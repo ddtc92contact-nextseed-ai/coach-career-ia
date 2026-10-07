@@ -1,0 +1,525 @@
+{
+  "metadata": {
+    "siteName": "Coach Career IA",
+    "title": "Coach Career IA — uw persoonlijke carrièreagent",
+    "titleTemplate": "%s · Coach Career IA",
+    "description": "Uw persoonlijke carrièreagent: uw bewijzen, uw randvoorwaarden, en alleen de kansen die daaraan voldoen. Standaard anoniem."
+  },
+  "header": {
+    "mainNav": "Hoofdnavigatie",
+    "signIn": "Inloggen"
+  },
+  "footer": {
+    "copyright": "© {year} Coach Career IA — NextSeed-AI",
+    "privacy": "Uw gegevens blijven van u: nooit verkocht, nooit gedeeld zonder uw toestemming."
+  },
+  "localeSwitcher": {
+    "label": "Taal"
+  },
+  "landing": {
+    "eyebrow": "Persoonlijke carrièreagent",
+    "title": "Stop met zoeken naar werk. Laat de juiste kansen naar u toe komen.",
+    "intro": "Coach Career IA draait het zoeken naar werk om: u bouwt een carrièregeheugen op dat op bewijzen berust, u bepaalt uw voorwaarden, en onze agent brengt u alleen vacatures die daaraan voldoen. Zonder uw identiteit prijs te geven.",
+    "ctaPrimary": "Mijn omgeving aanmaken",
+    "ctaSecondary": "Zo werkt het",
+    "pillarsTitle": "Vier principes, geen compromissen",
+    "pillars": {
+      "anonymous": {
+        "title": "Standaard anoniem",
+        "text": "Uw identiteit, contactgegevens en huidige werkgever worden apart en versleuteld opgeslagen. Recruiters zien alleen een geanonimiseerd profiel, gebaseerd op wat u kunt."
+      },
+      "proofs": {
+        "title": "Bewijzen, geen beloftes",
+        "text": "Uw carrièregeheugen bundelt concrete prestaties: opgeleverde projecten, gemeten resultaten, aangetoonde vaardigheden. Zij spreken voor u."
+      },
+      "guardRails": {
+        "title": "Uw randvoorwaarden maken de selectie",
+        "text": "Minimumsalaris, thuiswerken, uitgesloten sectoren, reistijd: u stelt niet-onderhandelbare regels. Een vacature die er één schendt, bereikt u nooit."
+      },
+      "control": {
+        "title": "U houdt de regie",
+        "text": "Niets gaat de deur uit zonder uw toestemming. Spreekt een kans u aan, dan heft u met één klik uw anonimiteit op — en alleen voor die ene recruiter."
+      }
+    },
+    "stepsTitle": "Hoe het werkt",
+    "steps": {
+      "one": "U beschrijft uw loopbaan met controleerbare bewijzen.",
+      "two": "U legt uw randvoorwaarden vast, eens en voor altijd.",
+      "three": "De agent analyseert de markt en toont u alleen gekwalificeerde vacatures.",
+      "four": "U beslist per vacature of u zich bekendmaakt."
+    },
+    "closingTitle": "Uw carrière, uw regels, uw tempo.",
+    "closingText": "Inloggen zonder wachtwoord, via een link naar uw e-mailadres. Er worden geen gegevens gedeeld zonder uw uitdrukkelijke toestemming.",
+    "closingCta": "Beginnen"
+  },
+  "notFound": {
+    "title": "Pagina niet gevonden",
+    "text": "Deze pagina bestaat niet of is verplaatst.",
+    "back": "Terug naar de startpagina"
+  },
+  "auth": {
+    "login": {
+      "metaTitle": "Inloggen",
+      "title": "Inloggen op uw omgeving",
+      "intro": "Geen wachtwoord: vul uw e-mailadres in en wij sturen u een eenmalige inloglink. Heeft u nog geen omgeving, dan wordt die bij de eerste keer inloggen aangemaakt.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "u@voorbeeld.nl",
+      "submit": "Stuur mij een inloglink",
+      "submitting": "Bezig met verzenden…",
+      "backHome": "Terug naar de startpagina",
+      "errors": {
+        "invalidEmail": "Vul een geldig e-mailadres in.",
+        "sendFailed": "De link kan op dit moment niet worden verzonden. Probeer het over enkele ogenblikken opnieuw."
+      }
+    },
+    "verify": {
+      "title": "Controleer uw mailbox",
+      "text": "Als het ingevulde adres geldig is, is er zojuist een inloglink naar u verzonden. Deze is 15 minuten geldig en werkt maar één keer.",
+      "help": "Niets ontvangen? Kijk ook in uw spamfolder en <link>vraag een nieuwe link aan</link>."
+    },
+    "error": {
+      "title": "Inloggen mislukt",
+      "retry": "Nieuwe link aanvragen",
+      "messages": {
+        "Verification": "Deze inloglink is verlopen of al gebruikt. Vraag een nieuwe aan: die is 15 minuten geldig.",
+        "Configuration": "De inlogdienst is tijdelijk niet beschikbaar. Probeer het over enkele ogenblikken opnieuw.",
+        "AccessDenied": "De toegang is geweigerd.",
+        "Default": "Er is een fout opgetreden tijdens het inloggen. Probeer het opnieuw."
+      }
+    }
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Uw inloglink voor Coach Career IA",
+      "brand": "Coach Career IA",
+      "greeting": "Hallo,",
+      "textIntro": "Hier is uw inloglink voor {host} (15 minuten geldig, eenmalig te gebruiken):",
+      "ignore": "Heeft u dit niet zelf aangevraagd? Dan kunt u dit bericht gewoon negeren.",
+      "htmlIntro": "Klik op de knop hieronder om in te loggen. Deze link is 15 minuten geldig en werkt maar één keer.",
+      "button": "Inloggen",
+      "htmlIgnore": "Heeft u dit niet zelf aangevraagd? Negeer dan dit bericht: er wordt geen account aangemaakt zonder op deze link te klikken."
+    }
+  },
+  "common": {
+    "optional": "optioneel",
+    "saving": "Opslaan…",
+    "saved": "Opgeslagen.",
+    "delete": "Verwijderen",
+    "deleting": "Verwijderen…"
+  },
+  "errors": {
+    "summary": "{count, plural, one {Eén veld moet worden gecorrigeerd.} other {# velden moeten worden gecorrigeerd.}}",
+    "required": "Dit veld is verplicht.",
+    "tooLong": "Deze tekst is te lang.",
+    "tooShort": "Deze tekst is te kort.",
+    "invalid": "Deze waarde is ongeldig.",
+    "invalidChoice": "Kies een optie uit de lijst.",
+    "invalidUrl": "Vul een volledig webadres in, beginnend met https://.",
+    "invalidMonth": "Vul een maand in met de notatie JJJJ-MM.",
+    "futureMonth": "Deze maand ligt in de toekomst.",
+    "endBeforeStart": "Het einde kan niet vóór het begin liggen.",
+    "invalidNumber": "Vul een geheel getal in.",
+    "outOfRange": "Deze waarde valt buiten de toegestane grenzen.",
+    "packageBelowSalary": "Het beoogde totale beloningspakket moet minstens gelijk zijn aan het minimale vaste salaris.",
+    "remoteDaysRequired": "Geef het minimale aantal thuiswerkdagen op.",
+    "tooMany": "Te veel items in deze lijst.",
+    "fileRequired": "Kies een bestand.",
+    "fileTooLarge": "Dit bestand is groter dan de maximaal toegestane grootte.",
+    "fileType": "Formaat niet toegestaan: upload een pdf of een afbeelding (PNG, JPEG, WebP).",
+    "fileQuota": "U heeft het maximale aantal documenten bereikt. Verwijder er een om een nieuw document toe te voegen.",
+    "confirmMismatch": "Het ingevulde adres komt niet overeen met dat van uw account.",
+    "notFound": "Dit item bestaat niet (meer)."
+  },
+  "app": {
+    "metaTitle": "Mijn omgeving",
+    "titleTemplate": "%s · Coach Career IA",
+    "signOut": "Uitloggen",
+    "nav": {
+      "label": "Kandidaatomgeving",
+      "dashboard": "Dashboard",
+      "memory": "Mijn carrièregeheugen",
+      "guardRails": "Mijn randvoorwaarden",
+      "opportunities": "Kansen",
+      "settings": "Instellingen"
+    }
+  },
+  "dashboard": {
+    "title": "Welkom in uw omgeving",
+    "intro": "Uw carrièreagent wordt ingericht. Begin met uw carrièregeheugen en uw randvoorwaarden: die bepalen welke kansen worden geselecteerd.",
+    "open": "Openen →",
+    "completeness": {
+      "title": "Volledigheid van het profiel",
+      "summary": "{achievements, plural, =0 {Nog geen prestaties.} one {Eén prestatie} other {# prestaties}}{achievements, plural, =0 {} other {, waarvan {proven, plural, =0 {geen enkele bewezen} one {één bewezen} other {# bewezen}}.}} Prestaties die met een bewijs zijn onderbouwd, wegen het zwaarst.",
+      "nextSteps": "Volgende stappen",
+      "complete": "Uw profiel is compleet. Vergeet het niet up-to-date te houden.",
+      "steps": {
+        "addExperience": {
+          "title": "Een werkervaring toevoegen",
+          "text": "Uw functie, de periode en een algemene beschrijving van de werkgever."
+        },
+        "addAchievement": {
+          "title": "Een prestatie beschrijven",
+          "text": "Een project, een actie, een meetbaar resultaat."
+        },
+        "addProof": {
+          "title": "Een prestatie onderbouwen",
+          "text": "Voeg een link, een document of een getuigenis toe."
+        },
+        "provenSkills": {
+          "title": "Drie bewezen vaardigheden",
+          "text": "Koppel uw vaardigheden aan bewezen prestaties."
+        },
+        "setSalary": {
+          "title": "Uw minimumsalaris vastleggen",
+          "text": "Vacatures daaronder krijgt u nooit te zien."
+        },
+        "setLocation": {
+          "title": "Locatie of thuiswerken aangeven",
+          "text": "De steden die u accepteert en uw thuiswerkbeleid."
+        },
+        "setContractTypes": {
+          "title": "Uw contractvormen kiezen",
+          "text": "Vast contract, freelance, tijdelijk contract… wat u accepteert."
+        }
+      }
+    },
+    "visibility": {
+      "title": "Zichtbaarheidsstatus",
+      "intro": "Bepaal of uw geanonimiseerde profiel aan recruiters mag worden voorgesteld.",
+      "save": "Bijwerken"
+    },
+    "sections": {
+      "memory": {
+        "title": "Mijn carrièregeheugen",
+        "text": "Bundel uw prestaties en de bewijzen die ze onderbouwen."
+      },
+      "guardRails": {
+        "title": "Mijn randvoorwaarden",
+        "text": "Leg de voorwaarden vast waaraan elke vacature moet voldoen."
+      },
+      "opportunities": {
+        "title": "Kansen",
+        "text": "Hier vindt u de vacatures die uw agent heeft geselecteerd."
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Kansen",
+    "intro": "Alleen vacatures die aan uw randvoorwaarden voldoen, met per match een toelichting.",
+    "emptyTitle": "Nog geen kansen",
+    "emptyText": "Zodra uw carrièregeheugen en uw randvoorwaarden zijn ingevuld, gaat uw agent u gekwalificeerde vacatures voorstellen."
+  },
+  "memory": {
+    "title": "Mijn carrièregeheugen",
+    "intro": "Uw concrete prestaties, elk onderbouwd met een bewijs. Dit is de basis van uw geanonimiseerde profiel: er staan geen namen van werkgevers of collega’s en geen contactgegevens in.",
+    "sectionsNav": "Onderdelen van het carrièregeheugen",
+    "anchors": {
+      "experiences": "Werkervaring",
+      "realisations": "Prestaties",
+      "competences": "Vaardigheden"
+    },
+    "period": "{start} – {end}",
+    "present": "heden",
+    "edit": "Bewerken",
+    "cancel": "Annuleren",
+    "experiences": {
+      "title": "Werkervaring",
+      "add": "Een werkervaring toevoegen",
+      "emptyTitle": "Nog geen werkervaring",
+      "emptyText": "Voeg uw opeenvolgende functies toe. De werkgever wordt in algemene termen beschreven (sector, omvang, fase): naar de naam wordt nooit gevraagd.",
+      "achievementCount": "{count, plural, =0 {geen prestaties} one {# prestatie} other {# prestaties}}",
+      "newTitle": "Nieuwe werkervaring",
+      "editTitle": "Werkervaring bewerken",
+      "formIntro": "Beschrijf de functie en de context zonder de werkgever te noemen: zo kunnen wij u anoniem voorstellen.",
+      "deleteTitle": "Deze werkervaring verwijderen",
+      "deleteText": "Gekoppelde prestaties blijven bewaard en worden alleen losgekoppeld van de werkervaring.",
+      "confirmDelete": "Deze werkervaring definitief verwijderen?",
+      "form": {
+        "roleTitle": "Functietitel",
+        "roleTitleHint": "Bijvoorbeeld: back-endontwikkelaar, marketingmanager.",
+        "startMonth": "Begin",
+        "endMonth": "Einde",
+        "monthHint": "Maand en jaar (JJJJ-MM).",
+        "current": "Ik vervul deze functie momenteel",
+        "seniority": "Niveau",
+        "contractType": "Contractvorm",
+        "choose": "Kiezen…",
+        "employerTitle": "De werkgever, zonder naam",
+        "employerHint": "Bijvoorbeeld: “fintech-scale-up met 51 tot 200 medewerkers”. Deze informatie volstaat voor de matching en beschermt uw anonimiteit.",
+        "sector": "Sector",
+        "companySize": "Omvang",
+        "companyStage": "Type organisatie",
+        "responsibilities": "Verantwoordelijkheden",
+        "responsibilitiesHint": "Uw werkterrein en belangrijkste taken. Vermeld geen bedrijfs- of persoonsnamen.",
+        "save": "Werkervaring opslaan"
+      }
+    },
+    "achievements": {
+      "title": "Prestaties",
+      "intro": "De kern van uw profiel: wat u heeft gedaan en welk resultaat dat opleverde. Een bewezen prestatie is veel meer waard dan een opgegeven prestatie.",
+      "add": "Een prestatie toevoegen",
+      "emptyTitle": "Nog geen prestaties",
+      "emptyText": "Beschrijf een project waar u trots op bent: de context, wat u deed en het meetbare resultaat. Voeg daarna een bewijs toe.",
+      "proofCount": "{count, plural, =0 {Geen bewijs} one {# bewijs} other {# bewijzen}}",
+      "addProof": "Een bewijs toevoegen",
+      "newTitle": "Nieuwe prestatie",
+      "editTitle": "Prestatie",
+      "formIntro": "Wees concreet: cijfers, doorlooptijden, impact. Vermijd namen van personen, klanten en werkgevers.",
+      "detailsTitle": "Beschrijving",
+      "deleteTitle": "Deze prestatie verwijderen",
+      "deleteText": "De bijbehorende bewijzen, inclusief geüploade documenten, worden verwijderd.",
+      "confirmDelete": "Deze prestatie en al haar bewijzen definitief verwijderen?",
+      "form": {
+        "title": "Titel",
+        "titleHint": "Bijvoorbeeld: herontwerp van het betaalproces.",
+        "experience": "Gekoppelde werkervaring",
+        "noExperience": "Geen (eigen project, vrijwilligerswerk…)",
+        "context": "Context",
+        "contextHint": "De uitgangssituatie en wat er op het spel stond.",
+        "actions": "Wat ik heb gedaan",
+        "actionsHint": "Uw eigen acties, niet die van het team.",
+        "result": "Meetbaar resultaat",
+        "resultHint": "Bijvoorbeeld: conversieratio +18% in drie maanden.",
+        "skills": "Ingezette vaardigheden",
+        "skillsHint": "Gescheiden door komma’s. Ze worden automatisch aan uw lijst met vaardigheden toegevoegd.",
+        "skillsPlaceholder": "PostgreSQL, projectmanagement, onderhandelen",
+        "save": "Opslaan",
+        "create": "Aanmaken en een bewijs toevoegen"
+      }
+    },
+    "proofs": {
+      "title": "Bewijzen",
+      "intro": "Een openbare link, een privédocument of een schriftelijke getuigenis. Documenten worden versleuteld en zijn alleen voor u zichtbaar.",
+      "empty": "Deze prestatie is nog niet bewezen. Voeg minstens één bewijs toe zodat ze volledig meetelt.",
+      "kindLabel": "Soort bewijs",
+      "kinds": {
+        "URL": "Link",
+        "DOCUMENT": "Document",
+        "REFERENCE": "Schriftelijke getuigenis"
+      },
+      "addTitle": "Een bewijs toevoegen",
+      "urlLabel": "Adres van de link",
+      "urlHint": "Artikel, coderepository, openbare presentatie, online certificaat…",
+      "fileLabel": "Bestand",
+      "fileHint": "PDF, PNG, JPEG of WebP, maximaal {maxMb} MB. Versleuteld opgeslagen, nooit gedeeld zonder uw toestemming.",
+      "referenceLabel": "Getuigenis",
+      "referenceHint": "Neem een ontvangen aanbeveling over, zonder de naam of contactgegevens van de schrijver.",
+      "add": "Bewijs toevoegen",
+      "kilobytes": "kB",
+      "addedOn": "Toegevoegd op {date}",
+      "confirmDelete": "Dit bewijs verwijderen?"
+    },
+    "skills": {
+      "title": "Vaardigheden",
+      "intro": "Berekend op basis van uw prestaties: het niveau hangt af van het aantal bewezen prestaties, de datum van laatste gebruik van de gekoppelde werkervaring.",
+      "emptyTitle": "Nog geen vaardigheden",
+      "emptyText": "Ze verschijnen zodra u ze bij een prestatie vermeldt. U kunt een vaardigheid ook rechtstreeks opgeven.",
+      "addLabel": "Een vaardigheid opgeven",
+      "addPlaceholder": "Bijvoorbeeld: Figma",
+      "addButton": "Toevoegen",
+      "addHint": "Een vaardigheid die zonder prestatie is opgegeven, wordt als onbewezen gemarkeerd.",
+      "usedNow": "Gebruikt in uw huidige functie",
+      "lastUsed": "Laatst gebruikt: {date}",
+      "lastUsedUnknown": "Laatste gebruik onbekend",
+      "backedBy": "Onderbouwd door",
+      "unprovenHint": "Onbewezen: vermeld haar bij een prestatie die met een bewijs is onderbouwd.",
+      "confirmDelete": "De vaardigheid “{name}” verwijderen? Ze wordt weggehaald bij de prestaties waarin ze vermeld staat."
+    }
+  },
+  "guardRails": {
+    "title": "Mijn randvoorwaarden",
+    "intro": "De niet-onderhandelbare voorwaarden waaraan een vacature moet voldoen om u te bereiken. Ze worden toegepast als strikte filters.",
+    "emptyHint": "Nog geen randvoorwaarden ingesteld. Begin met uw minimumsalaris en uw contractvormen.",
+    "save": "Mijn randvoorwaarden opslaan",
+    "summary": {
+      "title": "Samengevat",
+      "minFixed": "Minimaal vast salaris: {amount} bruto per jaar",
+      "targetPackage": "Beoogd totaal beloningspakket: {amount}"
+    },
+    "salary": {
+      "title": "Beloning",
+      "intro": "Brutobedragen per jaar, in euro.",
+      "minFixed": "Minimaal vast salaris",
+      "amountHint": "Daaronder wordt de vacature uitgesloten.",
+      "targetPackage": "Beoogd totaal beloningspakket",
+      "packageHint": "Vast + variabel + winstdeling of aandelen."
+    },
+    "location": {
+      "title": "Locaties en thuiswerken",
+      "intro": "De steden waar u in de omgeving wilt werken, en uw thuiswerkbeleid.",
+      "empty": "Geen locatie toegevoegd.",
+      "city": "Stad",
+      "cityPlaceholder": "Bijvoorbeeld: Utrecht",
+      "radius": "Straal (km)",
+      "remove": "Verwijderen",
+      "add": "Een locatie toevoegen"
+    },
+    "remote": {
+      "title": "Thuiswerken",
+      "none": "Geen eis",
+      "minDays": "Minimaal aantal thuiswerkdagen per week",
+      "chooseDays": "Kiezen…",
+      "days": "{count, plural, one {# dag} other {# dagen}}"
+    },
+    "contracts": {
+      "title": "Geaccepteerde contractvormen",
+      "intro": "Niets aangevinkt: alle contractvormen worden geaccepteerd."
+    },
+    "exclusions": {
+      "title": "Uitsluitingen",
+      "intro": "De sectoren en bedrijven waarvan u geen enkele vacature wilt ontvangen.",
+      "sectors": "Uitgesloten sectoren",
+      "companies": "Uitgesloten bedrijven",
+      "companiesHint": "Eén per regel (bijvoorbeeld uw huidige werkgever). Deze namen worden versleuteld en verlaten uw omgeving nooit."
+    },
+    "workload": {
+      "title": "Werkritme",
+      "maxHours": "Maximaal aantal uren per week",
+      "maxHoursHint": "Laat leeg als het u niet uitmaakt.",
+      "onCall": "Ik accepteer bereikbaarheidsdiensten",
+      "onCallHint": "Anders worden functies met bereikbaarheidsdiensten uitgesloten."
+    },
+    "culture": {
+      "title": "Bedrijfscultuur",
+      "intro": "Optioneel: wat voor u belangrijk is. Deze voorkeuren verfijnen de rangschikking van vacatures."
+    }
+  },
+  "settings": {
+    "title": "Instellingen",
+    "intro": "Uw taal, uw gegevens, uw account.",
+    "language": {
+      "title": "Taal",
+      "intro": "De taal van de interface, de e-mails en de teksten die uw agent opstelt."
+    },
+    "export": {
+      "title": "Mijn gegevens exporteren",
+      "intro": "Download al uw gegevens (werkervaring, prestaties, bewijzen en documenten, vaardigheden, randvoorwaarden) in JSON-formaat.",
+      "button": "Mijn export downloaden"
+    },
+    "delete": {
+      "title": "Mijn account verwijderen",
+      "intro": "Directe en definitieve verwijdering van uw account, uw carrièregeheugen, uw randvoorwaarden en al uw documenten. Dit kan niet ongedaan worden gemaakt.",
+      "confirmLabel": "Bevestig door uw e-mailadres in te vullen",
+      "confirmHint": "Exporteer uw gegevens voordat u uw account verwijdert.",
+      "submit": "Mijn account definitief verwijderen",
+      "deleting": "Bezig met verwijderen…"
+    }
+  },
+  "codes": {
+    "visibility": {
+      "ACTIVE": {
+        "label": "Actief op zoek",
+        "description": "Uw geanonimiseerde profiel wordt met voorrang aan recruiters voorgesteld."
+      },
+      "OPEN": {
+        "label": "Open voor kansen",
+        "description": "Uw geanonimiseerde profiel kan worden voorgesteld voor zeer gerichte vacatures."
+      },
+      "INVISIBLE": {
+        "label": "Onzichtbaar",
+        "description": "Geen enkele recruiter ziet uw profiel. Uw agent blijft voor u op de uitkijk."
+      }
+    },
+    "seniority": {
+      "INTERN": "Stagiair",
+      "JUNIOR": "Junior",
+      "MID": "Medior",
+      "SENIOR": "Senior",
+      "LEAD": "Lead / specialist",
+      "MANAGER": "Manager",
+      "DIRECTOR": "Directeur",
+      "EXECUTIVE": "Bestuurder"
+    },
+    "contractType": {
+      "PERMANENT": "Vast contract",
+      "FIXED_TERM": "Tijdelijk contract",
+      "FREELANCE": "Freelance",
+      "TEMPORARY": "Uitzendwerk",
+      "APPRENTICESHIP": "Leer-werktraject",
+      "INTERNSHIP": "Stage"
+    },
+    "companySize": {
+      "S1_10": "1 tot 10 medewerkers",
+      "S11_50": "11 tot 50 medewerkers",
+      "S51_200": "51 tot 200 medewerkers",
+      "S201_500": "201 tot 500 medewerkers",
+      "S501_1000": "501 tot 1.000 medewerkers",
+      "S1001_5000": "1.001 tot 5.000 medewerkers",
+      "S5001_PLUS": "Meer dan 5.000 medewerkers"
+    },
+    "companyStage": {
+      "STARTUP": "Start-up",
+      "SCALEUP": "Scale-up",
+      "SME": "Mkb-bedrijf",
+      "MIDCAP": "Middelgroot bedrijf",
+      "LARGE_CORP": "Groot concern",
+      "PUBLIC_SECTOR": "Publieke sector",
+      "NONPROFIT": "Vereniging / ngo",
+      "CONSULTANCY": "Adviesbureau / IT-dienstverlener"
+    },
+    "sector": {
+      "AEROSPACE_DEFENSE": "Lucht- en ruimtevaart en defensie",
+      "AGRIFOOD": "Agri-food",
+      "AUTOMOTIVE_MOBILITY": "Automotive en mobiliteit",
+      "BANKING_INSURANCE": "Bankwezen en verzekeringen",
+      "BIOTECH_PHARMA": "Biotech en farma",
+      "CONSTRUCTION_REAL_ESTATE": "Bouw en vastgoed",
+      "CONSULTING": "Consultancy",
+      "CYBERSECURITY": "Cybersecurity",
+      "ECOMMERCE_RETAIL": "E-commerce en retail",
+      "EDUCATION_EDTECH": "Onderwijs en edtech",
+      "ENERGY_UTILITIES": "Energie",
+      "ENVIRONMENT_CLEANTECH": "Milieu en cleantech",
+      "FINTECH": "Fintech",
+      "GAMBLING": "Kansspelen",
+      "GAMING": "Videogames",
+      "HEALTHCARE_HEALTHTECH": "Zorg en healthtech",
+      "HOSPITALITY_TOURISM": "Horeca en toerisme",
+      "HR_RECRUITMENT": "HR en recruitment",
+      "INDUSTRY_MANUFACTURING": "Industrie",
+      "LEGAL": "Juridisch",
+      "LUXURY_FASHION": "Luxe en mode",
+      "MARKETING_ADVERTISING": "Marketing en reclame",
+      "MEDIA_ENTERTAINMENT": "Media en entertainment",
+      "NONPROFIT": "Non-profit en sociale economie",
+      "OIL_GAS": "Olie en gas",
+      "PUBLIC_ADMINISTRATION": "Overheid",
+      "SAAS_SOFTWARE": "Software en SaaS",
+      "TELECOM": "Telecommunicatie",
+      "TOBACCO_ALCOHOL": "Tabak en alcohol",
+      "TRANSPORT_LOGISTICS": "Transport en logistiek",
+      "OTHER": "Andere sector"
+    },
+    "remotePolicy": {
+      "ONSITE": "Op locatie werken geaccepteerd",
+      "HYBRID": "Hybride",
+      "FULL_REMOTE": "Uitsluitend volledig op afstand"
+    },
+    "culture": {
+      "ASYNC_FIRST": "Asynchroon werken",
+      "FLAT_HIERARCHY": "Platte hiërarchie",
+      "STRUCTURED_PROCESSES": "Gestructureerde processen",
+      "FAST_PACED": "Hoog tempo",
+      "WORK_LIFE_BALANCE": "Balans tussen werk en privé",
+      "LEARNING_CULTURE": "Continu leren",
+      "MISSION_DRIVEN": "Missie met impact",
+      "DIVERSITY_INCLUSION": "Diversiteit en inclusie",
+      "INTERNATIONAL": "Internationale omgeving",
+      "SMALL_TEAMS": "Kleine, autonome teams",
+      "ENGINEERING_CULTURE": "Sterke technische cultuur",
+      "TRANSPARENT_PAY": "Transparante salarisschalen"
+    },
+    "evidence": {
+      "DECLARED": "Opgegeven",
+      "DOCUMENT": "Bewezen",
+      "VERIFIED": "Geverifieerd"
+    },
+    "skillLevel": {
+      "UNPROVEN": "Onbewezen",
+      "DECLARED": "Opgegeven, zonder bewijs",
+      "DEMONSTRATED": "Aangetoond",
+      "CONFIRMED": "Bevestigd",
+      "EXPERT": "Beheerst"
+    }
+  }
+}

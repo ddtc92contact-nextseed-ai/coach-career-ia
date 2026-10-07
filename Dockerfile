@@ -38,6 +38,8 @@ COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 COPY --chown=node:node worker ./worker
+# Pièces justificatives (chiffrées), montées sur le volume `uploads`.
+RUN mkdir -p /app/storage/uploads && chown -R node:node /app/storage && chmod 700 /app/storage/uploads
 
 USER node
 EXPOSE 3000

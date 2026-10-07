@@ -1,10 +1,17 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   // Image Docker minimale : seul le serveur autonome est copié.
   output: "standalone",
   poweredByHeader: false,
   agentRules: false,
+  experimental: {
+    // Envoi de pièces justificatives (5 Mo max, voir `src/lib/career/documents.ts`).
+    serverActions: { bodySizeLimit: "6mb" },
+  },
   async headers() {
     return [
       {
@@ -20,4 +27,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

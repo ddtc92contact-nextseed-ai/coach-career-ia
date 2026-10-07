@@ -1,0 +1,525 @@
+{
+  "metadata": {
+    "siteName": "Coach Career IA",
+    "title": "Coach Career IA — your private career agent",
+    "titleTemplate": "%s · Coach Career IA",
+    "description": "Your private career agent: your proof, your guard-rails, and only the opportunities that respect them. Anonymous by default."
+  },
+  "header": {
+    "mainNav": "Main navigation",
+    "signIn": "Sign in"
+  },
+  "footer": {
+    "copyright": "© {year} Coach Career IA — NextSeed-AI",
+    "privacy": "Your data stays yours: never sold, never shared without your consent."
+  },
+  "localeSwitcher": {
+    "label": "Language"
+  },
+  "landing": {
+    "eyebrow": "Private career agent",
+    "title": "Stop job hunting. Let the right opportunities come to you.",
+    "intro": "Coach Career IA flips the job search around: you build a career memory grounded in proof, you set your conditions, and our agent brings you only the offers that respect them. Without exposing your identity.",
+    "ctaPrimary": "Create my space",
+    "ctaSecondary": "How it works",
+    "pillarsTitle": "Four principles, no compromise",
+    "pillars": {
+      "anonymous": {
+        "title": "Anonymous by default",
+        "text": "Your identity, contact details and current employer are stored separately, encrypted. Recruiters only see an anonymised profile built on what you can do."
+      },
+      "proofs": {
+        "title": "Proof, not promises",
+        "text": "Your career memory gathers concrete achievements: projects delivered, measured results, demonstrated skills. They speak for you."
+      },
+      "guardRails": {
+        "title": "Your guard-rails do the sorting",
+        "text": "Minimum salary, remote work, excluded sectors, commute time: you set non-negotiable rules. An offer that breaks one never reaches you."
+      },
+      "control": {
+        "title": "You stay in control",
+        "text": "Nothing goes out without your consent. When an opportunity interests you, you lift your anonymity in one click — and only for that recruiter."
+      }
+    },
+    "stepsTitle": "How it works",
+    "steps": {
+      "one": "You describe your background with verifiable proof.",
+      "two": "You set your guard-rails, once and for all.",
+      "three": "The agent analyses the market and shows you only qualified offers.",
+      "four": "You decide, offer by offer, whether to reveal yourself."
+    },
+    "closingTitle": "Your career, your rules, your pace.",
+    "closingText": "Passwordless sign-in, via a link sent to your email address. No data is shared without your explicit consent.",
+    "closingCta": "Get started"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This page doesn’t exist or has been moved.",
+    "back": "Back to home"
+  },
+  "auth": {
+    "login": {
+      "metaTitle": "Sign in",
+      "title": "Sign in to your space",
+      "intro": "No password: enter your email address and we’ll send you a one-time sign-in link. If you don’t have a space yet, it will be created the first time you sign in.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Send me a sign-in link",
+      "submitting": "Sending…",
+      "backHome": "Back to home",
+      "errors": {
+        "invalidEmail": "Enter a valid email address.",
+        "sendFailed": "We couldn’t send the link right now. Please try again in a few moments."
+      }
+    },
+    "verify": {
+      "title": "Check your inbox",
+      "text": "If the address you entered is valid, a sign-in link has just been sent to you. It is valid for 15 minutes and works only once.",
+      "help": "Nothing arrived? Check your spam folder, then <link>request a new link</link>."
+    },
+    "error": {
+      "title": "Unable to sign in",
+      "retry": "Request a new link",
+      "messages": {
+        "Verification": "This sign-in link has expired or has already been used. Request a new one: it stays valid for 15 minutes.",
+        "Configuration": "The sign-in service is temporarily unavailable. Please try again in a few moments.",
+        "AccessDenied": "Access was denied.",
+        "Default": "Something went wrong while signing in. Please try again."
+      }
+    }
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Your sign-in link for Coach Career IA",
+      "brand": "Coach Career IA",
+      "greeting": "Hello,",
+      "textIntro": "Here is your sign-in link for {host} (valid for 15 minutes, single use):",
+      "ignore": "If you didn’t request this, simply ignore this message.",
+      "htmlIntro": "Click the button below to sign in. This link is valid for 15 minutes and works only once.",
+      "button": "Sign me in",
+      "htmlIgnore": "If you didn’t request this, ignore this message: no account will be opened unless this link is clicked."
+    }
+  },
+  "common": {
+    "optional": "optional",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "delete": "Delete",
+    "deleting": "Deleting…"
+  },
+  "errors": {
+    "summary": "{count, plural, one {One field needs correcting.} other {# fields need correcting.}}",
+    "required": "This field is required.",
+    "tooLong": "This text is too long.",
+    "tooShort": "This text is too short.",
+    "invalid": "This value is not valid.",
+    "invalidChoice": "Choose an option from the list.",
+    "invalidUrl": "Enter a full web address, starting with https://.",
+    "invalidMonth": "Enter a month in YYYY-MM format.",
+    "futureMonth": "This month is in the future.",
+    "endBeforeStart": "The end cannot come before the start.",
+    "invalidNumber": "Enter a whole number.",
+    "outOfRange": "This value is outside the allowed range.",
+    "packageBelowSalary": "The target total compensation must be at least equal to the minimum base salary.",
+    "remoteDaysRequired": "Specify the minimum number of remote days.",
+    "tooMany": "Too many items in this list.",
+    "fileRequired": "Choose a file.",
+    "fileTooLarge": "This file exceeds the maximum allowed size.",
+    "fileType": "Unsupported format: upload a PDF or an image (PNG, JPEG, WebP).",
+    "fileQuota": "You have reached the maximum number of documents. Delete one to add another.",
+    "confirmMismatch": "The address you entered doesn’t match your account’s address.",
+    "notFound": "This item doesn’t exist or no longer exists."
+  },
+  "app": {
+    "metaTitle": "My space",
+    "titleTemplate": "%s · Coach Career IA",
+    "signOut": "Sign out",
+    "nav": {
+      "label": "Candidate space",
+      "dashboard": "Dashboard",
+      "memory": "My career memory",
+      "guardRails": "My guard-rails",
+      "opportunities": "Opportunities",
+      "settings": "Settings"
+    }
+  },
+  "dashboard": {
+    "title": "Welcome to your space",
+    "intro": "Your career agent is getting set up. Start with your career memory and your guard-rails: they will guide the selection of opportunities.",
+    "open": "Open →",
+    "completeness": {
+      "title": "Profile completeness",
+      "summary": "{achievements, plural, =0 {No achievements yet.} one {One achievement} other {# achievements}}{achievements, plural, =0 {} other {, {proven, plural, =0 {none proven} one {one proven} other {# proven}}.}} Achievements backed by proof count the most.",
+      "nextSteps": "Next steps",
+      "complete": "Your profile is complete. Remember to keep it up to date.",
+      "steps": {
+        "addExperience": {
+          "title": "Add an experience",
+          "text": "Your role, its dates and a generic description of the employer."
+        },
+        "addAchievement": {
+          "title": "Describe an achievement",
+          "text": "A project, an action, a measurable result."
+        },
+        "addProof": {
+          "title": "Prove an achievement",
+          "text": "Attach a link, a document or a testimonial."
+        },
+        "provenSkills": {
+          "title": "Three proven skills",
+          "text": "Link your skills to proven achievements."
+        },
+        "setSalary": {
+          "title": "Set your minimum salary",
+          "text": "No offer below it will be shown to you."
+        },
+        "setLocation": {
+          "title": "Specify location or remote work",
+          "text": "The cities you accept and your remote-work policy."
+        },
+        "setContractTypes": {
+          "title": "Choose your contract types",
+          "text": "Permanent, freelance, fixed-term… whatever you accept."
+        }
+      }
+    },
+    "visibility": {
+      "title": "Visibility status",
+      "intro": "Decide whether your anonymised profile can be shown to recruiters.",
+      "save": "Update"
+    },
+    "sections": {
+      "memory": {
+        "title": "My career memory",
+        "text": "Gather your achievements and the proof that backs them."
+      },
+      "guardRails": {
+        "title": "My guard-rails",
+        "text": "Set the conditions no offer may break."
+      },
+      "opportunities": {
+        "title": "Opportunities",
+        "text": "Find the offers qualified by your agent here."
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Opportunities",
+    "intro": "Only offers that respect your guard-rails, with an explanation of every match.",
+    "emptyTitle": "No opportunities yet",
+    "emptyText": "As soon as your career memory and guard-rails are filled in, your agent will start suggesting qualified offers."
+  },
+  "memory": {
+    "title": "My career memory",
+    "intro": "Your concrete achievements, each backed by proof. This is the basis of your anonymised profile: no employer names, colleague names or contact details appear in it.",
+    "sectionsNav": "Career memory sections",
+    "anchors": {
+      "experiences": "Experience",
+      "realisations": "Achievements",
+      "competences": "Skills"
+    },
+    "period": "{start} – {end}",
+    "present": "present",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "experiences": {
+      "title": "Experience",
+      "add": "Add an experience",
+      "emptyTitle": "No experience yet",
+      "emptyText": "Add your successive roles. The employer is described generically (sector, size, stage): its name is never requested.",
+      "achievementCount": "{count, plural, =0 {no achievements} one {# achievement} other {# achievements}}",
+      "newTitle": "New experience",
+      "editTitle": "Edit experience",
+      "formIntro": "Describe the role and its context without naming the employer: this is what lets us present you anonymously.",
+      "deleteTitle": "Delete this experience",
+      "deleteText": "Linked achievements are kept, simply detached from the experience.",
+      "confirmDelete": "Permanently delete this experience?",
+      "form": {
+        "roleTitle": "Job title",
+        "roleTitleHint": "For example: Back-end developer, Marketing manager.",
+        "startMonth": "Start",
+        "endMonth": "End",
+        "monthHint": "Month and year (YYYY-MM).",
+        "current": "I currently hold this position",
+        "seniority": "Level",
+        "contractType": "Contract type",
+        "choose": "Choose…",
+        "employerTitle": "The employer, without naming it",
+        "employerHint": "For example: “fintech scale-up with 51 to 200 people”. This is enough for matching and preserves your anonymity.",
+        "sector": "Sector",
+        "companySize": "Size",
+        "companyStage": "Type of organisation",
+        "responsibilities": "Responsibilities",
+        "responsibilitiesHint": "Your scope and main duties. Don’t include any company or person names.",
+        "save": "Save experience"
+      }
+    },
+    "achievements": {
+      "title": "Achievements",
+      "intro": "The heart of your profile: what you did, and the result you achieved. A proven achievement is worth far more than a declared one.",
+      "add": "Add an achievement",
+      "emptyTitle": "No achievements yet",
+      "emptyText": "Describe a project you are proud of: the context, what you did, the measurable result. Then add proof.",
+      "proofCount": "{count, plural, =0 {No proof} one {# proof} other {# proofs}}",
+      "addProof": "Add proof",
+      "newTitle": "New achievement",
+      "editTitle": "Achievement",
+      "formIntro": "Be concrete: figures, timelines, impact. Avoid names of people, clients and employers.",
+      "detailsTitle": "Description",
+      "deleteTitle": "Delete this achievement",
+      "deleteText": "Its proofs, including uploaded documents, will be deleted.",
+      "confirmDelete": "Permanently delete this achievement and all its proofs?",
+      "form": {
+        "title": "Title",
+        "titleHint": "For example: Redesign of the checkout flow.",
+        "experience": "Linked experience",
+        "noExperience": "None (personal project, volunteering…)",
+        "context": "Context",
+        "contextHint": "The starting situation, what was at stake.",
+        "actions": "What I did",
+        "actionsHint": "Your own actions, not the team’s.",
+        "result": "Measurable result",
+        "resultHint": "For example: conversion rate +18% in three months.",
+        "skills": "Skills used",
+        "skillsHint": "Comma-separated. They automatically feed your skills list.",
+        "skillsPlaceholder": "PostgreSQL, project management, negotiation",
+        "save": "Save",
+        "create": "Create and add proof"
+      }
+    },
+    "proofs": {
+      "title": "Proof",
+      "intro": "A public link, a private document or a written testimonial. Documents are encrypted and visible to you alone.",
+      "empty": "This achievement is not proven yet. Add at least one proof for it to count fully.",
+      "kindLabel": "Type of proof",
+      "kinds": {
+        "URL": "Link",
+        "DOCUMENT": "Document",
+        "REFERENCE": "Written testimonial"
+      },
+      "addTitle": "Add proof",
+      "urlLabel": "Link address",
+      "urlHint": "Article, code repository, public presentation, online certificate…",
+      "fileLabel": "File",
+      "fileHint": "PDF, PNG, JPEG or WebP, {maxMb} MB maximum. Stored encrypted, never shared without your consent.",
+      "referenceLabel": "Testimonial",
+      "referenceHint": "Copy a recommendation you received, without its author’s name or contact details.",
+      "add": "Add proof",
+      "kilobytes": "KB",
+      "addedOn": "Added on {date}",
+      "confirmDelete": "Delete this proof?"
+    },
+    "skills": {
+      "title": "Skills",
+      "intro": "Calculated from your achievements: the level depends on the number of proven achievements, and the last-used date on the linked experience.",
+      "emptyTitle": "No skills yet",
+      "emptyText": "They appear as soon as you mention them in an achievement. You can also declare one directly.",
+      "addLabel": "Declare a skill",
+      "addPlaceholder": "For example: Figma",
+      "addButton": "Add",
+      "addHint": "A skill declared without an achievement is marked as unproven.",
+      "usedNow": "Used in your current role",
+      "lastUsed": "Last used: {date}",
+      "lastUsedUnknown": "Last use unknown",
+      "backedBy": "Backed by",
+      "unprovenHint": "Unproven: mention it in an achievement backed by proof.",
+      "confirmDelete": "Delete the skill “{name}”? It will be removed from the achievements that mention it."
+    }
+  },
+  "guardRails": {
+    "title": "My guard-rails",
+    "intro": "The non-negotiable conditions an offer must meet to reach you. They are applied as strict filters.",
+    "emptyHint": "No guard-rails set yet. Start with your minimum salary and your contract types.",
+    "save": "Save my guard-rails",
+    "summary": {
+      "title": "Summary",
+      "minFixed": "Minimum base salary: {amount} gross per year",
+      "targetPackage": "Target total compensation: {amount}"
+    },
+    "salary": {
+      "title": "Compensation",
+      "intro": "Gross annual amounts, in euros.",
+      "minFixed": "Minimum base salary",
+      "amountHint": "Below this, the offer is discarded.",
+      "targetPackage": "Target total compensation",
+      "packageHint": "Base + variable + profit-sharing or equity."
+    },
+    "location": {
+      "title": "Locations and remote work",
+      "intro": "The cities around which you are willing to work, and your remote-work policy.",
+      "empty": "No locations added.",
+      "city": "City",
+      "cityPlaceholder": "For example: Lyon",
+      "radius": "Radius (km)",
+      "remove": "Remove",
+      "add": "Add a location"
+    },
+    "remote": {
+      "title": "Remote work",
+      "none": "No requirement",
+      "minDays": "Minimum remote days per week",
+      "chooseDays": "Choose…",
+      "days": "{count, plural, one {# day} other {# days}}"
+    },
+    "contracts": {
+      "title": "Accepted contract types",
+      "intro": "No box ticked: all contract types are accepted."
+    },
+    "exclusions": {
+      "title": "Exclusions",
+      "intro": "The sectors and companies you never want to receive offers from.",
+      "sectors": "Excluded sectors",
+      "companies": "Excluded companies",
+      "companiesHint": "One per line (your current employer, for example). These names are encrypted and never leave your space."
+    },
+    "workload": {
+      "title": "Working pattern",
+      "maxHours": "Maximum weekly hours",
+      "maxHoursHint": "Leave blank if it doesn’t matter to you.",
+      "onCall": "I accept on-call duty",
+      "onCallHint": "Otherwise, roles with on-call duty are discarded."
+    },
+    "culture": {
+      "title": "Company culture",
+      "intro": "Optional: what matters to you. These preferences refine how offers are ranked."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "intro": "Your language, your data, your account.",
+    "language": {
+      "title": "Language",
+      "intro": "The language of the interface, emails and texts written by your agent."
+    },
+    "export": {
+      "title": "Export my data",
+      "intro": "Download all your data (experience, achievements, proofs and documents, skills, guard-rails) in JSON format.",
+      "button": "Download my export"
+    },
+    "delete": {
+      "title": "Delete my account",
+      "intro": "Immediate and permanent deletion of your account, your career memory, your guard-rails and all your documents. This action cannot be undone.",
+      "confirmLabel": "Confirm by entering your email address",
+      "confirmHint": "Remember to export your data before deleting your account.",
+      "submit": "Permanently delete my account",
+      "deleting": "Deleting…"
+    }
+  },
+  "codes": {
+    "visibility": {
+      "ACTIVE": {
+        "label": "Actively looking",
+        "description": "Your anonymised profile is put forward to recruiters as a priority."
+      },
+      "OPEN": {
+        "label": "Open to opportunities",
+        "description": "Your anonymised profile may be shown for highly targeted offers."
+      },
+      "INVISIBLE": {
+        "label": "Invisible",
+        "description": "No recruiter can see your profile. Your agent keeps watching out for you."
+      }
+    },
+    "seniority": {
+      "INTERN": "Intern",
+      "JUNIOR": "Junior",
+      "MID": "Mid-level",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "MANAGER": "Manager",
+      "DIRECTOR": "Director",
+      "EXECUTIVE": "Executive"
+    },
+    "contractType": {
+      "PERMANENT": "Permanent contract",
+      "FIXED_TERM": "Fixed-term contract",
+      "FREELANCE": "Freelance",
+      "TEMPORARY": "Temporary / agency",
+      "APPRENTICESHIP": "Apprenticeship",
+      "INTERNSHIP": "Internship"
+    },
+    "companySize": {
+      "S1_10": "1 to 10 people",
+      "S11_50": "11 to 50 people",
+      "S51_200": "51 to 200 people",
+      "S201_500": "201 to 500 people",
+      "S501_1000": "501 to 1,000 people",
+      "S1001_5000": "1,001 to 5,000 people",
+      "S5001_PLUS": "More than 5,000 people"
+    },
+    "companyStage": {
+      "STARTUP": "Start-up",
+      "SCALEUP": "Scale-up",
+      "SME": "SME",
+      "MIDCAP": "Mid-sized company",
+      "LARGE_CORP": "Large corporation",
+      "PUBLIC_SECTOR": "Public sector",
+      "NONPROFIT": "Non-profit / NGO",
+      "CONSULTANCY": "Consultancy / IT services company"
+    },
+    "sector": {
+      "AEROSPACE_DEFENSE": "Aerospace and defence",
+      "AGRIFOOD": "Food and agriculture",
+      "AUTOMOTIVE_MOBILITY": "Automotive and mobility",
+      "BANKING_INSURANCE": "Banking and insurance",
+      "BIOTECH_PHARMA": "Biotech and pharma",
+      "CONSTRUCTION_REAL_ESTATE": "Construction and real estate",
+      "CONSULTING": "Consulting",
+      "CYBERSECURITY": "Cybersecurity",
+      "ECOMMERCE_RETAIL": "E-commerce and retail",
+      "EDUCATION_EDTECH": "Education and edtech",
+      "ENERGY_UTILITIES": "Energy and utilities",
+      "ENVIRONMENT_CLEANTECH": "Environment and cleantech",
+      "FINTECH": "Fintech",
+      "GAMBLING": "Gambling",
+      "GAMING": "Video games",
+      "HEALTHCARE_HEALTHTECH": "Healthcare and healthtech",
+      "HOSPITALITY_TOURISM": "Hospitality and tourism",
+      "HR_RECRUITMENT": "HR and recruitment",
+      "INDUSTRY_MANUFACTURING": "Industry and manufacturing",
+      "LEGAL": "Legal",
+      "LUXURY_FASHION": "Luxury and fashion",
+      "MARKETING_ADVERTISING": "Marketing and advertising",
+      "MEDIA_ENTERTAINMENT": "Media and entertainment",
+      "NONPROFIT": "Non-profit and social economy",
+      "OIL_GAS": "Oil and gas",
+      "PUBLIC_ADMINISTRATION": "Public administration",
+      "SAAS_SOFTWARE": "Software and SaaS",
+      "TELECOM": "Telecommunications",
+      "TOBACCO_ALCOHOL": "Tobacco and alcohol",
+      "TRANSPORT_LOGISTICS": "Transport and logistics",
+      "OTHER": "Other sector"
+    },
+    "remotePolicy": {
+      "ONSITE": "On-site accepted",
+      "HYBRID": "Hybrid",
+      "FULL_REMOTE": "Fully remote only"
+    },
+    "culture": {
+      "ASYNC_FIRST": "Asynchronous work",
+      "FLAT_HIERARCHY": "Flat hierarchy",
+      "STRUCTURED_PROCESSES": "Structured processes",
+      "FAST_PACED": "Fast-paced",
+      "WORK_LIFE_BALANCE": "Work-life balance",
+      "LEARNING_CULTURE": "Continuous learning",
+      "MISSION_DRIVEN": "Mission-driven",
+      "DIVERSITY_INCLUSION": "Diversity and inclusion",
+      "INTERNATIONAL": "International environment",
+      "SMALL_TEAMS": "Small autonomous teams",
+      "ENGINEERING_CULTURE": "Strong engineering culture",
+      "TRANSPARENT_PAY": "Transparent salary bands"
+    },
+    "evidence": {
+      "DECLARED": "Declared",
+      "DOCUMENT": "Proven",
+      "VERIFIED": "Verified"
+    },
+    "skillLevel": {
+      "UNPROVEN": "Unproven",
+      "DECLARED": "Declared, without proof",
+      "DEMONSTRATED": "Demonstrated",
+      "CONFIRMED": "Confirmed",
+      "EXPERT": "Mastered"
+    }
+  }
+}

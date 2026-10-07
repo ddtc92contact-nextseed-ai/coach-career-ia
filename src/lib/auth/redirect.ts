@@ -1,11 +1,12 @@
 const DEFAULT_REDIRECT = "/app";
 
-/** En-tête interne posé par `src/proxy.ts` : chemin demandé sous `/app`. */
+/** En-tête interne posé par `src/proxy.ts` : chemin demandé sous `/app` (sans la langue). */
 export const PATHNAME_HEADER = "x-ccia-pathname";
 
 /**
  * N'accepte comme destination après connexion qu'un chemin interne de
- * l'espace connecté (`/app…`) : protège contre les redirections ouvertes.
+ * l'espace connecté (`/app…`, sans préfixe de langue) : protège contre les
+ * redirections ouvertes.
  */
 export function safeCallbackUrl(raw: unknown): string {
   if (typeof raw !== "string") return DEFAULT_REDIRECT;
@@ -14,7 +15,7 @@ export function safeCallbackUrl(raw: unknown): string {
   return raw;
 }
 
-/** Page de connexion qui ramène, après connexion, vers `callbackUrl` (validé). */
+/** Page de connexion (sans langue) qui ramène ensuite vers `callbackUrl` (validé). */
 export function loginPath(callbackUrl: unknown): string {
   return `/connexion?callbackUrl=${encodeURIComponent(safeCallbackUrl(callbackUrl))}`;
 }

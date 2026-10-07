@@ -1,32 +1,40 @@
-import { NextResponse, type NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
 import { PATHNAME_HEADER } from "@/lib/auth/redirect";
+import { LOCALES, routing } from "@/i18n/routing";
 
 const SESSION_COOKIES = ["authjs.session-token", "__Secure-authjs.session-token"];
+const APP_PATH = new RegExp(`^/(${LOCALES.join("|")})(/app(?:/.*)?)$`);
+
+const intl = createMiddleware(routing);
 
 /**
- * Filtre optimiste : sans cookie de session, `/app` renvoie vers la connexion
- * en conservant la page demandée. La vérification qui fait foi reste
- * `requireUser()` côté serveur (session validée en base) ; le chemin demandé
- * lui est transmis par en-tête pour qu'elle conserve aussi la destination.
+ * 1. Langue : `/` et toute URL sans préfixe redirigent vers la meilleure langue
+ *    (cookie `NEXT_LOCALE`, puis Accept-Language, puis français).
+ * 2. Filtre optimiste : sans cookie de session, `/<langue>/app` renvoie vers la
+ *    connexion en conservant la page demandée. La vérification qui fait foi
+ *    reste `requireUser()` côté serveur (session validée en base) ; le chemin
+ *    demandé (sans langue) lui est transmis par en-tête pour qu'elle conserve
+ *    aussi la destination.
  */
 export function proxy(request: NextRequest) {
+  const appMatch = APP_PATH.exec(request.nextUrl.pathname);
   const hasSession = SESSION_COOKIES.some((name) => request.cookies.has(name));
-  if (hasSession) {
-    // Écrase toute valeur fournie par le client.
-    const headers = new Headers(request.headers);
-    headers.set(PATHNAME_HEADER, request.nextUrl.pathname);
-    return NextResponse.next({ request: { headers } });
+  if (appMatch && !hasSession) {
+    const [, locale, path = "/app"] = appMatch;
+    const login = new URL(`/${locale}/connexion`, request.url);
+    login.searchParams.set("callbackUrl", path);
+    return NextResponse.redirect(login);
   }
 
-  return NextResponse.redirect(loginUrl(request.url, request.nextUrl.pathname));
-}
-
-function loginUrl(base: string, pathname: string): URL {
-  const login = new URL("/connexion", base);
-  login.searchParams.set("callbackUrl", pathname);
-  return login;
+  // Écrase toute valeur fournie par le client.
+  const headers = new Headers(request.headers);
+  if (appMatch) headers.set(PATHNAME_HEADER, appMatch[2] ?? "/app");
+  else headers.delete(PATHNAME_HEADER);
+  return intl(new NextRequest(request, { headers }));
 }
 
 export const config = {
-  matcher: ["/app", "/app/:path*"],
+  // Tout sauf l'API, les fichiers internes de Next.js et les fichiers statiques.
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

@@ -1,0 +1,525 @@
+{
+  "metadata": {
+    "siteName": "Coach Career IA",
+    "title": "Coach Career IA — il Suo agente di carriera privato",
+    "titleTemplate": "%s · Coach Career IA",
+    "description": "Il Suo agente di carriera privato: le Sue prove, i Suoi paletti e solo le opportunità che li rispettano. Anonimo per impostazione predefinita."
+  },
+  "header": {
+    "mainNav": "Navigazione principale",
+    "signIn": "Accedi"
+  },
+  "footer": {
+    "copyright": "© {year} Coach Career IA — NextSeed-AI",
+    "privacy": "I Suoi dati restano Suoi: mai rivenduti, mai condivisi senza il Suo consenso."
+  },
+  "localeSwitcher": {
+    "label": "Lingua"
+  },
+  "landing": {
+    "eyebrow": "Agente di carriera privato",
+    "title": "Smetta di cercare lavoro. Lasci che le opportunità giuste arrivino a Lei.",
+    "intro": "Coach Career IA capovolge la ricerca di lavoro: Lei costruisce una memoria di carriera basata su prove concrete, stabilisce le Sue condizioni e il nostro agente Le propone solo le offerte che le rispettano. Senza esporre la Sua identità.",
+    "ctaPrimary": "Crea il mio spazio",
+    "ctaSecondary": "Scopri come funziona",
+    "pillarsTitle": "Quattro principi, nessun compromesso",
+    "pillars": {
+      "anonymous": {
+        "title": "Anonimo per impostazione predefinita",
+        "text": "La Sua identità, i Suoi recapiti e il Suo datore di lavoro attuale sono conservati separatamente e cifrati. I recruiter vedono solo un profilo anonimizzato, costruito su ciò che Lei sa fare."
+      },
+      "proofs": {
+        "title": "Prove, non promesse",
+        "text": "La Sua memoria di carriera raccoglie risultati concreti: progetti consegnati, risultati misurati, competenze dimostrate. Sono loro a parlare per Lei."
+      },
+      "guardRails": {
+        "title": "I Suoi paletti fanno da filtro",
+        "text": "Stipendio minimo, smart working, settori esclusi, tempi di spostamento: Lei stabilisce regole non negoziabili. Un’offerta che ne viola anche una sola non Le arriverà mai."
+      },
+      "control": {
+        "title": "Il controllo resta a Lei",
+        "text": "Nulla viene inviato senza il Suo consenso. Quando un’opportunità La interessa, rinuncia all’anonimato con un clic — e solo per quel recruiter."
+      }
+    },
+    "stepsTitle": "Come funziona",
+    "steps": {
+      "one": "Descrive il Suo percorso con prove verificabili.",
+      "two": "Stabilisce i Suoi paletti, una volta per tutte.",
+      "three": "L’agente analizza il mercato e Le presenta solo offerte qualificate.",
+      "four": "Decide Lei, offerta per offerta, se rivelarsi o meno."
+    },
+    "closingTitle": "La Sua carriera, le Sue regole, i Suoi tempi.",
+    "closingText": "Accesso senza password, tramite un link inviato al Suo indirizzo e-mail. Nessun dato viene condiviso senza il Suo consenso esplicito.",
+    "closingCta": "Inizia"
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "text": "Questa pagina non esiste o è stata spostata.",
+    "back": "Torna alla home"
+  },
+  "auth": {
+    "login": {
+      "metaTitle": "Accesso",
+      "title": "Acceda al Suo spazio",
+      "intro": "Nessuna password: inserisca il Suo indirizzo e-mail e Le invieremo un link di accesso monouso. Se non ha ancora uno spazio, verrà creato al primo accesso.",
+      "emailLabel": "Indirizzo e-mail",
+      "emailPlaceholder": "lei@esempio.it",
+      "submit": "Ricevi il link di accesso",
+      "submitting": "Invio in corso…",
+      "backHome": "Torna alla home",
+      "errors": {
+        "invalidEmail": "Inserisca un indirizzo e-mail valido.",
+        "sendFailed": "Al momento non è possibile inviare il link. Riprovi tra qualche istante."
+      }
+    },
+    "verify": {
+      "title": "Controlli la Sua casella di posta",
+      "text": "Se l’indirizzo inserito è valido, Le è appena stato inviato un link di accesso. È valido 15 minuti e funziona una sola volta.",
+      "help": "Non ha ricevuto nulla? Controlli la cartella spam, poi <link>richieda un nuovo link</link>."
+    },
+    "error": {
+      "title": "Accesso non riuscito",
+      "retry": "Richiedi un nuovo link",
+      "messages": {
+        "Verification": "Questo link di accesso è scaduto o è già stato utilizzato. Ne richieda uno nuovo: resterà valido 15 minuti.",
+        "Configuration": "Il servizio di accesso è momentaneamente non disponibile. Riprovi tra qualche istante.",
+        "AccessDenied": "Accesso negato.",
+        "Default": "Si è verificato un errore durante l’accesso. Riprovi."
+      }
+    }
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Il Suo link di accesso a Coach Career IA",
+      "brand": "Coach Career IA",
+      "greeting": "Buongiorno,",
+      "textIntro": "Ecco il Suo link di accesso a {host} (valido 15 minuti, utilizzabile una sola volta):",
+      "ignore": "Se non ha effettuato Lei questa richiesta, ignori semplicemente questo messaggio.",
+      "htmlIntro": "Clicchi sul pulsante qui sotto per accedere. Questo link è valido 15 minuti e funziona una sola volta.",
+      "button": "Accedi",
+      "htmlIgnore": "Se non ha effettuato Lei questa richiesta, ignori questo messaggio: nessun account verrà aperto senza un clic su questo link."
+    }
+  },
+  "common": {
+    "optional": "facoltativo",
+    "saving": "Salvataggio…",
+    "saved": "Salvato.",
+    "delete": "Elimina",
+    "deleting": "Eliminazione…"
+  },
+  "errors": {
+    "summary": "{count, plural, one {Un campo da correggere.} other {# campi da correggere.}}",
+    "required": "Questo campo è obbligatorio.",
+    "tooLong": "Questo testo è troppo lungo.",
+    "tooShort": "Questo testo è troppo corto.",
+    "invalid": "Questo valore non è valido.",
+    "invalidChoice": "Scelga un’opzione dall’elenco.",
+    "invalidUrl": "Inserisca un indirizzo web completo, che inizi con https://.",
+    "invalidMonth": "Inserisca un mese nel formato AAAA-MM.",
+    "futureMonth": "Questo mese è nel futuro.",
+    "endBeforeStart": "La fine non può precedere l’inizio.",
+    "invalidNumber": "Inserisca un numero intero.",
+    "outOfRange": "Questo valore è fuori dai limiti consentiti.",
+    "packageBelowSalary": "La retribuzione complessiva desiderata deve essere almeno pari alla parte fissa minima.",
+    "remoteDaysRequired": "Indichi il numero minimo di giorni di smart working.",
+    "tooMany": "Troppi elementi in questo elenco.",
+    "fileRequired": "Scelga un file.",
+    "fileTooLarge": "Questo file supera la dimensione massima consentita.",
+    "fileType": "Formato non accettato: carichi un PDF o un’immagine (PNG, JPEG, WebP).",
+    "fileQuota": "Ha raggiunto il numero massimo di documenti. Ne elimini uno per aggiungerne un altro.",
+    "confirmMismatch": "L’indirizzo inserito non corrisponde a quello del Suo account.",
+    "notFound": "Questo elemento non esiste o non esiste più."
+  },
+  "app": {
+    "metaTitle": "Il mio spazio",
+    "titleTemplate": "%s · Coach Career IA",
+    "signOut": "Esci",
+    "nav": {
+      "label": "Area candidato",
+      "dashboard": "Dashboard",
+      "memory": "La mia memoria di carriera",
+      "guardRails": "I miei paletti",
+      "opportunities": "Opportunità",
+      "settings": "Impostazioni"
+    }
+  },
+  "dashboard": {
+    "title": "Benvenuto/a nel Suo spazio",
+    "intro": "Il Suo agente di carriera si sta configurando. Inizi dalla Sua memoria di carriera e dai Suoi paletti: saranno loro a guidare la selezione delle opportunità.",
+    "open": "Apri →",
+    "completeness": {
+      "title": "Completezza del profilo",
+      "summary": "{achievements, plural, =0 {Ancora nessun risultato.} one {Un risultato} other {# risultati}}{achievements, plural, =0 {} other {, di cui {proven, plural, =0 {nessuno comprovato} one {uno comprovato} other {# comprovati}}.}} I risultati supportati da una prova contano di più.",
+      "nextSteps": "Prossimi passi",
+      "complete": "Il Suo profilo è completo. Si ricordi di tenerlo aggiornato.",
+      "steps": {
+        "addExperience": {
+          "title": "Aggiungere un’esperienza",
+          "text": "Il Suo ruolo, il periodo e una descrizione generica del datore di lavoro."
+        },
+        "addAchievement": {
+          "title": "Descrivere un risultato",
+          "text": "Un progetto, un’azione, un risultato misurabile."
+        },
+        "addProof": {
+          "title": "Comprovare un risultato",
+          "text": "Alleghi un link, un documento o una testimonianza."
+        },
+        "provenSkills": {
+          "title": "Tre competenze comprovate",
+          "text": "Colleghi le Sue competenze a risultati comprovati."
+        },
+        "setSalary": {
+          "title": "Fissare lo stipendio minimo",
+          "text": "Nessuna offerta al di sotto Le verrà presentata."
+        },
+        "setLocation": {
+          "title": "Indicare sede o smart working",
+          "text": "Le città accettate e la Sua politica di smart working."
+        },
+        "setContractTypes": {
+          "title": "Scegliere i tipi di contratto",
+          "text": "Tempo indeterminato, freelance, tempo determinato… ciò che accetta."
+        }
+      }
+    },
+    "visibility": {
+      "title": "Stato di visibilità",
+      "intro": "Decida se il Suo profilo anonimizzato può essere presentato ai recruiter.",
+      "save": "Aggiorna"
+    },
+    "sections": {
+      "memory": {
+        "title": "La mia memoria di carriera",
+        "text": "Raccolga i Suoi risultati e le prove che li supportano."
+      },
+      "guardRails": {
+        "title": "I miei paletti",
+        "text": "Stabilisca le condizioni che nessuna offerta deve violare."
+      },
+      "opportunities": {
+        "title": "Opportunità",
+        "text": "Qui trova le offerte qualificate dal Suo agente."
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Opportunità",
+    "intro": "Solo offerte che rispettano i Suoi paletti, con la spiegazione di ogni corrispondenza.",
+    "emptyTitle": "Ancora nessuna opportunità",
+    "emptyText": "Non appena avrà compilato la Sua memoria di carriera e i Suoi paletti, il Suo agente inizierà a proporLe offerte qualificate."
+  },
+  "memory": {
+    "title": "La mia memoria di carriera",
+    "intro": "I Suoi risultati concreti, ciascuno supportato da una prova. È la base del Suo profilo anonimizzato: non vi compare alcun nome di datore di lavoro, di collega né alcun recapito.",
+    "sectionsNav": "Sezioni della memoria di carriera",
+    "anchors": {
+      "experiences": "Esperienze",
+      "realisations": "Risultati",
+      "competences": "Competenze"
+    },
+    "period": "{start} – {end}",
+    "present": "oggi",
+    "edit": "Modifica",
+    "cancel": "Annulla",
+    "experiences": {
+      "title": "Esperienze",
+      "add": "Aggiungi un’esperienza",
+      "emptyTitle": "Ancora nessuna esperienza",
+      "emptyText": "Aggiunga i Suoi ruoli successivi. Il datore di lavoro è descritto in modo generico (settore, dimensione, tipo): il suo nome non viene mai richiesto.",
+      "achievementCount": "{count, plural, =0 {nessun risultato} one {# risultato} other {# risultati}}",
+      "newTitle": "Nuova esperienza",
+      "editTitle": "Modifica esperienza",
+      "formIntro": "Descriva il ruolo e il suo contesto senza nominare il datore di lavoro: è ciò che consente di presentarLa in forma anonima.",
+      "deleteTitle": "Elimina questa esperienza",
+      "deleteText": "I risultati collegati vengono conservati, semplicemente scollegati dall’esperienza.",
+      "confirmDelete": "Eliminare definitivamente questa esperienza?",
+      "form": {
+        "roleTitle": "Titolo del ruolo",
+        "roleTitleHint": "Ad esempio: Sviluppatrice back-end, Responsabile marketing.",
+        "startMonth": "Inizio",
+        "endMonth": "Fine",
+        "monthHint": "Mese e anno (AAAA-MM).",
+        "current": "Ricopro attualmente questo ruolo",
+        "seniority": "Livello",
+        "contractType": "Tipo di contratto",
+        "choose": "Scegli…",
+        "employerTitle": "Il datore di lavoro, senza nominarlo",
+        "employerHint": "Ad esempio: «scale-up fintech da 51 a 200 persone». Queste informazioni bastano per il matching e tutelano il Suo anonimato.",
+        "sector": "Settore",
+        "companySize": "Dimensione",
+        "companyStage": "Tipo di organizzazione",
+        "responsibilities": "Responsabilità",
+        "responsibilitiesHint": "Il Suo perimetro, le Sue mansioni principali. Non indichi nomi di aziende né di persone.",
+        "save": "Salva l’esperienza"
+      }
+    },
+    "achievements": {
+      "title": "Risultati",
+      "intro": "Il cuore del Suo profilo: ciò che ha fatto e il risultato ottenuto. Un risultato comprovato vale molto più di uno dichiarato.",
+      "add": "Aggiungi un risultato",
+      "emptyTitle": "Ancora nessun risultato",
+      "emptyText": "Descriva un progetto di cui va fiero o fiera: il contesto, ciò che ha fatto, il risultato misurabile. Poi aggiunga una prova.",
+      "proofCount": "{count, plural, =0 {Nessuna prova} one {# prova} other {# prove}}",
+      "addProof": "Aggiungi una prova",
+      "newTitle": "Nuovo risultato",
+      "editTitle": "Risultato",
+      "formIntro": "Sia concreto: cifre, tempi, impatto. Eviti nomi di persone, clienti e datori di lavoro.",
+      "detailsTitle": "Descrizione",
+      "deleteTitle": "Elimina questo risultato",
+      "deleteText": "Le sue prove, compresi i documenti caricati, verranno eliminate.",
+      "confirmDelete": "Eliminare definitivamente questo risultato e tutte le sue prove?",
+      "form": {
+        "title": "Titolo",
+        "titleHint": "Ad esempio: Riprogettazione del funnel di pagamento.",
+        "experience": "Esperienza collegata",
+        "noExperience": "Nessuna (progetto personale, volontariato…)",
+        "context": "Contesto",
+        "contextHint": "La situazione di partenza, la posta in gioco.",
+        "actions": "Cosa ho fatto",
+        "actionsHint": "Le Sue azioni personali, non quelle del team.",
+        "result": "Risultato misurabile",
+        "resultHint": "Ad esempio: tasso di conversione +18% in tre mesi.",
+        "skills": "Competenze impiegate",
+        "skillsHint": "Separate da virgole. Alimentano automaticamente il Suo elenco di competenze.",
+        "skillsPlaceholder": "PostgreSQL, gestione di progetto, negoziazione",
+        "save": "Salva",
+        "create": "Crea e aggiungi una prova"
+      }
+    },
+    "proofs": {
+      "title": "Prove",
+      "intro": "Un link pubblico, un documento privato o una testimonianza scritta. I documenti sono cifrati e visibili solo a Lei.",
+      "empty": "Questo risultato non è ancora comprovato. Aggiunga almeno una prova perché conti pienamente.",
+      "kindLabel": "Tipo di prova",
+      "kinds": {
+        "URL": "Link",
+        "DOCUMENT": "Documento",
+        "REFERENCE": "Testimonianza scritta"
+      },
+      "addTitle": "Aggiungi una prova",
+      "urlLabel": "Indirizzo del link",
+      "urlHint": "Articolo, repository di codice, presentazione pubblica, certificato online…",
+      "fileLabel": "File",
+      "fileHint": "PDF, PNG, JPEG o WebP, massimo {maxMb} MB. Conservato cifrato, mai condiviso senza il Suo consenso.",
+      "referenceLabel": "Testimonianza",
+      "referenceHint": "Trascriva una referenza ricevuta, senza il nome né i recapiti dell’autore.",
+      "add": "Aggiungi la prova",
+      "kilobytes": "KB",
+      "addedOn": "Aggiunta il {date}",
+      "confirmDelete": "Eliminare questa prova?"
+    },
+    "skills": {
+      "title": "Competenze",
+      "intro": "Calcolate a partire dai Suoi risultati: il livello dipende dal numero di risultati comprovati, la data di ultimo utilizzo dall’esperienza collegata.",
+      "emptyTitle": "Ancora nessuna competenza",
+      "emptyText": "Compaiono non appena le cita in un risultato. Può anche dichiararne una direttamente.",
+      "addLabel": "Dichiara una competenza",
+      "addPlaceholder": "Ad esempio: Figma",
+      "addButton": "Aggiungi",
+      "addHint": "Una competenza dichiarata senza alcun risultato viene contrassegnata come non comprovata.",
+      "usedNow": "Utilizzata nel Suo ruolo attuale",
+      "lastUsed": "Ultimo utilizzo: {date}",
+      "lastUsedUnknown": "Ultimo utilizzo sconosciuto",
+      "backedBy": "Supportata da",
+      "unprovenHint": "Non comprovata: la citi in un risultato supportato da una prova.",
+      "confirmDelete": "Eliminare la competenza «{name}»? Verrà rimossa dai risultati che la citano."
+    }
+  },
+  "guardRails": {
+    "title": "I miei paletti",
+    "intro": "Le condizioni non negoziabili che un’offerta deve rispettare per arrivare fino a Lei. Vengono applicate come filtri rigorosi.",
+    "emptyHint": "Ancora nessun paletto definito. Inizi dallo stipendio minimo e dai tipi di contratto.",
+    "save": "Salva i miei paletti",
+    "summary": {
+      "title": "In sintesi",
+      "minFixed": "Fisso minimo: {amount} lordi annui",
+      "targetPackage": "Retribuzione complessiva desiderata: {amount}"
+    },
+    "salary": {
+      "title": "Retribuzione",
+      "intro": "Importi lordi annui (RAL), in euro.",
+      "minFixed": "Stipendio fisso minimo",
+      "amountHint": "Al di sotto, l’offerta viene scartata.",
+      "targetPackage": "Retribuzione complessiva desiderata",
+      "packageHint": "Fisso + variabile + premi di risultato o azioni."
+    },
+    "location": {
+      "title": "Sedi e smart working",
+      "intro": "Le città nei cui dintorni accetta di lavorare e la Sua politica di smart working.",
+      "empty": "Nessuna sede aggiunta.",
+      "city": "Città",
+      "cityPlaceholder": "Ad esempio: Milano",
+      "radius": "Raggio (km)",
+      "remove": "Rimuovi",
+      "add": "Aggiungi una sede"
+    },
+    "remote": {
+      "title": "Smart working",
+      "none": "Nessun requisito",
+      "minDays": "Minimo di giorni di smart working a settimana",
+      "chooseDays": "Scegli…",
+      "days": "{count, plural, one {# giorno} other {# giorni}}"
+    },
+    "contracts": {
+      "title": "Tipi di contratto accettati",
+      "intro": "Nessuna casella selezionata: tutti i tipi di contratto sono accettati."
+    },
+    "exclusions": {
+      "title": "Esclusioni",
+      "intro": "I settori e le aziende da cui non desidera ricevere alcuna offerta.",
+      "sectors": "Settori esclusi",
+      "companies": "Aziende escluse",
+      "companiesHint": "Una per riga (ad esempio il Suo datore di lavoro attuale). Questi nomi sono cifrati e non lasciano mai il Suo spazio."
+    },
+    "workload": {
+      "title": "Ritmo di lavoro",
+      "maxHours": "Ore settimanali massime",
+      "maxHoursHint": "Lasci vuoto se per Lei è indifferente.",
+      "onCall": "Accetto la reperibilità",
+      "onCallHint": "Altrimenti, i ruoli con reperibilità vengono scartati."
+    },
+    "culture": {
+      "title": "Cultura aziendale",
+      "intro": "Facoltativo: ciò che conta per Lei. Queste preferenze affinano la classificazione delle offerte."
+    }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "intro": "La Sua lingua, i Suoi dati, il Suo account.",
+    "language": {
+      "title": "Lingua",
+      "intro": "La lingua dell’interfaccia, delle e-mail e dei testi redatti dal Suo agente."
+    },
+    "export": {
+      "title": "Esporta i miei dati",
+      "intro": "Scarichi la totalità dei Suoi dati (esperienze, risultati, prove e documenti, competenze, paletti) in formato JSON.",
+      "button": "Scarica la mia esportazione"
+    },
+    "delete": {
+      "title": "Elimina il mio account",
+      "intro": "Eliminazione immediata e definitiva del Suo account, della Sua memoria di carriera, dei Suoi paletti e di tutti i Suoi documenti. Questa azione è irreversibile.",
+      "confirmLabel": "Confermi inserendo il Suo indirizzo e-mail",
+      "confirmHint": "Si ricordi di esportare i Suoi dati prima di eliminare l’account.",
+      "submit": "Elimina definitivamente il mio account",
+      "deleting": "Eliminazione in corso…"
+    }
+  },
+  "codes": {
+    "visibility": {
+      "ACTIVE": {
+        "label": "In cerca attiva",
+        "description": "Il Suo profilo anonimizzato viene proposto in via prioritaria ai recruiter."
+      },
+      "OPEN": {
+        "label": "Aperto/a a nuove opportunità",
+        "description": "Il Suo profilo anonimizzato può essere presentato per offerte molto mirate."
+      },
+      "INVISIBLE": {
+        "label": "Invisibile",
+        "description": "Nessun recruiter vede il Suo profilo. Il Suo agente continua a vigilare per Lei."
+      }
+    },
+    "seniority": {
+      "INTERN": "Tirocinante",
+      "JUNIOR": "Junior",
+      "MID": "Esperto/a",
+      "SENIOR": "Senior",
+      "LEAD": "Lead / referente",
+      "MANAGER": "Manager",
+      "DIRECTOR": "Direttore o direttrice",
+      "EXECUTIVE": "Dirigente"
+    },
+    "contractType": {
+      "PERMANENT": "Tempo indeterminato",
+      "FIXED_TERM": "Tempo determinato",
+      "FREELANCE": "Freelance",
+      "TEMPORARY": "Somministrazione / interinale",
+      "APPRENTICESHIP": "Apprendistato",
+      "INTERNSHIP": "Tirocinio / stage"
+    },
+    "companySize": {
+      "S1_10": "Da 1 a 10 persone",
+      "S11_50": "Da 11 a 50 persone",
+      "S51_200": "Da 51 a 200 persone",
+      "S201_500": "Da 201 a 500 persone",
+      "S501_1000": "Da 501 a 1.000 persone",
+      "S1001_5000": "Da 1.001 a 5.000 persone",
+      "S5001_PLUS": "Oltre 5.000 persone"
+    },
+    "companyStage": {
+      "STARTUP": "Start-up",
+      "SCALEUP": "Scale-up",
+      "SME": "PMI",
+      "MIDCAP": "Media impresa",
+      "LARGE_CORP": "Grande gruppo",
+      "PUBLIC_SECTOR": "Settore pubblico",
+      "NONPROFIT": "Associazione / ONG",
+      "CONSULTANCY": "Società di consulenza / consulenza IT"
+    },
+    "sector": {
+      "AEROSPACE_DEFENSE": "Aerospazio e difesa",
+      "AGRIFOOD": "Agroalimentare",
+      "AUTOMOTIVE_MOBILITY": "Automotive e mobilità",
+      "BANKING_INSURANCE": "Banche e assicurazioni",
+      "BIOTECH_PHARMA": "Biotech e farmaceutico",
+      "CONSTRUCTION_REAL_ESTATE": "Edilizia e immobiliare",
+      "CONSULTING": "Consulenza",
+      "CYBERSECURITY": "Cybersecurity",
+      "ECOMMERCE_RETAIL": "E-commerce e retail",
+      "EDUCATION_EDTECH": "Istruzione ed edtech",
+      "ENERGY_UTILITIES": "Energia e utility",
+      "ENVIRONMENT_CLEANTECH": "Ambiente e cleantech",
+      "FINTECH": "Fintech",
+      "GAMBLING": "Gioco d’azzardo",
+      "GAMING": "Videogiochi",
+      "HEALTHCARE_HEALTHTECH": "Sanità e healthtech",
+      "HOSPITALITY_TOURISM": "Ospitalità e turismo",
+      "HR_RECRUITMENT": "HR e selezione del personale",
+      "INDUSTRY_MANUFACTURING": "Industria e manifattura",
+      "LEGAL": "Legale",
+      "LUXURY_FASHION": "Lusso e moda",
+      "MARKETING_ADVERTISING": "Marketing e pubblicità",
+      "MEDIA_ENTERTAINMENT": "Media e intrattenimento",
+      "NONPROFIT": "Non profit e terzo settore",
+      "OIL_GAS": "Petrolio e gas",
+      "PUBLIC_ADMINISTRATION": "Pubblica amministrazione",
+      "SAAS_SOFTWARE": "Software e SaaS",
+      "TELECOM": "Telecomunicazioni",
+      "TOBACCO_ALCOHOL": "Tabacco e alcol",
+      "TRANSPORT_LOGISTICS": "Trasporti e logistica",
+      "OTHER": "Altro settore"
+    },
+    "remotePolicy": {
+      "ONSITE": "Lavoro in sede accettato",
+      "HYBRID": "Ibrido",
+      "FULL_REMOTE": "Solo full remote"
+    },
+    "culture": {
+      "ASYNC_FIRST": "Lavoro asincrono",
+      "FLAT_HIERARCHY": "Gerarchia orizzontale",
+      "STRUCTURED_PROCESSES": "Processi strutturati",
+      "FAST_PACED": "Ritmo sostenuto",
+      "WORK_LIFE_BALANCE": "Equilibrio vita-lavoro",
+      "LEARNING_CULTURE": "Formazione continua",
+      "MISSION_DRIVEN": "Missione a impatto",
+      "DIVERSITY_INCLUSION": "Diversità e inclusione",
+      "INTERNATIONAL": "Ambiente internazionale",
+      "SMALL_TEAMS": "Piccoli team autonomi",
+      "ENGINEERING_CULTURE": "Forte cultura tecnica",
+      "TRANSPARENT_PAY": "Griglie retributive trasparenti"
+    },
+    "evidence": {
+      "DECLARED": "Dichiarato",
+      "DOCUMENT": "Comprovato",
+      "VERIFIED": "Verificato"
+    },
+    "skillLevel": {
+      "UNPROVEN": "Non comprovata",
+      "DECLARED": "Dichiarata, senza prova",
+      "DEMONSTRATED": "Dimostrata",
+      "CONFIRMED": "Confermata",
+      "EXPERT": "Padroneggiata"
+    }
+  }
+}

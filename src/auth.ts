@@ -4,7 +4,8 @@ import type { EmailConfig } from "next-auth/providers";
 import { db } from "@/lib/db";
 import { serverEnv } from "@/lib/env";
 import { logger } from "@/lib/logger";
-import { sendMagicLink } from "@/lib/auth/mailer";
+import { magicLinkLocale, sendMagicLink } from "@/lib/auth/mailer";
+import { DEFAULT_LOCALE, isAppLocale } from "@/i18n/routing";
 
 const MAGIC_LINK_MAX_AGE = 15 * 60; // 15 minutes
 
@@ -19,8 +20,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
     from: env.EMAIL_FROM,
     maxAge: MAGIC_LINK_MAX_AGE,
     options: {},
-    sendVerificationRequest: ({ identifier, url, expires }) =>
-      sendMagicLink({ to: identifier, url, expires }),
+    // Langue de l'e-mail : celle de la page où le lien a été demandé, sinon la
+    // préférence du compte, sinon le français.
+    sendVerificationRequest: async ({ identifier, url, expires }) => {
+      let locale = magicLinkLocale(url);
+      if (!locale) {
+        const user = await db.user.findUnique({
+          where: { email: identifier },
+          select: { locale: true },
+        });
+        locale = isAppLocale(user?.locale) ? user.locale : DEFAULT_LOCALE;
+      }
+      await sendMagicLink({ to: identifier, url, expires, locale });
+    },
   };
 
   return {

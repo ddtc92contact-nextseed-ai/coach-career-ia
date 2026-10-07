@@ -173,3 +173,52 @@ export function needsReEncryption(payload: string, options?: CryptoOptions): boo
   if (!match) throw new DecryptionError();
   return Number(match[1]) !== resolveKeyring(options).currentVersion;
 }
+
+// --- Données binaires (fichiers) --------------------------------------------
+
+/** En-tête des fichiers chiffrés : `CCE1` puis la version de clé (uint32). */
+const BYTES_MAGIC = Buffer.from("CCE1", "ascii");
+const BYTES_HEADER = BYTES_MAGIC.length + 4;
+
+/**
+ * Chiffre un contenu binaire (pièce justificative). Format :
+ * `CCE1 | version (uint32 BE) | iv | tag | chiffré`.
+ */
+export function encryptBytes(plaintext: Uint8Array, options?: CryptoOptions): Buffer {
+  const keyring = resolveKeyring(options);
+  const version = keyring.currentVersion;
+  const key = keyring.keys.get(version);
+  if (!key) throw new EncryptionConfigError("Clé courante absente du trousseau");
+
+  const iv = randomBytes(IV_BYTES);
+  const cipher = createCipheriv(ALGORITHM, key, iv, { authTagLength: TAG_BYTES });
+  cipher.setAAD(associatedData(version, options?.aad));
+  const ciphertext = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+  const header = Buffer.alloc(BYTES_HEADER);
+  BYTES_MAGIC.copy(header);
+  header.writeUInt32BE(version, BYTES_MAGIC.length);
+  return Buffer.concat([header, iv, cipher.getAuthTag(), ciphertext]);
+}
+
+export function decryptBytes(payload: Uint8Array, options?: CryptoOptions): Buffer {
+  const data = Buffer.from(payload);
+  if (data.length < BYTES_HEADER + IV_BYTES + TAG_BYTES) throw new DecryptionError();
+  if (!data.subarray(0, BYTES_MAGIC.length).equals(BYTES_MAGIC)) throw new DecryptionError();
+  const version = data.readUInt32BE(BYTES_MAGIC.length);
+  const key = resolveKeyring(options).keys.get(version);
+  if (!key) throw new DecryptionError();
+
+  const iv = data.subarray(BYTES_HEADER, BYTES_HEADER + IV_BYTES);
+  const tag = data.subarray(BYTES_HEADER + IV_BYTES, BYTES_HEADER + IV_BYTES + TAG_BYTES);
+  try {
+    const decipher = createDecipheriv(ALGORITHM, key, iv, { authTagLength: TAG_BYTES });
+    decipher.setAAD(associatedData(version, options?.aad));
+    decipher.setAuthTag(tag);
+    return Buffer.concat([
+      decipher.update(data.subarray(BYTES_HEADER + IV_BYTES + TAG_BYTES)),
+      decipher.final(),
+    ]);
+  } catch {
+    throw new DecryptionError();
+  }
+}

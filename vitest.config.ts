@@ -11,6 +11,8 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    // next-intl importe `next/server` sans extension (résolu par Next, pas par Node).
+    server: { deps: { inline: ["next-intl"] } },
     include: ["tests/**/*.test.ts"],
     globalSetup: ["tests/global-setup.ts"],
     // Les tests de base partagent une même base : exécution séquentielle des fichiers.
