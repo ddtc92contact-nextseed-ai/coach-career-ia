@@ -781,6 +781,31 @@ Services (`docker-compose.yml`) :
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.
 
+### Pages légales et variables `LEGAL_*`
+
+Pages publiques, liées depuis le pied de page (accueil, connexion, espaces candidat et
+entreprise) : `/<langue>/legal/mentions-legales`, `/confidentialite` (dont la section
+`#cookies`), `/conditions` (candidats), `/conditions-entreprises` et `/ia` (fonctionnement de
+l'IA, transparence art. 50 du règlement IA). Textes dans `messages/*.json` (`legal.pages`), le
+français faisant foi ; ce sont des projets à faire relire par un avocat avant l'ouverture
+publique.
+
+Les informations de l'éditeur ne sont pas dans le code : `src/config/legal.ts` lit les
+variables `LEGAL_*` à chaque requête (voir `.env.example`) — raison sociale, marque, forme,
+capital, SIREN, TVA, siège, téléphone, e-mail de contact (aussi pour les demandes RGPD),
+directeur de la publication, hébergeur (nom, adresse, téléphone), prestataire d'e-mails et
+médiateur de la consommation. Une valeur vide s'affiche « — » ; renseigner au minimum l'éditeur,
+le siège, le directeur de la publication, l'e-mail et l'hébergeur avant d'ouvrir le site.
+
+Acceptation : le formulaire de connexion et l'inscription entreprise affichent « en continuant,
+vous acceptez… ». La version des textes (`LEGAL_TERMS_VERSION`) et sa date sont enregistrées sur
+le compte à la connexion (`users.terms_version`, `users.terms_accepted_at`) et sur
+l'organisation à sa création (`organizations.terms_*`). Après une modification importante des
+textes, changer la constante `LEGAL_TERMS_VERSION` (`src/config/legal.ts`) : la nouvelle version est enregistrée à la connexion
+suivante. Seuls des cookies strictement nécessaires sont déposés (session Auth.js, langue
+`NEXT_LOCALE`) : pas de bandeau, pas de traceur ; tout nouveau cookie doit être ajouté à la
+section cookies de la politique de confidentialité.
+
 ## CI
 
 GitHub Actions (`.github/workflows/ci.yml`) : installation, lint, parité des traductions, typecheck, tests (avec un

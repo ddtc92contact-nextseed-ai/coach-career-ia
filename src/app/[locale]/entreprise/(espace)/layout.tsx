@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { Logo } from "@/components/logo";
+import { SiteFooter } from "@/components/site-footer";
 import { Link } from "@/i18n/navigation";
 import { initUserLocale } from "@/lib/career/repository";
 import { requireEmployer } from "@/lib/employer/session";
@@ -64,6 +65,7 @@ export default async function EmployerLayout({
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+      <SiteFooter />
     </div>
   );
 }

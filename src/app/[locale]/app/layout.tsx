@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Logo } from "@/components/logo";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { SiteFooter } from "@/components/site-footer";
 import { VaultProvider } from "@/components/vault/vault-provider";
 import { LogoutButton, VaultStatusBadge } from "@/components/vault/vault-widgets";
 import { isAdminEmail } from "@/lib/auth/admin";
@@ -61,6 +62,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
           </div>
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+        <SiteFooter />
       </div>
     </VaultProvider>
   );

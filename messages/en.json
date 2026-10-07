@@ -1988,5 +1988,364 @@
       "total": "Amount",
       "back": "Back to the job"
     }
+  },
+  "legal": {
+    "updated": "Last updated: {date}",
+    "contents": "On this page",
+    "nav": {
+      "label": "Legal information",
+      "notice": "Legal notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "terms": "Terms of use",
+      "companyTerms": "Company terms",
+      "ai": "How our AI works"
+    },
+    "consent": {
+      "candidate": "By continuing, you accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>.",
+      "company": "By creating the company workspace, you accept the <terms>company terms</terms> and the <privacy>privacy policy</privacy>."
+    },
+    "pages": {
+      "notice": {
+        "title": "Legal notice",
+        "intro": "Information required by the French Act on Confidence in the Digital Economy (LCEN, article 6) about the publisher and the host of Coach Career IA.",
+        "sections": {
+          "publisher": {
+            "title": "Site publisher",
+            "content": {
+              "list": {
+                "name": "Company name: {publisher}",
+                "brand": "Brand: {brand}",
+                "form": "Legal form: {legalForm}",
+                "capital": "Share capital: {shareCapital}",
+                "siren": "SIREN: {siren}",
+                "vat": "Intra-community VAT number: {vatNumber}",
+                "address": "Registered office: {address}",
+                "phone": "Phone: {phone}",
+                "email": "Email: {email}"
+              }
+            }
+          },
+          "director": {
+            "title": "Publication director",
+            "content": {
+              "p1": "{director}"
+            }
+          },
+          "host": {
+            "title": "Host",
+            "content": {
+              "list": {
+                "name": "Name: {hostName}",
+                "address": "Address: {hostAddress}",
+                "phone": "Phone: {hostPhone}"
+              },
+              "p1": "The application’s data is hosted in the European Union."
+            }
+          },
+          "property": {
+            "title": "Intellectual property",
+            "content": {
+              "p1": "The site, its brand, texts, code and graphic elements belong to {publisher} or are used under licence. Any reproduction without authorisation is prohibited. The content you add (Career Memory, supporting documents, messages) remains yours."
+            }
+          },
+          "contact": {
+            "title": "Contact",
+            "content": {
+              "p1": "For any question about the site or to report content: {email}. For your personal data, see the <privacy>privacy policy</privacy>."
+            }
+          }
+        }
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "intro": "Coach Career IA is a private career agent: privacy is the product. This page explains what data we process, why, for how long, with whom, and how to exercise your rights (General Data Protection Regulation, GDPR).",
+        "sections": {
+          "controller": {
+            "title": "Data controller",
+            "content": {
+              "p1": "{publisher} ({brand}), {address}. Contact for your data: {email}."
+            }
+          },
+          "data": {
+            "title": "Data processed, feature by feature",
+            "content": {
+              "list": {
+                "account": "<strong>Account</strong>: email address, preferred language, creation and login dates, version of the terms accepted. No password: you sign in with a single-use link.",
+                "memory": "<strong>Career Memory</strong>: experiences (job title, dates, level, employer described by its sector and size, never by name), achievements, skills, supporting documents (encrypted on our servers) and guard rails (salary, locations, remote work, contract types, excluded sectors and companies, the latter encrypted).",
+                "vault": "<strong>Identity vault</strong>: your name, contact details, the real names of your employers and your original CV are encrypted in your browser with a key derived from your passphrase. The server only stores encrypted data that it cannot read; neither the passphrase nor the key is ever sent to it.",
+                "import": "<strong>Imports</strong>: the CV, LinkedIn export or public GitHub profile you import are analysed to offer you a draft Career Memory, which you review and validate before anything is saved.",
+                "coach": "<strong>AI coach</strong>: your conversations with the coach and the suggestions it makes to you.",
+                "matching": "<strong>Opportunities and alerts</strong>: the job postings selected for you, their score and explanation, your reactions; email alerts are only sent if you turn them on, and every email contains an unsubscribe link.",
+                "contacts": "<strong>Anonymous card, outreach and negotiation</strong>: your anonymous card, the messages sent to companies after your approval, the contact address of the person you specify, the replies received and your negotiation mandate (encrypted).",
+                "handover": "<strong>Identity reveal</strong>: only the fields you choose to reveal to a company, accessible through a revocable link that expires after {handoverDays} days.",
+                "billing": "<strong>Subscription</strong>: plan taken, subscription status and renewal date, payment provider identifiers. We never see or store your card number.",
+                "company": "<strong>Company accounts</strong>: the member’s professional email address, the organisation’s name, website, sector, size and country, published job postings and related payments.",
+                "logs": "<strong>Technical logs</strong>: technical identifiers, counters and errors, with no personal content (no email, no name, no text you entered)."
+              }
+            }
+          },
+          "bases": {
+            "title": "Legal bases",
+            "content": {
+              "list": {
+                "contract": "<strong>Performance of a contract</strong> (article 6.1.b GDPR): account, Career Memory, vault, imports, coach, opportunities, outreach and identity reveals that you request, subscription, company workspace.",
+                "consent": "<strong>Consent</strong> (article 6.1.a): email alerts, which you can withdraw at any time from the settings or the unsubscribe link.",
+                "interest": "<strong>Legitimate interest</strong> (article 6.1.f): security of the service, abuse prevention, moderation of job postings and organisations, technical logs.",
+                "obligation": "<strong>Legal obligation</strong> (article 6.1.c): retention of accounting records relating to payments."
+              }
+            }
+          },
+          "retention": {
+            "title": "Retention periods",
+            "content": {
+              "list": {
+                "account": "Account, Career Memory, vault and coach data: for as long as the account exists. Deleting the account immediately erases all this data and all your files; backup copies disappear within 30 days at most.",
+                "auth": "Login link: 15 minutes, single use. Login session: 30 days, revoked when you sign out.",
+                "card": "Anonymous card links: {cardDays} days. Data revealed in an identity reveal: {handoverDays} days, then automatically purged.",
+                "postings": "Company job postings: published for {postingDays} days then closed; kept for as long as the organisation exists.",
+                "accounting": "Accounting records relating to payments: 10 years (article L123-22 of the French Commercial Code)."
+              }
+            }
+          },
+          "recipients": {
+            "title": "Recipients and processors",
+            "content": {
+              "p1": "Your data is never sold or rented. A company only receives what you have approved: a message, your anonymous card, or the fields you choose to reveal. Our processors act only on our instructions:",
+              "list": {
+                "mistral": "<strong>Mistral AI</strong> (France, hosted in the European Union): language model used for imports, the coach, opportunity explanations and message drafts. We do not train any model with your data.",
+                "email": "<strong>Email delivery</strong> ({emailProvider}): login links, alerts and messages to companies.",
+                "host": "<strong>Hosting</strong> ({hostName}): virtual private server located in the European Union, which hosts the application and the database.",
+                "payment": "<strong>Payment</strong>: {payments, select, stripe {Stripe Payments Europe (Ireland) processes card payments; it only receives your login email address and an account identifier, never your Career Memory or your identity.} other {payments are simulated during the test phase: no payment data is collected. When payments open, Stripe Payments Europe (Ireland) will process them.}}",
+                "geo": "<strong>Geocoding</strong>: city names (never your identity) are sent to the IGN Géoplateforme (France) and to OpenStreetMap Nominatim to calculate distances.",
+                "github": "<strong>GitHub</strong>: only if you import a GitHub profile, to read its public information."
+              }
+            }
+          },
+          "hosting": {
+            "title": "Hosting and transfers",
+            "content": {
+              "p1": "Data is hosted and processed in the European Union. We do not transfer your data outside the European Union; if a provider were to do so, it would only be with the safeguards provided for by the GDPR (standard contractual clauses of the European Commission)."
+            }
+          },
+          "security": {
+            "title": "Security",
+            "content": {
+              "p1": "Passwordless login, revocable sessions, AES-256 encryption of sensitive fields and supporting documents, identity vault end-to-end encrypted in your browser, data access limited to your account, logs free of personal data."
+            }
+          },
+          "rights": {
+            "title": "Your rights",
+            "content": {
+              "p1": "You have the rights of access, rectification, erasure, restriction, objection and portability, the right to withdraw your consent, and the right to give directions on what happens to your data after your death.",
+              "list": {
+                "export": "<export>Export all your data</export> (JSON file) from your account settings.",
+                "delete": "<delete>Delete your account</delete> and all its data, at any time, from the settings.",
+                "edit": "Correct your information directly in your workspace (Career Memory, guard rails, identity).",
+                "contact": "For any other request: {email}. We reply within one month."
+              },
+              "p2": "If you believe your rights are not being respected, you can lodge a complaint with the <cnil>CNIL</cnil> (the French data protection authority, Commission nationale de l’informatique et des libertés)."
+            }
+          },
+          "cookies": {
+            "title": "Cookies",
+            "content": {
+              "p1": "We only set cookies that are strictly necessary for the service to work: they are exempt from consent, which is why no banner is displayed. No audience measurement, advertising or tracking cookies, and no third-party tracking tools.",
+              "list": {
+                "session": "<strong>authjs.session-token</strong>: keeps you signed in (30 days, deleted when you sign out).",
+                "csrf": "<strong>authjs.csrf-token</strong>: protects the login forms against request forgery (browser session).",
+                "callback": "<strong>authjs.callback-url</strong>: page to return to after login (browser session).",
+                "locale": "<strong>NEXT_LOCALE</strong>: display language you have chosen (browser session)."
+              },
+              "p2": "Your browser also keeps, in local storage, the automatic lock delay of the identity vault that you have chosen: this is not personal data."
+            }
+          },
+          "changes": {
+            "title": "Changes",
+            "content": {
+              "p1": "This policy may change as the service evolves. The update date appears at the top of the page; in the event of a significant change, we will inform you the next time you sign in."
+            }
+          }
+        }
+      },
+      "terms": {
+        "title": "Terms of use (candidates)",
+        "intro": "These terms apply to anyone who uses Coach Career IA for their career. They are offered by {publisher} ({brand}).",
+        "sections": {
+          "service": {
+            "title": "The service",
+            "content": {
+              "p1": "Coach Career IA helps you build an evidence-based Career Memory, set your non-negotiable conditions (guard rails) and shows you the opportunities that respect them. An AI agent helps you draft your exchanges with companies, under your control."
+            }
+          },
+          "account": {
+            "title": "Account",
+            "content": {
+              "p1": "The account is created at your first login, through a link sent to your email address. You are responsible for access to that address. The account is personal: one account per person."
+            }
+          },
+          "plans": {
+            "title": "Free plan and Premium",
+            "content": {
+              "list": {
+                "free": "<strong>Free</strong>: Career Memory, identity vault, guard rails, opportunities, anonymous card, outreach and AI coach within a daily quota.",
+                "premium": "<strong>Premium</strong>: monthly subscription that adds the unlimited AI coach and the negotiation agent, at the price shown on the Subscription page before you subscribe. Cancellable at any time from your workspace, taking effect at the end of the paid period.",
+                "payment": "{payments, select, stripe {Payment is processed by Stripe.} other {During the test phase, payments are simulated: no amount is charged.}}",
+                "withdrawal": "If you are a consumer, you have a 14-day right of withdrawal. By requesting immediate access to Premium, you agree that the service begins before the end of this period."
+              }
+            }
+          },
+          "agent": {
+            "title": "The agent and your messages",
+            "content": {
+              "p1": "<strong>No message is sent to a company without your approval.</strong> The agent prepares drafts (outreach, negotiation counter-proposal); you review them, edit them if needed and decide whether to send them. Every message sent states that it was prepared with the help of an AI and approved by you.",
+              "p2": "Your anonymity is the rule: your identity is only revealed to a company if you decide so, field by field, through a link you can revoke. See <ai>how our AI works</ai>."
+            }
+          },
+          "content": {
+            "title": "Your content",
+            "content": {
+              "p1": "You warrant that the information in your Career Memory is accurate and that you hold the rights to the documents you upload. You remain the owner of your content; you only authorise us to process it in order to provide the service to you."
+            }
+          },
+          "use": {
+            "title": "Acceptable use",
+            "content": {
+              "p1": "It is prohibited to provide false information, impersonate others, send abusive messages, circumvent the limits of the service or extract its data by automated means. In the event of a breach, we may suspend the account after notifying you, except in urgent cases."
+            }
+          },
+          "offers": {
+            "title": "Job postings",
+            "content": {
+              "p1": "Job postings come from documented public sources and from companies that publish them directly. We do not guarantee their accuracy or availability, nor the outcome of an application. A salary is only displayed if it is published by the company, never estimated on its behalf."
+            }
+          },
+          "liability": {
+            "title": "Liability",
+            "content": {
+              "p1": "We make every effort to keep the service available and safe, without being able to guarantee permanent availability. AI suggestions may contain errors: decisions about your career are yours."
+            }
+          },
+          "end": {
+            "title": "Term and termination",
+            "content": {
+              "p1": "You can delete your account at any time from the settings; all your data is then erased (see the <privacy>privacy policy</privacy>)."
+            }
+          },
+          "law": {
+            "title": "Changes, governing law and disputes",
+            "content": {
+              "p1": "We may update these terms; the new version is presented to you and applies from your next login. These terms are governed by French law. In the event of a dispute, please contact us first ({email}); if you are a consumer, you may use the consumer mediator free of charge ({mediator}) or the European online dispute resolution platform, before bringing the matter before the competent courts."
+            }
+          }
+        }
+      },
+      "companyTerms": {
+        "title": "Company terms",
+        "intro": "These terms apply to organisations that publish job postings on Coach Career IA. They are offered by {publisher} ({brand}) to professionals.",
+        "sections": {
+          "account": {
+            "title": "Company workspace",
+            "content": {
+              "p1": "The workspace is opened by a member of the organisation using their professional address. If the domain of that address matches the company’s website, the workspace is activated immediately; otherwise, our team verifies it before any publication. You warrant that you are authorised to represent the organisation."
+            }
+          },
+          "postings": {
+            "title": "Paid publication",
+            "content": {
+              "list": {
+                "price": "Each job posting is paid for individually, at the price shown before payment, with no subscription.",
+                "duration": "A paid and approved job posting stays online for {postingDays} days then closes automatically; republishing it requires a new payment.",
+                "payment": "{payments, select, stripe {Payment is processed by Stripe.} other {During the test phase, payments are simulated: no amount is charged.}}"
+              }
+            }
+          },
+          "content": {
+            "title": "Job posting content",
+            "content": {
+              "p1": "<strong>The salary range is mandatory</strong> (minimum, maximum, currency, period): it is candidates’ first condition. The posting must describe a real, available position, state the contract type, remote work policy and location, and comply with the law, in particular the ban on discrimination (age, sex, origin, family situation, disability, etc.)."
+            }
+          },
+          "moderation": {
+            "title": "Moderation",
+            "content": {
+              "p1": "Each job posting is checked before it goes online. A posting that contains potentially discriminatory criteria goes to manual review. We may refuse a posting or suspend an organisation, with a reason communicated by email; suspension closes its online postings."
+            }
+          },
+          "candidates": {
+            "title": "Relationship with candidates",
+            "content": {
+              "p1": "<strong>Companies never search for, browse or rank candidates.</strong> Each candidate is represented by their agent, which shows them the postings that respect their conditions; it is the candidate who decides to contact you, first anonymously.",
+              "p2": "The messages you receive were prepared with the help of an AI and approved by the candidate. The information received, including that from an identity reveal, may only be used for the recruitment concerned: you undertake not to attempt to re-identify an anonymous candidate and not to reuse it for any other purpose. You are responsible for the processing of the data a candidate reveals to you."
+            }
+          },
+          "liability": {
+            "title": "Liability",
+            "content": {
+              "p1": "You are responsible for the content of your job postings and your exchanges with candidates. We do not guarantee a number of contacts or the outcome of a recruitment. The dashboard only shows aggregated statistics, with no candidate data."
+            }
+          },
+          "law": {
+            "title": "Term, changes and governing law",
+            "content": {
+              "p1": "You can leave the company workspace at any time; job postings already paid for are not refunded once online. We may update these terms by informing you. These terms are governed by French law; failing an amicable settlement, the courts with jurisdiction over the publisher’s registered office have jurisdiction. Contact: {email}. See also the <privacy>privacy policy</privacy>."
+            }
+          }
+        }
+      },
+      "ai": {
+        "title": "How our AI works",
+        "intro": "Coach Career IA uses a language model to save you time, never to decide for you. This page meets the transparency obligation of the EU AI Act (article 50) and of the GDPR.",
+        "sections": {
+          "does": {
+            "title": "What the agent does",
+            "content": {
+              "list": {
+                "import": "Turn your CV or imported profile into a draft Career Memory, which you validate.",
+                "coach": "Ask you questions to bring out your achievements and their evidence (AI coach).",
+                "matching": "Explain in a few sentences why a job posting matches your conditions.",
+                "drafts": "Write drafts of outreach messages and negotiation counter-proposals, within the mandate you have set."
+              }
+            }
+          },
+          "doesNot": {
+            "title": "What it does not do",
+            "content": {
+              "list": {
+                "send": "It never sends anything without your explicit approval, message by message.",
+                "reveal": "It never reveals your identity: only your decision, field by field, allows it.",
+                "rank": "It does not assess or rank candidates for companies: no company sees a list or score of candidates.",
+                "decide": "It makes no decision that produces legal effects concerning you: no automated decision within the meaning of article 22 GDPR.",
+                "train": "It is not trained with your data: we do not train any model."
+              }
+            }
+          },
+          "human": {
+            "title": "A human in the loop",
+            "content": {
+              "p1": "Each draft is shown to you before anything is sent: you can edit it, reject it or send it. Your guard rails are your own rules, applied as they are; an opportunity’s score is only used to order the postings offered to you, and you remain free to view all of them."
+            }
+          },
+          "marking": {
+            "title": "Messages flagged as AI-assisted",
+            "content": {
+              "p1": "Every message sent to a company states that it was prepared by an AI agent on behalf of a candidate, who reviewed and approved it."
+            }
+          },
+          "model": {
+            "title": "The model used",
+            "content": {
+              "p1": "We use models from Mistral AI, a French company, hosted in the European Union. Only the data needed for the requested task is passed to them; your identity, encrypted in your vault, never is."
+            }
+          },
+          "limits": {
+            "title": "Limits",
+            "content": {
+              "p1": "A language model can make mistakes or word information poorly. Always review a draft before approving it. To report a problem: {email}."
+            }
+          }
+        }
+      }
+    }
   }
 }
