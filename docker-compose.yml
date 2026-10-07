@@ -84,7 +84,8 @@ services:
       - internal
     mem_limit: 512m
 
-  # Tâches de fond : Market Radar (collecte d'offres) toutes les RADAR_INTERVAL_HOURS.
+  # Tâches de fond : Market Radar (collecte d'offres) toutes les RADAR_INTERVAL_HOURS,
+  # matching (recalcul des opportunités) et alertes e-mail.
   worker:
     build:
       context: .
@@ -92,9 +93,18 @@ services:
     image: coach-career-ia-worker:latest
     restart: unless-stopped
     environment:
-      NODE_ENV: production
-      DATABASE_URL: postgresql://${POSTGRES_USER:-coach}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-coach_career}
-      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # Mêmes réglages que l'app : base, clé de chiffrement (entreprises exclues),
+      # SMTP (alertes), IA (embeddings, explications), AUTH_URL (liens des e-mails).
+      <<: *app-env
+      # Matching : voir .env.example (valeurs par défaut raisonnables).
+      MATCHING_ENABLED: ${MATCHING_ENABLED:-true}
+      MATCHING_POLL_SECONDS: ${MATCHING_POLL_SECONDS:-60}
+      MATCHING_DEBOUNCE_SECONDS: ${MATCHING_DEBOUNCE_SECONDS:-30}
+      MATCHING_MIN_SCORE: ${MATCHING_MIN_SCORE:-40}
+      MATCHING_LLM_EXPLANATIONS: ${MATCHING_LLM_EXPLANATIONS:-true}
+      MATCHING_LLM_MAX_PER_RUN: ${MATCHING_LLM_MAX_PER_RUN:-30}
+      MATCHING_SIM_FLOOR: ${MATCHING_SIM_FLOOR:-0.55}
+      MATCHING_SIM_CEIL: ${MATCHING_SIM_CEIL:-0.85}
       RADAR_CONTACT: ${RADAR_CONTACT:?RADAR_CONTACT requis (contact du User-Agent du radar)}
       RADAR_INTERVAL_HOURS: ${RADAR_INTERVAL_HOURS:-6}
       RADAR_RUN_ON_START: ${RADAR_RUN_ON_START:-true}
