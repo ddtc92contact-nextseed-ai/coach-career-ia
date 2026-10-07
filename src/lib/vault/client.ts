@@ -27,6 +27,17 @@ export class VaultHttpError extends Error {
   }
 }
 
+/**
+ * Conflit de révision (409) : un autre onglet ou appareil a modifié le coffre.
+ * Porte l'identité rechargée, pour remettre le formulaire à jour.
+ */
+export class VaultConflictError extends VaultHttpError {
+  constructor(readonly latest: IdentityData | null) {
+    super(409);
+    this.name = "VaultConflictError";
+  }
+}
+
 type Fetch = (input: string, init?: RequestInit) => Promise<Response>;
 
 /** Coffre déverrouillé, tenu en mémoire uniquement. */
@@ -74,12 +85,16 @@ export function createVaultClient(fetcher: Fetch = (input, init) => fetch(input,
   return {
     /** Coffre chiffré de l'utilisateur, ou `null` s'il n'en a pas encore. */
     async fetch(): Promise<VaultResponse | null> {
-      try {
-        return (await (await call("/api/vault")).json()) as VaultResponse;
-      } catch (error) {
-        if (error instanceof VaultHttpError && error.status === 404) return null;
-        throw error;
-      }
+      return (await (await call("/api/vault")).json()) as VaultResponse | null;
+    },
+
+    /**
+     * Déchiffre une version plus récente du coffre (après un conflit 409)
+     * avec la clé déjà en mémoire : ni phrase ni nouveau déverrouillage. La
+     * clé de données ne change jamais (seul son emballage change).
+     */
+    reopen(latest: VaultResponse, key: CryptoKey): Promise<UnlockedVault> {
+      return open(latest, key);
     },
 
     /** Crée le coffre ; renvoie la clé de secours, à montrer une seule fois. */

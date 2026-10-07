@@ -24,23 +24,33 @@ export function VaultEmployerName({ experienceId }: { experienceId: string }) {
   );
 }
 
-/** Indicateur d'en-tête : coffre déverrouillé, avec verrouillage en un clic. */
+/**
+ * Indicateur d'en-tête : coffre déverrouillé, avec verrouillage en un clic.
+ * Sur téléphone, seul le bouton (cadenas) est montré pour tenir à côté du
+ * sélecteur de langue et de la déconnexion.
+ */
 export function VaultStatusBadge() {
   const t = useTranslations("identity");
   const { status, lock } = useVault();
   if (status !== "unlocked") return null;
   return (
-    <span className="bg-brand-50 text-brand-800 ring-brand-100 inline-flex items-center gap-1 rounded-full py-0.5 pr-1 pl-2 text-xs font-medium ring-1 ring-inset">
-      <LockIcon open />
+    <span className="sm:bg-brand-50 text-brand-800 sm:ring-brand-100 inline-flex shrink-0 items-center gap-1 rounded-full text-xs font-medium sm:py-0.5 sm:pr-1 sm:pl-2 sm:ring-1 sm:ring-inset">
+      <span className="hidden sm:contents">
+        <LockIcon open />
+      </span>
       <Link href="/app/identite" className="hidden whitespace-nowrap sm:inline">
         {t("badge.unlocked")}
       </Link>
       <button
         type="button"
         onClick={lock}
-        className="rounded-full bg-white px-2 py-0.5 whitespace-nowrap ring-1 ring-stone-200 hover:bg-stone-50"
+        title={t("lock")}
+        className="bg-brand-50 ring-brand-100 inline-flex items-center rounded-full p-2 ring-1 hover:bg-stone-50 sm:bg-white sm:px-2 sm:py-0.5 sm:ring-stone-200"
       >
-        {t("lock")}
+        <span className="sm:hidden">
+          <LockIcon />
+        </span>
+        <span className="sr-only whitespace-nowrap sm:not-sr-only">{t("lock")}</span>
       </button>
     </span>
   );
@@ -50,7 +60,7 @@ export function VaultStatusBadge() {
 export function LogoutButton({ action, label }: { action: () => Promise<void>; label: string }) {
   const { lock } = useVault();
   return (
-    <form action={action} onSubmit={lock}>
+    <form action={action} onSubmit={lock} className="shrink-0">
       <button
         type="submit"
         className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium whitespace-nowrap hover:bg-stone-100"

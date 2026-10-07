@@ -6,7 +6,8 @@ import { createVaultInput, updateVaultInput } from "@/lib/vault/schemas";
 /**
  * Coffre d'identité de l'utilisateur connecté. N'accepte et ne renvoie que
  * des blobs chiffrés dans le navigateur. Le coffre d'un autre utilisateur
- * n'est jamais adressable : sans coffre propre, la réponse est un 404.
+ * n'est jamais adressable : sans coffre propre, la lecture renvoie `null`
+ * (200, pour ne pas polluer la console à chaque page) et les écritures un 404.
  *
  * Les écritures exigent `Content-Type: application/json` (requête « non
  * simple » : un autre site ne peut pas l'émettre sans CORS). Rien n'est
@@ -36,7 +37,7 @@ export async function GET() {
   const user = await getCurrentUser();
   if (!user) return empty(401);
   const vault = await getVault(user.id);
-  return vault ? json(vault) : empty(404);
+  return json(vault);
 }
 
 export async function POST(request: Request) {

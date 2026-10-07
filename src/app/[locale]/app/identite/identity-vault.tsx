@@ -5,7 +5,7 @@ import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { inputClass } from "@/components/form";
 import { IDLE_CHOICES, useVault } from "@/components/vault/vault-provider";
 import { LockIcon } from "@/components/vault/vault-widgets";
-import { VaultHttpError } from "@/lib/vault/client";
+import { VaultConflictError, VaultHttpError } from "@/lib/vault/client";
 import { MIN_PASSPHRASE_LENGTH, VaultDecryptError, VaultParamsError } from "@/lib/vault/crypto";
 import {
   CV_MIME_TYPES,
@@ -531,7 +531,7 @@ function ExperienceSelect({
 
 function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
   const t = useTranslations("identity.form");
-  const { identity, saveIdentity, reload } = useVault();
+  const { identity, saveIdentity } = useVault();
   const [draft, setDraft] = useState<IdentityData>(() => identity ?? emptyIdentity());
   const [error, setError] = useState<ErrorKey | null>(null);
   const [pending, setPending] = useState(false);
@@ -556,9 +556,9 @@ function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
             await saveIdentity(draft);
             setSaved(true);
           } catch (e) {
-            const key = errorKey(e);
-            setError(key);
-            if (key === "conflict") await reload();
+            setError(errorKey(e));
+            // Le coffre a été rechargé : le formulaire repart de la version à jour.
+            if (e instanceof VaultConflictError && e.latest) setDraft(e.latest);
           } finally {
             setPending(false);
           }
@@ -755,20 +755,21 @@ function CvSection() {
               {pending === "download" ? t("working") : t("download")}
             </button>
           ) : null}
-          <label
-            htmlFor={inputId}
-            className={`${secondaryButton} cursor-pointer text-center ${pending ? "pointer-events-none opacity-60" : ""}`}
-          >
-            {pending === "upload" ? t("uploading") : hasCv ? t("replace") : t("choose")}
-          </label>
+          {/* Champ avant son libellé : le libellé-bouton montre le focus clavier (peer). */}
           <input
             ref={input}
             id={inputId}
             type="file"
             accept={CV_MIME_TYPES.join(",")}
-            className="sr-only"
+            className="peer sr-only"
             onChange={(e) => onFile(e.target.files?.[0])}
           />
+          <label
+            htmlFor={inputId}
+            className={`${secondaryButton} peer-focus-visible:outline-brand-600 cursor-pointer text-center peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 ${pending ? "pointer-events-none opacity-60" : ""}`}
+          >
+            {pending === "upload" ? t("uploading") : hasCv ? t("replace") : t("choose")}
+          </label>
           {hasCv ? (
             <button
               type="button"

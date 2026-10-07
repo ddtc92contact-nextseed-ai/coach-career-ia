@@ -16,6 +16,7 @@ const vaultRoute = await import("@/app/api/vault/route");
 const cvRoute = await import("@/app/api/vault/cv/route");
 const { GET: exportRoute } = await import("@/app/api/account/export/route");
 const { createVaultClient, VaultHttpError } = await import("@/lib/vault/client");
+const { MESSAGES } = await import("@/i18n/messages");
 const { identityData } = await import("@/lib/vault/identity");
 
 const url = process.env.TEST_DATABASE_URL;
@@ -205,18 +206,65 @@ describe.skipIf(!url)("coffre d'identité : le serveur ne reçoit que des chiffr
   it("l'export RGPD contient le coffre, chiffré", async () => {
     asUser(alice);
     const response = await exportRoute();
-    const data = (await response.json()) as { identityVault: { identity: string; cv: string } };
+    const data = (await response.json()) as {
+      identityVault: { identity: string; cv: string; notice: string };
+    };
     expect(data.identityVault.identity).toBeTruthy();
     expect(data.identityVault.cv).toBeTruthy();
     expectNoSecret(JSON.stringify(data));
+    // Avertissement dans la langue du compte.
+    await db.user.update({ where: { id: alice.id }, data: { locale: "de" } });
+    const german = (await (await exportRoute()).json()) as { identityVault: { notice: string } };
+    expect(german.identityVault.notice).toBe(MESSAGES.de.identity.exportNotice);
+    await db.user.update({ where: { id: alice.id }, data: { locale: null } });
+    const fallback = (await (await exportRoute()).json()) as { identityVault: { notice: string } };
+    expect(fallback.identityVault.notice).toBe(MESSAGES.fr.identity.exportNotice);
   });
 
-  it("le coffre est cloisonné : Bob reçoit un 404 et ne peut rien modifier", async () => {
+  it("après un conflit 409, la version relue avec la clé en mémoire s'enregistre", async () => {
+    asUser(alice);
+    // Deux onglets déverrouillés sur la même révision.
+    const tabA = await client.unlock((await client.fetch())!, PASSPHRASE);
+    const tabB = await client.unlock((await client.fetch())!, PASSPHRASE);
+    const fromA = { ...identity, phone: "+33 1 00 00 00 01" };
+    const savedA = await client.saveIdentity(tabA, fromA);
+    expect(savedA.revision).toBe(tabB.revision + 1);
+
+    const fromB = { ...identity, phone: "+33 1 00 00 00 02" };
+    const conflict = await client.saveIdentity(tabB, fromB).catch((e: unknown) => e);
+    expect(conflict).toBeInstanceOf(VaultHttpError);
+    expect((conflict as InstanceType<typeof VaultHttpError>).status).toBe(409);
+
+    // Rechargement sans phrase : même clé, révision et identité à jour.
+    const latest = (await client.fetch())!;
+    const refreshed = await client.reopen(latest, tabB.key);
+    expect(refreshed.revision).toBe(savedA.revision);
+    expect(refreshed.identity).toEqual(fromA);
+    const savedB = await client.saveIdentity(refreshed, fromB);
+    expect(savedB.revision).toBe(savedA.revision + 1);
+    expect((await client.unlock((await client.fetch())!, PASSPHRASE)).identity).toEqual(fromB);
+
+    // Idem pour un changement de phrase concurrent : les clés relues restent valables.
+    const stale = savedA;
+    const changeConflict = await client
+      .changePassphrase(stale, PASSPHRASE, NEW_PASSPHRASE)
+      .catch((e: unknown) => e);
+    expect((changeConflict as InstanceType<typeof VaultHttpError>).status).toBe(409);
+    const again = await client.reopen((await client.fetch())!, stale.key);
+    const changed = await client.changePassphrase(again, PASSPHRASE, NEW_PASSPHRASE);
+    await client.changePassphrase(changed, NEW_PASSPHRASE, PASSPHRASE);
+    await client.saveIdentity(await client.unlock((await client.fetch())!, PASSPHRASE), identity);
+  });
+
+  it("le coffre est cloisonné : Bob ne voit rien et ne peut rien modifier", async () => {
     asUser(bob);
     expect(await client.fetch()).toBeNull();
     const status = async (route: Handler, init?: RequestInit) =>
       (await route(new Request("http://test/api/vault", init))).status;
-    expect(await status(vaultRoute.GET as unknown as Handler)).toBe(404);
+    // Sans coffre propre : 200 avec `null` (pas d'erreur console sur chaque page).
+    const read = await (vaultRoute.GET as unknown as Handler)(new Request("http://test/api/vault"));
+    expect(read.status).toBe(200);
+    expect(await read.json()).toBeNull();
     expect(await status(cvRoute.GET as unknown as Handler)).toBe(404);
     expect(await status(cvRoute.DELETE as unknown as Handler)).toBe(404);
     const aliceVault = await db.identityVault.findUniqueOrThrow({ where: { userId: alice.id } });

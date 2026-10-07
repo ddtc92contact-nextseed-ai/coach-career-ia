@@ -478,7 +478,8 @@
       "cvTooLarge": "File too large.",
       "cvType": "Unsupported format: PDF, Word or OpenDocument only.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "exportNotice": "Data encrypted in your browser: only your passphrase or your recovery key can read it."
   },
   "guardRails": {
     "title": "My guard-rails",

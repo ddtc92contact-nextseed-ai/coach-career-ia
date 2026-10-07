@@ -10,7 +10,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { createVaultClient, type UnlockedVault } from "@/lib/vault/client";
+import {
+  createVaultClient,
+  VaultConflictError,
+  VaultHttpError,
+  type UnlockedVault,
+} from "@/lib/vault/client";
 import type { VaultFile } from "@/lib/vault/crypto";
 import type { IdentityData } from "@/lib/vault/identity";
 import type { VaultResponse } from "@/lib/vault/schemas";
@@ -142,6 +147,41 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     return vaultRef.current;
   }, []);
 
+  /**
+   * Après un 409 : relit le coffre, le déchiffre avec la clé en mémoire et
+   * remplace la révision, l'identité et le matériel de clés périmés, puis
+   * relance l'erreur sous forme de `VaultConflictError` (identité à jour).
+   */
+  const withConflictReload = useCallback(
+    async (task: () => Promise<UnlockedVault>) => {
+      try {
+        apply(await task());
+      } catch (error) {
+        if (!(error instanceof VaultHttpError) || error.status !== 409) throw error;
+        const key = vaultRef.current?.key;
+        const latest = await client.fetch();
+        setStored(latest);
+        if (!latest) {
+          apply(null);
+          setStatus("none");
+          throw new VaultConflictError(null);
+        }
+        if (!key) throw new VaultConflictError(null);
+        try {
+          const fresh = await client.reopen(latest, key);
+          apply(fresh);
+          throw new VaultConflictError(fresh.identity);
+        } catch (reopenError) {
+          if (reopenError instanceof VaultConflictError) throw reopenError;
+          // Coffre recréé ailleurs avec une autre clé : on reverrouille.
+          lock();
+          throw new VaultConflictError(null);
+        }
+      }
+    },
+    [client, apply, lock],
+  );
+
   const value = useMemo<VaultContextValue>(
     () => ({
       status,
@@ -177,11 +217,11 @@ export function VaultProvider({ children }: { children: ReactNode }) {
       },
       lock,
       saveIdentity: async (identity) => {
-        apply(await client.saveIdentity(current(), identity));
+        await withConflictReload(() => client.saveIdentity(current(), identity));
         await reload();
       },
       changePassphrase: async (currentPassphrase, next) => {
-        apply(await client.changePassphrase(current(), currentPassphrase, next));
+        await withConflictReload(() => client.changePassphrase(current(), currentPassphrase, next));
         await reload();
       },
       uploadCv: async (file) => {
@@ -198,7 +238,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
         setStatus("none");
       },
     }),
-    [status, vault, stored, idleMinutes, reload, client, apply, lock, current],
+    [status, vault, stored, idleMinutes, reload, client, apply, lock, current, withConflictReload],
   );
 
   return <VaultContext.Provider value={value}>{children}</VaultContext.Provider>;

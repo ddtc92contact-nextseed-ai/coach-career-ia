@@ -478,7 +478,8 @@
       "cvTooLarge": "Bestand te groot.",
       "cvType": "Formaat niet ondersteund: alleen PDF, Word of OpenDocument.",
       "generic": "Er is iets misgegaan. Probeer het opnieuw."
-    }
+    },
+    "exportNotice": "Gegevens versleuteld in je browser: alleen je wachtwoordzin of je herstelsleutel kan ze lezen."
   },
   "guardRails": {
     "title": "Mijn randvoorwaarden",

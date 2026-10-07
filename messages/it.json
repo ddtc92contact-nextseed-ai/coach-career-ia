@@ -478,7 +478,8 @@
       "cvTooLarge": "File troppo grande.",
       "cvType": "Formato non supportato: solo PDF, Word o OpenDocument.",
       "generic": "Si è verificato un errore. Riprova."
-    }
+    },
+    "exportNotice": "Dati cifrati nel tuo browser: solo la tua frase segreta o la tua chiave di recupero permettono di leggerli."
   },
   "guardRails": {
     "title": "I miei paletti",

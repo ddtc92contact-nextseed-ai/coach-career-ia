@@ -478,7 +478,8 @@
       "cvTooLarge": "Fichier trop volumineux.",
       "cvType": "Format non accepté : PDF, Word ou OpenDocument uniquement.",
       "generic": "Une erreur est survenue. Réessayez."
-    }
+    },
+    "exportNotice": "Données chiffrées dans votre navigateur : seules votre phrase secrète ou votre clé de secours permettent de les lire."
   },
   "guardRails": {
     "title": "Mes garde-fous",

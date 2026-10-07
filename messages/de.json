@@ -478,7 +478,8 @@
       "cvTooLarge": "Datei zu groß.",
       "cvType": "Format nicht unterstützt: nur PDF, Word oder OpenDocument.",
       "generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen."
-    }
+    },
+    "exportNotice": "In Ihrem Browser verschlüsselte Daten: Nur Ihre Passphrase oder Ihr Wiederherstellungsschlüssel können sie lesen."
   },
   "guardRails": {
     "title": "Meine Leitplanken",

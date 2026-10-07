@@ -110,13 +110,12 @@ export async function setCv(userId: string, ciphertext: Uint8Array | null): Prom
 }
 
 /** Pour l'export RGPD : les blobs tels que stockés (illisibles sans la phrase). */
-export async function exportVault(userId: string) {
+export async function exportVault(userId: string, notice: string) {
   const vault = await getVault(userId);
   if (!vault) return null;
   const cv = vault.hasCv ? await getCv(userId) : null;
   return {
-    notice:
-      "Données chiffrées dans votre navigateur : seules votre phrase secrète ou votre clé de secours permettent de les lire.",
+    notice,
     ...vault,
     cv: cv ? b64(cv) : null,
   };

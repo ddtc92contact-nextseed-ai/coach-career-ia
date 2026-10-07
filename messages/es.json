@@ -478,7 +478,8 @@
       "cvTooLarge": "Archivo demasiado grande.",
       "cvType": "Formato no admitido: solo PDF, Word u OpenDocument.",
       "generic": "Se ha producido un error. Inténtalo de nuevo."
-    }
+    },
+    "exportNotice": "Datos cifrados en su navegador: solo su frase secreta o su clave de recuperación permiten leerlos."
   },
   "guardRails": {
     "title": "Mis salvaguardas",

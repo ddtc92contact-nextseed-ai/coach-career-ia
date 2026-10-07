@@ -2,7 +2,8 @@ import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
 import { decrypt, encrypt } from "@/lib/crypto";
-import { isAppLocale, type AppLocale } from "@/i18n/routing";
+import { DEFAULT_LOCALE, isAppLocale, type AppLocale } from "@/i18n/routing";
+import { MESSAGES } from "@/i18n/messages";
 import { SECTORS, type SectorCode, type VisibilityStatusCode } from "./codes";
 import {
   computeCompleteness,
@@ -512,6 +513,11 @@ function omitUserId<T extends { userId: string }>(row: T): Omit<T, "userId"> {
   return copy as Omit<T, "userId">;
 }
 
+/** Avertissement du coffre chiffré, dans la langue du compte. */
+function exportNotice(locale: string | null): string {
+  return MESSAGES[isAppLocale(locale) ? locale : DEFAULT_LOCALE].identity.exportNotice;
+}
+
 /**
  * Toutes les données de l'utilisateur, déchiffrées, y compris le contenu des
  * pièces justificatives (base64).
@@ -532,7 +538,7 @@ export async function exportUserData(userId: string) {
         where: { userId, kind: "DOCUMENT" },
         select: { id: true, storageKey: true },
       }),
-      exportVault(userId),
+      exportVault(userId, exportNotice(user.locale)),
     ]);
   const contents = new Map<string, string>();
   for (const doc of documents) {
