@@ -116,6 +116,8 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (avec `BILLING_PROVIDER=stripe`)       |
 | `STRIPE_WEBHOOK_SECRET`                                               | paiement | secret de signature du webhook (`whsec_…`)                |
 | `STRIPE_PRICE_PREMIUM_MONTHLY`                                        | paiement | prix mensuel récurrent de Premium (`price_…`)             |
+| `JOB_POSTING_PRICE_CENTS`, `JOB_POSTING_CURRENCY`                     | non      | prix d'une publication d'offre (`9900`, `EUR`, fictif)    |
+| `JOB_POSTING_DURATION_DAYS`                                           | non (30) | durée d'une publication d'offre directe (jours)           |
 | `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub      |
 | `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                 |
 | `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                          |
@@ -545,6 +547,58 @@ déjà envoyé et qui a reçu une réponse. Code : `src/lib/handover`, route
 - Sans coffre : message invitant à créer le coffre d'identité d'abord.
 - Tests : `tests/unit/handover.test.ts`, `tests/db/handover.test.ts` (isolation entre candidats,
   fil A / fil B / liens de carte, révocation et expiration 404/410 avec purge, échec d'envoi).
+
+## Espace entreprise (`/entreprise`)
+
+Phase 2 : les entreprises publient leurs offres, **payées à l'unité** (les candidats restent en
+freemium). Code : `src/lib/employer`, pages `src/app/[locale]/entreprise`, modération
+`/app/moderation` (admin, en français). Règle produit : une entreprise ne voit, ne recherche et
+ne reçoit **jamais** de liste ni de classement de candidats ; le matching reste piloté par
+l'agent de chaque candidat.
+
+- **Comptes** : même connexion par lien magique ; un compte peut être candidat, membre d'une
+  organisation, ou les deux (`organizations`, `organization_members`, rôle `OWNER`/`MEMBER`).
+  Inscription « Je recrute » (`/entreprise/inscription`, publique, liée depuis l'accueil).
+  **Contrôle du domaine** (`src/lib/employer/domain.ts`) : le domaine de l'e-mail doit être
+  celui du site (ou un sous-domaine) ; messageries grand public refusées ; domaine déjà occupé
+  par une organisation active → l'organisation reste `PENDING` jusqu'à validation par un
+  administrateur. Les pages `/entreprise/*` (hors inscription) renvoient **404** à un compte
+  qui n'est membre d'aucune organisation (`requireEmployer()`), et toute requête est filtrée
+  par l'organisation du compte (offre d'une autre organisation : 404).
+- **Offres** : formulaire zod (`src/lib/employer/schema.ts`), **fourchette de salaire
+  obligatoire** (min, max, devise, période), contrat, télétravail explicite, ville géocodée
+  (`src/lib/geo`), séniorité et secteur (codes). Le contenu est une ligne `job_offers`
+  (`source = "direct"`, `source_key = "direct:<orgId>"`, rattachée à la fiche `companies` de
+  l'organisation) au statut `DRAFT` — jamais lue par le matching — tant que l'offre n'est pas en
+  ligne. L'état de publication vit dans `job_postings`.
+- **Cycle de vie** (`src/lib/employer/lifecycle.ts`, pur et testé) : brouillon → soumission →
+  paiement → modération → en ligne `JOB_POSTING_DURATION_DAYS` jours → fermée (échéance,
+  fermeture anticipée, suspension). En ligne **seulement si payée ET approuvée ET organisation
+  active**. Modération automatique si rien n'est signalé ; un repérage simple de critères
+  discriminatoires (âge, sexe, origine, situation familiale — `moderation.ts`) envoie l'offre en
+  revue manuelle, sans refus automatique. Republier une offre fermée = nouveau paiement ;
+  payer une offre en ligne prolonge son échéance. Le worker ferme les offres échues toutes les
+  5 minutes (et le tableau de bord à l'affichage).
+- **Paiement** : achat unitaire via l'interface des fournisseurs (`createJobPostingCheckout`) —
+  simulateur par défaut (page `/entreprise/paiement/<session>`), ou Stripe Checkout
+  `mode=payment` (prix inline depuis `JOB_POSTING_PRICE_CENTS`/`JOB_POSTING_CURRENCY`,
+  métadonnées `kind=job_posting`, `paymentId`). Dans les deux cas, l'offre n'avance que par le
+  traitement de `checkout.session.completed` (même code que le webhook, montant vérifié,
+  évènement traité une fois). Les administrateurs (`ADMIN_EMAILS`) peuvent publier gratuitement
+  (achat à 0 €, provider `admin`).
+- **Modération** (`/app/moderation`) : organisations en attente (valider / refuser avec
+  motif), offres en revue (extraits signalés, approuver / refuser avec motif), suspension d'une
+  organisation (ferme ses offres) et réactivation. Chaque décision est envoyée par e-mail aux
+  membres, dans leur langue.
+- **Côté candidat** : les offres en ligne passent par le matching comme toute autre source
+  (garde-fous durs, embeddings, score) et portent le badge « Publiée directement par
+  l'entreprise ». Mise en ligne ou retrait → recalcul des opportunités.
+- **Tableau de bord entreprise** : offres, statut, échéance, nombre de consultations (candidats
+  ayant ouvert l'offre parmi leurs opportunités) — **aucune donnée candidat**.
+- Tests : `tests/unit/employer.test.ts` (domaine, salaire obligatoire, cycle de vie, repérage,
+  évènement de paiement, accès), `tests/db/employer.test.ts` (inscription, 404 candidat, IDOR
+  entre organisations, paiement simulé → publication, matching avec garde-fous, échéance et
+  republication, modération et e-mails, suspension, publication admin).
 
 ## Authentification
 
