@@ -1,0 +1,23 @@
+Lena Hartmann
+DevOps Engineer
+lena.hartmann@beispiel.test | +49 170 1234567 | Köln
+
+BERUFSERFAHRUNG
+
+Senior DevOps Engineer, Wolkenbau GmbH (unbefristet), 04/2020 - heute
+SaaS-Anbieter für Bauplanung, ca. 120 Mitarbeitende.
+- Migration von 30 Microservices von VMs auf Kubernetes (EKS) mit Terraform und ArgoCD.
+- Deployment-Dauer von 45 Minuten auf 8 Minuten gesenkt.
+- Einführung von Bereitschaftsdienst und SLOs mit Prometheus und Grafana.
+
+Systemadministratorin, Stahlwerk Rheinau AG, 2016 - 03/2020
+Stahlproduzent, über 8.000 Mitarbeitende.
+- Automatisierung der Serverbereitstellung mit Ansible (200 Linux-Server).
+- Aufbau eines zentralen Loggings mit dem ELK-Stack.
+
+AUSBILDUNG
+B.Sc. Informatik, Hochschule Neustadt, 2012 - 2016
+
+KENNTNISSE
+Kubernetes, Terraform, ArgoCD, AWS, Ansible, Prometheus, Grafana, Linux, Bash, Go
+Sprachen: Deutsch (Muttersprache), Englisch (fließend)

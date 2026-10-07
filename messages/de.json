@@ -144,6 +144,7 @@
       "label": "Kandidatenbereich",
       "dashboard": "Übersicht",
       "memory": "Mein Karrieregedächtnis",
+      "identity": "Meine Identität",
       "guardRails": "Meine Leitplanken",
       "opportunities": "Chancen",
       "settings": "Einstellungen",
@@ -335,7 +336,152 @@
       "backedBy": "Belegt durch",
       "unprovenHint": "Nicht belegt: Nennen Sie sie in einem Erfolg mit Nachweis.",
       "confirmDelete": "Die Kompetenz „{name}“ löschen? Sie wird aus allen Erfolgen entfernt, in denen sie genannt wird."
-    }
+    },
+    "importCta": "Meinen Werdegang importieren",
+    "importHint": "Lebenslauf, LinkedIn-Export oder GitHub: Die KI erstellt einen Entwurf, den Sie freigeben."
+  },
+  "identity": {
+    "title": "Meine Identität",
+    "intro": "Ihre echte Identität, verschlüsselt in Ihrem Browser. Sie bleibt getrennt von Ihrem anonymisierten Berufsprofil.",
+    "employerLabel": "Arbeitgeber (aus Ihrem Tresor):",
+    "lock": "Sperren",
+    "loading": "Tresor wird geöffnet…",
+    "retry": "Erneut versuchen",
+    "badge": {
+      "unlocked": "Identität entsperrt"
+    },
+    "explain": {
+      "title": "Niemand, nicht einmal wir, kann diese Daten lesen",
+      "encrypted": "Name, Kontaktdaten, Arbeitgeber, Schulen, Links und Original-Lebenslauf werden in Ihrem Browser verschlüsselt, bevor etwas gesendet wird. Unsere Server erhalten und speichern nur einen unlesbaren Block.",
+      "nobody": "Weder unser Team noch unser Hoster noch jemand, der unsere Datenbank stiehlt, kann sie entschlüsseln: Der Schlüssel existiert nur bei Ihnen.",
+      "you": "Nur Sie entsperren sie, mit Ihrer Passphrase. Sie wird von unseren Diensten nie übertragen oder gespeichert.",
+      "handover": "Ihre Identität wird einem Recruiter nur offengelegt, wenn Sie es für genau diesen Recruiter entscheiden.",
+      "lossTitle": "Wichtige Folge:",
+      "loss": "Wenn Sie sowohl Ihre Passphrase als auch Ihren Wiederherstellungsschlüssel verlieren, sind diese Daten endgültig verloren. Wir können sie nicht für Sie wiederherstellen. Ihr Berufsprofil ist davon nicht betroffen."
+    },
+    "setup": {
+      "title": "Meinen Identitätstresor anlegen",
+      "intro": "Wählen Sie eine eigene Passphrase für diesen Tresor, die sich von Ihren anderen Passwörtern unterscheidet. Mehrere Wörter hintereinander sind leicht zu merken und schwer zu erraten.",
+      "passphrase": "Passphrase",
+      "passphraseHint": "Mindestens {min} Zeichen.",
+      "confirm": "Passphrase bestätigen",
+      "understand": "Mir ist klar: Wenn ich Passphrase und Wiederherstellungsschlüssel verliere, kann niemand meine Identität wiederherstellen.",
+      "submit": "Tresor anlegen",
+      "working": "Tresor wird angelegt… (einige Sekunden)"
+    },
+    "recovery": {
+      "title": "Ihr Wiederherstellungsschlüssel",
+      "intro": "Damit öffnen Sie Ihren Tresor wieder, falls Sie Ihre Passphrase vergessen. Er wird nie wieder angezeigt.",
+      "warning": "Bewahren Sie ihn offline auf: ausgedruckt, in einem Passwort-Manager oder in einer sicher abgelegten Datei. Geben Sie ihn niemandem weiter.",
+      "download": "Herunterladen (.txt)",
+      "print": "Drucken",
+      "copy": "Kopieren",
+      "copied": "Kopiert",
+      "confirm": "Ich habe meinen Wiederherstellungsschlüssel sicher aufbewahrt.",
+      "continue": "Weiter zu meiner Identität",
+      "fileName": "coach-career-ia-wiederherstellungsschluessel.txt",
+      "fileText": "Coach Career IA — Wiederherstellungsschlüssel des Identitätstresors\nErstellt am {date}\n\n{key}\n\nMit diesem Schlüssel öffnen Sie Ihren Tresor wieder, falls Sie Ihre Passphrase vergessen.\nBewahren Sie ihn sicher auf und geben Sie ihn niemandem weiter: Ohne ihn und ohne Ihre Passphrase sind Ihre Identitätsdaten endgültig verloren."
+    },
+    "unlock": {
+      "title": "Meine Identität entsperren",
+      "intro": "Ihr Tresor ist gesperrt. Geben Sie Ihre Passphrase ein: Die Entschlüsselung erfolgt in diesem Browser.",
+      "passphrase": "Passphrase",
+      "submit": "Entsperren",
+      "working": "Wird entsperrt…",
+      "forgot": "Passphrase vergessen?"
+    },
+    "recover": {
+      "title": "Mit dem Wiederherstellungsschlüssel wiederherstellen",
+      "intro": "Geben Sie den bei der Erstellung erhaltenen Wiederherstellungsschlüssel ein und wählen Sie eine neue Passphrase.",
+      "recoveryKey": "Wiederherstellungsschlüssel",
+      "recoveryKeyHint": "Bindestriche, Leerzeichen und Großbuchstaben sind optional.",
+      "newPassphrase": "Neue Passphrase",
+      "newPassphraseHint": "Mindestens {min} Zeichen.",
+      "confirm": "Neue Passphrase bestätigen",
+      "submit": "Tresor wiederherstellen",
+      "working": "Wird wiederhergestellt…",
+      "back": "Zurück zur Passphrase"
+    },
+    "unlocked": {
+      "status": "Tresor in diesem Browser entsperrt",
+      "idle": "Automatisch sperren nach",
+      "idleOption": "{minutes} Min. Inaktivität"
+    },
+    "form": {
+      "title": "Meine Identitätsangaben",
+      "intro": "Beim Speichern in Ihrem Browser verschlüsselt. Sie werden nie für das Matching verwendet.",
+      "identityTitle": "Identität",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "contactTitle": "Für Recruiter sichtbare Kontaktdaten",
+      "contactIntro": "Nur an den Recruiter übermittelt, dem Sie Ihre Identität offenlegen.",
+      "email": "Kontakt-E-Mail",
+      "phone": "Telefon",
+      "employersTitle": "Arbeitgeber",
+      "employersIntro": "Der echte Name jedes Arbeitgebers, verknüpft mit der passenden Erfahrung in Ihrem Karrieregedächtnis. Er wird dort angezeigt, wenn Ihr Tresor entsperrt ist.",
+      "employerName": "Name des Arbeitgebers",
+      "employerExperience": "Zugehörige Erfahrung",
+      "noExperience": "Nicht verknüpft",
+      "addEmployer": "Arbeitgeber hinzufügen",
+      "schoolsTitle": "Schulen und Ausbildung",
+      "schoolName": "Name der Einrichtung",
+      "addSchool": "Schule hinzufügen",
+      "linksTitle": "Persönliche Links",
+      "linksIntro": "LinkedIn-Profil, persönliche Website, Code-Repository… jeder Link, der Sie identifiziert.",
+      "linkLabel": "Bezeichnung",
+      "linkUrl": "Adresse (URL)",
+      "addLink": "Link hinzufügen",
+      "remove": "Entfernen",
+      "none": "Noch keine Einträge.",
+      "save": "Verschlüsseln und speichern",
+      "saving": "Wird verschlüsselt…",
+      "saved": "Gespeichert, verschlüsselt.",
+      "saveHint": "Nur die verschlüsselte Version verlässt Ihren Browser."
+    },
+    "cv": {
+      "title": "Original-Lebenslauf",
+      "intro": "Ihr vollständiger Lebenslauf mit Name und Kontaktdaten. Er wird vor dem Hochladen in Ihrem Browser verschlüsselt: Wir sehen weder Inhalt noch Dateinamen.",
+      "none": "Kein Lebenslauf gespeichert.",
+      "current": "Ein verschlüsselter Lebenslauf ist gespeichert.",
+      "choose": "Lebenslauf hinzufügen",
+      "replace": "Lebenslauf ersetzen",
+      "uploading": "Verschlüsseln und hochladen…",
+      "download": "Lebenslauf herunterladen",
+      "delete": "Lebenslauf löschen",
+      "working": "Bitte warten…",
+      "confirmDelete": "Ihren Original-Lebenslauf endgültig löschen?",
+      "hint": "PDF, Word oder OpenDocument, höchstens {max} MB."
+    },
+    "change": {
+      "title": "Passphrase ändern",
+      "intro": "Ihre Daten müssen nicht neu verschlüsselt werden. Ihr Wiederherstellungsschlüssel bleibt gültig.",
+      "current": "Aktuelle Passphrase",
+      "next": "Neue Passphrase",
+      "confirm": "Neue Passphrase bestätigen",
+      "submit": "Passphrase ändern",
+      "working": "Wird geändert…",
+      "done": "Passphrase geändert."
+    },
+    "reset": {
+      "title": "Tresor zurücksetzen",
+      "intro": "Löscht Ihre verschlüsselte Identität und Ihren Original-Lebenslauf endgültig. Nützlich, wenn Sie Passphrase und Wiederherstellungsschlüssel verloren haben: Danach können Sie einen neuen Tresor anlegen. Ihr Karrieregedächtnis bleibt unberührt.",
+      "button": "Meinen Tresor löschen",
+      "confirm": "Identitätstresor und Lebenslauf endgültig löschen? Dies kann nicht rückgängig gemacht werden.",
+      "working": "Wird gelöscht…"
+    },
+    "errors": {
+      "tooShort": "Die Passphrase muss mindestens {min} Zeichen lang sein.",
+      "mismatch": "Die beiden Passphrasen stimmen nicht überein.",
+      "understand": "Bestätigen Sie mit dem Kontrollkästchen, dass Sie es verstanden haben.",
+      "wrongPassphrase": "Falsche Passphrase.",
+      "wrongRecoveryKey": "Falscher Wiederherstellungsschlüssel.",
+      "conflict": "Ihr Tresor wurde in einem anderen Tab oder auf einem anderen Gerät geändert. Die neueste Version wurde geladen: Prüfen Sie sie und speichern Sie erneut.",
+      "network": "Server nicht erreichbar. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "cvTooLarge": "Datei zu groß.",
+      "cvType": "Format nicht unterstützt: nur PDF, Word oder OpenDocument.",
+      "generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen."
+    },
+    "exportNotice": "In Ihrem Browser verschlüsselte Daten: Nur Ihre Passphrase oder Ihr Wiederherstellungsschlüssel können sie lesen."
   },
   "guardRails": {
     "title": "Meine Leitplanken",
@@ -416,6 +562,117 @@
       "confirmHint": "Denken Sie daran, Ihre Daten zu exportieren, bevor Sie Ihr Konto löschen.",
       "submit": "Mein Konto endgültig löschen",
       "deleting": "Wird gelöscht…"
+    }
+  },
+  "import": {
+    "title": "Meinen Werdegang importieren",
+    "back": "← Zurück zu meinem Karrieregedächtnis",
+    "intro": "Starten Sie mit Ihrem Lebenslauf, Ihrem LinkedIn-Export oder Ihrem GitHub: Die KI erstellt einen Entwurf Ihres Karrieregedächtnisses, den Sie Punkt für Punkt freigeben.",
+    "privacy": {
+      "title": "Was mit Ihren Daten geschieht",
+      "files": "Ihre Dateien werden im Arbeitsspeicher gelesen und danach verworfen: Sie werden nie auf unseren Servern gespeichert.",
+      "contacts": "Ihre Kontaktdaten (E-Mail, Telefon, Profillinks) werden entfernt, bevor unser KI-Anbieter den Text analysiert.",
+      "identity": "Namen (Ihrer, die Ihrer Arbeitgeber und Ihrer Hochschulen) werden getrennt gehalten: Sie gelangen nie in Ihr Profil.",
+      "review": "Ohne Ihre ausdrückliche Freigabe wird nichts in Ihr Gedächtnis übernommen."
+    },
+    "form": {
+      "cv": "Lebenslauf",
+      "cvHint": "PDF oder DOCX, maximal {maxMb} MB.",
+      "linkedin": "LinkedIn-Export",
+      "linkedinHint": "ZIP-Archiv Ihrer Daten, maximal {maxMb} MB. Auf LinkedIn: Einstellungen › Datenschutz › Kopie Ihrer Daten anfordern.",
+      "github": "GitHub-Benutzername",
+      "githubHint": "Ihre öffentlichen Repositorys dienen als Belege für Ihre Erfolge.",
+      "githubPlaceholder": "mein-name",
+      "submit": "Werdegang analysieren",
+      "notConfigured": "Die KI-Analyse ist für diesen Dienst noch nicht aktiviert. Sie können Ihr Karrieregedächtnis von Hand ausfüllen."
+    },
+    "progress": {
+      "label": "Analyse läuft",
+      "reading": "Ihre Dokumente werden gelesen",
+      "analysing": "KI-Analyse",
+      "drafting": "Entwurf wird vorbereitet",
+      "elapsed": "{seconds, plural, one {# Sekunde} other {# Sekunden}}",
+      "slow": "Das dauert länger als üblich. Bitte haben Sie noch etwas Geduld.",
+      "cancel": "Abbrechen"
+    },
+    "errors": {
+      "title": "Der Import ist fehlgeschlagen",
+      "noSource": "Fügen Sie mindestens einen Lebenslauf, einen LinkedIn-Export oder einen GitHub-Benutzernamen hinzu.",
+      "cvTooLarge": "Dieser Lebenslauf ist größer als {cvMaxMb} MB.",
+      "cvType": "Lebenslaufformat nicht erkannt: Senden Sie eine ungeschützte PDF- oder DOCX-Datei.",
+      "cvEmpty": "In diesem Lebenslauf konnte kein Text gelesen werden (gescanntes Dokument?). Versuchen Sie ein aus Ihrer Textverarbeitung exportiertes PDF.",
+      "linkedinTooLarge": "Dateien zu groß: Der LinkedIn-Export ist auf {linkedinMaxMb} MB und der Lebenslauf auf {cvMaxMb} MB begrenzt.",
+      "linkedinInvalid": "Diese Datei ist kein erkannter LinkedIn-Export (ZIP-Archiv erwartet).",
+      "githubInvalid": "Dieser GitHub-Benutzername ist ungültig.",
+      "githubNotFound": "Zu diesem Benutzernamen gibt es kein öffentliches GitHub-Konto.",
+      "githubUnavailable": "GitHub antwortet im Moment nicht.",
+      "aiNotConfigured": "Die KI-Analyse ist für diesen Dienst nicht aktiviert.",
+      "aiTimeout": "Die Analyse hat zu lange gedauert.",
+      "aiUnavailable": "Der Analysedienst ist vorübergehend nicht verfügbar.",
+      "aiRateLimited": "Der Analysedienst ist gerade stark ausgelastet.",
+      "aiInvalidOutput": "Die Analyse hat ein unbrauchbares Ergebnis geliefert.",
+      "tooManyImports": "Sie haben in letzter Zeit viele Importe gestartet. Versuchen Sie es in einer Stunde erneut.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und beginnen Sie von vorn.",
+      "network": "Die Verbindung wurde unterbrochen.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten.",
+      "retryHint": "Ihre Dateien werden nicht aufbewahrt: Starten Sie die Analyse einfach erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "review": {
+      "title": "Entwurf prüfen",
+      "intro": "Nichts wird gespeichert, bevor Sie es freigeben. Übernehmen, bearbeiten oder verwerfen Sie jeden Eintrag.",
+      "found": "Gefunden: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}}, {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}}, {skills, plural, =0 {keine weitere Kompetenz} one {# weitere Kompetenz} other {# weitere Kompetenzen}}.",
+      "acceptAll": "Alle übernehmen",
+      "rejectAll": "Alle verwerfen",
+      "accept": "Übernehmen",
+      "edit": "Bearbeiten",
+      "reject": "Verwerfen",
+      "applyEdit": "Bestätigen und übernehmen",
+      "status": {
+        "pending": "Zu prüfen",
+        "accepted": "Übernommen",
+        "edited": "Bearbeitet und übernommen",
+        "rejected": "Verworfen"
+      },
+      "experiencesTitle": "Berufserfahrung",
+      "achievementsTitle": "Erfolge",
+      "skillsTitle": "Weitere Kompetenzen",
+      "skillsIntro": "Tippen Sie auf eine Kompetenz, um sie hinzuzufügen oder zu entfernen.",
+      "empty": "Kein Eintrag dieser Art gefunden.",
+      "linkedTo": "Verknüpft mit: {role}",
+      "linkedRejected": "Diese Station ist verworfen: Der Erfolg wird ohne Verknüpfung gespeichert.",
+      "proofs": "Beigefügter Beleg",
+      "removeProof": "Entfernen",
+      "flags": {
+        "identityRemoved": "Namen oder Kontaktdaten wurden aus diesem Text entfernt (ersetzt durch […]). Bitte lesen Sie ihn noch einmal.",
+        "identifyingLink": "Dieser Link enthält Ihren GitHub-Benutzernamen: Er bleibt privat, kann Sie aber identifizieren. Entfernen Sie ihn, wenn Sie möchten.",
+        "adjusted": "Einige Werte wurden automatisch ergänzt: Bitte prüfen Sie sie.",
+        "rareDetail": "Seltenes Detail, an dem man Sie erkennen könnte:"
+      },
+      "identity": {
+        "title": "Erkannte identifizierende Daten",
+        "intro": "Sie werden getrennt gehalten: Sie werden nicht auf unseren Servern gespeichert und erscheinen nicht in Ihrem Profil.",
+        "vault": "Der verschlüsselte Identitätstresor kommt bald. Bis dahin werden diese Daten vergessen, sobald Sie diese Seite verlassen.",
+        "fullName": "Name",
+        "emails": "E-Mail-Adressen",
+        "phones": "Telefonnummern",
+        "links": "Persönliche Links",
+        "employers": "Arbeitgeber",
+        "schools": "Hochschulen und Schulen",
+        "organizations": "Weitere Organisationen"
+      },
+      "saveHint": "Nur übernommene Einträge werden Ihrem Gedächtnis hinzugefügt.",
+      "save": "{count, plural, =0 {Kein Eintrag übernommen} one {# Eintrag speichern} other {# Einträge speichern}}",
+      "saving": "Wird gespeichert…",
+      "restart": "Neu beginnen"
+    },
+    "done": {
+      "title": "Ihr Karrieregedächtnis ist aktuell",
+      "text": "Hinzugefügt: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}}, {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}} und {skills, plural, =0 {keine Kompetenz} one {# Kompetenz} other {# Kompetenzen}}.",
+      "next": "Fügen Sie jetzt Belege zu Ihren angegebenen Erfolgen hinzu: Sie zählen am meisten.",
+      "identityForgotten": "Die erkannten identifizierenden Daten wurden nicht gespeichert.",
+      "cta": "Mein Karrieregedächtnis ansehen",
+      "again": "Weitere Quellen importieren"
     }
   },
   "codes": {

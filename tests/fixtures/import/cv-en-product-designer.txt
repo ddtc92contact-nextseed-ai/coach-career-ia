@@ -1,0 +1,24 @@
+OLIVER BRANDT
+Product Designer
+London, UK | +44 7700 900123 | oliver.brandt@example.test
+Portfolio: https://dribbble.com/obrandt-example
+
+EXPERIENCE
+
+Lead Product Designer, Pixelfjord Studio — Jan 2022 to present
+Design agency, 25 people, working for healthtech and fintech clients.
+- Led the redesign of a patient booking app for Northwind Health: booking completion rate up from 61% to 78%.
+- Built and maintained a design system (Figma, Storybook) used by 4 product teams.
+- Mentored 3 junior designers.
+
+Product Designer, Northwind Health — Jun 2018 to Dec 2021
+Private hospital group, 6,000 employees.
+- Designed the online pre-admission journey; phone calls to the admissions desk reduced by 25%.
+- Ran 40+ usability tests with patients aged 65 and over.
+- Speaker at "UX for Hospitals 2020" about accessible forms.
+
+EDUCATION
+BA (Hons) Interaction Design, Kingsbridge School of Art, 2015-2018
+
+SKILLS
+Figma, Storybook, user research, usability testing, accessibility (WCAG 2.2), prototyping, design systems

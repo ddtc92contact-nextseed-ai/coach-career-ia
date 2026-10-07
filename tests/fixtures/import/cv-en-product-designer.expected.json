@@ -1,0 +1,146 @@
+{
+  "draft": {
+    "experiences": [
+      {
+        "roleTitle": "Lead Product Designer chez […]",
+        "startMonth": "2022-01",
+        "seniority": "LEAD",
+        "contractType": "CDI",
+        "sector": "MARKETING_ADVERTISING",
+        "companySize": "S11_50",
+        "companyStage": "SME",
+        "responsibilities": "Direction du design produit dans une agence travaillant pour des clients de la santé et de la fintech.",
+        "ref": "exp-1"
+      },
+      {
+        "roleTitle": "Product Designer",
+        "startMonth": "2018-06",
+        "endMonth": "2021-12",
+        "seniority": "MID",
+        "contractType": "CDI",
+        "sector": "HEALTHCARE_HEALTHTECH",
+        "companySize": "S5001_PLUS",
+        "companyStage": "LARGE_CORP",
+        "responsibilities": "Conception des parcours patients numériques d'un groupe hospitalier privé.",
+        "ref": "exp-2"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Refonte d'une application de prise de rendez-vous patients",
+        "context": "Application de réservation d'un client du secteur de la santé ([…]).",
+        "actions": "Pilotage de la refonte de l'application, de la recherche utilisateur aux maquettes finales.",
+        "result": "Taux de réservations abouties passé de 61 % à 78 %.",
+        "skills": [
+          "Figma",
+          "User research"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Design system partagé par quatre équipes produit",
+        "context": "",
+        "actions": "Construction et maintenance d'un design system dans Figma et Storybook.",
+        "result": "Utilisé par 4 équipes produit.",
+        "skills": [
+          "Figma",
+          "Storybook",
+          "Design systems"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Parcours de pré-admission en ligne",
+        "context": "Les admissions recevaient de nombreux appels pour la pré-admission.",
+        "actions": "Conception du parcours de pré-admission en ligne et plus de 40 tests utilisateurs avec des patients de 65 ans et plus.",
+        "result": "Appels au service des admissions réduits de 25 %.",
+        "skills": [
+          "Usability testing",
+          "Accessibility (WCAG 2.2)"
+        ],
+        "experienceRef": "exp-2",
+        "proofs": []
+      }
+    ],
+    "skills": [
+      "Prototyping",
+      "Mentoring"
+    ]
+  },
+  "flags": {
+    "experiences": [
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [
+          "Intervention publique à la conférence « UX for Hospitals 2020 »."
+        ]
+      }
+    ],
+    "achievements": [
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      }
+    ]
+  },
+  "identity": {
+    "fullName": "Oliver Brandt",
+    "emails": [
+      "oliver.brandt@example.test"
+    ],
+    "phones": [
+      "+44 7700 900123"
+    ],
+    "links": [
+      "https://dribbble.com/obrandt-example"
+    ],
+    "employers": [
+      {
+        "name": "Pixelfjord Studio",
+        "experienceRef": "exp-1"
+      },
+      {
+        "name": "Northwind Health",
+        "experienceRef": "exp-2"
+      }
+    ],
+    "schools": [
+      {
+        "name": "Kingsbridge School of Art",
+        "degree": "BA (Hons) Interaction Design"
+      }
+    ],
+    "organizations": [
+      "Northwind Health"
+    ]
+  },
+  "sources": {
+    "cv": true,
+    "linkedin": false,
+    "github": false
+  }
+}

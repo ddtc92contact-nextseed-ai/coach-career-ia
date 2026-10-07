@@ -1,0 +1,70 @@
+{
+  "identity": {
+    "fullName": "Lena Hartmann",
+    "schools": [{ "name": "Hochschule Neustadt", "degree": "B.Sc. Informatik" }],
+    "organizations": []
+  },
+  "experiences": [
+    {
+      "ref": "exp-1",
+      "employerName": "Wolkenbau GmbH",
+      "roleTitle": "Senior DevOps Engineer",
+      "startMonth": "2020-04",
+      "endMonth": null,
+      "seniority": "senior",
+      "contractType": "CDI",
+      "sector": "SAAS_SOFTWARE",
+      "companySize": "S51_200",
+      "companyStage": "SCALEUP",
+      "responsibilities": "Verantwortlich für Plattform, Deployments und Betrieb eines SaaS-Anbieters für Bauplanung. Kontakt: lena.hartmann@beispiel.test",
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-2",
+      "employerName": "Stahlwerk Rheinau AG",
+      "roleTitle": "Systemadministratorin",
+      "startMonth": "2016",
+      "endMonth": "2020-03",
+      "seniority": "MID",
+      "contractType": "permanent",
+      "sector": "Steel industry",
+      "companySize": "S5001_PLUS",
+      "companyStage": "LARGE_CORP",
+      "responsibilities": "Betrieb und Automatisierung der Linux-Serverlandschaft eines großen Stahlproduzenten.",
+      "rareDetails": []
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Migration von 30 Microservices auf Kubernetes",
+      "context": "Die Microservices liefen auf virtuellen Maschinen.",
+      "actions": "Migration auf Kubernetes (EKS) mit Terraform und ArgoCD.",
+      "result": "Deployment-Dauer von 45 auf 8 Minuten gesenkt.",
+      "skills": ["Kubernetes", "Terraform", "ArgoCD", "AWS"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Einführung von Bereitschaftsdienst und SLOs",
+      "context": "",
+      "actions": "Einführung von SLOs und Monitoring mit Prometheus und Grafana.",
+      "result": "",
+      "skills": ["Prometheus", "Grafana"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Automatisierte Serverbereitstellung bei Stahlwerk Rheinau",
+      "context": "200 Linux-Server wurden manuell bereitgestellt.",
+      "actions": "Automatisierung der Bereitstellung mit Ansible und Aufbau eines zentralen Loggings (ELK).",
+      "result": "200 Server automatisiert.",
+      "skills": ["Ansible", "ELK", "Linux"],
+      "experienceRef": "exp-9",
+      "links": [],
+      "rareDetails": []
+    }
+  ],
+  "skills": ["Bash", "Go", "Englisch (fließend)"]
+}

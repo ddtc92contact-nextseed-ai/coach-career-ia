@@ -144,6 +144,7 @@
       "label": "Kandidaatomgeving",
       "dashboard": "Dashboard",
       "memory": "Mijn carrièregeheugen",
+      "identity": "Mijn identiteit",
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
       "settings": "Instellingen",
@@ -335,7 +336,152 @@
       "backedBy": "Onderbouwd door",
       "unprovenHint": "Onbewezen: vermeld haar bij een prestatie die met een bewijs is onderbouwd.",
       "confirmDelete": "De vaardigheid “{name}” verwijderen? Ze wordt weggehaald bij de prestaties waarin ze vermeld staat."
-    }
+    },
+    "importCta": "Mijn loopbaan importeren",
+    "importHint": "Cv, LinkedIn-export of GitHub: de AI maakt een concept dat u goedkeurt."
+  },
+  "identity": {
+    "title": "Mijn identiteit",
+    "intro": "Je echte identiteit, versleuteld in je browser. Ze blijft gescheiden van je professionele profiel, dat geanonimiseerd is.",
+    "employerLabel": "Werkgever (uit je kluis):",
+    "lock": "Vergrendelen",
+    "loading": "Kluis wordt geopend…",
+    "retry": "Opnieuw proberen",
+    "badge": {
+      "unlocked": "Identiteit ontgrendeld"
+    },
+    "explain": {
+      "title": "Niemand, zelfs wij niet, kan deze gegevens lezen",
+      "encrypted": "Je naam, contactgegevens, werkgevers, opleidingen, links en originele cv worden in je browser versleuteld voordat er iets wordt verzonden. Onze servers ontvangen en bewaren alleen een onleesbaar blok.",
+      "nobody": "Ons team, onze hostingpartij of iemand die onze database steelt: niemand kan ze ontsleutelen. De sleutel bestaat alleen bij jou.",
+      "you": "Alleen jij ontgrendelt ze, met je wachtzin. Die wordt nooit door onze diensten ontvangen of opgeslagen.",
+      "handover": "Je identiteit wordt alleen aan een recruiter onthuld als jij dat beslist, voor die specifieke recruiter.",
+      "lossTitle": "Belangrijk gevolg:",
+      "loss": "als je zowel je wachtzin als je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. Wij kunnen ze niet voor je terughalen. Je professionele profiel blijft ongemoeid."
+    },
+    "setup": {
+      "title": "Mijn identiteitskluis aanmaken",
+      "intro": "Kies een eigen wachtzin voor deze kluis, anders dan je andere wachtwoorden. Een reeks van meerdere woorden is makkelijk te onthouden en moeilijk te raden.",
+      "passphrase": "Wachtzin",
+      "passphraseHint": "Minstens {min} tekens.",
+      "confirm": "Bevestig de wachtzin",
+      "understand": "Ik begrijp dat niemand mijn identiteit kan herstellen als ik mijn wachtzin en herstelsleutel kwijtraak.",
+      "submit": "Mijn kluis aanmaken",
+      "working": "Kluis wordt aangemaakt… (enkele seconden)"
+    },
+    "recovery": {
+      "title": "Je herstelsleutel",
+      "intro": "Hiermee open je je kluis opnieuw als je je wachtzin vergeet. Hij wordt nooit meer getoond.",
+      "warning": "Bewaar hem offline: afgedrukt, in een wachtwoordbeheerder of in een veilig opgeslagen bestand. Deel hem met niemand.",
+      "download": "Downloaden (.txt)",
+      "print": "Afdrukken",
+      "copy": "Kopiëren",
+      "copied": "Gekopieerd",
+      "confirm": "Ik heb mijn herstelsleutel veilig bewaard.",
+      "continue": "Verder naar mijn identiteit",
+      "fileName": "coach-career-ia-herstelsleutel.txt",
+      "fileText": "Coach Career IA — herstelsleutel van de identiteitskluis\nAangemaakt op {date}\n\n{key}\n\nMet deze sleutel open je je kluis opnieuw als je je wachtzin vergeet.\nBewaar hem veilig en deel hem met niemand: zonder deze sleutel en zonder je wachtzin zijn je identiteitsgegevens definitief verloren."
+    },
+    "unlock": {
+      "title": "Mijn identiteit ontgrendelen",
+      "intro": "Je kluis is vergrendeld. Voer je wachtzin in: het ontsleutelen gebeurt in deze browser.",
+      "passphrase": "Wachtzin",
+      "submit": "Ontgrendelen",
+      "working": "Ontgrendelen…",
+      "forgot": "Wachtzin vergeten?"
+    },
+    "recover": {
+      "title": "Herstellen met mijn herstelsleutel",
+      "intro": "Voer de herstelsleutel in die je bij het aanmaken van de kluis kreeg en kies een nieuwe wachtzin.",
+      "recoveryKey": "Herstelsleutel",
+      "recoveryKeyHint": "Streepjes, spaties en hoofdletters zijn optioneel.",
+      "newPassphrase": "Nieuwe wachtzin",
+      "newPassphraseHint": "Minstens {min} tekens.",
+      "confirm": "Bevestig de nieuwe wachtzin",
+      "submit": "Mijn kluis herstellen",
+      "working": "Herstellen…",
+      "back": "Terug naar de wachtzin"
+    },
+    "unlocked": {
+      "status": "Kluis ontgrendeld in deze browser",
+      "idle": "Automatisch vergrendelen na",
+      "idleOption": "{minutes} min inactiviteit"
+    },
+    "form": {
+      "title": "Mijn identiteitsgegevens",
+      "intro": "Versleuteld in je browser bij het opslaan. Ze worden nooit gebruikt voor matching.",
+      "identityTitle": "Identiteit",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "contactTitle": "Contactgegevens zichtbaar voor recruiters",
+      "contactIntro": "Alleen gedeeld met de recruiter aan wie je ervoor kiest je identiteit te onthullen.",
+      "email": "Contact-e-mail",
+      "phone": "Telefoon",
+      "employersTitle": "Werkgevers",
+      "employersIntro": "De echte naam van elke werkgever, gekoppeld aan de bijbehorende ervaring in je loopbaangeheugen. Hij verschijnt daar wanneer je kluis ontgrendeld is.",
+      "employerName": "Naam van de werkgever",
+      "employerExperience": "Bijbehorende ervaring",
+      "noExperience": "Niet gekoppeld",
+      "addEmployer": "Werkgever toevoegen",
+      "schoolsTitle": "Scholen en opleidingen",
+      "schoolName": "Naam van de instelling",
+      "addSchool": "School toevoegen",
+      "linksTitle": "Persoonlijke links",
+      "linksIntro": "LinkedIn-profiel, persoonlijke website, coderepository… elke link die je identificeert.",
+      "linkLabel": "Label",
+      "linkUrl": "Adres (URL)",
+      "addLink": "Link toevoegen",
+      "remove": "Verwijderen",
+      "none": "Nog niets.",
+      "save": "Versleutelen en opslaan",
+      "saving": "Versleutelen…",
+      "saved": "Opgeslagen, versleuteld.",
+      "saveHint": "Alleen de versleutelde versie verlaat je browser."
+    },
+    "cv": {
+      "title": "Originele cv",
+      "intro": "Je volledige cv, met je naam en contactgegevens. Het wordt vóór het uploaden in je browser versleuteld: wij zien noch de inhoud noch de bestandsnaam.",
+      "none": "Geen cv opgeslagen.",
+      "current": "Er is een versleutelde cv opgeslagen.",
+      "choose": "Mijn cv toevoegen",
+      "replace": "Cv vervangen",
+      "uploading": "Versleutelen en uploaden…",
+      "download": "Mijn cv downloaden",
+      "delete": "Cv verwijderen",
+      "working": "Even geduld…",
+      "confirmDelete": "Je originele cv definitief verwijderen?",
+      "hint": "PDF, Word of OpenDocument, maximaal {max} MB."
+    },
+    "change": {
+      "title": "Mijn wachtzin wijzigen",
+      "intro": "Je gegevens hoeven niet opnieuw versleuteld te worden. Je herstelsleutel blijft geldig.",
+      "current": "Huidige wachtzin",
+      "next": "Nieuwe wachtzin",
+      "confirm": "Bevestig de nieuwe wachtzin",
+      "submit": "Wachtzin wijzigen",
+      "working": "Wijzigen…",
+      "done": "Wachtzin gewijzigd."
+    },
+    "reset": {
+      "title": "Kluis resetten",
+      "intro": "Verwijdert je versleutelde identiteit en originele cv definitief. Handig als je je wachtzin en herstelsleutel kwijt bent: daarna kun je een nieuwe kluis aanmaken. Je loopbaangeheugen blijft ongemoeid.",
+      "button": "Mijn kluis verwijderen",
+      "confirm": "Je identiteitskluis en cv definitief verwijderen? Dit kan niet ongedaan worden gemaakt.",
+      "working": "Verwijderen…"
+    },
+    "errors": {
+      "tooShort": "De wachtzin moet minstens {min} tekens bevatten.",
+      "mismatch": "De twee wachtzinnen komen niet overeen.",
+      "understand": "Vink het vakje aan om te bevestigen dat je het begrijpt.",
+      "wrongPassphrase": "Onjuiste wachtzin.",
+      "wrongRecoveryKey": "Onjuiste herstelsleutel.",
+      "conflict": "Je kluis is gewijzigd vanuit een ander tabblad of apparaat. De nieuwste versie is opnieuw geladen: controleer en sla opnieuw op.",
+      "network": "Server niet bereikbaar. Controleer je verbinding en probeer het opnieuw.",
+      "cvTooLarge": "Bestand te groot.",
+      "cvType": "Formaat niet ondersteund: alleen PDF, Word of OpenDocument.",
+      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+    },
+    "exportNotice": "Gegevens versleuteld in je browser: alleen je wachtwoordzin of je herstelsleutel kan ze lezen."
   },
   "guardRails": {
     "title": "Mijn randvoorwaarden",
@@ -416,6 +562,117 @@
       "confirmHint": "Exporteer uw gegevens voordat u uw account verwijdert.",
       "submit": "Mijn account definitief verwijderen",
       "deleting": "Bezig met verwijderen…"
+    }
+  },
+  "import": {
+    "title": "Mijn loopbaan importeren",
+    "back": "← Terug naar mijn carrièregeheugen",
+    "intro": "Begin met uw cv, uw LinkedIn-export of uw GitHub: de AI maakt een concept van uw carrièregeheugen dat u onderdeel voor onderdeel goedkeurt.",
+    "privacy": {
+      "title": "Wat er met uw gegevens gebeurt",
+      "files": "Uw bestanden worden in het geheugen gelezen en daarna weggegooid: ze worden nooit op onze servers opgeslagen.",
+      "contacts": "Uw contactgegevens (e-mail, telefoon, profiellinks) worden verwijderd voordat onze AI-leverancier de tekst analyseert.",
+      "identity": "Namen (die van u, uw werkgevers en uw opleidingen) worden apart gehouden: ze komen nooit in uw profiel.",
+      "review": "Niets wordt aan uw geheugen toegevoegd zonder uw uitdrukkelijke goedkeuring."
+    },
+    "form": {
+      "cv": "Cv",
+      "cvHint": "PDF of DOCX, maximaal {maxMb} MB.",
+      "linkedin": "LinkedIn-export",
+      "linkedinHint": "ZIP-archief van uw gegevens, maximaal {maxMb} MB. Op LinkedIn: Instellingen › Gegevensprivacy › Een kopie van uw gegevens downloaden.",
+      "github": "GitHub-gebruikersnaam",
+      "githubHint": "Uw openbare repositories dienen als bewijs van uw prestaties.",
+      "githubPlaceholder": "mijn-naam",
+      "submit": "Mijn loopbaan analyseren",
+      "notConfigured": "AI-analyse is op deze dienst nog niet ingeschakeld. U kunt uw carrièregeheugen met de hand invullen."
+    },
+    "progress": {
+      "label": "Analyse bezig",
+      "reading": "Uw documenten worden gelezen",
+      "analysing": "AI-analyse",
+      "drafting": "Concept wordt voorbereid",
+      "elapsed": "{seconds, plural, one {# seconde} other {# seconden}}",
+      "slow": "Dit duurt langer dan normaal. Nog even geduld, alstublieft.",
+      "cancel": "Annuleren"
+    },
+    "errors": {
+      "title": "De import is niet gelukt",
+      "noSource": "Voeg ten minste een cv, een LinkedIn-export of een GitHub-gebruikersnaam toe.",
+      "cvTooLarge": "Dit cv is groter dan {cvMaxMb} MB.",
+      "cvType": "Cv-formaat niet herkend: stuur een onbeveiligde PDF of DOCX.",
+      "cvEmpty": "Er kon geen tekst uit dit cv worden gelezen (gescand document?). Probeer een PDF die u vanuit uw tekstverwerker exporteert.",
+      "linkedinTooLarge": "Bestanden te groot: de LinkedIn-export is beperkt tot {linkedinMaxMb} MB en het cv tot {cvMaxMb} MB.",
+      "linkedinInvalid": "Dit bestand is geen herkende LinkedIn-export (ZIP-archief verwacht).",
+      "githubInvalid": "Deze GitHub-gebruikersnaam is ongeldig.",
+      "githubNotFound": "Er is geen openbaar GitHub-account met deze gebruikersnaam.",
+      "githubUnavailable": "GitHub reageert op dit moment niet.",
+      "aiNotConfigured": "AI-analyse is op deze dienst niet ingeschakeld.",
+      "aiTimeout": "De analyse duurde te lang.",
+      "aiUnavailable": "De analysedienst is tijdelijk niet beschikbaar.",
+      "aiRateLimited": "De analysedienst is op dit moment erg druk.",
+      "aiInvalidOutput": "De analyse gaf een onbruikbaar resultaat.",
+      "tooManyImports": "U hebt onlangs veel imports gestart. Probeer het over een uur opnieuw.",
+      "unauthorized": "Uw sessie is verlopen. Meld u opnieuw aan en begin opnieuw.",
+      "network": "De verbinding is onderbroken.",
+      "unknown": "Er is een onverwachte fout opgetreden.",
+      "retryHint": "Uw bestanden worden niet bewaard: start de analyse gewoon opnieuw.",
+      "retry": "Opnieuw proberen"
+    },
+    "review": {
+      "title": "Controleer het concept",
+      "intro": "Er wordt niets opgeslagen voordat u het goedkeurt. Accepteer, bewerk of weiger elk onderdeel.",
+      "found": "Gevonden: {experiences, plural, =0 {geen functie} one {# functie} other {# functies}}, {achievements, plural, =0 {geen prestatie} one {# prestatie} other {# prestaties}}, {skills, plural, =0 {geen andere vaardigheid} one {# andere vaardigheid} other {# andere vaardigheden}}.",
+      "acceptAll": "Alles accepteren",
+      "rejectAll": "Alles weigeren",
+      "accept": "Accepteren",
+      "edit": "Bewerken",
+      "reject": "Weigeren",
+      "applyEdit": "Bevestigen en accepteren",
+      "status": {
+        "pending": "Te controleren",
+        "accepted": "Geaccepteerd",
+        "edited": "Bewerkt en geaccepteerd",
+        "rejected": "Geweigerd"
+      },
+      "experiencesTitle": "Werkervaring",
+      "achievementsTitle": "Prestaties",
+      "skillsTitle": "Andere vaardigheden",
+      "skillsIntro": "Tik op een vaardigheid om die toe te voegen of te verwijderen.",
+      "empty": "Er is geen onderdeel van dit type gevonden.",
+      "linkedTo": "Gekoppeld aan: {role}",
+      "linkedRejected": "Deze functie is geweigerd: de prestatie wordt zonder koppeling opgeslagen.",
+      "proofs": "Bijgevoegd bewijs",
+      "removeProof": "Verwijderen",
+      "flags": {
+        "identityRemoved": "Er zijn namen of contactgegevens uit deze tekst verwijderd (vervangen door […]). Lees hem nog eens na.",
+        "identifyingLink": "Deze link bevat uw GitHub-gebruikersnaam: hij blijft privé, maar kan u identificeren. Verwijder hem als u dat liever hebt.",
+        "adjusted": "Sommige waarden zijn automatisch aangevuld: controleer ze.",
+        "rareDetail": "Zeldzaam detail waaraan u herkend zou kunnen worden:"
+      },
+      "identity": {
+        "title": "Gevonden identificerende gegevens",
+        "intro": "Ze worden apart gehouden: ze worden niet op onze servers opgeslagen en verschijnen niet in uw profiel.",
+        "vault": "De versleutelde identiteitskluis komt binnenkort. Tot dan worden deze gegevens vergeten zodra u deze pagina verlaat.",
+        "fullName": "Naam",
+        "emails": "E-mailadressen",
+        "phones": "Telefoonnummers",
+        "links": "Persoonlijke links",
+        "employers": "Werkgevers",
+        "schools": "Opleidingen",
+        "organizations": "Andere organisaties"
+      },
+      "saveHint": "Alleen geaccepteerde onderdelen worden aan uw geheugen toegevoegd.",
+      "save": "{count, plural, =0 {Geen onderdeel geaccepteerd} one {# onderdeel opslaan} other {# onderdelen opslaan}}",
+      "saving": "Opslaan…",
+      "restart": "Opnieuw beginnen"
+    },
+    "done": {
+      "title": "Uw carrièregeheugen is bijgewerkt",
+      "text": "Toegevoegd: {experiences, plural, =0 {geen functie} one {# functie} other {# functies}}, {achievements, plural, =0 {geen prestatie} one {# prestatie} other {# prestaties}} en {skills, plural, =0 {geen vaardigheid} one {# vaardigheid} other {# vaardigheden}}.",
+      "next": "Voeg nu bewijs toe aan uw opgegeven prestaties: dat telt het zwaarst.",
+      "identityForgotten": "De gevonden identificerende gegevens zijn niet opgeslagen.",
+      "cta": "Mijn carrièregeheugen bekijken",
+      "again": "Andere bronnen importeren"
     }
   },
   "codes": {

@@ -33,7 +33,7 @@ export function LocaleSwitcher({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex min-w-0 items-center gap-2">
       <label htmlFor={id} className={showLabel ? "text-sm font-medium text-stone-700" : "sr-only"}>
         {t("label")}
       </label>
@@ -42,7 +42,7 @@ export function LocaleSwitcher({
         value={locale}
         disabled={pending}
         onChange={(event) => onChange(event.target.value)}
-        className="rounded-lg border border-stone-300 bg-white py-1.5 pr-8 pl-2 text-sm disabled:opacity-60"
+        className="min-w-0 rounded-lg border border-stone-300 bg-white py-1.5 pr-8 pl-2 text-sm text-ellipsis disabled:opacity-60"
       >
         {LOCALES.map((code) => (
           <option key={code} value={code} lang={code}>

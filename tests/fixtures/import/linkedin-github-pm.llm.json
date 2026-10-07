@@ -1,0 +1,94 @@
+{
+  "identity": {
+    "fullName": "Hugo Verdier",
+    "schools": [],
+    "organizations": ["Fonderies du Rhône"]
+  },
+  "experiences": [
+    {
+      "ref": "li-1",
+      "employerName": "Payflow",
+      "roleTitle": "Senior Product Manager",
+      "startMonth": "2022-02",
+      "endMonth": null,
+      "seniority": "SENIOR",
+      "contractType": "CDI",
+      "sector": "HR_RECRUITMENT",
+      "companySize": "S51_200",
+      "companyStage": "SCALEUP",
+      "responsibilities": "Responsable du produit paie d'un éditeur SaaS RH.",
+      "rareDetails": []
+    },
+    {
+      "ref": "li-2",
+      "employerName": "Atelier Numérique Verdier & Associés",
+      "roleTitle": "Product Owner",
+      "startMonth": "2019-09",
+      "endMonth": "2022-01",
+      "seniority": "MID",
+      "contractType": "CDI",
+      "sector": "CONSULTING",
+      "companySize": "S11_50",
+      "companyStage": "CONSULTANCY",
+      "responsibilities": "Product owner pour des clients industriels, dont Fonderies du Rhône.",
+      "rareDetails": ["Le cabinet porte le nom de famille du candidat."]
+    },
+    {
+      "ref": "li-3",
+      "employerName": "Grand Magasin du Centre",
+      "roleTitle": "Chef de projet digital",
+      "startMonth": "2017-07",
+      "endMonth": "2019-08",
+      "seniority": "JUNIOR",
+      "contractType": "CDI",
+      "sector": "ECOMMERCE_RETAIL",
+      "companySize": "S501_1000",
+      "companyStage": "MIDCAP",
+      "responsibilities": "Pilotage de la refonte du site e-commerce d'une enseigne de grands magasins.",
+      "rareDetails": []
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Lancement du module de notes de frais",
+      "context": "Éditeur SaaS RH souhaitant élargir son offre au-delà de la paie.",
+      "actions": "Conduite du lancement du module de notes de frais, de la discovery à la mise sur le marché.",
+      "result": "1 200 entreprises clientes la première année.",
+      "skills": ["Product Management", "Discovery"],
+      "experienceRef": "li-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Programme d'onboarding pour réduire le churn",
+      "context": "",
+      "actions": "Conception et pilotage d'un programme d'onboarding des nouveaux clients.",
+      "result": "Churn réduit de 4 % à 2,5 %.",
+      "skills": ["Amplitude", "Onboarding"],
+      "experienceRef": "li-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Bibliothèque open source de calcul des jours fériés",
+      "context": "Besoin récurrent des logiciels de paie.",
+      "actions": "Création et maintenance d'une bibliothèque TypeScript calculant les jours fériés français, avec 100 % de couverture de tests.",
+      "result": "42 étoiles sur GitHub, utilisée par plusieurs logiciels de paie.",
+      "skills": ["TypeScript", "Tests automatisés"],
+      "experienceRef": null,
+      "links": ["LINK 1"],
+      "rareDetails": []
+    },
+    {
+      "title": "Outil de suivi d'OKR",
+      "context": "",
+      "actions": "Développement d'un petit outil de suivi d'OKR en Python.",
+      "result": "",
+      "skills": ["Python", "OKR"],
+      "experienceRef": null,
+      "links": ["LINK 2"],
+      "rareDetails": []
+    }
+  ],
+  "skills": ["Scrum", "Jira", "SQL", "Hugo Verdier"]
+}

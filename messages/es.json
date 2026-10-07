@@ -144,6 +144,7 @@
       "label": "Espacio del candidato",
       "dashboard": "Panel",
       "memory": "Mi memoria de carrera",
+      "identity": "Mi identidad",
       "guardRails": "Mis salvaguardas",
       "opportunities": "Oportunidades",
       "settings": "Ajustes",
@@ -335,7 +336,152 @@
       "backedBy": "Respaldada por",
       "unprovenHint": "No probada: menciónela en un logro respaldado por una prueba.",
       "confirmDelete": "¿Eliminar la competencia «{name}»? Se quitará de los logros que la mencionan."
-    }
+    },
+    "importCta": "Importar mi trayectoria",
+    "importHint": "CV, exportación de LinkedIn o GitHub: la IA prepara un borrador que tú validas."
+  },
+  "identity": {
+    "title": "Mi identidad",
+    "intro": "Tu identidad real, cifrada en tu navegador. Se mantiene separada de tu perfil profesional, que está anonimizado.",
+    "employerLabel": "Empleador (desde tu caja fuerte):",
+    "lock": "Bloquear",
+    "loading": "Abriendo la caja fuerte…",
+    "retry": "Reintentar",
+    "badge": {
+      "unlocked": "Identidad desbloqueada"
+    },
+    "explain": {
+      "title": "Nadie, ni siquiera nosotros, puede leer estos datos",
+      "encrypted": "Tu nombre, datos de contacto, empleadores, centros de estudio, enlaces y CV original se cifran en tu navegador antes de cualquier envío. Nuestros servidores solo reciben y almacenan un bloque ilegible.",
+      "nobody": "Ni nuestro equipo, ni nuestro proveedor de alojamiento, ni quien robara nuestra base de datos puede descifrarlos: la clave solo existe en tu lado.",
+      "you": "Solo tú los desbloqueas, con tu frase secreta. Nuestros servicios nunca la reciben ni la guardan.",
+      "handover": "Tu identidad solo se revela a un reclutador si tú lo decides, para ese reclutador concreto.",
+      "lossTitle": "Consecuencia importante:",
+      "loss": "si pierdes a la vez tu frase secreta y tu clave de recuperación, estos datos se pierden para siempre. No podremos recuperarlos por ti. Tu perfil profesional no se ve afectado."
+    },
+    "setup": {
+      "title": "Crear mi caja fuerte de identidad",
+      "intro": "Elige una frase secreta propia de esta caja fuerte, distinta de tus otras contraseñas. Una serie de varias palabras es fácil de recordar y difícil de adivinar.",
+      "passphrase": "Frase secreta",
+      "passphraseHint": "Al menos {min} caracteres.",
+      "confirm": "Confirma la frase secreta",
+      "understand": "Entiendo que si pierdo mi frase secreta y mi clave de recuperación, nadie podrá recuperar mi identidad.",
+      "submit": "Crear mi caja fuerte",
+      "working": "Creando la caja fuerte… (unos segundos)"
+    },
+    "recovery": {
+      "title": "Tu clave de recuperación",
+      "intro": "Permite volver a abrir tu caja fuerte si olvidas tu frase secreta. No se volverá a mostrar.",
+      "warning": "Guárdala fuera de línea: impresa, en un gestor de contraseñas o en un archivo guardado en un lugar seguro. No la compartas con nadie.",
+      "download": "Descargar (.txt)",
+      "print": "Imprimir",
+      "copy": "Copiar",
+      "copied": "Copiada",
+      "confirm": "He guardado mi clave de recuperación en un lugar seguro.",
+      "continue": "Continuar a mi identidad",
+      "fileName": "coach-career-ia-clave-de-recuperacion.txt",
+      "fileText": "Coach Career IA — clave de recuperación de la caja fuerte de identidad\nCreada el {date}\n\n{key}\n\nEsta clave permite volver a abrir tu caja fuerte si olvidas tu frase secreta.\nGuárdala en un lugar seguro y no la compartas: sin ella ni tu frase secreta, tus datos de identidad se pierden para siempre."
+    },
+    "unlock": {
+      "title": "Desbloquear mi identidad",
+      "intro": "Tu caja fuerte está bloqueada. Introduce tu frase secreta: el descifrado se hace en este navegador.",
+      "passphrase": "Frase secreta",
+      "submit": "Desbloquear",
+      "working": "Desbloqueando…",
+      "forgot": "¿Olvidaste tu frase secreta?"
+    },
+    "recover": {
+      "title": "Recuperar con mi clave de recuperación",
+      "intro": "Introduce la clave de recuperación obtenida al crear la caja fuerte y elige una nueva frase secreta.",
+      "recoveryKey": "Clave de recuperación",
+      "recoveryKeyHint": "Los guiones, espacios y mayúsculas son opcionales.",
+      "newPassphrase": "Nueva frase secreta",
+      "newPassphraseHint": "Al menos {min} caracteres.",
+      "confirm": "Confirma la nueva frase secreta",
+      "submit": "Recuperar mi caja fuerte",
+      "working": "Recuperando…",
+      "back": "Volver a la frase secreta"
+    },
+    "unlocked": {
+      "status": "Caja fuerte desbloqueada en este navegador",
+      "idle": "Bloqueo automático tras",
+      "idleOption": "{minutes} min de inactividad"
+    },
+    "form": {
+      "title": "Mis datos de identidad",
+      "intro": "Se cifran en tu navegador al guardarlos. Nunca se usan para el matching.",
+      "identityTitle": "Identidad",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "contactTitle": "Datos de contacto visibles para reclutadores",
+      "contactIntro": "Solo se comunican al reclutador al que decidas revelar tu identidad.",
+      "email": "Correo de contacto",
+      "phone": "Teléfono",
+      "employersTitle": "Empleadores",
+      "employersIntro": "El nombre real de cada empleador, vinculado a la experiencia correspondiente de tu memoria profesional. Se muestra allí cuando tu caja fuerte está desbloqueada.",
+      "employerName": "Nombre del empleador",
+      "employerExperience": "Experiencia correspondiente",
+      "noExperience": "Sin vincular",
+      "addEmployer": "Añadir un empleador",
+      "schoolsTitle": "Centros de estudio y formación",
+      "schoolName": "Nombre del centro",
+      "addSchool": "Añadir un centro",
+      "linksTitle": "Enlaces personales",
+      "linksIntro": "Perfil de LinkedIn, sitio personal, repositorio de código… cualquier enlace que permita identificarte.",
+      "linkLabel": "Etiqueta",
+      "linkUrl": "Dirección (URL)",
+      "addLink": "Añadir un enlace",
+      "remove": "Quitar",
+      "none": "Nada por ahora.",
+      "save": "Cifrar y guardar",
+      "saving": "Cifrando…",
+      "saved": "Guardado, cifrado.",
+      "saveHint": "Solo la versión cifrada sale de tu navegador."
+    },
+    "cv": {
+      "title": "CV original",
+      "intro": "Tu CV completo, con tu nombre y datos de contacto. Se cifra en tu navegador antes del envío: no vemos ni su contenido ni su nombre de archivo.",
+      "none": "Ningún CV guardado.",
+      "current": "Hay un CV cifrado guardado.",
+      "choose": "Añadir mi CV",
+      "replace": "Sustituir el CV",
+      "uploading": "Cifrando y enviando…",
+      "download": "Descargar mi CV",
+      "delete": "Eliminar el CV",
+      "working": "Espera…",
+      "confirmDelete": "¿Eliminar definitivamente tu CV original?",
+      "hint": "PDF, Word u OpenDocument, {max} MB como máximo."
+    },
+    "change": {
+      "title": "Cambiar mi frase secreta",
+      "intro": "No es necesario volver a cifrar tus datos. Tu clave de recuperación sigue siendo válida.",
+      "current": "Frase secreta actual",
+      "next": "Nueva frase secreta",
+      "confirm": "Confirma la nueva frase",
+      "submit": "Cambiar la frase secreta",
+      "working": "Modificando…",
+      "done": "Frase secreta modificada."
+    },
+    "reset": {
+      "title": "Restablecer la caja fuerte",
+      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si has perdido tu frase secreta y tu clave de recuperación: después podrás crear una nueva caja fuerte. Tu memoria profesional no se modifica.",
+      "button": "Eliminar mi caja fuerte",
+      "confirm": "¿Eliminar definitivamente tu caja fuerte de identidad y tu CV? Esta acción es irreversible.",
+      "working": "Eliminando…"
+    },
+    "errors": {
+      "tooShort": "La frase secreta debe tener al menos {min} caracteres.",
+      "mismatch": "Las dos frases secretas no coinciden.",
+      "understand": "Marca la casilla para confirmar que lo has entendido.",
+      "wrongPassphrase": "Frase secreta incorrecta.",
+      "wrongRecoveryKey": "Clave de recuperación incorrecta.",
+      "conflict": "Tu caja fuerte se ha modificado desde otra pestaña o dispositivo. Se ha recargado la última versión: revísala y vuelve a guardar.",
+      "network": "No se puede conectar con el servidor. Comprueba tu red e inténtalo de nuevo.",
+      "cvTooLarge": "Archivo demasiado grande.",
+      "cvType": "Formato no admitido: solo PDF, Word u OpenDocument.",
+      "generic": "Se ha producido un error. Inténtalo de nuevo."
+    },
+    "exportNotice": "Datos cifrados en su navegador: solo su frase secreta o su clave de recuperación permiten leerlos."
   },
   "guardRails": {
     "title": "Mis salvaguardas",
@@ -416,6 +562,117 @@
       "confirmHint": "Recuerde exportar sus datos antes de eliminar su cuenta.",
       "submit": "Eliminar definitivamente mi cuenta",
       "deleting": "Eliminando…"
+    }
+  },
+  "import": {
+    "title": "Importar mi trayectoria",
+    "back": "← Volver a mi memoria de carrera",
+    "intro": "Parte de tu CV, de tu exportación de LinkedIn o de tu GitHub: la IA prepara un borrador de memoria de carrera que validas elemento por elemento.",
+    "privacy": {
+      "title": "Qué pasa con tus datos",
+      "files": "Tus archivos se leen en memoria y luego se descartan: nunca se guardan en nuestros servidores.",
+      "contacts": "Tus datos de contacto (correo, teléfono, enlaces de perfil) se eliminan antes del análisis por nuestro proveedor de IA.",
+      "identity": "Los nombres (el tuyo, los de tus empleadores y tus centros de estudios) se guardan aparte: nunca entran en tu perfil.",
+      "review": "Nada se añade a tu memoria sin tu validación explícita."
+    },
+    "form": {
+      "cv": "CV",
+      "cvHint": "PDF o DOCX, {maxMb} MB como máximo.",
+      "linkedin": "Exportación de LinkedIn",
+      "linkedinHint": "Archivo ZIP con tus datos, {maxMb} MB como máximo. En LinkedIn: Preferencias › Privacidad de datos › Obtener una copia de tus datos.",
+      "github": "Usuario de GitHub",
+      "githubHint": "Tus repositorios públicos sirven de prueba de tus logros.",
+      "githubPlaceholder": "mi-usuario",
+      "submit": "Analizar mi trayectoria",
+      "notConfigured": "El análisis con IA aún no está activado en este servicio. Puedes completar tu memoria de carrera a mano."
+    },
+    "progress": {
+      "label": "Análisis en curso",
+      "reading": "Lectura de tus documentos",
+      "analysing": "Análisis con IA",
+      "drafting": "Preparación del borrador",
+      "elapsed": "{seconds, plural, one {# segundo} other {# segundos}}",
+      "slow": "Está tardando más de lo habitual. Espera un poco más, por favor.",
+      "cancel": "Cancelar"
+    },
+    "errors": {
+      "title": "La importación no se ha completado",
+      "noSource": "Añade al menos un CV, una exportación de LinkedIn o un usuario de GitHub.",
+      "cvTooLarge": "Este CV supera los {cvMaxMb} MB.",
+      "cvType": "Formato de CV no reconocido: envía un PDF o un DOCX sin protección.",
+      "cvEmpty": "No se ha podido leer ningún texto en este CV (¿documento escaneado?). Prueba con un PDF exportado desde tu procesador de textos.",
+      "linkedinTooLarge": "Archivos demasiado grandes: la exportación de LinkedIn está limitada a {linkedinMaxMb} MB y el CV a {cvMaxMb} MB.",
+      "linkedinInvalid": "Este archivo no es una exportación de LinkedIn reconocida (se espera un archivo ZIP).",
+      "githubInvalid": "Este usuario de GitHub no es válido.",
+      "githubNotFound": "Ninguna cuenta pública de GitHub corresponde a este usuario.",
+      "githubUnavailable": "GitHub no responde en este momento.",
+      "aiNotConfigured": "El análisis con IA no está activado en este servicio.",
+      "aiTimeout": "El análisis ha tardado demasiado.",
+      "aiUnavailable": "El servicio de análisis no está disponible temporalmente.",
+      "aiRateLimited": "El servicio de análisis está muy solicitado en este momento.",
+      "aiInvalidOutput": "El análisis ha producido un resultado inutilizable.",
+      "tooManyImports": "Has iniciado muchas importaciones recientemente. Vuelve a intentarlo dentro de una hora.",
+      "unauthorized": "Tu sesión ha caducado. Vuelve a iniciar sesión y empieza de nuevo.",
+      "network": "La conexión se ha interrumpido.",
+      "unknown": "Se ha producido un error inesperado.",
+      "retryHint": "Tus archivos no se conservan: basta con volver a lanzar el análisis.",
+      "retry": "Reintentar"
+    },
+    "review": {
+      "title": "Revisa el borrador",
+      "intro": "No se guarda nada hasta que lo valides. Acepta, modifica o rechaza cada elemento.",
+      "found": "Encontrado: {experiences, plural, =0 {ninguna experiencia} one {# experiencia} other {# experiencias}}, {achievements, plural, =0 {ningún logro} one {# logro} other {# logros}}, {skills, plural, =0 {ninguna otra competencia} one {# otra competencia} other {# otras competencias}}.",
+      "acceptAll": "Aceptar todo",
+      "rejectAll": "Rechazar todo",
+      "accept": "Aceptar",
+      "edit": "Modificar",
+      "reject": "Rechazar",
+      "applyEdit": "Validar y aceptar",
+      "status": {
+        "pending": "Por validar",
+        "accepted": "Aceptado",
+        "edited": "Modificado y aceptado",
+        "rejected": "Rechazado"
+      },
+      "experiencesTitle": "Experiencias",
+      "achievementsTitle": "Logros",
+      "skillsTitle": "Otras competencias",
+      "skillsIntro": "Toca una competencia para añadirla o quitarla.",
+      "empty": "No se ha encontrado ningún elemento de este tipo.",
+      "linkedTo": "Vinculado a: {role}",
+      "linkedRejected": "Esta experiencia está rechazada: el logro se guardará sin vínculo.",
+      "proofs": "Prueba adjunta",
+      "removeProof": "Quitar",
+      "flags": {
+        "identityRemoved": "Se han eliminado nombres o datos de contacto de este texto (sustituidos por […]). Reléelo.",
+        "identifyingLink": "Este enlace contiene tu usuario de GitHub: sigue siendo privado, pero permite identificarte. Quítalo si lo prefieres.",
+        "adjusted": "Algunos valores se han completado automáticamente: compruébalos.",
+        "rareDetail": "Detalle poco común que podría permitir reconocerte:"
+      },
+      "identity": {
+        "title": "Datos identificativos detectados",
+        "intro": "Se guardan aparte: no se almacenan en nuestros servidores y no aparecerán en tu perfil.",
+        "vault": "La caja fuerte de identidad cifrada llegará pronto. Mientras tanto, estos datos se olvidarán en cuanto salgas de esta página.",
+        "fullName": "Nombre",
+        "emails": "Correos electrónicos",
+        "phones": "Teléfonos",
+        "links": "Enlaces personales",
+        "employers": "Empleadores",
+        "schools": "Centros de estudios",
+        "organizations": "Otras organizaciones"
+      },
+      "saveHint": "Solo los elementos aceptados se añadirán a tu memoria.",
+      "save": "{count, plural, =0 {Ningún elemento aceptado} one {Guardar # elemento} other {Guardar # elementos}}",
+      "saving": "Guardando…",
+      "restart": "Empezar de nuevo"
+    },
+    "done": {
+      "title": "Tu memoria de carrera está al día",
+      "text": "Añadido: {experiences, plural, =0 {ninguna experiencia} one {# experiencia} other {# experiencias}}, {achievements, plural, =0 {ningún logro} one {# logro} other {# logros}} y {skills, plural, =0 {ninguna competencia} one {# competencia} other {# competencias}}.",
+      "next": "Añade ahora pruebas a tus logros declarados: son lo que más cuenta.",
+      "identityForgotten": "Los datos identificativos detectados no se han guardado.",
+      "cta": "Ver mi memoria de carrera",
+      "again": "Importar otras fuentes"
     }
   },
   "codes": {

@@ -1,0 +1,204 @@
+{
+  "draft": {
+    "experiences": [
+      {
+        "roleTitle": "Data engineer senior",
+        "startMonth": "2021-03",
+        "seniority": "SENIOR",
+        "contractType": "CDI",
+        "sector": "BANKING_INSURANCE",
+        "companySize": "S1001_5000",
+        "companyStage": "LARGE_CORP",
+        "responsibilities": "Responsable de la plateforme de données d'une banque de détail régionale et de la qualité des flux réglementaires.",
+        "ref": "exp-1"
+      },
+      {
+        "roleTitle": "Data engineer",
+        "startMonth": "2018-09",
+        "endMonth": "2021-02",
+        "seniority": "MID",
+        "contractType": "CDI",
+        "sector": "TRANSPORT_LOGISTICS",
+        "companySize": "S11_50",
+        "companyStage": "STARTUP",
+        "responsibilities": "Ingénierie des données d'une start-up de logistique urbaine, en mission pour le client […].",
+        "ref": "exp-2"
+      },
+      {
+        "roleTitle": "Stagiaire data analyst",
+        "startMonth": "2018-04",
+        "endMonth": "2018-08",
+        "seniority": "INTERN",
+        "contractType": "INTERNSHIP",
+        "sector": "BANKING_INSURANCE",
+        "companySize": "S1001_5000",
+        "companyStage": "LARGE_CORP",
+        "responsibilities": "Automatisation de rapports hebdomadaires.",
+        "ref": "exp-3"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Migration de l'entrepôt de données vers Snowflake et dbt",
+        "context": "Entrepôt de données Oracle vieillissant chez […].",
+        "actions": "Migration de 40 pipelines vers une plateforme Snowflake + dbt.",
+        "result": "Coût d'infrastructure réduit de 35 %.",
+        "skills": [
+          "Snowflake",
+          "dbt",
+          "SQL"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Tests de qualité de données sur les flux réglementaires",
+        "context": "",
+        "actions": "Mise en place de tests Great Expectations sur les flux de reporting réglementaire.",
+        "result": "Incidents de reporting divisés par trois.",
+        "skills": [
+          "Great Expectations",
+          "Python"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Encadrement de data engineers juniors",
+        "context": "",
+        "actions": "[…] a encadré deux data engineers juniors.",
+        "result": "",
+        "skills": [
+          "Management"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Pipeline d'ingestion temps réel des positions GPS",
+        "context": "Suivi des tournées de livraison pour […].",
+        "actions": "Conception du pipeline d'ingestion temps réel avec Kafka et Python.",
+        "result": "2 millions d'événements traités par jour.",
+        "skills": [
+          "Kafka",
+          "Python"
+        ],
+        "experienceRef": "exp-2",
+        "proofs": []
+      },
+      {
+        "title": "Tableau de bord de suivi des tournées",
+        "context": "",
+        "actions": "Création du tableau de bord de suivi des tournées dans Metabase.",
+        "result": "",
+        "skills": [
+          "Metabase"
+        ],
+        "experienceRef": "exp-2",
+        "proofs": []
+      }
+    ],
+    "skills": [
+      "Airflow",
+      "Docker",
+      "Anglais courant"
+    ]
+  },
+  "flags": {
+    "experiences": [
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [
+          "Lauréate du hackathon interne « […] Data Cup 2019 »."
+        ]
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      }
+    ],
+    "achievements": [
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": []
+      }
+    ]
+  },
+  "identity": {
+    "fullName": "Camille Rousset",
+    "emails": [
+      "camille.rousset@exemple.test"
+    ],
+    "phones": [
+      "06 12 34 56 78"
+    ],
+    "links": [
+      "https://www.linkedin.com/in/camille-rousset-exemple",
+      "https://github.com/crousset-data"
+    ],
+    "employers": [
+      {
+        "name": "Banque Lumière",
+        "experienceRef": "exp-1"
+      },
+      {
+        "name": "Trajecto SAS",
+        "experienceRef": "exp-2"
+      },
+      {
+        "name": "Banque Lumière",
+        "experienceRef": "exp-3"
+      }
+    ],
+    "schools": [
+      {
+        "name": "École Nationale des Données de Brest",
+        "degree": "Diplôme d'ingénieur, spécialité données"
+      }
+    ],
+    "organizations": [
+      "Groupe Hexadis"
+    ]
+  },
+  "sources": {
+    "cv": true,
+    "linkedin": false,
+    "github": false
+  }
+}

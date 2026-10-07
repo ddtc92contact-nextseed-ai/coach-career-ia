@@ -1,0 +1,32 @@
+[
+  {
+    "name": "jours-feries",
+    "html_url": "https://github.com/hverdier-dev/jours-feries",
+    "description": "Calcul des jours fériés français (métropole et Alsace-Moselle)",
+    "fork": false,
+    "archived": false,
+    "stargazers_count": 42,
+    "pushed_at": "2026-05-10T08:00:00Z",
+    "language": "TypeScript"
+  },
+  {
+    "name": "okr-tracker",
+    "html_url": "https://github.com/hverdier-dev/okr-tracker",
+    "description": "Petit suivi d'OKR en Python",
+    "fork": false,
+    "archived": false,
+    "stargazers_count": 3,
+    "pushed_at": "2025-11-02T08:00:00Z",
+    "language": "Python"
+  },
+  {
+    "name": "react",
+    "html_url": "https://github.com/hverdier-dev/react",
+    "description": "Fork",
+    "fork": true,
+    "archived": false,
+    "stargazers_count": 0,
+    "pushed_at": "2024-01-01T00:00:00Z",
+    "language": "JavaScript"
+  }
+]

@@ -1,0 +1,104 @@
+{
+  "identity": {
+    "fullName": "Camille Rousset",
+    "schools": [{ "name": "École Nationale des Données de Brest", "degree": "Diplôme d'ingénieur, spécialité données" }],
+    "organizations": ["Groupe Hexadis"]
+  },
+  "experiences": [
+    {
+      "ref": "exp-1",
+      "employerName": "Banque Lumière",
+      "roleTitle": "Data engineer senior",
+      "startMonth": "2021-03",
+      "endMonth": null,
+      "seniority": "SENIOR",
+      "contractType": "CDI",
+      "sector": "BANKING_INSURANCE",
+      "companySize": "S1001_5000",
+      "companyStage": "LARGE_CORP",
+      "responsibilities": "Responsable de la plateforme de données d'une banque de détail régionale et de la qualité des flux réglementaires.",
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-2",
+      "employerName": "Trajecto SAS",
+      "roleTitle": "Data engineer",
+      "startMonth": "2018-09",
+      "endMonth": "2021-02",
+      "seniority": "MID",
+      "contractType": "CDI",
+      "sector": "TRANSPORT_LOGISTICS",
+      "companySize": "S11_50",
+      "companyStage": "STARTUP",
+      "responsibilities": "Ingénierie des données d'une start-up de logistique urbaine, en mission pour le client Groupe Hexadis.",
+      "rareDetails": ["Lauréate du hackathon interne « Trajecto Data Cup 2019 »."]
+    },
+    {
+      "ref": "exp-3",
+      "employerName": "Banque Lumière",
+      "roleTitle": "Stagiaire data analyst",
+      "startMonth": "2018-04",
+      "endMonth": "2018-08",
+      "seniority": "INTERN",
+      "contractType": "INTERNSHIP",
+      "sector": "BANKING_INSURANCE",
+      "companySize": "S1001_5000",
+      "companyStage": "LARGE_CORP",
+      "responsibilities": "Automatisation de rapports hebdomadaires.",
+      "rareDetails": []
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Migration de l'entrepôt de données vers Snowflake et dbt",
+      "context": "Entrepôt de données Oracle vieillissant chez Banque Lumière.",
+      "actions": "Migration de 40 pipelines vers une plateforme Snowflake + dbt.",
+      "result": "Coût d'infrastructure réduit de 35 %.",
+      "skills": ["Snowflake", "dbt", "SQL"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Tests de qualité de données sur les flux réglementaires",
+      "context": "",
+      "actions": "Mise en place de tests Great Expectations sur les flux de reporting réglementaire.",
+      "result": "Incidents de reporting divisés par trois.",
+      "skills": ["Great Expectations", "Python"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Encadrement de data engineers juniors",
+      "context": "",
+      "actions": "Camille a encadré deux data engineers juniors.",
+      "result": "",
+      "skills": ["Management"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Pipeline d'ingestion temps réel des positions GPS",
+      "context": "Suivi des tournées de livraison pour Groupe Hexadis.",
+      "actions": "Conception du pipeline d'ingestion temps réel avec Kafka et Python.",
+      "result": "2 millions d'événements traités par jour.",
+      "skills": ["Kafka", "Python"],
+      "experienceRef": "exp-2",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Tableau de bord de suivi des tournées",
+      "context": "",
+      "actions": "Création du tableau de bord de suivi des tournées dans Metabase.",
+      "result": "",
+      "skills": ["Metabase"],
+      "experienceRef": "exp-2",
+      "links": [],
+      "rareDetails": []
+    }
+  ],
+  "skills": ["Python", "SQL", "Airflow", "Docker", "Anglais courant"]
+}
