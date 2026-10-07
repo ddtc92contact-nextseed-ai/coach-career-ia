@@ -7,6 +7,7 @@ export const APP_NAV = [
   { href: "/app", key: "dashboard" },
   { href: "/app/memoire", key: "memory" },
   { href: "/app/garde-fous", key: "guardRails" },
+  { href: "/app/coach", key: "coach" },
   { href: "/app/opportunites", key: "opportunities" },
   { href: "/app/parametres", key: "settings" },
 ] as const;

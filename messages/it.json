@@ -147,7 +147,8 @@
       "guardRails": "I miei paletti",
       "opportunities": "Opportunità",
       "settings": "Impostazioni",
-      "radar": "Radar (admin)"
+      "radar": "Radar (admin)",
+      "coach": "Coach IA"
     }
   },
   "dashboard": {
@@ -395,6 +396,132 @@
     "culture": {
       "title": "Cultura aziendale",
       "intro": "Facoltativo: ciò che conta per Lei. Queste preferenze affinano la classificazione delle offerte."
+    }
+  },
+  "coach": {
+    "title": "Coach IA",
+    "intro": "Un coach di carriera basato sull’intelligenza artificiale: impara a conoscerLa, La aiuta a dimostrare i Suoi risultati, a chiarire ciò che cerca e a preparare i colloqui. Non modifica mai la Sua memoria di carriera senza il Suo consenso.",
+    "aiNotice": "Sta parlando con un’intelligenza artificiale, non con una persona. Le sue risposte possono contenere errori: le verifichi. Non è necessario fornirle il Suo nome, quello dei Suoi datori di lavoro o i Suoi recapiti.",
+    "notConfigured": "Il coach IA non è ancora attivo su questo servizio.",
+    "quota": "{remaining, plural, =0 {Nessun messaggio disponibile nelle ultime 24 ore.} one {# messaggio rimanente nelle ultime 24 ore.} other {# messaggi rimanenti nelle ultime 24 ore.}}",
+    "start": {
+      "title": "Nuova conversazione",
+      "intro": "Scelga su cosa vuole lavorare con il coach.",
+      "button": "Inizia"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Scoprire il mio profilo",
+        "description": "Un colloquio guidato (situazione, compito, azione, risultato misurabile, prova) per trasformare le Sue esperienze in risultati dimostrati.",
+        "welcome": "Buongiorno! Sono il coach di Coach Career IA, un’intelligenza artificiale. Mi parli di un progetto o di un incarico di cui va fiero o fiera: lo trasformeremo in un risultato dimostrato, passo dopo passo. Non Le chiederò mai il nome dei Suoi datori di lavoro né i Suoi recapiti."
+      },
+      "CLARIFY": {
+        "title": "Chiarire ciò che voglio",
+        "description": "Stipendio, luogo, smart working, contratti, settori: il coach La aiuta a fissare paletti chiari.",
+        "welcome": "Buongiorno! Sono il coach di Coach Career IA, un’intelligenza artificiale. Definiamo ciò che vuole davvero: retribuzione, luogo, smart working, tipo di contratto, settori da evitare. Le proporrò dei paletti che convaliderà uno per uno."
+      },
+      "INTERVIEW": {
+        "title": "Preparare un colloquio",
+        "description": "Una simulazione di colloquio per il ruolo a cui punta, con riscontri concreti dopo ogni risposta.",
+        "welcome": "Buongiorno! Sono il coach di Coach Career IA, un’intelligenza artificiale. Descriva il ruolo a cui punta (titolo, livello, tipo di azienda, senza nominarla) e Le farò fare un colloquio di prova, con riscontri dopo ogni risposta."
+      }
+    },
+    "history": {
+      "title": "Le mie conversazioni",
+      "empty": "Nessuna conversazione per ora.",
+      "messages": "{count, plural, =0 {nessun messaggio} one {# messaggio} other {# messaggi}}",
+      "pending": "{count, plural, one {# suggerimento da convalidare} other {# suggerimenti da convalidare}}",
+      "updated": "Aggiornata il {date}",
+      "open": "Apri",
+      "confirmDelete": "Eliminare definitivamente questa conversazione? I suggerimenti non convalidati andranno persi; ciò che è stato aggiunto alla Sua memoria di carriera viene conservato."
+    },
+    "chat": {
+      "back": "Tutte le conversazioni",
+      "label": "Conversazione con il coach",
+      "you": "Lei",
+      "coach": "Coach IA",
+      "inputLabel": "Il Suo messaggio al coach",
+      "placeholder": "Il Suo messaggio… (Invio per inviare, Maiusc + Invio per andare a capo)",
+      "send": "Invia",
+      "sending": "Risposta in corso…",
+      "tooLong": "Messaggio troppo lungo (massimo {max} caratteri).",
+      "unanswered": "Il Suo ultimo messaggio non ha ricevuto risposta.",
+      "status": {
+        "thinking": "Il coach sta riflettendo…",
+        "reading": "Il coach sta consultando la Sua memoria di carriera…",
+        "suggesting": "Il coach sta preparando un suggerimento…"
+      }
+    },
+    "errors": {
+      "title": "Il coach non è riuscito a rispondere",
+      "aiNotConfigured": "Il coach IA non è ancora attivo su questo servizio.",
+      "aiTimeout": "Il coach ha impiegato troppo tempo a rispondere.",
+      "aiUnavailable": "Il servizio di IA è momentaneamente non disponibile.",
+      "aiRateLimited": "Il servizio di IA è molto richiesto in questo momento.",
+      "aiInvalidOutput": "Il coach ha prodotto una risposta inutilizzabile.",
+      "quotaExceeded": "Ha raggiunto il limite di {limit} messaggi in 24 ore. Torni un po’ più tardi.",
+      "notFound": "Questa conversazione non esiste più.",
+      "invalid": "Non è stato possibile inviare questo messaggio.",
+      "unauthorized": "La Sua sessione è scaduta. Acceda di nuovo e riprovi.",
+      "network": "La connessione è stata interrotta.",
+      "unknown": "Si è verificato un errore imprevisto.",
+      "kept": "Il Suo messaggio è stato conservato: può interrogare di nuovo il coach.",
+      "retry": "Riprova"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Risultato proposto",
+        "EXPERIENCE_UPDATE": "Modifica dell’esperienza proposta",
+        "SKILL": "Competenza proposta",
+        "GUARD_RAIL": "Paletti proposti"
+      },
+      "pendingBadge": "Da convalidare",
+      "acceptedBadge": "Accettato",
+      "rejectedBadge": "Rifiutato",
+      "draft": "Bozza: nulla viene salvato senza il Suo consenso.",
+      "why": "Perché: {rationale}",
+      "identityRemoved": "Alcune informazioni identificative (nome, datore di lavoro, recapiti) sono state rimosse da questo suggerimento.",
+      "accept": "Accetta",
+      "edit": "Modifica",
+      "reject": "Rifiuta",
+      "cancel": "Annulla",
+      "saveAccept": "Salva e accetta",
+      "accepted": "Aggiunto alla Sua memoria di carriera.",
+      "acceptedGuardRail": "Paletti aggiornati.",
+      "rejected": "Suggerimento rifiutato: non è stato salvato nulla.",
+      "view": "Vedi",
+      "nothingToEdit": "Nessun campo modificabile: accetti o rifiuti il suggerimento.",
+      "skillsHint": "separate da virgole",
+      "yes": "Sì",
+      "no": "No",
+      "remoteDays": "{count, plural, one {almeno # giorno} other {almeno # giorni}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Titolo",
+        "experience": "Esperienza",
+        "context": "Contesto",
+        "actions": "Azioni",
+        "result": "Risultato",
+        "skills": "Competenze",
+        "proofUrl": "Link di prova",
+        "name": "Competenza",
+        "roleTitle": "Ruolo",
+        "responsibilities": "Responsabilità",
+        "seniority": "Livello",
+        "contractType": "Contratto",
+        "sector": "Settore",
+        "companySize": "Dimensione dell’azienda",
+        "companyStage": "Tipo di azienda",
+        "minFixedSalary": "Stipendio fisso minimo (lordo annuo)",
+        "targetTotalPackage": "Retribuzione totale desiderata (lorda annua)",
+        "remotePolicy": "Smart working",
+        "minRemoteDays": "Giorni minimi di smart working a settimana",
+        "contractTypes": "Contratti accettati",
+        "excludedSectors": "Settori esclusi",
+        "maxWeeklyHours": "Ore settimanali massime",
+        "acceptsOnCall": "Reperibilità accettata",
+        "locations": "Zone di lavoro"
+      }
     }
   },
   "settings": {
