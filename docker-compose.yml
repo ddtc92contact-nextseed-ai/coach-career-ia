@@ -40,7 +40,10 @@ x-app-env: &app-env
   AI_MAX_RETRIES: ${AI_MAX_RETRIES:-2}
   COACH_MESSAGES_PER_DAY: ${COACH_MESSAGES_PER_DAY:-40}
   GITHUB_TOKEN: ${GITHUB_TOKEN:-}
-  # Abonnements Stripe : sans ces variables, paiements indisponibles (rien n'est bloqué).
+  # Abonnements : simulateur par défaut (phase de test) ; `stripe` + clés pour le vrai Stripe.
+  BILLING_PROVIDER: ${BILLING_PROVIDER:-simulator}
+  BILLING_PREMIUM_PRICE_CENTS: ${BILLING_PREMIUM_PRICE_CENTS:-900}
+  BILLING_CURRENCY: ${BILLING_CURRENCY:-EUR}
   STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
   STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
   STRIPE_PRICE_PREMIUM_MONTHLY: ${STRIPE_PRICE_PREMIUM_MONTHLY:-}

@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { isBillingConfigured } from "@/lib/billing/config";
+import { isBillingAvailable } from "@/lib/billing/config";
 import { getEntitlements } from "@/lib/billing/server";
 import { remainingMessages } from "@/lib/coach/quota";
 import { countRecentUserMessages, getConversation } from "@/lib/coach/repository";
@@ -49,7 +49,7 @@ export default async function CoachConversationPage({
         initialRemaining={remainingMessages(sent, limit)}
         limit={limit}
         configured={isAiConfigured()}
-        billing={isBillingConfigured()}
+        billing={isBillingAvailable()}
       />
     </div>
   );

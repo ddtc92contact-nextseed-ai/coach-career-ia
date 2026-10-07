@@ -195,6 +195,7 @@
       "radar": "Radar (Admin)",
       "coach": "KI-Coach",
       "billing": "Abonnement",
+      "billingSimulator": "Zahlungssimulator (Admin)",
       "card": "Meine anonyme Karte",
       "contacts": "Kontakte"
     }
@@ -1170,7 +1171,8 @@
       "renewsOn": "Automatische Verlängerung am {date}.",
       "endsOn": "Abonnement gekündigt: Premium bleibt bis zum {date} aktiv.",
       "free": "KI-Coach: {limit, plural, =0 {nur mit Premium} one {# Nachricht pro 24 Stunden} other {# Nachrichten pro 24 Stunden}}.",
-      "pastDue": "Die letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Zahlungsmethode, um Premium zu behalten."
+      "pastDue": "Die letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Zahlungsmethode, um Premium zu behalten.",
+      "unpaid": "Die Verlängerung Ihres Abonnements konnte nicht bezahlt werden: Ihr Konto ist wieder im kostenlosen Tarif. Sie können jederzeit wieder zu Premium wechseln."
     },
     "manage": "Abonnement verwalten",
     "manageHint": "Zahlungsmethode, Rechnungen und Kündigung auf der sicheren Seite von Stripe.",
@@ -1199,7 +1201,53 @@
     },
     "upgrade": "Zu Premium wechseln",
     "upgradeHint": "Monatliche Zahlung, abgesichert durch Stripe, jederzeit kündbar.",
-    "privacy": "Datenschutz: Stripe erhält nur Ihre Anmelde-E-Mail-Adresse und eine Kontokennung. Ihr Karrieregedächtnis und Ihre Identität werden nie übermittelt, und Ihre Kartendaten laufen nicht über unsere Server."
+    "privacy": "Datenschutz: Stripe erhält nur Ihre Anmelde-E-Mail-Adresse und eine Kontokennung. Ihr Karrieregedächtnis und Ihre Identität werden nie übermittelt, und Ihre Kartendaten laufen nicht über unsere Server.",
+    "simulator": {
+      "badge": "Testmodus",
+      "badgeHint": "Simulierte Zahlungen: keine echte Abbuchung.",
+      "banner": "Simulierte Zahlung — Testmodus, keine echte Abbuchung.",
+      "upgradeHint": "Testmodus: Die Zahlung wird simuliert, es wird nichts abgebucht.",
+      "manageHint": "Testmodus: Kündigung und Fortsetzung des Abonnements werden simuliert.",
+      "privacy": "Testmodus: Es werden keine Daten an einen Zahlungsdienstleister übermittelt.",
+      "checkoutSuccess": "Simulierte Zahlung akzeptiert: Premium ist aktiv.",
+      "back": "Zurück zum Abonnement",
+      "checkout": {
+        "title": "Zahlung",
+        "intro": "Wählen Sie das zu simulierende Zahlungsergebnis.",
+        "plan": "Tarif",
+        "total": "Betrag",
+        "pay": "Bezahlen (Erfolg)",
+        "decline": "Karte abgelehnt",
+        "cancel": "Abbrechen",
+        "declined": "Karte abgelehnt: Die Zahlung ist fehlgeschlagen, es wurde nichts abgebucht. Sie können es erneut versuchen.",
+        "noCard": "Es werden keine Kartendaten abgefragt: Diese Zahlung ist fiktiv."
+      },
+      "portal": {
+        "title": "Abonnement verwalten",
+        "none": "Kein laufendes Abonnement.",
+        "renewsOn": "Automatische Verlängerung am {date}.",
+        "endsOn": "Kündigung vorgemerkt: Premium bleibt bis zum {date} aktiv.",
+        "retryUntil": "Zahlung ausstehend: Premium bleibt während der Zahlungsversuche erhalten, spätestens bis zum {date}.",
+        "error": "Diese Aktion ist im aktuellen Zustand des Abonnements nicht möglich.",
+        "status": {
+          "ACTIVE": "Premium — aktives Abonnement",
+          "TRIALING": "Premium — Testphase",
+          "PAST_DUE": "Premium — Zahlung fehlgeschlagen"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Zum Ende des Zeitraums kündigen",
+          "resume": "Abonnement fortsetzen",
+          "cancelNow": "Jetzt zum kostenlosen Tarif wechseln",
+          "payOutstanding": "Ausstehende Zahlung begleichen"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Kündigung gespeichert: Premium bleibt bis zum Ende des Zeitraums aktiv.",
+          "resume": "Abonnement fortgesetzt: Es wird normal verlängert.",
+          "cancelNow": "Abonnement gekündigt: Ihr Konto ist wieder im kostenlosen Tarif.",
+          "payOutstanding": "Zahlung beglichen: Ihr Abonnement ist wieder aktiv."
+        }
+      }
+    }
   },
   "card": {
     "title": "Meine anonyme Karte",

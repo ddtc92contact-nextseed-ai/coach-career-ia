@@ -195,6 +195,7 @@
       "radar": "Radar (admin)",
       "coach": "Coach IA",
       "billing": "Abonnement",
+      "billingSimulator": "Simulateur de paiement (admin)",
       "card": "Ma carte anonyme",
       "contacts": "Contacts"
     }
@@ -1170,7 +1171,8 @@
       "renewsOn": "Renouvellement automatique le {date}.",
       "endsOn": "Abonnement résilié : Premium reste actif jusqu’au {date}.",
       "free": "Coach IA : {limit, plural, =0 {réservé à Premium} one {# message sur 24 heures} other {# messages sur 24 heures}}.",
-      "pastDue": "Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour conserver Premium."
+      "pastDue": "Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour conserver Premium.",
+      "unpaid": "Le renouvellement de votre abonnement n’a pas pu être payé : votre compte est repassé à l’offre gratuite. Vous pouvez reprendre Premium à tout moment."
     },
     "manage": "Gérer mon abonnement",
     "manageHint": "Moyen de paiement, factures et résiliation, sur la page sécurisée de Stripe.",
@@ -1199,7 +1201,53 @@
     },
     "upgrade": "Passer à Premium",
     "upgradeHint": "Paiement mensuel sécurisé par Stripe, résiliable à tout moment.",
-    "privacy": "Confidentialité : Stripe reçoit uniquement votre adresse e-mail de connexion et un identifiant de compte. Votre mémoire de carrière et votre identité ne lui sont jamais transmises, et vos données de carte ne transitent pas par nos serveurs."
+    "privacy": "Confidentialité : Stripe reçoit uniquement votre adresse e-mail de connexion et un identifiant de compte. Votre mémoire de carrière et votre identité ne lui sont jamais transmises, et vos données de carte ne transitent pas par nos serveurs.",
+    "simulator": {
+      "badge": "Mode test",
+      "badgeHint": "Paiements simulés : aucun prélèvement réel.",
+      "banner": "Paiement simulé — mode test, aucun prélèvement réel.",
+      "upgradeHint": "Mode test : le paiement est simulé, aucun montant n’est prélevé.",
+      "manageHint": "Mode test : résiliation et reprise de l’abonnement simulées.",
+      "privacy": "Mode test : aucune donnée n’est transmise à un prestataire de paiement.",
+      "checkoutSuccess": "Paiement simulé accepté : Premium est actif.",
+      "back": "Retour à l’abonnement",
+      "checkout": {
+        "title": "Paiement",
+        "intro": "Choisissez l’issue du paiement à simuler.",
+        "plan": "Offre",
+        "total": "Montant",
+        "pay": "Payer (succès)",
+        "decline": "Carte refusée",
+        "cancel": "Annuler",
+        "declined": "Carte refusée : le paiement n’a pas abouti, aucun montant n’a été prélevé. Vous pouvez réessayer.",
+        "noCard": "Aucune donnée de carte n’est demandée : ce paiement est fictif."
+      },
+      "portal": {
+        "title": "Gérer mon abonnement",
+        "none": "Aucun abonnement en cours.",
+        "renewsOn": "Renouvellement automatique le {date}.",
+        "endsOn": "Résiliation demandée : Premium reste actif jusqu’au {date}.",
+        "retryUntil": "Paiement en attente : Premium est conservé pendant les relances, au plus tard jusqu’au {date}.",
+        "error": "Cette action n’est pas possible dans l’état actuel de l’abonnement.",
+        "status": {
+          "ACTIVE": "Premium — abonnement actif",
+          "TRIALING": "Premium — période d’essai",
+          "PAST_DUE": "Premium — paiement en échec"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Résilier à la fin de la période",
+          "resume": "Reprendre l’abonnement",
+          "cancelNow": "Repasser à l’offre gratuite maintenant",
+          "payOutstanding": "Régler le paiement en attente"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Résiliation enregistrée : Premium reste actif jusqu’à la fin de la période.",
+          "resume": "Abonnement repris : il sera renouvelé normalement.",
+          "cancelNow": "Abonnement résilié : votre compte est repassé à l’offre gratuite.",
+          "payOutstanding": "Paiement régularisé : votre abonnement est de nouveau actif."
+        }
+      }
+    }
   },
   "card": {
     "title": "Ma carte anonyme",

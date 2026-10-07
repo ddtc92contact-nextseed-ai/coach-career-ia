@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { PageTitle } from "@/components/empty-state";
 import { requireUser } from "@/lib/auth/session";
-import { isBillingConfigured } from "@/lib/billing/config";
+import { getBillingProvider } from "@/lib/billing/provider";
 import { getBillingAccount } from "@/lib/billing/repository";
-import { getEntitlements, getPremiumPrice } from "@/lib/billing/server";
+import { getEntitlements } from "@/lib/billing/server";
 import { coachMessagesPerDay } from "@/lib/coach/quota";
 import { openPortal, startCheckout } from "./actions";
 import { RedirectButton } from "./redirect-button";
+import { TestModeBadge } from "./simulation/test-mode";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("billing");
@@ -44,13 +45,16 @@ export default async function BillingPage({
   searchParams: Promise<{ checkout?: string; error?: string }>;
 }) {
   const user = await requireUser();
-  const configured = isBillingConfigured();
-  const [t, format, entitlements, account, price, query] = await Promise.all([
+  const provider = getBillingProvider();
+  const configured = provider !== null;
+  const simulator = provider?.name === "simulator";
+  // Droits d'abord : ils appliquent une échéance passée du simulateur.
+  const entitlements = await getEntitlements(user.id);
+  const [t, format, account, price, query] = await Promise.all([
     getTranslations("billing"),
     getFormatter(),
-    getEntitlements(user.id),
     getBillingAccount(user.id),
-    configured ? getPremiumPrice() : Promise.resolve(null),
+    provider ? provider.getPremiumPrice() : Promise.resolve(null),
     searchParams,
   ]);
   const premium = entitlements.plan === "PREMIUM";
@@ -64,13 +68,19 @@ export default async function BillingPage({
   const periodEnd = account?.currentPeriodEnd
     ? format.dateTime(account.currentPeriodEnd, "short")
     : null;
-  const canManage = configured && Boolean(account?.stripeCustomerId);
+  const canManage = Boolean(provider && account && provider.canManage(account));
+  const hint = (key: "upgradeHint" | "manageHint" | "privacy" | "checkoutSuccess") =>
+    t(simulator ? `simulator.${key}` : key);
 
   return (
     <div className="max-w-3xl space-y-6">
-      <PageTitle title={t("title")} intro={t("intro")} />
+      <PageTitle
+        title={t("title")}
+        intro={t("intro")}
+        action={simulator ? <TestModeBadge /> : undefined}
+      />
 
-      {query.checkout === "success" ? <Notice tone="info">{t("checkoutSuccess")}</Notice> : null}
+      {query.checkout === "success" ? <Notice tone="info">{hint("checkoutSuccess")}</Notice> : null}
       {query.checkout === "cancel" ? <Notice tone="warn">{t("checkoutCancel")}</Notice> : null}
       {query.error === "checkout" || query.error === "portal" ? (
         <Notice tone="error">{t(`errors.${query.error}`)}</Notice>
@@ -95,6 +105,14 @@ export default async function BillingPage({
           ) : null}
           {entitlements.source === "free" ? <p>{t("current.free", { limit: freeLimit })}</p> : null}
         </div>
+        {!premium && account?.subscriptionStatus === "UNPAID" ? (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          >
+            {t("current.unpaid")}
+          </p>
+        ) : null}
         {account?.subscriptionStatus === "PAST_DUE" ? (
           <p
             role="alert"
@@ -106,7 +124,7 @@ export default async function BillingPage({
         {canManage ? (
           <form action={openPortal} className="mt-4">
             <RedirectButton label={t("manage")} pendingLabel={t("redirecting")} />
-            <p className="mt-2 text-xs text-stone-500">{t("manageHint")}</p>
+            <p className="mt-2 text-xs text-stone-500">{hint("manageHint")}</p>
           </form>
         ) : null}
       </section>
@@ -140,14 +158,14 @@ export default async function BillingPage({
             {!premium && configured ? (
               <form action={startCheckout} className="mt-5">
                 <RedirectButton primary label={t("upgrade")} pendingLabel={t("redirecting")} />
-                <p className="mt-2 text-xs text-stone-500">{t("upgradeHint")}</p>
+                <p className="mt-2 text-xs text-stone-500">{hint("upgradeHint")}</p>
               </form>
             ) : null}
           </li>
         </ul>
       </section>
 
-      <p className="text-xs text-stone-500">{t("privacy")}</p>
+      <p className="text-xs text-stone-500">{hint("privacy")}</p>
     </div>
   );
 }

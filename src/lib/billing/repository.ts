@@ -1,6 +1,7 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
+import { SIMULATOR_ID_PREFIX } from "./config";
 import type { BillingStore } from "./webhook";
 
 /** Abonnement de l'utilisateur courant (page « Abonnement »). */
@@ -19,11 +20,15 @@ export function getBillingAccount(userId: string) {
 
 /**
  * Rattache le client Stripe créé pour l'utilisateur. Sans effet si un client
- * est déjà enregistré : renvoie celui qui fait foi.
+ * est déjà enregistré : renvoie celui qui fait foi. Un client du simulateur
+ * (`sim_…`, phase de test) est remplacé par le vrai.
  */
 export async function saveStripeCustomerId(userId: string, customerId: string) {
   await db.user.updateMany({
-    where: { id: userId, stripeCustomerId: null },
+    where: {
+      id: userId,
+      OR: [{ stripeCustomerId: null }, { stripeCustomerId: { startsWith: SIMULATOR_ID_PREFIX } }],
+    },
     data: { stripeCustomerId: customerId },
   });
   const user = await db.user.findUnique({

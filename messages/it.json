@@ -195,6 +195,7 @@
       "radar": "Radar (admin)",
       "coach": "Coach IA",
       "billing": "Abbonamento",
+      "billingSimulator": "Simulatore di pagamento (admin)",
       "card": "La mia scheda anonima",
       "contacts": "Contatti"
     }
@@ -1170,7 +1171,8 @@
       "renewsOn": "Rinnovo automatico il {date}.",
       "endsOn": "Abbonamento disdetto: Premium resta attivo fino al {date}.",
       "free": "Coach IA: {limit, plural, =0 {riservato a Premium} one {# messaggio ogni 24 ore} other {# messaggi ogni 24 ore}}.",
-      "pastDue": "L’ultimo pagamento non è andato a buon fine. Aggiorni il metodo di pagamento per mantenere Premium."
+      "pastDue": "L’ultimo pagamento non è andato a buon fine. Aggiorni il metodo di pagamento per mantenere Premium.",
+      "unpaid": "Non è stato possibile addebitare il rinnovo del suo abbonamento: il suo account è tornato al piano gratuito. Può tornare a Premium in qualsiasi momento."
     },
     "manage": "Gestisci il mio abbonamento",
     "manageHint": "Metodo di pagamento, fatture e disdetta, sulla pagina sicura di Stripe.",
@@ -1199,7 +1201,53 @@
     },
     "upgrade": "Passa a Premium",
     "upgradeHint": "Pagamento mensile protetto da Stripe, disdicibile in qualsiasi momento.",
-    "privacy": "Riservatezza: Stripe riceve solo il Suo indirizzo e-mail di accesso e un identificativo dell’account. La Sua memoria professionale e la Sua identità non gli vengono mai trasmesse e i dati della carta non transitano dai nostri server."
+    "privacy": "Riservatezza: Stripe riceve solo il Suo indirizzo e-mail di accesso e un identificativo dell’account. La Sua memoria professionale e la Sua identità non gli vengono mai trasmesse e i dati della carta non transitano dai nostri server.",
+    "simulator": {
+      "badge": "Modalità test",
+      "badgeHint": "Pagamenti simulati: nessun addebito reale.",
+      "banner": "Pagamento simulato — modalità test, nessun addebito reale.",
+      "upgradeHint": "Modalità test: il pagamento è simulato, non viene addebitato nulla.",
+      "manageHint": "Modalità test: disdetta e ripresa dell’abbonamento sono simulate.",
+      "privacy": "Modalità test: nessun dato viene trasmesso a un fornitore di pagamenti.",
+      "checkoutSuccess": "Pagamento simulato accettato: Premium è attivo.",
+      "back": "Torna all’abbonamento",
+      "checkout": {
+        "title": "Pagamento",
+        "intro": "Scelga l’esito del pagamento da simulare.",
+        "plan": "Piano",
+        "total": "Importo",
+        "pay": "Paga (successo)",
+        "decline": "Carta rifiutata",
+        "cancel": "Annulla",
+        "declined": "Carta rifiutata: il pagamento non è andato a buon fine, non è stato addebitato nulla. Può riprovare.",
+        "noCard": "Non viene richiesto alcun dato della carta: questo pagamento è fittizio."
+      },
+      "portal": {
+        "title": "Gestisci il mio abbonamento",
+        "none": "Nessun abbonamento in corso.",
+        "renewsOn": "Rinnovo automatico il {date}.",
+        "endsOn": "Disdetta richiesta: Premium resta attivo fino al {date}.",
+        "retryUntil": "Pagamento in sospeso: Premium resta attivo durante i nuovi tentativi, al più tardi fino al {date}.",
+        "error": "Questa azione non è possibile nello stato attuale dell’abbonamento.",
+        "status": {
+          "ACTIVE": "Premium — abbonamento attivo",
+          "TRIALING": "Premium — periodo di prova",
+          "PAST_DUE": "Premium — pagamento non riuscito"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Disdici a fine periodo",
+          "resume": "Riprendi l’abbonamento",
+          "cancelNow": "Torna subito al piano gratuito",
+          "payOutstanding": "Salda il pagamento in sospeso"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Disdetta registrata: Premium resta attivo fino alla fine del periodo.",
+          "resume": "Abbonamento ripreso: verrà rinnovato normalmente.",
+          "cancelNow": "Abbonamento disdetto: il suo account è tornato al piano gratuito.",
+          "payOutstanding": "Pagamento saldato: il suo abbonamento è di nuovo attivo."
+        }
+      }
+    }
   },
   "card": {
     "title": "La mia scheda anonima",

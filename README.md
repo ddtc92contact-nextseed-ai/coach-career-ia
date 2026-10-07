@@ -110,7 +110,9 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `CONTACT_DAILY_LIMIT`                                                 | non (5)  | prises de contact envoyées par candidat sur 24 h          |
 | `CONTACT_EMAIL_FROM`                                                  | non      | expéditeur des prises de contact (défaut : `EMAIL_FROM`)  |
 | `CARD_LINK_TTL_DAYS`                                                  | non (30) | durée de validité des liens de carte anonyme (jours)      |
-| `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (sinon paiements indisponibles)        |
+| `BILLING_PROVIDER`                                                    | non      | `simulator` (défaut, paiements simulés) ou `stripe`       |
+| `BILLING_PREMIUM_PRICE_CENTS`, `BILLING_CURRENCY`                     | non      | prix affiché par le simulateur (`900`, `EUR`)             |
+| `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (avec `BILLING_PROVIDER=stripe`)       |
 | `STRIPE_WEBHOOK_SECRET`                                               | paiement | secret de signature du webhook (`whsec_…`)                |
 | `STRIPE_PRICE_PREMIUM_MONTHLY`                                        | paiement | prix mensuel récurrent de Premium (`price_…`)             |
 | `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub      |
@@ -368,7 +370,7 @@ mémoire de carrière **uniquement par des suggestions qu'il valide**.
 Tests : `tests/db/coach.test.ts` (séquence d'outils scriptée, acceptation / rejet, pannes,
 isolation, quota, cascade, journaux) et `tests/unit/coach.test.ts`, avec le fournisseur simulé.
 
-## Abonnements (Stripe, `/app/billing`)
+## Abonnements (Stripe ou simulateur, `/app/billing`)
 
 Modèle freemium côté candidat : le compte est gratuit, les fonctions avancées sont dans
 **Premium** (abonnement mensuel). Première fonction Premium : **coach IA illimité**.
@@ -398,11 +400,62 @@ Modèle freemium côté candidat : le compte est gratuit, les fonctions avancée
 - **Suppression du compte** : le client Stripe est supprimé d'abord (abonnement résilié, e-mail
   effacé chez Stripe) ; si Stripe est injoignable, la suppression est refusée et peut être
   relancée.
-- **Sans configuration** (une des trois variables `STRIPE_*` absente) : build et application
-  normaux, la page « Abonnement » indique que les paiements ne sont pas encore disponibles, le
-  webhook répond 503 ; personne n'est bloqué (offre gratuite).
+- **Fournisseur** (`src/lib/billing/provider.ts`) : `BILLING_PROVIDER=simulator` (défaut) ou
+  `stripe`. Les deux implémentent la même interface (`createCheckout`, `openPortal`, `cancel`,
+  prix) et alimentent le même traitement d'évènements, seul à modifier l'offre. Stripe n'est
+  utilisé que si `BILLING_PROVIDER=stripe` **et** ses trois variables sont présentes ; sinon
+  (ou valeur inconnue) : build et application normaux, la page « Abonnement » indique que les
+  paiements ne sont pas encore disponibles, le webhook répond 503 ; personne n'est bloqué.
 
-Mise en service :
+### Simulateur de paiement (phase de test, défaut)
+
+Sans aucune variable de facturation, tout le parcours freemium fonctionne avec un **Stripe
+émulé** : aucun compte Stripe, aucune clé, aucun prélèvement. La page « Abonnement » affiche une
+pastille « Mode test ».
+
+- **Paiement** : « Passer à Premium » ouvre `/app/billing/simulation/paiement/<sim_cs_…>`
+  (bandeau « Paiement simulé — mode test », offre, prix `BILLING_PREMIUM_PRICE_CENTS` /
+  `BILLING_CURRENCY` formaté selon la langue) avec trois boutons : **Payer (succès)**, **Carte
+  refusée** (on reste sur la page, rien n'est émis, comme chez Stripe), **Annuler**. Aucun champ
+  de carte.
+- **Gestion** : « Gérer mon abonnement » ouvre `/app/billing/simulation/portail` : résilier à la
+  fin de la période, reprendre, repasser au gratuit tout de suite, régler un paiement en échec.
+- **Mêmes évènements que Stripe** (`src/lib/billing/simulator.ts`) : `checkout.session.completed`,
+  `customer.subscription.created/updated/deleted`, `invoice.payment_failed`, même JSON, signés
+  localement et livrés à `handleStripeWebhook` — le traitement du webhook réel — qui relit
+  l'abonnement dans l'état simulé comme il le relirait chez Stripe. Droits, journal
+  `stripe_events` et idempotence sont donc exercés exactement comme en production.
+- **État** : table `simulated_subscriptions` (ce que Stripe tiendrait : statut, fin de période,
+  résiliation demandée), identifiants `sim_cus_…`, `sim_sub_…`, `sim_cs_…`, `sim_evt_…`. Les
+  colonnes `stripe_customer_id` / `stripe_subscription_id` de `users` reçoivent ces identifiants
+  `sim_`. Une échéance passée (renouvellement payé, fin d'un abonnement résilié, fin des relances)
+  est appliquée à la lecture des droits, comme Stripe l'aurait fait.
+- **Isolation** : une session de paiement ou un abonnement simulé n'est accessible qu'à son
+  titulaire (404 sinon) ; hors simulateur, ces pages et actions n'existent pas (404).
+- **Contrôles admin** `/app/simulateur-paiement` (adresses de `ADMIN_EMAILS`, 404 pour les autres) :
+  rechercher un compte par e-mail puis forcer Premium / gratuit, avancer à la fin de période
+  (renouvellement ou expiration), faire échouer le renouvellement (`PAST_DUE`, Premium conservé
+  pendant les relances ; « fin de période » ensuite → `UNPAID`, retour au gratuit avec un message
+  explicite sur la page « Abonnement »). Les comptes administrateurs étant Premium d'office,
+  tester le parcours avec un compte hors `ADMIN_EMAILS`.
+
+### Passer au vrai Stripe (après la phase de test)
+
+1. Configurer Stripe (ci-dessous) et renseigner les trois variables `STRIPE_*`.
+2. Remettre à zéro les abonnements simulés (sinon les comptes concernés resteraient Premium sans
+   abonnement réel) :
+
+   ```sql
+   UPDATE users SET plan = 'FREE', subscription_status = NULL, current_period_end = NULL,
+     cancel_at_period_end = false, stripe_customer_id = NULL, stripe_subscription_id = NULL
+   WHERE stripe_customer_id LIKE 'sim\_%';
+   DELETE FROM simulated_subscriptions;
+   ```
+
+3. Définir `BILLING_PROVIDER=stripe` et redéployer. La pastille « Mode test » disparaît. (Un
+   client `sim_…` restant est de toute façon ignoré : un vrai client Stripe est créé au paiement.)
+
+Mise en service de Stripe :
 
 1. Stripe → Produits : créer « Premium » avec un **prix récurrent mensuel** → `STRIPE_PRICE_PREMIUM_MONTHLY`.
 2. Développeurs → Webhooks : point de terminaison `https://<SITE_DOMAIN>/api/stripe/webhook`, avec
@@ -412,7 +465,10 @@ Mise en service :
 
 Tests (`tests/unit/billing.test.ts`, `tests/db/billing.test.ts`) : Stripe simulé, seule la
 vérification de signature du SDK est réelle (fixtures `tests/fixtures/stripe` signées en local) ;
-aucun appel à l'API Stripe.
+aucun appel à l'API Stripe. Simulateur : `tests/unit/billing-simulator.test.ts` (évènements de
+même forme que les fixtures Stripe et mêmes droits, choix du fournisseur, transitions) et
+`tests/db/billing-simulator.test.ts` (parcours complet sans variable de facturation, isolation,
+contrôles admin).
 
 ## Carte anonyme et prise de contact (Stealth Proxy)
 
