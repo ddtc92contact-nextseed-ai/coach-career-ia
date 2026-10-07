@@ -128,7 +128,7 @@ export function HandoverPanel({
         <p role="status" className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
           {doneUrl ? t("doneManual") : t("doneEmail", { company })}
         </p>
-        {doneUrl ? <CopyText text={doneUrl} /> : null}
+        {doneUrl ? <CopyText text={doneUrl} rows={3} /> : null}
       </div>
     );
   }
