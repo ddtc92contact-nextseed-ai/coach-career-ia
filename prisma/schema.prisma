@@ -66,12 +66,14 @@ model User {
 
   simulatedSubscriptions SimulatedSubscription[]
 
-  profileCard    ProfileCard?
-  cardLinks      CardLink[]
-  contacts       Contact[]
-  contactReplies ContactReply[]
-  handovers      Handover[]
-  handoverEvents HandoverEvent[]
+  profileCard     ProfileCard?
+  cardLinks       CardLink[]
+  contacts        Contact[]
+  contactReplies  ContactReply[]
+  /// Réponses écrites en tant que membre d'une organisation (espace entreprise).
+  authoredReplies ContactReply[]  @relation("ContactReplyAuthor")
+  handovers       Handover[]
+  handoverEvents  HandoverEvent[]
 
   /// Espace entreprise : un compte peut être candidat, membre d'une organisation, ou les deux.
   organizationMemberships OrganizationMember[]
@@ -1001,6 +1003,9 @@ enum ContactChannel {
   EMAIL
   /// Offre sans adresse : le candidat colle lui-même le message sur la page « Postuler ».
   APPLY_URL
+  /// Offre publiée directement (`source = "direct"`) : remis dans la messagerie de
+  /// l'espace entreprise de l'organisation, sans e-mail contenant le message.
+  PORTAL
 }
 
 enum ContactStatus {
@@ -1042,11 +1047,18 @@ model Contact {
   /// Fil passé d'anonyme à révélé : date de la dernière levée d'anonymat
   /// (le fait reste acquis après révocation : l'entreprise a pu voir l'identité).
   revealedAt   DateTime?      @map("revealed_at")
+  /// Canal `PORTAL` : organisation destinataire (seuls ses membres voient le fil).
+  orgId        String?        @map("org_id")
+  /// Fil ouvert pour la première fois par un membre de l'organisation (« lu »).
+  orgReadAt    DateTime?      @map("org_read_at")
+  /// Fil clos poliment par l'organisation (message type envoyé au candidat).
+  orgClosedAt  DateTime?      @map("org_closed_at")
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
 
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   offer          JobOffer        @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  organization   Organization?   @relation(fields: [orgId], references: [id], onDelete: SetNull)
   cardLink       CardLink?       @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
   replies        ContactReply[]
   handovers      Handover[]
@@ -1055,6 +1067,8 @@ model Contact {
   @@unique([userId, offerId])
   /// Quota quotidien : envois récents du candidat.
   @@index([userId, sentAt])
+  /// Messagerie de l'espace entreprise.
+  @@index([orgId, status])
   @@map("contacts")
 }
 
@@ -1066,9 +1080,14 @@ model ContactReply {
   contactId String    @map("contact_id")
   bodyEnc   String    @map("body_enc")
   readAt    DateTime? @map("read_at")
+  /// Réponse écrite dans l'espace entreprise : membre auteur (`null` : page à jeton).
+  authorId  String?   @map("author_id")
+  /// Message type de clôture du fil par l'entreprise.
+  closing   Boolean   @default(false)
   createdAt DateTime  @default(now()) @map("created_at")
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  author  User?   @relation("ContactReplyAuthor", fields: [authorId], references: [id], onDelete: SetNull)
   contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
@@ -1188,6 +1207,7 @@ model Organization {
   members  OrganizationMember[]
   postings JobPosting[]
   payments JobPostingPayment[]
+  contacts Contact[]
 
   @@index([status])
   @@index([domain])
@@ -1224,25 +1244,25 @@ enum JobPostingStatus {
 /// l'état de publication : paiement, modération, expiration.
 /// En ligne seulement si payée ET approuvée ET organisation active.
 model JobPosting {
-  id            String           @id @default(cuid())
-  orgId         String           @map("org_id")
-  offerId       String           @unique @map("offer_id")
-  status        JobPostingStatus @default(DRAFT)
+  id          String           @id @default(cuid())
+  orgId       String           @map("org_id")
+  offerId     String           @unique @map("offer_id")
+  status      JobPostingStatus @default(DRAFT)
   /// Paiement de la période en cours (ou publication gratuite d'un administrateur).
-  paidAt        DateTime?        @map("paid_at")
+  paidAt      DateTime?        @map("paid_at")
   /// Modération passée (automatique si rien n'est signalé, sinon par un administrateur).
-  approvedAt    DateTime?        @map("approved_at")
+  approvedAt  DateTime?        @map("approved_at")
   /// Catégories de critères potentiellement discriminatoires repérées (âge, sexe…).
-  flags         String[]
+  flags       String[]
   /// Motif du dernier refus (envoyé à l'entreprise).
-  reviewNote    String?          @map("review_note")
-  publishedAt   DateTime?        @map("published_at")
-  expiresAt     DateTime?        @map("expires_at")
-  closedAt      DateTime?        @map("closed_at")
+  reviewNote  String?          @map("review_note")
+  publishedAt DateTime?        @map("published_at")
+  expiresAt   DateTime?        @map("expires_at")
+  closedAt    DateTime?        @map("closed_at")
   /// Nombre de candidats ayant ouvert l'offre parmi leurs opportunités (aucune identité).
-  viewCount     Int              @default(0) @map("view_count")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime         @updatedAt @map("updated_at")
+  viewCount   Int              @default(0) @map("view_count")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
 
   organization Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
   offer        JobOffer            @relation(fields: [offerId], references: [id], onDelete: Cascade)

@@ -35,6 +35,11 @@ import {
  *   cette levée : il n'ouvre rien d'autre (ni un autre fil, ni la carte seule).
  * - Toutes les requêtes du candidat sont filtrées par `userId` : le fil d'un
  *   autre candidat est traité comme inexistant (404).
+ * - Canal PORTAL (offre publiée directement) : aucun e-mail ni lien n'est
+ *   transmis ; les champs révélés s'affichent dans le fil de la messagerie
+ *   de l'espace entreprise, pour les seuls membres de l'organisation
+ *   destinataire, avec les mêmes règles d'expiration, de révocation et de
+ *   journal (`portalHandover`).
  * - Journal : codes, canal et nombre de champs, jamais de valeur d'identité.
  */
 
@@ -45,6 +50,7 @@ export type HandoverError =
   | "notSent"
   | "noReply"
   | "alreadyRevealed"
+  | "closed"
   | "invalid"
   | "cvInvalid"
   | "sendUnavailable"
@@ -85,6 +91,7 @@ async function ownedContact(userId: string, id: unknown) {
       channel: true,
       locale: true,
       revealedAt: true,
+      orgClosedAt: true,
       offer: { select: { title: true, applyEmail: true } },
       _count: { select: { replies: true } },
     },
@@ -115,6 +122,8 @@ export async function revealIdentity(
   const contact = await ownedContact(userId, contactId);
   if (contact.status !== "SENT") return { ok: false, error: "notSent" };
   if (contact._count.replies === 0) return { ok: false, error: "noReply" };
+  // Fil clos par l'entreprise : plus rien ne lui est révélé.
+  if (contact.orgClosedAt) return { ok: false, error: "closed" };
 
   const parsed = revealInput.safeParse(input.payload);
   if (!parsed.success) return { ok: false, error: "invalid" };
@@ -125,7 +134,8 @@ export async function revealIdentity(
   if (fields.length === 0) return { ok: false, error: "invalid" };
 
   const recipient = contact.channel === "EMAIL" ? contact.offer.applyEmail : null;
-  if (!deps.appUrl || (contact.channel === "EMAIL" && (!recipient || !deps.send))) {
+  const portal = contact.channel === "PORTAL";
+  if ((!portal && !deps.appUrl) || (contact.channel === "EMAIL" && (!recipient || !deps.send))) {
     return { ok: false, error: "sendUnavailable" };
   }
 
@@ -216,7 +226,8 @@ export async function revealIdentity(
   }
 
   const locale: AppLocale = isAppLocale(contact.locale) ? contact.locale : DEFAULT_LOCALE;
-  const url = `${deps.appUrl}${revealedPath(locale, token)}`;
+  // Canal PORTAL : le jeton n'est jamais transmis, le fil de l'espace entreprise suffit.
+  const url = `${deps.appUrl ?? ""}${revealedPath(locale, token)}`;
   if (recipient && deps.send) {
     try {
       await deps.send({
@@ -423,6 +434,61 @@ export async function handoverCv(
       type: identity.cv?.type ?? "application/octet-stream",
       bytes: new Uint8Array(bytes),
     },
+  };
+}
+
+// --- Fil de l'espace entreprise (canal PORTAL) ------------------------------------------
+
+/**
+ * Levée active d'un fil, pour son affichage dans l'espace entreprise. À
+ * n'appeler qu'APRÈS avoir vérifié que le fil appartient à l'organisation du
+ * membre connecté (`src/lib/employer/inbox.ts`). Une levée expirée est purgée
+ * à la volée ; révoquée ou purgée : `null` (rien n'est plus affiché).
+ * `countView` : consultation comptée, comme pour le lien.
+ */
+export async function portalHandover(
+  userId: string,
+  contactId: string,
+  options: { now?: Date; countView?: boolean } = {},
+): Promise<{ identity: RevealedIdentity; expiresAt: Date; createdAt: Date } | null> {
+  const now = options.now ?? new Date();
+  await purgeExpiredHandovers(db, { now, where: { contactId } });
+  const row = await db.handover.findFirst({
+    where: { userId, contactId, ...activeWhere(now) },
+    select: { id: true, payloadEnc: true, expiresAt: true, createdAt: true },
+  });
+  if (!row?.payloadEnc) return null;
+  if (options.countView) {
+    await db.handover.update({
+      where: { id: row.id },
+      data: { viewCount: { increment: 1 }, lastViewedAt: now },
+    });
+  }
+  const identity = JSON.parse(
+    decrypt(row.payloadEnc, { aad: payloadAad(userId, row.id) }),
+  ) as RevealedIdentity;
+  return { identity, expiresAt: row.expiresAt, createdAt: row.createdAt };
+}
+
+/** CV révélé d'un fil de l'espace entreprise (mêmes précautions que `portalHandover`). */
+export async function portalHandoverCv(
+  userId: string,
+  contactId: string,
+  now = new Date(),
+): Promise<RevealFile | null> {
+  await purgeExpiredHandovers(db, { now, where: { contactId } });
+  const row = await db.handover.findFirst({
+    where: { userId, contactId, ...activeWhere(now) },
+    select: { id: true, payloadEnc: true, cvEnc: true },
+  });
+  if (!row?.payloadEnc || !row.cvEnc) return null;
+  const identity = JSON.parse(
+    decrypt(row.payloadEnc, { aad: payloadAad(userId, row.id) }),
+  ) as RevealedIdentity;
+  return {
+    name: identity.cv?.name ?? "cv",
+    type: identity.cv?.type ?? "application/octet-stream",
+    bytes: new Uint8Array(decryptBytes(row.cvEnc, { aad: cvAad(userId, row.id) })),
   };
 }
 

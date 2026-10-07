@@ -129,7 +129,13 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           ) : (
             <>
               <p className="mt-2 text-sm text-stone-700">
-                {t(contact.channel === "EMAIL" ? "contact.email" : "contact.applyUrl")}
+                {t(
+                  contact.channel === "PORTAL"
+                    ? "contact.portal"
+                    : contact.channel === "EMAIL"
+                      ? "contact.email"
+                      : "contact.applyUrl",
+                )}
               </p>
               {contactError ? (
                 <p role="alert" className="mt-2 text-sm text-red-700">

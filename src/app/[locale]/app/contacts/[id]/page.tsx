@@ -72,7 +72,9 @@ export default async function ContactPage({ params }: Props) {
             ? contact.offer.recipient
               ? t("recipient", { email: contact.offer.recipient })
               : t("recipientHidden")
-            : null}
+            : contact.channel === "PORTAL"
+              ? t("recipientPortal")
+              : null}
         </p>
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {contact.channel === "APPLY_URL" && contact.offer.applyUrl ? (
@@ -114,7 +116,7 @@ export default async function ContactPage({ params }: Props) {
           </h2>
           {contact.sentAt ? (
             <p className="mt-1 text-sm text-stone-600">
-              {tc(contact.channel === "EMAIL" ? "sentOn" : "submittedOn", {
+              {tc(contact.channel === "APPLY_URL" ? "submittedOn" : "sentOn", {
                 date: format.dateTime(contact.sentAt, "short"),
               })}
             </p>
@@ -178,11 +180,11 @@ export default async function ContactPage({ params }: Props) {
       {contact.cardLink && (sent || contact.channel === "APPLY_URL") ? (
         <p className="text-sm text-stone-600">
           {linkActive
-            ? t("link", {
+            ? t(contact.channel === "PORTAL" ? "portalCard" : "link", {
                 date: format.dateTime(contact.cardLink.expiresAt, "short"),
                 views: contact.cardLink.viewCount,
               })
-            : t("linkRevoked")}
+            : t(contact.channel === "PORTAL" ? "portalCardRevoked" : "linkRevoked")}
         </p>
       ) : null}
 
@@ -198,7 +200,9 @@ export default async function ContactPage({ params }: Props) {
               {contact.replies.map((r) => (
                 <li key={r.id} className="rounded-lg border border-stone-200 p-3">
                   <p className="text-xs text-stone-500">
-                    {t("receivedOn", { date: format.dateTime(r.createdAt, "short") })}
+                    {t(r.closing ? "closedOn" : "receivedOn", {
+                      date: format.dateTime(r.createdAt, "short"),
+                    })}
                   </p>
                   <p className="mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
                     {r.body}
@@ -224,7 +228,7 @@ export default async function ContactPage({ params }: Props) {
                 })}
               </p>
               <p className="text-sm text-stone-600">
-                {th("activeLink", {
+                {th(contact.channel === "PORTAL" ? "activePortal" : "activeLink", {
                   date: format.dateTime(handover.active.expiresAt, "short"),
                   views: handover.active.viewCount,
                 })}
@@ -236,10 +240,12 @@ export default async function ContactPage({ params }: Props) {
                 small
               />
             </div>
+          ) : contact.closedAt ? (
+            <p className="text-sm text-stone-600">{th("closed")}</p>
           ) : contact.replies.length === 0 ? (
             <p className="text-sm text-stone-600">{th("waitReply")}</p>
           ) : null}
-          {contact.replies.length > 0 ? (
+          {contact.replies.length > 0 && !contact.closedAt ? (
             <HandoverPanel
               contactId={contact.id}
               active={Boolean(handover.active)}

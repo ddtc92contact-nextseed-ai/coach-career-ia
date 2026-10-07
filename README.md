@@ -476,7 +476,8 @@ contrôles admin).
 ## Carte anonyme et prise de contact (Stealth Proxy)
 
 Le candidat ne contacte une entreprise que par le **canal de candidature publié dans l'offre**
-(pas de portail recruteur, aucune recherche de contacts personnels). Code : `src/lib/card`,
+(aucune recherche de contacts personnels) — ou, pour une offre publiée directement, par la
+messagerie de l'espace entreprise (voir plus bas). Code : `src/lib/card`,
 `src/lib/contact`.
 
 - **Carte anonyme** (`/app/carte`) : générée par règles depuis la mémoire PSEUDONYMISÉE (jamais
@@ -599,6 +600,40 @@ l'agent de chaque candidat.
   évènement de paiement, accès), `tests/db/employer.test.ts` (inscription, 404 candidat, IDOR
   entre organisations, paiement simulé → publication, matching avec garde-fous, échéance et
   republication, modération et e-mails, suspension, publication admin).
+
+### Messagerie de l'espace entreprise (`/entreprise/messages`)
+
+Pour une offre publiée directement (`source = "direct"`), la prise de contact passe par le
+canal **`PORTAL`** au lieu de l'e-mail. Code : `src/lib/employer/inbox.ts`, migration
+`20261009000000_portal_inbox`.
+
+- **Routage** (`src/lib/contact/channel.ts`) : offre directe → `PORTAL` (le contact retient
+  l'organisation destinataire, `contacts.org_id`) ; sinon e-mail de candidature, puis page
+  « Postuler ». Mêmes règles qu'un e-mail : brouillon, approbation explicite liée au texte,
+  garde-fous revérifiés, une prise de contact par offre, et **même quota**
+  `CONTACT_DAILY_LIMIT` (envois e-mail et messagerie comptés ensemble). La remise ne dépend
+  pas du SMTP.
+- **Notification** : chaque membre reçoit (dans sa langue) « Vous avez reçu une candidature
+  anonyme pour <offre> » et le lien du fil — aucune donnée candidat (ni carte, ni message).
+- **Fil** (un par contact) : carte anonyme rendue comme sur `/p/<jeton>` et soumise aux mêmes
+  règles (le lien de carte créé à l'envoi n'est jamais transmis ; expiré, révoqué ou carte
+  modifiée depuis sa validation → plus affichée), message de l'agent étiqueté « rédigé par
+  l'assistant IA de la personne candidate et approuvé par elle », réponses. Statuts : nouveau /
+  lu / répondu / clos. Clôture polie : message type localisé (langue de l'échange), puis plus
+  de réponse ni de levée d'anonymat.
+- **Réponses** : stockées en `contact_replies` (auteur `author_id`, drapeau `closing`), le seul
+  modèle de message entrant — `/app/contacts`, et tout ce qui lit les réponses entrantes, les
+  voient sans changement ; le candidat est prévenu par e-mail sans le contenu.
+- **Levée d'anonymat** : sur un fil `PORTAL`, aucun e-mail ni lien n'est envoyé ; les champs
+  révélés s'affichent dans le fil pour les seuls membres de l'organisation (CV via
+  `/api/entreprise/messages/<id>/cv`), avec la même expiration, la même révocation (effet
+  immédiat) et le même journal que le lien.
+- **Isolation** : chaque lecture et écriture filtre par l'organisation du membre connecté ; fil
+  d'une autre organisation, non-membre, contact e-mail ou brouillon : 404. L'organisation ne
+  voit que les personnes qui l'ont contactée ; il n'existe ni recherche, ni liste, ni
+  classement de candidats.
+- Tests : `tests/unit/portal-inbox.test.ts`, `tests/db/portal-inbox.test.ts` (routage, IDOR,
+  notification sans donnée candidat, carte et levée retirées, clôture, quotas, parcours complet).
 
 ## Authentification
 

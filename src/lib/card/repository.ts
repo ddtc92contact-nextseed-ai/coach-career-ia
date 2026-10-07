@@ -277,9 +277,30 @@ export async function resolveCardLink(
   options: { now?: Date; countView?: boolean } = {},
 ): Promise<ResolvedLink | null> {
   if (!isTokenShape(token)) return null;
+  return resolveLink({ tokenHash: hashToken(token) }, options);
+}
+
+/**
+ * Carte d'un fil de la messagerie de l'espace entreprise (canal PORTAL) :
+ * mêmes règles que le lien public (expiration, révocation, carte toujours
+ * validée et partageable), le lien étant désigné par son identifiant.
+ */
+export async function resolveCardLinkById(
+  id: string,
+  userId: string,
+  options: { now?: Date; countView?: boolean } = {},
+): Promise<ResolvedLink | null> {
+  const link = await resolveLink({ id }, options);
+  return link?.userId === userId ? link : null;
+}
+
+async function resolveLink(
+  where: { tokenHash: string } | { id: string },
+  options: { now?: Date; countView?: boolean },
+): Promise<ResolvedLink | null> {
   const now = options.now ?? new Date();
   const link = await db.cardLink.findUnique({
-    where: { tokenHash: hashToken(token) },
+    where,
     select: {
       id: true,
       userId: true,
