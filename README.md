@@ -110,6 +110,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `CONTACT_DAILY_LIMIT`                                                 | non (5)  | prises de contact envoyées par candidat sur 24 h          |
 | `CONTACT_EMAIL_FROM`                                                  | non      | expéditeur des prises de contact (défaut : `EMAIL_FROM`)  |
 | `CARD_LINK_TTL_DAYS`                                                  | non (30) | durée de validité des liens de carte anonyme (jours)      |
+| `HANDOVER_TTL_DAYS`                                                   | non (30) | validité des levées d'anonymat, puis purge (jours)        |
 | `BILLING_PROVIDER`                                                    | non      | `simulator` (défaut, paiements simulés) ou `stripe`       |
 | `BILLING_PREMIUM_PRICE_CENTS`, `BILLING_CURRENCY`                     | non      | prix affiché par le simulateur (`900`, `EUR`)             |
 | `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (avec `BILLING_PROVIDER=stripe`)       |
@@ -507,11 +508,43 @@ Le candidat ne contacte une entreprise que par le **canal de candidature publié
   envois par 24 h glissantes ; historique complet (canal, date, texte envoyé chiffré).
 - **Réponses** : l'e-mail renvoie vers `/<langue>/p/<jeton>/repondre`, ouverte seulement par le
   jeton d'un contact envoyé ; la réponse (chiffrée) arrive dans `/app/contacts`, et le candidat
-  est prévenu par e-mail sans le contenu. Levée d'anonymat : à venir
-  (`Contact.handoverRequestedAt`, mention sur la page du contact).
+  est prévenu par e-mail sans le contenu. Levée d'anonymat : voir ci-dessous.
 - **Confidentialité** : textes des contacts et réponses chiffrés (AAD `user:<id>:contact`,
   `user:<id>:contact-reply`) ; journal limité aux codes et au canal (ni identité, ni contenu,
   ni adresse de l'entreprise).
+
+## Levée d'anonymat (handover)
+
+Le candidat décide de révéler qui il est à **une** entreprise, sur un fil de `/app/contacts`
+déjà envoyé et qui a reçu une réponse. Code : `src/lib/handover`, route
+`POST /api/contacts/<id>/handover`, page publique `/<langue>/r/<jeton>`.
+
+- **Zéro connaissance jusqu'à la confirmation** : le coffre est déverrouillé et déchiffré dans
+  le navigateur ; le candidat coche les champs à révéler (nom, e-mail, téléphone, chacun de ses
+  liens, employeurs réels, écoles, CV d'origine — rien n'est coché par défaut), voit l'aperçu
+  exact de ce que verra l'entreprise, puis confirme. Une **seule** requête part alors, avec les
+  seuls champs cochés (et le CV déchiffré localement, s'il est coché), pour ce seul fil.
+- **Stockage** : identité et CV chiffrés avec la clé de la plateforme (`DATA_ENCRYPTION_KEY`,
+  AAD `handover:<userId>:<id>`), table `handovers` ; au plus une levée active par fil (index
+  unique partiel). Expiration après `HANDOVER_TTL_DAYS` (30 jours par défaut) : le worker purge
+  toutes les heures (identité et CV effacés), et une levée expirée est aussi purgée à la lecture.
+- **Lien** : jeton aléatoire de 256 bits (empreinte seule stockée), propre à cette levée — il
+  n'ouvre ni un autre fil ni la carte seule, et les liens de carte n'exposent jamais l'identité.
+  `noindex`, `no-store`, `no-referrer`. Page : 404 sans distinction ; CV
+  (`/api/r/<jeton>/cv`) : 404 si inconnu, 410 si révoqué ou expiré.
+- **E-mail à l'entreprise** (canal e-mail, adresse de candidature de l'offre, dans la langue de
+  l'offre) : uniquement le lien et sa date d'expiration, avec la mention « envoyé par l'agent de
+  carrière IA du candidat, sur sa décision explicite ». Aucune donnée d'identité dans l'e-mail :
+  révoquer coupe vraiment l'accès. Offre sans adresse : le lien est affiché une fois au candidat,
+  qui le transmet lui-même. Échec d'envoi : la levée est annulée.
+- **Révocation** à tout moment depuis le fil : lien mort, identité et CV supprimés. Le fil passe
+  « Anonyme » → « Identité révélée » ; `Contact.revealedAt` garde la date de la dernière levée.
+  Journal visible du candidat (`handover_events` : champs révélés par leur nom, dates,
+  révocation, expiration — jamais les valeurs). Les journaux applicatifs ne contiennent que le
+  canal et le nombre de champs.
+- Sans coffre : message invitant à créer le coffre d'identité d'abord.
+- Tests : `tests/unit/handover.test.ts`, `tests/db/handover.test.ts` (isolation entre candidats,
+  fil A / fil B / liens de carte, révocation et expiration 404/410 avec purge, échec d'envoi).
 
 ## Authentification
 
