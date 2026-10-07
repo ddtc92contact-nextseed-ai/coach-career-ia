@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Market",
+    "intro": "Where this offer sits against the salaries published for comparable roles.",
+    "quartiles": {
+      "p25": "1st quartile",
+      "median": "Median",
+      "p75": "3rd quartile"
+    },
+    "estimate": "Estimate based on {count, plural, one {# published offer} other {# published offers}} with a salary, from {from} to {to} (gross per year, excluding variable pay). This is not an official salary scale.",
+    "fallback": {
+      "COUNTRY": "Benchmark widened to the whole country: not enough comparable offers in the area.",
+      "FAMILY_COUNTRY": "Benchmark widened to the job family, all seniority levels: not enough more specific comparable offers."
+    },
+    "notEnoughData": "Not enough data: fewer than {min} comparable offers with a published salary. No benchmark is shown rather than an unreliable figure.",
+    "remote": "fully remote ({country})",
+    "allSeniorities": "all seniority levels",
+    "offerPosition": {
+      "BELOW": "The advertised salary ({amount} gross per year, mid-range) is below the market’s 1st quartile.",
+      "WITHIN": "The advertised salary ({amount} gross per year, mid-range) is within the usual market range (between the 1st and 3rd quartiles).",
+      "ABOVE": "The advertised salary ({amount} gross per year, mid-range) is above the market’s 3rd quartile.",
+      "noSalary": "This offer does not state a comparable salary: only the market benchmark is shown."
+    },
+    "floorPosition": {
+      "BELOW": "Your floor ({amount}) is below the 1st quartile: it rules out few comparable offers.",
+      "WITHIN": "Your floor ({amount}) is within the usual market range.",
+      "ABOVE": "Your floor ({amount}) is above the 3rd quartile: it rules out most comparable offers."
+    },
+    "guardRails": {
+      "title": "Market benchmark",
+      "intro": "Salaries published for your job family (based on your most recent role), in France."
+    }
+  },
   "card": {
     "title": "My anonymous card",
     "intro": "What a company sees of you before you choose to reveal your identity. It is generated from your pseudonymised career memory, never from your identity vault.",

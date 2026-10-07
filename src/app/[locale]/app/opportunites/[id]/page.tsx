@@ -3,14 +3,18 @@ import { notFound } from "next/navigation";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { CompanySignalList } from "@/components/company-signals";
+import { SalaryBenchmarkBlock } from "@/components/salary-benchmark";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
+import { db } from "@/lib/db";
 import { contactOptions, type ContactError } from "@/lib/contact/repository";
 import { displaySummary, factLines } from "@/lib/matching/explanation";
 import { getMatch, markMatchSeen } from "@/lib/matching/repository";
 import { WEIGHTS } from "@/lib/matching/score";
 import { startContactAction } from "../../contacts/actions";
+import { BENCHMARK_CONFIG } from "@/lib/radar/benchmarks/config";
+import { benchmarkForOffer } from "@/lib/radar/salary-benchmarks";
 import { SIGNAL_THRESHOLDS } from "@/lib/radar/signals/config";
 import { getCompanySignals } from "@/lib/radar/signals/server";
 import { OfferFacts, ScoreBadge, StatusActions } from "../opportunity-parts";
@@ -37,12 +41,13 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
   if (!match) notFound();
   if (match.status === "NEW") await markMatchSeen(user.id, id);
 
-  const [t, tm, tc, tce, ts, format, locale, contact, signals] = await Promise.all([
+  const [t, tm, tc, tce, ts, tb, format, locale, contact, signals, market] = await Promise.all([
     getTranslations("opportunities"),
     getTranslations("matching"),
     getTranslations("codes.culture"),
     getTranslations("contacts.errors"),
     getTranslations("companySignals"),
+    getTranslations("salaryBenchmark"),
     getFormatter(),
     getLocale() as Promise<AppLocale>,
     contactOptions(user.id, id),
@@ -51,6 +56,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           limit: SIGNAL_THRESHOLDS.display.maxPerOffer,
         })
       : [],
+    benchmarkForOffer(db, match.offer),
   ]);
   const contactError = CONTACT_ERRORS.find((code) => code === query.contact) ?? null;
   const explanation = match.explanation;
@@ -267,6 +273,22 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           </h2>
           <p className="mt-1 mb-3 text-xs text-stone-500">{ts("intro")}</p>
           <CompanySignalList signals={signals} />
+        </section>
+      ) : null}
+
+      {market ? (
+        <section className={sectionClass} aria-labelledby="marche">
+          <h2 id="marche" className="text-lg font-semibold">
+            {tb("title")}
+          </h2>
+          <p className="mt-1 mb-3 text-xs text-stone-500">{tb("intro")}</p>
+          <SalaryBenchmarkBlock
+            benchmark={market.benchmark}
+            minSample={BENCHMARK_CONFIG.minSample}
+            value={market.offerAnnual}
+            position={market.position}
+            positionKey="offerPosition"
+          />
         </section>
       ) : null}
 

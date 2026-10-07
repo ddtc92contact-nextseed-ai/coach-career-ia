@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Mercato",
+    "intro": "Come si colloca questa offerta rispetto agli stipendi pubblicati per ruoli comparabili.",
+    "quartiles": {
+      "p25": "1° quartile",
+      "median": "Mediana",
+      "p75": "3° quartile"
+    },
+    "estimate": "Stima basata su {count, plural, one {# offerta pubblicata} other {# offerte pubblicate}} con stipendio, da {from} a {to} (lordo annuo, parte variabile esclusa). Non è una tabella retributiva ufficiale.",
+    "fallback": {
+      "COUNTRY": "Riferimento esteso all’intero paese: offerte comparabili insufficienti nella zona.",
+      "FAMILY_COUNTRY": "Riferimento esteso alla famiglia professionale, tutti i livelli di anzianità: offerte comparabili più precise insufficienti."
+    },
+    "notEnoughData": "Dati insufficienti: meno di {min} offerte comparabili con stipendio pubblicato. Nessun riferimento mostrato piuttosto che un dato poco affidabile.",
+    "remote": "full remote ({country})",
+    "allSeniorities": "tutti i livelli",
+    "offerPosition": {
+      "BELOW": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sotto il 1° quartile del mercato.",
+      "WITHIN": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) rientra nella forbice abituale del mercato (tra il 1° e il 3° quartile).",
+      "ABOVE": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sopra il 3° quartile del mercato.",
+      "noSalary": "Questa offerta non indica uno stipendio comparabile: viene mostrato solo il riferimento di mercato."
+    },
+    "floorPosition": {
+      "BELOW": "La Sua soglia minima ({amount}) è sotto il 1° quartile: esclude poche offerte comparabili.",
+      "WITHIN": "La Sua soglia minima ({amount}) rientra nella forbice abituale del mercato.",
+      "ABOVE": "La Sua soglia minima ({amount}) supera il 3° quartile: esclude la maggior parte delle offerte comparabili."
+    },
+    "guardRails": {
+      "title": "Riferimento di mercato",
+      "intro": "Stipendi pubblicati per la Sua famiglia professionale (in base al Suo ruolo più recente), in Francia."
+    }
+  },
   "card": {
     "title": "La mia scheda anonima",
     "intro": "Ciò che un’azienda vede di te prima che tu decida di rivelare la tua identità. Viene generata dalla tua memoria professionale pseudonimizzata, mai dalla tua cassaforte dell’identità.",

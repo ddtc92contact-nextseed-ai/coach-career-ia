@@ -4,7 +4,8 @@
  *   passage à la fois. Le même client HTTP est conservé entre passages : les
  *   requêtes conditionnelles (ETag / Last-Modified) évitent de retélécharger
  *   un board inchangé. Chaque passage recalcule ensuite les signaux faibles
- *   des entreprises et demande le recalcul des opportunités ;
+ *   des entreprises, les repères de salaire du marché, et demande le recalcul
+ *   des opportunités ;
  * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
  *   candidats en attente (regroupé), puis envoi des alertes e-mail dues ;
  * - purge des levées d'anonymat expirées toutes les heures (identité et CV
@@ -23,6 +24,7 @@ import { matchingConfig, type MatchingConfig } from "../src/lib/matching/config"
 import { markAllCandidatesDirty, runMatchingCycle } from "../src/lib/matching/jobs";
 import { radarConfig, type RadarConfig } from "../src/lib/radar/config";
 import { radarHttpClient, runRadar } from "../src/lib/radar/job";
+import { runSalaryBenchmarks } from "../src/lib/radar/benchmarks/job";
 import { runCompanySignals } from "../src/lib/radar/signals/job";
 
 const log = createLogger();
@@ -105,6 +107,14 @@ function start(config: RadarConfig, matching: MatchingConfig) {
       await runCompanySignals(prisma, { logger: log });
     } catch (error) {
       log.error("worker.signals.failed", { error: error instanceof Error ? error : String(error) });
+    }
+    try {
+      // Repères de salaire (famille × séniorité × zone) tirés des fourchettes publiées.
+      await runSalaryBenchmarks(prisma, { logger: log });
+    } catch (error) {
+      log.error("worker.benchmarks.failed", {
+        error: error instanceof Error ? error : String(error),
+      });
     }
     if (!stopping) timer = setTimeout(tick, intervalMs);
   };

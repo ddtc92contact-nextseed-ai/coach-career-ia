@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Markt",
+    "intro": "Wo dieses Angebot im Vergleich zu den veröffentlichten Gehältern vergleichbarer Stellen liegt.",
+    "quartiles": {
+      "p25": "1. Quartil",
+      "median": "Median",
+      "p75": "3. Quartil"
+    },
+    "estimate": "Schätzung auf Basis von {count, plural, one {# veröffentlichten Angebot} other {# veröffentlichten Angeboten}} mit Gehaltsangabe, von {from} bis {to} (brutto pro Jahr, ohne variable Vergütung). Keine offizielle Gehaltstabelle.",
+    "fallback": {
+      "COUNTRY": "Vergleichswert auf das ganze Land erweitert: zu wenige vergleichbare Angebote in der Region.",
+      "FAMILY_COUNTRY": "Vergleichswert auf die Berufsgruppe erweitert, alle Erfahrungsstufen: zu wenige genauer vergleichbare Angebote."
+    },
+    "notEnoughData": "Nicht genügend Daten: weniger als {min} vergleichbare Angebote mit veröffentlichtem Gehalt. Lieber kein Vergleichswert als eine unzuverlässige Zahl.",
+    "remote": "vollständig remote ({country})",
+    "allSeniorities": "alle Erfahrungsstufen",
+    "offerPosition": {
+      "BELOW": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt unter dem 1. Quartil des Marktes.",
+      "WITHIN": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt im üblichen Marktbereich (zwischen 1. und 3. Quartil).",
+      "ABOVE": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt über dem 3. Quartil des Marktes.",
+      "noSalary": "Dieses Angebot nennt kein vergleichbares Gehalt: Nur der Marktvergleichswert wird angezeigt."
+    },
+    "floorPosition": {
+      "BELOW": "Ihre Untergrenze ({amount}) liegt unter dem 1. Quartil: Sie schließt wenige vergleichbare Angebote aus.",
+      "WITHIN": "Ihre Untergrenze ({amount}) liegt im üblichen Marktbereich.",
+      "ABOVE": "Ihre Untergrenze ({amount}) liegt über dem 3. Quartil: Sie schließt die meisten vergleichbaren Angebote aus."
+    },
+    "guardRails": {
+      "title": "Marktvergleich",
+      "intro": "Veröffentlichte Gehälter für Ihre Berufsgruppe (nach Ihrer letzten Position), in Frankreich."
+    }
+  },
   "card": {
     "title": "Meine anonyme Karte",
     "intro": "Was ein Unternehmen von Ihnen sieht, bevor Sie Ihre Identität preisgeben. Sie wird aus Ihrem pseudonymisierten Karrieregedächtnis erstellt, nie aus Ihrem Identitätstresor.",

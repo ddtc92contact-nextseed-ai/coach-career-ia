@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Mercado",
+    "intro": "Cómo se sitúa esta oferta frente a los salarios publicados para puestos comparables.",
+    "quartiles": {
+      "p25": "1.er cuartil",
+      "median": "Mediana",
+      "p75": "3.er cuartil"
+    },
+    "estimate": "Estimación basada en {count, plural, one {# oferta publicada} other {# ofertas publicadas}} con salario, de {from} a {to} (bruto anual, sin la parte variable). No es una tabla salarial oficial.",
+    "fallback": {
+      "COUNTRY": "Referencia ampliada a todo el país: no hay suficientes ofertas comparables en la zona.",
+      "FAMILY_COUNTRY": "Referencia ampliada a la familia de puestos, todos los niveles de experiencia: no hay suficientes ofertas comparables más precisas."
+    },
+    "notEnoughData": "No hay datos suficientes: menos de {min} ofertas comparables con salario publicado. Preferimos no mostrar ninguna referencia antes que una cifra poco fiable.",
+    "remote": "teletrabajo completo ({country})",
+    "allSeniorities": "todos los niveles",
+    "offerPosition": {
+      "BELOW": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está por debajo del 1.er cuartil del mercado.",
+      "WITHIN": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está dentro de la horquilla habitual del mercado (entre el 1.er y el 3.er cuartil).",
+      "ABOVE": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está por encima del 3.er cuartil del mercado.",
+      "noSalary": "Esta oferta no indica un salario comparable: solo se muestra la referencia del mercado."
+    },
+    "floorPosition": {
+      "BELOW": "Su salario mínimo ({amount}) está por debajo del 1.er cuartil: descarta pocas ofertas comparables.",
+      "WITHIN": "Su salario mínimo ({amount}) está dentro de la horquilla habitual del mercado.",
+      "ABOVE": "Su salario mínimo ({amount}) supera el 3.er cuartil: descarta la mayoría de las ofertas comparables."
+    },
+    "guardRails": {
+      "title": "Referencia del mercado",
+      "intro": "Salarios publicados para su familia de puestos (según su puesto más reciente), en Francia."
+    }
+  },
   "card": {
     "title": "Mi tarjeta anónima",
     "intro": "Lo que una empresa ve de ti antes de que decidas revelar tu identidad. Se genera a partir de tu memoria profesional seudonimizada, nunca de tu caja fuerte de identidad.",

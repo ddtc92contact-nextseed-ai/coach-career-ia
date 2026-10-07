@@ -24,6 +24,7 @@
     "db:down": "docker compose -f docker-compose.dev.yml down",
     "radar:run": "tsx scripts/radar-run.ts",
     "radar:signals": "tsx scripts/radar-signals.ts",
+    "radar:benchmarks": "tsx scripts/radar-benchmarks.ts",
     "geo:backfill": "tsx scripts/geo-backfill.ts",
     "ai:eval": "tsx scripts/ai-eval-import.ts",
     "worker": "node --import tsx worker/index.ts",
