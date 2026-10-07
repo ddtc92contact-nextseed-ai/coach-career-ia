@@ -147,6 +147,15 @@
       "view": "Read the reply",
       "viewText": "Read the reply: {url}",
       "privacy": "Your identity has not been shared. You decide what happens next from your workspace."
+    },
+    "handover": {
+      "subject": "Revealed profile – {title}",
+      "intro": "The candidate who contacted you about your offer “{title}” has decided to reveal their identity to you.",
+      "view": "View the revealed profile",
+      "viewText": "Revealed profile: {url}",
+      "expires": "Link valid until {date}. The candidate can revoke it at any time.",
+      "disclosure": "This message is sent by their AI career agent (Coach Career IA), on their explicit decision.",
+      "noReply": "Replies to this email are not read."
     }
   },
   "common": {
@@ -1461,7 +1470,6 @@
       "replies": "Company replies",
       "noReply": "No reply yet. You will be notified by email.",
       "receivedOn": "Received on {date}",
-      "handover": "Revealing your identity to this company: coming soon. For now, your identity is never shared.",
       "approved": "Message approved.",
       "discardConfirm": "Discard this contact? The draft will be deleted."
     },
@@ -1478,6 +1486,87 @@
       "invalid": "The subject (160 characters maximum) and the message (20 to 3,000 characters) are required."
     }
   },
+  "handover": {
+    "title": "Lift anonymity",
+    "intro": "You decide whether, and when, {company} learns who you are. You choose exactly what is revealed, to this company only.",
+    "start": "Lift anonymity with this company",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "vaultLoading": "Loading your identity vault…",
+    "noVault": "To lift anonymity, first create your identity vault: that is where your name, contact details and CV are encrypted, in your browser.",
+    "createVault": "Create my identity vault",
+    "unlockIntro": "Unlock your vault: it is decrypted in your browser, nothing is sent at this stage.",
+    "passphrase": "Vault passphrase",
+    "unlock": "Unlock",
+    "unlocking": "Unlocking…",
+    "emptyVault": "Your identity vault is empty: first add the information you want to reveal.",
+    "completeVault": "Complete my vault",
+    "selectIntro": "Tick only what {company} will be able to see. Nothing is ticked by default.",
+    "selectTitle": "Information to reveal",
+    "preview": "Preview",
+    "previewTitle": "What {company} will see",
+    "previewIntro": "Your anonymous card stays visible, completed with this information:",
+    "previewEmail": "Your agent will send a link to this page to the offer’s application address. The link expires automatically and you can revoke it at any time.",
+    "previewManual": "This offer has no email address: you will get a link to pass on yourself. It expires automatically and you can revoke it at any time.",
+    "confirmLabel": "I decide to reveal this information to {company}, and to it only.",
+    "confirm": "Lift anonymity",
+    "revealing": "Sending…",
+    "back": "Change selection",
+    "doneEmail": "Done: {company} has received the link to your revealed profile.",
+    "doneManual": "Done. Pass this link on to the company (it is shown only once):",
+    "thisCompany": "this company",
+    "waitReply": "You can lift your anonymity as soon as the company has replied.",
+    "active": "Anonymity lifted on {date}: {fields}.",
+    "activeLink": "Link valid until {date}, {views, plural, =0 {never viewed} one {viewed # time} other {viewed # times}}.",
+    "revoke": "Revoke",
+    "revokeConfirm": "Revoke the handover? The link will stop working and the revealed information will be deleted.",
+    "logTitle": "Anonymity log",
+    "status": {
+      "anonymous": "Anonymous",
+      "revealed": "Identity revealed"
+    },
+    "log": {
+      "REVEALED": "{date}: revealed to the company — {fields}",
+      "REVOKED": "{date}: revoked by you, information deleted",
+      "EXPIRED": "{date}: link expired, information deleted"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "links": "Links",
+      "link": "Link",
+      "employers": "Employers",
+      "employer": "Employer",
+      "schools": "Education",
+      "school": "School",
+      "cv": "CV",
+      "cvOriginal": "Original CV (file)",
+      "cvDownload": "Download the CV ({name})"
+    },
+    "fieldNames": {
+      "name": "name",
+      "email": "email",
+      "phone": "phone",
+      "links": "links",
+      "employers": "employers",
+      "schools": "schools",
+      "cv": "CV"
+    },
+    "errors": {
+      "notSent": "You can only lift anonymity after your message has been sent.",
+      "noReply": "The company has not replied yet.",
+      "alreadyRevealed": "Anonymity is already lifted for this company.",
+      "invalid": "Invalid selection. Check the ticked information.",
+      "cvInvalid": "The CV must be a PDF, DOC, DOCX or ODT file of 5 MB at most.",
+      "sendUnavailable": "Email sending is not configured on this server.",
+      "sendFailed": "Sending failed: nothing was revealed. Try again later.",
+      "notFound": "This contact cannot be found.",
+      "network": "A network error occurred. Try again.",
+      "wrongPassphrase": "Wrong passphrase.",
+      "nothingSelected": "Tick at least one piece of information to reveal."
+    }
+  },
   "replyPage": {
     "title": "Reply to the candidate",
     "intro": "Your message will be delivered to the candidate’s workspace, about the job offer “{title}”. They only know what you write here.",
@@ -1489,5 +1578,14 @@
     "rateLimited": "Too many messages today for this contact. Please try again tomorrow.",
     "notFound": "This reply link has expired or is no longer valid.",
     "back": "← Back to the card"
+  },
+  "revealedPage": {
+    "title": "Revealed profile",
+    "context": "Application to your offer “{title}”",
+    "disclosure": "The candidate has decided to reveal their identity to you. This link was sent to you by their AI career agent (Coach Career IA), on their explicit decision.",
+    "identity": "Identity",
+    "card": "Profile",
+    "expires": "Link valid until {date}, revocable at any time by the candidate.",
+    "notice": "This information is shared with you for this recruitment only."
   }
 }

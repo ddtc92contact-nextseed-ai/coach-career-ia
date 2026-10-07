@@ -8,8 +8,10 @@ import { LOCALE_NAMES } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
 import { isLinkActive } from "@/lib/card/tokens";
 import { getContact, markRepliesRead } from "@/lib/contact/repository";
-import { discardContactAction, markSubmittedAction } from "../actions";
+import { experienceRoles, getHandoverState } from "@/lib/handover/repository";
+import { discardContactAction, markSubmittedAction, revokeHandoverAction } from "../actions";
 import { CopyText, DraftPanel } from "./draft-panel";
+import { HandoverPanel } from "./handover-panel";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -28,12 +30,17 @@ export default async function ContactPage({ params }: Props) {
   if (!contact) notFound();
   if (contact.replies.some((r) => !r.readAt)) await markRepliesRead(user.id, contact.id);
 
-  const [t, tc, format] = await Promise.all([
+  const sent = contact.status === "SENT" || contact.status === "SENDING";
+  const [t, tc, th, format, handover, roles] = await Promise.all([
     getTranslations("contacts.detail"),
     getTranslations("contacts"),
+    getTranslations("handover"),
     getFormatter(),
+    getHandoverState(user.id, contact.id),
+    sent && contact.replies.length > 0 ? experienceRoles(user.id) : Promise.resolve({}),
   ]);
-  const sent = contact.status === "SENT" || contact.status === "SENDING";
+  const fieldList = (fields: string[]) =>
+    format.list(fields.map((f) => th(`fieldNames.${f as "name"}`)));
   const linkActive = contact.cardLink ? isLinkActive(contact.cardLink, new Date()) : false;
 
   return (
@@ -48,6 +55,11 @@ export default async function ContactPage({ params }: Props) {
             {tc(`status.${contact.status}`)}
           </Badge>
           <Badge>{tc(`channel.${contact.channel}`)}</Badge>
+          {sent ? (
+            <Badge tone={handover.active ? "proven" : "neutral"}>
+              {handover.active ? th("status.revealed") : th("status.anonymous")}
+            </Badge>
+          ) : null}
         </div>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight break-words">
           {contact.offer.title}
@@ -195,8 +207,62 @@ export default async function ContactPage({ params }: Props) {
               ))}
             </ul>
           )}
-          {/* Point d'accroche de la levée d'anonymat (issue à venir). */}
-          <p className="mt-4 text-xs text-stone-500">{t("handover")}</p>
+        </section>
+      ) : null}
+
+      {sent ? (
+        <section className={`${sectionClass} space-y-4`} aria-labelledby="anonymat">
+          <h2 id="anonymat" className="text-lg font-semibold">
+            {th("title")}
+          </h2>
+          {handover.active ? (
+            <div className="space-y-3">
+              <p className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
+                {th("active", {
+                  date: format.dateTime(handover.active.createdAt, "short"),
+                  fields: fieldList(handover.active.fields),
+                })}
+              </p>
+              <p className="text-sm text-stone-600">
+                {th("activeLink", {
+                  date: format.dateTime(handover.active.expiresAt, "short"),
+                  views: handover.active.viewCount,
+                })}
+              </p>
+              <DeleteButton
+                action={revokeHandoverAction.bind(null, contact.id)}
+                confirmMessage={th("revokeConfirm")}
+                label={th("revoke")}
+                small
+              />
+            </div>
+          ) : contact.replies.length === 0 ? (
+            <p className="text-sm text-stone-600">{th("waitReply")}</p>
+          ) : null}
+          {contact.replies.length > 0 ? (
+            <HandoverPanel
+              contactId={contact.id}
+              active={Boolean(handover.active)}
+              channel={contact.channel}
+              companyName={contact.offer.companyName}
+              roles={roles}
+            />
+          ) : null}
+          {handover.events.length > 0 ? (
+            <div className="border-t border-stone-100 pt-4">
+              <h3 className="text-sm font-semibold">{th("logTitle")}</h3>
+              <ul className="mt-2 space-y-1 text-sm text-stone-700">
+                {handover.events.map((e) => (
+                  <li key={e.id}>
+                    {th(`log.${e.type}`, {
+                      date: format.dateTime(e.createdAt, "short"),
+                      fields: fieldList(e.fields),
+                    })}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </section>
       ) : null}
     </div>
