@@ -107,6 +107,9 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)                |
 | `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)                |
 | `COACH_MESSAGES_PER_DAY`                                              | non (40) | offre gratuite : messages au coach sur 24 h (0 = Premium) |
+| `CONTACT_DAILY_LIMIT`                                                 | non (5)  | prises de contact envoyées par candidat sur 24 h          |
+| `CONTACT_EMAIL_FROM`                                                  | non      | expéditeur des prises de contact (défaut : `EMAIL_FROM`)  |
+| `CARD_LINK_TTL_DAYS`                                                  | non (30) | durée de validité des liens de carte anonyme (jours)      |
 | `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (sinon paiements indisponibles)        |
 | `STRIPE_WEBHOOK_SECRET`                                               | paiement | secret de signature du webhook (`whsec_…`)                |
 | `STRIPE_PRICE_PREMIUM_MONTHLY`                                        | paiement | prix mensuel récurrent de Premium (`price_…`)             |
@@ -175,8 +178,14 @@ client identifié et poli. Code : `src/lib/radar`.
   passage, statut, compteurs (reçues / créées / fermées / doublons), dernière erreur, dernier
   succès, et alerte quand les `RADAR_HEALTH_FAILURE_THRESHOLD` (3) derniers passages ont
   échoué (également journalisée : `radar.source.unhealthy`).
-- **Données personnelles** : les contacts recruteurs fournis par France Travail ne sont pas
-  stockés ; les logs ne contiennent que des compteurs et des erreurs nettoyées.
+- **Canal de candidature** (`apply.ts`) : seul le canal publié POUR CANDIDATER est conservé —
+  courriel et URL de postulation France Travail, URL de candidature des ATS (Greenhouse,
+  Lever, Ashby, SmartRecruiters, Recruitee, Workable), adresse annoncée dans le texte
+  (« Envoyez votre CV à … »). Jamais le nom, le téléphone ni l'adresse postale d'un recruteur.
+  Une adresse qui semble nominative (`prenom.nom@…`) est conservée mais marquée : elle ne sert
+  qu'à l'envoi, n'est jamais affichée ni journalisée.
+- **Données personnelles** : les logs ne contiennent que des compteurs et des erreurs
+  nettoyées.
 - **Exécution** : `npm run radar:run` (un passage), ou le service `worker` (toutes les
   `RADAR_INTERVAL_HOURS`). Suivi : `/app/radar`, réservé à `ADMIN_EMAILS`.
 - **Tests** : tous sur des fixtures enregistrées (`tests/fixtures/radar`), jamais sur le
@@ -404,6 +413,49 @@ Mise en service :
 Tests (`tests/unit/billing.test.ts`, `tests/db/billing.test.ts`) : Stripe simulé, seule la
 vérification de signature du SDK est réelle (fixtures `tests/fixtures/stripe` signées en local) ;
 aucun appel à l'API Stripe.
+
+## Carte anonyme et prise de contact (Stealth Proxy)
+
+Le candidat ne contacte une entreprise que par le **canal de candidature publié dans l'offre**
+(pas de portail recruteur, aucune recherche de contacts personnels). Code : `src/lib/card`,
+`src/lib/contact`.
+
+- **Carte anonyme** (`/app/carte`) : générée par règles depuis la mémoire PSEUDONYMISÉE (jamais
+  depuis le coffre) — accroche, séniorité, années d'expérience, réalisations clés (les mieux
+  prouvées, résultats chiffrés, niveau de preuve), compétences issues des réalisations, résumé
+  des garde-fous (salaire plancher arrondi, télétravail, contrats, zone). Le candidat la relit,
+  la modifie et la **valide** ; toute modification retire la validation.
+- **Contrôle de ré-identification** (`reidentify.ts`, déterministe), refait avant CHAQUE partage
+  (validation, envoi, texte à coller, ouverture du lien) : coordonnées, liens, liens de profil
+  personnel (et tout lien de preuve tant que le candidat ne les autorise pas), employeurs
+  (« chez X », raison sociale, entreprises connues du radar, entreprises exclues), écoles,
+  dates (jour, mois, année : « intitulé rare + dates exactes » ré-identifie), parties de
+  l'e-mail du compte. Coffre déverrouillé, le même contrôle tourne **dans le navigateur** avec
+  le nom, les employeurs, les écoles et les liens du coffre (rien n'est envoyé au serveur).
+- **Lien public** `/<langue>/p/<jeton>` : jeton aléatoire de 256 bits dont seule l'empreinte
+  SHA-256 est stockée, expirant (`CARD_LINK_TTL_DAYS`), révocable depuis `/app/carte`,
+  `noindex` (méta + `X-Robots-Tag`), `no-store`, `Referrer-Policy: no-referrer`. Jeton inconnu,
+  expiré, révoqué ou carte non partageable : 404 sans distinction.
+- **Prise de contact** (« Contacter cette entreprise » sur une opportunité) : l'agent rédige un
+  court message dans la **langue de l'offre** (détectée par mots-outils, sans IA), à partir de
+  la seule carte validée et des faits de la correspondance ; sortie JSON validée par zod, texte
+  re-contrôlé (repli sur un modèle déterministe si l'IA échoue ou ré-identifierait le candidat).
+  Cycle : brouillon → **approbation explicite** (liée au texte exact) → envoi à la demande.
+  Rien n'est jamais envoyé automatiquement. L'e-mail part du SMTP de l'application, depuis
+  l'adresse de la plateforme, et indique qu'il a été préparé par un agent IA pour une personne
+  candidate anonyme qui l'a approuvé (AI Act, art. 50), avec les liens de la carte et de
+  réponse. Offre sans adresse : le texte et le lien sont préparés pour que le candidat les colle
+  lui-même sur la page « Postuler » (aucun formulaire rempli automatiquement).
+- **Garde-fous et quotas** : impossible pour une offre qui viole un garde-fou dur (revérifié à
+  l'approbation et à l'envoi), une seule prise de contact par offre, `CONTACT_DAILY_LIMIT`
+  envois par 24 h glissantes ; historique complet (canal, date, texte envoyé chiffré).
+- **Réponses** : l'e-mail renvoie vers `/<langue>/p/<jeton>/repondre`, ouverte seulement par le
+  jeton d'un contact envoyé ; la réponse (chiffrée) arrive dans `/app/contacts`, et le candidat
+  est prévenu par e-mail sans le contenu. Levée d'anonymat : à venir
+  (`Contact.handoverRequestedAt`, mention sur la page du contact).
+- **Confidentialité** : textes des contacts et réponses chiffrés (AAD `user:<id>:contact`,
+  `user:<id>:contact-reply`) ; journal limité aux codes et au canal (ni identité, ni contenu,
+  ni adresse de l'entreprise).
 
 ## Authentification
 

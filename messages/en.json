@@ -118,6 +118,35 @@
       "footer": "You receive this {frequency, select, DAILY {daily} other {weekly}} digest because you turned on alerts.",
       "unsubscribe": "Unsubscribe",
       "unsubscribeText": "To stop receiving these emails: {url}"
+    },
+    "contact": {
+      "subject": "Anonymous application – {title}",
+      "disclosure": "This message was prepared by an AI agent (Coach Career IA) on behalf of a candidate who wishes to remain anonymous at this stage. The candidate reviewed and approved it before it was sent.",
+      "cardText": "Anonymous profile card: {url}",
+      "replyText": "Reply without knowing their identity: {url}",
+      "cardButton": "See the anonymous card",
+      "replyButton": "Reply",
+      "expires": "Links valid until {date}.",
+      "noReply": "Replies to this email are not read: please use the “Reply” link.",
+      "draft": {
+        "greeting": "Hello,",
+        "intro": "I am the AI career agent of a candidate interested in your job offer “{title}”.",
+        "profile": "Their profile: {profile}.",
+        "profileYears": "Their profile: {profile}, {years, plural, one {# year} other {# years}} of experience.",
+        "highlights": "What matches your needs:",
+        "provenSkills": "Required skills, backed by proofs: {skills}.",
+        "skills": "Required skills: {skills}.",
+        "closing": "If this profile interests you, their anonymous card and a link to reply are below. The candidate will then decide whether to reveal their identity.",
+        "signoff": "Kind regards,"
+      }
+    },
+    "reply": {
+      "subject": "A company replied to your contact",
+      "brand": "Coach Career IA",
+      "intro": "A company replied to your anonymous contact about the job offer “{title}”.",
+      "view": "Read the reply",
+      "viewText": "Read the reply: {url}",
+      "privacy": "Your identity has not been shared. You decide what happens next from your workspace."
     }
   },
   "common": {
@@ -165,7 +194,9 @@
       "settings": "Settings",
       "radar": "Radar (admin)",
       "coach": "AI coach",
-      "billing": "Subscription"
+      "billing": "Subscription",
+      "card": "My anonymous card",
+      "contacts": "Contacts"
     }
   },
   "dashboard": {
@@ -332,7 +363,23 @@
       "guardRailsOk": "This offer meets all your guard-rails."
     },
     "emptyTitle": "No opportunities yet",
-    "emptyText": "As soon as your career memory and guard-rails are filled in, your agent will start suggesting qualified offers."
+    "emptyText": "As soon as your career memory and guard-rails are filled in, your agent will start suggesting qualified offers.",
+    "contact": {
+      "title": "Contact this company",
+      "email": "Your agent drafts a short message to the application address published in the offer, with a link to your anonymous card. You review and approve it: nothing is sent without you.",
+      "applyUrl": "This offer only publishes an “Apply” page: your agent prepares the message and your card link, which you paste yourself.",
+      "none": "This offer publishes no usable application channel: use the original offer.",
+      "button": "Contact this company",
+      "existing": "See the contact",
+      "cardNeeded": "Approve your anonymous card first: it is what the company will discover.",
+      "cardLink": "My anonymous card",
+      "status": {
+        "DRAFT": "Draft awaiting your review.",
+        "APPROVED": "Message approved, not sent yet.",
+        "SENDING": "Sending.",
+        "SENT": "Company contacted."
+      }
+    }
   },
   "memory": {
     "title": "My career memory",
@@ -1153,5 +1200,190 @@
     "upgrade": "Upgrade to Premium",
     "upgradeHint": "Monthly payment secured by Stripe, cancel at any time.",
     "privacy": "Privacy: Stripe only receives your login email address and an account identifier. Your Career Memory and identity are never sent to it, and your card details never pass through our servers."
+  },
+  "card": {
+    "title": "My anonymous card",
+    "intro": "What a company sees of you before you choose to reveal your identity. It is generated from your pseudonymised career memory, never from your identity vault.",
+    "status": {
+      "approved": "Card approved on {date}: it can be shared.",
+      "notApproved": "Card not approved: it cannot be shared yet.",
+      "generated": "Draft generated from your memory: review it, edit it, then approve it."
+    },
+    "issues": {
+      "title": "Fix these points before any sharing",
+      "none": "No identifying detail found in the card.",
+      "contact": "Contact detail: “{excerpt}”",
+      "url": "Link in the text: “{excerpt}”",
+      "identityUrl": "Link to a personal profile: “{excerpt}”",
+      "knownTerm": "Name that could identify you: “{excerpt}”",
+      "employer": "Employer name: “{excerpt}”",
+      "school": "School name: “{excerpt}”",
+      "date": "Exact date: “{excerpt}” (use a duration instead)",
+      "headlineMissing": "Add a headline.",
+      "where": "{field} — {problem}"
+    },
+    "fields": {
+      "headline": "Headline",
+      "achievementTitle": "Achievement {n} — title",
+      "achievementResult": "Achievement {n} — result",
+      "achievementSkill": "Achievement {n} — skill",
+      "achievementProof": "Achievement {n} — proof link",
+      "skill": "Skills",
+      "location": "Search area",
+      "subject": "Subject",
+      "body": "Message"
+    },
+    "vault": {
+      "title": "Check against your identity vault",
+      "locked": "Unlock your vault (“My identity” page) to also check that your name, employers, schools and links do not appear. This check runs only in your browser.",
+      "clean": "No name, employer, school or link from your vault appears in the card.",
+      "found": "These items from your vault appear in the card: fix them before approving it."
+    },
+    "form": {
+      "headline": "Headline",
+      "headlineHint": "Your job in a few words, without company names or dates.",
+      "achievements": "Key achievements",
+      "achievementsHint": "Best-proven first. Keep quantified results.",
+      "include": "Show on the card",
+      "achievementTitle": "Title",
+      "achievementResult": "Result",
+      "skills": "Skills",
+      "skillsHint": "Only skills used in your achievements.",
+      "conditions": "Conditions sought",
+      "showSalary": "Show my minimum base salary ({amount})",
+      "showLocations": "Show my search area",
+      "allowProofUrls": "Allow the public links of my proofs to be shown",
+      "allowProofUrlsHint": "Off by default: a link can reveal your identity. Links to a personal profile are always refused.",
+      "save": "Save",
+      "saved": "Card saved. Approve it to be able to share it.",
+      "approve": "Approve the card",
+      "approved": "Card approved.",
+      "regenerate": "Start again from my career memory",
+      "regenerateHint": "Your edits to the card will be replaced.",
+      "invalid": "Some fields are invalid or too long."
+    },
+    "preview": "Preview — what the company sees",
+    "links": {
+      "title": "Sharing links",
+      "intro": "Each link is unguessable, expires and can be revoked at any time. Links sent to a company are created automatically.",
+      "create": "Create a link",
+      "created": "Link created: copy it now, it will not be shown again.",
+      "empty": "No link yet.",
+      "forContact": "Sent for “{title}”",
+      "manual": "Link created manually",
+      "createdAt": "Created on {date}",
+      "expiresAt": "Expires on {date}",
+      "views": "{count, plural, =0 {Never viewed} one {# view} other {# views}}",
+      "active": "Active",
+      "expired": "Expired",
+      "revoked": "Revoked",
+      "revoke": "Revoke",
+      "notShareable": "Approve your card first (with no re-identification issue)."
+    }
+  },
+  "publicCard": {
+    "title": "Anonymous profile",
+    "badge": "Anonymous profile",
+    "years": "{years, plural, one {# year of experience} other {# years of experience}}",
+    "achievements": "Key achievements",
+    "skills": "Skills",
+    "proven": "Proven",
+    "declared": "Declared",
+    "proof": "See the proof",
+    "conditions": "Conditions sought",
+    "salary": "Minimum base salary: {amount} gross per year",
+    "remote": "Remote work: {policy}",
+    "remoteDays": "{days, plural, one {At least # remote day} other {At least # remote days}}",
+    "contracts": "Contracts: {contracts}",
+    "location": "{label} ({km} km radius)",
+    "notice": "Profile presented by Coach Career IA. The candidate’s identity is only shared with their consent.",
+    "reply": "Reply to the candidate",
+    "unavailableTitle": "Link unavailable",
+    "unavailableText": "This link has expired or was revoked by the candidate."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "intro": "Your anonymous contacts and the companies’ replies. You approve every message before it is sent.",
+    "quota": "Sends left today: {remaining} of {limit}.",
+    "emptyTitle": "No contact yet",
+    "emptyText": "From an opportunity, choose “Contact this company”: your agent prepares a message for you to approve.",
+    "emptyAction": "See my opportunities",
+    "channel": {
+      "EMAIL": "Application email",
+      "APPLY_URL": "“Apply” page"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "APPROVED": "Approved, not sent",
+      "SENDING": "Sending",
+      "SENT": "Sent"
+    },
+    "sentOn": "Sent on {date}",
+    "submittedOn": "Submitted on {date}",
+    "replies": "{count, plural, =0 {No reply} one {# reply} other {# replies}}",
+    "unread": "{count, plural, one {# unread} other {# unread}}",
+    "companyUnknown": "Company not disclosed",
+    "open": "Open",
+    "detail": {
+      "back": "← All contacts",
+      "recipient": "Recipient: {email}",
+      "recipientHidden": "Recipient: application address published in the offer (not shown)",
+      "applyPage": "Offer’s application page",
+      "original": "Original offer",
+      "opportunity": "Match explanation",
+      "offerClosed": "This offer is closed.",
+      "language": "Message language: {language}",
+      "draftLlm": "Draft written by the AI from your approved card and the match. Review it: it will be sent as is.",
+      "draftRules": "Draft prepared from a template, with your approved card. Review and personalise it.",
+      "appended": "Added automatically: the notice that the message was prepared by an AI agent for an anonymous candidate, the link to your card and the reply link.",
+      "subject": "Subject",
+      "body": "Message",
+      "save": "Save the draft",
+      "saved": "Draft saved. Approve it to be able to send it.",
+      "approve": "I approve this message",
+      "approvedOn": "Approved on {date}. Any edit cancels the approval.",
+      "send": "Send now",
+      "sendHint": "Sent from the platform address, never from yours.",
+      "sent": "Message sent.",
+      "paste": "Text to paste on the “Apply” page",
+      "pasteHint": "Paste this text into the company’s application form. No form is filled in automatically.",
+      "copy": "Copy the text",
+      "copied": "Copied.",
+      "markSubmitted": "I have submitted this message",
+      "discard": "Discard this contact",
+      "sentText": "Message submitted",
+      "link": "Card link: valid until {date}, {views, plural, =0 {never viewed} one {viewed # time} other {viewed # times}}.",
+      "linkRevoked": "Card link revoked: the company can no longer see your card or reply.",
+      "replies": "Company replies",
+      "noReply": "No reply yet. You will be notified by email.",
+      "receivedOn": "Received on {date}",
+      "handover": "Revealing your identity to this company: coming soon. For now, your identity is never shared.",
+      "approved": "Message approved.",
+      "discardConfirm": "Discard this contact? The draft will be deleted."
+    },
+    "errors": {
+      "noChannel": "This offer publishes no usable application channel.",
+      "guardRail": "This offer no longer meets your guard-rails: no contact is possible.",
+      "card": "Your anonymous card must be approved, with no re-identification issue, before any sharing.",
+      "notApproved": "Approve this message first, in its current version.",
+      "alreadySent": "This contact has already been made.",
+      "reidentifying": "The message contains something that could identify you: “{excerpt}”. Please edit it.",
+      "quota": "Daily limit reached: {limit} sends per 24 hours. Please try again tomorrow.",
+      "sendUnavailable": "Email sending is not configured on this server.",
+      "sendFailed": "Sending failed. Please try again later.",
+      "invalid": "The subject (160 characters maximum) and the message (20 to 3,000 characters) are required."
+    }
+  },
+  "replyPage": {
+    "title": "Reply to the candidate",
+    "intro": "Your message will be delivered to the candidate’s workspace, about the job offer “{title}”. They only know what you write here.",
+    "hint": "If you want to be contacted back, include a work email address in your message. You will receive no information about the candidate’s identity until they decide so.",
+    "label": "Your message",
+    "submit": "Send the reply",
+    "sent": "Message delivered. The candidate has been notified.",
+    "invalid": "Your message is empty or too long (5,000 characters maximum).",
+    "rateLimited": "Too many messages today for this contact. Please try again tomorrow.",
+    "notFound": "This reply link has expired or is no longer valid.",
+    "back": "← Back to the card"
   }
 }

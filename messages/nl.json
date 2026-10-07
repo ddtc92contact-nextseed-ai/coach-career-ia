@@ -118,6 +118,35 @@
       "footer": "Je ontvangt dit {frequency, select, DAILY {dagelijkse} other {wekelijkse}} overzicht omdat je meldingen hebt ingeschakeld.",
       "unsubscribe": "Afmelden",
       "unsubscribeText": "Om deze e-mails niet meer te ontvangen: {url}"
+    },
+    "contact": {
+      "subject": "Anonieme sollicitatie – {title}",
+      "disclosure": "Dit bericht is opgesteld door een AI-agent (Coach Career IA) namens een kandidaat die in dit stadium anoniem wil blijven. De kandidaat heeft het nagelezen en goedgekeurd voordat het werd verstuurd.",
+      "cardText": "Anonieme profielkaart: {url}",
+      "replyText": "Antwoorden zonder de identiteit te kennen: {url}",
+      "cardButton": "Anonieme kaart bekijken",
+      "replyButton": "Antwoorden",
+      "expires": "Links geldig tot {date}.",
+      "noReply": "Antwoorden op deze e-mail worden niet gelezen: gebruik de link ‘Antwoorden’.",
+      "draft": {
+        "greeting": "Goedendag,",
+        "intro": "Ik ben de AI-loopbaanagent van een kandidaat die interesse heeft in uw vacature ‘{title}’.",
+        "profile": "Het profiel: {profile}.",
+        "profileYears": "Het profiel: {profile}, {years, plural, one {# jaar} other {# jaar}} ervaring.",
+        "highlights": "Wat aansluit bij uw behoefte:",
+        "provenSkills": "Gevraagde en bewezen vaardigheden: {skills}.",
+        "skills": "Gevraagde vaardigheden: {skills}.",
+        "closing": "Als dit profiel u interesseert, vindt u hieronder de anonieme kaart en een link om te antwoorden. De kandidaat beslist daarna of die de anonimiteit opheft.",
+        "signoff": "Met vriendelijke groet,"
+      }
+    },
+    "reply": {
+      "subject": "Een bedrijf heeft op je contact geantwoord",
+      "brand": "Coach Career IA",
+      "intro": "Een bedrijf heeft geantwoord op je anonieme contact over de vacature ‘{title}’.",
+      "view": "Antwoord lezen",
+      "viewText": "Antwoord lezen: {url}",
+      "privacy": "Je identiteit is niet gedeeld. Jij beslist over het vervolg vanuit je omgeving."
     }
   },
   "common": {
@@ -165,7 +194,9 @@
       "settings": "Instellingen",
       "radar": "Radar (beheer)",
       "coach": "AI-coach",
-      "billing": "Abonnement"
+      "billing": "Abonnement",
+      "card": "Mijn anonieme kaart",
+      "contacts": "Contacten"
     }
   },
   "dashboard": {
@@ -332,7 +363,23 @@
       "guardRailsOk": "Deze vacature voldoet aan al je vangrails."
     },
     "emptyTitle": "Nog geen kansen",
-    "emptyText": "Zodra uw carrièregeheugen en uw randvoorwaarden zijn ingevuld, gaat uw agent u gekwalificeerde vacatures voorstellen."
+    "emptyText": "Zodra uw carrièregeheugen en uw randvoorwaarden zijn ingevuld, gaat uw agent u gekwalificeerde vacatures voorstellen.",
+    "contact": {
+      "title": "Dit bedrijf contacteren",
+      "email": "Je agent schrijft een kort bericht voor het sollicitatieadres dat in de vacature staat, met een link naar je anonieme kaart. Jij leest het na en keurt het goed: niets wordt zonder jou verstuurd.",
+      "applyUrl": "De vacature publiceert alleen een ‘Solliciteren’-pagina: je agent bereidt het bericht en de link naar je kaart voor, die je zelf plakt.",
+      "none": "Deze vacature publiceert geen bruikbaar sollicitatiekanaal: gebruik de oorspronkelijke vacature.",
+      "button": "Dit bedrijf contacteren",
+      "existing": "Contact bekijken",
+      "cardNeeded": "Keur eerst je anonieme kaart goed: die krijgt het bedrijf te zien.",
+      "cardLink": "Mijn anonieme kaart",
+      "status": {
+        "DRAFT": "Concept wacht op je controle.",
+        "APPROVED": "Bericht goedgekeurd, nog niet verstuurd.",
+        "SENDING": "Bezig met versturen.",
+        "SENT": "Bedrijf gecontacteerd."
+      }
+    }
   },
   "memory": {
     "title": "Mijn carrièregeheugen",
@@ -1153,5 +1200,190 @@
     "upgrade": "Overstappen op Premium",
     "upgradeHint": "Maandelijkse betaling beveiligd door Stripe, op elk moment opzegbaar.",
     "privacy": "Privacy: Stripe ontvangt alleen uw e-mailadres voor inloggen en een accountidentificatie. Uw loopbaangeheugen en identiteit worden nooit doorgegeven, en uw kaartgegevens gaan niet via onze servers."
+  },
+  "card": {
+    "title": "Mijn anonieme kaart",
+    "intro": "Wat een bedrijf van je ziet voordat je je identiteit prijsgeeft. Ze wordt gemaakt op basis van je gepseudonimiseerde loopbaangeheugen, nooit op basis van je identiteitskluis.",
+    "status": {
+      "approved": "Kaart goedgekeurd op {date}: ze kan worden gedeeld.",
+      "notApproved": "Kaart niet goedgekeurd: ze kan nog niet worden gedeeld.",
+      "generated": "Voorstel gemaakt op basis van je geheugen: lees het na, pas het aan en keur het goed."
+    },
+    "issues": {
+      "title": "Corrigeer deze punten voordat je deelt",
+      "none": "Geen identificerende gegevens gevonden op de kaart.",
+      "contact": "Contactgegeven: ‘{excerpt}’",
+      "url": "Link in de tekst: ‘{excerpt}’",
+      "identityUrl": "Link naar een persoonlijk profiel: ‘{excerpt}’",
+      "knownTerm": "Naam die je kan identificeren: ‘{excerpt}’",
+      "employer": "Naam van een werkgever: ‘{excerpt}’",
+      "school": "Naam van een school: ‘{excerpt}’",
+      "date": "Precieze datum: ‘{excerpt}’ (gebruik liever een duur)",
+      "headlineMissing": "Voeg een kopregel toe.",
+      "where": "{field} — {problem}"
+    },
+    "fields": {
+      "headline": "Kopregel",
+      "achievementTitle": "Prestatie {n} — titel",
+      "achievementResult": "Prestatie {n} — resultaat",
+      "achievementSkill": "Prestatie {n} — vaardigheid",
+      "achievementProof": "Prestatie {n} — bewijslink",
+      "skill": "Vaardigheden",
+      "location": "Zoekgebied",
+      "subject": "Onderwerp",
+      "body": "Bericht"
+    },
+    "vault": {
+      "title": "Controle met je identiteitskluis",
+      "locked": "Ontgrendel je kluis (pagina ‘Mijn identiteit’) om ook te controleren dat je naam, werkgevers, scholen en links niet voorkomen. Deze controle gebeurt alleen in je browser.",
+      "clean": "Geen naam, werkgever, school of link uit je kluis komt voor op de kaart.",
+      "found": "Deze gegevens uit je kluis komen voor op de kaart: corrigeer ze voordat je de kaart goedkeurt."
+    },
+    "form": {
+      "headline": "Kopregel",
+      "headlineHint": "Je beroep in een paar woorden, zonder bedrijfsnamen of datums.",
+      "achievements": "Belangrijkste prestaties",
+      "achievementsHint": "De best onderbouwde eerst. Behoud de cijfermatige resultaten.",
+      "include": "Tonen op de kaart",
+      "achievementTitle": "Titel",
+      "achievementResult": "Resultaat",
+      "skills": "Vaardigheden",
+      "skillsHint": "Alleen vaardigheden die in je prestaties worden gebruikt.",
+      "conditions": "Gezochte voorwaarden",
+      "showSalary": "Mijn minimale vaste salaris tonen ({amount})",
+      "showLocations": "Mijn zoekgebied tonen",
+      "allowProofUrls": "Tonen van de openbare links van mijn bewijzen toestaan",
+      "allowProofUrlsHint": "Standaard uit: een link kan je identiteit verraden. Links naar een persoonlijk profiel worden altijd geweigerd.",
+      "save": "Opslaan",
+      "saved": "Kaart opgeslagen. Keur haar goed om haar te kunnen delen.",
+      "approve": "Kaart goedkeuren",
+      "approved": "Kaart goedgekeurd.",
+      "regenerate": "Opnieuw beginnen vanuit mijn loopbaangeheugen",
+      "regenerateHint": "Je wijzigingen aan de kaart worden vervangen.",
+      "invalid": "Sommige velden zijn ongeldig of te lang."
+    },
+    "preview": "Voorbeeld — wat het bedrijf ziet",
+    "links": {
+      "title": "Deellinks",
+      "intro": "Elke link is onvoorspelbaar, verloopt en kan op elk moment worden ingetrokken. Links die naar een bedrijf worden gestuurd, worden automatisch aangemaakt.",
+      "create": "Link aanmaken",
+      "created": "Link aangemaakt: kopieer hem nu, hij wordt niet meer getoond.",
+      "empty": "Nog geen links.",
+      "forContact": "Verstuurd voor ‘{title}’",
+      "manual": "Handmatig aangemaakte link",
+      "createdAt": "Aangemaakt op {date}",
+      "expiresAt": "Verloopt op {date}",
+      "views": "{count, plural, =0 {Nooit bekeken} one {# keer bekeken} other {# keer bekeken}}",
+      "active": "Actief",
+      "expired": "Verlopen",
+      "revoked": "Ingetrokken",
+      "revoke": "Intrekken",
+      "notShareable": "Keur eerst je kaart goed (zonder heridentificatieprobleem)."
+    }
+  },
+  "publicCard": {
+    "title": "Anoniem profiel",
+    "badge": "Anoniem profiel",
+    "years": "{years, plural, one {# jaar ervaring} other {# jaar ervaring}}",
+    "achievements": "Belangrijkste prestaties",
+    "skills": "Vaardigheden",
+    "proven": "Bewezen",
+    "declared": "Opgegeven",
+    "proof": "Bewijs bekijken",
+    "conditions": "Gezochte voorwaarden",
+    "salary": "Minimaal vast salaris: {amount} bruto per jaar",
+    "remote": "Thuiswerken: {policy}",
+    "remoteDays": "{days, plural, one {Minstens # dag thuiswerken} other {Minstens # dagen thuiswerken}}",
+    "contracts": "Contracten: {contracts}",
+    "location": "{label} (straal van {km} km)",
+    "notice": "Profiel gepresenteerd door Coach Career IA. De identiteit van de kandidaat wordt alleen met diens toestemming gedeeld.",
+    "reply": "De kandidaat antwoorden",
+    "unavailableTitle": "Link niet beschikbaar",
+    "unavailableText": "Deze link is verlopen of door de kandidaat ingetrokken."
+  },
+  "contacts": {
+    "title": "Contacten",
+    "intro": "Je anonieme contacten en de antwoorden van bedrijven. Je keurt elk bericht goed voordat het wordt verstuurd.",
+    "quota": "Vandaag nog te versturen: {remaining} van {limit}.",
+    "emptyTitle": "Nog geen contact",
+    "emptyText": "Kies bij een kans ‘Dit bedrijf contacteren’: je agent bereidt een bericht voor dat jij goedkeurt.",
+    "emptyAction": "Mijn kansen bekijken",
+    "channel": {
+      "EMAIL": "Sollicitatie-e-mail",
+      "APPLY_URL": "‘Solliciteren’-pagina"
+    },
+    "status": {
+      "DRAFT": "Concept",
+      "APPROVED": "Goedgekeurd, niet verstuurd",
+      "SENDING": "Bezig met versturen",
+      "SENT": "Verstuurd"
+    },
+    "sentOn": "Verstuurd op {date}",
+    "submittedOn": "Ingediend op {date}",
+    "replies": "{count, plural, =0 {Geen antwoord} one {# antwoord} other {# antwoorden}}",
+    "unread": "{count, plural, one {# ongelezen} other {# ongelezen}}",
+    "companyUnknown": "Bedrijf niet vermeld",
+    "open": "Openen",
+    "detail": {
+      "back": "← Alle contacten",
+      "recipient": "Ontvanger: {email}",
+      "recipientHidden": "Ontvanger: sollicitatieadres uit de vacature (niet getoond)",
+      "applyPage": "Sollicitatiepagina van de vacature",
+      "original": "Oorspronkelijke vacature",
+      "opportunity": "Uitleg van de match",
+      "offerClosed": "Deze vacature is gesloten.",
+      "language": "Taal van het bericht: {language}",
+      "draftLlm": "Concept geschreven door de AI op basis van je goedgekeurde kaart en de match. Lees het na: het wordt ongewijzigd verstuurd.",
+      "draftRules": "Concept op basis van een sjabloon, met je goedgekeurde kaart. Lees het na en maak het persoonlijk.",
+      "appended": "Automatisch toegevoegd: de vermelding dat het bericht is opgesteld door een AI-agent voor een anonieme kandidaat, de link naar je kaart en de antwoordlink.",
+      "subject": "Onderwerp",
+      "body": "Bericht",
+      "save": "Concept opslaan",
+      "saved": "Concept opgeslagen. Keur het goed om het te kunnen versturen.",
+      "approve": "Ik keur dit bericht goed",
+      "approvedOn": "Goedgekeurd op {date}. Elke wijziging maakt de goedkeuring ongedaan.",
+      "send": "Nu versturen",
+      "sendHint": "Verstuurd vanaf het adres van het platform, nooit vanaf het jouwe.",
+      "sent": "Bericht verstuurd.",
+      "paste": "Tekst om te plakken op de ‘Solliciteren’-pagina",
+      "pasteHint": "Plak deze tekst in het sollicitatieformulier van het bedrijf. Er wordt geen formulier automatisch ingevuld.",
+      "copy": "Tekst kopiëren",
+      "copied": "Gekopieerd.",
+      "markSubmitted": "Ik heb dit bericht ingediend",
+      "discard": "Dit contact laten vallen",
+      "sentText": "Ingediend bericht",
+      "link": "Kaartlink: geldig tot {date}, {views, plural, =0 {nooit bekeken} one {# keer bekeken} other {# keer bekeken}}.",
+      "linkRevoked": "Kaartlink ingetrokken: het bedrijf kan je kaart niet meer zien en niet meer antwoorden.",
+      "replies": "Antwoorden van het bedrijf",
+      "noReply": "Nog geen antwoord. Je krijgt een e-mail zodra er een is.",
+      "receivedOn": "Ontvangen op {date}",
+      "handover": "Je identiteit aan dit bedrijf bekendmaken: binnenkort beschikbaar. Voorlopig wordt je identiteit nooit gedeeld.",
+      "approved": "Bericht goedgekeurd.",
+      "discardConfirm": "Dit contact laten vallen? Het concept wordt verwijderd."
+    },
+    "errors": {
+      "noChannel": "Deze vacature publiceert geen bruikbaar sollicitatiekanaal.",
+      "guardRail": "Deze vacature voldoet niet meer aan je grenzen: contact is niet mogelijk.",
+      "card": "Je anonieme kaart moet goedgekeurd zijn, zonder heridentificatieprobleem, voordat je iets deelt.",
+      "notApproved": "Keur eerst dit bericht goed, in de huidige versie.",
+      "alreadySent": "Dit contact is al gelegd.",
+      "reidentifying": "Het bericht bevat iets dat je kan identificeren: ‘{excerpt}’. Pas het aan.",
+      "quota": "Daglimiet bereikt: {limit} berichten per 24 uur. Probeer het morgen opnieuw.",
+      "sendUnavailable": "Het versturen van e-mails is niet ingesteld op deze server.",
+      "sendFailed": "Versturen mislukt. Probeer het later opnieuw.",
+      "invalid": "Het onderwerp (maximaal 160 tekens) en het bericht (20 tot 3.000 tekens) zijn verplicht."
+    }
+  },
+  "replyPage": {
+    "title": "De kandidaat antwoorden",
+    "intro": "Je bericht wordt afgeleverd in de omgeving van de kandidaat, over de vacature ‘{title}’. De kandidaat kent alleen wat je hier schrijft.",
+    "hint": "Wil je teruggebeld of gemaild worden, vermeld dan een zakelijk adres in je bericht. Je krijgt geen informatie over de identiteit van de kandidaat zolang die daar niet voor kiest.",
+    "label": "Je bericht",
+    "submit": "Antwoord versturen",
+    "sent": "Bericht afgeleverd. De kandidaat is op de hoogte gebracht.",
+    "invalid": "Je bericht is leeg of te lang (maximaal 5.000 tekens).",
+    "rateLimited": "Te veel berichten vandaag voor dit contact. Probeer het morgen opnieuw.",
+    "notFound": "Deze antwoordlink is verlopen of niet meer geldig.",
+    "back": "← Terug naar de kaart"
   }
 }

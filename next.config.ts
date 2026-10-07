@@ -23,6 +23,16 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
+      {
+        // Carte anonyme et page de réponse publiques (lien à jeton) : jamais
+        // indexées, jamais mises en cache, jeton jamais transmis en Referer.
+        source: "/:locale/p/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
     ];
   },
 };

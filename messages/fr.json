@@ -118,6 +118,35 @@
       "footer": "Vous recevez ce résumé {frequency, select, DAILY {quotidien} other {hebdomadaire}} parce que vous avez activé les alertes.",
       "unsubscribe": "Se désabonner",
       "unsubscribeText": "Pour ne plus recevoir ces e-mails : {url}"
+    },
+    "contact": {
+      "subject": "Candidature anonyme – {title}",
+      "disclosure": "Ce message a été préparé par un agent IA (Coach Career IA) pour le compte d’une personne candidate qui souhaite rester anonyme à ce stade. Elle l’a relu et approuvé avant son envoi.",
+      "cardText": "Carte anonyme du profil : {url}",
+      "replyText": "Répondre sans connaître son identité : {url}",
+      "cardButton": "Voir la carte anonyme",
+      "replyButton": "Répondre",
+      "expires": "Liens valables jusqu’au {date}.",
+      "noReply": "Les réponses à cet e-mail ne sont pas lues : utilisez le lien « Répondre ».",
+      "draft": {
+        "greeting": "Bonjour,",
+        "intro": "Je suis l’agent de carrière IA d’une personne candidate intéressée par votre offre « {title} ».",
+        "profile": "Son profil : {profile}.",
+        "profileYears": "Son profil : {profile}, {years, plural, one {# an} other {# ans}} d’expérience.",
+        "highlights": "Ce qui répond à votre besoin :",
+        "provenSkills": "Compétences demandées et prouvées : {skills}.",
+        "skills": "Compétences demandées : {skills}.",
+        "closing": "Si ce profil vous intéresse, sa carte anonyme et un lien pour répondre figurent ci-dessous. La personne candidate décidera ensuite de lever ou non son anonymat.",
+        "signoff": "Bien cordialement,"
+      }
+    },
+    "reply": {
+      "subject": "Une entreprise a répondu à votre prise de contact",
+      "brand": "Coach Career IA",
+      "intro": "Une entreprise a répondu à votre prise de contact anonyme pour l’offre « {title} ».",
+      "view": "Lire la réponse",
+      "viewText": "Lire la réponse : {url}",
+      "privacy": "Votre identité n’a pas été communiquée. Vous décidez de la suite depuis votre espace."
     }
   },
   "common": {
@@ -165,7 +194,9 @@
       "settings": "Paramètres",
       "radar": "Radar (admin)",
       "coach": "Coach IA",
-      "billing": "Abonnement"
+      "billing": "Abonnement",
+      "card": "Ma carte anonyme",
+      "contacts": "Contacts"
     }
   },
   "dashboard": {
@@ -332,7 +363,23 @@
       "guardRailsOk": "Cette offre respecte tous vos garde-fous."
     },
     "emptyTitle": "Aucune opportunité pour l’instant",
-    "emptyText": "Dès que votre mémoire de carrière et vos garde-fous seront renseignés, votre agent commencera à vous proposer des offres qualifiées."
+    "emptyText": "Dès que votre mémoire de carrière et vos garde-fous seront renseignés, votre agent commencera à vous proposer des offres qualifiées.",
+    "contact": {
+      "title": "Contacter cette entreprise",
+      "email": "Votre agent rédige un court message pour l’adresse de candidature publiée dans l’offre, avec un lien vers votre carte anonyme. Vous le relisez et l’approuvez : rien n’est envoyé sans vous.",
+      "applyUrl": "L’offre ne publie qu’une page « Postuler » : votre agent prépare le message et le lien de votre carte, que vous collez vous-même.",
+      "none": "Cette offre ne publie aucun canal de candidature exploitable : passez par l’offre d’origine.",
+      "button": "Contacter cette entreprise",
+      "existing": "Voir la prise de contact",
+      "cardNeeded": "Validez d’abord votre carte anonyme : c’est elle que l’entreprise découvrira.",
+      "cardLink": "Ma carte anonyme",
+      "status": {
+        "DRAFT": "Brouillon en attente de votre relecture.",
+        "APPROVED": "Message approuvé, pas encore envoyé.",
+        "SENDING": "Envoi en cours.",
+        "SENT": "Prise de contact effectuée."
+      }
+    }
   },
   "memory": {
     "title": "Ma mémoire de carrière",
@@ -1153,5 +1200,190 @@
     "upgrade": "Passer à Premium",
     "upgradeHint": "Paiement mensuel sécurisé par Stripe, résiliable à tout moment.",
     "privacy": "Confidentialité : Stripe reçoit uniquement votre adresse e-mail de connexion et un identifiant de compte. Votre mémoire de carrière et votre identité ne lui sont jamais transmises, et vos données de carte ne transitent pas par nos serveurs."
+  },
+  "card": {
+    "title": "Ma carte anonyme",
+    "intro": "Ce qu’une entreprise voit de vous avant que vous ne leviez l’anonymat. Elle est générée depuis votre mémoire de carrière pseudonymisée, jamais depuis votre coffre d’identité.",
+    "status": {
+      "approved": "Carte validée le {date} : elle peut être partagée.",
+      "notApproved": "Carte non validée : elle ne peut pas encore être partagée.",
+      "generated": "Proposition générée depuis votre mémoire : relisez-la, modifiez-la puis validez-la."
+    },
+    "issues": {
+      "title": "Avant tout partage, corrigez ces points",
+      "none": "Aucun élément identifiant détecté dans la carte.",
+      "contact": "Coordonnée : « {excerpt} »",
+      "url": "Lien dans le texte : « {excerpt} »",
+      "identityUrl": "Lien vers un profil personnel : « {excerpt} »",
+      "knownTerm": "Nom qui peut vous identifier : « {excerpt} »",
+      "employer": "Nom d’employeur : « {excerpt} »",
+      "school": "Nom d’école : « {excerpt} »",
+      "date": "Date précise : « {excerpt} » (préférez une durée)",
+      "headlineMissing": "Ajoutez une accroche.",
+      "where": "{field} — {problem}"
+    },
+    "fields": {
+      "headline": "Accroche",
+      "achievementTitle": "Réalisation {n} — titre",
+      "achievementResult": "Réalisation {n} — résultat",
+      "achievementSkill": "Réalisation {n} — compétence",
+      "achievementProof": "Réalisation {n} — lien de preuve",
+      "skill": "Compétences",
+      "location": "Zone de recherche",
+      "subject": "Objet",
+      "body": "Message"
+    },
+    "vault": {
+      "title": "Vérification avec votre coffre d’identité",
+      "locked": "Déverrouillez votre coffre (page « Mon identité ») pour vérifier aussi que votre nom, vos employeurs, vos écoles et vos liens n’apparaissent pas. Cette vérification se fait uniquement dans votre navigateur.",
+      "clean": "Aucun nom, employeur, école ou lien de votre coffre n’apparaît dans la carte.",
+      "found": "Ces éléments de votre coffre apparaissent dans la carte : corrigez-les avant de la valider."
+    },
+    "form": {
+      "headline": "Accroche",
+      "headlineHint": "Votre métier en quelques mots, sans nom d’entreprise ni date.",
+      "achievements": "Réalisations clés",
+      "achievementsHint": "Les mieux prouvées d’abord. Gardez les résultats chiffrés.",
+      "include": "Afficher sur la carte",
+      "achievementTitle": "Titre",
+      "achievementResult": "Résultat",
+      "skills": "Compétences",
+      "skillsHint": "Uniquement des compétences utilisées dans vos réalisations.",
+      "conditions": "Conditions recherchées",
+      "showSalary": "Afficher mon salaire fixe minimal ({amount})",
+      "showLocations": "Afficher ma zone de recherche",
+      "allowProofUrls": "Autoriser l’affichage des liens publics de mes preuves",
+      "allowProofUrlsHint": "Désactivé par défaut : un lien peut révéler votre identité. Les liens vers un profil personnel restent toujours refusés.",
+      "save": "Enregistrer",
+      "saved": "Carte enregistrée. Validez-la pour pouvoir la partager.",
+      "approve": "Valider la carte",
+      "approved": "Carte validée.",
+      "regenerate": "Repartir de ma mémoire de carrière",
+      "regenerateHint": "Vos modifications de la carte seront remplacées.",
+      "invalid": "Certains champs sont invalides ou trop longs."
+    },
+    "preview": "Aperçu — ce que voit l’entreprise",
+    "links": {
+      "title": "Liens de partage",
+      "intro": "Chaque lien est imprévisible, expire et peut être révoqué à tout moment. Les liens envoyés à une entreprise sont créés automatiquement.",
+      "create": "Créer un lien",
+      "created": "Lien créé : copiez-le maintenant, il ne sera plus affiché.",
+      "empty": "Aucun lien pour l’instant.",
+      "forContact": "Envoyé pour « {title} »",
+      "manual": "Lien créé manuellement",
+      "createdAt": "Créé le {date}",
+      "expiresAt": "Expire le {date}",
+      "views": "{count, plural, =0 {Jamais consulté} one {# consultation} other {# consultations}}",
+      "active": "Actif",
+      "expired": "Expiré",
+      "revoked": "Révoqué",
+      "revoke": "Révoquer",
+      "notShareable": "Validez d’abord votre carte (sans problème de ré-identification)."
+    }
+  },
+  "publicCard": {
+    "title": "Profil anonyme",
+    "badge": "Profil anonyme",
+    "years": "{years, plural, one {# an d’expérience} other {# ans d’expérience}}",
+    "achievements": "Réalisations clés",
+    "skills": "Compétences",
+    "proven": "Prouvée",
+    "declared": "Déclarée",
+    "proof": "Voir la preuve",
+    "conditions": "Conditions recherchées",
+    "salary": "Salaire fixe minimal : {amount} brut par an",
+    "remote": "Télétravail : {policy}",
+    "remoteDays": "{days, plural, one {# jour de télétravail minimum} other {# jours de télétravail minimum}}",
+    "contracts": "Contrats : {contracts}",
+    "location": "{label} (rayon de {km} km)",
+    "notice": "Profil présenté par Coach Career IA. L’identité de la personne candidate n’est communiquée qu’avec son accord.",
+    "reply": "Répondre à la personne candidate",
+    "unavailableTitle": "Lien indisponible",
+    "unavailableText": "Ce lien a expiré ou a été révoqué par la personne candidate."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "intro": "Vos prises de contact anonymes et les réponses des entreprises. Chaque message est approuvé par vous avant son envoi.",
+    "quota": "Envois restants aujourd’hui : {remaining} sur {limit}.",
+    "emptyTitle": "Aucune prise de contact",
+    "emptyText": "Depuis une opportunité, choisissez « Contacter cette entreprise » : votre agent prépare un message que vous approuvez.",
+    "emptyAction": "Voir mes opportunités",
+    "channel": {
+      "EMAIL": "E-mail de candidature",
+      "APPLY_URL": "Page « Postuler »"
+    },
+    "status": {
+      "DRAFT": "Brouillon",
+      "APPROVED": "Approuvé, non envoyé",
+      "SENDING": "Envoi en cours",
+      "SENT": "Envoyé"
+    },
+    "sentOn": "Envoyé le {date}",
+    "submittedOn": "Transmis le {date}",
+    "replies": "{count, plural, =0 {Aucune réponse} one {# réponse} other {# réponses}}",
+    "unread": "{count, plural, one {# non lue} other {# non lues}}",
+    "companyUnknown": "Entreprise non communiquée",
+    "open": "Ouvrir",
+    "detail": {
+      "back": "← Tous les contacts",
+      "recipient": "Destinataire : {email}",
+      "recipientHidden": "Destinataire : adresse de candidature publiée dans l’offre (non affichée)",
+      "applyPage": "Page de candidature de l’offre",
+      "original": "Offre d’origine",
+      "opportunity": "Explication de la correspondance",
+      "offerClosed": "Cette offre est fermée.",
+      "language": "Langue du message : {language}",
+      "draftLlm": "Brouillon rédigé par l’IA à partir de votre carte validée et de la correspondance. Relisez-le : il partira tel quel.",
+      "draftRules": "Brouillon préparé à partir d’un modèle, avec votre carte validée. Relisez-le et personnalisez-le.",
+      "appended": "Sont ajoutés automatiquement : la mention indiquant que le message a été préparé par un agent IA pour une personne candidate anonyme, le lien vers votre carte et le lien de réponse.",
+      "subject": "Objet",
+      "body": "Message",
+      "save": "Enregistrer le brouillon",
+      "saved": "Brouillon enregistré. Approuvez-le pour pouvoir l’envoyer.",
+      "approve": "J’approuve ce message",
+      "approvedOn": "Approuvé le {date}. Toute modification annule l’approbation.",
+      "send": "Envoyer maintenant",
+      "sendHint": "Envoyé depuis l’adresse de la plateforme, jamais depuis la vôtre.",
+      "sent": "Message envoyé.",
+      "paste": "Texte à coller sur la page « Postuler »",
+      "pasteHint": "Collez ce texte dans le formulaire de candidature de l’entreprise. Aucun formulaire n’est rempli automatiquement.",
+      "copy": "Copier le texte",
+      "copied": "Copié.",
+      "markSubmitted": "J’ai transmis ce message",
+      "discard": "Abandonner ce contact",
+      "sentText": "Message transmis",
+      "link": "Lien de la carte : valable jusqu’au {date}, {views, plural, =0 {jamais consulté} one {consulté # fois} other {consulté # fois}}.",
+      "linkRevoked": "Lien de la carte révoqué : l’entreprise ne peut plus voir votre carte ni répondre.",
+      "replies": "Réponses de l’entreprise",
+      "noReply": "Pas encore de réponse. Vous serez prévenu par e-mail.",
+      "receivedOn": "Reçu le {date}",
+      "handover": "Lever l’anonymat auprès de cette entreprise : bientôt disponible. Pour l’instant, votre identité n’est jamais communiquée.",
+      "approved": "Message approuvé.",
+      "discardConfirm": "Abandonner ce contact ? Le brouillon sera supprimé."
+    },
+    "errors": {
+      "noChannel": "Cette offre ne publie aucun canal de candidature exploitable.",
+      "guardRail": "Cette offre ne respecte plus vos garde-fous : aucune prise de contact n’est possible.",
+      "card": "Votre carte anonyme doit être validée, sans problème de ré-identification, avant tout partage.",
+      "notApproved": "Approuvez d’abord ce message, dans sa version actuelle.",
+      "alreadySent": "Cette prise de contact a déjà été effectuée.",
+      "reidentifying": "Le message contient un élément qui pourrait vous identifier : « {excerpt} ». Modifiez-le.",
+      "quota": "Limite quotidienne atteinte : {limit} envois sur 24 heures. Réessayez demain.",
+      "sendUnavailable": "L’envoi d’e-mails n’est pas configuré sur ce serveur.",
+      "sendFailed": "L’envoi a échoué. Réessayez plus tard.",
+      "invalid": "L’objet (160 caractères maximum) et le message (20 à 3 000 caractères) sont obligatoires."
+    }
+  },
+  "replyPage": {
+    "title": "Répondre à la personne candidate",
+    "intro": "Votre message sera transmis à la personne candidate dans son espace, au sujet de l’offre « {title} ». Elle ne connaît que ce que vous écrivez ici.",
+    "hint": "Si vous souhaitez être recontacté, indiquez une adresse professionnelle dans votre message. Vous ne recevrez aucune information sur l’identité de la personne candidate tant qu’elle ne l’aura pas décidé.",
+    "label": "Votre message",
+    "submit": "Envoyer la réponse",
+    "sent": "Message transmis. La personne candidate en est informée.",
+    "invalid": "Votre message est vide ou trop long (5 000 caractères maximum).",
+    "rateLimited": "Trop de messages aujourd’hui pour cette prise de contact. Réessayez demain.",
+    "notFound": "Ce lien de réponse a expiré ou n’est plus valable.",
+    "back": "← Revenir à la carte"
   }
 }
