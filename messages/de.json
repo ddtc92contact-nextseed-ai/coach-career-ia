@@ -104,6 +104,18 @@
       "htmlIntro": "Klicken Sie auf die Schaltfläche unten, um sich anzumelden. Dieser Link ist 15 Minuten gültig und funktioniert nur einmal.",
       "button": "Anmelden",
       "htmlIgnore": "Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese Nachricht: Ohne Klick auf diesen Link wird kein Konto eröffnet."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# neue Gelegenheit} other {# neue Gelegenheiten}} für Sie",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Ihr Agent hat ein neues Angebot gefunden, das Ihre Leitplanken erfüllt:} other {Ihr Agent hat # neue Angebote gefunden, die Ihre Leitplanken erfüllen:}}",
+      "score": "Punktzahl {score}/100",
+      "companyUnknown": "Unternehmen nicht angegeben",
+      "view": "Erklärung ansehen",
+      "original": "Originalangebot",
+      "footer": "Sie erhalten diese {frequency, select, DAILY {tägliche} other {wöchentliche}} Zusammenfassung, weil Sie Benachrichtigungen aktiviert haben.",
+      "unsubscribe": "Abmelden",
+      "unsubscribeText": "Um diese E-Mails nicht mehr zu erhalten: {url}"
     }
   },
   "common": {
@@ -218,8 +230,102 @@
   "opportunities": {
     "title": "Chancen",
     "intro": "Nur Angebote, die Ihre Leitplanken respektieren, jeweils mit einer Erklärung der Übereinstimmung.",
-    "emptyTitle": "Noch keine Chancen",
-    "emptyText": "Sobald Ihr Karrieregedächtnis und Ihre Leitplanken ausgefüllt sind, beginnt Ihr Agent, Ihnen qualifizierte Angebote vorzuschlagen."
+    "empty": {
+      "noMemoryTitle": "Ihr Agent braucht Ihr Karrieregedächtnis",
+      "noMemoryText": "Fügen Sie mindestens eine Erfahrung, einen Erfolg oder eine Kompetenz hinzu: Das vergleicht Ihr Agent mit den Stellenangeboten.",
+      "noMemoryAction": "Mein Gedächtnis ergänzen",
+      "noRailsTitle": "Legen Sie Ihre Leitplanken fest",
+      "noRailsText": "Mindestgehalt, Umkreis, Homeoffice, Vertragsarten: Ohne Leitplanken kann Ihr Agent nicht garantieren, dass die vorgeschlagenen Angebote zu Ihnen passen.",
+      "noRailsAction": "Meine Leitplanken festlegen",
+      "pendingTitle": "Analyse läuft",
+      "pendingText": "Ihr Agent vergleicht die Angebote des Marktes mit Ihrem Profil. Die Ergebnisse erscheinen hier in wenigen Minuten: Sie müssen nicht auf der Seite bleiben.",
+      "noMatchTitle": "Noch kein passendes Angebot",
+      "noMatchText": "Derzeit erfüllt kein offenes Angebot alle Ihre Leitplanken mit ausreichender Punktzahl. Ihr Agent beobachtet den Markt weiter; mehr belegte Erfolge verbessern Ihre Treffer ebenfalls.",
+      "noResultTitle": "Keine Gelegenheit mit diesen Filtern",
+      "noResultText": "Ändern Sie die Filter, um Ihre anderen Gelegenheiten zu sehen."
+    },
+    "pending": "Aktualisierung läuft: Ihre letzten Änderungen werden in wenigen Minuten berücksichtigt.",
+    "lastComputed": "Letzte Analyse: {date}",
+    "alertsHint": "Neue Gelegenheiten per E-Mail erhalten: <link>Benachrichtigungen einrichten</link>.",
+    "filters": {
+      "label": "Gelegenheiten filtern",
+      "status": "Status",
+      "minScore": "Mindestpunktzahl",
+      "anyScore": "Alle Punktzahlen",
+      "scoreOption": "{score} und mehr",
+      "apply": "Filtern",
+      "statusOptions": {
+        "active": "Zu prüfen",
+        "saved": "Gespeichert",
+        "dismissed": "Verworfen",
+        "all": "Alle (außer verworfene)"
+      }
+    },
+    "count": "{count, plural, =0 {Keine Gelegenheit} one {# Gelegenheit} other {# Gelegenheiten}}",
+    "score": "{score}/100",
+    "scoreLabel": "Übereinstimmung: {score} von 100",
+    "status": {
+      "NEW": "Neu",
+      "SEEN": "Gesehen",
+      "SAVED": "Gespeichert",
+      "DISMISSED": "Verworfen"
+    },
+    "companyUnknown": "Unternehmen nicht angegeben",
+    "placeUnknown": "Ort nicht angegeben",
+    "remote": {
+      "ONSITE": "Vor Ort",
+      "HYBRID": "Hybrid",
+      "FULL_REMOTE": "Vollständig remote",
+      "UNKNOWN": "Homeoffice nicht angegeben"
+    },
+    "contract": {
+      "CDI": "Unbefristeter Vertrag",
+      "CDD": "Befristeter Vertrag",
+      "FREELANCE": "Freiberuflich",
+      "INTERNSHIP": "Praktikum",
+      "APPRENTICESHIP": "Ausbildung",
+      "TEMPORARY": "Zeitarbeit",
+      "OTHER": "Anderer Vertrag",
+      "UNKNOWN": "Vertragsart nicht angegeben"
+    },
+    "salary": {
+      "notStated": "Gehalt nicht angegeben",
+      "range": "{min} – {max}",
+      "from": "ab {min}",
+      "upTo": "bis zu {max}",
+      "period": {
+        "HOUR": "/ Stunde",
+        "DAY": "/ Tag",
+        "MONTH": "/ Monat",
+        "YEAR": "/ Jahr"
+      }
+    },
+    "actions": {
+      "save": "Speichern",
+      "unsave": "Aus Gespeicherten entfernen",
+      "dismiss": "Verwerfen",
+      "restore": "Wieder in die Liste",
+      "details": "Erklärung ansehen",
+      "original": "Originalangebot ansehen",
+      "back": "← Alle Gelegenheiten"
+    },
+    "detail": {
+      "why": "Warum dieses Angebot",
+      "generatedBy": {
+        "llm": "Zusammenfassung Ihres Agenten auf Grundlage der folgenden Elemente.",
+        "rules": "Automatisch erstellte Zusammenfassung auf Grundlage der folgenden Elemente."
+      },
+      "proofs": "Ihre passenden Erfolge",
+      "proofsEmpty": "Keiner Ihrer Erfolge erfüllt direkt eine Anforderung des Angebots.",
+      "skills": "Ihre im Angebot genannten Kompetenzen",
+      "culture": "Ihre genannten Kulturpräferenzen",
+      "gaps": "Zu beachten",
+      "unknowns": "Fehlende Angaben",
+      "components": "Aufschlüsselung der Punktzahl",
+      "description": "Beschreibung des Angebots",
+      "published": "Veröffentlicht am {date}",
+      "guardRailsOk": "Dieses Angebot erfüllt alle Ihre Leitplanken."
+    }
   },
   "memory": {
     "title": "Mein Karrieregedächtnis",
@@ -562,6 +668,19 @@
       "confirmHint": "Denken Sie daran, Ihre Daten zu exportieren, bevor Sie Ihr Konto löschen.",
       "submit": "Mein Konto endgültig löschen",
       "deleting": "Wird gelöscht…"
+    },
+    "alerts": {
+      "title": "Benachrichtigungen zu Gelegenheiten",
+      "intro": "Erhalten Sie per E-Mail eine Zusammenfassung neuer passender Angebote. Die E-Mail enthält nur Informationen zu den Angeboten.",
+      "frequency": "Häufigkeit",
+      "frequencyOptions": {
+        "OFF": "Deaktiviert",
+        "DAILY": "Tägliche Zusammenfassung",
+        "WEEKLY": "Wöchentliche Zusammenfassung"
+      },
+      "minScore": "Mindestpunktzahl",
+      "minScoreHint": "Nur Gelegenheiten mit mindestens dieser Punktzahl werden gesendet.",
+      "save": "Speichern"
     }
   },
   "import": {
@@ -791,5 +910,54 @@
       "CONFIRMED": "Bestätigt",
       "EXPERT": "Beherrscht"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Sehr gute Übereinstimmung ({score}/100).",
+      "good": "Gute Übereinstimmung ({score}/100).",
+      "fair": "Teilweise Übereinstimmung ({score}/100).",
+      "provenSkills": "{count, plural, one {Ihre belegte Kompetenz {skills} wird verlangt.} other {Ihre belegten Kompetenzen {skills} werden verlangt.}}",
+      "declaredSkills": "{count, plural, one {Ihre Kompetenz {skills} wird genannt, bisher ohne Nachweis.} other {Ihre Kompetenzen {skills} werden genannt, bisher ohne Nachweis.}}",
+      "noSkills": "Das Angebot nennt nur wenige Ihrer Kompetenzen ausdrücklich.",
+      "proofs": "{count, plural, one {Einer Ihrer Erfolge erfüllt direkt eine Anforderung.} other {# Ihrer Erfolge erfüllen direkt Anforderungen.}}",
+      "seniorityAbove": "Die Stelle scheint höher angesiedelt als Ihre aktuelle Position.",
+      "salaryUnknown": "Das Gehalt ist nicht angegeben."
+    },
+    "match": "Ihr Erfolg „{achievement}“ erfüllt die Anforderung „{requirement}“.",
+    "matchSemantic": "Ihr Erfolg „{achievement}“ liegt nah an den Aufgaben der Stelle.",
+    "proven": "Belegt",
+    "declared": "Angegeben",
+    "gaps": {
+      "seniorityAbove": "Das erwartete Niveau scheint höher als das Ihrer aktuellen Position.",
+      "seniorityBelow": "Die Stelle scheint weniger senior als Ihr Werdegang.",
+      "salaryBelowTarget": "Die angegebene Vergütung liegt unter Ihrem Zielpaket.",
+      "unprovenSkill": "„{value}“ wird verlangt, ist aber noch nicht belegt: Fügen Sie einem Erfolg, der sie nutzt, einen Nachweis hinzu.",
+      "fewSkills": "Das Angebot nennt keine Ihrer Kompetenzen ausdrücklich."
+    },
+    "unknowns": {
+      "salaryNotStated": "Gehalt nicht angegeben.",
+      "remoteNotStated": "Homeoffice-Regelung nicht angegeben.",
+      "remoteDaysNotStated": "Anzahl der Homeoffice-Tage nicht angegeben.",
+      "contractNotStated": "Vertragsart nicht angegeben.",
+      "hoursNotStated": "Wochenarbeitszeit nicht angegeben.",
+      "locationNotChecked": "Entfernung nicht geprüft: Ihre Orte konnten nicht lokalisiert werden.",
+      "seniorityNotStated": "Erwartetes Erfahrungsniveau nicht angegeben.",
+      "cultureNotStated": "Das Angebot erwähnt keine Ihrer Kulturpräferenzen."
+    },
+    "components": {
+      "skills": "Kompetenzen und Nachweise",
+      "seniority": "Seniorität",
+      "salary": "Vergütung",
+      "culture": "Unternehmenskultur"
+    }
+  },
+  "unsubscribe": {
+    "title": "Benachrichtigungen zu Gelegenheiten",
+    "confirmText": "Sie erhalten keine Zusammenfassungen mehr per E-Mail. Sie können die Benachrichtigungen jederzeit in Ihren Einstellungen wieder aktivieren.",
+    "button": "Abmeldung bestätigen",
+    "doneTitle": "Abmeldung bestätigt",
+    "doneText": "Sie erhalten keine Benachrichtigungen mehr. Sie können sie in Ihren Einstellungen wieder aktivieren.",
+    "invalidTitle": "Ungültiger Link",
+    "invalidText": "Dieser Abmeldelink ist ungültig. Sie können Ihre Benachrichtigungen in Ihren Einstellungen verwalten."
   }
 }

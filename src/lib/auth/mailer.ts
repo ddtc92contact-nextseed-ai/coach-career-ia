@@ -1,10 +1,10 @@
 import "server-only";
 import { createTranslator } from "next-intl";
-import nodemailer from "nodemailer";
 import { MESSAGES } from "@/i18n/messages";
 import { DEFAULT_LOCALE, isAppLocale, type AppLocale } from "@/i18n/routing";
 import { isSmtpConfigured, serverEnv } from "@/lib/env";
 import { logger } from "@/lib/logger";
+import { createSmtpTransport } from "@/lib/mail/smtp";
 
 type MagicLinkParams = { to: string; url: string; expires: Date; locale: AppLocale };
 
@@ -62,11 +62,13 @@ export async function sendMagicLink({ to, url, locale }: MagicLinkParams): Promi
     return;
   }
 
-  const transport = nodemailer.createTransport({
+  const transport = createSmtpTransport({
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,
     secure: env.SMTP_SECURE,
-    auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASSWORD } : undefined,
+    user: env.SMTP_USER,
+    password: env.SMTP_PASSWORD,
+    from: env.EMAIL_FROM,
   });
   const { subject, text, html } = magicLinkEmail(url, locale);
   const result = await transport.sendMail({ from: env.EMAIL_FROM, to, subject, text, html });

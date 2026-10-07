@@ -104,6 +104,18 @@
       "htmlIntro": "Haga clic en el botón de abajo para iniciar sesión. Este enlace es válido durante 15 minutos y solo funciona una vez.",
       "button": "Iniciar sesión",
       "htmlIgnore": "Si no ha solicitado este acceso, ignore este mensaje: no se abrirá ninguna cuenta sin hacer clic en este enlace."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nueva oportunidad} other {# nuevas oportunidades}} para ti",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Tu agente ha encontrado una nueva oferta que cumple tus límites:} other {Tu agente ha encontrado # nuevas ofertas que cumplen tus límites:}}",
+      "score": "Puntuación {score}/100",
+      "companyUnknown": "Empresa no indicada",
+      "view": "Ver la explicación",
+      "original": "Oferta original",
+      "footer": "Recibes este resumen {frequency, select, DAILY {diario} other {semanal}} porque has activado las alertas.",
+      "unsubscribe": "Darse de baja",
+      "unsubscribeText": "Para dejar de recibir estos correos: {url}"
     }
   },
   "common": {
@@ -218,8 +230,102 @@
   "opportunities": {
     "title": "Oportunidades",
     "intro": "Solo ofertas que respetan sus salvaguardas, con la explicación de cada coincidencia.",
-    "emptyTitle": "Todavía no hay oportunidades",
-    "emptyText": "En cuanto complete su memoria de carrera y sus salvaguardas, su agente empezará a proponerle ofertas cualificadas."
+    "empty": {
+      "noMemoryTitle": "Tu agente necesita tu memoria profesional",
+      "noMemoryText": "Añade al menos una experiencia, un logro o una competencia: es lo que tu agente compara con las ofertas.",
+      "noMemoryAction": "Completar mi memoria",
+      "noRailsTitle": "Define tus límites",
+      "noRailsText": "Salario mínimo, zona, teletrabajo, contratos: sin límites, tu agente no puede garantizar que las ofertas propuestas te convengan.",
+      "noRailsAction": "Definir mis límites",
+      "pendingTitle": "Análisis en curso",
+      "pendingText": "Tu agente está comparando las ofertas del mercado con tu perfil. Los resultados aparecerán aquí en unos minutos: no hace falta quedarse en la página.",
+      "noMatchTitle": "Ninguna oferta cualificada por ahora",
+      "noMatchText": "Ninguna oferta abierta cumple hoy todos tus límites con una puntuación suficiente. Tu agente sigue vigilando el mercado; demostrar más logros también mejora tus coincidencias.",
+      "noResultTitle": "Ninguna oportunidad con estos filtros",
+      "noResultText": "Cambia los filtros para ver tus otras oportunidades."
+    },
+    "pending": "Actualización en curso: tus últimos cambios se tendrán en cuenta en unos minutos.",
+    "lastComputed": "Último análisis: {date}",
+    "alertsHint": "Recibe las nuevas oportunidades por correo: <link>configura tus alertas</link>.",
+    "filters": {
+      "label": "Filtrar las oportunidades",
+      "status": "Estado",
+      "minScore": "Puntuación mínima",
+      "anyScore": "Todas las puntuaciones",
+      "scoreOption": "{score} o más",
+      "apply": "Filtrar",
+      "statusOptions": {
+        "active": "Por revisar",
+        "saved": "Guardadas",
+        "dismissed": "Descartadas",
+        "all": "Todas (salvo descartadas)"
+      }
+    },
+    "count": "{count, plural, =0 {Ninguna oportunidad} one {# oportunidad} other {# oportunidades}}",
+    "score": "{score}/100",
+    "scoreLabel": "Puntuación de coincidencia: {score} sobre 100",
+    "status": {
+      "NEW": "Nueva",
+      "SEEN": "Vista",
+      "SAVED": "Guardada",
+      "DISMISSED": "Descartada"
+    },
+    "companyUnknown": "Empresa no indicada",
+    "placeUnknown": "Lugar no indicado",
+    "remote": {
+      "ONSITE": "Presencial",
+      "HYBRID": "Híbrido",
+      "FULL_REMOTE": "Teletrabajo completo",
+      "UNKNOWN": "Teletrabajo no indicado"
+    },
+    "contract": {
+      "CDI": "Contrato indefinido",
+      "CDD": "Contrato temporal",
+      "FREELANCE": "Autónomo",
+      "INTERNSHIP": "Prácticas",
+      "APPRENTICESHIP": "Formación en alternancia",
+      "TEMPORARY": "Trabajo temporal",
+      "OTHER": "Otro contrato",
+      "UNKNOWN": "Contrato no indicado"
+    },
+    "salary": {
+      "notStated": "Salario no indicado",
+      "range": "{min} – {max}",
+      "from": "desde {min}",
+      "upTo": "hasta {max}",
+      "period": {
+        "HOUR": "/ hora",
+        "DAY": "/ día",
+        "MONTH": "/ mes",
+        "YEAR": "/ año"
+      }
+    },
+    "actions": {
+      "save": "Guardar",
+      "unsave": "Quitar de guardadas",
+      "dismiss": "Descartar",
+      "restore": "Volver a la lista",
+      "details": "Ver la explicación",
+      "original": "Ver la oferta original",
+      "back": "← Todas las oportunidades"
+    },
+    "detail": {
+      "why": "Por qué esta oferta",
+      "generatedBy": {
+        "llm": "Resumen redactado por tu agente a partir de los elementos siguientes.",
+        "rules": "Resumen generado automáticamente a partir de los elementos siguientes."
+      },
+      "proofs": "Tus logros que coinciden",
+      "proofsEmpty": "Ninguno de tus logros responde directamente a un requisito de la oferta.",
+      "skills": "Tus competencias citadas en la oferta",
+      "culture": "Tus preferencias de cultura mencionadas",
+      "gaps": "Puntos a tener en cuenta",
+      "unknowns": "Información que falta",
+      "components": "Detalle de la puntuación",
+      "description": "Descripción de la oferta",
+      "published": "Publicada el {date}",
+      "guardRailsOk": "Esta oferta cumple todos tus límites."
+    }
   },
   "memory": {
     "title": "Mi memoria de carrera",
@@ -562,6 +668,19 @@
       "confirmHint": "Recuerde exportar sus datos antes de eliminar su cuenta.",
       "submit": "Eliminar definitivamente mi cuenta",
       "deleting": "Eliminando…"
+    },
+    "alerts": {
+      "title": "Alertas de oportunidades",
+      "intro": "Recibe por correo un resumen de las nuevas ofertas cualificadas. El correo solo contiene información sobre las ofertas.",
+      "frequency": "Frecuencia",
+      "frequencyOptions": {
+        "OFF": "Desactivadas",
+        "DAILY": "Resumen diario",
+        "WEEKLY": "Resumen semanal"
+      },
+      "minScore": "Puntuación mínima",
+      "minScoreHint": "Solo se envían las oportunidades con al menos esta puntuación.",
+      "save": "Guardar"
     }
   },
   "import": {
@@ -791,5 +910,54 @@
       "CONFIRMED": "Confirmada",
       "EXPERT": "Dominada"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Muy buena coincidencia ({score}/100).",
+      "good": "Buena coincidencia ({score}/100).",
+      "fair": "Coincidencia parcial ({score}/100).",
+      "provenSkills": "{count, plural, one {Se pide tu competencia demostrada {skills}.} other {Se piden tus competencias demostradas {skills}.}}",
+      "declaredSkills": "{count, plural, one {Se cita tu competencia {skills}, todavía sin prueba.} other {Se citan tus competencias {skills}, todavía sin prueba.}}",
+      "noSkills": "La oferta cita explícitamente pocas de tus competencias.",
+      "proofs": "{count, plural, one {Uno de tus logros responde directamente a un requisito.} other {# de tus logros responden directamente a requisitos.}}",
+      "seniorityAbove": "El puesto parece más sénior que tu puesto actual.",
+      "salaryUnknown": "El salario no está indicado."
+    },
+    "match": "Tu logro «{achievement}» responde al requisito «{requirement}».",
+    "matchSemantic": "Tu logro «{achievement}» se acerca a las funciones del puesto.",
+    "proven": "Demostrado",
+    "declared": "Declarado",
+    "gaps": {
+      "seniorityAbove": "El nivel esperado parece superior al de tu puesto actual.",
+      "seniorityBelow": "El puesto parece menos sénior que tu trayectoria.",
+      "salaryBelowTarget": "La remuneración indicada está por debajo de tu paquete objetivo.",
+      "unprovenSkill": "Se pide «{value}» pero aún no está demostrada: añade una prueba a un logro que la utilice.",
+      "fewSkills": "La oferta no cita explícitamente ninguna de tus competencias."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salario no indicado.",
+      "remoteNotStated": "Política de teletrabajo no indicada.",
+      "remoteDaysNotStated": "Número de días de teletrabajo no indicado.",
+      "contractNotStated": "Tipo de contrato no indicado.",
+      "hoursNotStated": "Jornada semanal no indicada.",
+      "locationNotChecked": "Distancia no comprobada: no se han podido localizar tus lugares.",
+      "seniorityNotStated": "Nivel de experiencia esperado no indicado.",
+      "cultureNotStated": "La oferta no menciona ninguna de tus preferencias de cultura."
+    },
+    "components": {
+      "skills": "Competencias y pruebas",
+      "seniority": "Seniority",
+      "salary": "Remuneración",
+      "culture": "Cultura de empresa"
+    }
+  },
+  "unsubscribe": {
+    "title": "Alertas de oportunidades",
+    "confirmText": "Ya no recibirás resúmenes de oportunidades por correo. Podrás reactivar las alertas en cualquier momento en tus ajustes.",
+    "button": "Confirmar la baja",
+    "doneTitle": "Baja confirmada",
+    "doneText": "Ya no recibirás alertas. Puedes reactivarlas en tus ajustes.",
+    "invalidTitle": "Enlace no válido",
+    "invalidText": "Este enlace de baja no es válido. Puedes gestionar tus alertas en tus ajustes."
   }
 }

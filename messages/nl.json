@@ -104,6 +104,18 @@
       "htmlIntro": "Klik op de knop hieronder om in te loggen. Deze link is 15 minuten geldig en werkt maar één keer.",
       "button": "Inloggen",
       "htmlIgnore": "Heeft u dit niet zelf aangevraagd? Negeer dan dit bericht: er wordt geen account aangemaakt zonder op deze link te klikken."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nieuwe kans} other {# nieuwe kansen}} voor jou",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Je agent heeft een nieuwe vacature gevonden die aan je vangrails voldoet:} other {Je agent heeft # nieuwe vacatures gevonden die aan je vangrails voldoen:}}",
+      "score": "Score {score}/100",
+      "companyUnknown": "Bedrijf niet vermeld",
+      "view": "Uitleg bekijken",
+      "original": "Oorspronkelijke vacature",
+      "footer": "Je ontvangt dit {frequency, select, DAILY {dagelijkse} other {wekelijkse}} overzicht omdat je meldingen hebt ingeschakeld.",
+      "unsubscribe": "Afmelden",
+      "unsubscribeText": "Om deze e-mails niet meer te ontvangen: {url}"
     }
   },
   "common": {
@@ -218,8 +230,102 @@
   "opportunities": {
     "title": "Kansen",
     "intro": "Alleen vacatures die aan uw randvoorwaarden voldoen, met per match een toelichting.",
-    "emptyTitle": "Nog geen kansen",
-    "emptyText": "Zodra uw carrièregeheugen en uw randvoorwaarden zijn ingevuld, gaat uw agent u gekwalificeerde vacatures voorstellen."
+    "empty": {
+      "noMemoryTitle": "Je agent heeft je loopbaangeheugen nodig",
+      "noMemoryText": "Voeg minstens één ervaring, prestatie of vaardigheid toe: dat vergelijkt je agent met de vacatures.",
+      "noMemoryAction": "Mijn geheugen aanvullen",
+      "noRailsTitle": "Stel je vangrails in",
+      "noRailsText": "Minimumsalaris, regio, thuiswerk, contracten: zonder vangrails kan je agent niet garanderen dat de voorgestelde vacatures bij je passen.",
+      "noRailsAction": "Mijn vangrails instellen",
+      "pendingTitle": "Analyse bezig",
+      "pendingText": "Je agent vergelijkt de vacatures op de markt met je profiel. De resultaten verschijnen hier binnen enkele minuten: je hoeft niet op de pagina te blijven.",
+      "noMatchTitle": "Nog geen passende vacature",
+      "noMatchText": "Geen enkele open vacature voldoet op dit moment aan al je vangrails met een voldoende score. Je agent blijft de markt volgen; meer bewezen prestaties verbeteren ook je matches.",
+      "noResultTitle": "Geen kansen met deze filters",
+      "noResultText": "Pas de filters aan om je andere kansen te zien."
+    },
+    "pending": "Bijwerken bezig: je laatste wijzigingen worden binnen enkele minuten verwerkt.",
+    "lastComputed": "Laatste analyse: {date}",
+    "alertsHint": "Ontvang nieuwe kansen per e-mail: <link>stel je meldingen in</link>.",
+    "filters": {
+      "label": "Kansen filteren",
+      "status": "Status",
+      "minScore": "Minimale score",
+      "anyScore": "Alle scores",
+      "scoreOption": "{score} en hoger",
+      "apply": "Filteren",
+      "statusOptions": {
+        "active": "Te bekijken",
+        "saved": "Bewaard",
+        "dismissed": "Afgewezen",
+        "all": "Alle (behalve afgewezen)"
+      }
+    },
+    "count": "{count, plural, =0 {Geen kansen} one {# kans} other {# kansen}}",
+    "score": "{score}/100",
+    "scoreLabel": "Matchscore: {score} van 100",
+    "status": {
+      "NEW": "Nieuw",
+      "SEEN": "Bekeken",
+      "SAVED": "Bewaard",
+      "DISMISSED": "Afgewezen"
+    },
+    "companyUnknown": "Bedrijf niet vermeld",
+    "placeUnknown": "Locatie niet vermeld",
+    "remote": {
+      "ONSITE": "Op locatie",
+      "HYBRID": "Hybride",
+      "FULL_REMOTE": "Volledig op afstand",
+      "UNKNOWN": "Thuiswerkbeleid niet vermeld"
+    },
+    "contract": {
+      "CDI": "Vast contract",
+      "CDD": "Tijdelijk contract",
+      "FREELANCE": "Freelance",
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Leer-werktraject",
+      "TEMPORARY": "Uitzendwerk",
+      "OTHER": "Ander contract",
+      "UNKNOWN": "Contract niet vermeld"
+    },
+    "salary": {
+      "notStated": "Salaris niet vermeld",
+      "range": "{min} – {max}",
+      "from": "vanaf {min}",
+      "upTo": "tot {max}",
+      "period": {
+        "HOUR": "/ uur",
+        "DAY": "/ dag",
+        "MONTH": "/ maand",
+        "YEAR": "/ jaar"
+      }
+    },
+    "actions": {
+      "save": "Bewaren",
+      "unsave": "Uit bewaard halen",
+      "dismiss": "Afwijzen",
+      "restore": "Terugzetten in de lijst",
+      "details": "Uitleg bekijken",
+      "original": "Oorspronkelijke vacature bekijken",
+      "back": "← Alle kansen"
+    },
+    "detail": {
+      "why": "Waarom deze vacature",
+      "generatedBy": {
+        "llm": "Samenvatting geschreven door je agent op basis van de onderstaande elementen.",
+        "rules": "Automatisch opgestelde samenvatting op basis van de onderstaande elementen."
+      },
+      "proofs": "Je passende prestaties",
+      "proofsEmpty": "Geen van je prestaties beantwoordt rechtstreeks aan een eis van de vacature.",
+      "skills": "Je vaardigheden die de vacature noemt",
+      "culture": "Je genoemde cultuurvoorkeuren",
+      "gaps": "Aandachtspunten",
+      "unknowns": "Ontbrekende informatie",
+      "components": "Opbouw van de score",
+      "description": "Beschrijving van de vacature",
+      "published": "Gepubliceerd op {date}",
+      "guardRailsOk": "Deze vacature voldoet aan al je vangrails."
+    }
   },
   "memory": {
     "title": "Mijn carrièregeheugen",
@@ -562,6 +668,19 @@
       "confirmHint": "Exporteer uw gegevens voordat u uw account verwijdert.",
       "submit": "Mijn account definitief verwijderen",
       "deleting": "Bezig met verwijderen…"
+    },
+    "alerts": {
+      "title": "Meldingen over kansen",
+      "intro": "Ontvang per e-mail een overzicht van nieuwe passende vacatures. De e-mail bevat alleen informatie over de vacatures.",
+      "frequency": "Frequentie",
+      "frequencyOptions": {
+        "OFF": "Uitgeschakeld",
+        "DAILY": "Dagelijks overzicht",
+        "WEEKLY": "Wekelijks overzicht"
+      },
+      "minScore": "Minimale score",
+      "minScoreHint": "Alleen kansen met minstens deze score worden verstuurd.",
+      "save": "Opslaan"
     }
   },
   "import": {
@@ -791,5 +910,54 @@
       "CONFIRMED": "Bevestigd",
       "EXPERT": "Beheerst"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Zeer goede match ({score}/100).",
+      "good": "Goede match ({score}/100).",
+      "fair": "Gedeeltelijke match ({score}/100).",
+      "provenSkills": "{count, plural, one {Je bewezen vaardigheid {skills} wordt gevraagd.} other {Je bewezen vaardigheden {skills} worden gevraagd.}}",
+      "declaredSkills": "{count, plural, one {Je vaardigheid {skills} wordt genoemd, nog zonder bewijs.} other {Je vaardigheden {skills} worden genoemd, nog zonder bewijs.}}",
+      "noSkills": "De vacature noemt weinig van je vaardigheden expliciet.",
+      "proofs": "{count, plural, one {Een van je prestaties beantwoordt rechtstreeks aan een eis.} other {# van je prestaties beantwoorden rechtstreeks aan eisen.}}",
+      "seniorityAbove": "De functie lijkt senioriteit te vragen boven je huidige functie.",
+      "salaryUnknown": "Het salaris wordt niet vermeld."
+    },
+    "match": "Je prestatie ‘{achievement}’ beantwoordt aan de eis ‘{requirement}’.",
+    "matchSemantic": "Je prestatie ‘{achievement}’ ligt dicht bij de taken van de functie.",
+    "proven": "Bewezen",
+    "declared": "Opgegeven",
+    "gaps": {
+      "seniorityAbove": "Het verwachte niveau lijkt hoger dan dat van je huidige functie.",
+      "seniorityBelow": "De functie lijkt minder senior dan je loopbaan.",
+      "salaryBelowTarget": "De vermelde beloning ligt onder je beoogde pakket.",
+      "unprovenSkill": "‘{value}’ wordt gevraagd maar is nog niet bewezen: voeg een bewijs toe aan een prestatie waarin je deze gebruikt.",
+      "fewSkills": "De vacature noemt geen van je vaardigheden expliciet."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salaris niet vermeld.",
+      "remoteNotStated": "Thuiswerkbeleid niet vermeld.",
+      "remoteDaysNotStated": "Aantal thuiswerkdagen niet vermeld.",
+      "contractNotStated": "Contracttype niet vermeld.",
+      "hoursNotStated": "Aantal uren per week niet vermeld.",
+      "locationNotChecked": "Afstand niet gecontroleerd: je locaties konden niet worden gevonden.",
+      "seniorityNotStated": "Verwacht ervaringsniveau niet vermeld.",
+      "cultureNotStated": "De vacature noemt geen van je cultuurvoorkeuren."
+    },
+    "components": {
+      "skills": "Vaardigheden en bewijzen",
+      "seniority": "Senioriteit",
+      "salary": "Beloning",
+      "culture": "Bedrijfscultuur"
+    }
+  },
+  "unsubscribe": {
+    "title": "Meldingen over kansen",
+    "confirmText": "Je ontvangt geen overzichten van kansen meer per e-mail. Je kunt de meldingen op elk moment weer inschakelen in je instellingen.",
+    "button": "Afmelding bevestigen",
+    "doneTitle": "Afmelding bevestigd",
+    "doneText": "Je ontvangt geen meldingen meer. Je kunt ze weer inschakelen in je instellingen.",
+    "invalidTitle": "Ongeldige link",
+    "invalidText": "Deze afmeldlink is ongeldig. Je kunt je meldingen beheren in je instellingen."
   }
 }
