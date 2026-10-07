@@ -1,0 +1,44 @@
+{
+  "resultats": [
+    {
+      "id": "202TSTM",
+      "intitule": "Gestionnaire de copropriétés IDF (H/F)",
+      "description": "Offre fictive relayée par France Travail : gestion d'un portefeuille de copropriétés à Paris.",
+      "dateCreation": "2026-09-25T08:00:00.000Z",
+      "lieuTravail": { "libelle": "75 - Paris 10e Arrondissement", "codePostal": "75010" },
+      "entreprise": { "nom": "MATERA" },
+      "typeContrat": "CDI",
+      "typeContratLibelle": "Contrat à durée indéterminée",
+      "salaire": { "libelle": "Annuel de 54000.00 Euros à 59000.00 Euros sur 12.0 mois" },
+      "contact": { "nom": "MATERA - M. Jean Fictif", "courriel": "jean.fictif@matera.example" },
+      "origineOffre": {
+        "origine": "1",
+        "urlOrigine": "https://candidat.francetravail.fr/offres/recherche/detail/202TSTM"
+      }
+    },
+    {
+      "id": "202TSTW",
+      "intitule": "Acheteur IT senior",
+      "description": "Offre fictive relayée depuis le site carrière de l'employeur.",
+      "dateCreation": "2026-09-19T08:00:00.000Z",
+      "lieuTravail": { "libelle": "59 - LILLE", "codePostal": "59000" },
+      "entreprise": { "nom": "EXOTEC SAS" },
+      "typeContrat": "CDI",
+      "origineOffre": {
+        "origine": "2",
+        "urlOrigine": "https://candidat.francetravail.fr/offres/recherche/detail/202TSTW",
+        "partenaires": [{ "nom": "WORKABLE", "url": "https://apply.workable.com/j/C005979099/apply" }]
+      }
+    },
+    {
+      "id": "202TSTN",
+      "intitule": "Contrôleur de gestion (H/F)",
+      "description": "Offre fictive : contrôle de gestion à La Madeleine.",
+      "dateCreation": "2026-10-06T10:00:00.000Z",
+      "lieuTravail": { "libelle": "59 - LA MADELEINE", "codePostal": "59110" },
+      "entreprise": { "nom": "NEXITY" },
+      "typeContrat": "CDI",
+      "origineOffre": { "origine": "1" }
+    }
+  ]
+}

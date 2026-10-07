@@ -1,0 +1,675 @@
+{
+  "744000153698949": {
+    "id": "744000153698949",
+    "name": "Contrôleur de Gestion H/F - CDI",
+    "uuid": "7cdfca6e-0c77-4eed-bbd6-f091077622b9",
+    "jobId": "6917ac2f-7c8f-4579-9a22-103967003468",
+    "jobAdId": "dafa1a4f-c318-4935-8050-327c7981f806",
+    "defaultJobAd": true,
+    "refNumber": "REF15423H",
+    "company": {
+      "name": "Nexity",
+      "identifier": "Nexity"
+    },
+    "location": {
+      "city": "La Madeleine",
+      "region": "Hauts-de-France",
+      "country": "fr",
+      "postalCode": "59110",
+      "remote": false,
+      "hybrid": false,
+      "fullLocation": "La Madeleine, Hauts-de-France, France"
+    },
+    "customField": [
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633d0",
+        "fieldLabel": "Department",
+        "valueId": "1020602",
+        "valueLabel": "Finance"
+      },
+      {
+        "fieldId": "5a046e17b60a5e36a4e0548e",
+        "fieldLabel": "Niveau",
+        "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+        "valueLabel": "Cadre"
+      },
+      {
+        "fieldId": "COUNTRY",
+        "fieldLabel": "Country/Region",
+        "valueId": "fr",
+        "valueLabel": "France"
+      },
+      {
+        "fieldId": "5a04697fb60a5e36a4e0548a",
+        "fieldLabel": "Type de contrat",
+        "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+        "valueLabel": "CDI"
+      },
+      {
+        "fieldId": "5d2334f011bbec26b66f5246",
+        "fieldLabel": "Code postal",
+        "valueLabel": "59110"
+      },
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633cf",
+        "fieldLabel": "Brands",
+        "valueId": "default",
+        "valueLabel": "Nexity"
+      },
+      {
+        "fieldId": "5a0468ba6d8bc55d3924410a",
+        "fieldLabel": "Pôle",
+        "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+        "valueLabel": "HOLDING"
+      },
+      {
+        "fieldId": "5f623677772192746bce79af",
+        "fieldLabel": "Poste CAPRECRUTEMENT",
+        "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+        "valueLabel": "Oui"
+      },
+      {
+        "fieldId": "5a16e07cb60a5e36a4e05726",
+        "fieldLabel": "Filiale",
+        "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+        "valueLabel": "NEXITY SA"
+      }
+    ],
+    "releasedDate": "2026-10-06T08:51:43.139Z",
+    "postingUrl": "https://jobs.smartrecruiters.com/Nexity/744000153698949-controleur-de-gestion-h-f-cdi",
+    "applyUrl": "https://jobs.smartrecruiters.com/Nexity/744000153698949-controleur-de-gestion-h-f-cdi?oga=true",
+    "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/Nexity/publication/7cdfca6e-0c77-4eed-bbd6-f091077622b9?dcr_ci=Nexity",
+    "jobAd": {
+      "sections": {
+        "companyDescription": {
+          "title": "Description de l'entreprise",
+          "text": "<p>Aménageur-promoteur et promoteur-exploitant au service de tous, Nexity accompagne la transformation des villes et répond aux besoins de logement, de services et d'immobilier de nos clients.<br>\nNexity est l’entreprise des passionnés d'immobilier, mais pas que.</p><p>Nous sommes aussi des passionnés de la société.</p><p>Employeur précurseur, Nexity invente la ville durable pour tous en s’appuyant sur des équipes entreprenantes et audacieuses.</p><p><br>\nTravailler chez Nexity, c'est rejoindre…</p>"
+        },
+        "jobDescription": {
+          "title": "Description du poste",
+          "text": "<p>Le Service Contrôle de Gestion recrute un Contrôleur de Gestion H/F à La Madeleine (59110).</p><p>Dans le cadre de la bonne gestion de l’entreprise, vous assurez le suivi de l’activité et du budget de plusieurs filiales opérationnelles réparties sur l’ensemble du territoire national.</p><p>Vous êtes l’interlocuteur privilégié des dirigeants de filiales et participez aux réunions périodiques organisés par la direction générale du pôle.</p><p><br>\n<u>Vos missions…</p>"
+        },
+        "qualifications": {
+          "title": "Qualifications",
+          "text": "<p>De formation Bac+4/5 Ecole de commerce ou de Formation universitaire (finance, Contrôle de gestion)&#xa0;vous disposez d’une expérience réussie minimum de 4 ans dans le domaine.</p><p>Rigueur et sens de l'organisation sont des qualités indispensables pour réussir à ce poste.</p><p>Donnez un nouvel élan à votre carrière, rejoignez-nous&#xa0;!</p><p><strong>Notre processus de recrutement</strong>&#xa0;</p><p>Pour vous offrir une expérience claire, transparente et efficace, votre candidature…</p>"
+        },
+        "additionalInformation": {
+          "title": "Informations supplémentaires",
+          "text": "<p>En rejoignant Nexity, vous intégrez un Groupe solide, engagé et reconnu pour la qualité de ses réalisations. Leader de la promotion immobilière en France, Nexity se distingue par la performance de ses résultats et son ancrage durable sur le marché.</p><ul><li>13 % de part de marché sur la promotion résidentielle, confirmant notre position de premier opérateur urbain. Des projets ambitieux variés et porteurs de sens : <a…</p>"
+        }
+      }
+    },
+    "active": true,
+    "visibility": "PUBLIC",
+    "industry": {
+      "id": "real_estate",
+      "label": "Real Estate"
+    },
+    "function": {
+      "id": "other",
+      "label": "Other"
+    },
+    "department": {
+      "id": 1020602,
+      "label": "Finance"
+    },
+    "experienceLevel": {
+      "id": "not_applicable",
+      "label": "Not Applicable"
+    },
+    "typeOfEmployment": {
+      "id": "permanent",
+      "label": "Full-time"
+    },
+    "language": {
+      "code": "fr",
+      "label": "French",
+      "labelNative": "français"
+    }
+  },
+  "744000153687839": {
+    "id": "744000153687839",
+    "name": "Responsable Développement Foncier H/F",
+    "uuid": "ddb59c6f-8f1b-4ef6-aa7f-7668538765d9",
+    "jobId": "6c64174f-0748-4880-a8f4-ea23bb86b57c",
+    "jobAdId": "97cabc06-098a-49bc-845b-cb2c47e6ac78",
+    "defaultJobAd": true,
+    "refNumber": "REF15440O",
+    "company": {
+      "name": "Nexity",
+      "identifier": "Nexity"
+    },
+    "location": {
+      "city": "Toulouse",
+      "country": "fr",
+      "postalCode": "31000",
+      "remote": false,
+      "hybrid": false,
+      "fullLocation": "Toulouse, , France"
+    },
+    "customField": [
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633d0",
+        "fieldLabel": "Department",
+        "valueId": "1025464",
+        "valueLabel": "Développement Foncier"
+      },
+      {
+        "fieldId": "5a046e17b60a5e36a4e0548e",
+        "fieldLabel": "Niveau",
+        "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+        "valueLabel": "Cadre"
+      },
+      {
+        "fieldId": "COUNTRY",
+        "fieldLabel": "Country/Region",
+        "valueId": "fr",
+        "valueLabel": "France"
+      },
+      {
+        "fieldId": "5a16e090b60a5e36a4e05727",
+        "fieldLabel": "Agence",
+        "valueId": "f5d48395-393e-4093-bb0d-d056516a6b86",
+        "valueLabel": "NEXITY MIDI PYRENEES"
+      },
+      {
+        "fieldId": "5a04697fb60a5e36a4e0548a",
+        "fieldLabel": "Type de contrat",
+        "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+        "valueLabel": "CDI"
+      },
+      {
+        "fieldId": "5d2334f011bbec26b66f5246",
+        "fieldLabel": "Code postal",
+        "valueLabel": "31000"
+      },
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633cf",
+        "fieldLabel": "Brands",
+        "valueId": "default",
+        "valueLabel": "Nexity"
+      },
+      {
+        "fieldId": "5a0468ba6d8bc55d3924410a",
+        "fieldLabel": "Pôle",
+        "valueId": "f5a5f4c6-4d61-4ecd-b0cb-2e8a231e0b42",
+        "valueLabel": "PROMOTION ET AMENAGEMENT"
+      },
+      {
+        "fieldId": "5f623677772192746bce79af",
+        "fieldLabel": "Poste CAPRECRUTEMENT",
+        "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+        "valueLabel": "Oui"
+      },
+      {
+        "fieldId": "5a16e07cb60a5e36a4e05726",
+        "fieldLabel": "Filiale",
+        "valueId": "e3dd96b2-da25-4384-ac6f-f397b50657f9",
+        "valueLabel": "NEXITY MIDI PYRENEES"
+      },
+      {
+        "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+        "fieldLabel": "Manager sur le poste",
+        "valueLabel": "Christophe BROCHET"
+      }
+    ],
+    "releasedDate": "2026-10-06T08:05:39.377Z",
+    "postingUrl": "https://jobs.smartrecruiters.com/Nexity/744000153687839-responsable-developpement-foncier-h-f",
+    "applyUrl": "https://jobs.smartrecruiters.com/Nexity/744000153687839-responsable-developpement-foncier-h-f?oga=true",
+    "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/Nexity/publication/ddb59c6f-8f1b-4ef6-aa7f-7668538765d9?dcr_ci=Nexity",
+    "jobAd": {
+      "sections": {
+        "companyDescription": {
+          "title": "Description de l'entreprise",
+          "text": "<p>Aménageur-promoteur et promoteur-exploitant au service de tous, Nexity accompagne la transformation des villes et répond aux besoins de logement, de services et d'immobilier de nos clients.</p><p>Nexity est l’entreprise des passionnés d'immobilier, mais pas que. Nous sommes aussi des passionnés de la société. Employeur précurseur, Nexity invente la ville durable pour tous en s’appuyant sur des équipes entreprenantes et audacieuses.</p><p>Travailler chez Nexity, c'est rejoindre une entreprise…</p>"
+        },
+        "jobDescription": {
+          "title": "Description du poste",
+          "text": "<p><strong>Nexity&#xa0;</strong>recrute un&#xa0;<strong>Responsable Développement Foncier H/F.</strong></p><p>Vous serez en charge de développer un secteur géographique qui vous sera confié et aurez pour principales missions :</p><ul><li>Etudier et analyser les opportunités foncières (prospection, pertinence du projet, …) ;</li><li>Etudier la faisabilité du projet (m2 développés, bilan financier, études de marché, …) ;</li><li>Négocier et signer les promesses de vente ;</li><li>Animer et…</p>"
+        },
+        "qualifications": {
+          "title": "Qualifications",
+          "text": "<p>De formation BAC+5 minimum (Ecole de commerce, école d’ingénieur, ESPI, droit de l'immobilier, ...), vous disposez d’une expérience de&#xa0;<strong>3&#xa0;années minimum sur un poste similaire en promotion immobilière</strong>.</p><p>Vous êtes reconnu pour vos capacités de négociation et votre pugnacité. Vous êtes dynamique et réactif. Doté d’un excellent relationnel, vous êtes mobile et disponible.</p><p>Rémunération : fixe + variable non plafonnés en fonction de vos résultats…</p>"
+        },
+        "additionalInformation": {
+          "title": "Informations supplémentaires",
+          "text": "<p>En rejoignant Nexity, vous intégrez un Groupe solide, engagé et reconnu pour la qualité de ses réalisations. Leader de la promotion immobilière en France, Nexity se distingue par la performance de ses résultats et son ancrage durable sur le marché.</p><ul><li>13 % de part de marché sur la promotion résidentielle, confirmant notre position de premier opérateur urbain. Des projets ambitieux variés et porteurs de sens : https://nexity.group/nos-realisations/rehabilitation-et-renovation…</p>"
+        }
+      }
+    },
+    "active": true,
+    "visibility": "PUBLIC",
+    "industry": {
+      "id": "real_estate",
+      "label": "Real Estate"
+    },
+    "function": {
+      "id": "other",
+      "label": "Other"
+    },
+    "department": {
+      "id": 1025464,
+      "label": "Développement Foncier"
+    },
+    "experienceLevel": {
+      "id": "not_applicable",
+      "label": "Not Applicable"
+    },
+    "typeOfEmployment": {
+      "id": "permanent",
+      "label": "Full-time"
+    },
+    "language": {
+      "code": "fr",
+      "label": "French",
+      "labelNative": "français"
+    }
+  },
+  "744000153108379": {
+    "id": "744000153108379",
+    "name": "Chef de projet Growth Marketing Acquisition & Data",
+    "uuid": "b0f6b63d-2908-4fe5-b658-9d919506a7b8",
+    "jobId": "86c0ee60-6159-4654-a48e-0ccc4a41a45f",
+    "jobAdId": "8bf36067-2586-4833-995c-643bc83d548c",
+    "defaultJobAd": true,
+    "refNumber": "REF15438V",
+    "company": {
+      "name": "Nexity",
+      "identifier": "Nexity"
+    },
+    "location": {
+      "city": "Nice",
+      "region": "Provence-Alpes-Côte d'Azur",
+      "country": "fr",
+      "remote": false,
+      "hybrid": false,
+      "latitude": "43.7101728",
+      "longitude": "7.261953200000001",
+      "fullLocation": "Nice, Provence-Alpes-Côte d'Azur, France"
+    },
+    "customField": [
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633d0",
+        "fieldLabel": "Department",
+        "valueId": "1020670",
+        "valueLabel": "Marketing"
+      },
+      {
+        "fieldId": "5a046e17b60a5e36a4e0548e",
+        "fieldLabel": "Niveau",
+        "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+        "valueLabel": "Cadre"
+      },
+      {
+        "fieldId": "COUNTRY",
+        "fieldLabel": "Country/Region",
+        "valueId": "fr",
+        "valueLabel": "France"
+      },
+      {
+        "fieldId": "5a16e090b60a5e36a4e05727",
+        "fieldLabel": "Agence",
+        "valueId": "38cf54bd-bbc6-40b3-b9a8-ed7177b0eabb",
+        "valueLabel": "PERLIS Nice"
+      },
+      {
+        "fieldId": "5a04697fb60a5e36a4e0548a",
+        "fieldLabel": "Type de contrat",
+        "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+        "valueLabel": "CDI"
+      },
+      {
+        "fieldId": "5d2334f011bbec26b66f5246",
+        "fieldLabel": "Code postal",
+        "valueLabel": "06000"
+      },
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633cf",
+        "fieldLabel": "Brands",
+        "valueId": "default",
+        "valueLabel": "Nexity"
+      },
+      {
+        "fieldId": "5a0468ba6d8bc55d3924410a",
+        "fieldLabel": "Pôle",
+        "valueId": "e1085180-d91a-4e41-b74a-d6441a05eb9b",
+        "valueLabel": "PERLIS"
+      },
+      {
+        "fieldId": "5f623677772192746bce79af",
+        "fieldLabel": "Poste CAPRECRUTEMENT",
+        "valueId": "f6e08ddc-8c47-4b1b-9b0e-33e191502dec",
+        "valueLabel": "Non"
+      },
+      {
+        "fieldId": "5a16e07cb60a5e36a4e05726",
+        "fieldLabel": "Filiale",
+        "valueId": "98ab3544-8e45-4c9c-865e-e14060231666",
+        "valueLabel": "PERLIS"
+      }
+    ],
+    "releasedDate": "2026-10-02T07:17:47.475Z",
+    "postingUrl": "https://jobs.smartrecruiters.com/Nexity/744000153108379-chef-de-projet-growth-marketing-acquisition-data",
+    "applyUrl": "https://jobs.smartrecruiters.com/Nexity/744000153108379-chef-de-projet-growth-marketing-acquisition-data?oga=true",
+    "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/Nexity/publication/b0f6b63d-2908-4fe5-b658-9d919506a7b8?dcr_ci=Nexity",
+    "jobAd": {
+      "sections": {
+        "companyDescription": {
+          "title": "Description de l'entreprise",
+          "text": "<p>Filiales du groupe Nexity, Perl et iSelection sont des acteurs de référence de l'investissement immobilier patrimonial depuis plus de 25 ans.</p><p>Nous accompagnons les professionnels du patrimoine dans la sélection de solutions immobilières adaptées aux objectifs de leurs clients. Chaque année, plusieurs milliers de prospects, investisseurs et partenaires interagissent avec nos marques à travers différents canaux digitaux et commerciaux.</p><p>Dans un contexte de transformation et…</p>"
+        },
+        "jobDescription": {
+          "title": "Description du poste",
+          "text": "<p>Dans le cadre de notre développement, nous recherchons notre futur(e) <strong>Chef de projet Growth Marketing &amp; Data</strong>.</p><p>Rattaché(e) au Responsable Marketing Digital, votre rôle sera de piloter l'ensemble du cycle de vie des prospects :</p><p><strong>Acquisition → Qualification → Nurturing → Conversion → Réactivation → Analyse</strong></p><p>Vous pilotez l'identification des leviers de croissance, l'exploitation de la donnée et l'optimisation des parcours clients afin…</p>"
+        },
+        "qualifications": {
+          "title": "Qualifications",
+          "text": "<p><strong>Formation &amp; expérience</strong></p><ul><li>Bac+5 en marketing, digital, data ou école de commerce.</li><li>Expérience de 5 ans minimum en Growth Marketing, CRM/Data ou marketing automation.</li><li>Parcours idéalement acquis en startup, scale-up, fintech, proptech, assurtech ou PME en croissance.</li><li>Expérience en environnement B2C avec des parcours de conversion complexes et une forte culture du test &amp; learn.</li></ul><p><strong>Compétences…</p>"
+        },
+        "additionalInformation": {
+          "title": "Informations supplémentaires",
+          "text": "<p>Nos collaborateurs bénéficient :</p><ul><li>D'une rémunération sur 13 mois</li><li>D'une carte ticket-restaurant</li><li>D'une très bonne qualité de vie au travail grâce à une entreprise qui en est soucieuse</li><li>D'un environnement favorisant l'innovation, l'autonomie et le développement des compétences</li><li>D'une journée de télétravail à l’issue de la période d’essai</li></ul>"
+        }
+      }
+    },
+    "compensation": {
+      "min": 40000,
+      "max": 50000,
+      "currency": "EUR",
+      "period": "YEARLY"
+    },
+    "active": true,
+    "visibility": "PUBLIC",
+    "industry": {
+      "id": "marketing_and_advertising",
+      "label": "Marketing And Advertising"
+    },
+    "function": {
+      "id": "marketing",
+      "label": "Marketing"
+    },
+    "department": {
+      "id": 1020670,
+      "label": "Marketing"
+    },
+    "experienceLevel": {
+      "id": "mid_senior_level",
+      "label": "Mid-Senior Level"
+    },
+    "typeOfEmployment": {
+      "id": "permanent",
+      "label": "Full-time"
+    },
+    "language": {
+      "code": "fr",
+      "label": "French",
+      "labelNative": "français"
+    }
+  },
+  "744000152970685": {
+    "id": "744000152970685",
+    "name": "Responsable juridique droit des sociétés H/F - CDI",
+    "uuid": "7830ade0-6dac-4c4e-83fe-ac2e7e255298",
+    "jobId": "bded593f-24c4-48d8-a76e-febda3d1e39b",
+    "jobAdId": "fa846457-b20e-41b0-a1ae-7d6e58be2e19",
+    "defaultJobAd": true,
+    "refNumber": "REF15437M",
+    "company": {
+      "name": "Nexity",
+      "identifier": "Nexity"
+    },
+    "location": {
+      "city": "Saint-Ouen-sur-Seine",
+      "region": "IDF",
+      "country": "fr",
+      "postalCode": "93400",
+      "remote": false,
+      "hybrid": false,
+      "fullLocation": "Saint-Ouen-sur-Seine, IDF, France"
+    },
+    "customField": [
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633d0",
+        "fieldLabel": "Department",
+        "valueId": "1023424",
+        "valueLabel": "Juridique"
+      },
+      {
+        "fieldId": "5a046e17b60a5e36a4e0548e",
+        "fieldLabel": "Niveau",
+        "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+        "valueLabel": "Cadre"
+      },
+      {
+        "fieldId": "COUNTRY",
+        "fieldLabel": "Country/Region",
+        "valueId": "fr",
+        "valueLabel": "France"
+      },
+      {
+        "fieldId": "5a04697fb60a5e36a4e0548a",
+        "fieldLabel": "Type de contrat",
+        "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+        "valueLabel": "CDI"
+      },
+      {
+        "fieldId": "5d2334f011bbec26b66f5246",
+        "fieldLabel": "Code postal",
+        "valueLabel": "93400"
+      },
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633cf",
+        "fieldLabel": "Brands",
+        "valueId": "default",
+        "valueLabel": "Nexity"
+      },
+      {
+        "fieldId": "5a0468ba6d8bc55d3924410a",
+        "fieldLabel": "Pôle",
+        "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+        "valueLabel": "HOLDING"
+      },
+      {
+        "fieldId": "5f623677772192746bce79af",
+        "fieldLabel": "Poste CAPRECRUTEMENT",
+        "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+        "valueLabel": "Oui"
+      },
+      {
+        "fieldId": "5a16e07cb60a5e36a4e05726",
+        "fieldLabel": "Filiale",
+        "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+        "valueLabel": "NEXITY SA"
+      },
+      {
+        "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+        "fieldLabel": "Manager sur le poste",
+        "valueLabel": "Camille Ricaud Le Borgne"
+      }
+    ],
+    "releasedDate": "2026-10-01T15:12:37.186Z",
+    "postingUrl": "https://jobs.smartrecruiters.com/Nexity/744000152970685-responsable-juridique-droit-des-societes-h-f-cdi",
+    "applyUrl": "https://jobs.smartrecruiters.com/Nexity/744000152970685-responsable-juridique-droit-des-societes-h-f-cdi?oga=true",
+    "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/Nexity/publication/7830ade0-6dac-4c4e-83fe-ac2e7e255298?dcr_ci=Nexity",
+    "jobAd": {
+      "sections": {
+        "companyDescription": {
+          "title": "Description de l'entreprise",
+          "text": "<p>Rejoindre Nexity, c’est intégrer un Groupe leader, passionné d’immobilier et de société, où vous relèverez des défis pour transformer la ville en profondeur. Aménageur-promoteur et promoteur-exploitant, Nexity œuvre pour l'accès au logement pour tous et la décarbonation de notre secteur. Avançons, évoluons et construisons la Vie Ensemble. Rejoignez-nous !</p>"
+        },
+        "jobDescription": {
+          "title": "Description du poste",
+          "text": "<p><strong>Partenaire des directions opérationnelles et juridiques, vous intervenez en qualité de conseil sur l’ensemble des problématiques liées au droit des sociétés et droit boursier. Vous veillez au respect des processus et des règles définis par le Groupe afin de garantir la sécurité juridique des opérations.</strong></p><p><strong>Praticien confirmé, vous êtes sollicité sur les dossiers complexes en droit des sociétés et en fusions-acquisitions, et accompagnez les différentes parties…</p>"
+        },
+        "qualifications": {
+          "title": "Qualifications",
+          "text": "<p>Diplôme&#xa0;: Master II Droit des affaires / Droit privé</p><p>Expérience&#xa0;: 10 ans en droit des sociétés, droit boursier dans un groupe de sociétés et/ou en cabinet d’avocats avec une expérience en management. Idéalement avec une connaissance du secteur de l'immobilier.&#xa0;</p>"
+        },
+        "additionalInformation": {
+          "title": "Informations supplémentaires",
+          "text": "<p><strong>Notre processus de recrutement</strong>&#xa0;</p><p>Pour vous offrir une expérience claire, transparente et efficace, votre candidature suivra le parcours suivant :&#xa0;<br>\n<strong>Un premier entretien</strong>&#xa0;avec la&#xa0;<strong>Chargée de Recrutement</strong>, afin d’échanger sur votre parcours, vos motivations et les contours du poste.&#xa0;<br>\n<strong>Un entretien avec le Manager recruteur</strong>, pour approfondir votre rôle futur, vos compétences et votre vision des…</p>"
+        }
+      }
+    },
+    "active": true,
+    "visibility": "PUBLIC",
+    "industry": {
+      "id": "real_estate",
+      "label": "Real Estate"
+    },
+    "function": {
+      "id": "legal",
+      "label": "Legal"
+    },
+    "department": {
+      "id": 1023424,
+      "label": "Juridique"
+    },
+    "experienceLevel": {
+      "id": "not_applicable",
+      "label": "Not Applicable"
+    },
+    "typeOfEmployment": {
+      "id": "permanent",
+      "label": "Full-time"
+    },
+    "language": {
+      "code": "fr",
+      "label": "French",
+      "labelNative": "français"
+    }
+  },
+  "744000152202129": {
+    "id": "744000152202129",
+    "name": "Juriste immobilier H/F - CDI",
+    "uuid": "410cf423-dca4-4402-b333-a3c29c51ecca",
+    "jobId": "9feda46c-f5bf-4473-89f5-01c5614238e5",
+    "jobAdId": "b4a66c51-2e1a-41d2-a12f-c81cc55d5146",
+    "defaultJobAd": true,
+    "refNumber": "REF15435O",
+    "company": {
+      "name": "Nexity",
+      "identifier": "Nexity"
+    },
+    "location": {
+      "city": "Saint-Ouen-sur-Seine",
+      "region": "IDF",
+      "country": "fr",
+      "postalCode": "93400",
+      "remote": false,
+      "hybrid": true,
+      "fullLocation": "Saint-Ouen-sur-Seine, IDF, France"
+    },
+    "customField": [
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633d0",
+        "fieldLabel": "Department",
+        "valueId": "1023424",
+        "valueLabel": "Juridique"
+      },
+      {
+        "fieldId": "5a046e17b60a5e36a4e0548e",
+        "fieldLabel": "Niveau",
+        "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+        "valueLabel": "Cadre"
+      },
+      {
+        "fieldId": "COUNTRY",
+        "fieldLabel": "Country/Region",
+        "valueId": "fr",
+        "valueLabel": "France"
+      },
+      {
+        "fieldId": "5a04697fb60a5e36a4e0548a",
+        "fieldLabel": "Type de contrat",
+        "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+        "valueLabel": "CDI"
+      },
+      {
+        "fieldId": "5d2334f011bbec26b66f5246",
+        "fieldLabel": "Code postal",
+        "valueLabel": "93400"
+      },
+      {
+        "fieldId": "59e8cbba6d8bc53c6dd633cf",
+        "fieldLabel": "Brands",
+        "valueId": "default",
+        "valueLabel": "Nexity"
+      },
+      {
+        "fieldId": "5a0468ba6d8bc55d3924410a",
+        "fieldLabel": "Pôle",
+        "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+        "valueLabel": "HOLDING"
+      },
+      {
+        "fieldId": "5f623677772192746bce79af",
+        "fieldLabel": "Poste CAPRECRUTEMENT",
+        "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+        "valueLabel": "Oui"
+      },
+      {
+        "fieldId": "5a16e07cb60a5e36a4e05726",
+        "fieldLabel": "Filiale",
+        "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+        "valueLabel": "NEXITY SA"
+      },
+      {
+        "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+        "fieldLabel": "Manager sur le poste",
+        "valueLabel": "Pauline DAVAL"
+      }
+    ],
+    "releasedDate": "2026-09-28T14:50:04.649Z",
+    "postingUrl": "https://jobs.smartrecruiters.com/Nexity/744000152202129-juriste-immobilier-h-f-cdi",
+    "applyUrl": "https://jobs.smartrecruiters.com/Nexity/744000152202129-juriste-immobilier-h-f-cdi?oga=true",
+    "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/Nexity/publication/410cf423-dca4-4402-b333-a3c29c51ecca?dcr_ci=Nexity",
+    "jobAd": {
+      "sections": {
+        "companyDescription": {
+          "title": "Description de l'entreprise",
+          "text": "<p>Rejoindre Nexity, c’est intégrer un Groupe leader, passionné d’immobilier et de société, où vous relèverez des défis pour transformer la ville en profondeur. Aménageur-promoteur et promoteur-exploitant, Nexity oeuvre pour l'accès au logement pour tous et la décarbonation de notre secteur. Avançons, évoluons et construisons la Vie Ensemble. Rejoignez-nous !</p><p>&#xa0;</p>"
+        },
+        "jobDescription": {
+          "title": "Description du poste",
+          "text": "<p>Au sein de la Direction Juridique Promotion et Aménagement de Nexity, vous participerez au développement et à la réalisation des opérations de promotion immobilière résidentielles, tertiaires et d’aménagements du Groupe.</p><p>Rattaché à un responsable juridique, vous accompagnerez vos clients internes (filiales opérationnelles) sur l’ensemble des étapes des opérations.</p><p>Vos principales missions consisteront à :</p><ul><li>Sécuriser le montage des opérations immobilières, nécessitant la…</p>"
+        },
+        "qualifications": {
+          "title": "Qualifications",
+          "text": "<p>De formation juridique supérieure de type Bac+5 en droit de l’immobilier, de l’urbanisme/ construction, vous justifiez d’une expérience similaire d'au moins 7 ans au sein d'une société de promotion immobilière, chez un bailleur, ou d'une étude notariale.</p><p>Vous êtes autonome, rigoureux, orienté vers la satisfaction de votre client interne et aimez le travail en équipe.</p>"
+        },
+        "additionalInformation": {
+          "title": "Informations supplémentaires",
+          "text": "<p>Notre processus de recrutement<br>\nPour vous offrir une expérience claire, transparente et efficace, votre candidature suivra le parcours suivant : Un premier entretien avec la Chargée de Recrutement, afin d’échanger sur votre parcours, vos motivations et les contours du poste. Un entretien avec le Manager recruteur, pour approfondir votre rôle futur, vos compétences et votre vision des missions. Un échange final avec la RRH, afin de valider votre intégration au sein de Nexity et répondre à…</p><ul><li>Rémunération : 48 000 € – 55 000 € brut annuel selon expérience, + intéressement.</li></ul>"
+        }
+      }
+    },
+    "active": true,
+    "visibility": "PUBLIC",
+    "industry": {
+      "id": "real_estate",
+      "label": "Real Estate"
+    },
+    "function": {
+      "id": "other",
+      "label": "Other"
+    },
+    "department": {
+      "id": 1023424,
+      "label": "Juridique"
+    },
+    "experienceLevel": {
+      "id": "mid_senior_level",
+      "label": "Mid-Senior Level"
+    },
+    "typeOfEmployment": {
+      "id": "permanent",
+      "label": "Full-time"
+    },
+    "language": {
+      "code": "fr",
+      "label": "French",
+      "labelNative": "français"
+    }
+  }
+}

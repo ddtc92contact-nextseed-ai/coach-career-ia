@@ -141,6 +141,28 @@ export function countryCode(name: string | null | undefined): string | null {
   return COUNTRIES[folded] ?? null;
 }
 
+/** Code pays ISO-2 fourni tel quel (« fr », « DE ») ou nom de pays connu. */
+export function isoCountry(value: string | null | undefined): string | null {
+  const v = value?.trim();
+  if (!v) return null;
+  return /^[a-z]{2}$/i.test(v) ? v.toUpperCase() : countryCode(v);
+}
+
+/**
+ * Indicateurs structurés de télétravail (SmartRecruiters, Recruitee) ;
+ * `null` si aucun n'est vrai (le texte de l'offre prend alors le relais).
+ */
+export function remoteFromFlags(flags: {
+  remote?: boolean | null;
+  hybrid?: boolean | null;
+  onSite?: boolean | null;
+}): RemotePolicy | null {
+  if (flags.hybrid) return "HYBRID";
+  if (flags.remote) return flags.onSite ? "HYBRID" : "FULL_REMOTE";
+  if (flags.onSite) return "ONSITE";
+  return null;
+}
+
 /** « Paris 15e Arrondissement » → « Paris », « Lyon 3e » → « Lyon », sans CEDEX. */
 export function cleanCity(city: string | null | undefined): string | null {
   if (!city) return null;

@@ -8,7 +8,11 @@ import { ashbyConnector } from "./connectors/ashby";
 import { franceTravailConnector } from "./connectors/france-travail";
 import { greenhouseConnector } from "./connectors/greenhouse";
 import { leverConnector } from "./connectors/lever";
+import { recruiteeConnector } from "./connectors/recruitee";
+import { smartRecruitersConnector } from "./connectors/smartrecruiters";
+import { workableConnector } from "./connectors/workable";
 import type { RadarConfig } from "./config";
+import { failureThreshold, loadSourceHealth } from "./health";
 import { HttpClient, type FetchLike } from "./http";
 import { runConnectors, type RunSummary } from "./pipeline";
 import type { Connector } from "./types";
@@ -21,7 +25,38 @@ export function atsConnector(company: AtsCompany): Connector<unknown> {
       return leverConnector(company) as Connector<unknown>;
     case "ASHBY":
       return ashbyConnector(company) as Connector<unknown>;
+    case "SMARTRECRUITERS":
+      return smartRecruitersConnector(company) as Connector<unknown>;
+    case "RECRUITEE":
+      return recruiteeConnector(company) as Connector<unknown>;
+    case "WORKABLE":
+      return workableConnector(company) as Connector<unknown>;
   }
+}
+
+/**
+ * Intervalles minimaux par hôte, au-delà de `RADAR_MIN_INTERVAL_MS` :
+ * `apply.workable.com` répond 429 dès quelques requêtes par seconde.
+ */
+export const HOST_INTERVALS: Record<string, number> = {
+  "apply.workable.com": 5000,
+};
+
+/** Client HTTP du radar (job ponctuel et worker). */
+export function radarHttpClient(
+  config: Pick<RadarConfig, "userAgent" | "minIntervalMs">,
+  deps: Pick<RadarDeps, "fetch" | "sleep"> = {},
+): HttpClient {
+  const hostIntervals = Object.fromEntries(
+    Object.entries(HOST_INTERVALS).map(([host, ms]) => [host, Math.max(ms, config.minIntervalMs)]),
+  );
+  return new HttpClient({
+    userAgent: config.userAgent,
+    minIntervalMs: config.minIntervalMs,
+    hostIntervals,
+    fetch: deps.fetch,
+    sleep: deps.sleep,
+  });
 }
 
 export function buildConnectors(
@@ -58,14 +93,7 @@ export async function runRadar(
 ): Promise<RunSummary[]> {
   const log = deps.logger ?? defaultLogger;
   const now = deps.now ?? (() => new Date());
-  const http =
-    deps.http ??
-    new HttpClient({
-      userAgent: config.userAgent,
-      minIntervalMs: config.minIntervalMs,
-      fetch: deps.fetch,
-      sleep: deps.sleep,
-    });
+  const http = deps.http ?? radarHttpClient(config, deps);
 
   const companies = await syncCompanies(prisma, await loadCompanyConfig(config.companiesFile));
   if (!config.franceTravail) {
@@ -106,6 +134,19 @@ export async function runRadar(
       });
     }
   }
+  // Alerte quand une source échoue plusieurs passages d'affilée (voir /app/radar).
+  try {
+    for (const source of await loadSourceHealth(prisma, { threshold: failureThreshold() })) {
+      if (!source.failing) continue;
+      log.warn("radar.source.unhealthy", {
+        sourceKey: source.sourceKey,
+        consecutiveFailures: source.consecutiveFailures,
+      });
+    }
+  } catch (error) {
+    log.error("radar.health.failed", { error: error instanceof Error ? error.name : "erreur" });
+  }
+
   const failed = summaries.filter((s) => s.status === "FAILED").length;
   log.info("radar.finished", {
     connectors: summaries.length,

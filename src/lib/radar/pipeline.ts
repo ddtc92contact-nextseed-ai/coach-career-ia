@@ -37,6 +37,9 @@ const SOURCE_PRIORITY: Record<string, number> = {
   greenhouse: 0,
   lever: 0,
   ashby: 0,
+  smartrecruiters: 0,
+  recruitee: 0,
+  workable: 0,
   france_travail: 1,
 };
 

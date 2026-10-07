@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "matera",
+    "name": "Matera",
+    "sector": "Immobilier / proptech",
+    "ats": "recruitee",
+    "boardToken": "matera"
+  },
+  {
+    "slug": "exotec",
+    "name": "Exotec",
+    "sector": "Robotique / logistique",
+    "ats": "workable",
+    "boardToken": "exotec"
+  },
+  {
+    "slug": "nexity",
+    "name": "Nexity",
+    "sector": "Immobilier",
+    "ats": "smartrecruiters",
+    "boardToken": "Nexity"
+  },
+  {
+    "slug": "ubisoft",
+    "name": "Ubisoft",
+    "ats": "smartrecruiters",
+    "boardToken": "Ubisoft2",
+    "active": false
+  }
+]

@@ -176,13 +176,79 @@ const INTERVALS: Record<string, SalaryPeriod> = {
   "per-day-wage": "DAY",
   "per-month-salary": "MONTH",
   "per-year-salary": "YEAR",
+  hour: "HOUR",
+  day: "DAY",
+  month: "MONTH",
+  year: "YEAR",
 };
 
-/** Période d'une rémunération structurée (Ashby, Lever). */
+/** Période d'une rémunération structurée (Ashby, Lever, Recruitee). */
 export function periodFromInterval(interval: unknown): SalaryPeriod | null {
   return typeof interval === "string" ? (INTERVALS[interval] ?? null) : null;
 }
 
 export function positiveNumber(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
+}
+
+/** Montant structuré, nombre ou chaîne numérique (« 54000 », « 40.00 »). */
+export function positiveAmount(value: unknown): number | null {
+  if (typeof value === "string" && /^\s*\d+(?:\.\d+)?\s*$/.test(value))
+    return positiveNumber(Number(value));
+  return positiveNumber(value);
+}
+
+/**
+ * Fourchette structurée d'un ATS. Des bornes incohérentes (« 40 – 45 000 »,
+ * saisie erronée) ne sont pas corrigées : seules les données brutes restent.
+ */
+export function structuredSalary(input: {
+  min: unknown;
+  max: unknown;
+  currency: unknown;
+  period: unknown;
+}): Salary | null {
+  let min = positiveAmount(input.min);
+  let max = positiveAmount(input.max);
+  if (min === null && max === null) return null;
+  const currency =
+    typeof input.currency === "string" && /^[a-z]{3}$/i.test(input.currency.trim())
+      ? input.currency.trim().toUpperCase()
+      : null;
+  const period = periodFromInterval(input.period);
+  const raw = [
+    min !== null && max !== null ? `${min}–${max}` : String(min ?? max),
+    currency,
+    typeof input.period === "string" ? `/ ${input.period}` : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  if (min !== null && max !== null && (min > max || min * 10 < max)) min = max = null;
+  const hasAmount = min !== null || max !== null;
+  return {
+    min,
+    max,
+    currency: hasAmount ? currency : null,
+    period: hasAmount ? period : null,
+    variable: null,
+    equity: null,
+    raw,
+  };
+}
+
+const SALARY_LINE =
+  /\b(?:salaire|r[ée]mun[ée]ration|salary|compensation|package|fourchette|brut annuel)\b/i;
+
+/**
+ * Rémunération annoncée dans une description : seule une ligne qui en parle
+ * explicitement (« Salaire : 45-55 k€ ») et donne un montant est retenue.
+ * Les autres chiffres du texte (chiffre d'affaires, effectifs…) sont ignorés.
+ */
+export function salaryFromDescription(text: string | null | undefined): Salary | null {
+  for (const line of (text ?? "").split("\n")) {
+    if (!SALARY_LINE.test(line)) continue;
+    const salary = parseSalaryText(line);
+    if (salary && (salary.min !== null || salary.max !== null)) return salary;
+  }
+  return null;
 }

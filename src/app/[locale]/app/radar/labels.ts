@@ -5,6 +5,9 @@ export const SOURCE_LABELS: Record<string, string> = {
   greenhouse: "Greenhouse",
   lever: "Lever",
   ashby: "Ashby",
+  smartrecruiters: "SmartRecruiters",
+  recruitee: "Recruitee",
+  workable: "Workable",
 };
 
 export const REMOTE_LABELS: Record<RemotePolicy, string> = {
