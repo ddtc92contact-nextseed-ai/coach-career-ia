@@ -148,7 +148,8 @@
     "fileType": "Format non accepté : envoyez un PDF ou une image (PNG, JPEG, WebP).",
     "fileQuota": "Vous avez atteint le nombre maximal de documents. Supprimez-en un pour en ajouter un autre.",
     "confirmMismatch": "L’adresse saisie ne correspond pas à celle de votre compte.",
-    "notFound": "Cet élément n’existe pas ou plus."
+    "notFound": "Cet élément n’existe pas ou plus.",
+    "billingCancelFailed": "Impossible de résilier votre abonnement pour le moment : votre compte n’a pas été supprimé. Réessayez dans quelques minutes."
   },
   "app": {
     "metaTitle": "Mon espace",
@@ -163,7 +164,8 @@
       "opportunities": "Opportunités",
       "settings": "Paramètres",
       "radar": "Radar (admin)",
-      "coach": "Coach IA"
+      "coach": "Coach IA",
+      "billing": "Abonnement"
     }
   },
   "dashboard": {
@@ -328,7 +330,9 @@
       "description": "Description de l’offre",
       "published": "Publiée le {date}",
       "guardRailsOk": "Cette offre respecte tous vos garde-fous."
-    }
+    },
+    "emptyTitle": "Aucune opportunité pour l’instant",
+    "emptyText": "Dès que votre mémoire de carrière et vos garde-fous seront renseignés, votre agent commencera à vous proposer des offres qualifiées."
   },
   "memory": {
     "title": "Ma mémoire de carrière",
@@ -780,6 +784,16 @@
         "acceptsOnCall": "Astreintes acceptées",
         "locations": "Zones de travail"
       }
+    },
+    "quotaUnlimited": "Messages illimités avec Premium.",
+    "upsell": {
+      "title": "Vous avez utilisé vos messages gratuits",
+      "text": "L’offre gratuite comprend {limit, plural, one {# message} other {# messages}} au coach sur 24 heures glissantes ; ils se libèrent au fil du temps.",
+      "titlePremiumOnly": "Le coach IA est réservé à Premium",
+      "textPremiumOnly": "Sur ce service, le coach IA fait partie de l’offre Premium.",
+      "premium": "Avec Premium, le coach est illimité.",
+      "later": "Le paiement en ligne n’est pas encore disponible : revenez un peu plus tard.",
+      "cta": "Découvrir Premium"
     }
   },
   "settings": {
@@ -1092,5 +1106,52 @@
     "doneText": "Vous ne recevrez plus d’alertes. Vous pouvez les réactiver dans vos paramètres.",
     "invalidTitle": "Lien invalide",
     "invalidText": "Ce lien de désabonnement n’est pas valide. Vous pouvez gérer vos alertes dans vos paramètres."
+  },
+  "billing": {
+    "title": "Abonnement",
+    "intro": "Votre offre actuelle et ce que Premium ajoute. L’essentiel du service reste gratuit.",
+    "notAvailable": "Les paiements ne sont pas encore disponibles. Toutes les fonctionnalités gratuites restent accessibles normalement.",
+    "checkoutSuccess": "Merci ! Votre paiement est enregistré : Premium s’active dans quelques instants. Actualisez la page si besoin.",
+    "checkoutCancel": "Paiement annulé : aucun montant n’a été prélevé.",
+    "errors": {
+      "checkout": "Impossible d’ouvrir la page de paiement pour le moment. Réessayez dans quelques minutes.",
+      "portal": "Impossible d’ouvrir la gestion de l’abonnement pour le moment. Réessayez dans quelques minutes."
+    },
+    "current": {
+      "title": "Votre offre",
+      "admin": "Premium vous est offert (compte administrateur).",
+      "renewsOn": "Renouvellement automatique le {date}.",
+      "endsOn": "Abonnement résilié : Premium reste actif jusqu’au {date}.",
+      "free": "Coach IA : {limit, plural, =0 {réservé à Premium} one {# message sur 24 heures} other {# messages sur 24 heures}}.",
+      "pastDue": "Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour conserver Premium."
+    },
+    "manage": "Gérer mon abonnement",
+    "manageHint": "Moyen de paiement, factures et résiliation, sur la page sécurisée de Stripe.",
+    "redirecting": "Redirection…",
+    "compare": {
+      "title": "Les offres"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratuit",
+        "price": "0 €, sans engagement"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {jour} week {semaine} year {an} other {mois}}",
+    "priceUnknown": "Abonnement mensuel",
+    "features": {
+      "memory": "Mémoire de carrière, coffre d’identité et garde-fous",
+      "opportunities": "Opportunités qualifiées selon vos garde-fous",
+      "coachLimited": "Coach IA : {limit, plural, one {# message} other {# messages}} sur 24 heures",
+      "coachNone": "Coach IA non inclus",
+      "everythingFree": "Tout ce que comprend l’offre gratuite",
+      "coachUnlimited": "Coach IA illimité"
+    },
+    "upgrade": "Passer à Premium",
+    "upgradeHint": "Paiement mensuel sécurisé par Stripe, résiliable à tout moment.",
+    "privacy": "Confidentialité : Stripe reçoit uniquement votre adresse e-mail de connexion et un identifiant de compte. Votre mémoire de carrière et votre identité ne lui sont jamais transmises, et vos données de carte ne transitent pas par nos serveurs."
   }
 }

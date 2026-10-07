@@ -148,7 +148,8 @@
     "fileType": "Formato non accettato: carichi un PDF o un’immagine (PNG, JPEG, WebP).",
     "fileQuota": "Ha raggiunto il numero massimo di documenti. Ne elimini uno per aggiungerne un altro.",
     "confirmMismatch": "L’indirizzo inserito non corrisponde a quello del Suo account.",
-    "notFound": "Questo elemento non esiste o non esiste più."
+    "notFound": "Questo elemento non esiste o non esiste più.",
+    "billingCancelFailed": "Impossibile disdire il Suo abbonamento al momento: l’account non è stato eliminato. Riprovi tra qualche minuto."
   },
   "app": {
     "metaTitle": "Il mio spazio",
@@ -163,7 +164,8 @@
       "opportunities": "Opportunità",
       "settings": "Impostazioni",
       "radar": "Radar (admin)",
-      "coach": "Coach IA"
+      "coach": "Coach IA",
+      "billing": "Abbonamento"
     }
   },
   "dashboard": {
@@ -328,7 +330,9 @@
       "description": "Descrizione dell’offerta",
       "published": "Pubblicata il {date}",
       "guardRailsOk": "Questa offerta rispetta tutti i tuoi paletti."
-    }
+    },
+    "emptyTitle": "Ancora nessuna opportunità",
+    "emptyText": "Non appena avrà compilato la Sua memoria di carriera e i Suoi paletti, il Suo agente inizierà a proporLe offerte qualificate."
   },
   "memory": {
     "title": "La mia memoria di carriera",
@@ -780,6 +784,16 @@
         "acceptsOnCall": "Reperibilità accettata",
         "locations": "Zone di lavoro"
       }
+    },
+    "quotaUnlimited": "Messaggi illimitati con Premium.",
+    "upsell": {
+      "title": "Ha utilizzato i Suoi messaggi gratuiti",
+      "text": "Il piano gratuito comprende {limit, plural, one {# messaggio} other {# messaggi}} al coach nelle ultime 24 ore; si liberano man mano.",
+      "titlePremiumOnly": "Il coach IA è riservato a Premium",
+      "textPremiumOnly": "Su questo servizio, il coach IA fa parte del piano Premium.",
+      "premium": "Con Premium, il coach è illimitato.",
+      "later": "Il pagamento online non è ancora disponibile: torni un po’ più tardi.",
+      "cta": "Scopri Premium"
     }
   },
   "settings": {
@@ -1092,5 +1106,52 @@
     "doneText": "Non riceverai più avvisi. Puoi riattivarli nelle impostazioni.",
     "invalidTitle": "Link non valido",
     "invalidText": "Questo link di annullamento non è valido. Puoi gestire i tuoi avvisi nelle impostazioni."
+  },
+  "billing": {
+    "title": "Abbonamento",
+    "intro": "Il Suo piano attuale e cosa aggiunge Premium. L’essenziale del servizio resta gratuito.",
+    "notAvailable": "I pagamenti non sono ancora disponibili. Tutte le funzionalità gratuite restano accessibili normalmente.",
+    "checkoutSuccess": "Grazie! Il pagamento è registrato: Premium si attiverà tra pochi istanti. Se necessario, aggiorni la pagina.",
+    "checkoutCancel": "Pagamento annullato: non è stato addebitato alcun importo.",
+    "errors": {
+      "checkout": "Impossibile aprire la pagina di pagamento al momento. Riprovi tra qualche minuto.",
+      "portal": "Impossibile aprire la gestione dell’abbonamento al momento. Riprovi tra qualche minuto."
+    },
+    "current": {
+      "title": "Il Suo piano",
+      "admin": "Premium Le è offerto (account amministratore).",
+      "renewsOn": "Rinnovo automatico il {date}.",
+      "endsOn": "Abbonamento disdetto: Premium resta attivo fino al {date}.",
+      "free": "Coach IA: {limit, plural, =0 {riservato a Premium} one {# messaggio ogni 24 ore} other {# messaggi ogni 24 ore}}.",
+      "pastDue": "L’ultimo pagamento non è andato a buon fine. Aggiorni il metodo di pagamento per mantenere Premium."
+    },
+    "manage": "Gestisci il mio abbonamento",
+    "manageHint": "Metodo di pagamento, fatture e disdetta, sulla pagina sicura di Stripe.",
+    "redirecting": "Reindirizzamento…",
+    "compare": {
+      "title": "I piani"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratuito",
+        "price": "0 €, senza vincoli"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {giorno} week {settimana} year {anno} other {mese}}",
+    "priceUnknown": "Abbonamento mensile",
+    "features": {
+      "memory": "Memoria professionale, cassaforte dell’identità e paletti",
+      "opportunities": "Opportunità qualificate secondo i Suoi paletti",
+      "coachLimited": "Coach IA: {limit, plural, one {# messaggio} other {# messaggi}} ogni 24 ore",
+      "coachNone": "Coach IA non incluso",
+      "everythingFree": "Tutto ciò che comprende il piano gratuito",
+      "coachUnlimited": "Coach IA illimitato"
+    },
+    "upgrade": "Passa a Premium",
+    "upgradeHint": "Pagamento mensile protetto da Stripe, disdicibile in qualsiasi momento.",
+    "privacy": "Riservatezza: Stripe riceve solo il Suo indirizzo e-mail di accesso e un identificativo dell’account. La Sua memoria professionale e la Sua identità non gli vengono mai trasmesse e i dati della carta non transitano dai nostri server."
   }
 }

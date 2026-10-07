@@ -40,6 +40,10 @@ x-app-env: &app-env
   AI_MAX_RETRIES: ${AI_MAX_RETRIES:-2}
   COACH_MESSAGES_PER_DAY: ${COACH_MESSAGES_PER_DAY:-40}
   GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+  # Abonnements Stripe : sans ces variables, paiements indisponibles (rien n'est bloqué).
+  STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+  STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+  STRIPE_PRICE_PREMIUM_MONTHLY: ${STRIPE_PRICE_PREMIUM_MONTHLY:-}
 
 services:
   app:

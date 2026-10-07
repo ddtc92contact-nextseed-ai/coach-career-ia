@@ -1,0 +1,23 @@
+{
+  "id": "evt_invoice_failed_1",
+  "object": "event",
+  "type": "invoice.payment_failed",
+  "api_version": "2026-09-30.endive",
+  "created": 1791360300,
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": { "id": null, "idempotency_key": null },
+  "data": {
+    "object": {
+      "id": "in_fixture",
+      "object": "invoice",
+      "customer": "cus_fixture",
+      "status": "open",
+      "parent": {
+        "type": "subscription_details",
+        "quote_details": null,
+        "subscription_details": { "subscription": "sub_fixture", "metadata": {} }
+      }
+    }
+  }
+}

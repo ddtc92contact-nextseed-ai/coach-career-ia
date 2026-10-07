@@ -57,8 +57,8 @@ export type CoachTurnInput = {
   signal: AbortSignal;
   /** Message du candidat déjà enregistré (ou repris pour un nouvel essai). */
   userMessage: { id: string; createdAt: Date };
-  /** Messages restants après celui-ci. */
-  remaining: number;
+  /** Messages restants après celui-ci (`null` : illimité). */
+  remaining: number | null;
   /** Appelé quand le tour est terminé (libération du verrou de la conversation). */
   onFinish?: () => Promise<void>;
 };

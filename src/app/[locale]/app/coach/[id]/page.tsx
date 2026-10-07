@@ -4,7 +4,9 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { coachMessagesPerDay, remainingMessages } from "@/lib/coach/quota";
+import { isBillingConfigured } from "@/lib/billing/config";
+import { getEntitlements } from "@/lib/billing/server";
+import { remainingMessages } from "@/lib/coach/quota";
 import { countRecentUserMessages, getConversation } from "@/lib/coach/repository";
 import { AiNotice } from "../ai-notice";
 import { CoachChat } from "./chat";
@@ -22,13 +24,14 @@ export default async function CoachConversationPage({
   const user = await requireUser();
   const { id } = await params;
   // Conversation d'un autre utilisateur : 404, comme une conversation inexistante.
-  const [t, conversation, sent] = await Promise.all([
+  const [t, conversation, sent, entitlements] = await Promise.all([
     getTranslations("coach"),
     getConversation(user.id, id),
     countRecentUserMessages(user.id),
+    getEntitlements(user.id),
   ]);
   if (!conversation) notFound();
-  const limit = coachMessagesPerDay();
+  const limit = entitlements.limits.coachMessagesPerDay;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -46,6 +49,7 @@ export default async function CoachConversationPage({
         initialRemaining={remainingMessages(sent, limit)}
         limit={limit}
         configured={isAiConfigured()}
+        billing={isBillingConfigured()}
       />
     </div>
   );

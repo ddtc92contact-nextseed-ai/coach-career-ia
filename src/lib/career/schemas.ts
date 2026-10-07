@@ -38,6 +38,7 @@ export const VALIDATION_ERRORS = [
   "fileType",
   "fileQuota",
   "confirmMismatch",
+  "billingCancelFailed",
   "notFound",
 ] as const;
 export type ValidationError = (typeof VALIDATION_ERRORS)[number];

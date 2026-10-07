@@ -174,13 +174,14 @@ export async function addMessage(
  * Enregistre un message du candidat SI le quota le permet. Le décompte et
  * l'insertion se font sous un verrou transactionnel propre à l'utilisateur
  * (`pg_advisory_xact_lock`) : des envois simultanés ne peuvent pas dépasser
- * la limite. Renvoie `null` si la limite est atteinte.
+ * la limite. Renvoie `null` si la limite est atteinte. `limit` à `null` :
+ * illimité (Premium).
  */
 export async function addUserMessageWithinQuota(
   userId: string,
   conversationId: string,
   content: string,
-  limit: number,
+  limit: number | null,
   now = new Date(),
 ) {
   return db.$transaction(async (tx) => {
@@ -192,7 +193,7 @@ export async function addUserMessageWithinQuota(
         createdAt: { gt: new Date(now.getTime() - COACH_QUOTA_WINDOW_MS) },
       },
     });
-    if (sent >= limit) return null;
+    if (limit !== null && sent >= limit) return null;
     const { count } = await tx.coachConversation.updateMany({
       where: { id: conversationId, userId },
       data: { updatedAt: now },

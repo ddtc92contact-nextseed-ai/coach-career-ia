@@ -5,11 +5,14 @@ import { PageTitle } from "@/components/empty-state";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { coachMessagesPerDay, remainingMessages } from "@/lib/coach/quota";
+import { isBillingConfigured } from "@/lib/billing/config";
+import { getEntitlements } from "@/lib/billing/server";
+import { remainingMessages } from "@/lib/coach/quota";
 import { countRecentUserMessages, listConversations } from "@/lib/coach/repository";
 import { COACH_MODES } from "@/lib/coach/shared";
 import { removeConversation, startConversation } from "./actions";
 import { AiNotice } from "./ai-notice";
+import { CoachUpsell } from "./upsell";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("coach");
@@ -18,14 +21,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CoachPage() {
   const user = await requireUser();
-  const [t, format, conversations, sent] = await Promise.all([
+  const [t, format, conversations, sent, entitlements] = await Promise.all([
     getTranslations("coach"),
     getFormatter(),
     listConversations(user.id),
     countRecentUserMessages(user.id),
+    getEntitlements(user.id),
   ]);
   const configured = isAiConfigured();
-  const remaining = remainingMessages(sent, coachMessagesPerDay());
+  const limit = entitlements.limits.coachMessagesPerDay;
+  const remaining = remainingMessages(sent, limit);
 
   return (
     <div className="max-w-4xl">
@@ -65,7 +70,15 @@ export default async function CoachPage() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-sm text-stone-500">{t("quota", { remaining })}</p>
+        {limit !== null && remaining === 0 ? (
+          <div className="mt-4">
+            <CoachUpsell limit={limit} billing={isBillingConfigured()} />
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-stone-500">
+            {remaining === null ? t("quotaUnlimited") : t("quota", { remaining })}
+          </p>
+        )}
       </section>
 
       <section aria-labelledby="coach-history">
