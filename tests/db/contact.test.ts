@@ -493,6 +493,23 @@ describe.skipIf(!url)(
       await db.contact.delete({ where: { id: started.id } });
     });
 
+    it("intitulé daté ou nom de l'entreprise dans le titre : le brouillon de l'agent s'approuve", async () => {
+      for (const title of [
+        "Alternance chef de produit 2026-2027 (H/F)",
+        `Data engineer – Initrode ${run}`,
+      ]) {
+        const match = await newMatch(alice.id, (await newOffer({ title })).id);
+        const started = await contacts.startContact(alice.id, match.id, { ai: null });
+        if (!started.ok) throw new Error(started.error);
+        const draft = (await contacts.getContact(alice.id, started.id))!;
+        expect(draft.body).toContain(title);
+        expect(await contacts.approveDraft(alice.id, started.id, { appUrl: APP_URL })).toEqual({
+          ok: true,
+        });
+        await db.contact.delete({ where: { id: started.id } });
+      }
+    });
+
     it("quota quotidien d'envois (CONTACT_DAILY_LIMIT) et une prise de contact par offre", async () => {
       process.env.CONTACT_DAILY_LIMIT = "2";
       const already = await contacts.getQuota(alice.id, NOW);

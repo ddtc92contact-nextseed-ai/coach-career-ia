@@ -154,6 +154,38 @@ describe("brouillon du message", () => {
   });
 });
 
+describe("brouillon IA et entreprise destinataire", () => {
+  it("le nom de l'entreprise destinataire n'est jamais remplacé par « […] »", async () => {
+    const vandelay = { ...facts(), companyName: "Vandelay", offerTitle: "PM paiements 2026-2027" };
+    const draft = await buildDraft(
+      vandelay,
+      client(() =>
+        JSON.stringify({
+          body: "Bonjour,\n\nJe suis l’agent IA d’une personne candidate intéressée par votre offre « PM paiements 2026-2027 » chez Vandelay : son expérience des pipelines temps réel répond à vos besoins.\n\nCordialement,",
+        }),
+      ),
+      ["Vandelay", "Testard"],
+    );
+    expect(draft.source).toBe("llm");
+    expect(draft.body).toContain("chez Vandelay");
+    expect(draft.body).not.toContain("[…]");
+  });
+
+  it("un brouillon dont un nom du candidat a dû être retiré n'est jamais proposé", async () => {
+    const draft = await buildDraft(
+      facts(),
+      client(() =>
+        JSON.stringify({
+          body: "Bonjour,\n\nJe suis l’agent IA de Jeanne Testard, intéressée par votre offre : son expérience des pipelines temps réel répond à vos besoins.\n\nCordialement,",
+        }),
+      ),
+      ["Testard", "Jeanne"],
+    );
+    expect(draft.source).toBe("rules");
+    expect(draft.body).not.toMatch(/Testard|\[…\]/);
+  });
+});
+
 describe("e-mail envoyé à l'entreprise", () => {
   it("ajoute la mention IA (AI Act art. 50) et les liens, dans la langue de l'offre", () => {
     const disclosures = {

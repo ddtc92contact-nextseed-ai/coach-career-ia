@@ -14,7 +14,7 @@ import {
   resolveCardLink,
   shareableCard,
 } from "@/lib/card/repository";
-import { checkText, type ReidentificationIssue } from "@/lib/card/reidentify";
+import { checkMessage, type ReidentificationIssue } from "@/lib/card/reidentify";
 import { publicCard } from "@/lib/card/schema";
 import { cardPath, replyPath } from "@/lib/card/tokens";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
@@ -272,10 +272,21 @@ async function preflight(
   if (!card.ok) return { ok: false, error: "card", issues: card.issues };
   const subject = dec(userId, row.subjectEnc);
   const body = dec(userId, row.bodyEnc);
-  const terms = await cardIdentityTerms(userId);
+  const [terms, offer] = await Promise.all([
+    cardIdentityTerms(userId),
+    db.jobOffer.findUnique({
+      where: { id: row.offerId },
+      select: { title: true, companyName: true },
+    }),
+  ]);
+  // L'intitulé de l'offre et le nom de l'entreprise destinataire ne sont pas des données du candidat.
+  const context = {
+    terms,
+    target: { offerTitle: offer?.title ?? "", companyName: offer?.companyName ?? null },
+  };
   const issues = [
-    ...checkText(subject, "subject", { terms }),
-    ...checkText(body, "body", { terms }),
+    ...checkMessage(subject, "subject", context),
+    ...checkMessage(body, "body", context),
   ];
   if (issues.length > 0) return { ok: false, error: "reidentifying", issues };
   return { ok: true, subject, body };

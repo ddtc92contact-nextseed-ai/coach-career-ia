@@ -61,7 +61,69 @@ const SCHOOL_ACRONYMS =
   /\b(?:HEC|ESSEC|ESCP|EDHEC|INSA|IUT|ENS|ENSAE|ENSTA|ENSAM|ENSIMAG|ENSEEIHT|EPITA|EPITECH|EFREI|ESIEA|ESILV|ISEP|UPMC|UCL|LSE|IAE)\b/u;
 
 /** Employeur : « chez Acme », « at Acme », « bei Acme », « presso Acme », « bij Acme ». */
-const EMPLOYER_AT = /(?:^|[\s(])(?:chez|at|bei|presso|bij)\s+(\p{Lu}[\p{L}\p{N}&'’.-]+)/u;
+const EMPLOYER_AT = /(?:^|[\s(])(?:chez|at|bei|presso|bij)\s+(\p{Lu}[\p{L}\p{N}&'’.-]+)/gu;
+/**
+ * Mots en capitale qui suivent couramment ces prépositions sans désigner un
+ * employeur : pronoms de politesse et noms communs allemands (« bei Ihnen »,
+ * « bei Interesse »), formules néerlandaises, italiennes, anglaises, françaises.
+ */
+const NOT_EMPLOYERS = new Set([
+  // de
+  "ihnen",
+  "ihrem",
+  "ihrer",
+  "ihren",
+  "ihr",
+  "ihre",
+  "euch",
+  "dir",
+  "uns",
+  "interesse",
+  "fragen",
+  "rückfragen",
+  "bedarf",
+  "gelegenheit",
+  "bedarfsfall",
+  "eignung",
+  "zusage",
+  // nl
+  "u",
+  "uw",
+  "jullie",
+  "vragen",
+  "interesse",
+  "voorkeur",
+  // it
+  "voi",
+  "lei",
+  "noi",
+  "vostra",
+  "vostro",
+  // en
+  "the",
+  "this",
+  "that",
+  "your",
+  "our",
+  "least",
+  "scale",
+  "best",
+  "first",
+  // fr
+  "vous",
+  "nous",
+  "moi",
+  "soi",
+]);
+
+/** Premier nom d'employeur introduit par « chez/at/bei/presso/bij », ou `null`. */
+function employerAfterPreposition(text: string): string | null {
+  for (const match of text.matchAll(EMPLOYER_AT)) {
+    const word = match[1]!.replace(/[.'’-]+$/, "");
+    if (!NOT_EMPLOYERS.has(word.toLowerCase())) return word;
+  }
+  return null;
+}
 /** Raison sociale : « Acme SAS », « Foo Bar GmbH ». */
 const LEGAL_FORM =
   /\p{Lu}[\p{L}\p{N}&'’.-]*(?:\s+\p{Lu}[\p{L}\p{N}&'’.-]*)*\s+(?:SAS|SASU|SARL|EURL|SA|SCOP|GmbH|AG|Inc\.?|Ltd\.?|LLC|BV|B\.V\.|NV|S\.p\.A\.|SpA|S\.L\.|SRL)(?![\p{L}])/u;
@@ -133,8 +195,8 @@ export function checkText(text: string, path: string, context: CheckContext) {
   if (url && !email) push("url", url[0]);
   const term = findTerm(text, context.terms);
   if (term) push("knownTerm", term);
-  const employer = EMPLOYER_AT.exec(text) ?? LEGAL_FORM.exec(text);
-  if (employer) push("employer", employer[1] ?? employer[0]);
+  const employer = employerAfterPreposition(text) ?? LEGAL_FORM.exec(text)?.[0];
+  if (employer) push("employer", employer);
   const school = SCHOOL_WORDS.exec(text) ?? SCHOOL_ACRONYMS.exec(text);
   if (school) push("school", school[0]);
   for (const pattern of DATE_PATTERNS) {
@@ -145,6 +207,64 @@ export function checkText(text: string, path: string, context: CheckContext) {
     }
   }
   return issues;
+}
+
+/** L'offre destinataire d'un message : son intitulé et son entreprise ne sont pas des données du candidat. */
+export type MessageTarget = { offerTitle: string; companyName: string | null };
+
+const LEGAL_SUFFIX = /\s+(?:SAS|SASU|SARL|EURL|SA|SE|GmbH|AG|Inc\.?|Ltd\.?|LLC|BV|NV|SpA|SRL)$/i;
+
+function targetNames(target: MessageTarget): string[] {
+  const names = [
+    target.offerTitle,
+    target.companyName,
+    target.companyName?.replace(LEGAL_SUFFIX, ""),
+  ];
+  return [...new Set(names.map((n) => n?.trim() ?? "").filter((n) => n.length >= 2))].sort(
+    (a, b) => b.length - a.length,
+  );
+}
+
+/**
+ * Termes identifiants SANS l'entreprise destinataire : la nommer dans un
+ * message qui lui est adressé ne révèle rien du candidat (une entreprise
+ * qu'il exclut ne passe de toute façon pas les garde-fous).
+ */
+export function termsForTarget(terms: string[], target: MessageTarget): string[] {
+  const company = target.companyName?.trim();
+  if (!company) return terms;
+  const names = [company, company.replace(LEGAL_SUFFIX, "")];
+  return terms.filter(
+    (term) => !names.some((name) => findTerm(name, [term]) || findTerm(term, [name])),
+  );
+}
+
+/** Retire du texte l'intitulé de l'offre et le nom de l'entreprise (sans casse ni accents). */
+export function stripTarget(text: string, target: MessageTarget): string {
+  let result = text;
+  for (const name of targetNames(target)) {
+    for (;;) {
+      const found = findTerm(result, [name]);
+      if (!found) break;
+      result = result.replace(found, " ");
+    }
+  }
+  return result;
+}
+
+/**
+ * Contrôle d'un message adressé à une entreprise : le texte de l'offre (titre
+ * avec ses dates, nom de l'entreprise) n'est pas une donnée du candidat et
+ * n'est donc pas contrôlé ; tout le reste l'est, comme pour la carte.
+ */
+export function checkMessage(
+  text: string,
+  path: string,
+  context: CheckContext & { target: MessageTarget },
+): ReidentificationIssue[] {
+  return checkText(stripTarget(text, context.target), path, {
+    terms: termsForTarget(context.terms, context.target),
+  });
 }
 
 /**

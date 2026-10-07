@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildCard, yearsOfExperience } from "@/lib/card/build";
-import { checkCard, checkText, findTerm, vaultTerms } from "@/lib/card/reidentify";
+import { checkCard, checkMessage, checkText, findTerm, vaultTerms } from "@/lib/card/reidentify";
 import { cardSchema, publicCard, type CardContent } from "@/lib/card/schema";
 import {
   cardLinkTtlDays,
@@ -275,5 +275,40 @@ describe("jetons des liens publics", () => {
     expect(cardLinkTtlDays({})).toBe(30);
     expect(cardLinkTtlDays({ CARD_LINK_TTL_DAYS: "7" })).toBe(7);
     expect(cardLinkTtlDays({ CARD_LINK_TTL_DAYS: "0" })).toBe(30);
+  });
+});
+
+describe("contrôle des messages adressés à une entreprise", () => {
+  it("prépositions suivies d'une formule de politesse : pas un employeur", () => {
+    const codesOf = (text: string) => checkText(text, "x", { terms: [] }).map((i) => i.code);
+    expect(codesOf("Bei Interesse melde ich mich gern bei Ihnen.")).toEqual([]);
+    expect(codesOf("Bij Interesse hoor ik graag van U of bij Uw team.")).toEqual([]);
+    expect(codesOf("Resto a disposizione presso Voi per un colloquio.")).toEqual([]);
+    expect(checkText("Zuvor Data Engineer bei Siemens.", "x", { terms: [] })).toEqual([
+      { code: "employer", path: "x", excerpt: "Siemens" },
+    ]);
+  });
+
+  it("l'intitulé de l'offre et l'entreprise destinataire ne sont pas des données du candidat", () => {
+    const target = {
+      offerTitle: "Alternance chef de produit 2026-2027 (H/F)",
+      companyName: "Vandelay SAS",
+    };
+    const body =
+      "Bonjour, je suis l’agent IA d’une personne candidate intéressée par votre offre « Alternance chef de produit 2026-2027 (H/F) » chez Vandelay.";
+    expect(checkMessage(body, "body", { terms: ["Vandelay", "Testard"], target })).toEqual([]);
+    expect(
+      checkMessage("Candidature anonyme – PM – Vandelay", "subject", {
+        terms: ["Vandelay"],
+        target: { offerTitle: "PM – Vandelay", companyName: "Vandelay" },
+      }),
+    ).toEqual([]);
+    // Le reste du texte reste contrôlé : dates et noms du candidat.
+    expect(
+      checkMessage(`${body} Elle y travaille depuis 2019, demandez Testard.`, "body", {
+        terms: ["Vandelay", "Testard"],
+        target,
+      }).map((i) => i.code),
+    ).toEqual(["knownTerm", "date"]);
   });
 });

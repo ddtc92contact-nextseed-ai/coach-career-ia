@@ -107,8 +107,10 @@ export default async function ContactPage({ params }: Props) {
               })}
             </p>
           ) : null}
-          <p className="mt-3 rounded-lg bg-stone-50 p-3 text-sm font-medium">{contact.subject}</p>
-          <p className="mt-2 rounded-lg bg-stone-50 p-3 text-sm whitespace-pre-line text-stone-800">
+          <p className="mt-3 rounded-lg bg-stone-50 p-3 text-sm font-medium [overflow-wrap:anywhere] break-words">
+            {contact.subject}
+          </p>
+          <p className="mt-2 rounded-lg bg-stone-50 p-3 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
             {contact.sentText ?? contact.body}
           </p>
         </section>
@@ -186,7 +188,9 @@ export default async function ContactPage({ params }: Props) {
                   <p className="text-xs text-stone-500">
                     {t("receivedOn", { date: format.dateTime(r.createdAt, "short") })}
                   </p>
-                  <p className="mt-1 text-sm whitespace-pre-line text-stone-800">{r.body}</p>
+                  <p className="mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
+                    {r.body}
+                  </p>
                 </li>
               ))}
             </ul>

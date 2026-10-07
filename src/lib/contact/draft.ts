@@ -6,7 +6,7 @@ import type { AiClient } from "@/lib/ai/client";
 import { isAiError } from "@/lib/ai/errors";
 import { languageInstruction } from "@/lib/ai/locale";
 import type { CardContent } from "@/lib/card/schema";
-import { checkText } from "@/lib/card/reidentify";
+import { checkMessage, termsForTarget } from "@/lib/card/reidentify";
 import { redactText } from "@/lib/import/pseudonymise";
 
 /**
@@ -156,9 +156,12 @@ export async function llmDraftBody(
       { role: "user", content: JSON.stringify(draftPromptFacts(facts)) },
     ],
   });
-  const body = redactText(object.body, terms).text;
-  // Un texte qui ré-identifierait le candidat n'est jamais proposé.
-  return checkText(body, "body", { terms }).length > 0 ? null : body;
+  // L'entreprise destinataire n'est pas un terme identifiant : jamais remplacée par « […] ».
+  const target = { offerTitle: facts.offerTitle, companyName: facts.companyName };
+  const body = redactText(object.body, termsForTarget(terms, target)).text;
+  // Un texte qui ré-identifierait le candidat (ou abîmé par le retrait d'un nom) n'est jamais proposé.
+  if (body.includes("[…]")) return null;
+  return checkMessage(body, "body", { terms, target }).length > 0 ? null : body;
 }
 
 /**

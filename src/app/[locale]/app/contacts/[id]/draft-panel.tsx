@@ -65,13 +65,17 @@ export function DraftPanel({
     {},
   );
   // Un texte modifié mais pas encore enregistré ne peut être ni approuvé ni envoyé.
-  const [dirty, setDirty] = useState(false);
+  // Nombre de modifications, et celui du dernier enregistrement envoyé : le
+  // texte n'est « propre » qu'après un enregistrement RÉUSSI de la dernière version.
+  const [edits, setEdits] = useState(0);
+  const [submitted, setSubmitted] = useState(0);
+  const dirty = edits > 0 && !(saveState.ok === "saved" && submitted === edits);
 
   return (
     <div className="space-y-6">
       <ActionForm
         action={(formData) => {
-          setDirty(false);
+          setSubmitted(edits);
           save(formData);
         }}
         className="space-y-4"
@@ -85,7 +89,7 @@ export function DraftPanel({
             name="subject"
             defaultValue={subject}
             maxLength={MAX_SUBJECT}
-            onChange={() => setDirty(true)}
+            onChange={() => setEdits((n) => n + 1)}
             className={inputClass}
           />
         </div>
@@ -99,7 +103,7 @@ export function DraftPanel({
             defaultValue={body}
             maxLength={MAX_BODY}
             rows={14}
-            onChange={() => setDirty(true)}
+            onChange={() => setEdits((n) => n + 1)}
             aria-describedby="body-hint"
             className={inputClass}
           />
@@ -143,7 +147,7 @@ export function CopyText({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <div className="space-y-2">
-      <textarea readOnly value={text} rows={12} className={inputClass} />
+      <textarea readOnly value={text} rows={12} aria-label={t("paste")} className={inputClass} />
       <div className="flex items-center gap-3">
         <button
           type="button"
