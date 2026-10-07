@@ -290,12 +290,15 @@ mémoire de carrière **uniquement par des suggestions qu'il valide**.
   (`accepted`, `status`, `suggestion`, `delta`, `done` ou `error`). Boucle d'outils limitée à 6
   étapes et 90 s ; le navigateur abandonne à 105 s. Panne, lenteur ou sortie vide : erreur
   traduite dans le fil et bouton « Réessayer » (`{ "retry": true }` relance le dernier message,
-  sans le décompter). Les suggestions d'un tour échoué sont abandonnées.
+  sans le décompter, 3 fois au plus par message). Un seul tour à la fois par conversation
+  (verrou atomique `turn_started_at`) : un envoi ou une relance simultanés reçoivent 409. Les
+  suggestions d'un tour échoué sont abandonnées.
 - **Données** : `CoachConversation`, `CoachMessage` (texte **chiffré**, AAD
   `user:<id>:coach-message`), `CoachSuggestion` ; suppression en cascade avec la conversation ou
   le compte, incluses dans l'export RGPD. La conversation d'un autre utilisateur répond 404.
 - **Quota** : `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h glissantes (40 par défaut),
-  compté en base. Défini dans `src/lib/coach/quota.ts`, seul endroit à modifier pour une future
+  compté en base sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des
+  envois simultanés ne peuvent pas dépasser la limite ; à 0, les relances sont aussi refusées. Défini dans `src/lib/coach/quota.ts`, seul endroit à modifier pour une future
   offre premium.
 - **Langue** : le coach répond dans la langue de l'utilisateur (`getUserLocale()`).
 - **Journal** : compteurs (étapes, suggestions, durée) et codes d'erreur ; jamais le texte des
