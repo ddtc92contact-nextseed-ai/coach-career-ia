@@ -1249,6 +1249,62 @@
       }
     }
   },
+  "companySignals": {
+    "title": "Dinamica dell’azienda",
+    "intro": "Segnali ricavati dalle offerte pubblicate dall’azienda nelle ultime settimane (fonti pubbliche).",
+    "week": "Settimana del {date}",
+    "strength": {
+      "weak": "Segnale debole",
+      "medium": "Segnale moderato",
+      "strong": "Segnale forte"
+    },
+    "types": {
+      "HIRING_SURGE": "Picco di assunzioni",
+      "HIRING_FREEZE": "Assunzioni congelate",
+      "NEW_TEAM": "Nuovo team",
+      "NEW_LOCATION": "Nuova sede",
+      "REPOSTED_OFFER": "Offerta ripubblicata",
+      "REMOTE_SHIFT": "Cambio sul lavoro da remoto"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# nuova offerta} other {# nuove offerte}} in una settimana, contro {baselineNew, number} in media di solito ({openCount, plural, one {# offerta aperta} other {# offerte aperte}}). L’azienda accelera: buon momento per candidarsi.",
+      "HIRING_FREEZE": "Nessuna nuova offerta da {quietWeeks} settimane e {closedOffers} offerte chiuse su {openBefore}: le assunzioni sembrano congelate.",
+      "NEW_TEAM_FAMILIES": "Prime offerte dell’azienda in {families}: si sta formando un nuovo team.",
+      "NEW_TEAM_LEADERSHIP": "Primo ruolo di responsabilità pubblicato: il team si sta strutturando.",
+      "NEW_LOCATION": "Prime offerte a {places}: l’azienda si sta insediando.",
+      "REPOSTED_OFFER": "{count, plural, one {Un’offerta ripubblicata} other {# offerte ripubblicate}} dopo la chiusura ({titles}): ruolo difficile da coprire, una leva per negoziare.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {Più lavoro da remoto} other {Meno lavoro da remoto}}: il {recentShare}% delle offerte recenti è ibrido o da remoto, contro il {baselineShare}% prima."
+    },
+    "families": {
+      "DATA_AI": "dati / IA",
+      "ENGINEERING": "ingegneria del software",
+      "PRODUCT": "prodotto",
+      "DESIGN": "design",
+      "SALES": "vendite",
+      "MARKETING": "marketing",
+      "CUSTOMER": "assistenza clienti",
+      "OPERATIONS": "operations",
+      "FINANCE": "finanza",
+      "PEOPLE": "risorse umane",
+      "LEGAL": "legale"
+    },
+    "admin": {
+      "title": "Dinamica delle aziende",
+      "intro": "Statistiche dell’ultima settimana conclusa e ultimi segnali deboli, calcolati dalle offerte raccolte (duplicati esclusi). Nessun segnale senza 4 settimane e 3 offerte di storico.",
+      "empty": "Nessuna azienda monitorata ha ancora offerte.",
+      "company": "Azienda",
+      "open": "Aperte",
+      "lastWeek": "Ultima settimana",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Tempo mediano di chiusura",
+      "days": "{days, number} g",
+      "salaryShare": "Con stipendio",
+      "percent": "{value, number, percent}",
+      "signals": "Ultimi segnali",
+      "none": "Nessun segnale",
+      "notAvailable": "—"
+    }
+  },
   "card": {
     "title": "La mia scheda anonima",
     "intro": "Ciò che un’azienda vede di te prima che tu decida di rivelare la tua identità. Viene generata dalla tua memoria professionale pseudonimizzata, mai dalla tua cassaforte dell’identità.",

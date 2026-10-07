@@ -1249,6 +1249,62 @@
       }
     }
   },
+  "companySignals": {
+    "title": "Dinámica de la empresa",
+    "intro": "Señales extraídas de las ofertas publicadas por la empresa en las últimas semanas (fuentes públicas).",
+    "week": "Semana del {date}",
+    "strength": {
+      "weak": "Señal débil",
+      "medium": "Señal moderada",
+      "strong": "Señal fuerte"
+    },
+    "types": {
+      "HIRING_SURGE": "Pico de contratación",
+      "HIRING_FREEZE": "Contratación congelada",
+      "NEW_TEAM": "Nuevo equipo",
+      "NEW_LOCATION": "Nueva ubicación",
+      "REPOSTED_OFFER": "Oferta republicada",
+      "REMOTE_SHIFT": "Cambio en el teletrabajo"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# oferta nueva} other {# ofertas nuevas}} en una semana, frente a {baselineNew, number} de media habitual ({openCount, plural, one {# oferta abierta} other {# ofertas abiertas}}). La empresa acelera: buen momento para postularse.",
+      "HIRING_FREEZE": "Ninguna oferta nueva desde hace {quietWeeks} semanas y {closedOffers} de {openBefore} ofertas cerradas: la contratación parece congelada.",
+      "NEW_TEAM_FAMILIES": "Primeras ofertas de la empresa en {families}: se está formando un nuevo equipo.",
+      "NEW_TEAM_LEADERSHIP": "Primer puesto de dirección publicado: el equipo se estructura.",
+      "NEW_LOCATION": "Primeras ofertas en {places}: la empresa se implanta allí.",
+      "REPOSTED_OFFER": "{count, plural, one {Una oferta republicada} other {# ofertas republicadas}} tras su cierre ({titles}): puesto difícil de cubrir, una baza para negociar.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {Más teletrabajo} other {Menos teletrabajo}}: el {recentShare} % de las ofertas recientes son híbridas o en remoto, frente al {baselineShare} % antes."
+    },
+    "families": {
+      "DATA_AI": "datos / IA",
+      "ENGINEERING": "ingeniería de software",
+      "PRODUCT": "producto",
+      "DESIGN": "diseño",
+      "SALES": "ventas",
+      "MARKETING": "marketing",
+      "CUSTOMER": "atención al cliente",
+      "OPERATIONS": "operaciones",
+      "FINANCE": "finanzas",
+      "PEOPLE": "recursos humanos",
+      "LEGAL": "jurídico"
+    },
+    "admin": {
+      "title": "Dinámica de las empresas",
+      "intro": "Estadísticas de la última semana completa y últimas señales débiles, calculadas a partir de las ofertas recopiladas (sin duplicados). Ninguna señal sin 4 semanas y 3 ofertas de historial.",
+      "empty": "Ninguna empresa seguida tiene ofertas todavía.",
+      "company": "Empresa",
+      "open": "Abiertas",
+      "lastWeek": "Última semana",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Plazo medio de cierre",
+      "days": "{days, number} d",
+      "salaryShare": "Con salario",
+      "percent": "{value, number, percent}",
+      "signals": "Últimas señales",
+      "none": "Ninguna señal",
+      "notAvailable": "—"
+    }
+  },
   "card": {
     "title": "Mi tarjeta anónima",
     "intro": "Lo que una empresa ve de ti antes de que decidas revelar tu identidad. Se genera a partir de tu memoria profesional seudonimizada, nunca de tu caja fuerte de identidad.",

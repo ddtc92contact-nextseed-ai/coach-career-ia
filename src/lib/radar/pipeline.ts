@@ -219,6 +219,7 @@ async function upsertOffer<Raw>(
       latitude: true,
       longitude: true,
       geocodedAt: true,
+      status: true,
     },
   });
   const geo = await offerGeo(offer, data, existing, geocoder, seenAt);
@@ -227,6 +228,8 @@ async function upsertOffer<Raw>(
     status: "OPEN" as const,
     closedAt: null,
     sourceKey: connector.key,
+    // Offre fermée qui réapparaît : republiée (signal « difficile à pourvoir »).
+    ...(existing?.status === "CLOSED" ? { reopenedAt: seenAt, reopenCount: { increment: 1 } } : {}),
   };
 
   let kind: UpsertOutcome["kind"];
@@ -242,7 +245,9 @@ async function upsertOffer<Raw>(
     row = await prisma.jobOffer.create({
       data: {
         ...data,
-        ...seen,
+        lastSeenAt: seenAt,
+        status: "OPEN",
+        sourceKey: connector.key,
         source: connector.source,
         sourceId: offer.sourceId,
         firstSeenAt: seenAt,

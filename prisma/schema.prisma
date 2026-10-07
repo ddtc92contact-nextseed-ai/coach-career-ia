@@ -603,7 +603,9 @@ model Company {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  offers JobOffer[]
+  offers    JobOffer[]
+  weekStats CompanyWeekStat[]
+  signals   CompanySignal[]
 
   @@unique([atsType, boardToken])
   @@map("companies")
@@ -659,6 +661,10 @@ model JobOffer {
   firstSeenAt        DateTime      @map("first_seen_at")
   lastSeenAt         DateTime      @map("last_seen_at")
   closedAt           DateTime?     @map("closed_at")
+  /// Dernière réapparition après une fermeture (même offre republiée), et
+  /// nombre de réapparitions : signal « offre difficile à pourvoir ».
+  reopenedAt         DateTime?     @map("reopened_at")
+  reopenCount        Int           @default(0) @map("reopen_count")
   status             OfferStatus   @default(OPEN)
   contentHash        String        @map("content_hash")
   /// Offre canonique dont celle-ci est un doublon (autre source).
@@ -689,6 +695,67 @@ model JobOffer {
   @@index([companyId])
   @@index([status, geocodedAt])
   @@map("job_offers")
+}
+
+/// Statistiques hebdomadaires de recrutement d'une entreprise, recalculées
+/// à partir des offres collectées (doublons exclus). Semaine = lundi 00:00 UTC.
+model CompanyWeekStat {
+  id                String   @id @default(cuid())
+  companyId         String   @map("company_id")
+  weekStart         DateTime @map("week_start")
+  newOffers         Int      @map("new_offers")
+  closedOffers      Int      @map("closed_offers")
+  /// Offres ouvertes à la fin de la semaine.
+  openCount         Int      @map("open_count")
+  /// Médiane (jours) entre première vue et fermeture des offres fermées dans la semaine.
+  medianDaysToClose Float?   @map("median_days_to_close")
+  /// Part des nouvelles offres annonçant un salaire (0–1), `null` sans nouvelle offre.
+  salaryShare       Float?   @map("salary_share")
+  /// Part des nouvelles offres hybrides ou en télétravail complet parmi celles qui le précisent.
+  remoteShare       Float?   @map("remote_share")
+  newCities         String[] @map("new_cities")
+  newCountries      String[] @map("new_countries")
+  /// Familles de métiers (codes `JobFamily`) jamais vues auparavant.
+  newFamilies       String[] @map("new_families")
+  /// Premier poste de management / direction de l'entreprise.
+  firstLeadership   Boolean  @default(false) @map("first_leadership")
+  computedAt        DateTime @map("computed_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, weekStart])
+  @@map("company_week_stats")
+}
+
+enum CompanySignalType {
+  HIRING_SURGE
+  HIRING_FREEZE
+  NEW_TEAM
+  NEW_LOCATION
+  REPOSTED_OFFER
+  REMOTE_SHIFT
+}
+
+/// Signal faible détecté sur une entreprise pour une semaine. Les faits sont
+/// structurés (nombres, codes, villes, intitulés d'offres) : aucune donnée
+/// personnelle. Un seul signal par entreprise, type et semaine (idempotent).
+model CompanySignal {
+  id          String            @id @default(cuid())
+  companyId   String            @map("company_id")
+  type        CompanySignalType
+  /// 1 (faible) à 3 (fort).
+  strength    Int
+  periodStart DateTime          @map("period_start")
+  periodEnd   DateTime          @map("period_end")
+  facts       Json
+  detectedAt  DateTime          @map("detected_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, type, periodStart])
+  @@index([periodStart])
+  @@map("company_signals")
 }
 
 /// Cache persistant du géocodage : une même requête normalisée (ville, pays,

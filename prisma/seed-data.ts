@@ -1,4 +1,5 @@
 import type { PrismaClient } from "../src/generated/prisma/client";
+import { seedCompanySignals } from "./seed-signals";
 
 export const DEMO_EMAIL = "demo@coach-career.test";
 
@@ -11,7 +12,15 @@ export async function seed(prisma: PrismaClient): Promise<void> {
   });
 
   // Mémoire de carrière d'exemple, créée une seule fois.
-  if ((await prisma.experience.count({ where: { userId: user.id } })) > 0) return;
+  if ((await prisma.experience.count({ where: { userId: user.id } })) === 0) {
+    await seedCareerMemory(prisma, user.id);
+  }
+  // Market Radar : entreprises avec des signaux faibles.
+  await seedCompanySignals(prisma, user.id);
+}
+
+async function seedCareerMemory(prisma: PrismaClient, userId: string): Promise<void> {
+  const user = { id: userId };
   const experience = await prisma.experience.create({
     data: {
       userId: user.id,
