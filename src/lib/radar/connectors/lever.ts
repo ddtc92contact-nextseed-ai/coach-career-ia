@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import {
   countryCode,
   detectContractType,
@@ -121,5 +122,6 @@ export function mapLeverPosting(
     sector: company.sector,
     seniority: null,
     publishedAt: parseDate(posting.createdAt),
+    apply: applyChannel({ url: posting.applyUrl, description }),
   };
 }

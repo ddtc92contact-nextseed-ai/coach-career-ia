@@ -273,7 +273,7 @@ describe("connecteur France Travail", () => {
     expect(result).toEqual({ items: [], complete: true });
   });
 
-  it("mappe le schéma normalisé sans jamais conserver le contact recruteur", async () => {
+  it("mappe le schéma normalisé et ne garde du contact que le canal de candidature", async () => {
     const connector = franceTravailConnector(credentials, criteria);
     const { items } = await connector.fetch({ http: testHttp(routes()), now });
     const offers = items.map((i) => connector.map(i)!);
@@ -297,7 +297,27 @@ describe("connecteur France Travail", () => {
         variable: "Prime, Intéressement",
       },
     });
-    expect(JSON.stringify(dev)).not.toMatch(/Claire|acme-logiciel\.example|01 23 45/);
+    // Courriel de candidature générique : conservé ; nom, adresse et téléphone : jamais.
+    expect(dev.apply).toEqual({
+      email: "recrutement@acme-logiciel.example",
+      emailPersonal: false,
+      url: null,
+    });
+    expect(JSON.stringify(dev)).not.toMatch(/Claire|Fictive|01 23 45/);
+
+    // Phrase « Pour postuler, utiliser le lien suivant : … » : l'URL est lue, pas le téléphone.
+    const apprentice = offers.find((o) => o.sourceId === "201TSTD")!;
+    expect(apprentice.apply).toEqual({
+      email: null,
+      emailPersonal: false,
+      url: "https://cabinet-fictif.example/postuler/201TSTD",
+    });
+    expect(JSON.stringify(apprentice)).not.toMatch(/Paul|06 11 22/);
+    // Adresse citée dans le texte de l'offre (« Envoyez votre CV à … »).
+    expect(offers.find((o) => o.sourceId === "201TSTC")!.apply).toMatchObject({
+      email: "jobs@alan.example",
+      emailPersonal: false,
+    });
 
     expect(offers.find((o) => o.sourceId === "201TSTB")).toMatchObject({
       canonicalUrl: "https://jobs.lever.co/qonto/ebed5dab-630c-48ea-be8f-9e018797c193/apply",

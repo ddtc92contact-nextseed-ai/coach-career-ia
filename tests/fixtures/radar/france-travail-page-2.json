@@ -3,7 +3,7 @@
     {
       "id": "201TSTC",
       "intitule": "IT Operations Specialist (H/F)",
-      "description": "Rejoignez l'équipe Work Environment d'Alan à Paris. Organisation en mode hybride.",
+      "description": "Rejoignez l'équipe Work Environment d'Alan à Paris. Organisation en mode hybride. Envoyez votre CV et vos disponibilités à jobs@alan.example.",
       "dateCreation": "2026-09-20T08:00:00.000Z",
       "lieuTravail": { "libelle": "75 - Paris 10e Arrondissement", "codePostal": "75010" },
       "entreprise": { "nom": "ALAN" },
@@ -22,6 +22,11 @@
       "dateCreation": "2026-09-25T08:00:00.000Z",
       "lieuTravail": { "libelle": "69 - LYON 03", "codePostal": "69003" },
       "entreprise": { "nom": "CABINET EXEMPLE" },
+      "contact": {
+        "nom": "CABINET FICTIF - M. Paul Exemple",
+        "telephone": "06 11 22 33 44",
+        "courriel": "Pour postuler, utiliser le lien suivant : https://cabinet-fictif.example/postuler/201TSTD"
+      },
       "typeContrat": "CDD",
       "typeContratLibelle": "Contrat à durée déterminée - 24 Mois",
       "natureContrat": "Contrat apprentissage",

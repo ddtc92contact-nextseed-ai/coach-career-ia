@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import { detectContractType, detectRemotePolicy, parseLocationLabel } from "../normalize";
 import { cleanString, htmlToText, parseDate } from "../text";
 import type { Connector, NormalizedOffer } from "../types";
@@ -62,5 +63,7 @@ export function mapGreenhouseJob(job: GreenhouseJob, company: AtsCompany): Norma
     sector: company.sector,
     seniority: null,
     publishedAt: parseDate(job.first_published) ?? parseDate(job.updated_at),
+    // La page de l'offre porte le formulaire de candidature Greenhouse.
+    apply: applyChannel({ url, description }),
   };
 }

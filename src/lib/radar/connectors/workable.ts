@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import { cleanCity, detectContractType, detectRemotePolicy, isoCountry } from "../normalize";
 import { salaryFromDescription } from "../salary";
 import { cleanString, htmlToText, parseDate } from "../text";
@@ -26,6 +27,7 @@ export type WorkableJob = {
   title?: string;
   url?: string;
   shortlink?: string;
+  application_url?: string;
   employment_type?: string | null;
   telecommuting?: boolean | null;
   department?: string | null;
@@ -110,5 +112,6 @@ export function mapWorkableJob(job: WorkableJob, company: AtsCompany): Normalize
     sector: company.sector,
     seniority: cleanString(job.experience),
     publishedAt: parseDate(job.published_on) ?? parseDate(job.created_at),
+    apply: applyChannel({ url: job.application_url, description }),
   };
 }

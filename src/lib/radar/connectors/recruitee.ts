@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import {
   cleanCity,
   detectContractType,
@@ -27,6 +28,7 @@ export type RecruiteeOffer = {
   title?: string;
   status?: string;
   careers_url?: string;
+  careers_apply_url?: string;
   description?: string;
   requirements?: string;
   city?: string | null;
@@ -151,5 +153,6 @@ export function mapRecruiteeOffer(
     sector: company.sector,
     seniority: cleanString(offer.experience_code),
     publishedAt: parseDate(offer.published_at) ?? parseDate(offer.created_at),
+    apply: applyChannel({ url: offer.careers_apply_url, description }),
   };
 }

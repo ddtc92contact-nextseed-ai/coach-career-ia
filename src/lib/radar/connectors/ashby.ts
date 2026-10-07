@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import {
   cleanCity,
   countryCode,
@@ -37,6 +38,7 @@ export type AshbyJob = {
   workplaceType?: string | null;
   publishedAt?: string;
   jobUrl?: string;
+  applyUrl?: string;
   descriptionPlain?: string;
   descriptionHtml?: string;
   address?: {
@@ -156,5 +158,6 @@ export function mapAshbyJob(job: AshbyJob, company: AtsCompany): NormalizedOffer
     sector: company.sector,
     seniority: null,
     publishedAt: parseDate(job.publishedAt),
+    apply: applyChannel({ url: job.applyUrl, description }),
   };
 }
