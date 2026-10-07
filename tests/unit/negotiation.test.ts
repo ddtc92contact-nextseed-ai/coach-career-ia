@@ -394,11 +394,17 @@ describe("négociation : repère du marché (offres publiées)", () => {
     const ok =
       "Les offres publiées pour des postes similaires dans cette zone affichent une médiane de 61 000 €. Elle souhaite 62 000 €.";
     expect(checkOutgoing(ok, MANDATE, { allowed })).toEqual([]);
-    expect(
-      checkOutgoing("Published offers for similar roles show a p75 of €67,000.", MANDATE, {
-        allowed,
-      }),
-    ).toEqual([]);
+    for (const framed of [
+      "Published offers for similar roles show a p75 of €67,000.",
+      "Les offres publiées affichent 56 000 € (p25), une médiane de 61 000 € et 67 000 € (p75).",
+      "Pour situer : les offres publiées pour ce métier affichent un troisième quartile de 67 000 €.",
+      "Veröffentlichte Angebote zeigen einen Median von 61.000 € brutto pro Jahr.",
+      "Gepubliceerde vacatures tonen een mediaan van € 61.000 bruto per jaar.",
+      "Le offerte pubblicate indicano una mediana di 61.000 € lordi annui.",
+      "Las ofertas publicadas muestran una mediana de 61.000 € brutos anuales.",
+    ]) {
+      expect(checkOutgoing(framed, MANDATE, { allowed }), framed).toEqual([]);
+    }
     expect(
       checkOutgoing("Les offres publiées affichent une médiane de 63 500 €.", MANDATE, {
         allowed,
@@ -435,6 +441,19 @@ describe("négociation : repère du marché (offres publiées)", () => {
       "Published offers show a median of €61,000, and she was offered that elsewhere.",
       // Chiffre isolé, sans statistique : pas la forme du repère.
       "Les offres publiées vont jusqu'à 67 000 €.",
+      // Reformulations hors liste noire : refusées par la liste blanche (QA #41, tour 2).
+      "Elle a déjà une promesse d'embauche à 67 000 €, soit le quartile haut des offres publiées.",
+      "Elle peut signer demain à 67 000 €, au niveau du quartile supérieur des offres publiées.",
+      "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
+      "She was promised €67,000 by a scale-up, matching the median of published offers.",
+      "Her current employer would match €67,000, the p75 of published offers.",
+      "Sie hat bereits eine Zusage über 67.000 €, das obere Quartil veröffentlichter Angebote.",
+      "Ze heeft al een contract van € 67.000 liggen, het bovenste kwartiel van gepubliceerde vacatures.",
+      "She has €67,000 on the table, the median of published offers.",
+      "Tiene un contrato firmado de 67.000 €, la mediana de las ofertas publicadas.",
+      // Forme du modèle détournée : la statistique ne précède pas le montant.
+      "Les offres publiées affichent une médiane, et une start-up garantit 67 000 €.",
+      "Selon une start-up qui a lu les offres publiées, la médiane est de 61 000 €.",
     ]) {
       expect(
         checkOutgoing(bluff, MANDATE, { allowed }).map((i) => i.code),
@@ -490,6 +509,8 @@ describe("négociation : repère du marché (offres publiées)", () => {
     for (const sentence of [
       "Un recruteur lui a proposé 67 000 €, en ligne avec les offres publiées.",
       "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
+      "Elle a déjà une promesse d'embauche à 67 000 €, soit le quartile haut des offres publiées.",
+      "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
     ]) {
       const laundered = `Bonjour,\n\n${sentence} Elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,`;
       const d = await buildNegotiationDraft(

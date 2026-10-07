@@ -1,14 +1,13 @@
 import {
-  BENCHMARK_STATISTIC,
   claimsIn,
   contractNegations,
   contractsIn,
   findAmounts,
   findPercentages,
+  framesBenchmark,
   mentionsClaim,
   mentionsCompetingOffer,
   mentionsOfferToSomeone,
-  PUBLISHED_OFFERS,
   remoteDaysIn,
   salaryAmounts,
   sentences,
@@ -149,15 +148,17 @@ export function checkOutgoing(
     const market = options.allowed.market ?? [];
     if (market.length > 0) {
       for (const sentence of sentences(text)) {
-        const cites = findAmounts(sentence).some((a) =>
+        // Liste blanche : chaque chiffre du repère doit avoir la forme du modèle
+        // (« les offres publiées … affichent une médiane de X »). En plus, aucune
+        // offre faite à quelqu'un, ni concurrent, recruteur, « ailleurs ».
+        const cited = findAmounts(sentence).filter((a) =>
           market.some((v) => close(a.value, v) || (a.annual !== null && close(a.annual, v))),
         );
-        // Forme du modèle exigée (« offres publiées … médiane/quartile ») et
-        // aucune offre faite à quelqu'un, ni concurrent, recruteur, « ailleurs ».
-        const framed = PUBLISHED_OFFERS.test(sentence) && BENCHMARK_STATISTIC.test(sentence);
         if (
-          cites &&
-          (!framed || mentionsCompetingOffer(sentence) || mentionsOfferToSomeone(sentence))
+          cited.length > 0 &&
+          (cited.some((a) => !framesBenchmark(sentence, a.raw)) ||
+            mentionsCompetingOffer(sentence) ||
+            mentionsOfferToSomeone(sentence))
         ) {
           push("competingOffer", sentence);
         }

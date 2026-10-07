@@ -269,7 +269,48 @@ export const BENCHMARK_STATISTIC =
  * qui cite un chiffre du repère : le repère n'est jamais une offre reçue.
  */
 const OFFER_TO_SOMEONE =
-  /(?<!\p{L})(?:propos(?:é|e|ait|era|i|ition|ta|to|te|ti)|propuest[oa]|offerts?(?!\p{L})|offert[oa](?!\p{L})|offered|offering|offers? (?:of|at|to|her|him|them)(?!\p{L})|ofrec|oferta (?:de|a|por)(?!\p{L})|ha offerto|offre (?:a|al|alla|le|gli)(?!\p{L})|lui offre|angeboten|anbiet|bietet|geboten|angebot (?:von|über|in höhe)|aangeboden|biedt|geboden|(?:bod|aanbod) van|concurren|competitor|competidor|concorrent|konkurren|recrut|recruit|reclut|headhunt|chasseur|cazatalent|cacciator|selezionator|personalvermittl|ailleurs|elsewhere|en otr[oa] (?:lugar|sitio|parte)|altrove|anderswo|woanders|elders|ergens anders)/iu;
+  /(?<!\p{L})(?:propos(?:é|e|ait|era|i|ition|ta|to|te|ti)|propuest[oa]|offerts?(?!\p{L})|offert[oa](?!\p{L})|offered|offering|offers? (?:of|at|to|her|him|them)(?!\p{L})|ofrec|oferta (?:de|a|por)(?!\p{L})|ha offerto|offre (?:a|al|alla|le|gli)(?!\p{L})|lui offre|angeboten|anbiet|bietet|geboten|angebot (?:von|über|in höhe)|aangeboden|biedt|geboden|(?:bod|aanbod) van|concurren|competitor|competidor|concorrent|konkurren|recrut|recruit|reclut|headhunt|chasseur|cazatalent|cacciator|selezionator|personalvermittl|ailleurs|elsewhere|en otr[oa] (?:lugar|sitio|parte)|altrove|anderswo|woanders|elders|ergens anders|(?:lui|her|him|ihm|ihr|haar|hem)(?!\p{L}))/iu;
+
+/** Mots admis entre la statistique et le montant (« médiane de », « p75 of »…). */
+const STAT_TO_AMOUNT =
+  /^\p{L}*\.?(?:\s+(?:de|d['’]|des|du|of|von|van|di|del|della|da|at|à|a|est|is|ist|è|es|ligt|liegt|op|bei|se|situe|sits|stands|around|about|environ|rund|circa|ongeveer|alrededor|intorno|haut|bas|supérieur|inférieur|upper|lower|obere|untere|bovenste|onderste|superior|inferior|superiore|inferiore))*\s*(?:€\s?)?$/iu;
+/** Mots au plus devant « offres publiées » dans la proposition (« Les offres publiées… »). */
+const MAX_LEAD_WORDS = 3;
+/** Mots au plus entre « offres publiées » et la statistique (complément de lieu, verbe). */
+const MAX_MIDDLE_WORDS = 14;
+const wordCount = (s: string) => s.split(/\s+/u).filter((w) => /\p{L}/u.test(w)).length;
+
+/**
+ * Liste blanche : le montant `raw` est-il cité EXACTEMENT comme le modèle cite
+ * le repère ? Dans la même proposition (`;`, `:` ou tiret séparent), « offres
+ * publiées » ouvre la proposition, une statistique suit, et le montant suit
+ * immédiatement la statistique (« médiane de X », « p75 of X ») ou la porte
+ * entre parenthèses (« X (p25) »). Toute autre forme est refusée.
+ */
+export function framesBenchmark(sentence: string, raw: string): boolean {
+  for (const clause of sentence.split(/\s*(?:[:;—–]|\s-\s)\s*/u)) {
+    const at = clause.indexOf(raw);
+    if (at < 0) continue;
+    const published = PUBLISHED_OFFERS.exec(clause);
+    if (!published || published.index > at) return false;
+    // Début du mot qui porte « publi… » (« offres publiées » : « publiées »).
+    const wordStart = clause.slice(0, published.index).search(/\p{L}*$/u);
+    if (wordCount(clause.slice(0, wordStart)) > MAX_LEAD_WORDS) return false;
+    const between = clause.slice(published.index, at);
+    const after = clause.slice(at + raw.length);
+    const stat = new RegExp(BENCHMARK_STATISTIC.source, "giu");
+    for (const m of between.matchAll(stat)) {
+      if (wordCount(between.slice(0, m.index)) > MAX_MIDDLE_WORDS) continue;
+      if (STAT_TO_AMOUNT.test(between.slice(m.index + m[0].length))) return true;
+    }
+    const parenthesized = new RegExp(
+      `^\\s*(?:€\\s?)?\\(\\s*(?:${BENCHMARK_STATISTIC.source})`,
+      "iu",
+    );
+    return parenthesized.test(after) && wordCount(between) <= MAX_MIDDLE_WORDS + 4;
+  }
+  return false;
+}
 
 /** La phrase présente-t-elle un chiffre comme une offre faite au candidat ou par un tiers ? */
 export function mentionsOfferToSomeone(sentence: string): boolean {
