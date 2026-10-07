@@ -64,6 +64,7 @@ convient.
 | `npm run db:seed`        | données de démonstration (idempotent, ignoré en production)       |
 | `npm run db:generate`    | régénère le client Prisma (`src/generated/prisma`, non versionné) |
 | `npm run radar:run`      | un passage du Market Radar sur toutes les sources                 |
+| `npm run ai:eval`        | fixtures de l'import IA passées au vrai fournisseur (manuel)      |
 | `npm run worker`         | worker de tâches de fond (radar planifié)                         |
 
 ## Variables d'environnement
@@ -94,6 +95,12 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)   |
 | `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                     |
 | `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)          |
+| `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`        |
+| `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)        |
+| `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API    |
+| `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)               |
+| `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)               |
+| `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub     |
 | `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                |
 | `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                         |
 | `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                         |
@@ -151,6 +158,60 @@ client identifié et poli. Code : `src/lib/radar`.
   `RADAR_INTERVAL_HOURS`). Suivi : `/app/radar`, réservé à `ADMIN_EMAILS`.
 - **Tests** : tous sur des fixtures enregistrées (`tests/fixtures/radar`), jamais sur le
   réseau.
+
+## Couche IA et import du parcours
+
+### Couche IA (`src/lib/ai`)
+
+Une interface unique, indépendante du fournisseur, pour le chat (multi-tours, sortie JSON,
+appel d'outils) et les embeddings. Le futur agent coach réutilise `runTools()` et les messages
+`tool` sans réécriture.
+
+- **Fournisseurs** (`AI_PROVIDER`) : Mistral par défaut (`MISTRAL_API_KEY`), tout endpoint
+  compatible OpenAI (Ollama local), et un simulateur déterministe (`createMockProvider`). Sous
+  Vitest, le simulateur est imposé et `fetch` est bloqué (`tests/setup/no-network.ts`) : aucun
+  test n'appelle un modèle, GitHub ni le réseau.
+- **Robustesse** : délai par tentative, reprises avec temporisation exponentielle sur
+  délai / 5xx / 429 (`Retry-After` respecté), erreurs converties en codes (`timeout`,
+  `unavailable`…).
+- **Sortie structurée** : `generateObject()` valide la réponse par zod et fait une seule tentative
+  de réparation en renvoyant les erreurs au modèle.
+- **Embeddings** : par lots, avec cache mémoire (clé = modèle + empreinte du texte).
+- **Journal** : fournisseur, modèle, usage, durée, jetons et coût estimé (`src/lib/ai/pricing.ts`).
+  Jamais le contenu des prompts ni des réponses.
+- **Langue** : les textes générés suivent `getUserLocale()` (`languageInstruction()`).
+- Côté serveur : `getAiClient()` (`src/lib/ai/server.ts`, protégé par `server-only`).
+
+### Import « Importer mon parcours » (`/app/memoire/importer`)
+
+Sources : CV PDF/DOCX (5 Mo), archive RGPD LinkedIn (ZIP, 20 Mo ; seuls les CSV Profile,
+Positions, Education, Skills, Projects, Certifications, e-mails et téléphones sont décompressés,
+5 Mo max chacun ; les messages ne sont jamais lus), dépôts publics GitHub (6 max : langages,
+étoiles, description, extrait du README).
+
+1. `POST /api/import` lit les fichiers **en mémoire** : rien n'est écrit sur disque ni en base.
+   Type détecté sur le contenu, tailles limitées, 10 imports par heure et par utilisateur.
+2. Avant le modèle : e-mails, téléphones et liens de profil sont masqués ; les noms du profil
+   LinkedIn ne sont pas envoyés.
+3. Le modèle produit un brouillon (`CareerMemoryDraft`) où les employeurs sont décrits par
+   secteur, taille et stade, et signale les détails rares qui pourraient ré-identifier le
+   candidat.
+4. Après le modèle : tout nom repéré (candidat, employeurs, écoles, clients, pseudo GitHub)
+   encore présent est remplacé par `[…]` et l'élément est signalé. Les données identifiantes
+   forment une charge **séparée**, renvoyée au seul navigateur (destinée au coffre d'identité #4 ;
+   en attendant, oubliée à la fin de la revue).
+5. Le candidat accepte, modifie ou rejette chaque expérience, réalisation et compétence. Seuls les
+   éléments acceptés sont enregistrés (`importDraft`, une transaction) ; une réalisation démarre au
+   niveau `DECLARED`, ou `DOCUMENT` si une preuve (dépôt GitHub…) est jointe.
+
+Panne ou lenteur du fournisseur : message traduit et bouton « Réessayer » ; le navigateur
+abandonne après 135 s (budget serveur : 120 s).
+
+**Évaluation** : `tests/fixtures/import` contient 4 profils fictifs (CV français en DOCX, anglais et
+allemand en PDF, export LinkedIn + GitHub) avec la réponse simulée du modèle et le brouillon
+attendu. `tests/unit/import-pipeline.test.ts` vérifie le résultat et l'absence de nom, contact,
+employeur ou école dans le brouillon. `npm run ai:eval` passe ces fixtures au vrai fournisseur
+configuré et affiche un tableau (expériences, dates, codes, rappel des compétences, fuites).
 
 ## Authentification
 
