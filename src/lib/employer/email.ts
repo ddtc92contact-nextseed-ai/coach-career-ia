@@ -62,13 +62,16 @@ export function employerEmail(
  * message, ni compétence) : seulement l'intitulé de l'offre de l'organisation
  * et le lien vers le fil, qui exige d'être connecté comme membre.
  */
+export type PortalEmailKind = "portalContact" | "portalMessage";
+
 export function portalContactEmail(
   locale: AppLocale,
   input: { title: string; url: string },
+  kind: PortalEmailKind = "portalContact",
 ): Omit<MailMessage, "to"> {
   const t = createTranslator({ locale, messages: MESSAGES[locale], namespace: "email.employer" });
-  const subject = t("portalContact.subject", { title: input.title });
-  const body = t("portalContact.body", { title: input.title });
+  const subject = t(`${kind}.subject`, { title: input.title });
+  const body = t(`${kind}.body`, { title: input.title });
   const text = [
     t("greeting"),
     "",

@@ -6,14 +6,24 @@ import { DeleteButton } from "@/components/delete-button";
 import { Link } from "@/i18n/navigation";
 import { LOCALE_NAMES } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
+import { hasFeature } from "@/lib/billing/entitlements";
+import { getEntitlements } from "@/lib/billing/server";
 import { isLinkActive } from "@/lib/card/tokens";
 import { getContact, markRepliesRead } from "@/lib/contact/repository";
 import { experienceRoles, getHandoverState } from "@/lib/handover/repository";
+import { getNegotiation } from "@/lib/negotiation/repository";
 import { discardContactAction, markSubmittedAction, revokeHandoverAction } from "../actions";
 import { CopyText, DraftPanel } from "./draft-panel";
 import { HandoverPanel } from "./handover-panel";
+import { NegotiationSection } from "./negotiation-section";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+/** Onglet « Négocier » : `?onglet=negocier`. */
+const NEGOTIATION_TAB = "negocier";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("contacts");
@@ -22,19 +32,47 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
 
-export default async function ContactPage({ params }: Props) {
+export default async function ContactPage({ params, searchParams }: Props) {
   const user = await requireUser();
-  const { id } = await params;
+  const [{ id }, query = {}] = await Promise.all([params, searchParams]);
   // Contact d'une autre personne (ou identifiant inventé) : 404.
   const contact = await getContact(user.id, id);
   if (!contact) notFound();
   if (contact.replies.some((r) => !r.readAt)) await markRepliesRead(user.id, contact.id);
 
   const sent = contact.status === "SENT" || contact.status === "SENDING";
-  const [t, tc, th, format, handover, roles] = await Promise.all([
+  const negotiate = contact.status === "SENT" && query.onglet === NEGOTIATION_TAB;
+  if (negotiate) {
+    const [view, entitlements, t, tn, tc] = await Promise.all([
+      getNegotiation(user.id, contact.id),
+      getEntitlements(user.id),
+      getTranslations("contacts.detail"),
+      getTranslations("negotiation"),
+      getTranslations("contacts"),
+    ]);
+    return (
+      <div className="max-w-3xl space-y-6">
+        <Link href="/app/contacts" className="text-sm text-stone-600 hover:underline">
+          {t("back")}
+        </Link>
+        <header>
+          <h1 className="text-2xl font-semibold tracking-tight break-words">
+            {contact.offer.title}
+          </h1>
+          <p className="mt-1 text-sm text-stone-600">
+            {contact.offer.companyName ?? tc("companyUnknown")}
+          </p>
+        </header>
+        <ContactTabs id={contact.id} active="negotiation" labels={tn} />
+        <NegotiationSection view={view} canGenerate={hasFeature(entitlements, "negotiation")} />
+      </div>
+    );
+  }
+  const [t, tc, th, tn, format, handover, roles] = await Promise.all([
     getTranslations("contacts.detail"),
     getTranslations("contacts"),
     getTranslations("handover"),
+    getTranslations("negotiation"),
     getFormatter(),
     getHandoverState(user.id, contact.id),
     sent && contact.replies.length > 0 ? experienceRoles(user.id) : Promise.resolve({}),
@@ -108,6 +146,10 @@ export default async function ContactPage({ params }: Props) {
           <p className="mt-2 text-sm text-amber-800">{t("offerClosed")}</p>
         ) : null}
       </header>
+
+      {contact.status === "SENT" ? (
+        <ContactTabs id={contact.id} active="followUp" labels={tn} />
+      ) : null}
 
       {sent ? (
         <section className={sectionClass} aria-labelledby="envoye">
@@ -272,5 +314,36 @@ export default async function ContactPage({ params }: Props) {
         </section>
       ) : null}
     </div>
+  );
+}
+
+/** Onglets « Suivi » / « Négocier » d'un contact envoyé. */
+function ContactTabs({
+  id,
+  active,
+  labels,
+}: {
+  id: string;
+  active: "followUp" | "negotiation";
+  labels: (key: "tab" | "tabFollowUp") => string;
+}) {
+  const tab = (key: "followUp" | "negotiation", href: string, label: string) => (
+    <Link
+      href={href}
+      aria-current={active === key ? "page" : undefined}
+      className={`-mb-px border-b-2 px-3 py-2 text-sm font-medium ${
+        active === key
+          ? "border-stone-900 text-stone-900"
+          : "border-transparent text-stone-600 hover:text-stone-900"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+  return (
+    <nav className="flex gap-2 border-b border-stone-200" aria-label={labels("tab")}>
+      {tab("followUp", `/app/contacts/${id}`, labels("tabFollowUp"))}
+      {tab("negotiation", `/app/contacts/${id}?onglet=${NEGOTIATION_TAB}`, labels("tab"))}
+    </nav>
   );
 }

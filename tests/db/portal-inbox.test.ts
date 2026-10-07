@@ -28,6 +28,8 @@ const cards = await import("@/lib/card/repository");
 const contacts = await import("@/lib/contact/repository");
 const handovers = await import("@/lib/handover/repository");
 const inbox = await import("@/lib/employer/inbox");
+const negotiation = await import("@/lib/negotiation/repository");
+const { entitlementsFor } = await import("@/lib/billing/entitlements");
 const inboxActions = await import("@/app/[locale]/entreprise/(espace)/messages/actions");
 const { default: ThreadPage } =
   await import("@/app/[locale]/entreprise/(espace)/messages/[id]/page");
@@ -38,6 +40,7 @@ const url = process.env.TEST_DATABASE_URL;
 const run = `pi${Date.now().toString(36)}${randomBytes(2).toString("hex")}`;
 const NOW = new Date("2026-10-07T12:00:00Z");
 const DAY = 24 * 3_600_000;
+const REVOKED_AT = new Date(NOW.getTime() + 60_000);
 const NOT_FOUND = /NEXT_HTTP_ERROR_FALLBACK;404/;
 
 const logLines: string[] = [];
@@ -419,11 +422,11 @@ describe.skipIf(!url)(
       expect(logLines.join("\n")).not.toMatch(new RegExp(`${SECRET_NAME.lastName}|zorglub`, "i"));
 
       // Révocation : disparu du fil immédiatement, CV compris ; journal à jour.
-      expect(await handovers.revokeHandover(alice.id, id, { now: NOW, logger })).toBe(true);
-      expect((await inbox.getThread(orgA.id, id, { now: NOW }))!.revealed).toBeNull();
+      expect(await handovers.revokeHandover(alice.id, id, { now: REVOKED_AT, logger })).toBe(true);
+      expect((await inbox.getThread(orgA.id, id, { now: REVOKED_AT }))!.revealed).toBeNull();
       expect(await inbox.threadCv(orgA.id, id)).toBeNull();
       expect((await cvRoute.GET(cvRequest(id), params({ id }))).status).toBe(404);
-      const events = await handovers.getHandoverState(alice.id, id, NOW);
+      const events = await handovers.getHandoverState(alice.id, id, REVOKED_AT);
       expect(events.events.map((e) => e.type)).toEqual(["REVOKED", "REVEALED"]);
     });
 
@@ -565,6 +568,76 @@ describe.skipIf(!url)(
         process.env.CONTACT_DAILY_LIMIT = "50";
         await db.user.delete({ where: { id: carol.id } });
       }
+    });
+
+    it("négociation (#37) sur un fil PORTAL : réponses lues comme entrantes, contre-propositions remises dans le fil", async () => {
+      const { id } = await portalContact(alice, orgA);
+      const member = { userId: ownerA.id, orgId: orgA.id };
+      await inbox.replyInThread(
+        member,
+        id,
+        { body: "Nous proposons 58 000 € brut annuel en CDI." },
+        replyDeps(),
+      );
+      expect(
+        await negotiation.saveMandate(alice.id, id, {
+          salaryFloor: 55_000,
+          salaryTarget: 62_000,
+          remoteDaysMin: 2,
+          location: null,
+          contractType: "CDI",
+          startDate: null,
+          title: null,
+          otherPoints: [],
+          niceToHave: [],
+          facts: null,
+        }),
+      ).toEqual({ ok: true });
+
+      // Réponse du portail pendant la négociation : message entrant du fil de négociation.
+      await inbox.replyInThread(
+        member,
+        id,
+        { body: "Nous pouvons monter à 60 000 €." },
+        replyDeps(new Date(NOW.getTime() + 1000)),
+      );
+      let view = await negotiation.getNegotiation(alice.id, id);
+      expect(view.messages.filter((m) => m.direction === "IN").map((m) => m.body)).toEqual([
+        "Nous pouvons monter à 60 000 €.",
+      ]);
+      expect(view.analysis).not.toBeNull();
+
+      // Contre-proposition approuvée → remise dans la messagerie, sans e-mail à une adresse de candidature.
+      const premium = entitlementsFor({ email: alice.email, plan: "PREMIUM" }, {});
+      const drafted = await negotiation.generateDraft(alice.id, id, "counter", {
+        ai: null,
+        entitlements: premium,
+      });
+      expect(drafted).toMatchObject({ ok: true });
+      view = await negotiation.getNegotiation(alice.id, id);
+      const pending = view.pending!;
+      expect(
+        await negotiation.approveMessage(alice.id, id, pending.id, { appUrl: APP_URL }),
+      ).toEqual({ ok: true });
+      outbox.length = 0;
+      const later = new Date(NOW.getTime() + 2000);
+      expect(
+        await negotiation.sendMessage(alice.id, id, pending.id, {
+          send: fakeSend,
+          notify: fakeSend,
+          appUrl: APP_URL,
+          now: () => later,
+          logger,
+        }),
+      ).toEqual({ ok: true });
+      expect(outbox.map((m) => m.to).sort()).toEqual([ownerA.email, memberA.email].sort());
+      for (const m of outbox) expect(`${m.text}${m.html}`).not.toContain(pending.body.slice(0, 30));
+
+      const thread = (await inbox.getThread(orgA.id, id))!;
+      expect(thread.replies.map((r) => r.from)).toEqual(["company", "company", "candidate"]);
+      expect(thread.replies.at(-1)!.body).toBe(pending.body);
+      // Quota commun : la contre-proposition compte comme un envoi.
+      expect((await contacts.getQuota(alice.id, later)).sent).toBeGreaterThanOrEqual(2);
     });
   },
 );

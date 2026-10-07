@@ -164,6 +164,31 @@
       "disclosure": "This message is sent by their AI career agent (Coach Career IA), on their explicit decision.",
       "noReply": "Replies to this email are not read."
     },
+    "negotiation": {
+      "subject": "Negotiation – {title}",
+      "disclosure": "This message was written by the candidate’s AI assistant (Coach Career IA); the candidate reviewed and approved it before it was sent. Nothing is binding until the candidate confirms it personally.",
+      "replyText": "Reply: {url}",
+      "replyButton": "Reply",
+      "expires": "Link valid until {date}.",
+      "noReply": "Replies to this email are not read: please use the “Reply” link.",
+      "draft": {
+        "greeting": "Hello,",
+        "intro": "I am the candidate’s AI career agent. Thank you for your reply about the “{title}” position.",
+        "salary": "Regarding compensation, the candidate is looking for a gross annual fixed salary of {amount}.",
+        "essentials": "Essential points for the candidate:",
+        "remote": "at least {days, plural, one {# day} other {# days}} of remote work per week",
+        "contract": "contract type: {contract}",
+        "location": "place of work: {location}",
+        "startDate": "start date no earlier than {date}",
+        "title": "job title: {title}",
+        "niceToHave": "Also appreciated:",
+        "availability": "The candidate is happy to discuss this further. Nothing is agreed until they confirm it personally.",
+        "signoff": "Kind regards,",
+        "closingAccepted": "I am the candidate’s AI career agent. The candidate thanks you for your proposal for the “{title}” position and wishes to move forward on that basis. They will get back to you personally to confirm the details.",
+        "closingDeclined": "I am the candidate’s AI career agent. The candidate thanks you for the time you spent on their application for the “{title}” position, but has decided not to proceed. They wish you every success with this hire.",
+        "closingPaused": "I am the candidate’s AI career agent. The candidate thanks you for your proposal for the “{title}” position and needs a little time to consider it. They will get back to you soon."
+      }
+    },
     "employer": {
       "brand": "Coach Career IA — Employer area",
       "greeting": "Hello,",
@@ -197,6 +222,10 @@
         "open": "Open the inbox",
         "openText": "Open the inbox: {url}",
         "privacy": "To protect the candidate, this e-mail contains no information about them: sign in to read the application."
+      },
+      "portalMessage": {
+        "subject": "New message from the candidate for {title}",
+        "body": "The candidate who contacted you about your offer “{title}” has sent you a new message. It is waiting for you in your company portal inbox."
       }
     }
   },
@@ -1253,7 +1282,8 @@
       "coachLimited": "AI coach: {limit, plural, one {# message} other {# messages}} per 24 hours",
       "coachNone": "AI coach not included",
       "everythingFree": "Everything in the free plan",
-      "coachUnlimited": "Unlimited AI coach"
+      "coachUnlimited": "Unlimited AI coach",
+      "negotiation": "Negotiation agent: counter-proposals written for you"
     },
     "upgrade": "Upgrade to Premium",
     "upgradeHint": "Monthly payment secured by Stripe, cancel at any time.",
@@ -1359,38 +1389,6 @@
       "signals": "Latest signals",
       "none": "No signal",
       "notAvailable": "—"
-    }
-  },
-  "salaryBenchmark": {
-    "title": "Market",
-    "intro": "Where this offer sits against the salaries published for comparable roles.",
-    "quartiles": {
-      "p25": "1st quartile",
-      "median": "Median",
-      "p75": "3rd quartile"
-    },
-    "estimate": "Estimate based on {count, plural, one {# published offer} other {# published offers}} with a salary, from {from} to {to} (gross per year, excluding variable pay). This is not an official salary scale.",
-    "fallback": {
-      "COUNTRY": "Benchmark widened to the whole country: not enough comparable offers in the area.",
-      "FAMILY_COUNTRY": "Benchmark widened to the job family, all seniority levels: not enough more specific comparable offers."
-    },
-    "notEnoughData": "Not enough data: fewer than {min} comparable offers with a published salary. No benchmark is shown rather than an unreliable figure.",
-    "remote": "fully remote ({country})",
-    "allSeniorities": "all seniority levels",
-    "offerPosition": {
-      "BELOW": "The advertised salary ({amount} gross per year, mid-range) is below the market’s 1st quartile.",
-      "WITHIN": "The advertised salary ({amount} gross per year, mid-range) is within the usual market range (between the 1st and 3rd quartiles).",
-      "ABOVE": "The advertised salary ({amount} gross per year, mid-range) is above the market’s 3rd quartile.",
-      "noSalary": "This offer does not state a comparable salary: only the market benchmark is shown."
-    },
-    "floorPosition": {
-      "BELOW": "Your floor ({amount}) is below the 1st quartile: it rules out few comparable offers.",
-      "WITHIN": "Your floor ({amount}) is within the usual market range.",
-      "ABOVE": "Your floor ({amount}) is above the 3rd quartile: it rules out most comparable offers."
-    },
-    "guardRails": {
-      "title": "Market benchmark",
-      "intro": "Salaries published for your job family (based on your most recent role), in France."
     }
   },
   "card": {
@@ -1680,6 +1678,186 @@
     "expires": "Link valid until {date}, revocable at any time by the candidate.",
     "notice": "This information is shared with you for this recruitment only."
   },
+  "negotiation": {
+    "tab": "Negotiate",
+    "tabFollowUp": "Follow-up",
+    "title": "Negotiation",
+    "intro": "Your agent negotiates for you, transparently: it drafts, you approve every message. It never invents facts and never accepts anything on your behalf.",
+    "notSent": "Negotiation opens once your first contact has been sent.",
+    "waitReply": "No reply from the company yet: you can already prepare your mandate.",
+    "mandate": {
+      "title": "Your mandate",
+      "intro": "What your agent may ask for. A message below your floor, or one that gives up a non-negotiable point, is blocked.",
+      "salaryFloor": "Floor (gross annual fixed salary, €)",
+      "salaryFloorHint": "Default: the minimum salary from your guard rails. Never disclosed to the company.",
+      "salaryTarget": "Target (gross annual fixed salary, €)",
+      "nonNegotiable": "Non-negotiable points",
+      "remoteDaysMin": "Minimum remote work (days per week)",
+      "location": "Place of work",
+      "contractType": "Contract type",
+      "contractAny": "No preference",
+      "startDate": "Earliest start date",
+      "otherPoints": "Other non-negotiable points (one per line)",
+      "niceToHave": "Nice to have (one per line)",
+      "facts": "Facts the agent may mention (optional)",
+      "factsHint": "For example another ongoing offer. Unless stated here, the agent never mentions a competing offer or your current salary.",
+      "save": "Save mandate",
+      "saved": "Mandate saved.",
+      "invalid": "Please check: {fields}.",
+      "jobTitle": "Job title"
+    },
+    "fields": {
+      "salaryFloor": "the floor (€10,000 to €1,000,000)",
+      "salaryTarget": "the target (at least the floor)",
+      "remoteDaysMin": "remote work (0 to 5 days)",
+      "location": "the place of work (120 characters max)",
+      "contractType": "the contract type",
+      "startDate": "the start date",
+      "title": "the job title (120 characters max)",
+      "otherPoints": "the other points (10 max, 200 characters each)",
+      "niceToHave": "the nice-to-have points (10 max, 200 characters each)",
+      "facts": "the facts (1,000 characters max)"
+    },
+    "analysis": {
+      "title": "Analysis of the latest proposal",
+      "estimate": "Automatic estimate based on the message received on {date}: always read the company’s text yourself.",
+      "none": "No proposal to analyse yet.",
+      "noMandate": "Save your mandate to compare the company’s proposal.",
+      "salary": {
+        "aboveTarget": "Compensation: {amount}, at or above your target.",
+        "aboveFloor": "Compensation: {amount}, above your floor but below your target.",
+        "belowFloor": "Compensation: {amount}, below your floor.",
+        "unknown": "Compensation: no amount found."
+      },
+      "remote": {
+        "met": "Remote work: {days, plural, one {# day} other {# days}} per week, meets your minimum.",
+        "notMet": "Remote work: {days, plural, one {# day} other {# days}} per week, below your minimum.",
+        "unknown": "Remote work: not specified."
+      },
+      "contract": {
+        "met": "Contract: {contract}, as required.",
+        "notMet": "Contract: {contract}, not what you require.",
+        "unknown": "Contract: not specified."
+      },
+      "unchecked": "{count, plural, one {# other non-negotiable point} other {# other non-negotiable points}} to check yourself."
+    },
+    "thread": {
+      "title": "Negotiation thread",
+      "empty": "No negotiation messages yet.",
+      "out": "Your agent, approved by you",
+      "in": "The company",
+      "sentOn": "Sent on {date}",
+      "submittedOn": "Passed on on {date}",
+      "receivedOn": "Received on {date}"
+    },
+    "composer": {
+      "title": "Next message",
+      "generateCounter": "Generate a counter-proposal",
+      "generateClosing": "Write the closing message",
+      "generating": "Writing…",
+      "draftLlm": "Written by the AI from your mandate and the company’s messages. Read it carefully: it will be sent as is.",
+      "draftRules": "Prepared from a template and your mandate. Read it and personalise it.",
+      "fallback": "The AI assistant could not write this message (service unavailable, too slow or non-compliant text): a proposal was prepared from a template.",
+      "generated": "Draft ready: read it before approving it.",
+      "body": "Message",
+      "appended": "Added automatically: a notice stating that the message was written by your AI assistant and approved by you, and the reply link.",
+      "language": "Message language: {language}",
+      "save": "Save",
+      "saved": "Draft saved. Approve it to be able to send it.",
+      "approve": "I approve this message",
+      "approved": "Message approved.",
+      "approvedOn": "Approved on {date}. Any change cancels the approval.",
+      "send": "Send now",
+      "sendHint": "Sent from the platform’s address, never from yours.",
+      "sent": "Message sent.",
+      "paste": "Text to pass on to the company",
+      "pasteHint": "This offer has no application address: pass this text on yourself. It contains the reply link.",
+      "markTransmitted": "I have passed this message on",
+      "discard": "Delete this draft",
+      "discardConfirm": "Delete this draft?",
+      "blocked": "This message cannot be approved as it stands:",
+      "sendPortal": "Send to the company portal",
+      "sendPortalHint": "Delivered to the company’s inbox; the company is notified without the content.",
+      "appendedPortal": "The company will see a note saying the message was written by your AI assistant and approved by you; it replies directly in its inbox."
+    },
+    "issues": {
+      "belowFloor": "an amount is below your floor ({excerpt});",
+      "remoteDays": "it concedes less remote work than your minimum;",
+      "contractType": "it mentions a contract type other than the one you require;",
+      "competingOffer": "it mentions a competing offer you have not declared in your mandate;",
+      "currentSalary": "it mentions your current salary, which is not in your mandate;",
+      "inventedFigure": "it quotes a figure that comes neither from your mandate nor from the company ({excerpt})."
+    },
+    "outcome": {
+      "title": "Your decision",
+      "intro": "Only you decide. The agent then drafts a closing message, which you approve before anything is sent.",
+      "status": {
+        "ACTIVE": "Negotiation in progress",
+        "PAUSED": "Negotiation paused",
+        "ACCEPTED": "Proposal accepted by you",
+        "DECLINED": "Proposal declined by you"
+      },
+      "accept": "I accept the proposal",
+      "decline": "I decline",
+      "pause": "Pause",
+      "resume": "Resume the negotiation",
+      "acceptConfirm": "Do you confirm you accept the company’s latest proposal? No message is sent without your approval."
+    },
+    "upsell": {
+      "title": "Assisted negotiation: Premium plan",
+      "text": "With Premium, your agent writes your counter-proposals and your closing message. The mandate and the analysis remain free.",
+      "cta": "Discover Premium"
+    },
+    "errors": {
+      "notSent": "The first contact must be sent first.",
+      "noMandate": "Save your mandate first.",
+      "premium": "Drafting by the negotiation agent is a Premium feature.",
+      "closed": "The negotiation is no longer in progress: resume it to get a counter-proposal.",
+      "notClosed": "Record your decision first.",
+      "blocked": "This message is blocked by your mandate: please edit it.",
+      "reidentifying": "The message contains something that could identify you: “{excerpt}”. Please edit it.",
+      "notApproved": "Approve this message first, in its current version.",
+      "alreadySent": "This message has already been sent.",
+      "card": "Your anonymous card must be approved, with no re-identification issue, to create the reply link.",
+      "quota": "Daily limit reached: {limit} sends per 24 hours. Please try again tomorrow.",
+      "noChannel": "This offer no longer publishes an application address.",
+      "sendUnavailable": "Email sending is not configured on this server.",
+      "sendFailed": "Sending failed. Please try again later.",
+      "invalid": "The message must be between 20 and 3,000 characters."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Market",
+    "intro": "Where this offer sits against the salaries published for comparable roles.",
+    "quartiles": {
+      "p25": "1st quartile",
+      "median": "Median",
+      "p75": "3rd quartile"
+    },
+    "estimate": "Estimate based on {count, plural, one {# published offer} other {# published offers}} with a salary, from {from} to {to} (gross per year, excluding variable pay). This is not an official salary scale.",
+    "fallback": {
+      "COUNTRY": "Benchmark widened to the whole country: not enough comparable offers in the area.",
+      "FAMILY_COUNTRY": "Benchmark widened to the job family, all seniority levels: not enough more specific comparable offers."
+    },
+    "notEnoughData": "Not enough data: fewer than {min} comparable offers with a published salary. No benchmark is shown rather than an unreliable figure.",
+    "remote": "fully remote ({country})",
+    "allSeniorities": "all seniority levels",
+    "offerPosition": {
+      "BELOW": "The advertised salary ({amount} gross per year, mid-range) is below the market’s 1st quartile.",
+      "WITHIN": "The advertised salary ({amount} gross per year, mid-range) is within the usual market range (between the 1st and 3rd quartiles).",
+      "ABOVE": "The advertised salary ({amount} gross per year, mid-range) is above the market’s 3rd quartile.",
+      "noSalary": "This offer does not state a comparable salary: only the market benchmark is shown."
+    },
+    "floorPosition": {
+      "BELOW": "Your floor ({amount}) is below the 1st quartile: it rules out few comparable offers.",
+      "WITHIN": "Your floor ({amount}) is within the usual market range.",
+      "ABOVE": "Your floor ({amount}) is above the 3rd quartile: it rules out most comparable offers."
+    },
+    "guardRails": {
+      "title": "Market benchmark",
+      "intro": "Salaries published for your job family (based on your most recent role), in France."
+    }
+  },
   "employer": {
     "metaTitle": "Employer area",
     "titleTemplate": "%s · Employer area",
@@ -1863,7 +2041,7 @@
       "cardGone": "The anonymous card is no longer available: it has expired or the candidate withdrew it.",
       "messageTitle": "Message",
       "aiDisclosure": "Message drafted by the candidate’s AI assistant, reviewed and approved by them before sending.",
-      "repliesTitle": "Your replies",
+      "repliesTitle": "Conversation",
       "noReply": "You have not replied yet.",
       "repliedOn": "Your reply of {date}",
       "closedOn": "Closed on {date}",
@@ -1885,7 +2063,8 @@
         "rateLimited": "Too many messages on this thread today. Try again tomorrow."
       },
       "threadPrivacy": "This information is reserved for members of your organisation, for this application only.",
-      "revealedDisclosure": "The candidate has decided to reveal their identity to your organisation. This information is shared by their AI career agent (Coach Career IA), on their explicit decision."
+      "revealedDisclosure": "The candidate has decided to reveal their identity to your organisation. This information is shared by their AI career agent (Coach Career IA), on their explicit decision.",
+      "candidateOn": "Message from the candidate on {date} — written by their AI assistant, approved by them"
     }
   }
 }

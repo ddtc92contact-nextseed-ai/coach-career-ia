@@ -164,6 +164,31 @@
       "disclosure": "Ce message est envoyé par son agent de carrière IA (Coach Career IA), sur sa décision explicite.",
       "noReply": "Les réponses à cet e-mail ne sont pas lues."
     },
+    "negotiation": {
+      "subject": "Négociation – {title}",
+      "disclosure": "Ce message a été rédigé par l’assistant IA (Coach Career IA) de la personne candidate, qui l’a relu et approuvé avant son envoi. Rien n’est engagé sans sa confirmation personnelle.",
+      "replyText": "Répondre : {url}",
+      "replyButton": "Répondre",
+      "expires": "Lien valable jusqu’au {date}.",
+      "noReply": "Les réponses à cet e-mail ne sont pas lues : utilisez le lien « Répondre ».",
+      "draft": {
+        "greeting": "Bonjour,",
+        "intro": "Je suis l’agent de carrière IA de la personne candidate. Merci pour votre retour concernant le poste « {title} ».",
+        "salary": "Pour la rémunération, elle souhaite un salaire fixe annuel brut de {amount}.",
+        "essentials": "Points essentiels pour elle :",
+        "remote": "au moins {days, plural, one {# jour} other {# jours}} de télétravail par semaine",
+        "contract": "un contrat {contract}",
+        "location": "lieu de travail : {location}",
+        "startDate": "prise de poste à partir du {date}",
+        "title": "intitulé du poste : {title}",
+        "niceToHave": "Seraient également appréciés :",
+        "availability": "Elle reste à votre disposition pour en discuter. Rien n’est engagé tant qu’elle ne l’a pas confirmé elle-même.",
+        "signoff": "Bien cordialement,",
+        "closingAccepted": "Je suis l’agent de carrière IA de la personne candidate. Elle vous remercie pour votre proposition concernant le poste « {title} » et souhaite avancer sur cette base. Elle reviendra vers vous personnellement pour en confirmer les détails.",
+        "closingDeclined": "Je suis l’agent de carrière IA de la personne candidate. Elle vous remercie pour le temps consacré à sa candidature au poste « {title} », mais a décidé de ne pas donner suite. Elle vous souhaite une belle réussite dans ce recrutement.",
+        "closingPaused": "Je suis l’agent de carrière IA de la personne candidate. Elle vous remercie pour votre proposition concernant le poste « {title} » et a besoin d’un peu de temps pour y réfléchir. Elle reviendra vers vous prochainement."
+      }
+    },
     "employer": {
       "brand": "Coach Career IA — Espace entreprise",
       "greeting": "Bonjour,",
@@ -197,6 +222,10 @@
         "open": "Ouvrir la messagerie",
         "openText": "Ouvrir la messagerie : {url}",
         "privacy": "Pour protéger la personne candidate, cet e-mail ne contient aucune information sur elle : connectez-vous pour lire sa candidature."
+      },
+      "portalMessage": {
+        "subject": "Nouveau message de la personne candidate pour {title}",
+        "body": "La personne candidate qui vous a contacté au sujet de votre offre « {title} » vous a envoyé un nouveau message. Il vous attend dans la messagerie de votre espace entreprise."
       }
     }
   },
@@ -1253,7 +1282,8 @@
       "coachLimited": "Coach IA : {limit, plural, one {# message} other {# messages}} sur 24 heures",
       "coachNone": "Coach IA non inclus",
       "everythingFree": "Tout ce que comprend l’offre gratuite",
-      "coachUnlimited": "Coach IA illimité"
+      "coachUnlimited": "Coach IA illimité",
+      "negotiation": "Agent de négociation : contre-propositions rédigées pour vous"
     },
     "upgrade": "Passer à Premium",
     "upgradeHint": "Paiement mensuel sécurisé par Stripe, résiliable à tout moment.",
@@ -1359,38 +1389,6 @@
       "signals": "Derniers signaux",
       "none": "Aucun signal",
       "notAvailable": "—"
-    }
-  },
-  "salaryBenchmark": {
-    "title": "Marché",
-    "intro": "Où se situe cette offre face aux salaires publiés pour des postes comparables.",
-    "quartiles": {
-      "p25": "1er quartile",
-      "median": "Médiane",
-      "p75": "3e quartile"
-    },
-    "estimate": "Estimation tirée de {count, plural, one {# offre publiée} other {# offres publiées}} avec un salaire, de {from} à {to} (brut annuel, part variable non comprise). Ce n’est pas une grille officielle.",
-    "fallback": {
-      "COUNTRY": "Repère élargi au pays : pas assez d’offres comparables dans la zone.",
-      "FAMILY_COUNTRY": "Repère élargi au métier, toutes séniorités : pas assez d’offres comparables plus précises."
-    },
-    "notEnoughData": "Pas assez de données : moins de {min} offres comparables avec un salaire publié. Aucun repère n’est affiché plutôt qu’un chiffre peu fiable.",
-    "remote": "télétravail complet ({country})",
-    "allSeniorities": "toutes séniorités",
-    "offerPosition": {
-      "BELOW": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est sous le 1er quartile du marché.",
-      "WITHIN": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est dans la fourchette courante du marché (entre le 1er et le 3e quartile).",
-      "ABOVE": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est au-dessus du 3e quartile du marché.",
-      "noSalary": "Cette offre n’annonce pas de salaire comparable : seul le repère du marché est affiché."
-    },
-    "floorPosition": {
-      "BELOW": "Votre plancher ({amount}) est sous le 1er quartile : il écarte peu d’offres comparables.",
-      "WITHIN": "Votre plancher ({amount}) est dans la fourchette courante du marché.",
-      "ABOVE": "Votre plancher ({amount}) dépasse le 3e quartile : il écarte la plupart des offres comparables."
-    },
-    "guardRails": {
-      "title": "Repère du marché",
-      "intro": "Salaires publiés pour votre métier (d’après votre poste le plus récent), en France."
     }
   },
   "card": {
@@ -1680,6 +1678,186 @@
     "expires": "Lien valable jusqu’au {date}, révocable à tout moment par la personne candidate.",
     "notice": "Ces informations vous sont communiquées pour ce recrutement uniquement."
   },
+  "negotiation": {
+    "tab": "Négocier",
+    "tabFollowUp": "Suivi",
+    "title": "Négociation",
+    "intro": "Votre agent négocie pour vous, en toute transparence : il rédige, vous approuvez chaque message. Il n’invente aucun fait et n’accepte jamais rien à votre place.",
+    "notSent": "La négociation s’ouvre une fois votre prise de contact transmise.",
+    "waitReply": "Pas encore de réponse de l’entreprise : vous pouvez déjà préparer votre mandat.",
+    "mandate": {
+      "title": "Votre mandat",
+      "intro": "Ce que votre agent peut demander. Un message sous votre plancher, ou qui cède sur un point non négociable, est bloqué.",
+      "salaryFloor": "Plancher (fixe annuel brut, €)",
+      "salaryFloorHint": "Par défaut : le salaire minimum de vos garde-fous. Jamais révélé à l’entreprise.",
+      "salaryTarget": "Cible (fixe annuel brut, €)",
+      "nonNegotiable": "Points non négociables",
+      "remoteDaysMin": "Télétravail minimum (jours par semaine)",
+      "location": "Lieu de travail",
+      "contractType": "Type de contrat",
+      "contractAny": "Indifférent",
+      "startDate": "Prise de poste au plus tôt",
+      "otherPoints": "Autres points non négociables (un par ligne)",
+      "niceToHave": "Souhaitables (un par ligne)",
+      "facts": "Faits que l’agent peut mentionner (facultatif)",
+      "factsHint": "Par exemple une autre offre en cours. Sans mention ici, l’agent n’évoque jamais d’offre concurrente ni votre salaire actuel.",
+      "save": "Enregistrer le mandat",
+      "saved": "Mandat enregistré.",
+      "invalid": "Vérifiez : {fields}.",
+      "jobTitle": "Intitulé du poste"
+    },
+    "fields": {
+      "salaryFloor": "le plancher (10 000 à 1 000 000 €)",
+      "salaryTarget": "la cible (au moins égale au plancher)",
+      "remoteDaysMin": "le télétravail (0 à 5 jours)",
+      "location": "le lieu (120 caractères maximum)",
+      "contractType": "le type de contrat",
+      "startDate": "la date de prise de poste",
+      "title": "l’intitulé (120 caractères maximum)",
+      "otherPoints": "les autres points (10 maximum, 200 caractères chacun)",
+      "niceToHave": "les souhaitables (10 maximum, 200 caractères chacun)",
+      "facts": "les faits (1 000 caractères maximum)"
+    },
+    "analysis": {
+      "title": "Analyse de la dernière proposition",
+      "estimate": "Estimation automatique à partir du message reçu le {date} : relisez toujours le texte de l’entreprise.",
+      "none": "Aucune proposition à analyser pour l’instant.",
+      "noMandate": "Enregistrez votre mandat pour comparer la proposition de l’entreprise.",
+      "salary": {
+        "aboveTarget": "Rémunération : {amount}, au niveau de votre cible ou au-dessus.",
+        "aboveFloor": "Rémunération : {amount}, au-dessus de votre plancher mais sous votre cible.",
+        "belowFloor": "Rémunération : {amount}, sous votre plancher.",
+        "unknown": "Rémunération : aucun montant repéré."
+      },
+      "remote": {
+        "met": "Télétravail : {days, plural, one {# jour} other {# jours}} par semaine, conforme à votre minimum.",
+        "notMet": "Télétravail : {days, plural, one {# jour} other {# jours}} par semaine, sous votre minimum.",
+        "unknown": "Télétravail : non précisé."
+      },
+      "contract": {
+        "met": "Contrat : {contract}, conforme.",
+        "notMet": "Contrat : {contract}, différent de votre exigence.",
+        "unknown": "Contrat : non précisé."
+      },
+      "unchecked": "{count, plural, one {# autre point non négociable} other {# autres points non négociables}} à vérifier vous-même."
+    },
+    "thread": {
+      "title": "Fil de la négociation",
+      "empty": "Aucun message de négociation pour l’instant.",
+      "out": "Votre agent, approuvé par vous",
+      "in": "L’entreprise",
+      "sentOn": "Envoyé le {date}",
+      "submittedOn": "Transmis le {date}",
+      "receivedOn": "Reçu le {date}"
+    },
+    "composer": {
+      "title": "Prochain message",
+      "generateCounter": "Générer une contre-proposition",
+      "generateClosing": "Rédiger le message de clôture",
+      "generating": "Rédaction en cours…",
+      "draftLlm": "Rédigé par l’IA à partir de votre mandat et des messages de l’entreprise. Relisez-le : il partira tel quel.",
+      "draftRules": "Préparé à partir d’un modèle et de votre mandat. Relisez-le et personnalisez-le.",
+      "fallback": "L’assistant IA n’a pas pu rédiger ce message (service indisponible, trop lent ou texte non conforme) : une proposition a été préparée à partir d’un modèle.",
+      "generated": "Brouillon prêt : relisez-le avant de l’approuver.",
+      "body": "Message",
+      "appended": "Ajoutés automatiquement : la mention indiquant que le message a été rédigé par votre assistant IA et approuvé par vous, et le lien de réponse.",
+      "language": "Langue du message : {language}",
+      "save": "Enregistrer",
+      "saved": "Brouillon enregistré. Approuvez-le pour pouvoir l’envoyer.",
+      "approve": "J’approuve ce message",
+      "approved": "Message approuvé.",
+      "approvedOn": "Approuvé le {date}. Toute modification annule l’approbation.",
+      "send": "Envoyer maintenant",
+      "sendHint": "Envoyé depuis l’adresse de la plateforme, jamais depuis la vôtre.",
+      "sent": "Message envoyé.",
+      "paste": "Texte à transmettre à l’entreprise",
+      "pasteHint": "Cette offre n’a pas d’adresse de candidature : transmettez ce texte vous-même. Il contient le lien de réponse.",
+      "markTransmitted": "J’ai transmis ce message",
+      "discard": "Supprimer ce brouillon",
+      "discardConfirm": "Supprimer ce brouillon ?",
+      "blocked": "Ce message ne peut pas être approuvé en l’état :",
+      "sendPortal": "Envoyer dans l’espace entreprise",
+      "sendPortalHint": "Remis dans la messagerie de l’entreprise, qui est prévenue sans le contenu.",
+      "appendedPortal": "L’entreprise verra la mention indiquant que le message a été rédigé par votre assistant IA et approuvé par vous ; elle répond directement dans sa messagerie."
+    },
+    "issues": {
+      "belowFloor": "un montant est inférieur à votre plancher ({excerpt}) ;",
+      "remoteDays": "il concède moins de télétravail que votre minimum ;",
+      "contractType": "il évoque un autre type de contrat que celui que vous exigez ;",
+      "competingOffer": "il mentionne une offre concurrente que vous n’avez pas déclarée dans votre mandat ;",
+      "currentSalary": "il mentionne votre salaire actuel, absent de votre mandat ;",
+      "inventedFigure": "il cite un chiffre qui ne vient ni de votre mandat ni de l’entreprise ({excerpt})."
+    },
+    "outcome": {
+      "title": "Votre décision",
+      "intro": "Vous seul décidez. L’agent rédige ensuite un message de clôture, que vous approuvez avant tout envoi.",
+      "status": {
+        "ACTIVE": "Négociation en cours",
+        "PAUSED": "Négociation en pause",
+        "ACCEPTED": "Proposition acceptée par vous",
+        "DECLINED": "Proposition déclinée par vous"
+      },
+      "accept": "J’accepte la proposition",
+      "decline": "Je décline",
+      "pause": "Mettre en pause",
+      "resume": "Reprendre la négociation",
+      "acceptConfirm": "Confirmez-vous accepter la dernière proposition de l’entreprise ? Aucun message ne part sans votre approbation."
+    },
+    "upsell": {
+      "title": "Négociation assistée : offre Premium",
+      "text": "Avec Premium, votre agent rédige vos contre-propositions et votre message de clôture. Le mandat et l’analyse restent gratuits.",
+      "cta": "Découvrir Premium"
+    },
+    "errors": {
+      "notSent": "La prise de contact doit d’abord être transmise.",
+      "noMandate": "Enregistrez d’abord votre mandat.",
+      "premium": "La rédaction par l’agent de négociation est réservée à Premium.",
+      "closed": "La négociation n’est plus en cours : reprenez-la pour une contre-proposition.",
+      "notClosed": "Indiquez d’abord votre décision.",
+      "blocked": "Ce message est bloqué par votre mandat : modifiez-le.",
+      "reidentifying": "Le message contient un élément qui pourrait vous identifier : « {excerpt} ». Modifiez-le.",
+      "notApproved": "Approuvez d’abord ce message, dans sa version actuelle.",
+      "alreadySent": "Ce message a déjà été envoyé.",
+      "card": "Votre carte anonyme doit être validée, sans problème de ré-identification, pour créer le lien de réponse.",
+      "quota": "Limite quotidienne atteinte : {limit} envois sur 24 heures. Réessayez demain.",
+      "noChannel": "Cette offre ne publie plus d’adresse de candidature.",
+      "sendUnavailable": "L’envoi d’e-mails n’est pas configuré sur ce serveur.",
+      "sendFailed": "L’envoi a échoué. Réessayez plus tard.",
+      "invalid": "Le message doit faire entre 20 et 3 000 caractères."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Marché",
+    "intro": "Où se situe cette offre face aux salaires publiés pour des postes comparables.",
+    "quartiles": {
+      "p25": "1er quartile",
+      "median": "Médiane",
+      "p75": "3e quartile"
+    },
+    "estimate": "Estimation tirée de {count, plural, one {# offre publiée} other {# offres publiées}} avec un salaire, de {from} à {to} (brut annuel, part variable non comprise). Ce n’est pas une grille officielle.",
+    "fallback": {
+      "COUNTRY": "Repère élargi au pays : pas assez d’offres comparables dans la zone.",
+      "FAMILY_COUNTRY": "Repère élargi au métier, toutes séniorités : pas assez d’offres comparables plus précises."
+    },
+    "notEnoughData": "Pas assez de données : moins de {min} offres comparables avec un salaire publié. Aucun repère n’est affiché plutôt qu’un chiffre peu fiable.",
+    "remote": "télétravail complet ({country})",
+    "allSeniorities": "toutes séniorités",
+    "offerPosition": {
+      "BELOW": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est sous le 1er quartile du marché.",
+      "WITHIN": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est dans la fourchette courante du marché (entre le 1er et le 3e quartile).",
+      "ABOVE": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est au-dessus du 3e quartile du marché.",
+      "noSalary": "Cette offre n’annonce pas de salaire comparable : seul le repère du marché est affiché."
+    },
+    "floorPosition": {
+      "BELOW": "Votre plancher ({amount}) est sous le 1er quartile : il écarte peu d’offres comparables.",
+      "WITHIN": "Votre plancher ({amount}) est dans la fourchette courante du marché.",
+      "ABOVE": "Votre plancher ({amount}) dépasse le 3e quartile : il écarte la plupart des offres comparables."
+    },
+    "guardRails": {
+      "title": "Repère du marché",
+      "intro": "Salaires publiés pour votre métier (d’après votre poste le plus récent), en France."
+    }
+  },
   "employer": {
     "metaTitle": "Espace entreprise",
     "titleTemplate": "%s · Espace entreprise",
@@ -1863,7 +2041,7 @@
       "cardGone": "La carte anonyme n’est plus disponible : elle a expiré ou la personne candidate l’a retirée.",
       "messageTitle": "Message",
       "aiDisclosure": "Message rédigé par l’assistant IA de la personne candidate, relu et approuvé par elle avant l’envoi.",
-      "repliesTitle": "Vos réponses",
+      "repliesTitle": "Échanges",
       "noReply": "Vous n’avez pas encore répondu.",
       "repliedOn": "Votre réponse du {date}",
       "closedOn": "Clôture du {date}",
@@ -1885,7 +2063,8 @@
         "rateLimited": "Trop de messages aujourd’hui sur ce fil. Réessayez demain."
       },
       "threadPrivacy": "Ces informations sont réservées aux membres de votre organisation, pour cette candidature uniquement.",
-      "revealedDisclosure": "La personne candidate a décidé de lever son anonymat auprès de votre organisation. Ces informations vous sont communiquées par son agent de carrière IA (Coach Career IA), sur sa décision explicite."
+      "revealedDisclosure": "La personne candidate a décidé de lever son anonymat auprès de votre organisation. Ces informations vous sont communiquées par son agent de carrière IA (Coach Career IA), sur sa décision explicite.",
+      "candidateOn": "Message de la personne candidate du {date} — rédigé par son assistant IA, approuvé par elle"
     }
   }
 }

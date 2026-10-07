@@ -621,9 +621,13 @@ canal **`PORTAL`** au lieu de l'e-mail. Code : `src/lib/employer/inbox.ts`, migr
   l'assistant IA de la personne candidate et approuvé par elle », réponses. Statuts : nouveau /
   lu / répondu / clos. Clôture polie : message type localisé (langue de l'échange), puis plus
   de réponse ni de levée d'anonymat.
-- **Réponses** : stockées en `contact_replies` (auteur `author_id`, drapeau `closing`), le seul
-  modèle de message entrant — `/app/contacts`, et tout ce qui lit les réponses entrantes, les
-  voient sans changement ; le candidat est prévenu par e-mail sans le contenu.
+- **Réponses** : enregistrées par le même code que la page à jeton (`storeCompanyReply`) — une
+  `contact_replies` (auteur `author_id`, drapeau `closing`), ou, si le candidat a ouvert une
+  négociation, un message entrant `negotiation_messages` lu par l'agent de négociation ; le
+  candidat est prévenu par e-mail sans le contenu. La clôture reste une `contact_replies`.
+- **Négociation** : sur un fil `PORTAL`, une contre-proposition approuvée est remise dans le fil
+  (pas d'e-mail ni de lien ; membres prévenus sans le contenu, même quota). Le fil de l'entreprise
+  montre les messages ENVOYÉS de la négociation, jamais les brouillons.
 - **Levée d'anonymat** : sur un fil `PORTAL`, aucun e-mail ni lien n'est envoyé ; les champs
   révélés s'affichent dans le fil pour les seuls membres de l'organisation (CV via
   `/api/entreprise/messages/<id>/cv`), avec la même expiration, la même révocation (effet

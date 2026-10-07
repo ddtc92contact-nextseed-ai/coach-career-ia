@@ -105,11 +105,17 @@ export default async function EmployerThreadPage({ params }: Props) {
         ) : (
           <ul className="space-y-3">
             {thread.replies.map((r) => (
-              <li key={r.id} className="rounded-lg border border-stone-200 p-3">
+              <li
+                key={r.id}
+                className={`rounded-lg border p-3 ${
+                  r.from === "candidate" ? "border-stone-200 bg-stone-50" : "border-stone-200"
+                }`}
+              >
                 <p className="text-xs text-stone-500">
-                  {t(r.closing ? "closedOn" : "repliedOn", {
-                    date: format.dateTime(r.createdAt, "short"),
-                  })}
+                  {t(
+                    r.from === "candidate" ? "candidateOn" : r.closing ? "closedOn" : "repliedOn",
+                    { date: format.dateTime(r.createdAt, "short") },
+                  )}
                 </p>
                 <p className="mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
                   {r.body}

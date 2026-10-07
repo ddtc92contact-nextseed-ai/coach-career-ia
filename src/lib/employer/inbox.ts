@@ -15,6 +15,7 @@ import { db } from "@/lib/db";
 import { portalHandover, portalHandoverCv, type RevealFile } from "@/lib/handover/repository";
 import type { RevealedIdentity } from "@/lib/handover/schema";
 import { logger as defaultLogger } from "@/lib/logger";
+import { decNegotiation } from "@/lib/negotiation/store";
 import { threadStatus, type ThreadStatus } from "./thread";
 
 /**
@@ -32,9 +33,11 @@ import { threadStatus, type ThreadStatus } from "./thread";
  *   modifiée depuis sa validation : plus affichée) ; les champs révélés
  *   suivent la levée d'anonymat (révoquée ou expirée : effacés, plus
  *   affichés).
- * - Les réponses sont des `ContactReply` (le modèle des réponses par la page
- *   à jeton) : `/app/contacts` et les fonctions qui lisent les réponses
- *   entrantes les voient sans changement.
+ * - Les réponses sont enregistrées comme celles de la page à jeton
+ *   (`storeCompanyReply`) : `ContactReply`, ou message entrant du fil de
+ *   négociation si le candidat a ouvert une négociation. Le fil montre aussi
+ *   les messages de négociation ENVOYÉS par le candidat (rédigés par son
+ *   agent, approuvés par lui) : un seul échange, quel que soit le modèle.
  * - L'identifiant du candidat ne sort jamais de ce module. Journal :
  *   identifiant d'organisation et codes, jamais de contenu.
  */
@@ -69,16 +72,31 @@ export async function listThreads(orgId: string): Promise<ThreadListItem[]> {
       orgClosedAt: true,
       offer: { select: { title: true } },
       replies: { select: { createdAt: true }, orderBy: { createdAt: "desc" }, take: 1 },
+      negotiationMessages: {
+        where: { status: "SENT" },
+        select: { createdAt: true, sentAt: true, direction: true },
+        orderBy: { createdAt: "desc" },
+      },
       _count: { select: { replies: true } },
     },
   });
-  return rows.map((r) => ({
-    id: r.id,
-    offerTitle: r.offer.title,
-    sentAt: r.sentAt,
-    lastActivityAt: r.replies[0]?.createdAt ?? r.sentAt,
-    status: threadStatus({ ...r, replies: r._count.replies }),
-  }));
+  return rows.map((r) => {
+    const activity = [
+      r.sentAt,
+      r.replies[0]?.createdAt,
+      ...r.negotiationMessages.map((m) => m.sentAt ?? m.createdAt),
+    ].filter((d): d is Date => Boolean(d));
+    const incoming = r.negotiationMessages.filter((m) => m.direction === "IN").length;
+    return {
+      id: r.id,
+      offerTitle: r.offer.title,
+      sentAt: r.sentAt,
+      lastActivityAt: activity.length
+        ? new Date(Math.max(...activity.map((d) => d.getTime())))
+        : null,
+      status: threadStatus({ ...r, replies: r._count.replies + incoming }),
+    };
+  });
 }
 
 /** Fils jamais ouverts par un membre (pastille de la navigation). */
@@ -106,9 +124,25 @@ async function ownedThread(orgId: string, id: unknown) {
         orderBy: { createdAt: "asc" },
         select: { id: true, bodyEnc: true, createdAt: true, closing: true },
       },
+      negotiationMandate: { select: { id: true } },
+      // Négociation : seuls les messages échangés (jamais les brouillons du candidat).
+      negotiationMessages: {
+        where: { status: "SENT" },
+        orderBy: { createdAt: "asc" },
+        select: { id: true, direction: true, bodyEnc: true, sentAt: true, createdAt: true },
+      },
     },
   });
 }
+
+export type ThreadEntry = {
+  id: string;
+  /** `company` : réponse de l'organisation ; `candidate` : message de l'agent du candidat, approuvé par lui. */
+  from: "company" | "candidate";
+  body: string;
+  createdAt: Date;
+  closing: boolean;
+};
 
 export type ThreadView = {
   id: string;
@@ -119,7 +153,8 @@ export type ThreadView = {
   message: { subject: string; body: string };
   /** Carte anonyme, `null` si son lien a expiré ou a été révoqué (ou carte non partageable). */
   card: CardContent | null;
-  replies: { id: string; body: string; createdAt: Date; closing: boolean }[];
+  /** Échanges après le premier message, dans l'ordre chronologique. */
+  replies: ThreadEntry[];
   /** Champs révélés par le candidat à cette organisation, `null` si aucun n'est actif. */
   revealed: { identity: RevealedIdentity; expiresAt: Date; createdAt: Date } | null;
 };
@@ -143,6 +178,22 @@ export async function getThread(
       data: { orgReadAt: now },
     });
   }
+  const entries: ThreadEntry[] = [
+    ...row.replies.map((r) => ({
+      id: r.id,
+      from: "company" as const,
+      body: decryptReply(row.userId, r.bodyEnc),
+      createdAt: r.createdAt,
+      closing: r.closing,
+    })),
+    ...row.negotiationMessages.map((m) => ({
+      id: m.id,
+      from: m.direction === "IN" ? ("company" as const) : ("candidate" as const),
+      body: decNegotiation(row.userId, m.bodyEnc),
+      createdAt: m.sentAt ?? m.createdAt,
+      closing: false,
+    })),
+  ].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   const view = { now, countView: options.open ?? false };
   const [card, revealed] = await Promise.all([
     row.cardLinkId ? resolveCardLinkById(row.cardLinkId, row.userId, view) : null,
@@ -155,16 +206,11 @@ export async function getThread(
     status: threadStatus({
       orgReadAt: row.orgReadAt ?? (options.open ? now : null),
       orgClosedAt: row.orgClosedAt,
-      replies: row.replies.length,
+      replies: entries.filter((e) => e.from === "company").length,
     }),
     message: decryptSentMessage(row),
     card: card?.card ?? null,
-    replies: row.replies.map((r) => ({
-      id: r.id,
-      body: decryptReply(row.userId, r.bodyEnc),
-      createdAt: r.createdAt,
-      closing: r.closing,
-    })),
+    replies: entries,
     revealed,
   };
 }
@@ -187,7 +233,12 @@ export async function replyInThread(
   const parsed = replyInput.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid" };
   const result = await storeCompanyReply(
-    { contactId: row.id, userId: row.userId, offerTitle: row.offer.title },
+    {
+      contactId: row.id,
+      userId: row.userId,
+      offerTitle: row.offer.title,
+      negotiation: Boolean(row.negotiationMandate),
+    },
     parsed.data.body,
     { ...deps, authorId: member.userId },
   );

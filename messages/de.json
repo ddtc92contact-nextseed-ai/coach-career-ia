@@ -164,6 +164,31 @@
       "disclosure": "Diese Nachricht wird von ihrem KI-Karriereagenten (Coach Career IA) auf ihre ausdrückliche Entscheidung hin gesendet.",
       "noReply": "Antworten auf diese E-Mail werden nicht gelesen."
     },
+    "negotiation": {
+      "subject": "Verhandlung – {title}",
+      "disclosure": "Diese Nachricht wurde vom KI-Assistenten (Coach Career IA) der kandidierenden Person verfasst; sie hat sie vor dem Versand gelesen und genehmigt. Nichts ist verbindlich ohne ihre persönliche Bestätigung.",
+      "replyText": "Antworten: {url}",
+      "replyButton": "Antworten",
+      "expires": "Link gültig bis {date}.",
+      "noReply": "Antworten auf diese E-Mail werden nicht gelesen: Bitte nutzen Sie den Link „Antworten“.",
+      "draft": {
+        "greeting": "Guten Tag,",
+        "intro": "Ich bin der KI-Karriereagent der kandidierenden Person. Vielen Dank für Ihre Rückmeldung zur Stelle „{title}“.",
+        "salary": "Beim Gehalt wünscht sie sich ein Bruttojahresfixgehalt von {amount}.",
+        "essentials": "Wesentliche Punkte für sie:",
+        "remote": "mindestens {days, plural, one {# Tag} other {# Tage}} Homeoffice pro Woche",
+        "contract": "Vertragsart: {contract}",
+        "location": "Arbeitsort: {location}",
+        "startDate": "Arbeitsbeginn frühestens am {date}",
+        "title": "Stellenbezeichnung: {title}",
+        "niceToHave": "Ebenfalls geschätzt:",
+        "availability": "Sie steht für ein Gespräch gern zur Verfügung. Nichts ist vereinbart, solange sie es nicht persönlich bestätigt hat.",
+        "signoff": "Mit freundlichen Grüßen",
+        "closingAccepted": "Ich bin der KI-Karriereagent der kandidierenden Person. Sie dankt Ihnen für Ihr Angebot zur Stelle „{title}“ und möchte auf dieser Grundlage weitermachen. Sie wird sich persönlich bei Ihnen melden, um die Einzelheiten zu bestätigen.",
+        "closingDeclined": "Ich bin der KI-Karriereagent der kandidierenden Person. Sie dankt Ihnen für die Zeit, die Sie ihrer Bewerbung für die Stelle „{title}“ gewidmet haben, hat sich aber entschieden, nicht weiterzumachen. Sie wünscht Ihnen viel Erfolg bei der Besetzung.",
+        "closingPaused": "Ich bin der KI-Karriereagent der kandidierenden Person. Sie dankt Ihnen für Ihr Angebot zur Stelle „{title}“ und braucht etwas Bedenkzeit. Sie wird sich in Kürze bei Ihnen melden."
+      }
+    },
     "employer": {
       "brand": "Coach Career IA — Unternehmensbereich",
       "greeting": "Guten Tag,",
@@ -197,6 +222,10 @@
         "open": "Postfach öffnen",
         "openText": "Postfach öffnen: {url}",
         "privacy": "Zum Schutz der Person enthält diese E-Mail keine Angaben über sie: Melden Sie sich an, um die Bewerbung zu lesen."
+      },
+      "portalMessage": {
+        "subject": "Neue Nachricht der Person zu {title}",
+        "body": "Die Person, die Sie zu Ihrem Angebot „{title}“ kontaktiert hat, hat Ihnen eine neue Nachricht gesendet. Sie wartet im Postfach Ihres Unternehmensbereichs."
       }
     }
   },
@@ -1253,7 +1282,8 @@
       "coachLimited": "KI-Coach: {limit, plural, one {# Nachricht} other {# Nachrichten}} pro 24 Stunden",
       "coachNone": "KI-Coach nicht enthalten",
       "everythingFree": "Alles aus dem kostenlosen Tarif",
-      "coachUnlimited": "Unbegrenzter KI-Coach"
+      "coachUnlimited": "Unbegrenzter KI-Coach",
+      "negotiation": "Verhandlungsagent: Gegenvorschläge für Sie verfasst"
     },
     "upgrade": "Zu Premium wechseln",
     "upgradeHint": "Monatliche Zahlung, abgesichert durch Stripe, jederzeit kündbar.",
@@ -1359,38 +1389,6 @@
       "signals": "Neueste Signale",
       "none": "Kein Signal",
       "notAvailable": "—"
-    }
-  },
-  "salaryBenchmark": {
-    "title": "Markt",
-    "intro": "Wo dieses Angebot im Vergleich zu den veröffentlichten Gehältern vergleichbarer Stellen liegt.",
-    "quartiles": {
-      "p25": "1. Quartil",
-      "median": "Median",
-      "p75": "3. Quartil"
-    },
-    "estimate": "Schätzung auf Basis von {count, plural, one {# veröffentlichten Angebot} other {# veröffentlichten Angeboten}} mit Gehaltsangabe, von {from} bis {to} (brutto pro Jahr, ohne variable Vergütung). Keine offizielle Gehaltstabelle.",
-    "fallback": {
-      "COUNTRY": "Vergleichswert auf das ganze Land erweitert: zu wenige vergleichbare Angebote in der Region.",
-      "FAMILY_COUNTRY": "Vergleichswert auf die Berufsgruppe erweitert, alle Erfahrungsstufen: zu wenige genauer vergleichbare Angebote."
-    },
-    "notEnoughData": "Nicht genügend Daten: weniger als {min} vergleichbare Angebote mit veröffentlichtem Gehalt. Lieber kein Vergleichswert als eine unzuverlässige Zahl.",
-    "remote": "vollständig remote ({country})",
-    "allSeniorities": "alle Erfahrungsstufen",
-    "offerPosition": {
-      "BELOW": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt unter dem 1. Quartil des Marktes.",
-      "WITHIN": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt im üblichen Marktbereich (zwischen 1. und 3. Quartil).",
-      "ABOVE": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt über dem 3. Quartil des Marktes.",
-      "noSalary": "Dieses Angebot nennt kein vergleichbares Gehalt: Nur der Marktvergleichswert wird angezeigt."
-    },
-    "floorPosition": {
-      "BELOW": "Ihre Untergrenze ({amount}) liegt unter dem 1. Quartil: Sie schließt wenige vergleichbare Angebote aus.",
-      "WITHIN": "Ihre Untergrenze ({amount}) liegt im üblichen Marktbereich.",
-      "ABOVE": "Ihre Untergrenze ({amount}) liegt über dem 3. Quartil: Sie schließt die meisten vergleichbaren Angebote aus."
-    },
-    "guardRails": {
-      "title": "Marktvergleich",
-      "intro": "Veröffentlichte Gehälter für Ihre Berufsgruppe (nach Ihrer letzten Position), in Frankreich."
     }
   },
   "card": {
@@ -1680,6 +1678,186 @@
     "expires": "Link gültig bis {date}, jederzeit von der Person widerrufbar.",
     "notice": "Diese Angaben werden Ihnen nur für dieses Auswahlverfahren mitgeteilt."
   },
+  "negotiation": {
+    "tab": "Verhandeln",
+    "tabFollowUp": "Verlauf",
+    "title": "Verhandlung",
+    "intro": "Ihr Agent verhandelt für Sie, ganz transparent: Er entwirft, Sie genehmigen jede Nachricht. Er erfindet keine Tatsachen und nimmt nie etwas in Ihrem Namen an.",
+    "notSent": "Die Verhandlung beginnt, sobald Ihre Kontaktaufnahme versendet wurde.",
+    "waitReply": "Das Unternehmen hat noch nicht geantwortet: Sie können Ihr Mandat schon vorbereiten.",
+    "mandate": {
+      "title": "Ihr Mandat",
+      "intro": "Was Ihr Agent verlangen darf. Eine Nachricht unter Ihrer Untergrenze oder mit einem Zugeständnis bei einem nicht verhandelbaren Punkt wird blockiert.",
+      "salaryFloor": "Untergrenze (Bruttojahresfixgehalt, €)",
+      "salaryFloorHint": "Standard: das Mindestgehalt Ihrer Leitplanken. Wird dem Unternehmen nie mitgeteilt.",
+      "salaryTarget": "Ziel (Bruttojahresfixgehalt, €)",
+      "nonNegotiable": "Nicht verhandelbare Punkte",
+      "remoteDaysMin": "Mindestens Homeoffice (Tage pro Woche)",
+      "location": "Arbeitsort",
+      "contractType": "Vertragsart",
+      "contractAny": "Egal",
+      "startDate": "Frühester Arbeitsbeginn",
+      "otherPoints": "Weitere nicht verhandelbare Punkte (einer pro Zeile)",
+      "niceToHave": "Wünschenswert (einer pro Zeile)",
+      "facts": "Tatsachen, die der Agent erwähnen darf (optional)",
+      "factsHint": "Zum Beispiel ein anderes laufendes Angebot. Ohne Angabe hier erwähnt der Agent nie ein Konkurrenzangebot oder Ihr aktuelles Gehalt.",
+      "save": "Mandat speichern",
+      "saved": "Mandat gespeichert.",
+      "invalid": "Bitte prüfen: {fields}.",
+      "jobTitle": "Stellenbezeichnung"
+    },
+    "fields": {
+      "salaryFloor": "die Untergrenze (10.000 bis 1.000.000 €)",
+      "salaryTarget": "das Ziel (mindestens die Untergrenze)",
+      "remoteDaysMin": "das Homeoffice (0 bis 5 Tage)",
+      "location": "den Arbeitsort (höchstens 120 Zeichen)",
+      "contractType": "die Vertragsart",
+      "startDate": "den Arbeitsbeginn",
+      "title": "die Stellenbezeichnung (höchstens 120 Zeichen)",
+      "otherPoints": "die weiteren Punkte (höchstens 10, je 200 Zeichen)",
+      "niceToHave": "die wünschenswerten Punkte (höchstens 10, je 200 Zeichen)",
+      "facts": "die Tatsachen (höchstens 1.000 Zeichen)"
+    },
+    "analysis": {
+      "title": "Analyse des letzten Angebots",
+      "estimate": "Automatische Schätzung anhand der am {date} erhaltenen Nachricht: Lesen Sie immer den Text des Unternehmens.",
+      "none": "Noch kein Angebot zu analysieren.",
+      "noMandate": "Speichern Sie Ihr Mandat, um das Angebot des Unternehmens zu vergleichen.",
+      "salary": {
+        "aboveTarget": "Vergütung: {amount}, auf oder über Ihrem Ziel.",
+        "aboveFloor": "Vergütung: {amount}, über Ihrer Untergrenze, aber unter Ihrem Ziel.",
+        "belowFloor": "Vergütung: {amount}, unter Ihrer Untergrenze.",
+        "unknown": "Vergütung: kein Betrag gefunden."
+      },
+      "remote": {
+        "met": "Homeoffice: {days, plural, one {# Tag} other {# Tage}} pro Woche, entspricht Ihrem Minimum.",
+        "notMet": "Homeoffice: {days, plural, one {# Tag} other {# Tage}} pro Woche, unter Ihrem Minimum.",
+        "unknown": "Homeoffice: nicht angegeben."
+      },
+      "contract": {
+        "met": "Vertrag: {contract}, wie gefordert.",
+        "notMet": "Vertrag: {contract}, nicht wie gefordert.",
+        "unknown": "Vertrag: nicht angegeben."
+      },
+      "unchecked": "{count, plural, one {# weiterer nicht verhandelbarer Punkt} other {# weitere nicht verhandelbare Punkte}} selbst zu prüfen."
+    },
+    "thread": {
+      "title": "Verhandlungsverlauf",
+      "empty": "Noch keine Verhandlungsnachrichten.",
+      "out": "Ihr Agent, von Ihnen genehmigt",
+      "in": "Das Unternehmen",
+      "sentOn": "Gesendet am {date}",
+      "submittedOn": "Übermittelt am {date}",
+      "receivedOn": "Erhalten am {date}"
+    },
+    "composer": {
+      "title": "Nächste Nachricht",
+      "generateCounter": "Gegenvorschlag erstellen",
+      "generateClosing": "Abschlussnachricht verfassen",
+      "generating": "Wird verfasst …",
+      "draftLlm": "Von der KI aus Ihrem Mandat und den Nachrichten des Unternehmens verfasst. Lesen Sie sie genau: Sie wird unverändert gesendet.",
+      "draftRules": "Aus einer Vorlage und Ihrem Mandat erstellt. Lesen und personalisieren Sie sie.",
+      "fallback": "Der KI-Assistent konnte diese Nachricht nicht verfassen (Dienst nicht verfügbar, zu langsam oder nicht konformer Text): Ein Vorschlag wurde aus einer Vorlage erstellt.",
+      "generated": "Entwurf bereit: Lesen Sie ihn vor der Genehmigung.",
+      "body": "Nachricht",
+      "appended": "Automatisch hinzugefügt: der Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen genehmigt wurde, sowie der Antwortlink.",
+      "language": "Sprache der Nachricht: {language}",
+      "save": "Speichern",
+      "saved": "Entwurf gespeichert. Genehmigen Sie ihn, um ihn senden zu können.",
+      "approve": "Ich genehmige diese Nachricht",
+      "approved": "Nachricht genehmigt.",
+      "approvedOn": "Genehmigt am {date}. Jede Änderung hebt die Genehmigung auf.",
+      "send": "Jetzt senden",
+      "sendHint": "Wird von der Adresse der Plattform gesendet, nie von Ihrer.",
+      "sent": "Nachricht gesendet.",
+      "paste": "Text zur Weitergabe an das Unternehmen",
+      "pasteHint": "Dieses Angebot hat keine Bewerbungsadresse: Geben Sie diesen Text selbst weiter. Er enthält den Antwortlink.",
+      "markTransmitted": "Ich habe diese Nachricht weitergegeben",
+      "discard": "Diesen Entwurf löschen",
+      "discardConfirm": "Diesen Entwurf löschen?",
+      "blocked": "Diese Nachricht kann so nicht genehmigt werden:",
+      "sendPortal": "An den Unternehmensbereich senden",
+      "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt.",
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen freigegeben wurde; es antwortet direkt in seinem Postfach."
+    },
+    "issues": {
+      "belowFloor": "ein Betrag liegt unter Ihrer Untergrenze ({excerpt});",
+      "remoteDays": "sie gesteht weniger Homeoffice zu als Ihr Minimum;",
+      "contractType": "sie nennt eine andere Vertragsart als die geforderte;",
+      "competingOffer": "sie erwähnt ein Konkurrenzangebot, das Sie nicht in Ihrem Mandat angegeben haben;",
+      "currentSalary": "sie erwähnt Ihr aktuelles Gehalt, das nicht in Ihrem Mandat steht;",
+      "inventedFigure": "sie nennt eine Zahl, die weder aus Ihrem Mandat noch vom Unternehmen stammt ({excerpt})."
+    },
+    "outcome": {
+      "title": "Ihre Entscheidung",
+      "intro": "Nur Sie entscheiden. Der Agent entwirft dann eine Abschlussnachricht, die Sie vor dem Versand genehmigen.",
+      "status": {
+        "ACTIVE": "Verhandlung läuft",
+        "PAUSED": "Verhandlung pausiert",
+        "ACCEPTED": "Angebot von Ihnen angenommen",
+        "DECLINED": "Angebot von Ihnen abgelehnt"
+      },
+      "accept": "Ich nehme das Angebot an",
+      "decline": "Ich lehne ab",
+      "pause": "Pausieren",
+      "resume": "Verhandlung fortsetzen",
+      "acceptConfirm": "Bestätigen Sie, dass Sie das letzte Angebot des Unternehmens annehmen? Keine Nachricht wird ohne Ihre Genehmigung gesendet."
+    },
+    "upsell": {
+      "title": "Unterstützte Verhandlung: Premium-Tarif",
+      "text": "Mit Premium verfasst Ihr Agent Ihre Gegenvorschläge und Ihre Abschlussnachricht. Mandat und Analyse bleiben kostenlos.",
+      "cta": "Premium entdecken"
+    },
+    "errors": {
+      "notSent": "Die Kontaktaufnahme muss zuerst versendet werden.",
+      "noMandate": "Speichern Sie zuerst Ihr Mandat.",
+      "premium": "Entwürfe des Verhandlungsagenten sind Premium vorbehalten.",
+      "closed": "Die Verhandlung läuft nicht mehr: Setzen Sie sie fort, um einen Gegenvorschlag zu erhalten.",
+      "notClosed": "Geben Sie zuerst Ihre Entscheidung an.",
+      "blocked": "Diese Nachricht wird durch Ihr Mandat blockiert: Bitte ändern Sie sie.",
+      "reidentifying": "Die Nachricht enthält etwas, das Sie identifizieren könnte: „{excerpt}“. Bitte ändern Sie sie.",
+      "notApproved": "Genehmigen Sie diese Nachricht zuerst in der aktuellen Fassung.",
+      "alreadySent": "Diese Nachricht wurde bereits gesendet.",
+      "card": "Ihre anonyme Karte muss ohne Re-Identifizierungsproblem freigegeben sein, um den Antwortlink zu erstellen.",
+      "quota": "Tageslimit erreicht: {limit} Sendungen pro 24 Stunden. Bitte morgen erneut versuchen.",
+      "noChannel": "Dieses Angebot veröffentlicht keine Bewerbungsadresse mehr.",
+      "sendUnavailable": "Der E-Mail-Versand ist auf diesem Server nicht konfiguriert.",
+      "sendFailed": "Der Versand ist fehlgeschlagen. Bitte später erneut versuchen.",
+      "invalid": "Die Nachricht muss zwischen 20 und 3.000 Zeichen lang sein."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Markt",
+    "intro": "Wo dieses Angebot im Vergleich zu den veröffentlichten Gehältern vergleichbarer Stellen liegt.",
+    "quartiles": {
+      "p25": "1. Quartil",
+      "median": "Median",
+      "p75": "3. Quartil"
+    },
+    "estimate": "Schätzung auf Basis von {count, plural, one {# veröffentlichten Angebot} other {# veröffentlichten Angeboten}} mit Gehaltsangabe, von {from} bis {to} (brutto pro Jahr, ohne variable Vergütung). Keine offizielle Gehaltstabelle.",
+    "fallback": {
+      "COUNTRY": "Vergleichswert auf das ganze Land erweitert: zu wenige vergleichbare Angebote in der Region.",
+      "FAMILY_COUNTRY": "Vergleichswert auf die Berufsgruppe erweitert, alle Erfahrungsstufen: zu wenige genauer vergleichbare Angebote."
+    },
+    "notEnoughData": "Nicht genügend Daten: weniger als {min} vergleichbare Angebote mit veröffentlichtem Gehalt. Lieber kein Vergleichswert als eine unzuverlässige Zahl.",
+    "remote": "vollständig remote ({country})",
+    "allSeniorities": "alle Erfahrungsstufen",
+    "offerPosition": {
+      "BELOW": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt unter dem 1. Quartil des Marktes.",
+      "WITHIN": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt im üblichen Marktbereich (zwischen 1. und 3. Quartil).",
+      "ABOVE": "Das angegebene Gehalt ({amount} brutto pro Jahr, Mitte der Spanne) liegt über dem 3. Quartil des Marktes.",
+      "noSalary": "Dieses Angebot nennt kein vergleichbares Gehalt: Nur der Marktvergleichswert wird angezeigt."
+    },
+    "floorPosition": {
+      "BELOW": "Ihre Untergrenze ({amount}) liegt unter dem 1. Quartil: Sie schließt wenige vergleichbare Angebote aus.",
+      "WITHIN": "Ihre Untergrenze ({amount}) liegt im üblichen Marktbereich.",
+      "ABOVE": "Ihre Untergrenze ({amount}) liegt über dem 3. Quartil: Sie schließt die meisten vergleichbaren Angebote aus."
+    },
+    "guardRails": {
+      "title": "Marktvergleich",
+      "intro": "Veröffentlichte Gehälter für Ihre Berufsgruppe (nach Ihrer letzten Position), in Frankreich."
+    }
+  },
   "employer": {
     "metaTitle": "Unternehmensbereich",
     "titleTemplate": "%s · Unternehmensbereich",
@@ -1863,7 +2041,7 @@
       "cardGone": "Die anonyme Karte ist nicht mehr verfügbar: Sie ist abgelaufen oder wurde zurückgezogen.",
       "messageTitle": "Nachricht",
       "aiDisclosure": "Nachricht vom KI-Assistenten der Person verfasst, von ihr vor dem Versand geprüft und freigegeben.",
-      "repliesTitle": "Ihre Antworten",
+      "repliesTitle": "Austausch",
       "noReply": "Sie haben noch nicht geantwortet.",
       "repliedOn": "Ihre Antwort vom {date}",
       "closedOn": "Abgeschlossen am {date}",
@@ -1885,7 +2063,8 @@
         "rateLimited": "Heute zu viele Nachrichten in diesem Austausch. Versuchen Sie es morgen erneut."
       },
       "threadPrivacy": "Diese Angaben sind den Mitgliedern Ihrer Organisation vorbehalten, nur für diese Bewerbung.",
-      "revealedDisclosure": "Die Person hat entschieden, ihre Anonymität gegenüber Ihrer Organisation aufzuheben. Diese Angaben übermittelt ihr KI-Karriereagent (Coach Career IA) auf ihre ausdrückliche Entscheidung."
+      "revealedDisclosure": "Die Person hat entschieden, ihre Anonymität gegenüber Ihrer Organisation aufzuheben. Diese Angaben übermittelt ihr KI-Karriereagent (Coach Career IA) auf ihre ausdrückliche Entscheidung.",
+      "candidateOn": "Nachricht der Person vom {date} — von ihrem KI-Assistenten verfasst, von ihr freigegeben"
     }
   }
 }

@@ -33,6 +33,7 @@ import { buildDraft, MAX_BODY, MAX_SUBJECT } from "./draft";
 import { contactEmail, pasteText, replyNotificationEmail } from "./email";
 import { offerLanguage } from "./language";
 import { notifyPortalContact } from "@/lib/employer/notify";
+import { encNegotiation } from "@/lib/negotiation/store";
 
 /**
  * Prises de contact de l'agent avec une entreprise, uniquement via le canal
@@ -58,6 +59,9 @@ const contentAad = (userId: string) => `user:${userId}:contact`;
 const replyAad = (userId: string) => `user:${userId}:contact-reply`;
 
 const enc = (userId: string, text: string) => encrypt(text, { aad: contentAad(userId) });
+/** Réponse d'une entreprise à un contact, en clair (candidat, fil de l'espace entreprise destinataire). */
+export const decryptReply = (userId: string, bodyEnc: string) =>
+  decrypt(bodyEnc, { aad: replyAad(userId) });
 const dec = (userId: string, text: string) => decrypt(text, { aad: contentAad(userId) });
 
 /** Empreinte du texte approuvé : toute modification invalide l'approbation. */
@@ -117,15 +121,33 @@ async function offerPassesGuardRails(userId: string, offerId: string): Promise<b
   return checkGuardRails(toMatchOffer(offer), rails).pass;
 }
 
-async function sentInWindow(userId: string, now: Date) {
-  return db.contact.count({
-    where: {
-      userId,
-      channel: { in: [...QUOTA_CHANNELS] },
-      status: { in: ["SENT", "SENDING"] },
-      sentAt: { gte: new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS) },
-    },
-  });
+/**
+ * Messages envoyés par l'application pour le candidat sur 24 h glissantes
+ * (e-mail et messagerie de l'espace entreprise) : prises de contact ET
+ * messages de négociation (quota commun).
+ */
+export async function sentInWindow(userId: string, now: Date) {
+  const since = new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS);
+  const [contacts, negotiation] = await Promise.all([
+    db.contact.count({
+      where: {
+        userId,
+        channel: { in: [...QUOTA_CHANNELS] },
+        status: { in: ["SENT", "SENDING"] },
+        sentAt: { gte: since },
+      },
+    }),
+    db.negotiationMessage.count({
+      where: {
+        userId,
+        direction: "OUT",
+        status: { in: ["SENT", "SENDING"] },
+        sentAt: { gte: since },
+        contact: { channel: { in: [...QUOTA_CHANNELS] } },
+      },
+    }),
+  ]);
+  return contacts + negotiation;
 }
 
 export async function getQuota(userId: string, now = new Date()) {
@@ -517,6 +539,12 @@ export async function listContacts(userId: string, now = new Date()) {
       createdAt: true,
       offer: { select: { title: true, companyName: true } },
       replies: { select: { readAt: true, createdAt: true }, orderBy: { createdAt: "desc" } },
+      // Réponses reçues pendant une négociation.
+      negotiationMessages: {
+        where: { direction: "IN" },
+        select: { readAt: true, createdAt: true },
+        orderBy: { createdAt: "desc" },
+      },
       // Levée d'anonymat active (métadonnée seulement).
       handovers: {
         where: { userId, revokedAt: null, purgedAt: null, expiresAt: { gt: now } },
@@ -525,18 +553,23 @@ export async function listContacts(userId: string, now = new Date()) {
       },
     },
   });
-  return rows.map((r) => ({
-    id: r.id,
-    channel: r.channel,
-    status: r.status,
-    sentAt: r.sentAt,
-    createdAt: r.createdAt,
-    offer: r.offer,
-    replies: r.replies.length,
-    unread: r.replies.filter((x) => !x.readAt).length,
-    lastReplyAt: r.replies[0]?.createdAt ?? null,
-    revealed: r.handovers.length > 0,
-  }));
+  return rows.map((r) => {
+    const received = [...r.replies, ...r.negotiationMessages].sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
+    return {
+      id: r.id,
+      channel: r.channel,
+      status: r.status,
+      sentAt: r.sentAt,
+      createdAt: r.createdAt,
+      offer: r.offer,
+      replies: received.length,
+      unread: received.filter((x) => !x.readAt).length,
+      lastReplyAt: received[0]?.createdAt ?? null,
+      revealed: r.handovers.length > 0,
+    };
+  });
 }
 export type ContactListItem = Awaited<ReturnType<typeof listContacts>>[number];
 
@@ -597,7 +630,7 @@ export async function getContact(userId: string, id: unknown) {
     cardLink: row.cardLink,
     replies: row.replies.map((r) => ({
       id: r.id,
-      body: decrypt(r.bodyEnc, { aad: replyAad(userId) }),
+      body: decryptReply(userId, r.bodyEnc),
       createdAt: r.createdAt,
       readAt: r.readAt,
       closing: r.closing,
@@ -644,14 +677,24 @@ export async function contactOptions(userId: string, matchId: string) {
 }
 
 export async function markRepliesRead(userId: string, contactId: string, now = new Date()) {
-  await db.contactReply.updateMany({
-    where: { userId, contactId, readAt: null },
-    data: { readAt: now },
-  });
+  await Promise.all([
+    db.contactReply.updateMany({
+      where: { userId, contactId, readAt: null },
+      data: { readAt: now },
+    }),
+    db.negotiationMessage.updateMany({
+      where: { userId, contactId, direction: "IN", readAt: null },
+      data: { readAt: now },
+    }),
+  ]);
 }
 
 export async function unreadReplies(userId: string) {
-  return db.contactReply.count({ where: { userId, readAt: null } });
+  const [replies, negotiation] = await Promise.all([
+    db.contactReply.count({ where: { userId, readAt: null } }),
+    db.negotiationMessage.count({ where: { userId, direction: "IN", readAt: null } }),
+  ]);
+  return replies + negotiation;
 }
 
 // --- Réponses des entreprises ----------------------------------------------------------
@@ -674,7 +717,12 @@ export async function replyTarget(token: unknown, now = new Date()) {
   if (!link?.contactId) return null;
   const contact = await db.contact.findFirst({
     where: { id: link.contactId, userId: link.userId, status: "SENT" },
-    select: { id: true, userId: true, offer: { select: { title: true } } },
+    select: {
+      id: true,
+      userId: true,
+      offer: { select: { title: true } },
+      negotiationMandate: { select: { id: true } },
+    },
   });
   return contact ? { ...contact, card: link.card } : null;
 }
@@ -694,7 +742,12 @@ export async function recordReply(
   const parsed = replyInput.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid" };
   return storeCompanyReply(
-    { contactId: target.id, userId: target.userId, offerTitle: target.offer.title },
+    {
+      contactId: target.id,
+      userId: target.userId,
+      offerTitle: target.offer.title,
+      negotiation: Boolean(target.negotiationMandate),
+    },
     parsed.data.body,
     { ...deps, now: () => now },
   );
@@ -703,39 +756,60 @@ export async function recordReply(
 /**
  * Réponse d'une entreprise à un contact ENVOYÉ, quel que soit le canal
  * (page à jeton ou messagerie de l'espace entreprise) : une `ContactReply`
- * chiffrée pour le candidat — le seul modèle de message entrant, lu tel quel
- * par `/app/contacts` — puis une notification au candidat, sans le contenu.
- * Le texte est supposé validé (`replyInput`). Un message de clôture
- * (`closing`) n'est pas soumis à la limite quotidienne.
+ * chiffrée pour le candidat, lue telle quelle par `/app/contacts` — ou, si le
+ * contact est en négociation, un message entrant du fil de négociation —
+ * puis une notification au candidat, sans le contenu. Le texte est supposé
+ * validé (`replyInput`). Un message de clôture (`closing`) reste une
+ * `ContactReply` et n'est pas soumis à la limite quotidienne.
  */
 export async function storeCompanyReply(
-  target: { contactId: string; userId: string; offerTitle: string },
+  target: { contactId: string; userId: string; offerTitle: string; negotiation?: boolean },
   body: string,
   deps: ReplyDeps & { authorId?: string | null; closing?: boolean },
 ): Promise<{ ok: true } | { ok: false; error: "rateLimited" }> {
   const log = deps.logger ?? defaultLogger;
   const now = (deps.now ?? (() => new Date()))();
   if (!deps.closing) {
-    const recent = await db.contactReply.count({
-      where: {
-        contactId: target.contactId,
-        createdAt: { gte: new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS) },
-      },
-    });
-    if (recent >= MAX_REPLIES_PER_DAY) return { ok: false, error: "rateLimited" };
+    const since = new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS);
+    const [recent, recentInNegotiation] = await Promise.all([
+      db.contactReply.count({ where: { contactId: target.contactId, createdAt: { gte: since } } }),
+      db.negotiationMessage.count({
+        where: { contactId: target.contactId, direction: "IN", createdAt: { gte: since } },
+      }),
+    ]);
+    if (recent + recentInNegotiation >= MAX_REPLIES_PER_DAY) {
+      return { ok: false, error: "rateLimited" };
+    }
   }
 
-  await db.contactReply.create({
-    data: {
-      userId: target.userId,
-      contactId: target.contactId,
-      bodyEnc: encrypt(body, { aad: replyAad(target.userId) }),
-      authorId: deps.authorId ?? null,
-      closing: deps.closing ?? false,
-      createdAt: now,
-    },
-  });
-  log.info("contact.reply.received", {});
+  const negotiation = Boolean(target.negotiation) && !deps.closing;
+  if (negotiation) {
+    // Contact en négociation : la réponse rejoint le fil de négociation.
+    await db.negotiationMessage.create({
+      data: {
+        userId: target.userId,
+        contactId: target.contactId,
+        direction: "IN",
+        kind: "reply",
+        status: "SENT",
+        bodyEnc: encNegotiation(target.userId, body),
+        sentAt: now,
+        createdAt: now,
+      },
+    });
+  } else {
+    await db.contactReply.create({
+      data: {
+        userId: target.userId,
+        contactId: target.contactId,
+        bodyEnc: encrypt(body, { aad: replyAad(target.userId) }),
+        authorId: deps.authorId ?? null,
+        closing: deps.closing ?? false,
+        createdAt: now,
+      },
+    });
+  }
+  log.info("contact.reply.received", { negotiation });
 
   const user = await db.user.findUnique({
     where: { id: target.userId },
@@ -758,11 +832,6 @@ export async function storeCompanyReply(
     }
   }
   return { ok: true };
-}
-
-/** Texte d'une réponse d'entreprise (déchiffré côté serveur, pour le fil de l'espace entreprise). */
-export function decryptReply(userId: string, bodyEnc: string): string {
-  return decrypt(bodyEnc, { aad: replyAad(userId) });
 }
 
 /** Message approuvé d'un contact (objet et texte transmis), pour le fil de l'espace entreprise. */
