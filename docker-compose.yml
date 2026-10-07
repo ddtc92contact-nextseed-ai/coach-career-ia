@@ -19,6 +19,8 @@ x-app-env: &app-env
   SMTP_PASSWORD: ${SMTP_PASSWORD:-}
   SMTP_SECURE: ${SMTP_SECURE:-false}
   LOG_LEVEL: ${LOG_LEVEL:-info}
+  # Pièces justificatives chiffrées (volume `uploads`).
+  UPLOAD_DIR: /app/storage/uploads
   ADMIN_EMAILS: ${ADMIN_EMAILS:-}
 
 services:
@@ -34,6 +36,8 @@ services:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
+    volumes:
+      - uploads:/app/storage/uploads
     networks:
       - internal
       - traefik
@@ -121,3 +125,4 @@ networks:
 
 volumes:
   pgdata:
+  uploads:

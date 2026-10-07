@@ -20,3 +20,6 @@ src/generated/
 # divers
 .DS_Store
 npm-debug.log*
+
+# pièces justificatives stockées en local (développement)
+storage/

@@ -4,8 +4,15 @@
 // employeur…) vivent dans des modèles d'identité dédiés, séparés du profil
 // partageable. Ici, seul `User` (et les tables techniques d'Auth.js) porte une
 // donnée identifiante : l'adresse e-mail de connexion. Toute table métier
-// future doit référencer `User.id` et chaque requête doit être filtrée par
-// l'utilisateur courant (voir `requireUser()`).
+// doit référencer `User.id` (suppression en cascade) et chaque requête doit
+// être filtrée par l'utilisateur courant (voir `requireUser()`).
+//
+// La mémoire de carrière (expériences, réalisations, preuves, compétences,
+// garde-fous) est un profil PSEUDONYMISÉ : aucun nom d'employeur, nom de
+// personne ni coordonnée n'y a de champ. L'employeur est décrit de façon
+// générique (secteur, taille, stade). Les seules valeurs identifiantes
+// possibles — noms d'entreprises exclues, noms de fichiers des justificatifs —
+// sont chiffrées au niveau applicatif (`src/lib/crypto`).
 
 generator client {
   provider = "prisma-client"
@@ -22,11 +29,21 @@ model User {
   id            String    @id @default(cuid())
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
+  /// Langue préférée (`fr`, `en`…) : e-mails et textes générés par l'IA.
+  /// `null` tant que l'utilisateur n'a rien choisi (langue de navigation).
+  locale        String?
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts Account[]
-  sessions Session[]
+  accounts     Account[]
+  sessions     Session[]
+  profile      CareerProfile?
+  experiences  Experience[]
+  achievements Achievement[]
+  proofs       Proof[]
+  skills       Skill[]
+  guardRails   GuardRails?
+  locations    GuardRailLocation[]
 
   @@map("users")
 }
@@ -73,6 +90,224 @@ model VerificationToken {
 
   @@id([identifier, token])
   @@map("verification_tokens")
+}
+
+// ---------------------------------------------------------------------------
+// Mémoire de carrière (profil pseudonymisé)
+// ---------------------------------------------------------------------------
+
+enum VisibilityStatus {
+  /// En recherche active : profil proposé en priorité.
+  ACTIVE
+  /// Ouvert aux opportunités.
+  OPEN
+  /// Invisible : aucun recruteur ne voit le profil.
+  INVISIBLE
+}
+
+enum Seniority {
+  INTERN
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  MANAGER
+  DIRECTOR
+  EXECUTIVE
+}
+
+enum CompanySize {
+  S1_10
+  S11_50
+  S51_200
+  S201_500
+  S501_1000
+  S1001_5000
+  S5001_PLUS
+}
+
+enum CompanyStage {
+  STARTUP
+  SCALEUP
+  SME
+  MIDCAP
+  LARGE_CORP
+  PUBLIC_SECTOR
+  NONPROFIT
+  CONSULTANCY
+}
+
+/// Niveau de preuve d'une réalisation. `VERIFIED` est réservé à une
+/// vérification par un tiers (fonctionnalité future).
+enum EvidenceLevel {
+  DECLARED
+  DOCUMENT
+  VERIFIED
+}
+
+enum ProofKind {
+  URL
+  DOCUMENT
+  REFERENCE
+}
+
+/// Réglages du profil (1-1 avec l'utilisateur).
+model CareerProfile {
+  userId     String           @id @map("user_id")
+  visibility VisibilityStatus @default(INVISIBLE)
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("career_profiles")
+}
+
+/// Expérience professionnelle. L'employeur n'est PAS nommé : seulement décrit.
+model Experience {
+  id               String       @id @default(cuid())
+  userId           String       @map("user_id")
+  roleTitle        String       @map("role_title")
+  /// Premier jour du mois de début (précision : le mois).
+  startMonth       DateTime     @map("start_month") @db.Date
+  /// Premier jour du mois de fin ; `null` = poste actuel.
+  endMonth         DateTime?    @map("end_month") @db.Date
+  seniority        Seniority
+  contractType     ContractType @map("contract_type")
+  /// Code de secteur (`src/lib/career/codes.ts`), affiché via les traductions.
+  sector           String
+  companySize      CompanySize  @map("company_size")
+  companyStage     CompanyStage @map("company_stage")
+  responsibilities String       @default("")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievements Achievement[]
+
+  @@index([userId])
+  @@map("experiences")
+}
+
+/// Réalisation, cœur de la mémoire de carrière.
+model Achievement {
+  id            String        @id @default(cuid())
+  userId        String        @map("user_id")
+  experienceId  String?       @map("experience_id")
+  title         String
+  context       String        @default("")
+  actions       String        @default("")
+  result        String        @default("")
+  /// Calculé : `DOCUMENT` dès qu'au moins une preuve est jointe.
+  evidenceLevel EvidenceLevel @default(DECLARED) @map("evidence_level")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experience Experience?        @relation(fields: [experienceId], references: [id], onDelete: SetNull)
+  proofs     Proof[]
+  skills     AchievementSkill[]
+
+  @@index([userId])
+  @@index([experienceId])
+  @@map("achievements")
+}
+
+/// Preuve d'une réalisation : lien, document privé ou témoignage écrit.
+model Proof {
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  achievementId String    @map("achievement_id")
+  kind          ProofKind
+  /// `URL` : adresse publique de la preuve.
+  url           String?
+  /// `REFERENCE` : texte du témoignage (sans nom ni coordonnées).
+  referenceText String?   @map("reference_text")
+  /// `DOCUMENT` : clé de stockage du fichier chiffré (`src/lib/career/storage.ts`).
+  storageKey    String?   @unique @map("storage_key")
+  /// `DOCUMENT` : nom de fichier d'origine, chiffré (peut être identifiant).
+  fileNameEnc   String?   @map("file_name_enc")
+  mimeType      String?   @map("mime_type")
+  sizeBytes     Int?      @map("size_bytes")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([achievementId])
+  @@map("proofs")
+}
+
+/// Compétence. Niveau et dernière utilisation sont calculés depuis les
+/// réalisations qui l'utilisent ; sans réalisation, elle est « non prouvée ».
+model Skill {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  name      String
+  /// Nom normalisé (minuscules, espaces réduits) : unicité par utilisateur.
+  nameKey   String   @map("name_key")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievements AchievementSkill[]
+
+  @@unique([userId, nameKey])
+  @@map("skills")
+}
+
+model AchievementSkill {
+  achievementId String @map("achievement_id")
+  skillId       String @map("skill_id")
+
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  skill       Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([achievementId, skillId])
+  @@index([skillId])
+  @@map("achievement_skills")
+}
+
+/// Garde-fous : filtres durs appliqués par le matching (1-1 avec l'utilisateur).
+/// Montants en euros bruts annuels.
+model GuardRails {
+  userId             String         @id @map("user_id")
+  minFixedSalary     Int?           @map("min_fixed_salary")
+  targetTotalPackage Int?           @map("target_total_package")
+  /// Enums partagés avec le radar ; l'application n'accepte que des valeurs
+  /// explicites (jamais `UNKNOWN` ni `OTHER`, voir `src/lib/career/codes.ts`).
+  remotePolicy       RemotePolicy?  @map("remote_policy")
+  minRemoteDays      Int?           @map("min_remote_days")
+  contractTypes      ContractType[] @map("contract_types")
+  /// Codes de secteur exclus.
+  excludedSectors    String[]       @map("excluded_sectors")
+  /// Noms d'entreprises exclues, chacun chiffré (AAD `user:<id>:excluded-company`).
+  excludedCompanies  String[]       @map("excluded_companies_enc")
+  maxWeeklyHours     Int?           @map("max_weekly_hours")
+  acceptsOnCall      Boolean        @default(false) @map("accepts_on_call")
+  /// Codes de préférences de culture d'entreprise (facultatifs).
+  culturePreferences String[]       @map("culture_preferences")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("guard_rails")
+}
+
+/// Zone de travail acceptée : une ville et un rayon. Les coordonnées seront
+/// renseignées par géocodage (fonctionnalité future) pour le filtrage.
+model GuardRailLocation {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  label     String
+  radiusKm  Int      @map("radius_km")
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("guard_rail_locations")
 }
 
 // ---------------------------------------------------------------------------

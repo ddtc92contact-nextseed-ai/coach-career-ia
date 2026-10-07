@@ -1,43 +1,56 @@
 import "server-only";
+import { createTranslator } from "next-intl";
 import nodemailer from "nodemailer";
+import { MESSAGES } from "@/i18n/messages";
+import { DEFAULT_LOCALE, isAppLocale, type AppLocale } from "@/i18n/routing";
 import { isSmtpConfigured, serverEnv } from "@/lib/env";
 import { logger } from "@/lib/logger";
 
-type MagicLinkParams = { to: string; url: string; expires: Date };
+type MagicLinkParams = { to: string; url: string; expires: Date; locale: AppLocale };
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
-export function magicLinkEmail(url: string) {
+/**
+ * Langue d'un lien magique : celle de sa destination (`callbackUrl=/en/app`),
+ * c'est-à-dire la langue de la page où le lien a été demandé.
+ */
+export function magicLinkLocale(url: string): AppLocale | undefined {
+  try {
+    const callbackUrl = new URL(url).searchParams.get("callbackUrl") ?? "";
+    const pathname = new URL(callbackUrl, "http://local").pathname;
+    const candidate = pathname.split("/")[1];
+    return isAppLocale(candidate) ? candidate : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function magicLinkEmail(url: string, locale: AppLocale = DEFAULT_LOCALE) {
+  const t = createTranslator({ locale, messages: MESSAGES[locale], namespace: "email.magicLink" });
   const host = new URL(url).host;
-  const subject = "Votre lien de connexion à Coach Career IA";
-  const text = [
-    "Bonjour,",
-    "",
-    `Voici votre lien de connexion à ${host} (valable 15 minutes, utilisable une seule fois) :`,
-    url,
-    "",
-    "Si vous n'êtes pas à l'origine de cette demande, ignorez simplement ce message.",
-  ].join("\n");
+  const subject = t("subject");
+  const text = [t("greeting"), "", t("textIntro", { host }), url, "", t("ignore")].join("\n");
   const html = `<!doctype html>
-<html lang="fr"><body style="font-family:system-ui,sans-serif;color:#1c1917;background:#fafaf9;padding:24px">
+<html lang="${locale}"><body style="font-family:system-ui,sans-serif;color:#1c1917;background:#fafaf9;padding:24px">
   <div style="max-width:480px;margin:auto;background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:32px">
-    <p style="margin:0 0 16px;font-weight:600">Coach Career IA</p>
-    <p>Bonjour,</p>
-    <p>Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable 15 minutes et ne fonctionne qu'une fois.</p>
-    <p style="margin:24px 0"><a href="${escapeHtml(url)}" style="background:#1c1917;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;display:inline-block">Me connecter</a></p>
-    <p style="font-size:13px;color:#78716c">Si vous n'êtes pas à l'origine de cette demande, ignorez ce message : aucun compte ne sera ouvert sans clic sur ce lien.</p>
+    <p style="margin:0 0 16px;font-weight:600">${escapeHtml(t("brand"))}</p>
+    <p>${escapeHtml(t("greeting"))}</p>
+    <p>${escapeHtml(t("htmlIntro"))}</p>
+    <p style="margin:24px 0"><a href="${escapeHtml(url)}" style="background:#1c1917;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;display:inline-block">${escapeHtml(t("button"))}</a></p>
+    <p style="font-size:13px;color:#78716c">${escapeHtml(t("htmlIgnore"))}</p>
   </div>
 </body></html>`;
   return { subject, text, html };
 }
 
 /**
- * Envoie le lien magique par SMTP. Sans SMTP configuré, en développement
- * uniquement, le lien est affiché dans la console du serveur.
+ * Envoie le lien magique par SMTP, dans la langue de l'utilisateur. Sans SMTP
+ * configuré, en développement uniquement, le lien est affiché dans la console
+ * du serveur.
  */
-export async function sendMagicLink({ to, url }: MagicLinkParams): Promise<void> {
+export async function sendMagicLink({ to, url, locale }: MagicLinkParams): Promise<void> {
   const env = serverEnv();
 
   if (!isSmtpConfigured(env)) {
@@ -45,7 +58,7 @@ export async function sendMagicLink({ to, url }: MagicLinkParams): Promise<void>
       throw new Error("SMTP non configuré : impossible d'envoyer le lien de connexion");
     }
     // Développement uniquement : affichage volontaire du lien dans la console.
-    console.info(`\n[dev] Lien de connexion (SMTP non configuré) :\n${url}\n`);
+    console.info(`\n[dev] Lien de connexion (SMTP non configuré, langue ${locale}) :\n${url}\n`);
     return;
   }
 
@@ -55,10 +68,10 @@ export async function sendMagicLink({ to, url }: MagicLinkParams): Promise<void>
     secure: env.SMTP_SECURE,
     auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASSWORD } : undefined,
   });
-  const { subject, text, html } = magicLinkEmail(url);
+  const { subject, text, html } = magicLinkEmail(url, locale);
   const result = await transport.sendMail({ from: env.EMAIL_FROM, to, subject, text, html });
   if (result.rejected.length > 0) {
     throw new Error("Adresse refusée par le serveur SMTP");
   }
-  logger.info("auth.magic_link.sent", { transport: "smtp" });
+  logger.info("auth.magic_link.sent", { transport: "smtp", locale });
 }

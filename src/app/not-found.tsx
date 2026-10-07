@@ -1,13 +1,19 @@
 import Link from "next/link";
-import { AuthCard } from "@/components/auth-card";
+import "./globals.css";
 
-export default function NotFound() {
+// Page 404 hors préfixe de langue (cas rare : le proxy redirige presque tout
+// vers une langue). Sans contexte de langue, elle reste en français.
+export default function GlobalNotFound() {
   return (
-    <AuthCard title="Page introuvable">
-      <p className="text-stone-600">Cette page n&apos;existe pas ou a été déplacée.</p>
-      <Link href="/" className="text-brand-700 mt-6 inline-block underline underline-offset-4">
-        Retour à l&apos;accueil
-      </Link>
-    </AuthCard>
+    <html lang="fr">
+      <body className="grid min-h-dvh place-items-center px-4 font-sans">
+        <main className="text-center">
+          <h1 className="text-xl font-semibold">Page introuvable</h1>
+          <Link href="/" className="text-brand-700 mt-4 inline-block underline underline-offset-4">
+            Coach Career IA
+          </Link>
+        </main>
+      </body>
+    </html>
   );
 }

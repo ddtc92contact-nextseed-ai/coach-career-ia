@@ -1,0 +1,536 @@
+{
+  "metadata": {
+    "siteName": "Coach Career IA",
+    "title": "Coach Career IA — Ihr privater Karriereagent",
+    "titleTemplate": "%s · Coach Career IA",
+    "description": "Ihr privater Karriereagent: Ihre Nachweise, Ihre Leitplanken und nur die Chancen, die sie respektieren. Standardmäßig anonym."
+  },
+  "header": {
+    "mainNav": "Hauptnavigation",
+    "signIn": "Anmelden"
+  },
+  "footer": {
+    "copyright": "© {year} Coach Career IA — NextSeed-AI",
+    "privacy": "Ihre Daten gehören Ihnen: niemals verkauft, niemals ohne Ihre Zustimmung weitergegeben."
+  },
+  "localeSwitcher": {
+    "label": "Sprache"
+  },
+  "landing": {
+    "eyebrow": "Privater Karriereagent",
+    "title": "Hören Sie auf, nach Jobs zu suchen. Lassen Sie die richtigen Chancen zu sich kommen.",
+    "intro": "Coach Career IA kehrt die Jobsuche um: Sie bauen ein Karrieregedächtnis auf, das auf Nachweisen beruht, legen Ihre Bedingungen fest, und unser Agent bringt Ihnen nur Angebote, die diese erfüllen. Ohne Ihre Identität preiszugeben.",
+    "ctaPrimary": "Meinen Bereich erstellen",
+    "ctaSecondary": "So funktioniert es",
+    "pillarsTitle": "Vier Prinzipien, keine Kompromisse",
+    "pillars": {
+      "anonymous": {
+        "title": "Standardmäßig anonym",
+        "text": "Ihre Identität, Ihre Kontaktdaten und Ihr aktueller Arbeitgeber werden getrennt und verschlüsselt gespeichert. Recruiter sehen nur ein anonymisiertes Profil, das auf Ihren Fähigkeiten beruht."
+      },
+      "proofs": {
+        "title": "Nachweise statt Versprechen",
+        "text": "Ihr Karrieregedächtnis bündelt konkrete Erfolge: abgeschlossene Projekte, messbare Ergebnisse, nachgewiesene Kompetenzen. Sie sprechen für Sie."
+      },
+      "guardRails": {
+        "title": "Ihre Leitplanken filtern vor",
+        "text": "Mindestgehalt, Homeoffice, ausgeschlossene Branchen, Pendelzeit: Sie legen nicht verhandelbare Regeln fest. Ein Angebot, das gegen eine davon verstößt, erreicht Sie nie."
+      },
+      "control": {
+        "title": "Sie behalten die Kontrolle",
+        "text": "Nichts wird ohne Ihre Zustimmung weitergegeben. Interessiert Sie eine Chance, heben Sie die Anonymität mit einem Klick auf — und nur für diesen einen Recruiter."
+      }
+    },
+    "stepsTitle": "So funktioniert es",
+    "steps": {
+      "one": "Sie beschreiben Ihren Werdegang mit überprüfbaren Nachweisen.",
+      "two": "Sie legen Ihre Leitplanken ein für alle Mal fest.",
+      "three": "Der Agent analysiert den Markt und zeigt Ihnen nur qualifizierte Angebote.",
+      "four": "Sie entscheiden für jedes Angebot, ob Sie sich zu erkennen geben."
+    },
+    "closingTitle": "Ihre Karriere, Ihre Regeln, Ihr Tempo.",
+    "closingText": "Anmeldung ohne Passwort, per Link an Ihre E-Mail-Adresse. Keine Daten werden ohne Ihre ausdrückliche Zustimmung weitergegeben.",
+    "closingCta": "Jetzt starten"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "text": "Diese Seite existiert nicht oder wurde verschoben.",
+    "back": "Zur Startseite"
+  },
+  "errorPage": {
+    "title": "Ein Fehler ist aufgetreten",
+    "text": "Der Vorgang konnte nicht abgeschlossen werden. Ihre gespeicherten Daten sind nicht betroffen: Versuchen Sie es gleich noch einmal.",
+    "retry": "Erneut versuchen",
+    "back": "Zur Startseite"
+  },
+  "auth": {
+    "login": {
+      "metaTitle": "Anmeldung",
+      "title": "Anmeldung in Ihrem Bereich",
+      "intro": "Kein Passwort nötig: Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen einmalig gültigen Anmeldelink. Falls Sie noch keinen Bereich haben, wird er bei der ersten Anmeldung erstellt.",
+      "emailLabel": "E-Mail-Adresse",
+      "emailPlaceholder": "sie@beispiel.de",
+      "submit": "Anmeldelink anfordern",
+      "submitting": "Wird gesendet…",
+      "backHome": "Zur Startseite",
+      "errors": {
+        "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+        "sendFailed": "Der Link kann derzeit nicht gesendet werden. Bitte versuchen Sie es in Kürze erneut."
+      }
+    },
+    "verify": {
+      "title": "Prüfen Sie Ihr Postfach",
+      "text": "Wenn die eingegebene Adresse gültig ist, wurde Ihnen soeben ein Anmeldelink gesendet. Er ist 15 Minuten gültig und funktioniert nur ein einziges Mal.",
+      "help": "Nichts erhalten? Prüfen Sie Ihren Spam-Ordner und <link>fordern Sie dann einen neuen Link an</link>."
+    },
+    "error": {
+      "title": "Anmeldung nicht möglich",
+      "retry": "Neuen Link anfordern",
+      "messages": {
+        "Verification": "Dieser Anmeldelink ist abgelaufen oder wurde bereits verwendet. Fordern Sie einen neuen an: Er ist 15 Minuten gültig.",
+        "Configuration": "Der Anmeldedienst ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
+        "AccessDenied": "Der Zugriff wurde verweigert.",
+        "Default": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      }
+    }
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Ihr Anmeldelink für Coach Career IA",
+      "brand": "Coach Career IA",
+      "greeting": "Guten Tag,",
+      "textIntro": "hier ist Ihr Anmeldelink für {host} (15 Minuten gültig, nur einmal verwendbar):",
+      "ignore": "Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese Nachricht einfach.",
+      "htmlIntro": "Klicken Sie auf die Schaltfläche unten, um sich anzumelden. Dieser Link ist 15 Minuten gültig und funktioniert nur einmal.",
+      "button": "Anmelden",
+      "htmlIgnore": "Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese Nachricht: Ohne Klick auf diesen Link wird kein Konto eröffnet."
+    }
+  },
+  "common": {
+    "optional": "optional",
+    "saving": "Wird gespeichert…",
+    "saved": "Gespeichert.",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht…"
+  },
+  "errors": {
+    "summary": "{count, plural, one {Ein Feld muss korrigiert werden.} other {# Felder müssen korrigiert werden.}}",
+    "required": "Dieses Feld ist erforderlich.",
+    "tooLong": "Dieser Text ist zu lang.",
+    "tooShort": "Dieser Text ist zu kurz.",
+    "invalid": "Dieser Wert ist ungültig.",
+    "invalidChoice": "Wählen Sie eine Option aus der Liste.",
+    "invalidUrl": "Geben Sie eine vollständige Webadresse ein, beginnend mit https://.",
+    "invalidMonth": "Geben Sie einen Monat im Format JJJJ-MM ein.",
+    "futureMonth": "Dieser Monat liegt in der Zukunft.",
+    "endBeforeStart": "Das Ende darf nicht vor dem Beginn liegen.",
+    "invalidNumber": "Geben Sie eine ganze Zahl ein.",
+    "outOfRange": "Dieser Wert liegt außerhalb des zulässigen Bereichs.",
+    "packageBelowSalary": "Die angestrebte Gesamtvergütung muss mindestens dem Mindestfixgehalt entsprechen.",
+    "remoteDaysRequired": "Geben Sie die Mindestanzahl an Homeoffice-Tagen an.",
+    "tooMany": "Zu viele Einträge in dieser Liste.",
+    "fileRequired": "Wählen Sie eine Datei aus.",
+    "fileTooLarge": "Diese Datei überschreitet die maximal zulässige Größe.",
+    "fileType": "Format nicht unterstützt: Laden Sie eine PDF-Datei oder ein Bild (PNG, JPEG, WebP) hoch.",
+    "fileQuota": "Sie haben die maximale Anzahl an Dokumenten erreicht. Löschen Sie eines, um ein weiteres hinzuzufügen.",
+    "confirmMismatch": "Die eingegebene Adresse stimmt nicht mit der Ihres Kontos überein.",
+    "notFound": "Dieses Element existiert nicht (mehr)."
+  },
+  "app": {
+    "metaTitle": "Mein Bereich",
+    "titleTemplate": "%s · Coach Career IA",
+    "signOut": "Abmelden",
+    "nav": {
+      "label": "Kandidatenbereich",
+      "dashboard": "Übersicht",
+      "memory": "Mein Karrieregedächtnis",
+      "guardRails": "Meine Leitplanken",
+      "opportunities": "Chancen",
+      "settings": "Einstellungen",
+      "radar": "Radar (Admin)"
+    }
+  },
+  "dashboard": {
+    "title": "Willkommen in Ihrem Bereich",
+    "intro": "Ihr Karriereagent wird eingerichtet. Beginnen Sie mit Ihrem Karrieregedächtnis und Ihren Leitplanken: Sie bestimmen die Auswahl der Chancen.",
+    "open": "Öffnen →",
+    "completeness": {
+      "title": "Vollständigkeit des Profils",
+      "summary": "{achievements, plural, =0 {Noch keine Erfolge.} one {Ein Erfolg} other {# Erfolge}}{achievements, plural, =0 {} other {, davon {proven, plural, =0 {keiner belegt} one {einer belegt} other {# belegt}}.}} Belegte Erfolge zählen am meisten.",
+      "nextSteps": "Nächste Schritte",
+      "complete": "Ihr Profil ist vollständig. Denken Sie daran, es aktuell zu halten.",
+      "steps": {
+        "addExperience": {
+          "title": "Berufserfahrung hinzufügen",
+          "text": "Ihre Position, der Zeitraum und eine allgemeine Beschreibung des Arbeitgebers."
+        },
+        "addAchievement": {
+          "title": "Einen Erfolg beschreiben",
+          "text": "Ein Projekt, eine Maßnahme, ein messbares Ergebnis."
+        },
+        "addProof": {
+          "title": "Einen Erfolg belegen",
+          "text": "Fügen Sie einen Link, ein Dokument oder eine Referenz hinzu."
+        },
+        "moreProofs": {
+          "title": "Weitere Erfolge belegen",
+          "text": "Drei belegte Erfolge ergeben die volle Punktzahl."
+        },
+        "provenSkills": {
+          "title": "Drei belegte Kompetenzen",
+          "text": "Verknüpfen Sie Ihre Kompetenzen mit belegten Erfolgen."
+        },
+        "setSalary": {
+          "title": "Mindestgehalt festlegen",
+          "text": "Darunter wird Ihnen kein Angebot vorgelegt."
+        },
+        "setLocation": {
+          "title": "Arbeitsort oder Homeoffice angeben",
+          "text": "Akzeptierte Städte und Ihre Homeoffice-Präferenz."
+        },
+        "setContractTypes": {
+          "title": "Vertragsarten wählen",
+          "text": "Unbefristet, freiberuflich, befristet… was Sie akzeptieren."
+        }
+      }
+    },
+    "visibility": {
+      "title": "Sichtbarkeitsstatus",
+      "intro": "Entscheiden Sie, ob Ihr anonymisiertes Profil Recruitern vorgestellt werden darf.",
+      "save": "Aktualisieren"
+    },
+    "sections": {
+      "memory": {
+        "title": "Mein Karrieregedächtnis",
+        "text": "Sammeln Sie Ihre Erfolge und die Nachweise, die sie belegen."
+      },
+      "guardRails": {
+        "title": "Meine Leitplanken",
+        "text": "Legen Sie die Bedingungen fest, gegen die kein Angebot verstoßen darf."
+      },
+      "opportunities": {
+        "title": "Chancen",
+        "text": "Hier finden Sie die von Ihrem Agenten qualifizierten Angebote."
+      }
+    }
+  },
+  "opportunities": {
+    "title": "Chancen",
+    "intro": "Nur Angebote, die Ihre Leitplanken respektieren, jeweils mit einer Erklärung der Übereinstimmung.",
+    "emptyTitle": "Noch keine Chancen",
+    "emptyText": "Sobald Ihr Karrieregedächtnis und Ihre Leitplanken ausgefüllt sind, beginnt Ihr Agent, Ihnen qualifizierte Angebote vorzuschlagen."
+  },
+  "memory": {
+    "title": "Mein Karrieregedächtnis",
+    "intro": "Ihre konkreten Erfolge, jeweils durch einen Nachweis belegt. Sie bilden die Grundlage Ihres anonymisierten Profils: Es enthält weder Arbeitgeber- noch Kollegennamen noch Kontaktdaten.",
+    "sectionsNav": "Abschnitte des Karrieregedächtnisses",
+    "anchors": {
+      "experiences": "Berufserfahrung",
+      "realisations": "Erfolge",
+      "competences": "Kompetenzen"
+    },
+    "period": "{start} – {end}",
+    "present": "heute",
+    "edit": "Bearbeiten",
+    "cancel": "Abbrechen",
+    "experiences": {
+      "title": "Berufserfahrung",
+      "add": "Berufserfahrung hinzufügen",
+      "emptyTitle": "Noch keine Berufserfahrung",
+      "emptyText": "Fügen Sie Ihre bisherigen Positionen hinzu. Der Arbeitgeber wird allgemein beschrieben (Branche, Größe, Organisationsform): Sein Name wird nie abgefragt.",
+      "achievementCount": "{count, plural, =0 {keine Erfolge} one {# Erfolg} other {# Erfolge}}",
+      "newTitle": "Neue Berufserfahrung",
+      "editTitle": "Berufserfahrung bearbeiten",
+      "formIntro": "Beschreiben Sie die Position und ihren Kontext, ohne den Arbeitgeber zu nennen: So können Sie anonym vorgestellt werden.",
+      "deleteTitle": "Diese Berufserfahrung löschen",
+      "deleteText": "Verknüpfte Erfolge bleiben erhalten und werden lediglich von der Berufserfahrung gelöst.",
+      "confirmDelete": "Diese Berufserfahrung endgültig löschen?",
+      "form": {
+        "roleTitle": "Positionsbezeichnung",
+        "roleTitleHint": "Zum Beispiel: Backend-Entwicklerin, Marketingleiter.",
+        "startMonth": "Beginn",
+        "endMonth": "Ende",
+        "monthHint": "Monat und Jahr (JJJJ-MM).",
+        "current": "Ich habe diese Position derzeit inne",
+        "seniority": "Karrierestufe",
+        "contractType": "Vertragsart",
+        "choose": "Auswählen…",
+        "employerTitle": "Der Arbeitgeber, ohne Namen",
+        "employerHint": "Zum Beispiel: „Fintech-Scale-up mit 51 bis 200 Beschäftigten“. Diese Angaben genügen für das Matching und wahren Ihre Anonymität.",
+        "sector": "Branche",
+        "companySize": "Größe",
+        "companyStage": "Organisationsform",
+        "responsibilities": "Verantwortungsbereiche",
+        "responsibilitiesHint": "Ihr Zuständigkeitsbereich, Ihre Hauptaufgaben. Nennen Sie weder Firmen- noch Personennamen.",
+        "save": "Berufserfahrung speichern"
+      }
+    },
+    "achievements": {
+      "title": "Erfolge",
+      "intro": "Das Herzstück Ihres Profils: was Sie getan haben und welches Ergebnis Sie erzielt haben. Ein belegter Erfolg zählt weit mehr als ein bloß angegebener.",
+      "add": "Erfolg hinzufügen",
+      "emptyTitle": "Noch keine Erfolge",
+      "emptyText": "Beschreiben Sie ein Projekt, auf das Sie stolz sind: den Kontext, Ihren Beitrag, das messbare Ergebnis. Fügen Sie anschließend einen Nachweis hinzu.",
+      "proofCount": "{count, plural, =0 {Kein Nachweis} one {# Nachweis} other {# Nachweise}}",
+      "addProof": "Nachweis hinzufügen",
+      "newTitle": "Neuer Erfolg",
+      "editTitle": "Erfolg",
+      "formIntro": "Bleiben Sie konkret: Zahlen, Zeiträume, Wirkung. Vermeiden Sie Namen von Personen, Kunden und Arbeitgebern.",
+      "detailsTitle": "Beschreibung",
+      "deleteTitle": "Diesen Erfolg löschen",
+      "deleteText": "Die zugehörigen Nachweise, einschließlich hochgeladener Dokumente, werden gelöscht.",
+      "confirmDelete": "Diesen Erfolg und alle zugehörigen Nachweise endgültig löschen?",
+      "form": {
+        "title": "Titel",
+        "titleHint": "Zum Beispiel: Neugestaltung des Bezahlprozesses.",
+        "experience": "Verknüpfte Berufserfahrung",
+        "noExperience": "Keine (privates Projekt, Ehrenamt…)",
+        "context": "Kontext",
+        "contextHint": "Die Ausgangslage, die Herausforderung.",
+        "actions": "Was ich getan habe",
+        "actionsHint": "Ihr eigener Beitrag, nicht der des Teams.",
+        "result": "Messbares Ergebnis",
+        "resultHint": "Zum Beispiel: Conversion-Rate +18 % in drei Monaten.",
+        "skills": "Eingesetzte Kompetenzen",
+        "skillsHint": "Durch Kommas getrennt. Sie werden automatisch in Ihre Kompetenzliste übernommen.",
+        "skillsPlaceholder": "PostgreSQL, Projektmanagement, Verhandlungsführung",
+        "save": "Speichern",
+        "create": "Erstellen und Nachweis hinzufügen"
+      }
+    },
+    "proofs": {
+      "title": "Nachweise",
+      "intro": "Ein öffentlicher Link, ein privates Dokument oder eine schriftliche Referenz. Dokumente werden verschlüsselt und sind nur für Sie sichtbar.",
+      "empty": "Dieser Erfolg ist noch nicht belegt. Fügen Sie mindestens einen Nachweis hinzu, damit er voll zählt.",
+      "kindLabel": "Art des Nachweises",
+      "kinds": {
+        "URL": "Link",
+        "DOCUMENT": "Dokument",
+        "REFERENCE": "Schriftliche Referenz"
+      },
+      "addTitle": "Nachweis hinzufügen",
+      "urlLabel": "Link-Adresse",
+      "urlHint": "Artikel, Code-Repository, öffentliche Präsentation, Online-Zertifikat…",
+      "fileLabel": "Datei",
+      "fileHint": "PDF, PNG, JPEG oder WebP, maximal {maxMb} MB. Verschlüsselt gespeichert, niemals ohne Ihre Zustimmung weitergegeben.",
+      "referenceLabel": "Referenz",
+      "referenceHint": "Übernehmen Sie eine erhaltene Empfehlung, ohne Namen und Kontaktdaten der verfassenden Person.",
+      "add": "Nachweis hinzufügen",
+      "kilobytes": "KB",
+      "addedOn": "Hinzugefügt am {date}",
+      "confirmDelete": "Diesen Nachweis löschen?"
+    },
+    "skills": {
+      "title": "Kompetenzen",
+      "intro": "Aus Ihren Erfolgen abgeleitet: Das Niveau hängt von der Anzahl belegter Erfolge ab, das Datum der letzten Anwendung von der verknüpften Berufserfahrung.",
+      "emptyTitle": "Noch keine Kompetenzen",
+      "emptyText": "Sie erscheinen, sobald Sie sie in einem Erfolg nennen. Sie können eine Kompetenz auch direkt angeben.",
+      "addLabel": "Kompetenz angeben",
+      "addPlaceholder": "Zum Beispiel: Figma",
+      "addButton": "Hinzufügen",
+      "addHint": "Eine ohne Erfolg angegebene Kompetenz wird als nicht belegt markiert.",
+      "usedNow": "In Ihrer aktuellen Position im Einsatz",
+      "lastUsed": "Zuletzt eingesetzt: {date}",
+      "lastUsedUnknown": "Letzter Einsatz unbekannt",
+      "backedBy": "Belegt durch",
+      "unprovenHint": "Nicht belegt: Nennen Sie sie in einem Erfolg mit Nachweis.",
+      "confirmDelete": "Die Kompetenz „{name}“ löschen? Sie wird aus allen Erfolgen entfernt, in denen sie genannt wird."
+    }
+  },
+  "guardRails": {
+    "title": "Meine Leitplanken",
+    "intro": "Die nicht verhandelbaren Bedingungen, die ein Angebot erfüllen muss, um Sie zu erreichen. Sie werden als strikte Filter angewendet.",
+    "emptyHint": "Noch keine Leitplanken festgelegt. Beginnen Sie mit Ihrem Mindestgehalt und Ihren Vertragsarten.",
+    "save": "Leitplanken speichern",
+    "summary": {
+      "title": "Zusammenfassung",
+      "minFixed": "Mindestfixgehalt: {amount} brutto pro Jahr",
+      "targetPackage": "Angestrebte Gesamtvergütung: {amount}"
+    },
+    "salary": {
+      "title": "Vergütung",
+      "intro": "Jährliche Bruttobeträge in Euro.",
+      "minFixed": "Mindestfixgehalt",
+      "amountHint": "Darunter wird das Angebot aussortiert.",
+      "targetPackage": "Angestrebte Gesamtvergütung",
+      "packageHint": "Fixum + variabler Anteil + Erfolgsbeteiligung oder Aktien."
+    },
+    "location": {
+      "title": "Arbeitsorte und Homeoffice",
+      "intro": "Die Städte, in deren Umkreis Sie arbeiten möchten, und Ihre Homeoffice-Präferenz.",
+      "empty": "Kein Ort hinzugefügt.",
+      "city": "Stadt",
+      "cityPlaceholder": "Zum Beispiel: München",
+      "radius": "Umkreis (km)",
+      "remove": "Entfernen",
+      "add": "Ort hinzufügen"
+    },
+    "remote": {
+      "title": "Homeoffice",
+      "none": "Keine Anforderung",
+      "minDays": "Mindestanzahl an Homeoffice-Tagen pro Woche",
+      "chooseDays": "Auswählen…",
+      "days": "{count, plural, one {# Tag} other {# Tage}}"
+    },
+    "contracts": {
+      "title": "Akzeptierte Vertragsarten",
+      "intro": "Kein Kästchen angekreuzt: Alle Vertragsarten werden akzeptiert."
+    },
+    "exclusions": {
+      "title": "Ausschlüsse",
+      "intro": "Branchen und Unternehmen, von denen Sie keine Angebote erhalten möchten.",
+      "sectors": "Ausgeschlossene Branchen",
+      "companies": "Ausgeschlossene Unternehmen",
+      "companiesHint": "Eines pro Zeile (zum Beispiel Ihr aktueller Arbeitgeber). Diese Namen werden verschlüsselt und verlassen niemals Ihren Bereich."
+    },
+    "workload": {
+      "title": "Arbeitspensum",
+      "maxHours": "Maximale Wochenstunden",
+      "maxHoursHint": "Leer lassen, wenn es Ihnen gleichgültig ist.",
+      "onCall": "Ich akzeptiere Rufbereitschaft",
+      "onCallHint": "Andernfalls werden Stellen mit Rufbereitschaft aussortiert."
+    },
+    "culture": {
+      "title": "Unternehmenskultur",
+      "intro": "Optional: was Ihnen wichtig ist. Diese Präferenzen verfeinern die Reihenfolge der Angebote."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "intro": "Ihre Sprache, Ihre Daten, Ihr Konto.",
+    "language": {
+      "title": "Sprache",
+      "intro": "Die Sprache der Benutzeroberfläche, der E-Mails und der von Ihrem Agenten verfassten Texte."
+    },
+    "export": {
+      "title": "Meine Daten exportieren",
+      "intro": "Laden Sie alle Ihre Daten (Berufserfahrung, Erfolge, Nachweise und Dokumente, Kompetenzen, Leitplanken) im JSON-Format herunter.",
+      "button": "Export herunterladen"
+    },
+    "delete": {
+      "title": "Mein Konto löschen",
+      "intro": "Sofortige und endgültige Löschung Ihres Kontos, Ihres Karrieregedächtnisses, Ihrer Leitplanken und aller Ihrer Dokumente. Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "confirmLabel": "Bestätigen Sie durch Eingabe Ihrer E-Mail-Adresse",
+      "confirmHint": "Denken Sie daran, Ihre Daten zu exportieren, bevor Sie Ihr Konto löschen.",
+      "submit": "Mein Konto endgültig löschen",
+      "deleting": "Wird gelöscht…"
+    }
+  },
+  "codes": {
+    "visibility": {
+      "ACTIVE": {
+        "label": "Aktiv auf der Suche",
+        "description": "Ihr anonymisiertes Profil wird Recruitern bevorzugt vorgeschlagen."
+      },
+      "OPEN": {
+        "label": "Offen für Chancen",
+        "description": "Ihr anonymisiertes Profil kann für sehr gezielte Angebote vorgestellt werden."
+      },
+      "INVISIBLE": {
+        "label": "Unsichtbar",
+        "description": "Kein Recruiter sieht Ihr Profil. Ihr Agent hält trotzdem weiter Ausschau für Sie."
+      }
+    },
+    "seniority": {
+      "INTERN": "Praktikant/in",
+      "JUNIOR": "Junior",
+      "MID": "Professional",
+      "SENIOR": "Senior",
+      "LEAD": "Lead / Fachverantwortung",
+      "MANAGER": "Manager/in",
+      "DIRECTOR": "Direktor/in",
+      "EXECUTIVE": "Geschäftsführung"
+    },
+    "contractType": {
+      "CDI": "Unbefristet",
+      "CDD": "Befristet",
+      "FREELANCE": "Freiberuflich",
+      "TEMPORARY": "Zeitarbeit",
+      "APPRENTICESHIP": "Duales Studium / Ausbildung",
+      "INTERNSHIP": "Praktikum"
+    },
+    "companySize": {
+      "S1_10": "1 bis 10 Beschäftigte",
+      "S11_50": "11 bis 50 Beschäftigte",
+      "S51_200": "51 bis 200 Beschäftigte",
+      "S201_500": "201 bis 500 Beschäftigte",
+      "S501_1000": "501 bis 1.000 Beschäftigte",
+      "S1001_5000": "1.001 bis 5.000 Beschäftigte",
+      "S5001_PLUS": "Mehr als 5.000 Beschäftigte"
+    },
+    "companyStage": {
+      "STARTUP": "Start-up",
+      "SCALEUP": "Scale-up",
+      "SME": "KMU",
+      "MIDCAP": "Mittelständisches Unternehmen",
+      "LARGE_CORP": "Konzern",
+      "PUBLIC_SECTOR": "Öffentlicher Sektor",
+      "NONPROFIT": "Verein / NGO",
+      "CONSULTANCY": "Beratung / IT-Dienstleister"
+    },
+    "sector": {
+      "AEROSPACE_DEFENSE": "Luft- und Raumfahrt, Verteidigung",
+      "AGRIFOOD": "Lebensmittelindustrie",
+      "AUTOMOTIVE_MOBILITY": "Automobil und Mobilität",
+      "BANKING_INSURANCE": "Banken und Versicherungen",
+      "BIOTECH_PHARMA": "Biotech und Pharma",
+      "CONSTRUCTION_REAL_ESTATE": "Bau und Immobilien",
+      "CONSULTING": "Beratung",
+      "CYBERSECURITY": "Cybersicherheit",
+      "ECOMMERCE_RETAIL": "E-Commerce und Handel",
+      "EDUCATION_EDTECH": "Bildung und Edtech",
+      "ENERGY_UTILITIES": "Energie",
+      "ENVIRONMENT_CLEANTECH": "Umwelt und Cleantech",
+      "FINTECH": "Fintech",
+      "GAMBLING": "Glücksspiel",
+      "GAMING": "Videospiele",
+      "HEALTHCARE_HEALTHTECH": "Gesundheit und Healthtech",
+      "HOSPITALITY_TOURISM": "Hotellerie und Tourismus",
+      "HR_RECRUITMENT": "Personalwesen und Recruiting",
+      "INDUSTRY_MANUFACTURING": "Industrie und Fertigung",
+      "LEGAL": "Recht",
+      "LUXURY_FASHION": "Luxus und Mode",
+      "MARKETING_ADVERTISING": "Marketing und Werbung",
+      "MEDIA_ENTERTAINMENT": "Medien und Unterhaltung",
+      "NONPROFIT": "Gemeinnütziger Sektor",
+      "OIL_GAS": "Öl und Gas",
+      "PUBLIC_ADMINISTRATION": "Öffentliche Verwaltung",
+      "SAAS_SOFTWARE": "Software und SaaS",
+      "TELECOM": "Telekommunikation",
+      "TOBACCO_ALCOHOL": "Tabak und Alkohol",
+      "TRANSPORT_LOGISTICS": "Transport und Logistik",
+      "OTHER": "Sonstige Branche"
+    },
+    "remotePolicy": {
+      "ONSITE": "Vor Ort akzeptiert",
+      "HYBRID": "Hybrid",
+      "FULL_REMOTE": "Nur vollständig remote"
+    },
+    "culture": {
+      "ASYNC_FIRST": "Asynchrones Arbeiten",
+      "FLAT_HIERARCHY": "Flache Hierarchien",
+      "STRUCTURED_PROCESSES": "Strukturierte Prozesse",
+      "FAST_PACED": "Hohes Tempo",
+      "WORK_LIFE_BALANCE": "Work-Life-Balance",
+      "LEARNING_CULTURE": "Kontinuierliche Weiterbildung",
+      "MISSION_DRIVEN": "Sinnstiftende Mission",
+      "DIVERSITY_INCLUSION": "Vielfalt und Inklusion",
+      "INTERNATIONAL": "Internationales Umfeld",
+      "SMALL_TEAMS": "Kleine, eigenständige Teams",
+      "ENGINEERING_CULTURE": "Ausgeprägte Technikkultur",
+      "TRANSPARENT_PAY": "Transparente Gehaltsstrukturen"
+    },
+    "evidence": {
+      "DECLARED": "Angegeben",
+      "DOCUMENT": "Belegt",
+      "VERIFIED": "Verifiziert"
+    },
+    "skillLevel": {
+      "UNPROVEN": "Nicht belegt",
+      "DECLARED": "Angegeben, ohne Nachweis",
+      "DEMONSTRATED": "Nachgewiesen",
+      "CONFIRMED": "Bestätigt",
+      "EXPERT": "Beherrscht"
+    }
+  }
+}

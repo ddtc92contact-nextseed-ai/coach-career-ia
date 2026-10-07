@@ -9,3 +9,4 @@ src/generated
 !.env.example
 *.md
 docker-compose*.yml
+storage
