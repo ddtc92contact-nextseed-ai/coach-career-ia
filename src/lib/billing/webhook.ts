@@ -60,8 +60,33 @@ export type SubscriptionSync = {
   cancelAtPeriodEnd: boolean;
 };
 
+/**
+ * Achat unitaire payé (Checkout `mode=payment`) : aujourd'hui, la publication
+ * d'une offre par une entreprise (`metadata.kind = "job_posting"`).
+ */
+export const ONE_TIME_KINDS = ["job_posting"] as const;
+export type OneTimeKind = (typeof ONE_TIME_KINDS)[number];
+
+export type OneTimePayment = {
+  kind: OneTimeKind;
+  /** Notre identifiant d'achat (métadonnées posées à la création de la session). */
+  paymentId: string;
+  checkoutSessionId: string;
+  /** Montant réellement payé, en centimes, et devise (majuscules). */
+  amountCents: number | null;
+  currency: string | null;
+};
+
 export type BillingStore = {
   isProcessed(eventId: string): Promise<boolean>;
+  /**
+   * Enregistre l'évènement et applique l'achat unitaire, atomiquement.
+   * Facultatif : sans lui, l'évènement est seulement enregistré.
+   */
+  applyPayment?(
+    event: { id: string; type: string },
+    payment: OneTimePayment,
+  ): Promise<"applied" | "duplicate" | "unmatched">;
   /**
    * Enregistre l'évènement et applique l'état, atomiquement. `duplicate` si
    * l'évènement a déjà été enregistré (livraisons concurrentes).
@@ -106,6 +131,23 @@ function subscriptionRef(event: Stripe.Event): { id: string | null; userId: stri
     default:
       return { id: null, userId: null };
   }
+}
+
+/** Achat unitaire payé, s'il s'agit d'une session Checkout `mode=payment` d'un type connu. */
+export function oneTimePaymentRef(event: Stripe.Event): OneTimePayment | null {
+  if (event.type !== "checkout.session.completed") return null;
+  const session = event.data.object;
+  if (session.mode !== "payment" || session.payment_status !== "paid") return null;
+  const kind = session.metadata?.kind;
+  const paymentId = session.metadata?.paymentId;
+  if (!kind || !(ONE_TIME_KINDS as readonly string[]).includes(kind) || !paymentId) return null;
+  return {
+    kind: kind as OneTimeKind,
+    paymentId,
+    checkoutSessionId: session.id,
+    amountCents: typeof session.amount_total === "number" ? session.amount_total : null,
+    currency: session.currency ? session.currency.toUpperCase() : null,
+  };
 }
 
 function toStatus(value: string): SubscriptionStatusCode {
@@ -164,6 +206,18 @@ export async function handleStripeWebhook(input: {
   }
   if (await store.isProcessed(event.id)) {
     logger.info("billing.webhook.duplicate", { eventId: event.id, type: event.type });
+    return { status: 200, body: { received: true } };
+  }
+
+  const payment = oneTimePaymentRef(event);
+  if (payment && store.applyPayment) {
+    const outcome = await store.applyPayment({ id: event.id, type: event.type }, payment);
+    logger.info("billing.webhook.processed", {
+      eventId: event.id,
+      type: event.type,
+      kind: payment.kind,
+      outcome,
+    });
     return { status: 200, body: { received: true } };
   }
 

@@ -1,4 +1,9 @@
-import type { CulturePreferenceCode, SectorCode, SeniorityCode } from "@/lib/career/codes";
+import {
+  SECTORS,
+  type CulturePreferenceCode,
+  type SectorCode,
+  type SeniorityCode,
+} from "@/lib/career/codes";
 import { normalizeText, termPattern } from "./text";
 
 /**
@@ -224,6 +229,8 @@ const SECTOR_PATTERNS = Object.entries(SECTOR_KEYWORDS).map(
 
 /** Secteurs reconnus dans le secteur déclaré de l'offre. */
 export function detectSectors(sector: string | null | undefined): SectorCode[] {
+  // Offres publiées directement : le secteur est déjà un code.
+  if (sector && (SECTORS as readonly string[]).includes(sector)) return [sector as SectorCode];
   const normalized = normalizeText(sector ?? "");
   if (!normalized) return [];
   return SECTOR_PATTERNS.filter(([, patterns]) => patterns.some((p) => p.test(normalized))).map(
@@ -383,6 +390,8 @@ function levelFromYears(years: number): number {
  * si l'offre ne dit rien d'exploitable.
  */
 export function offerSeniorityRank(title: string, seniority: string | null): number | null {
+  // Offres publiées directement : séniorité saisie comme code.
+  if (seniority && seniority in SENIORITY_RANK) return SENIORITY_RANK[seniority as SeniorityCode];
   const normalizedTitle = normalizeText(title);
   for (const [pattern, rank] of TITLE_LEVELS) {
     if (pattern.test(normalizedTitle)) return rank;

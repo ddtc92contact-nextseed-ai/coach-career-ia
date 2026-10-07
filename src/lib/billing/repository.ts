@@ -1,6 +1,8 @@
 import "server-only";
 import { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
+import { applyJobPostingPayment } from "@/lib/employer/publication";
+import { logger } from "@/lib/logger";
 import { SIMULATOR_ID_PREFIX } from "./config";
 import type { BillingStore } from "./webhook";
 
@@ -99,6 +101,23 @@ export const prismaBillingStore: BillingStore = {
       });
     } catch (error) {
       // Évènement enregistré entre-temps par une livraison concurrente.
+      if (isUniqueViolation(error) && (await prismaBillingStore.isProcessed(event.id))) {
+        return "duplicate";
+      }
+      throw error;
+    }
+  },
+
+  async applyPayment(event, payment) {
+    try {
+      return await db.$transaction(async (tx) => {
+        await tx.stripeEvent.create({ data: { id: event.id, type: event.type } });
+        switch (payment.kind) {
+          case "job_posting":
+            return applyJobPostingPayment(tx, payment, { logger });
+        }
+      });
+    } catch (error) {
       if (isUniqueViolation(error) && (await prismaBillingStore.isProcessed(event.id))) {
         return "duplicate";
       }

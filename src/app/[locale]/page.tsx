@@ -90,6 +90,18 @@ export default function HomePage() {
               </li>
             ))}
           </ol>
+          <div className="mt-12 flex flex-col gap-4 rounded-2xl border border-stone-200 bg-white px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+            <div>
+              <h2 className="text-xl font-semibold tracking-tight">{t("recruiter.title")}</h2>
+              <p className="mt-2 max-w-2xl text-stone-600">{t("recruiter.text")}</p>
+            </div>
+            <Link
+              href="/entreprise/inscription"
+              className="shrink-0 rounded-lg border border-stone-300 px-5 py-3 text-center font-medium hover:bg-stone-100"
+            >
+              {t("recruiter.cta")}
+            </Link>
+          </div>
           <div className="mt-12 rounded-2xl bg-stone-900 px-6 py-10 text-white sm:px-10">
             <h2 className="text-2xl font-semibold tracking-tight">{t("closingTitle")}</h2>
             <p className="mt-3 max-w-2xl text-stone-300">{t("closingText")}</p>

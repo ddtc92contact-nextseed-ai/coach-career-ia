@@ -85,16 +85,27 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
       </header>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <a
-          href={match.offer.url}
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          className="inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-stone-700"
-        >
-          {t("actions.original")}
-        </a>
+        {match.offer.direct ? (
+          // Offre publiée sur la plateforme : pas d'annonce d'origine ailleurs.
+          <span />
+        ) : (
+          <a
+            href={match.offer.url}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-stone-700"
+          >
+            {t("actions.original")}
+          </a>
+        )}
         <StatusActions id={match.id} status={match.status === "NEW" ? "SEEN" : match.status} />
       </div>
+
+      {match.offer.direct ? (
+        <section className={sectionClass}>
+          <p className="text-sm whitespace-pre-line text-stone-700">{match.offer.description}</p>
+        </section>
+      ) : null}
 
       {contact ? (
         <section className={sectionClass} aria-labelledby="contacter-titre" id="contacter">

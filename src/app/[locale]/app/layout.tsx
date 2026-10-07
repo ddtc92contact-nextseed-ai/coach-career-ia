@@ -7,6 +7,8 @@ import { LogoutButton, VaultStatusBadge } from "@/components/vault/vault-widgets
 import { isAdminEmail } from "@/lib/auth/admin";
 import { requireUser } from "@/lib/auth/session";
 import { initUserLocale } from "@/lib/career/repository";
+import { getMembership } from "@/lib/employer/repository";
+import { Link } from "@/i18n/navigation";
 import { logout } from "./actions";
 import { AppNav } from "./nav";
 
@@ -20,7 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const user = await requireUser();
-  const [t, locale] = await Promise.all([getTranslations("app"), getLocale()]);
+  const [t, locale, membership] = await Promise.all([
+    getTranslations("app"),
+    getLocale(),
+    getMembership(user.id),
+  ]);
   // Première visite : la langue de navigation devient la préférence du compte.
   await initUserLocale(user.id, locale);
 
@@ -38,6 +44,14 @@ export default async function AppLayout({ children }: Readonly<{ children: React
                 >
                   {user.email}
                 </span>
+                {membership ? (
+                  <Link
+                    href="/entreprise"
+                    className="hidden text-sm text-stone-600 hover:text-stone-900 hover:underline md:inline"
+                  >
+                    {t("nav.employer")}
+                  </Link>
+                ) : null}
                 <VaultStatusBadge />
                 <LocaleSwitcher persist />
                 <LogoutButton action={logout} label={t("signOut")} />

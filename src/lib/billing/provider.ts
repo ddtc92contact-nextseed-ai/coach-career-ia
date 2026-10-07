@@ -17,6 +17,7 @@ import {
   getCurrentSimulatedSubscription,
   applySimulatorAction,
 } from "./simulator-server";
+import { simId } from "./simulator";
 
 /**
  * Fournisseur de paiement : Stripe ou son simulateur (`BILLING_PROVIDER`).
@@ -29,8 +30,25 @@ import {
 export type BillingRedirect =
   { kind: "external"; url: string } | { kind: "internal"; href: string };
 
+/** Achat unitaire d'une publication d'offre (Checkout `mode=payment`). */
+export type JobPostingCheckoutInput = {
+  user: CurrentUser;
+  /** Achat déjà enregistré (`job_posting_payments`, statut `PENDING`). */
+  paymentId: string;
+  postingId: string;
+  amountCents: number;
+  currency: string;
+  /** Libellé affiché sur la page de paiement (intitulé de l'offre). */
+  label: string;
+  locale: string;
+};
+
+export type OneTimeCheckout = { checkoutSessionId: string; redirect: BillingRedirect };
+
 export type BillingProvider = {
   name: BillingProviderName;
+  /** Page de paiement d'une publication d'offre ; `null` si elle n'a pas pu être ouverte. */
+  createJobPostingCheckout(input: JobPostingCheckoutInput): Promise<OneTimeCheckout | null>;
   /** Prix mensuel de Premium, `null` s'il est inconnu. */
   getPremiumPrice(): Promise<PremiumPrice | null>;
   /** Page de paiement ; `null` si elle n'a pas pu être ouverte. */
@@ -46,9 +64,49 @@ export type BillingProvider = {
 const billingUrl = (locale: string, query = "") =>
   new URL(`/${locale}/app/billing${query}`, siteUrl()).toString();
 
+const postingUrl = (locale: string, postingId: string, query: string) =>
+  new URL(`/${locale}/entreprise/offres/${postingId}?${query}`, siteUrl()).toString();
+
 export const stripeProvider: BillingProvider = {
   name: "stripe",
   getPremiumPrice,
+
+  async createJobPostingCheckout(input) {
+    const stripe = getStripe();
+    if (!stripe) return null;
+    try {
+      const session = await stripe.checkout.sessions.create(
+        {
+          mode: "payment",
+          client_reference_id: input.user.id,
+          customer_email: input.user.email,
+          line_items: [
+            {
+              quantity: 1,
+              price_data: {
+                currency: input.currency.toLowerCase(),
+                unit_amount: input.amountCents,
+                product_data: { name: input.label.slice(0, 250) },
+              },
+            },
+          ],
+          metadata: { kind: "job_posting", paymentId: input.paymentId },
+          payment_intent_data: { metadata: { kind: "job_posting", paymentId: input.paymentId } },
+          success_url: postingUrl(input.locale, input.postingId, "paiement=ok"),
+          cancel_url: postingUrl(input.locale, input.postingId, "paiement=annule"),
+          locale: input.locale as "fr",
+        },
+        // Double clic : une seule session par achat.
+        { idempotencyKey: `job-posting-${input.paymentId}` },
+      );
+      return session.url
+        ? { checkoutSessionId: session.id, redirect: { kind: "external", url: session.url } }
+        : null;
+    } catch (error) {
+      logger.error("billing.jobPosting.checkoutFailed", { userId: input.user.id, error });
+      return null;
+    }
+  },
 
   async createCheckout(user, locale) {
     const config = billingConfigFromEnv();
@@ -115,6 +173,14 @@ export const stripeProvider: BillingProvider = {
 export const simulatorProvider: BillingProvider = {
   name: "simulator",
   getPremiumPrice: async () => simulatedPriceFromEnv(),
+
+  async createJobPostingCheckout() {
+    const checkoutSessionId = simId("cs");
+    return {
+      checkoutSessionId,
+      redirect: { kind: "internal", href: `/entreprise/paiement/${checkoutSessionId}` },
+    };
+  },
 
   async createCheckout(user) {
     const session = await createSimulatedCheckout(user.id);

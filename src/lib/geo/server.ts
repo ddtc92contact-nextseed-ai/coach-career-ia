@@ -4,6 +4,7 @@ import { logger } from "@/lib/logger";
 import type { HttpClient } from "@/lib/radar/http";
 import { parseLocationLabel } from "@/lib/radar/normalize";
 import { createGeocoder, geoConfig, geoHttpClient, type GeoPoint } from "./index";
+import { locateOffer, type OfferGeoColumns } from "./offers";
 
 /**
  * Géocodage côté application (garde-fous du candidat). Le client HTTP est
@@ -51,3 +52,18 @@ export const locateLabels: LabelLocator = async (labels) => {
   });
   return points;
 };
+
+/**
+ * Coordonnées d'une offre saisie dans l'application (espace entreprise) :
+ * même règle que pour les offres du radar (`locateOffer`). Ne lève jamais ;
+ * `geocodedAt` reste `null` si le géocodeur est indisponible (rattrapage par
+ * `npm run geo:backfill`).
+ */
+export async function locateOfferPlace(
+  place: { city: string; country: string },
+  now: Date = new Date(),
+): Promise<OfferGeoColumns> {
+  const http = sharedHttp();
+  const geocoder = http ? createGeocoder(db, geoConfig(), { http, logger }) : null;
+  return locateOffer(place, geocoder, now);
+}
