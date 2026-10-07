@@ -84,6 +84,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `DATA_ENCRYPTION_KEY_VERSION`                                         | non (1)  | version de la clé courante                               |
 | `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                   |
 | `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)    |
+| `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)          |
 | `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                         |
 | `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`          |
 | `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar        |
@@ -242,6 +243,44 @@ Dans **Paramètres** :
   documents en base64) ;
 - suppression du compte confirmée par la saisie de l'adresse e-mail : toutes les tables
   (cascade sur `users.id`, sessions comprises) puis tous les fichiers de l'utilisateur.
+
+## Coffre d'identité (zéro connaissance)
+
+L'identité réelle du candidat (prénom, nom, e-mail et téléphone montrés aux recruteurs, noms
+réels des employeurs et écoles, liens identifiants, CV d'origine) est chiffrée **dans le
+navigateur** : le serveur ne stocke que des blobs qu'il ne peut pas lire. Page :
+`/app/identite` (« Mon identité »).
+
+- Cryptographie : `src/lib/vault/crypto.ts`, WebCrypto uniquement. Clé de données
+  AES-256-GCM aléatoire ; enveloppée par une clé dérivée de la phrase secrète
+  (PBKDF2-SHA256, 600 000 itérations, sel de 16 octets) et par une clé de secours de 256 bits
+  (52 caractères base32 Crockford), affichée une seule fois, téléchargeable et imprimable. Les
+  AAD lient chaque chiffré à son usage (identité, CV, enveloppes) ; l'identité est complétée à
+  256 octets pour ne pas trahir la longueur des noms ; le nom et le type du CV sont chiffrés
+  avec son contenu.
+- Le client refuse des paramètres affaiblis renvoyés par le serveur (< 600 000 itérations).
+- Clé déverrouillée : `CryptoKey` non exportable, en mémoire React uniquement
+  (`src/components/vault/vault-provider.tsx`), effacée au verrouillage, à la déconnexion, au
+  rechargement et après inactivité (5 à 60 min au choix ; défaut
+  `NEXT_PUBLIC_VAULT_IDLE_MINUTES`). Seule cette durée est mémorisée en `localStorage`.
+- Changement de phrase : seule l'enveloppe change, les données ne sont pas rechiffrées.
+  Phrase oubliée : la clé de secours permet d'en définir une nouvelle. Les deux perdues :
+  données irrécupérables ; le coffre peut seulement être réinitialisé (supprimé).
+- Mémoire de carrière : le nom réel de l'employeur s'affiche sous l'expérience quand le coffre
+  est déverrouillé, par jointure sur l'identifiant d'expérience dans le navigateur.
+- Modèle `IdentityVault` (table `identity_vaults`, 1-1 avec `users`, cascade) : version,
+  paramètres KDF, deux clés enveloppées, identité chiffrée, CV chiffré, `revision` (verrou
+  optimiste : 409 si le coffre a changé ailleurs).
+- API (blobs opaques, toujours le coffre de l'utilisateur connecté, 404 sinon) :
+  `GET|POST|PUT|DELETE /api/vault` (JSON exigé) et `GET|PUT|DELETE /api/vault/cv`
+  (`application/octet-stream`, 5 Mo + en-tête). L'export RGPD inclut le coffre, chiffré.
+
+Tests : `tests/unit/vault-crypto.test.ts` (aller-retour, mauvaise phrase, clé de secours,
+changement de phrase, altérations) ; `tests/db/identity-vault.test.ts` exécute le client du
+coffre contre les vraies routes, vérifie qu'aucune requête, ligne en base ni ligne de journal ne
+contient de donnée d'identité, de phrase ou de clé, et que l'utilisateur B reçoit un 404 sur le
+coffre de A ; `tests/unit/vault-storage.test.ts` interdit tout autre usage du stockage
+navigateur.
 
 ## Chiffrement applicatif
 
