@@ -548,12 +548,14 @@
     "title": "KI-Coach",
     "intro": "Ein Karrierecoach auf Basis künstlicher Intelligenz: Er lernt Sie kennen, hilft Ihnen, Ihre Erfolge zu belegen, Ihre Wünsche zu klären und Ihre Vorstellungsgespräche vorzubereiten. Er ändert Ihr Karrieregedächtnis nie ohne Ihre Zustimmung.",
     "aiNotice": "Sie sprechen mit einer künstlichen Intelligenz, nicht mit einem Menschen. Ihre Antworten können Fehler enthalten: Prüfen Sie sie. Sie müssen ihr weder Ihren Namen noch die Namen Ihrer Arbeitgeber oder Ihre Kontaktdaten nennen.",
+    "aiBadge": "KI",
     "notConfigured": "Der KI-Coach ist in diesem Dienst noch nicht aktiviert.",
     "quota": "{remaining, plural, =0 {Keine Nachrichten mehr in den letzten 24 Stunden.} one {Noch # Nachricht in den letzten 24 Stunden.} other {Noch # Nachrichten in den letzten 24 Stunden.}}",
     "start": {
       "title": "Neues Gespräch",
       "intro": "Wählen Sie, woran Sie mit dem Coach arbeiten möchten.",
-      "button": "Starten"
+      "button": "Starten",
+      "buttonFor": "Starten: {mode}"
     },
     "modes": {
       "DISCOVER": {
@@ -606,6 +608,8 @@
       "aiRateLimited": "Der KI-Dienst ist gerade stark ausgelastet.",
       "aiInvalidOutput": "Der Coach hat eine unbrauchbare Antwort erzeugt.",
       "quotaExceeded": "Sie haben das Limit von {limit} Nachrichten pro 24 Stunden erreicht. Bitte kommen Sie etwas später wieder.",
+      "tooManyRetries": "Diese Nachricht wurde bereits mehrmals erfolglos erneut gesendet. Formulieren Sie sie um oder senden Sie eine neue Nachricht.",
+      "busy": "Der Coach beantwortet in diesem Gespräch bereits eine Nachricht. Bitte warten Sie einige Sekunden.",
       "notFound": "Dieses Gespräch existiert nicht mehr.",
       "invalid": "Diese Nachricht konnte nicht gesendet werden.",
       "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und versuchen Sie es noch einmal.",

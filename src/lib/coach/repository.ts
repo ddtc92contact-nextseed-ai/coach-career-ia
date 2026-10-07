@@ -25,6 +25,7 @@ import {
 import { emailNameParts, redactSuggestion } from "./redact";
 import { COACH_QUOTA_WINDOW_MS } from "./quota";
 import {
+  COACH_LIMITS,
   SUGGESTION_SCHEMAS,
   type CoachMessageView,
   type CoachModeCode,
@@ -167,6 +168,82 @@ export async function addMessage(
       select: { id: true, createdAt: true },
     });
   });
+}
+
+/**
+ * Enregistre un message du candidat SI le quota le permet. Le décompte et
+ * l'insertion se font sous un verrou transactionnel propre à l'utilisateur
+ * (`pg_advisory_xact_lock`) : des envois simultanés ne peuvent pas dépasser
+ * la limite. Renvoie `null` si la limite est atteinte.
+ */
+export async function addUserMessageWithinQuota(
+  userId: string,
+  conversationId: string,
+  content: string,
+  limit: number,
+  now = new Date(),
+) {
+  return db.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`coach-quota:${userId}`}))`;
+    const sent = await tx.coachMessage.count({
+      where: {
+        userId,
+        role: "USER",
+        createdAt: { gt: new Date(now.getTime() - COACH_QUOTA_WINDOW_MS) },
+      },
+    });
+    if (sent >= limit) return null;
+    const { count } = await tx.coachConversation.updateMany({
+      where: { id: conversationId, userId },
+      data: { updatedAt: now },
+    });
+    if (count === 0) throw new NotFoundError();
+    const message = await tx.coachMessage.create({
+      data: {
+        userId,
+        conversationId,
+        role: "USER",
+        contentEnc: encrypt(content, { aad: messageAad(userId) }),
+      },
+      select: { id: true, createdAt: true },
+    });
+    return { message, sent: sent + 1 };
+  });
+}
+
+/**
+ * Réserve le tour de la conversation (opération atomique) : un seul appel au
+ * modèle à la fois. `false` si un tour est déjà en cours.
+ */
+export async function acquireTurn(userId: string, conversationId: string, now = new Date()) {
+  const { count } = await db.coachConversation.updateMany({
+    where: {
+      id: conversationId,
+      userId,
+      OR: [
+        { turnStartedAt: null },
+        { turnStartedAt: { lt: new Date(now.getTime() - COACH_LIMITS.turnLockMs) } },
+      ],
+    },
+    data: { turnStartedAt: now },
+  });
+  return count === 1;
+}
+
+export async function releaseTurn(userId: string, conversationId: string) {
+  await db.coachConversation.updateMany({
+    where: { id: conversationId, userId },
+    data: { turnStartedAt: null },
+  });
+}
+
+/** Décompte une relance du message ; `false` si le plafond est atteint. */
+export async function claimRetry(userId: string, messageId: string) {
+  const { count } = await db.coachMessage.updateMany({
+    where: { id: messageId, userId, role: "USER", retryCount: { lt: COACH_LIMITS.maxRetries } },
+    data: { retryCount: { increment: 1 } },
+  });
+  return count === 1;
 }
 
 /** Derniers messages (déchiffrés, dans l'ordre), pour le contexte du modèle. */

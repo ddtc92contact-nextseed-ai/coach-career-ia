@@ -356,11 +356,14 @@ enum CoachSuggestionStatus {
 }
 
 model CoachConversation {
-  id        String    @id @default(cuid())
-  userId    String    @map("user_id")
-  mode      CoachMode
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  mode          CoachMode
+  /// Tour en cours (verrou) : un seul appel au modèle à la fois par conversation.
+  /// Un verrou plus ancien que le budget d'un tour est considéré comme abandonné.
+  turnStartedAt DateTime? @map("turn_started_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages    CoachMessage[]
@@ -377,6 +380,8 @@ model CoachMessage {
   role           CoachRole
   /// Texte chiffré (AAD `user:<id>:coach-message`).
   contentEnc     String    @map("content_enc")
+  /// Message du candidat : nombre de relances après une panne (plafonné).
+  retryCount     Int       @default(0) @map("retry_count")
   createdAt      DateTime  @default(now()) @map("created_at")
 
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)

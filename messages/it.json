@@ -548,12 +548,14 @@
     "title": "Coach IA",
     "intro": "Un coach di carriera basato sull’intelligenza artificiale: impara a conoscerLa, La aiuta a dimostrare i Suoi risultati, a chiarire ciò che cerca e a preparare i colloqui. Non modifica mai la Sua memoria di carriera senza il Suo consenso.",
     "aiNotice": "Sta parlando con un’intelligenza artificiale, non con una persona. Le sue risposte possono contenere errori: le verifichi. Non è necessario fornirle il Suo nome, quello dei Suoi datori di lavoro o i Suoi recapiti.",
+    "aiBadge": "IA",
     "notConfigured": "Il coach IA non è ancora attivo su questo servizio.",
     "quota": "{remaining, plural, =0 {Nessun messaggio disponibile nelle ultime 24 ore.} one {# messaggio rimanente nelle ultime 24 ore.} other {# messaggi rimanenti nelle ultime 24 ore.}}",
     "start": {
       "title": "Nuova conversazione",
       "intro": "Scelga su cosa vuole lavorare con il coach.",
-      "button": "Inizia"
+      "button": "Inizia",
+      "buttonFor": "Inizia: {mode}"
     },
     "modes": {
       "DISCOVER": {
@@ -606,6 +608,8 @@
       "aiRateLimited": "Il servizio di IA è molto richiesto in questo momento.",
       "aiInvalidOutput": "Il coach ha prodotto una risposta inutilizzabile.",
       "quotaExceeded": "Ha raggiunto il limite di {limit} messaggi in 24 ore. Torni un po’ più tardi.",
+      "tooManyRetries": "Questo messaggio è già stato riprovato più volte senza successo. Lo riformuli o invii un nuovo messaggio.",
+      "busy": "Il coach sta già rispondendo a un messaggio in questa conversazione. Attenda qualche secondo.",
       "notFound": "Questa conversazione non esiste più.",
       "invalid": "Non è stato possibile inviare questo messaggio.",
       "unauthorized": "La Sua sessione è scaduta. Acceda di nuovo e riprovi.",

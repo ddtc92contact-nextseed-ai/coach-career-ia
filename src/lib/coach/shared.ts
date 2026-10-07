@@ -39,6 +39,10 @@ export const COACH_LIMITS = {
   /** Budget total d'un tour côté serveur ; l'interface abandonne un peu après. */
   turnBudgetMs: 90_000,
   clientTimeoutMs: 105_000,
+  /** Relances possibles d'un même message resté sans réponse. */
+  maxRetries: 3,
+  /** Un verrou de tour plus ancien est considéré comme abandonné (processus arrêté…). */
+  turnLockMs: 120_000,
   /** Réponse du coach tronquée au-delà. */
   replyMaxChars: 8_000,
 } as const;
@@ -50,6 +54,8 @@ export const COACH_ERRORS = [
   "aiRateLimited",
   "aiInvalidOutput",
   "quotaExceeded",
+  "tooManyRetries",
+  "busy",
   "notFound",
   "invalid",
   "unauthorized",

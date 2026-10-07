@@ -548,12 +548,14 @@
     "title": "AI-coach",
     "intro": "Een loopbaancoach op basis van kunstmatige intelligentie: hij leert u kennen, helpt u uw prestaties te bewijzen, te verduidelijken wat u zoekt en uw sollicitatiegesprekken voor te bereiden. Hij wijzigt uw carrièregeheugen nooit zonder uw toestemming.",
     "aiNotice": "U praat met een kunstmatige intelligentie, niet met een mens. De antwoorden kunnen fouten bevatten: controleer ze. U hoeft uw naam, de namen van uw werkgevers of uw contactgegevens niet te delen.",
+    "aiBadge": "AI",
     "notConfigured": "De AI-coach is nog niet geactiveerd op deze dienst.",
     "quota": "{remaining, plural, =0 {Geen berichten meer over in de afgelopen 24 uur.} one {Nog # bericht over in de afgelopen 24 uur.} other {Nog # berichten over in de afgelopen 24 uur.}}",
     "start": {
       "title": "Nieuw gesprek",
       "intro": "Kies waaraan u met de coach wilt werken.",
-      "button": "Beginnen"
+      "button": "Beginnen",
+      "buttonFor": "Beginnen: {mode}"
     },
     "modes": {
       "DISCOVER": {
@@ -606,6 +608,8 @@
       "aiRateLimited": "De AI-dienst is op dit moment erg druk.",
       "aiInvalidOutput": "De coach gaf een onbruikbaar antwoord.",
       "quotaExceeded": "U hebt de limiet van {limit} berichten per 24 uur bereikt. Kom later terug.",
+      "tooManyRetries": "Dit bericht is al meerdere keren zonder succes opnieuw verzonden. Herformuleer het of stuur een nieuw bericht.",
+      "busy": "De coach beantwoordt al een bericht in dit gesprek. Wacht een paar seconden.",
       "notFound": "Dit gesprek bestaat niet meer.",
       "invalid": "Dit bericht kon niet worden verzonden.",
       "unauthorized": "Uw sessie is verlopen. Meld u opnieuw aan en probeer het nog eens.",

@@ -26,11 +26,19 @@ const ai = {
   replies: [] as MockReply[],
   timeoutMs: 5_000,
   calls: [] as ChatRequest[],
+  /** Appels au modèle, tous clients confondus. */
+  total: 0,
 };
 vi.mock("@/lib/ai/server", () => ({
   isAiConfigured: () => true,
   getAiClient: () => {
-    const provider = createMockProvider({ respond: scriptedReplies(...ai.replies) });
+    const scripted = scriptedReplies(...ai.replies);
+    const provider = createMockProvider({
+      respond: (request, index) => {
+        ai.total++;
+        return scripted(request, index);
+      },
+    });
     ai.calls = provider.calls;
     return createAiClient({
       provider,
@@ -324,7 +332,7 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
 
     // Le modèle boucle sur les outils : arrêt au nombre maximal d'étapes.
     ai.replies = [call("read_career_memory", {})];
-    const looping = await events(await send(id, { retry: true }));
+    const looping = await events(await send(id, { content: "Deuxième message" }));
     expect(looping.at(-1)).toEqual({ type: "error", code: "aiInvalidOutput" });
 
     // Arguments d'outil illisibles : l'erreur est renvoyée au modèle, le tour aboutit.
@@ -335,7 +343,11 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     const recovered = await events(await send(id, { retry: true }));
     expect(recovered.at(-1)).toMatchObject({ type: "done" });
     conversation = await coachRepo.getConversation(alice.id, id);
-    expect(conversation!.messages.map((m) => m.content)).toEqual(["Premier message", "Reprenons."]);
+    expect(conversation!.messages.map((m) => m.content)).toEqual([
+      "Premier message",
+      "Deuxième message",
+      "Reprenons.",
+    ]);
 
     // Plus rien à relancer une fois la réponse reçue.
     expect((await send(id, { retry: true })).status).toBe(400);
@@ -411,6 +423,81 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     expect(await third.json()).toEqual({ error: "quotaExceeded", limit: 2 });
     // Le message refusé n'est pas enregistré.
     expect(await db.coachMessage.count({ where: { conversationId: id, role: "USER" } })).toBe(2);
+  });
+
+  it("des envois simultanés ne dépassent jamais le quota", async () => {
+    const carol = await newUser("carol");
+    asUser(carol);
+    process.env.COACH_MESSAGES_PER_DAY = "3";
+    ai.replies = ["D'accord."];
+    const conversations = await Promise.all(
+      Array.from({ length: 8 }, () => coachRepo.createConversation(carol.id, "INTERVIEW")),
+    );
+    const responses = await Promise.all(
+      conversations.map(({ id }) => send(id, { content: "en parallèle" })),
+    );
+    await Promise.all(responses.map((r) => (r.ok ? r.text() : r.json())));
+    expect(responses.filter((r) => r.status === 200)).toHaveLength(3);
+    expect(responses.filter((r) => r.status === 429)).toHaveLength(5);
+    expect(await db.coachMessage.count({ where: { userId: carol.id, role: "USER" } })).toBe(3);
+
+    // Même conversation : un seul tour à la fois, les autres reçoivent 409.
+    process.env.COACH_MESSAGES_PER_DAY = "40";
+    const { id } = await coachRepo.createConversation(carol.id, "INTERVIEW");
+    ai.replies = [{ content: "Réponse", delayMs: 100 }];
+    const same = await Promise.all(
+      Array.from({ length: 6 }, () => send(id, { content: "simultané" })),
+    );
+    await Promise.all(same.map((r) => (r.ok ? r.text() : r.json())));
+    expect(same.filter((r) => r.status === 200)).toHaveLength(1);
+    expect(same.filter((r) => r.status === 409)).toHaveLength(5);
+    expect(await db.coachMessage.count({ where: { conversationId: id } })).toBe(2);
+    await db.user.delete({ where: { id: carol.id } });
+  });
+
+  it("des relances simultanées ne déclenchent qu'un appel au modèle et une réponse", async () => {
+    asUser(alice);
+    const { id } = await coachRepo.createConversation(alice.id, "INTERVIEW");
+    ai.replies = [{ error: new AiError("unavailable") }];
+    await events(await send(id, { content: "Sans réponse" }));
+
+    ai.replies = [{ content: "Enfin", delayMs: 100 }];
+    const before = ai.total;
+    const retries = await Promise.all(Array.from({ length: 10 }, () => send(id, { retry: true })));
+    await Promise.all(retries.map((r) => (r.ok ? r.text() : r.json())));
+    expect(retries.filter((r) => r.status === 200)).toHaveLength(1);
+    expect(ai.total - before).toBe(1);
+    expect(await db.coachMessage.count({ where: { conversationId: id, role: "ASSISTANT" } })).toBe(
+      1,
+    );
+  });
+
+  it("plafonne les relances d'un message et les refuse quand le coach est coupé", async () => {
+    asUser(alice);
+    const { id } = await coachRepo.createConversation(alice.id, "INTERVIEW");
+    ai.replies = [{ error: new AiError("unavailable") }];
+    await events(await send(id, { content: "Toujours en panne" }));
+    for (let i = 0; i < 3; i++) {
+      expect((await events(await send(id, { retry: true }))).at(-1)).toEqual({
+        type: "error",
+        code: "aiUnavailable",
+      });
+    }
+    const capped = await send(id, { retry: true });
+    expect(capped.status).toBe(429);
+    expect(await capped.json()).toEqual({ error: "tooManyRetries" });
+
+    process.env.COACH_MESSAGES_PER_DAY = "0";
+    const off = await send(id, { retry: true });
+    expect(off.status).toBe(429);
+    expect(await off.json()).toEqual({ error: "quotaExceeded", limit: 0 });
+
+    // Le candidat peut toujours écrire un nouveau message (le verrou est libéré).
+    delete process.env.COACH_MESSAGES_PER_DAY;
+    ai.replies = ["Me revoilà."];
+    expect((await events(await send(id, { content: "Autre question" }))).at(-1)).toMatchObject({
+      type: "done",
+    });
   });
 
   it("valide le corps de la requête", async () => {

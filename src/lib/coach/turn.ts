@@ -59,6 +59,8 @@ export type CoachTurnInput = {
   userMessage: { id: string; createdAt: Date };
   /** Messages restants après celui-ci. */
   remaining: number;
+  /** Appelé quand le tour est terminé (libération du verrou de la conversation). */
+  onFinish?: () => Promise<void>;
 };
 
 export function streamCoachTurn(input: CoachTurnInput): ReadableStream<Uint8Array> {
@@ -84,6 +86,7 @@ export function streamCoachTurn(input: CoachTurnInput): ReadableStream<Uint8Arra
       try {
         await runTurn(input, send);
       } finally {
+        await input.onFinish?.().catch(() => {});
         open = false;
         try {
           controller.close();

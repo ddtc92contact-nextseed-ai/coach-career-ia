@@ -81,8 +81,7 @@ export function CoachChat({
   // Dernier message sans réponse (panne, onglet fermé) : on propose de relancer.
   const canRetry = !busy && last?.role === "USER" && !String(last.id).startsWith("local-");
   const tooLong = input.length > COACH_LIMITS.messageMaxChars;
-  const canSend =
-    configured && !busy && !canRetry && input.trim().length > 0 && !tooLong && remaining > 0;
+  const canSend = configured && !busy && input.trim().length > 0 && !tooLong && remaining > 0;
 
   async function run(body: SendBody) {
     const abort = new AbortController();
@@ -274,7 +273,7 @@ export function CoachChat({
           {canRetry ? <p className="mt-1">{t("errors.kept")}</p> : null}
         </div>
       ) : null}
-      {canRetry && configured ? (
+      {canRetry && configured && error !== "tooManyRetries" ? (
         <div className="flex flex-wrap items-center gap-3">
           {!error ? <p className="text-sm text-stone-600">{t("chat.unanswered")}</p> : null}
           <button type="button" className={buttonClass} onClick={() => void run({ retry: true })}>

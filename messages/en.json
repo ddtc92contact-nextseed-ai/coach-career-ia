@@ -548,12 +548,14 @@
     "title": "AI coach",
     "intro": "A career coach powered by artificial intelligence: it gets to know you, helps you prove your achievements, clarify what you want and prepare your interviews. It never changes your Career Memory without your approval.",
     "aiNotice": "You are talking to an artificial intelligence, not a person. Its answers may contain mistakes: check them. There is no need to give it your name, your employers’ names or your contact details.",
+    "aiBadge": "AI",
     "notConfigured": "The AI coach is not enabled on this service yet.",
     "quota": "{remaining, plural, =0 {No messages left for the last 24 hours.} one {# message left for the last 24 hours.} other {# messages left for the last 24 hours.}}",
     "start": {
       "title": "New conversation",
       "intro": "Choose what you want to work on with the coach.",
-      "button": "Start"
+      "button": "Start",
+      "buttonFor": "Start: {mode}"
     },
     "modes": {
       "DISCOVER": {
@@ -606,6 +608,8 @@
       "aiRateLimited": "The AI service is very busy right now.",
       "aiInvalidOutput": "The coach produced an unusable answer.",
       "quotaExceeded": "You have reached the limit of {limit} messages per 24 hours. Please come back a little later.",
+      "tooManyRetries": "This message has already been retried several times without success. Rephrase it or send a new message.",
+      "busy": "The coach is already answering a message in this conversation. Please wait a few seconds.",
       "notFound": "This conversation no longer exists.",
       "invalid": "This message could not be sent.",
       "unauthorized": "Your session has expired. Sign in again and retry.",
