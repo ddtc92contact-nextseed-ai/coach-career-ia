@@ -19,7 +19,8 @@ async function scopeLabel(benchmark: SalaryBenchmark): Promise<string> {
     benchmark.seniority === "ALL"
       ? t("allSeniorities")
       : ts(benchmark.seniority as BenchmarkSeniority);
-  return [tf(benchmark.family), seniority, place].join(" · ");
+  const label = [tf(benchmark.family), seniority, place].join(" · ");
+  return label.charAt(0).toLocaleUpperCase(locale) + label.slice(1);
 }
 
 const POSITION_TONE: Record<SalaryPosition, string> = {
@@ -114,7 +115,9 @@ export async function SalaryBenchmarkBlock({
           from: format.dateTime(benchmark.period.from, "month"),
           to: format.dateTime(benchmark.period.to, "month"),
         })}{" "}
-        {benchmark.scope !== "REGION" ? t(`fallback.${benchmark.scope}`) : null}
+        {benchmark.fallback && benchmark.scope !== "REGION"
+          ? t(`fallback.${benchmark.scope}`)
+          : null}
       </p>
     </div>
   );

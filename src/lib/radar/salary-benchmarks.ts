@@ -45,6 +45,8 @@ export type SalaryBenchmark = {
   sampleSize: number;
   /** Niveau effectivement utilisé (repli vers plus large si le plus précis manque de données). */
   scope: BenchmarkScope;
+  /** Vrai si un niveau plus précis était demandé mais n'avait pas assez de données. */
+  fallback: boolean;
   /** Dates de publication des offres utilisées. */
   period: { from: Date; to: Date };
   family: JobFamily;
@@ -85,10 +87,11 @@ export async function getSalaryBenchmark(
     // Le seuil est revérifié à la lecture : un seuil relevé prend effet sans attendre le job.
     where: { key: { in: chain.map((c) => c.key) }, sampleSize: { gte: config.minSample } },
   });
-  for (const { key } of chain) {
+  for (const [index, { key }] of chain.entries()) {
     const row = rows.find((r) => r.key === key);
     if (row) {
       return {
+        fallback: index > 0,
         p25: row.p25,
         median: row.median,
         p75: row.p75,

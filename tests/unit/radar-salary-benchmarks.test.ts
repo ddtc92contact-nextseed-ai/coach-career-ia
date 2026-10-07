@@ -94,6 +94,33 @@ describe("classement des offres", () => {
     expect(candidateSeniority(null)).toBeNull();
   });
 
+  it("fait passer les qualificatifs explicites avant le mot « manager »", () => {
+    expect(offerSeniority("Product Manager Junior", null)).toBe("JUNIOR");
+    expect(offerSeniority("Product Manager Senior", null)).toBe("SENIOR");
+    expect(offerSeniority("Senior Product Manager", null)).toBe("SENIOR");
+    expect(offerSeniority("Lead Product Manager", null)).toBe("LEAD");
+    expect(offerSeniority("Account Manager Junior", null)).toBe("JUNIOR");
+    expect(offerSeniority("Senior Account Manager", null)).toBe("SENIOR");
+    expect(offerSeniority("Engineering Manager", null)).toBe("LEAD");
+    expect(offerSeniority("Head of Product", null)).toBe("DIRECTOR");
+    // Sans qualificatif : le métier, pas un niveau ; l'expérience demandée tranche.
+    expect(offerSeniority("Product Manager", null)).toBeNull();
+    expect(offerSeniority("Product Manager", "6 An(s)")).toBe("SENIOR");
+    // Même échelle côté candidat : un PM déclaré SENIOR retrouve les offres SENIOR.
+    expect(candidateSeniority("SENIOR")).toBe(offerSeniority("Senior Product Manager", null));
+  });
+
+  it("publie un repère PRODUCT × SENIOR à partir d'offres « Product Manager Senior »", () => {
+    const offers = [
+      ...series(8, 60_000, 2_000, { title: "Product Manager Senior" }),
+      ...series(7, 62_000, 2_000, { title: "Senior Product Manager" }),
+    ];
+    const keys = published(offers).map((b) => b.key);
+    expect(keys).toContain("REGION|PRODUCT|SENIOR|FR|Île-de-France");
+    expect(keys).toContain("COUNTRY|PRODUCT|SENIOR|FR|");
+    expect(keys.some((k) => k.includes("|LEAD|"))).toBe(false);
+  });
+
   it("range une offre dans sa région française, ou dans le télétravail complet", () => {
     expect(offerArea({ country: "FR", region: "Île-de-France", remotePolicy: "HYBRID" })).toBe(
       "Île-de-France",

@@ -1,6 +1,7 @@
 import type { ContractType, RemotePolicy, SalaryPeriod } from "@/generated/prisma/enums";
 import type { SeniorityCode } from "@/lib/career/codes";
 import { offerSeniorityRank, SENIORITY_RANK } from "@/lib/matching/signals";
+import { normalizeText } from "@/lib/matching/text";
 import { REGION_DEPARTMENTS } from "@/lib/radar/normalize";
 import { jobFamily, type JobFamily } from "@/lib/radar/signals/families";
 import { BENCHMARK_CONFIG, type BenchmarkConfig } from "./config";
@@ -86,9 +87,42 @@ export function benchmarkKey(scope: BenchmarkScope, key: BenchmarkKey): string {
   return [scope, key.family, key.seniority, key.country, key.area ?? ""].join("|");
 }
 
+/**
+ * Niveaux lus dans l'intitulé, propres aux repères : les qualificatifs
+ * explicites passent avant le mot « manager ». Un « Product Manager Senior »
+ * est SENIOR et un « Account Manager Junior » JUNIOR ; un « Product Manager »
+ * sans qualificatif n'a pas de niveau (le métier, pas l'encadrement). Seul
+ * un poste d'encadrement d'équipe (« Engineering Manager », « Team Manager »)
+ * compte comme LEAD. L'échelle du matching (`offerSeniorityRank`) n'est pas
+ * modifiée : elle pèse sur les scores.
+ */
+const BENCHMARK_TITLE_LEVELS: [RegExp, BenchmarkSeniority][] = [
+  [
+    /\b(?:ceo|cto|cfo|coo|cpo|chief|vp|vice[- ]president|directeur general|managing director)\b/,
+    "EXECUTIVE",
+  ],
+  [/\b(?:directeur|directrice|director|head of)\b/, "DIRECTOR"],
+  [/\b(?:lead|principal|staff|tech lead|team lead)\b/, "LEAD"],
+  [
+    /\b(?:engineering manager|team manager|people manager|manager d'equipe|chef d'equipe)\b/,
+    "LEAD",
+  ],
+  [/\b(?:senior|sr\.?|confirme|confirmee|experimente|experimentee|expert|experte)\b/, "SENIOR"],
+  [/\b(?:junior|jr\.?|debutant|debutante|entry[- ]level|graduate)\b/, "JUNIOR"],
+  [
+    /\b(?:stage|stagiaire|intern|internship|alternance|alternant|alternante|apprenti|apprentie|apprentissage|v\.?i\.?e)\b/,
+    "INTERN",
+  ],
+];
+
 /** Séniorité d'une offre (intitulé puis expérience demandée), ou `null` si rien d'exploitable. */
 export function offerSeniority(title: string, seniority: string | null): BenchmarkSeniority | null {
-  const rank = offerSeniorityRank(title, seniority);
+  const normalized = normalizeText(title);
+  for (const [pattern, level] of BENCHMARK_TITLE_LEVELS) {
+    if (pattern.test(normalized)) return level;
+  }
+  // Intitulé sans niveau explicite : expérience demandée seule (« 5 An(s) », « 3+ years »).
+  const rank = offerSeniorityRank("", seniority);
   return rank === null ? null : (SENIORITY_OF_RANK[rank] ?? null);
 }
 

@@ -168,7 +168,12 @@ describe.skipIf(!url)("Repères de salaire (en base)", () => {
       { family: "DATA_AI", seniority: "SENIOR", country: "FR", area: "Île-de-France" },
       config,
     );
-    expect(country).toMatchObject({ scope: "COUNTRY", sampleSize: 12, seniority: "SENIOR" });
+    expect(country).toMatchObject({
+      scope: "COUNTRY",
+      fallback: true,
+      sampleSize: 12,
+      seniority: "SENIOR",
+    });
     expect(country!.period.from).toBeInstanceOf(Date);
 
     const family = await getSalaryBenchmark(
@@ -176,7 +181,7 @@ describe.skipIf(!url)("Repères de salaire (en base)", () => {
       { family: "DATA_AI", seniority: "JUNIOR", country: "FR" },
       config,
     );
-    expect(family).toMatchObject({ scope: "FAMILY_COUNTRY", seniority: "ALL" });
+    expect(family).toMatchObject({ scope: "FAMILY_COUNTRY", fallback: true, seniority: "ALL" });
 
     // Aucun niveau publié : pas de chiffre.
     expect(
@@ -236,6 +241,49 @@ describe.skipIf(!url)("Repères de salaire (en base)", () => {
       const result = await getCandidateSalaryBenchmark(prisma, user.id, config);
       expect(result).toMatchObject({ family: "DATA_AI", seniority: "SENIOR" });
       expect(result!.benchmark).toMatchObject({ scope: "COUNTRY", sampleSize: 10 });
+    } finally {
+      await prisma.user.delete({ where: { id: user.id } });
+    }
+  });
+
+  it("donne à un Product Manager SENIOR le repère PRODUCT × SENIOR (pas un repli)", async () => {
+    await insertOffers(prisma, [
+      ...series(8, 60_000, 2_000, { title: "Product Manager Senior" }),
+      ...series(7, 62_000, 2_000, { title: "Senior Product Manager" }),
+      ...series(5, 45_000, 2_000, { title: "Product Manager Junior" }),
+    ]);
+    await runSalaryBenchmarks(prisma, { now: () => NOW, logger, config });
+    const user = await prisma.user.create({
+      data: { email: `bench-pm-${Date.now()}@example.test` },
+    });
+    try {
+      await prisma.experience.create({
+        data: {
+          userId: user.id,
+          roleTitle: "Product manager",
+          startMonth: new Date("2021-01-01"),
+          seniority: "SENIOR",
+          contractType: "CDI",
+          sector: "SAAS_SOFTWARE",
+          companySize: "S51_200",
+          companyStage: "SCALEUP",
+        },
+      });
+      const result = await getCandidateSalaryBenchmark(prisma, user.id, config);
+      expect(result).toMatchObject({ family: "PRODUCT", seniority: "SENIOR" });
+      expect(result!.benchmark).toMatchObject({
+        scope: "COUNTRY",
+        fallback: false,
+        seniority: "SENIOR",
+        sampleSize: 15,
+      });
+
+      const offer = await benchmarkForOffer(
+        prisma,
+        salaryOffer({ title: "Product Manager Senior", salaryMin: 70_000, salaryMax: 70_000 }),
+        config,
+      );
+      expect(offer!.benchmark).toMatchObject({ scope: "REGION", seniority: "SENIOR" });
     } finally {
       await prisma.user.delete({ where: { id: user.id } });
     }
