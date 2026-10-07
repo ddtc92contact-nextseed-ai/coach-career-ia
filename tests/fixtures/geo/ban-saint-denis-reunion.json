@@ -1,0 +1,35 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [2.3539, 48.9362] },
+      "properties": {
+        "label": "Saint-Denis",
+        "score": 0.95,
+        "type": "municipality",
+        "name": "Saint-Denis",
+        "postcode": "93200",
+        "citycode": "93066",
+        "city": "Saint-Denis",
+        "context": "93, Seine-Saint-Denis, Île-de-France"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [55.4481, -20.8823] },
+      "properties": {
+        "label": "Saint-Denis",
+        "score": 0.94,
+        "type": "municipality",
+        "name": "Saint-Denis",
+        "postcode": "97400",
+        "citycode": "97411",
+        "city": "Saint-Denis",
+        "context": "974, La Réunion"
+      }
+    }
+  ],
+  "query": "Saint-Denis",
+  "filters": { "type": "municipality" }
+}

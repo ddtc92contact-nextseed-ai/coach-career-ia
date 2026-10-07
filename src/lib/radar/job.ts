@@ -1,4 +1,6 @@
 import type { PrismaClient } from "@/generated/prisma/client";
+import { createGeocoder, type Geocoder } from "@/lib/geo";
+import { backfillOfferCoordinates } from "@/lib/geo/offers";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
 import { loadCompanyConfig, syncCompanies } from "./companies";
 import type { AtsCompany } from "./connectors/ats";
@@ -44,6 +46,8 @@ export type RadarDeps = {
   logger?: Logger;
   /** Client HTTP partagé entre passages (cache conditionnel conservé). */
   http?: HttpClient;
+  /** Géocodeur injecté (tests) ; `null` le désactive. Défaut : selon `config.geo`. */
+  geocoder?: Geocoder | null;
 };
 
 /** Un passage complet du radar : toutes les sources, l'une après l'autre. */
@@ -70,12 +74,38 @@ export async function runRadar(
   const connectors = buildConnectors(config, companies);
   log.info("radar.started", { connectors: connectors.length });
 
+  const geocoder =
+    deps.geocoder !== undefined
+      ? deps.geocoder
+      : config.geo
+        ? createGeocoder(prisma, config.geo, {
+            fetch: deps.fetch,
+            sleep: deps.sleep,
+            now,
+            logger: log,
+          })
+        : null;
+  if (!geocoder) log.warn("radar.geo.disabled", { reason: "géocodage désactivé ou sans contact" });
+
   const summaries = await runConnectors(prisma, connectors, {
     http,
     now,
     allowedCountries: config.countries,
     logger: log,
+    geocoder,
   });
+
+  // Rattrapage des offres ouvertes encore sans géocodage (offres anciennes,
+  // sources inactives, géocodeur indisponible lors d'un passage précédent).
+  if (geocoder) {
+    try {
+      await backfillOfferCoordinates(prisma, geocoder, { now, logger: log });
+    } catch (error) {
+      log.error("radar.geo.backfill_failed", {
+        error: error instanceof Error ? error.name : "erreur",
+      });
+    }
+  }
   const failed = summaries.filter((s) => s.status === "FAILED").length;
   log.info("radar.finished", {
     connectors: summaries.length,
