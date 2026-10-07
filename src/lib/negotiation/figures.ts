@@ -273,41 +273,75 @@ const OFFER_TO_SOMEONE =
 
 /** Mots admis entre la statistique et le montant (« médiane de », « p75 of »…). */
 const STAT_TO_AMOUNT =
-  /^\p{L}*\.?(?:\s+(?:de|d['’]|des|du|of|von|van|di|del|della|da|at|à|a|est|is|ist|è|es|ligt|liegt|op|bei|se|situe|sits|stands|around|about|environ|rund|circa|ongeveer|alrededor|intorno|haut|bas|supérieur|inférieur|upper|lower|obere|untere|bovenste|onderste|superior|inferior|superiore|inferiore))*\s*(?:€\s?)?$/iu;
-/** Mots au plus devant « offres publiées » dans la proposition (« Les offres publiées… »). */
-const MAX_LEAD_WORDS = 3;
-/** Mots au plus entre « offres publiées » et la statistique (complément de lieu, verbe). */
-const MAX_MIDDLE_WORDS = 14;
-const wordCount = (s: string) => s.split(/\s+/u).filter((w) => /\p{L}/u.test(w)).length;
+  /^\p{L}*\.?(?:\s+(?:de|d['’]|des|du|of|von|van|di|del|della|da|at|à|est|is|ist|è|es|ligt|liegt|op|bei|around|about|environ|rund|circa|ongeveer|alrededor|intorno|haut|bas|supérieur|inférieur|upper|lower|obere|untere|bovenste|onderste|superior|inferior|superiore|inferiore))*\s*(?:€\s?)?$/iu;
+
+/**
+ * Vocabulaire fermé des propositions qui citent le repère, dans les six
+ * langues : articles, compléments de poste/lieu, verbes d'affichage,
+ * statistiques, unités. Aucun pronom, aucun verbe d'action (signer,
+ * garantir, recevoir…), aucune conjonction (mais, car, but, since…).
+ */
+const BENCHMARK_VOCABULARY = new Set(
+  // fr
+  (
+    "les le la l des de du d un une ce cette ces pour dans même mêmes postes poste similaires " +
+    "comparables métier zone région pays offres annonces affichent montrent indiquent révèlent " +
+    "situent est se premier première troisième brut brute annuel annuelle annuels par an et " +
+    // en
+    "the a an for in this these similar comparable roles role positions jobs occupation area " +
+    "region country offers postings show indicate is first third gross per year annual and of " +
+    // es
+    "las los el una para en esta este estos puestos puesto similares oficio zona región país " +
+    "ofertas muestran indican primer tercer brutos bruto anuales anual al año y " +
+    // it
+    "le il lo gli una un per in questa questo ruoli ruolo simili mestiere zona regione paese " +
+    "offerte annunci indicano mostrano primo terzo lordi lordo annui annuo all anno e di " +
+    // de
+    "die der das den dem ein eine einen für in dieser diesem diesen vergleichbare vergleichbaren " +
+    "stellen stelle beruf region land angebote stellenangebote zeigen weisen aus liegt bei " +
+    "ersten dritten erste dritte brutto pro jahr jährlich und von im " +
+    // nl
+    "de het een voor in deze dit vergelijkbare functies functie beroep regio land vacatures " +
+    "tonen laten zien eerste derde bruto per jaar jaarlijks en van op"
+  ).split(" "),
+);
+
+function isBenchmarkToken(token: string): boolean {
+  const word = token.replace(/^[(«"“]+|[.,;)»"”!?]+$/gu, "").toLowerCase();
+  if (word === "" || /\d/u.test(word) || /^(?:€|k|k€|eur|euros?)$/u.test(word)) return true;
+  if (BENCHMARK_STATISTIC.test(word) || PUBLISHED_OFFERS.test(word)) return true;
+  return word
+    .split(/['’-]/u)
+    .filter(Boolean)
+    .every((part) => BENCHMARK_VOCABULARY.has(part));
+}
 
 /**
  * Liste blanche : le montant `raw` est-il cité EXACTEMENT comme le modèle cite
- * le repère ? Dans la même proposition (`;`, `:` ou tiret séparent), « offres
- * publiées » ouvre la proposition, une statistique suit, et le montant suit
- * immédiatement la statistique (« médiane de X », « p75 of X ») ou la porte
- * entre parenthèses (« X (p25) »). Toute autre forme est refusée.
+ * le repère ? Dans sa proposition (`;`, `:` ou tiret séparent) :
+ * - chaque mot appartient au vocabulaire fermé du repère (`BENCHMARK_VOCABULARY`) ;
+ * - « offres publiées » précède le montant ;
+ * - le montant suit immédiatement une statistique (« médiane de X », « p75 of X »)
+ *   ou la porte entre parenthèses (« X (p25) »).
+ * Toute autre forme est refusée : un faux refus ne coûte qu'un retour au modèle.
  */
 export function framesBenchmark(sentence: string, raw: string): boolean {
   for (const clause of sentence.split(/\s*(?:[:;—–]|\s-\s)\s*/u)) {
     const at = clause.indexOf(raw);
     if (at < 0) continue;
+    if (!clause.split(/\s+/u).every(isBenchmarkToken)) return false;
     const published = PUBLISHED_OFFERS.exec(clause);
     if (!published || published.index > at) return false;
-    // Début du mot qui porte « publi… » (« offres publiées » : « publiées »).
-    const wordStart = clause.slice(0, published.index).search(/\p{L}*$/u);
-    if (wordCount(clause.slice(0, wordStart)) > MAX_LEAD_WORDS) return false;
     const between = clause.slice(published.index, at);
-    const after = clause.slice(at + raw.length);
     const stat = new RegExp(BENCHMARK_STATISTIC.source, "giu");
     for (const m of between.matchAll(stat)) {
-      if (wordCount(between.slice(0, m.index)) > MAX_MIDDLE_WORDS) continue;
       if (STAT_TO_AMOUNT.test(between.slice(m.index + m[0].length))) return true;
     }
     const parenthesized = new RegExp(
       `^\\s*(?:€\\s?)?\\(\\s*(?:${BENCHMARK_STATISTIC.source})`,
       "iu",
     );
-    return parenthesized.test(after) && wordCount(between) <= MAX_MIDDLE_WORDS + 4;
+    return parenthesized.test(clause.slice(at + raw.length));
   }
   return false;
 }

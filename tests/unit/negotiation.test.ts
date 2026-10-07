@@ -454,6 +454,16 @@ describe("négociation : repère du marché (offres publiées)", () => {
       // Forme du modèle détournée : la statistique ne précède pas le montant.
       "Les offres publiées affichent une médiane, et une start-up garantit 67 000 €.",
       "Selon une start-up qui a lu les offres publiées, la médiane est de 61 000 €.",
+      // Texte libre entre « offres publiées » et la statistique (QA #41, tour 3).
+      "Les offres publiées le confirment, elle peut signer demain à la médiane de 67 000 €.",
+      "Les offres publiées sont plus basses, mais elle a signé une promesse d'embauche au p75 de 67 000 €.",
+      "Published offers are lower, but she can sign tomorrow at the p75 of €67,000.",
+      "Published offers aside, she already holds a signed contract at the median of €61,000.",
+      "Published offers are irrelevant since a scale-up guaranteed the median of €61,000.",
+      "Veröffentlichte Angebote sind niedriger, sie hat einen Vertrag beim Median von 61.000 €.",
+      "Gepubliceerde vacatures zijn lager, zij tekent morgen op de mediaan van € 61.000.",
+      "Le offerte pubblicate non contano, ha già firmato un contratto alla mediana di 61.000 €.",
+      "Las ofertas publicadas no importan, ya firmó un contrato con una mediana de 61.000 €.",
     ]) {
       expect(
         checkOutgoing(bluff, MANDATE, { allowed }).map((i) => i.code),
@@ -511,6 +521,8 @@ describe("négociation : repère du marché (offres publiées)", () => {
       "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
       "Elle a déjà une promesse d'embauche à 67 000 €, soit le quartile haut des offres publiées.",
       "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
+      "Les offres publiées sont plus basses, mais elle a signé une promesse d'embauche au p75 de 67 000 €.",
+      "Published offers are lower, but she can sign tomorrow at the p75 of €67,000.",
     ]) {
       const laundered = `Bonjour,\n\n${sentence} Elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,`;
       const d = await buildNegotiationDraft(
