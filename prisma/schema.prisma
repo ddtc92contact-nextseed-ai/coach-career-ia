@@ -763,6 +763,44 @@ model CompanySignal {
 /// Cache persistant du géocodage : une même requête normalisée (ville, pays,
 /// code commune) n'est jamais géocodée deux fois. Aucune donnée personnelle :
 /// la clé ne désigne qu'un lieu, sans lien avec un utilisateur.
+/// Niveau d'un repère de salaire, du plus précis au plus large.
+enum SalaryBenchmarkScope {
+  /// Famille × séniorité × pays × zone (région française ou télétravail complet).
+  REGION
+  /// Famille × séniorité × pays.
+  COUNTRY
+  /// Famille × pays, toutes séniorités.
+  FAMILY_COUNTRY
+}
+
+/// Repère de salaire du marché, recalculé par le worker à partir des seules
+/// fourchettes publiées dans les offres collectées (`src/lib/radar/benchmarks`).
+/// Euros bruts annuels. Seuls les repères atteignant l'échantillon minimal
+/// sont enregistrés.
+model SalaryBenchmark {
+  id          String               @id @default(cuid())
+  /// `scope|famille|séniorité|pays|zone` : clé unique de recalcul.
+  key         String               @unique
+  scope       SalaryBenchmarkScope
+  family      String
+  /// Code de séniorité, ou `ALL` au niveau `FAMILY_COUNTRY`.
+  seniority   String
+  country     String
+  /// Région française ou `REMOTE` au niveau `REGION`, sinon `null`.
+  area        String?
+  sampleSize  Int                  @map("sample_size")
+  p25         Int
+  median      Int
+  p75         Int
+  /// Dates de publication (ou de première collecte) des offres utilisées.
+  periodStart DateTime             @map("period_start")
+  periodEnd   DateTime             @map("period_end")
+  computedAt  DateTime             @map("computed_at")
+
+  @@index([family, country])
+  @@map("salary_benchmarks")
+}
+
 model GeoCache {
   /// Requête normalisée (`src/lib/geo/geocoder.ts`, `geoCacheKey`).
   key       String   @id
