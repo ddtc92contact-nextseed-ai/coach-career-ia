@@ -1,0 +1,242 @@
+{
+  "jobs": [
+    {
+      "absolute_url": "https://job-boards.greenhouse.io/dataiku/jobs/5420293004",
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": false,
+          "requires_processing_consent": false,
+          "requires_retention_consent": false,
+          "retention_period": null,
+          "demographic_data_consent_applies": false
+        }
+      ],
+      "internal_job_id": 4865289004,
+      "location": {
+        "name": "France, Remote; Germany, Remote; Netherlands, Remote; Spain, Remote; United Kingdom, Remote"
+      },
+      "metadata": [
+        {
+          "id": 4661136004,
+          "name": "External-Facing Department",
+          "value": "Engineering",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4661137004,
+          "name": "External-Facing Sub-Department",
+          "value": "Engineering",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4545662004,
+          "name": "Remote?",
+          "value": "Yes",
+          "value_type": "single_select"
+        }
+      ],
+      "id": 5420293004,
+      "updated_at": "2026-09-01T13:58:26-04:00",
+      "requisition_id": "PIPE-SoftECoreEMEAGI-FY25",
+      "title": "Fullstack Software Engineer - Core",
+      "company_name": "Dataiku",
+      "first_published": "2025-10-22T10:48:25-04:00",
+      "language": "en",
+      "application_deadline": null,
+      "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://www.dataiku.com/?utm_source=newswire&amp;amp;utm_medium=press-release&amp;amp;utm_campaign=PlatformforAISuccess&quot; target=&quot;_blank&quot;&gt;Dataiku&lt;/a&gt; is the Platform for AI Success, the enterprise orchestration layer for building, deploying, and governing AI. In a single environment, teams design and operate analytics, machine learning, and AI agents with the transparency, collaboration, and control enterprises require. Sitting above data platforms, cloud infrastructure, and AI services, Dataiku connects the full enterprise AI stack - empowering organizations to run AI across multi-vendor environments with centralized governance.&lt;br&gt;&lt;br&gt;The world’s leading companies rely on Dataiku to operationalize AI and run it as a true business performance engine delivering measurable value. For more, visit the Dataiku &lt;a href=&quot;https://blog.dataiku.com/?_gl=1*17edvf4*_ga*MjA1Mjk5NzY4OC4xNjY3MjMyMDUz*_ga_B3YXRYMY48*MTY2OTA1MDY5NS4xMi4xLjE2NjkwNTA2OTguNTcuMC4w&quot; target=&quot;_blank&quot;&gt;blog&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/company/dataiku/&quot; target=&quot;_blank&quot;&gt;LinkedIn&lt;/a&gt;, &lt;a href=&quot;https://x.com/dataiku&quot; target=&quot;_blank&quot;&gt;X&lt;/a&gt;, and &lt;a href=&quot;https://www.youtube.com/dataiku&quot; target=&quot;_blank&quot;&gt;YouTube&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Why Engineering at Dataiku?&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;Dataiku’s on-premise, cloud, or SaaS-deployed platform connects many data science technologies, and our technology stack reflects our commitment to quality and innovation. We integrate the best of data and A",
+      "departments": [
+        {
+          "id": 4039139004,
+          "name": "Engineering",
+          "child_ids": [],
+          "parent_id": 4039135004
+        }
+      ],
+      "offices": [
+        {
+          "id": 4023765004,
+          "name": "Europe, Middle East, and Africa",
+          "location": null,
+          "child_ids": [
+            4092416004,
+            4064072004,
+            4067177004,
+            4034036004,
+            4032438004,
+            4034940004,
+            4036965004,
+            4032949004,
+            4036626004,
+            4031191004,
+            4032475004,
+            4026872004,
+            4026874004,
+            4026879004,
+            4032487004,
+            4026880004,
+            4026906004,
+            4026895004,
+            4027677004,
+            4026888004,
+            4026896004,
+            4026904004,
+            4027678004,
+            4026894004,
+            4026900004,
+            4026893004,
+            4026901004,
+            4026903004,
+            4026877004,
+            4026905004,
+            4026911004,
+            4026861004,
+            4026918004,
+            4030517004,
+            4032392004,
+            4085172004
+          ],
+          "parent_id": null
+        }
+      ],
+      "ai_disclaimer": null,
+      "include_ai_disclaimer": null,
+      "ai_opt_out_request_url": null
+    },
+    {
+      "absolute_url": "https://job-boards.greenhouse.io/dataiku/jobs/6148066004",
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": true,
+          "requires_processing_consent": true,
+          "requires_retention_consent": true,
+          "retention_period": 720,
+          "demographic_data_consent_applies": true
+        }
+      ],
+      "internal_job_id": 5202486004,
+      "location": {
+        "name": "France, Remote"
+      },
+      "metadata": [
+        {
+          "id": 4661136004,
+          "name": "External-Facing Department",
+          "value": "Engineering",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4661137004,
+          "name": "External-Facing Sub-Department",
+          "value": "Engineering",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4545662004,
+          "name": "Remote?",
+          "value": "Yes",
+          "value_type": "single_select"
+        }
+      ],
+      "id": 6148066004,
+      "updated_at": "2026-09-15T04:29:22-04:00",
+      "requisition_id": "R-2608012",
+      "title": "Infrastructure Engineer",
+      "company_name": "Dataiku",
+      "first_published": "2026-08-24T05:19:58-04:00",
+      "language": "en",
+      "application_deadline": null,
+      "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://www.dataiku.com/?utm_source=newswire&amp;amp;utm_medium=press-release&amp;amp;utm_campaign=PlatformforAISuccess&quot; target=&quot;_blank&quot;&gt;Dataiku&lt;/a&gt; is the Platform for AI Success, the enterprise orchestration layer for building, deploying, and governing AI. In a single environment, teams design and operate analytics, machine learning, and AI agents with the transparency, collaboration, and control enterprises require. Sitting above data platforms, cloud infrastructure, and AI services, Dataiku connects the full enterprise AI stack - empowering organizations to run AI across multi-vendor environments with centralized governance.&lt;br&gt;&lt;br&gt;The world’s leading companies rely on Dataiku to operationalize AI and run it as a true business performance engine delivering measurable value. For more, visit the Dataiku &lt;a href=&quot;https://blog.dataiku.com/?_gl=1*17edvf4*_ga*MjA1Mjk5NzY4OC4xNjY3MjMyMDUz*_ga_B3YXRYMY48*MTY2OTA1MDY5NS4xMi4xLjE2NjkwNTA2OTguNTcuMC4w&quot; target=&quot;_blank&quot;&gt;blog&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/company/dataiku/&quot; target=&quot;_blank&quot;&gt;LinkedIn&lt;/a&gt;, &lt;a href=&quot;https://x.com/dataiku&quot; target=&quot;_blank&quot;&gt;X&lt;/a&gt;, and &lt;a href=&quot;https://www.youtube.com/dataiku&quot; target=&quot;_blank&quot;&gt;YouTube&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;&lt;p&gt;The Platforms Infrastructure team is seeking a driven individual to join us in addressing our evolving infrastructure challenges. At Dataiku, our mission is to architect, deploy, and maintain robust data platforms centered around our core product. We also pro",
+      "departments": [
+        {
+          "id": 4039139004,
+          "name": "Engineering",
+          "child_ids": [],
+          "parent_id": 4039135004
+        }
+      ],
+      "offices": [
+        {
+          "id": 4026893004,
+          "name": "France, Remote",
+          "location": null,
+          "child_ids": [],
+          "parent_id": 4023765004
+        }
+      ],
+      "ai_disclaimer": null,
+      "include_ai_disclaimer": null,
+      "ai_opt_out_request_url": null
+    },
+    {
+      "absolute_url": "https://job-boards.greenhouse.io/dataiku/jobs/6141886004",
+      "data_compliance": [
+        {
+          "type": "gdpr",
+          "requires_consent": true,
+          "requires_processing_consent": true,
+          "requires_retention_consent": true,
+          "retention_period": 720,
+          "demographic_data_consent_applies": false
+        }
+      ],
+      "internal_job_id": 5199241004,
+      "location": {
+        "name": "United States, Remote"
+      },
+      "metadata": [
+        {
+          "id": 4661136004,
+          "name": "External-Facing Department",
+          "value": "Finance",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4661137004,
+          "name": "External-Facing Sub-Department",
+          "value": "Financial Planning & Analysis",
+          "value_type": "single_select"
+        },
+        {
+          "id": 4545662004,
+          "name": "Remote?",
+          "value": "Yes",
+          "value_type": "single_select"
+        }
+      ],
+      "id": 6141886004,
+      "updated_at": "2026-09-30T07:29:52-04:00",
+      "requisition_id": "R-2608005",
+      "title": "Anaplan Systems Architect ",
+      "company_name": "Dataiku",
+      "first_published": "2026-08-12T10:26:54-04:00",
+      "language": "en",
+      "application_deadline": null,
+      "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;&lt;a href=&quot;https://www.dataiku.com/?utm_source=newswire&amp;amp;utm_medium=press-release&amp;amp;utm_campaign=PlatformforAISuccess&quot; target=&quot;_blank&quot;&gt;Dataiku&lt;/a&gt; is the Platform for AI Success, the enterprise orchestration layer for building, deploying, and governing AI. In a single environment, teams design and operate analytics, machine learning, and AI agents with the transparency, collaboration, and control enterprises require. Sitting above data platforms, cloud infrastructure, and AI services, Dataiku connects the full enterprise AI stack - empowering organizations to run AI across multi-vendor environments with centralized governance.&lt;br&gt;&lt;br&gt;The world’s leading companies rely on Dataiku to operationalize AI and run it as a true business performance engine delivering measurable value. For more, visit the Dataiku &lt;a href=&quot;https://blog.dataiku.com/?_gl=1*17edvf4*_ga*MjA1Mjk5NzY4OC4xNjY3MjMyMDUz*_ga_B3YXRYMY48*MTY2OTA1MDY5NS4xMi4xLjE2NjkwNTA2OTguNTcuMC4w&quot; target=&quot;_blank&quot;&gt;blog&lt;/a&gt;, &lt;a href=&quot;https://www.linkedin.com/company/dataiku/&quot; target=&quot;_blank&quot;&gt;LinkedIn&lt;/a&gt;, &lt;a href=&quot;https://x.com/dataiku&quot; target=&quot;_blank&quot;&gt;X&lt;/a&gt;, and &lt;a href=&quot;https://www.youtube.com/dataiku&quot; target=&quot;_blank&quot;&gt;YouTube&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;&lt;h1&gt;&lt;strong&gt;Position Overview&lt;/strong&gt;&lt;/h1&gt;\n&lt;p&gt;Dataiku is seeking a Senior Manager, Anaplan &amp;amp; Sales Compensation Systems to lead our Anaplan platform strategy within Strategic Finance. This is a net-new, high-visibility role responsible for owning the end-to",
+      "departments": [
+        {
+          "id": 4046179004,
+          "name": "Finance",
+          "child_ids": [],
+          "parent_id": 4039954004
+        }
+      ],
+      "offices": [
+        {
+          "id": 4026907004,
+          "name": "United States, Remote",
+          "location": null,
+          "child_ids": [],
+          "parent_id": 4023761004
+        }
+      ],
+      "ai_disclaimer": null,
+      "include_ai_disclaimer": null,
+      "ai_opt_out_request_url": null
+    }
+  ],
+  "meta": {
+    "total": 3
+  }
+}

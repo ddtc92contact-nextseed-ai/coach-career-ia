@@ -1,0 +1,18 @@
+{
+  "resultats": [
+    {
+      "id": "201TSTE",
+      "intitule": "Serveur / Serveuse de restaurant",
+      "description": "Service en salle pour la saison estivale.",
+      "dateCreation": "2026-10-02T08:00:00.000Z",
+      "lieuTravail": { "libelle": "13 - Marseille 2e Arrondissement", "codePostal": "13002" },
+      "typeContrat": "SAI",
+      "typeContratLibelle": "Emploi saisonnier - 3 Mois",
+      "experienceExige": "D",
+      "salaire": { "commentaire": "Selon profil" },
+      "alternance": false,
+      "origineOffre": { "origine": "1" }
+    }
+  ],
+  "filtresPossibles": []
+}

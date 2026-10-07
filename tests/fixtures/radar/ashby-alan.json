@@ -1,0 +1,134 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "8ec3768e-13cf-4e92-ba14-5d2a9484227c",
+      "title": "IT Operations Specialist",
+      "department": "Work Environment",
+      "team": "IT",
+      "employmentType": "FullTime",
+      "location": "Paris, France",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-09-07T10:17:04.041+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressCountry": "France"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/alan/8ec3768e-13cf-4e92-ba14-5d2a9484227c",
+      "applyUrl": "https://jobs.ashbyhq.com/alan/8ec3768e-13cf-4e92-ba14-5d2a9484227c/application",
+      "descriptionHtml": "<h2><strong>Health can’t wait</strong>. </h2><p style=\"min-height:1.5em\">Not for symptoms to get worse. Not for a six‑month appointment. Not for a system to catch up. But that’s exactly how healthcare works today. You wait, until you can’t.</p><p style=\"min-height:1.5em\">Alan exists to end the wait.</p><p style=\"min-height:1.5em\">Health is a universal right, and we believe this right can only become real when it’s coupled with prevention. We need to stop treating health as something we repair and start treating it as something we build, every day. It’s not solely a question of willpower. It’s the healthcare system itself that needs to work for everyone, in a sustainable way.</p><p style=\"min-height:1.5em\">So we are building the<strong> new standard in prevention insurance. </strong>Alan is the first company that integrates insurance, prevention, and care into a single, acclaimed user experience.</p><p style=\"min-height:1.5em\">We are on an incredible journey to build a <strong>global leading company, with a </strong><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://alan.com/en/careers\"><strong><u>unique culture</u></strong></a>. We already partner with 40K+ compani",
+      "descriptionPlain": "HEALTH CAN’T WAIT. \n\nNot for symptoms to get worse. Not for a six‑month appointment. Not for a system to catch up. But that’s exactly how healthcare works today. You wait, until you can’t.\n\nAlan exists to end the wait.\n\nHealth is a universal right, and we believe this right can only become real when it’s coupled with prevention. We need to stop treating health as something we repair and start treating it as something we build, every day. It’s not solely a question of willpower. It’s the healthcare system itself that needs to work for everyone, in a sustainable way.\n\nSo we are building the new standard in prevention insurance. Alan is the first company that integrates insurance, prevention, and care into a single, acclaimed user experience.\n\nWe are on an incredible journey to build a global leading company, with a unique culture https://alan.com/en/careers. We already partner with 40K+ companies of all sizes, serving more than 1M+ members, and have reached €800M+ in ARR.\n\nPrevention as the new norm. That's what we're building with our team of 1000+ people. If it speaks to you: we're hiring across France, Spain, Belgium, and Canada. And beyond.\n\n\nMISSION\n\nAlan is scaling internationa",
+      "compensation": {
+        "compensationTierSummary": "€46K – €53K • €18K – €27K Equity",
+        "scrapeableCompensationSalarySummary": "€46K - €53K",
+        "compensationTiers": [
+          {
+            "id": "0e4848a6-68ed-4f56-898e-03c5469552f3",
+            "tierSummary": "Level B0 - B1 €46K – €53K • €18K – €27K Equity",
+            "title": null,
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "df25897d-3e52-4ec3-a328-ac862867f35b",
+                "summary": "Level B0 - B1 €46K – €53K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "EUR",
+                "minValue": 46000,
+                "maxValue": 53000
+              },
+              {
+                "id": "24688381-67de-4767-830e-2b6a1780f829",
+                "summary": "€18K – €27K Equity",
+                "compensationType": "EquityCashValue",
+                "interval": "1 YEAR",
+                "currencyCode": "EUR",
+                "minValue": 18000,
+                "maxValue": 27000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "interval": "1 YEAR",
+            "currencyCode": "EUR",
+            "minValue": 46000,
+            "maxValue": 53000
+          },
+          {
+            "compensationType": "EquityCashValue",
+            "interval": "1 YEAR",
+            "currencyCode": "EUR",
+            "minValue": 18000,
+            "maxValue": 27000
+          }
+        ]
+      }
+    },
+    {
+      "id": "d457e0f1-2418-4759-b4ed-e41fdff50bf0",
+      "title": "CTO Founder Associate - internship",
+      "department": "Associates",
+      "team": "Associates",
+      "employmentType": "Intern",
+      "location": "Paris, France",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [],
+      "publishedAt": "2026-08-03T08:33:52.099+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressCountry": "France"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/alan/d457e0f1-2418-4759-b4ed-e41fdff50bf0",
+      "applyUrl": "https://jobs.ashbyhq.com/alan/d457e0f1-2418-4759-b4ed-e41fdff50bf0/application",
+      "descriptionHtml": "<h2><strong>Health can’t wait</strong>. </h2><p style=\"min-height:1.5em\">Not for symptoms to get worse. Not for a six‑month appointment. Not for a system to catch up. But that’s exactly how healthcare works today. You wait, until you can’t.</p><p style=\"min-height:1.5em\">Alan exists to end the wait.</p><p style=\"min-height:1.5em\">Health is a universal right, and we believe this right can only become real when it’s coupled with prevention. We need to stop treating health as something we repair and start treating it as something we build, every day. It’s not solely a question of willpower. It’s the healthcare system itself that needs to work for everyone, in a sustainable way.</p><p style=\"min-height:1.5em\">So we are building the<strong> new standard in prevention insurance. </strong>Alan is the first company that integrates insurance, prevention, and care into a single, acclaimed user experience.</p><p style=\"min-height:1.5em\">We are on an incredible journey to build a <strong>global leading company, with a </strong><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://alan.com/en/careers\"><strong><u>unique culture</u></strong></a>. We already partner with 40K+ compani",
+      "descriptionPlain": "HEALTH CAN’T WAIT. \n\nNot for symptoms to get worse. Not for a six‑month appointment. Not for a system to catch up. But that’s exactly how healthcare works today. You wait, until you can’t.\n\nAlan exists to end the wait.\n\nHealth is a universal right, and we believe this right can only become real when it’s coupled with prevention. We need to stop treating health as something we repair and start treating it as something we build, every day. It’s not solely a question of willpower. It’s the healthcare system itself that needs to work for everyone, in a sustainable way.\n\nSo we are building the new standard in prevention insurance. Alan is the first company that integrates insurance, prevention, and care into a single, acclaimed user experience.\n\nWe are on an incredible journey to build a global leading company, with a unique culture https://alan.com/en/careers. We already partner with 40K+ companies of all sizes, serving more than 1M+ members, and have reached €800M+ in ARR.\n\nPrevention as the new norm. That's what we're building with our team of 1000+ people. If it speaks to you: we're hiring across France, Spain, Belgium, and Canada. And beyond.\n\n\n⭐ CTO FOUNDER ASSOCIATE INTERNSHIP ⭐\n",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    },
+    {
+      "id": "4c7e8e0a-0be9-47b8-b962-204a1360f11f",
+      "title": "Founding engineer- Mo team (AI Health Companion)",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "Paris, France",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [],
+      "publishedAt": "2026-04-21T10:27:02.537+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressCountry": "France"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/alan/4c7e8e0a-0be9-47b8-b962-204a1360f11f",
+      "applyUrl": "https://jobs.ashbyhq.com/alan/4c7e8e0a-0be9-47b8-b962-204a1360f11f/application",
+      "descriptionHtml": "<h1><strong>🤖 Who we are</strong></h1><p style=\"min-height:1.5em\"><strong>We’re building Mo — a health companion for everyone.</strong></p><p style=\"min-height:1.5em\">We’re a small team within Alan, on a mission to redefine the future of care by <strong>democratizing access to medical expertise</strong>. We are building <strong>Mo,</strong> an intelligent, empathetic, multimodal <strong>LLM-based conversational AI assistant able</strong> to <strong>prescribe, triage, and proactively follow up</strong> on care.</p><p style=\"min-height:1.5em\">Imagine giving every person in the world <strong>instant, 24/7 access to personalised medical expertise</strong> - through chat, voice, or video. That’s what we are building 🤖.</p><p style=\"min-height:1.5em\">We kicked off the project in 2023, and we have launched Mo to all our french members (1M) in Q1 2026, making it the first safe AI health companion live at scale in Europe.</p><p style=\"min-height:1.5em\"></p><h1><strong>🚀 What keeps us up at night</strong></h1><p style=\"min-height:1.5em\">We’re building a medical agent that works — <strong>reliably, safely, and at scale</strong>.</p><p style=\"min-height:1.5em\">You’ll work at the <strong>inters",
+      "descriptionPlain": "🤖 WHO WE ARE\n\nWe’re building Mo — a health companion for everyone.\n\nWe’re a small team within Alan, on a mission to redefine the future of care by democratizing access to medical expertise. We are building Mo, an intelligent, empathetic, multimodal LLM-based conversational AI assistant able to prescribe, triage, and proactively follow up on care.\n\nImagine giving every person in the world instant, 24/7 access to personalised medical expertise - through chat, voice, or video. That’s what we are building 🤖.\n\nWe kicked off the project in 2023, and we have launched Mo to all our french members (1M) in Q1 2026, making it the first safe AI health companion live at scale in Europe.\n\n\n\n\n🚀 WHAT KEEPS US UP AT NIGHT\n\nWe’re building a medical agent that works — reliably, safely, and at scale.\n\nYou’ll work at the intersection of product engineering, ML engineering, and medical expertise. Our mission is to build the most accurate and reliable medical agent in the world, while delivering an outstanding conversational experience. Things we’re working on:\n\n - 💬 Deliver the most memorable chatting experience — You’ll work on making Mo the obvious choice when it comes to asking a health question. It ",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    }
+  ]
+}

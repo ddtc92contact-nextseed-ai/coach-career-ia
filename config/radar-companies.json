@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "dataiku",
+    "name": "Dataiku",
+    "website": "https://www.dataiku.com",
+    "sector": "Logiciel / IA",
+    "ats": "greenhouse",
+    "boardToken": "dataiku"
+  },
+  {
+    "slug": "doctolib",
+    "name": "Doctolib",
+    "website": "https://www.doctolib.fr",
+    "sector": "Santé numérique",
+    "ats": "greenhouse",
+    "boardToken": "doctolib"
+  },
+  {
+    "slug": "qonto",
+    "name": "Qonto",
+    "website": "https://qonto.com",
+    "sector": "Fintech",
+    "ats": "lever",
+    "boardToken": "qonto"
+  },
+  {
+    "slug": "alan",
+    "name": "Alan",
+    "website": "https://alan.com",
+    "sector": "Assurance santé",
+    "ats": "ashby",
+    "boardToken": "alan"
+  },
+  {
+    "slug": "pennylane",
+    "name": "Pennylane",
+    "website": "https://www.pennylane.com",
+    "sector": "Fintech / comptabilité",
+    "ats": "ashby",
+    "boardToken": "pennylane"
+  }
+]
