@@ -10,6 +10,7 @@ import { redactText } from "@/lib/import/pseudonymise";
 import type { OfferAnalysis } from "./analysis";
 import { allowedFigures, checkOutgoing } from "./check";
 import { MAX_MESSAGE, type Mandate, type NegotiationOutcome } from "./mandate";
+import { marketFigures, type MarketBenchmark } from "./market";
 
 export { MAX_MESSAGE };
 
@@ -18,9 +19,10 @@ export { MAX_MESSAGE };
  * contre-proposition (`counter`) ou message de clôture (`closing`) après la
  * décision du candidat.
  *
- * Le LLM ne reçoit que le mandat, l'intitulé de l'offre et les messages de
- * l'entreprise (termes identifiants du candidat retirés) : jamais le coffre
- * d'identité ni la mémoire brute. Sa sortie (JSON validé par zod) passe un
+ * Le LLM ne reçoit que le mandat, l'intitulé de l'offre, les messages de
+ * l'entreprise (termes identifiants du candidat retirés) et, si l'échantillon
+ * est suffisant, le repère de salaire du marché (offres publiées) : jamais le
+ * coffre d'identité ni la mémoire brute. Sa sortie (JSON validé par zod) passe un
  * contrôle déterministe (plancher, non négociables, faits et chiffres non
  * fournis, ré-identification) ; au moindre problème, ou si le fournisseur
  * échoue, un modèle déterministe le remplace. Le candidat relit, modifie et
@@ -40,6 +42,11 @@ export type NegotiationFacts = {
   analysis: OfferAnalysis | null;
   offerSalary: { min: number | null; max: number | null };
   outcome: NegotiationOutcome;
+  /**
+   * Repère de salaire du marché pour l'offre (offres publiées), `null` ou
+   * absent sous le seuil d'échantillon (`marketForNegotiation`).
+   */
+  market?: MarketBenchmark | null;
 };
 
 export type NegotiationDraft = {
@@ -85,6 +92,16 @@ export function ruleCounterBody(facts: NegotiationFacts): string {
   const m = facts.mandate;
   const lines = [t("greeting"), "", t("intro", { title: facts.offerTitle }), ""];
   lines.push(t("salary", { amount: formatSalary(facts.locale, m.salaryTarget ?? m.salaryFloor) }));
+  // Repère du marché : la médiane des offres publiées, jamais sous le plancher.
+  const market = facts.market;
+  if (market && Math.round(market.median) >= m.salaryFloor) {
+    lines.push(
+      t("market", {
+        scope: market.scope,
+        amount: formatSalary(facts.locale, Math.round(market.median)),
+      }),
+    );
+  }
   const essentials: string[] = [];
   if (m.remoteDaysMin) essentials.push(t("remote", { days: m.remoteDaysMin }));
   if (m.contractType) essentials.push(t("contract", { contract: contracts(m.contractType) }));
@@ -120,9 +137,13 @@ export function ruleBody(kind: DraftKind, facts: NegotiationFacts): string {
 
 const phrased = z.object({ body: z.string().trim().min(40).max(MAX_MESSAGE) });
 
-/** Faits transmis au modèle : mandat, offre et messages de l'entreprise, rien d'autre. */
+/**
+ * Faits transmis au modèle : mandat, offre, messages de l'entreprise et repère
+ * du marché (offres publiées, si l'échantillon suffit), rien d'autre.
+ */
 export function negotiationPromptFacts(kind: DraftKind, facts: NegotiationFacts) {
   const m = facts.mandate;
+  const market = facts.market ?? null;
   return {
     task: kind === "counter" ? "counter-proposal" : `closing message (${facts.outcome})`,
     offer: {
@@ -148,6 +169,19 @@ export function negotiationPromptFacts(kind: DraftKind, facts: NegotiationFacts)
       .slice(-3)
       .map((text) => text.slice(0, MAX_COMPANY_MESSAGE)),
     estimateOfLatestCompanyOffer: facts.analysis,
+    ...(market
+      ? {
+          marketBenchmarkFromPublishedOffers: {
+            meaning:
+              "Gross annual salaries (EUR) computed from the salary ranges PUBLISHED in job offers for similar roles (same job family, seniority and area). Market data, NOT an offer the candidate received.",
+            p25: Math.round(market.p25),
+            median: Math.round(market.median),
+            p75: Math.round(market.p75),
+            scope: market.scope,
+            area: market.area,
+          },
+        }
+      : {}),
   };
 }
 
@@ -159,6 +193,7 @@ const SYSTEM = [
   'Never concede a non-negotiable point; restate them clearly and positively (e.g. "at least 2 remote days per week", "a permanent contract"), without naming the remote arrangements or contract types the candidate refuses. Present nice-to-have points as wishes.',
   "Never accept an offer or commit the candidate: nothing is agreed until the candidate confirms it personally.",
   "Never write a name, an email address, a phone number, a link, a former employer or a school.",
+  "MARKET DATA: if marketBenchmarkFromPublishedOffers is given, you may cite its figures (preferably the median) to support the request, always as published offers, e.g. \"published offers for similar roles in this area show a median of X\". Never present it as an offer the candidate received, as another company's offer, or as the candidate's salary. Never cite a figure below the salary floor, and do not mention the number of offers.",
 ].join("\n");
 
 const CLOSING = {
@@ -210,10 +245,12 @@ export async function llmNegotiationBody(
   const target = { offerTitle: facts.offerTitle, companyName: facts.companyName };
   const body = redactText(object.body, termsForTarget(context.terms, target)).text;
   if (body.includes("[…]")) return null;
-  const allowed = allowedFigures(facts.mandate, facts.companyMessages, [
-    facts.offerSalary.min,
-    facts.offerSalary.max,
-  ]);
+  const allowed = allowedFigures(
+    facts.mandate,
+    facts.companyMessages,
+    [facts.offerSalary.min, facts.offerSalary.max],
+    marketFigures(facts.market ?? null),
+  );
   if (checkOutgoing(body, facts.mandate, { allowed }).length > 0) return null;
   if (!context.revealed && identityIssues(body, context.terms, target).length > 0) return null;
   return body;

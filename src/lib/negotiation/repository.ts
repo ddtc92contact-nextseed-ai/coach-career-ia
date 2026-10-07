@@ -16,6 +16,9 @@ import { db } from "@/lib/db";
 import { redactText } from "@/lib/import/pseudonymise";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
 import type { MailSender } from "@/lib/mail/smtp";
+import { annualEur } from "@/lib/radar/benchmarks/compute";
+import { BENCHMARK_CONFIG } from "@/lib/radar/benchmarks/config";
+import { benchmarkForOffer, type SalaryBenchmark } from "@/lib/radar/salary-benchmarks";
 import { analyseOffer, type OfferAnalysis } from "./analysis";
 import { checkOutgoing, type NegotiationIssue } from "./check";
 import {
@@ -34,6 +37,7 @@ import {
   type MandateField,
   type NegotiationOutcome,
 } from "./mandate";
+import { mandateHints, marketForNegotiation, type MarketBenchmark } from "./market";
 import { decNegotiation, encNegotiation, messageHash } from "./store";
 
 /**
@@ -101,6 +105,12 @@ async function ownedContact(userId: string, contactId: unknown) {
           applyEmail: true,
           salaryMin: true,
           salaryMax: true,
+          salaryCurrency: true,
+          salaryPeriod: true,
+          seniority: true,
+          country: true,
+          region: true,
+          remotePolicy: true,
         },
       },
       negotiationMandate: true,
@@ -137,6 +147,37 @@ async function decryptedCompanyTexts(userId: string, contactId: string) {
   ].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 }
 
+/**
+ * Repère de salaire du marché pour l'offre du contact (famille × séniorité ×
+ * zone de l'OFFRE, jamais de données du candidat), `null` sous le seuil
+ * d'échantillon ; et maximum annoncé par l'offre, annualisé en euros.
+ */
+async function offerMarket(offer: OwnedContact["offer"]) {
+  const salary = {
+    ...offer,
+    salaryMin: offer.salaryMin === null ? null : Number(offer.salaryMin),
+    salaryMax: offer.salaryMax === null ? null : Number(offer.salaryMax),
+  };
+  const found = await benchmarkForOffer(db, salary).catch(() => null);
+  const benchmark: SalaryBenchmark | null = marketForNegotiation(
+    found?.benchmark,
+    BENCHMARK_CONFIG.minSample,
+  );
+  const max = salary.salaryMax ?? salary.salaryMin;
+  const offerMax = max === null ? null : annualEur({ ...salary, salaryMin: max, salaryMax: max });
+  return { benchmark, offerMaxAnnual: offerMax === null ? null : Math.round(offerMax) };
+}
+
+const forDraft = (b: SalaryBenchmark | null): MarketBenchmark | null =>
+  b && {
+    p25: b.p25,
+    median: b.median,
+    p75: b.p75,
+    sampleSize: b.sampleSize,
+    scope: b.scope,
+    area: b.area,
+  };
+
 // --- Lecture --------------------------------------------------------------------------
 
 /** Vue de la négociation d'un contact du candidat. */
@@ -145,13 +186,14 @@ export async function getNegotiation(userId: string, contactId: unknown) {
   const sent = contact.status === "SENT";
   const mandateRow = contact.negotiationMandate;
   const mandate = mandateRow ? readMandate(userId, mandateRow.contentEnc) : null;
-  const [rails, rows, texts] = await Promise.all([
+  const [rails, rows, texts, market] = await Promise.all([
     getGuardRails(userId),
     db.negotiationMessage.findMany({
       where: { userId, contactId: contact.id },
       orderBy: { createdAt: "asc" },
     }),
     sent ? decryptedCompanyTexts(userId, contact.id) : Promise.resolve([]),
+    sent ? offerMarket(contact.offer) : Promise.resolve(null),
   ]);
   // Fil dans l'ordre des échanges : envoi (ou réception) plutôt que création du brouillon.
   const at = (m: { sentAt: Date | null; createdAt: Date }) => (m.sentAt ?? m.createdAt).getTime();
@@ -181,6 +223,14 @@ export async function getNegotiation(userId: string, contactId: unknown) {
   const latest = texts.at(-1) ?? null;
   const analysis: OfferAnalysis | null =
     mandate && latest ? analyseOffer(latest.text, mandate) : null;
+  const defaults = defaultMandate({
+    minFixedSalary: rails.minFixedSalary,
+    targetTotalPackage: rails.targetTotalPackage,
+    minRemoteDays: rails.minRemoteDays,
+    contractTypes: rails.contractTypes.filter((c): c is ContractTypeCode =>
+      (CONTRACT_TYPES as readonly string[]).includes(c),
+    ),
+  });
   return {
     contactId: contact.id,
     sent,
@@ -191,14 +241,15 @@ export async function getNegotiation(userId: string, contactId: unknown) {
     status: (mandateRow?.status ?? null) as NegotiationOutcome | null,
     closedAt: mandateRow?.closedAt ?? null,
     mandate,
-    defaults: defaultMandate({
-      minFixedSalary: rails.minFixedSalary,
-      targetTotalPackage: rails.targetTotalPackage,
-      minRemoteDays: rails.minRemoteDays,
-      contractTypes: rails.contractTypes.filter((c): c is ContractTypeCode =>
-        (CONTRACT_TYPES as readonly string[]).includes(c),
-      ),
-    }),
+    defaults,
+    /**
+     * Repère du marché pour l'offre (`benchmark: null` : pas assez de données)
+     * et conseils sur le mandat enregistré (ou, à défaut, les valeurs par défaut).
+     */
+    market: market && {
+      ...market,
+      hints: mandateHints(mandate ?? defaults, market.benchmark, market.offerMaxAnnual),
+    },
     messages: messages.filter((m) => m !== pending),
     pending,
     /** Problèmes bloquants du brouillon en cours, au regard du mandat actuel. */
@@ -301,9 +352,10 @@ export async function generateDraft(
   });
   if (sending > 0) return { ok: false, error: "alreadySent" };
 
-  const [terms, texts] = await Promise.all([
+  const [terms, texts, market] = await Promise.all([
     cardIdentityTerms(userId),
     decryptedCompanyTexts(userId, contact.id),
+    offerMarket(contact.offer),
   ]);
   const locale = localeOf(contact);
   const companyMessages = texts.map((t) => forModel(t.text, terms));
@@ -319,6 +371,7 @@ export async function generateDraft(
       max: contact.offer.salaryMax === null ? null : Number(contact.offer.salaryMax),
     },
     outcome: row.status,
+    market: forDraft(market.benchmark),
   };
   const draft = await buildNegotiationDraft(
     kind,

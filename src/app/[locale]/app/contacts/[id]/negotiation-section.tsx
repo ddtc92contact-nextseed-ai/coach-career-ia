@@ -5,6 +5,9 @@ import { LOCALE_NAMES } from "@/i18n/routing";
 import type { NegotiationView } from "@/lib/negotiation/repository";
 import { formatSalary } from "@/lib/negotiation/draft";
 import { DeleteButton } from "@/components/delete-button";
+import { SalaryBenchmarkBlock } from "@/components/salary-benchmark";
+import { positionAgainst } from "@/lib/radar/benchmarks/compute";
+import { BENCHMARK_CONFIG } from "@/lib/radar/benchmarks/config";
 import { discardMessageAction } from "../negotiation-actions";
 import {
   GenerateButton,
@@ -40,8 +43,11 @@ export async function NegotiationSection({
       </section>
     );
   }
-  const { mandate, analysis, pending } = view;
+  const { mandate, analysis, pending, market } = view;
   const status = view.status;
+  const floor = (mandate ?? view.defaults).salaryFloor ?? null;
+  const target = (mandate ?? view.defaults).salaryTarget ?? null;
+  const money = (n: number) => format.number(n, "salary");
 
   return (
     <div className="space-y-6">
@@ -60,6 +66,38 @@ export async function NegotiationSection({
         </div>
         <p className="text-sm text-stone-600">{t("mandate.intro")}</p>
         {!view.hasReplies ? <p className="text-sm text-stone-600">{t("waitReply")}</p> : null}
+        {market ? (
+          <div
+            className="rounded-xl border border-stone-200 px-4 py-3"
+            data-testid="negotiation-market"
+          >
+            <h3 className="text-sm font-medium">{t("mandate.market.title")}</h3>
+            <p className="mt-1 mb-3 text-xs text-stone-500">{t("mandate.market.intro")}</p>
+            <SalaryBenchmarkBlock
+              benchmark={market.benchmark}
+              minSample={BENCHMARK_CONFIG.minSample}
+              value={floor}
+              position={
+                market.benchmark && floor !== null ? positionAgainst(floor, market.benchmark) : null
+              }
+              positionKey="floorPosition"
+            />
+            {market.hints.length > 0 ? (
+              <ul className="mt-3 space-y-1 text-sm text-amber-800" data-testid="mandate-hints">
+                {market.hints.map((hint) => (
+                  <li key={hint}>
+                    {t(`mandate.market.hints.${hint}`, {
+                      amount: money(hint === "floorAboveOffer" ? (floor ?? 0) : (target ?? 0)),
+                      p25: market.benchmark ? money(market.benchmark.p25) : "",
+                      p75: market.benchmark ? money(market.benchmark.p75) : "",
+                      max: market.offerMaxAnnual !== null ? money(market.offerMaxAnnual) : "",
+                    })}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
         <MandateForm contactId={view.contactId} mandate={mandate} defaults={view.defaults} />
       </section>
 

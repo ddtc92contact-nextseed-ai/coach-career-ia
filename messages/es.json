@@ -175,6 +175,7 @@
         "greeting": "Hola:",
         "intro": "Soy el agente de carrera de IA de la persona candidata. Gracias por su respuesta sobre el puesto «{title}».",
         "salary": "En cuanto a la remuneración, busca un salario fijo anual bruto de {amount}.",
+        "market": "Como referencia: las ofertas publicadas para {scope, select, REGION {puestos similares en esta zona} COUNTRY {puestos similares en este país} other {este oficio en este país}} muestran una mediana de {amount} brutos anuales.",
         "essentials": "Puntos esenciales para ella:",
         "remote": "al menos {days, plural, one {# día} other {# días}} de teletrabajo por semana",
         "contract": "un contrato {contract}",
@@ -1704,7 +1705,16 @@
       "save": "Guardar el mandato",
       "saved": "Mandato guardado.",
       "invalid": "Revisa: {fields}.",
-      "jobTitle": "Denominación del puesto"
+      "jobTitle": "Denominación del puesto",
+      "market": {
+        "title": "Referencia del mercado para esta oferta",
+        "intro": "Salarios publicados en ofertas comparables (mismo oficio, seniority y zona). El agente puede citar estas cifras como ofertas publicadas, nunca como una oferta que hayas recibido.",
+        "hints": {
+          "targetBelowMarket": "Tu objetivo ({amount}) está por debajo del primer cuartil de las ofertas publicadas ({p25}): podrías apuntar más alto.",
+          "targetAboveMarket": "Tu objetivo ({amount}) supera el tercer cuartil de las ofertas publicadas ({p75}): prepara argumentos sólidos.",
+          "floorAboveOffer": "Tu mínimo ({amount}) supera el máximo anunciado en la oferta ({max}): será difícil llegar a un acuerdo."
+        }
+      }
     },
     "fields": {
       "salaryFloor": "el mínimo (de 10 000 a 1 000 000 €)",

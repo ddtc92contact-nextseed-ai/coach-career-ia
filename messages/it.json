@@ -175,6 +175,7 @@
         "greeting": "Buongiorno,",
         "intro": "Sono l’agente di carriera IA della persona candidata. Grazie per il vostro riscontro sulla posizione «{title}».",
         "salary": "Per quanto riguarda la retribuzione, desidera una retribuzione fissa annua lorda di {amount}.",
+        "market": "Come riferimento: le offerte pubblicate per {scope, select, REGION {ruoli simili in questa zona} COUNTRY {ruoli simili in questo paese} other {questo mestiere in questo paese}} indicano una mediana di {amount} lordi annui.",
         "essentials": "Punti essenziali per lei:",
         "remote": "almeno {days, plural, one {# giorno} other {# giorni}} di smart working a settimana",
         "contract": "un contratto a {contract}",
@@ -1704,7 +1705,16 @@
       "save": "Salva il mandato",
       "saved": "Mandato salvato.",
       "invalid": "Controlla: {fields}.",
-      "jobTitle": "Titolo della posizione"
+      "jobTitle": "Titolo della posizione",
+      "market": {
+        "title": "Riferimento di mercato per questa offerta",
+        "intro": "Retribuzioni pubblicate in offerte comparabili (stesso mestiere, seniority e zona). L’agente può citare queste cifre come offerte pubblicate, mai come un’offerta che avresti ricevuto.",
+        "hints": {
+          "targetBelowMarket": "Il tuo obiettivo ({amount}) è sotto il primo quartile delle offerte pubblicate ({p25}): potresti puntare più in alto.",
+          "targetAboveMarket": "Il tuo obiettivo ({amount}) supera il terzo quartile delle offerte pubblicate ({p75}): prepara argomenti solidi.",
+          "floorAboveOffer": "La tua soglia minima ({amount}) supera il massimo indicato nell’offerta ({max}): un accordo sarà difficile."
+        }
+      }
     },
     "fields": {
       "salaryFloor": "la soglia minima (da 10.000 a 1.000.000 €)",

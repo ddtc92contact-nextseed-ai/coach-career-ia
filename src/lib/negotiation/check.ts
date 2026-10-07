@@ -4,7 +4,10 @@ import {
   contractsIn,
   findAmounts,
   findPercentages,
+  framesBenchmark,
   mentionsClaim,
+  mentionsCompetingOffer,
+  mentionsOfferToSomeone,
   remoteDaysIn,
   salaryAmounts,
   sentences,
@@ -20,7 +23,13 @@ import type { Mandate } from "./mandate";
  *   déclaré dans son mandat (pas de bluff : bonne foi précontractuelle,
  *   art. 1112 du Code civil) ;
  * - `inventedFigure` (texte rédigé par l'IA seulement) : un chiffre qui ne
- *   vient ni du mandat, ni de l'offre, ni des messages de l'entreprise.
+ *   vient ni du mandat, ni de l'offre, ni des messages de l'entreprise, ni
+ *   du repère de salaire du marché.
+ *
+ * Un chiffre qui ne vient QUE du repère du marché doit être présenté comme
+ * tel (« les offres publiées… ») et jamais dans une phrase qui évoque une
+ * offre reçue ou une autre entreprise : sinon `competingOffer` (le repère
+ * transformé en offre concurrente est un bluff).
  *
  * Module pur, partagé par le serveur et les tests.
  */
@@ -36,13 +45,24 @@ export const NEGOTIATION_ISSUES = [
 export type NegotiationIssueCode = (typeof NEGOTIATION_ISSUES)[number];
 export type NegotiationIssue = { code: NegotiationIssueCode; excerpt?: string };
 
-export type AllowedFigures = { amounts: number[]; percentages: number[] };
+const close = (a: number, b: number) => Math.abs(a - b) <= Math.max(1, b * 0.005);
 
-/** Chiffres que l'agent peut reprendre : mandat, offre, messages de l'entreprise. */
+export type AllowedFigures = {
+  amounts: number[];
+  percentages: number[];
+  /** Montants qui ne viennent QUE du repère du marché (présentation encadrée). */
+  market?: number[];
+};
+
+/**
+ * Chiffres que l'agent peut reprendre : mandat, offre, messages de
+ * l'entreprise et, s'il est fourni, repère du marché (`marketAmounts`).
+ */
 export function allowedFigures(
   mandate: Mandate,
   sources: string[],
   extraAmounts: (number | null | undefined)[] = [],
+  marketAmounts: number[] = [],
 ): AllowedFigures {
   const texts = [
     mandate.facts ?? "",
@@ -63,10 +83,12 @@ export function allowedFigures(
     }
     for (const p of findPercentages(text)) percentages.add(p);
   }
-  return { amounts: [...amounts], percentages: [...percentages] };
+  const base = [...amounts];
+  const market = marketAmounts.filter(
+    (v) => Number.isFinite(v) && v > 0 && !base.some((a) => close(a, v)),
+  );
+  return { amounts: [...base, ...market], percentages: [...percentages], market };
 }
-
-const close = (a: number, b: number) => Math.abs(a - b) <= Math.max(1, b * 0.005);
 
 export function checkOutgoing(
   text: string,
@@ -122,6 +144,25 @@ export function checkOutgoing(
     else {
       const pct = findPercentages(text).find((p) => !percentages.some((v) => close(p, v)));
       if (pct !== undefined) push("inventedFigure", `${pct} %`);
+    }
+    const market = options.allowed.market ?? [];
+    if (market.length > 0) {
+      for (const sentence of sentences(text)) {
+        // Liste blanche : chaque chiffre du repère doit avoir la forme du modèle
+        // (« les offres publiées … affichent une médiane de X »). En plus, aucune
+        // offre faite à quelqu'un, ni concurrent, recruteur, « ailleurs ».
+        const cited = findAmounts(sentence).filter((a) =>
+          market.some((v) => close(a.value, v) || (a.annual !== null && close(a.annual, v))),
+        );
+        if (
+          cited.length > 0 &&
+          (cited.some((a) => !framesBenchmark(sentence, a.raw)) ||
+            mentionsCompetingOffer(sentence) ||
+            mentionsOfferToSomeone(sentence))
+        ) {
+          push("competingOffer", sentence);
+        }
+      }
     }
   }
   return issues;

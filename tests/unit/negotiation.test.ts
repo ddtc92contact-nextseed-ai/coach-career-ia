@@ -18,8 +18,27 @@ import {
 } from "@/lib/negotiation/email";
 import { claimsIn, findAmounts, remoteDaysIn, salaryAmounts } from "@/lib/negotiation/figures";
 import { mandateFromForm, parseMandate, type Mandate } from "@/lib/negotiation/mandate";
+import {
+  mandateHints,
+  marketFigures,
+  marketForNegotiation,
+  type MarketBenchmark,
+} from "@/lib/negotiation/market";
 
 // Données fictives uniquement : aucun profil réel n'est envoyé à un fournisseur.
+// Phrases que le candidat peut écrire : aucune n'affirme un engagement signé.
+const ORDINARY_SENTENCES = [
+  "Clara pourra signer dès réception du contrat.",
+  "Elle va signer rapidement si ces points sont confirmés.",
+  "Le confirmo que el teletrabajo de 2 días es esencial.",
+  "Como confirmó en su último mensaje, el contrato es indefinido.",
+  "Wir freuen uns auf Ihre Zusage zu diesen Punkten.",
+  "Sobald der Vertrag unterzeichnet ist, kann sie am 4. Januar beginnen.",
+  "Graag nemen we de twee thuiswerkdagen op in de arbeidsovereenkomst.",
+  "Could you send the offer letter with these terms?",
+  "Ha firmato? No, non ancora.",
+];
+
 const MANDATE: Mandate = {
   salaryFloor: 55_000,
   salaryTarget: 62_000,
@@ -89,6 +108,28 @@ describe("négociation : lecture des chiffres", () => {
     expect(claimsIn("Son salaire actuel est de 50 000 €.")).toEqual(["currentSalary"]);
     expect(claimsIn("Sie hat ein Konkurrenzangebot erhalten.")).toEqual(["competingOffer"]);
     expect(claimsIn("Elle n’a pas d’autre offre en cours.")).toEqual([]);
+    // Contrat signé, promesse d'embauche : même règle (bluff sauf si déclaré).
+    for (const signed of [
+      "Elle a déjà signé une promesse d'embauche.",
+      "She already holds a signed contract.",
+      "Sie hat eine Zusage über diesen Betrag.",
+      "Zij heeft al getekend.",
+      "Ha già firmato un contratto.",
+      "Ya firmó un contrato.",
+    ]) {
+      expect(claimsIn(signed), signed).toEqual(["competingOffer"]);
+    }
+    expect(claimsIn("Elle n’a signé aucun contrat.")).toEqual([]);
+    // Phrases ordinaires du candidat : ni affirmation ni blocage (QA #41, tour 5).
+    for (const ordinary of ORDINARY_SENTENCES) {
+      expect(claimsIn(ordinary), ordinary).toEqual([]);
+    }
+    expect(
+      checkOutgoing("Elle a déjà signé une promesse d'embauche.", {
+        ...MANDATE,
+        facts: "J’ai une promesse d’embauche signée ailleurs.",
+      }),
+    ).toEqual([]);
   });
 });
 
@@ -343,5 +384,232 @@ describe("négociation : mandat et analyse", () => {
         "negotiation",
       ),
     ).toBe(true);
+  });
+});
+
+// Repère fictif (offres publiées), au-dessus du plancher de MANDATE.
+const MARKET: MarketBenchmark = {
+  p25: 56_000,
+  median: 61_000,
+  p75: 67_000,
+  sampleSize: 24,
+  scope: "REGION",
+  area: "Auvergne-Rhône-Alpes",
+};
+
+describe("négociation : repère du marché (offres publiées)", () => {
+  const withMarket = (overrides: Partial<NegotiationFacts> = {}) =>
+    facts({ market: MARKET, ...overrides });
+  const allowedWith = (f: NegotiationFacts) =>
+    allowedFigures(f.mandate, f.companyMessages, [55_000, 65_000], marketFigures(f.market ?? null));
+
+  it("seuil d'échantillon : sous le seuil, aucun repère ni chiffre", () => {
+    expect(marketForNegotiation(MARKET, 10)).toBe(MARKET);
+    expect(marketForNegotiation({ ...MARKET, sampleSize: 9 }, 10)).toBeNull();
+    expect(marketForNegotiation(null, 10)).toBeNull();
+    expect(marketFigures(null)).toEqual([]);
+  });
+
+  it("conseils du mandat : cible hors p25–p75, plancher au-dessus du maximum de l'offre", () => {
+    expect(mandateHints({ salaryFloor: 55_000, salaryTarget: 62_000 }, MARKET, 65_000)).toEqual([]);
+    expect(mandateHints({ salaryFloor: 50_000, salaryTarget: 52_000 }, MARKET, 65_000)).toEqual([
+      "targetBelowMarket",
+    ]);
+    expect(mandateHints({ salaryFloor: 70_000, salaryTarget: 80_000 }, MARKET, 65_000)).toEqual([
+      "targetAboveMarket",
+      "floorAboveOffer",
+    ]);
+    // Sans repère (pas assez de données) ni salaire annoncé : aucun conseil chiffré.
+    expect(mandateHints({ salaryFloor: 70_000, salaryTarget: 80_000 }, null, null)).toEqual([]);
+  });
+
+  it("chiffres du repère acceptés dans un brouillon ; tout autre chiffre toujours rejeté", () => {
+    const allowed = allowedWith(withMarket());
+    expect(allowed.market).toEqual([56_000, 61_000, 67_000]);
+    const ok =
+      "Les offres publiées pour des postes similaires dans cette zone affichent une médiane de 61 000 €. Elle souhaite 62 000 €.";
+    expect(checkOutgoing(ok, MANDATE, { allowed })).toEqual([]);
+    for (const framed of [
+      "Published offers for similar roles show a p75 of €67,000.",
+      "Les offres publiées affichent 56 000 € (p25), une médiane de 61 000 € et 67 000 € (p75).",
+      "Pour situer : les offres publiées pour ce métier affichent un troisième quartile de 67 000 €.",
+      "Veröffentlichte Angebote zeigen einen Median von 61.000 € brutto pro Jahr.",
+      "Gepubliceerde vacatures tonen een mediaan van € 61.000 bruto per jaar.",
+      "Le offerte pubblicate indicano una mediana di 61.000 € lordi annui.",
+      "Las ofertas publicadas muestran una mediana de 61.000 € brutos anuales.",
+    ]) {
+      expect(checkOutgoing(framed, MANDATE, { allowed }), framed).toEqual([]);
+    }
+    expect(
+      checkOutgoing("Les offres publiées affichent une médiane de 63 500 €.", MANDATE, {
+        allowed,
+      }),
+    ).toMatchObject([{ code: "inventedFigure", excerpt: "63 500 €" }]);
+    // Sans repère, ses chiffres ne sont pas autorisés.
+    const without = allowedFigures(MANDATE, facts().companyMessages, [55_000, 65_000]);
+    expect(checkOutgoing(ok, MANDATE, { allowed: without })).toMatchObject([
+      { code: "inventedFigure", excerpt: "61 000 €" },
+    ]);
+  });
+
+  it("anti-bluff : le repère présenté comme une offre reçue est rejeté", () => {
+    const allowed = allowedWith(withMarket());
+    for (const bluff of [
+      "Une autre entreprise lui a proposé 67 000 €.",
+      "Elle a reçu une offre à 67 000 € brut annuel.",
+      "Another company offered the candidate €67,000.",
+      "The candidate received an offer of €61,000 elsewhere.",
+      "Ein anderes Unternehmen bietet ihr 67.000 €.",
+      // Chiffre du repère sans dire qu'il vient d'offres publiées.
+      "Le marché est à 61 000 €, elle souhaite donc 62 000 €.",
+      // « Offres publiées » ne blanchit pas une offre faite à la candidate (QA #41).
+      "A competitor offered her €67,000, in line with published offers.",
+      "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
+      "Un recruteur lui a proposé 67 000 €, en ligne avec les offres publiées.",
+      "She has been offered €67,000 elsewhere, which matches published offers.",
+      "Ihr wurde bereits 67.000 € angeboten, wie veröffentlichte Angebote zeigen.",
+      "Le han ofrecido 67.000 €, en línea con las ofertas publicadas.",
+      "Un concorrente le ha proposto 67.000 €, in linea con le offerte pubblicate.",
+      "Haar werd al € 67.000 aangeboden, zoals gepubliceerde vacatures tonen.",
+      // Même avec la forme statistique, aucun verbe d'offre ni tiers.
+      "Un recruteur cite la médiane des offres publiées : 61 000 €.",
+      "Published offers show a median of €61,000, and she was offered that elsewhere.",
+      // Chiffre isolé, sans statistique : pas la forme du repère.
+      "Les offres publiées vont jusqu'à 67 000 €.",
+      // Reformulations hors liste noire : refusées par la liste blanche (QA #41, tour 2).
+      "Elle a déjà une promesse d'embauche à 67 000 €, soit le quartile haut des offres publiées.",
+      "Elle peut signer demain à 67 000 €, au niveau du quartile supérieur des offres publiées.",
+      "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
+      "She was promised €67,000 by a scale-up, matching the median of published offers.",
+      "Her current employer would match €67,000, the p75 of published offers.",
+      "Sie hat bereits eine Zusage über 67.000 €, das obere Quartil veröffentlichter Angebote.",
+      "Ze heeft al een contract van € 67.000 liggen, het bovenste kwartiel van gepubliceerde vacatures.",
+      "She has €67,000 on the table, the median of published offers.",
+      "Tiene un contrato firmado de 67.000 €, la mediana de las ofertas publicadas.",
+      // Forme du modèle détournée : la statistique ne précède pas le montant.
+      "Les offres publiées affichent une médiane, et une start-up garantit 67 000 €.",
+      "Selon une start-up qui a lu les offres publiées, la médiane est de 61 000 €.",
+      // Texte libre entre « offres publiées » et la statistique (QA #41, tour 3).
+      "Les offres publiées le confirment, elle peut signer demain à la médiane de 67 000 €.",
+      "Les offres publiées sont plus basses, mais elle a signé une promesse d'embauche au p75 de 67 000 €.",
+      "Published offers are lower, but she can sign tomorrow at the p75 of €67,000.",
+      "Published offers aside, she already holds a signed contract at the median of €61,000.",
+      "Published offers are irrelevant since a scale-up guaranteed the median of €61,000.",
+      "Veröffentlichte Angebote sind niedriger, sie hat einen Vertrag beim Median von 61.000 €.",
+      "Gepubliceerde vacatures zijn lager, zij tekent morgen op de mediaan van € 61.000.",
+      "Le offerte pubblicate non contano, ha già firmato un contratto alla mediana di 61.000 €.",
+      "Las ofertas publicadas no importan, ya firmó un contrato con una mediana de 61.000 €.",
+      // Texte libre dans une autre proposition de la même phrase (QA #41, tour 4).
+      "Les offres publiées affichent un p75 de 67 000 € — c'est exactement ce qu'elle a signé la semaine dernière.",
+      "Les offres publiées affichent un p75 de 67 000 € ; elle a déjà signé une promesse d'embauche à ce niveau.",
+      "Elle a déjà signé une promesse d'embauche à ce niveau : les offres publiées affichent un p75 de 67 000 €.",
+      "Published offers show a p75 of €67,000 - she already signed a contract at exactly that level.",
+      "She already holds a signed contract at this level; published offers show a p75 of €67,000.",
+      "Veröffentlichte Angebote zeigen einen Median von 61.000 € — genau das hat sie unterschrieben.",
+      "Gepubliceerde vacatures tonen een mediaan van € 61.000 – dat heeft zij al getekend.",
+      "Le offerte pubblicate indicano una mediana di 61.000 €: ha già firmato a questo livello.",
+      "Las ofertas publicadas muestran una mediana de 61.000 € - ya firmó un contrato a ese nivel.",
+      // « publi- » au milieu d'un mot : pas des offres publiées.
+      "Unpublished offers for similar roles show a p75 of €67,000.",
+      "Unveröffentlichte Angebote zeigen einen Median von 61.000 €.",
+      "Ongepubliceerde vacatures tonen een mediaan van € 61.000.",
+      // Affirmation dans la phrase précédente, sans montant.
+      "Elle a déjà signé une promesse d'embauche à ce niveau. Les offres publiées affichent un p75 de 67 000 €.",
+    ]) {
+      expect(
+        checkOutgoing(bluff, MANDATE, { allowed }).map((i) => i.code),
+        bluff,
+      ).toContain("competingOffer");
+    }
+    // Même avec une offre concurrente déclarée au mandat, le repère n'en devient pas une.
+    const declared = { ...MANDATE, facts: "J’ai une autre offre en cours." };
+    const mixed = "Elle a une autre offre à 67 000 €, comme le montrent les offres publiées.";
+    expect(checkOutgoing(mixed, declared, { allowed }).map((i) => i.code)).toEqual([
+      "competingOffer",
+    ]);
+  });
+
+  it("texte du candidat : le modèle suivi d'une phrase ordinaire reste approuvable", () => {
+    for (const locale of ["fr", "es", "de"] as const) {
+      const counter = ruleCounterBody(withMarket({ locale }));
+      for (const ordinary of ORDINARY_SENTENCES) {
+        const text = `${counter}\n\n${ordinary}`;
+        expect(checkOutgoing(text, MANDATE), `${locale}: ${ordinary}`).toEqual([]);
+      }
+    }
+  });
+
+  it("le modèle cite la médiane comme offres publiées, dans les six langues, sans bluff", () => {
+    for (const locale of routing.locales as readonly AppLocale[]) {
+      const f = withMarket({ locale });
+      const counter = ruleCounterBody(f);
+      expect(salaryAmounts(counter), locale).toEqual([62_000, 61_000]);
+      expect(checkOutgoing(counter, MANDATE, { allowed: allowedWith(f) }), counter).toEqual([]);
+      expect(checkOutgoing(counter, MANDATE), locale).toEqual([]);
+    }
+    // Médiane sous le plancher : jamais citée.
+    const low = withMarket({ market: { ...MARKET, p25: 40_000, median: 45_000, p75: 50_000 } });
+    expect(salaryAmounts(ruleCounterBody(low))).toEqual([62_000]);
+  });
+
+  it("brouillon IA : repère transmis et citable ; bluff à partir du repère → modèle", async () => {
+    const body =
+      "Bonjour,\n\nMerci pour votre proposition de 58 000 €. Les offres publiées pour des postes similaires dans cette zone affichent une médiane de 61 000 € ; la personne candidate souhaite 62 000 € brut annuel, en CDI, avec 2 jours de télétravail par semaine.\n\nBien cordialement,";
+    const ai = aiReplying(body);
+    expect(await buildNegotiationDraft("counter", withMarket(), ai.client, CONTEXT)).toEqual({
+      body,
+      source: "llm",
+    });
+    const prompt = JSON.stringify(ai.provider.calls[0]!.messages);
+    expect(prompt).toContain("marketBenchmarkFromPublishedOffers");
+    expect(prompt).toContain("61000");
+    expect(prompt).not.toContain("Testard");
+
+    const bluff =
+      "Bonjour,\n\nUne autre entreprise lui a proposé 67 000 € ; elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,";
+    const draft = await buildNegotiationDraft(
+      "counter",
+      withMarket(),
+      aiReplying(bluff).client,
+      CONTEXT,
+    );
+    expect(draft).toMatchObject({ source: "rules", fallback: "check" });
+    expect(draft.body).toBe(ruleCounterBody(withMarket()));
+
+    // « Offres publiées » accolé à une offre reçue : toujours le modèle.
+    for (const sentence of [
+      "Un recruteur lui a proposé 67 000 €, en ligne avec les offres publiées.",
+      "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
+      "Elle a déjà une promesse d'embauche à 67 000 €, soit le quartile haut des offres publiées.",
+      "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
+      "Les offres publiées sont plus basses, mais elle a signé une promesse d'embauche au p75 de 67 000 €.",
+      "Published offers are lower, but she can sign tomorrow at the p75 of €67,000.",
+      "Les offres publiées affichent un p75 de 67 000 € — c'est exactement ce qu'elle a signé la semaine dernière.",
+    ]) {
+      const laundered = `Bonjour,\n\n${sentence} Elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,`;
+      const d = await buildNegotiationDraft(
+        "counter",
+        withMarket(),
+        aiReplying(laundered).client,
+        CONTEXT,
+      );
+      expect(d, sentence).toMatchObject({ source: "rules", fallback: "check" });
+      expect(d.body).toBe(ruleCounterBody(withMarket()));
+    }
+  });
+
+  it("repère sous le seuil : non transmis au modèle, ses chiffres refusés", async () => {
+    const market = marketForNegotiation({ ...MARKET, sampleSize: 3 }, 10);
+    const f = facts({ market });
+    const cites =
+      "Bonjour,\n\nLes offres publiées pour des postes similaires affichent une médiane de 61 000 € ; la personne candidate souhaite 62 000 € brut annuel, en CDI.\n\nBien cordialement,";
+    const ai = aiReplying(cites);
+    const draft = await buildNegotiationDraft("counter", f, ai.client, CONTEXT);
+    const prompt = String(ai.provider.calls[0]!.messages[1]!.content);
+    expect(prompt).toContain("salaryFloorNeverGoBelowAndNeverMention");
+    expect(prompt).not.toContain("marketBenchmarkFromPublishedOffers");
+    expect(prompt).not.toContain("61000");
+    expect(draft).toMatchObject({ source: "rules", fallback: "check" });
+    expect(salaryAmounts(draft.body)).toEqual([62_000]);
   });
 });

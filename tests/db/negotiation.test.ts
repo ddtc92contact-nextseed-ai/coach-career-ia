@@ -16,6 +16,18 @@ vi.mock("next-intl/server", async (original) => ({
   getLocale: async () => "fr",
 }));
 
+// Repère du marché simulé : la table des repères est partagée avec d'autres tests.
+const market = vi.hoisted(() => ({
+  benchmark: null as null | Record<string, unknown>,
+}));
+vi.mock("@/lib/radar/salary-benchmarks", () => ({
+  benchmarkForOffer: async () => ({
+    benchmark: market.benchmark,
+    offerAnnual: 60_000,
+    position: null,
+  }),
+}));
+
 const outbox: MailMessage[] = [];
 const fakeSend = vi.fn(async (message: MailMessage) => void outbox.push(message));
 const fakeNotify = vi.fn(async () => {});
@@ -418,6 +430,63 @@ describe.skipIf(!url)(
       expect(view.pending).toMatchObject({ draftSource: "rules", kind: "counter" });
       expect(view.pending!.body).toMatch(/62\s000/u);
       expect(view.pendingIssues).toEqual([]);
+    });
+
+    it("repère du marché : affiché au mandat, transmis au modèle seulement au-dessus du seuil", async () => {
+      market.benchmark = {
+        p25: 56_000,
+        median: 61_000,
+        p75: 67_000,
+        sampleSize: 24,
+        scope: "COUNTRY",
+        fallback: true,
+        period: { from: new Date("2026-01-01"), to: new Date("2026-09-30") },
+        family: "DATA_AI",
+        seniority: "MID",
+        country: "FR",
+        area: null,
+      };
+      try {
+        const view = await negotiation.getNegotiation(alice.id, contact.id);
+        expect(view.market).toMatchObject({
+          benchmark: { median: 61_000, sampleSize: 24 },
+          offerMaxAnnual: 65_000,
+          hints: [],
+        });
+        const body =
+          "Bonjour,\n\nMerci pour votre retour. Les offres publiées pour des postes similaires dans ce pays affichent une médiane de 61 000 € ; la personne candidate souhaite 62 000 € brut annuel, en CDI, avec 2 jours de télétravail par semaine.\n\nBien cordialement,";
+        let ai = mockAi({ body });
+        expect(
+          await negotiation.generateDraft(alice.id, contact.id, "counter", {
+            ai: ai.client,
+            entitlements: PREMIUM,
+          }),
+        ).toEqual({ ok: true, source: "llm" });
+        let prompt = JSON.stringify(ai.provider.calls);
+        expect(prompt).toContain("marketBenchmarkFromPublishedOffers");
+        expect(prompt).not.toMatch(/testard/i);
+        expect(prompt).not.toContain(alice.email);
+        expect((await negotiation.getNegotiation(alice.id, contact.id)).pendingIssues).toEqual([]);
+
+        // Sous le seuil d'échantillon : « pas assez de données », rien n'est transmis.
+        market.benchmark = { ...market.benchmark, sampleSize: 3 };
+        expect((await negotiation.getNegotiation(alice.id, contact.id)).market).toMatchObject({
+          benchmark: null,
+          hints: [],
+        });
+        ai = mockAi({ body });
+        expect(
+          await negotiation.generateDraft(alice.id, contact.id, "counter", {
+            ai: ai.client,
+            entitlements: PREMIUM,
+          }),
+        ).toEqual({ ok: true, source: "rules", fallback: "check" });
+        prompt = JSON.stringify(ai.provider.calls.map((c) => c.messages[1]));
+        expect(prompt).not.toContain("marketBenchmarkFromPublishedOffers");
+        expect(prompt).not.toContain("61000");
+      } finally {
+        market.benchmark = null;
+      }
     });
 
     it("quota quotidien commun avec les prises de contact", async () => {

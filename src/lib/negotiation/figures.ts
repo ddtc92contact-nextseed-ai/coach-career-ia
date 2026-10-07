@@ -248,7 +248,162 @@ export function contractNegations(sentence: string, code: ContractTypeCode): boo
 
 /** Mention d'une offre concurrente (ou d'une autre proposition reçue). */
 const COMPETING_OFFER =
-  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding/iu;
+  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)/iu;
+/**
+ * Repère du marché présenté comme tel : « offres publiées », « published
+ * offers »… (six langues). Exigé autour d'un chiffre qui ne vient que du repère.
+ */
+export const PUBLISHED_OFFERS = /publi(?:é|e|s|cad|cat)|pubblicat|ver[öo]ffentlicht|gepubliceerd/iu;
+
+/**
+ * Statistique du repère (« médiane », « quartile », « p75 »…, six langues) :
+ * un chiffre du repère n'est cité que sous cette forme, jamais comme un montant
+ * isolé que l'on pourrait prendre pour une offre.
+ */
+export const BENCHMARK_STATISTIC =
+  /m[ée]dian|mediaan|quarti[lt]|kwartiel|(?<![\p{L}\d])p(?:25|50|75)(?![\p{L}\d])|percentil|perzentil|centile/iu;
+
+/**
+ * Offre faite à quelqu'un (verbe d'offre, « offer of »…) ou tiers qui la ferait
+ * (concurrent, recruteur, « ailleurs »…), six langues. Interdit dans une phrase
+ * qui cite un chiffre du repère : le repère n'est jamais une offre reçue.
+ */
+const OFFER_TO_SOMEONE =
+  /(?<!\p{L})(?:propos(?:é|e|ait|era|i|ition|ta|to|te|ti)|propuest[oa]|offerts?(?!\p{L})|offert[oa](?!\p{L})|offered|offering|offers? (?:of|at|to|her|him|them)(?!\p{L})|ofrec|oferta (?:de|a|por)(?!\p{L})|ha offerto|offre (?:a|al|alla|le|gli)(?!\p{L})|lui offre|angeboten|anbiet|bietet|geboten|angebot (?:von|über|in höhe)|aangeboden|biedt|geboden|(?:bod|aanbod) van|concurren|competitor|competidor|concorrent|konkurren|recrut|recruit|reclut|headhunt|chasseur|cazatalent|cacciator|selezionator|personalvermittl|ailleurs|elsewhere|en otr[oa] (?:lugar|sitio|parte)|altrove|anderswo|woanders|elders|ergens anders|(?:lui|her|him|ihm|ihr|haar|hem)(?!\p{L}))/iu;
+
+/** Mots admis entre la statistique et le montant (« médiane de », « p75 of »…). */
+const STAT_TO_AMOUNT =
+  /^\p{L}*\.?(?:\s+(?:de|d['’]|des|du|of|von|van|di|del|della|da|at|à|est|is|ist|è|es|ligt|liegt|op|bei|around|about|environ|rund|circa|ongeveer|alrededor|intorno|haut|bas|supérieur|inférieur|upper|lower|obere|untere|bovenste|onderste|superior|inferior|superiore|inferiore))*\s*(?:€\s?)?$/iu;
+
+/**
+ * Vocabulaire fermé des propositions qui citent le repère, dans les six
+ * langues : articles, compléments de poste/lieu, verbes d'affichage,
+ * statistiques, unités. Aucun pronom, aucun verbe d'action (signer,
+ * garantir, recevoir…), aucune conjonction (mais, car, but, since…).
+ */
+const BENCHMARK_VOCABULARY = new Set(
+  // fr
+  // Introductions du modèle (« Pour situer cette demande : », « For context: »…).
+  (
+    "situer demande context como referencia come riferimento zur einordnung ter vergelijking " +
+    "les le la l des de du d un une ce cette ces pour dans même mêmes postes poste similaires " +
+    "comparables métier zone région pays offres annonces affichent montrent indiquent révèlent " +
+    "situent est se premier première troisième brut brute annuel annuelle annuels par an et " +
+    // en
+    "the a an for in this these similar comparable roles role positions jobs occupation area " +
+    "region country offers postings show indicate is first third gross per year annual and of " +
+    // es
+    "las los el una para en esta este estos puestos puesto similares oficio zona región país " +
+    "ofertas muestran indican primer tercer brutos bruto anuales anual al año y " +
+    // it
+    "le il lo gli una un per in questa questo ruoli ruolo simili mestiere zona regione paese " +
+    "offerte annunci indicano mostrano primo terzo lordi lordo annui annuo all anno e di " +
+    // de
+    "die der das den dem ein eine einen für in dieser diesem diesen vergleichbare vergleichbaren " +
+    "stellen stelle beruf region land angebote stellenangebote zeigen weisen aus liegt bei " +
+    "ersten dritten erste dritte brutto pro jahr jährlich und von im " +
+    // nl
+    "de het een voor in deze dit vergelijkbare functies functie beroep regio land vacatures " +
+    "tonen laten zien eerste derde bruto per jaar jaarlijks en van op"
+  ).split(" "),
+);
+
+const STATISTIC_WORD = new RegExp(`^(?:${BENCHMARK_STATISTIC.source})`, "iu");
+const PUBLISHED_WORD = new RegExp(`^(?:${PUBLISHED_OFFERS.source})`, "iu");
+
+function isBenchmarkToken(token: string): boolean {
+  const word = token.replace(/^[(«"“]+|[.,:;)»"”!?]+$/gu, "").toLowerCase();
+  if (word === "" || /\d/u.test(word) || /^(?:€|k|k€|eur|euros?)$/u.test(word)) return true;
+  // Ancré au début du mot : « unpublished », « ongepubliceerde » sont refusés.
+  if (STATISTIC_WORD.test(word) || PUBLISHED_WORD.test(word)) return true;
+  return word
+    .split(/['’-]/u)
+    .filter(Boolean)
+    .every((part) => BENCHMARK_VOCABULARY.has(part));
+}
+
+/**
+ * Liste blanche : le montant `raw` est-il cité EXACTEMENT comme le modèle cite
+ * le repère ? Dans sa proposition (`;`, `:` ou tiret séparent) :
+ * - chaque mot appartient au vocabulaire fermé du repère (`BENCHMARK_VOCABULARY`) ;
+ * - « offres publiées » précède le montant ;
+ * - le montant suit immédiatement une statistique (« médiane de X », « p75 of X »)
+ *   ou la porte entre parenthèses (« X (p25) »).
+ * Toute autre forme est refusée : un faux refus ne coûte qu'un retour au modèle.
+ */
+export function framesBenchmark(sentence: string, raw: string): boolean {
+  // Toute la phrase, pas seulement la proposition du montant : rien de libre
+  // après un « ; », « : » ou un tiret (un tiret isolé n'est pas du vocabulaire).
+  if (!sentence.split(/\s+/u).every(isBenchmarkToken)) return false;
+  for (const clause of sentence.split(/\s*(?:[:;—–]|\s-\s)\s*/u)) {
+    const at = clause.indexOf(raw);
+    if (at < 0) continue;
+    const published = PUBLISHED_OFFERS.exec(clause);
+    if (!published || published.index > at) return false;
+    const between = clause.slice(published.index, at);
+    const stat = new RegExp(BENCHMARK_STATISTIC.source, "giu");
+    for (const m of between.matchAll(stat)) {
+      if (STAT_TO_AMOUNT.test(between.slice(m.index + m[0].length))) return true;
+    }
+    const parenthesized = new RegExp(
+      `^\\s*(?:€\\s?)?\\(\\s*(?:${BENCHMARK_STATISTIC.source})`,
+      "iu",
+    );
+    return parenthesized.test(clause.slice(at + raw.length));
+  }
+  return false;
+}
+
+/** La phrase présente-t-elle un chiffre comme une offre faite au candidat ou par un tiers ? */
+export function mentionsOfferToSomeone(sentence: string): boolean {
+  return OFFER_TO_SOMEONE.test(sentence);
+}
+
+/**
+ * Engagement déjà signé ou promesse obtenue (six langues). Mots entiers et
+ * contexte de possession ou de passé exigés : ce motif s'applique aussi au
+ * texte du candidat (« pourra signer », « confirmó », « Ihre Zusage zu… »,
+ * « send the offer letter » ne sont pas des affirmations).
+ */
+const SIGNED_COMMITMENT = new RegExp(
+  [
+    // fr
+    "(?:a|ont|avons|ai) (?:d[ée]j[àa] )?sign[ée](?:e|s)?",
+    "(?:a|ont|avons|ai) (?:d[ée]j[àa] )?(?:re[çc]u |obtenu )?une promesse d['’]embauche",
+    "dispose d['’]une promesse d['’]embauche",
+    "(?:a|ont|avons|ai|dispose d['’]un|d[ée]tient) (?:d[ée]j[àa] )?(?:un |le )?contrat sign[ée]",
+    // en
+    "(?:has|have|had|already) signed",
+    "(?:she|he|they|i|we) (?:already )?signed",
+    "holds? an? signed",
+    "(?:has|have|holds?|received|got) an? (?:signed )?offer letter",
+    // es
+    "(?:ya |ha |he )?firmó",
+    "(?:ha|han|he|hemos) (?:ya )?firmado",
+    "(?:tiene|tengo|tienen) (?:ya )?un contrato firmado",
+    // it
+    "(?:ha|hanno|ho|abbiamo) (?:già )?firmato (?:un|il|una|la|l['’])",
+    "(?:ha|hanno|ho) (?:già )?un contratto firmato",
+    "(?:ha|hanno|ho) (?:già )?ricevuto una lettera di assunzione",
+    // de
+    "(?:eine|die) zusage (?:erhalten|bekommen|von|über)",
+    "(?:hat|haben|habe) (?:\\p{L}+ ){0,3}(?:unterschrieben|unterzeichnet)",
+    // nl
+    "(?:heeft|hebben|heb) (?:al )?(?:\\p{L}+ ){0,3}(?:getekend|ondertekend)",
+    "getekende arbeidsovereenkomst",
+  ]
+    .map((p) => `(?<!\\p{L})${p}(?!\\p{L})`)
+    .join("|"),
+  "iu",
+);
+
+const claimsCompetingOffer = (text: string) =>
+  COMPETING_OFFER.test(text) || SIGNED_COMMITMENT.test(text);
+
+/** La phrase évoque-t-elle une offre reçue, ou faite par une autre entreprise ? */
+export function mentionsCompetingOffer(sentence: string): boolean {
+  return claimsCompetingOffer(sentence);
+}
 /** Mention du salaire actuel ou passé du candidat. */
 const CURRENT_SALARY =
   /(?:salaire|r[ée]mun[ée]ration|paie) (?:actuel(?:le)?|pr[ée]c[ée]dent(?:e)?)|actuellement (?:pay[ée]e?|r[ée]mun[ée]r[ée]e?)|gagne actuellement|(?:current|present|previous) (?:salary|pay|compensation)|currently (?:earns?|paid|makes?)|(?:salario|sueldo) actual|(?:stipendio|retribuzione) attuale|attualmente (?:guadagna|percepisce)|(?:aktuelles?|derzeitiges?|jetziges?) gehalt|verdient (?:derzeit|aktuell)|huidig(?:e)? salaris|verdient (?:nu|momenteel)/iu;
@@ -259,7 +414,7 @@ export type ClaimCode = "competingOffer" | "currentSalary";
 export function claimsIn(text: string): ClaimCode[] {
   const found = new Set<ClaimCode>();
   for (const sentence of sentences(text)) {
-    if (COMPETING_OFFER.test(sentence) && !isNegated(sentence)) found.add("competingOffer");
+    if (claimsCompetingOffer(sentence) && !isNegated(sentence)) found.add("competingOffer");
     if (CURRENT_SALARY.test(sentence) && !isNegated(sentence)) found.add("currentSalary");
   }
   return [...found];
@@ -267,5 +422,5 @@ export function claimsIn(text: string): ClaimCode[] {
 
 /** Le texte (faits déclarés par le candidat) évoque-t-il ce type de fait ? */
 export function mentionsClaim(text: string, claim: ClaimCode): boolean {
-  return (claim === "competingOffer" ? COMPETING_OFFER : CURRENT_SALARY).test(text);
+  return claim === "competingOffer" ? claimsCompetingOffer(text) : CURRENT_SALARY.test(text);
 }
