@@ -38,5 +38,207 @@
     "sector": "Fintech / comptabilité",
     "ats": "ashby",
     "boardToken": "pennylane"
+  },
+  {
+    "slug": "matera",
+    "name": "Matera",
+    "website": "https://matera.eu",
+    "sector": "Immobilier / proptech",
+    "ats": "recruitee",
+    "boardToken": "matera"
+  },
+  {
+    "slug": "zenchef",
+    "name": "Zenchef",
+    "website": "https://www.zenchef.com",
+    "sector": "Logiciel / restauration",
+    "ats": "recruitee",
+    "boardToken": "zenchef"
+  },
+  {
+    "slug": "hiflow",
+    "name": "Hiflow",
+    "website": "https://www.hiflow.com",
+    "sector": "Mobilité / logistique automobile",
+    "ats": "recruitee",
+    "boardToken": "hiflow"
+  },
+  {
+    "slug": "ami-paris",
+    "name": "AMI Paris",
+    "website": "https://www.amiparis.com",
+    "sector": "Mode / luxe",
+    "ats": "recruitee",
+    "boardToken": "amiparis"
+  },
+  {
+    "slug": "mon-marche",
+    "name": "Mon Marché",
+    "website": "https://www.monmarche.fr",
+    "sector": "E-commerce alimentaire",
+    "ats": "recruitee",
+    "boardToken": "monmarchefr"
+  },
+  {
+    "slug": "top-chrono",
+    "name": "Top Chrono",
+    "website": "https://www.topchrono.fr",
+    "sector": "Transport / livraison",
+    "ats": "recruitee",
+    "boardToken": "topchrono"
+  },
+  {
+    "slug": "mistertemp",
+    "name": "Mistertemp' group",
+    "website": "https://www.mistertemp.com",
+    "sector": "Intérim / ressources humaines",
+    "ats": "recruitee",
+    "boardToken": "jobsmistertemp"
+  },
+  {
+    "slug": "institut-mines-telecom",
+    "name": "Institut Mines-Télécom",
+    "website": "https://www.imt.fr",
+    "sector": "Enseignement supérieur / recherche",
+    "ats": "recruitee",
+    "boardToken": "institutminestelecom"
+  },
+  {
+    "slug": "exotec",
+    "name": "Exotec",
+    "website": "https://www.exotec.com",
+    "sector": "Robotique / logistique",
+    "ats": "workable",
+    "boardToken": "exotec"
+  },
+  {
+    "slug": "fifty-five",
+    "name": "Fifty-Five",
+    "website": "https://www.fifty-five.com",
+    "sector": "Conseil data / marketing",
+    "ats": "workable",
+    "boardToken": "fifty-five"
+  },
+  {
+    "slug": "invox",
+    "name": "Invox",
+    "website": "https://www.invox.fr",
+    "sector": "Marketing digital",
+    "ats": "workable",
+    "boardToken": "invox"
+  },
+  {
+    "slug": "medecins-du-monde",
+    "name": "Médecins du Monde",
+    "website": "https://www.medecinsdumonde.org",
+    "sector": "Humanitaire / santé",
+    "ats": "workable",
+    "boardToken": "medecins-du-monde"
+  },
+  {
+    "slug": "handicap-international",
+    "name": "Handicap International",
+    "website": "https://www.handicap-international.fr",
+    "sector": "Humanitaire / solidarité",
+    "ats": "workable",
+    "boardToken": "hi-jobs"
+  },
+  {
+    "slug": "costco-france",
+    "name": "Costco France",
+    "website": "https://www.costco.fr",
+    "sector": "Commerce de détail",
+    "ats": "workable",
+    "boardToken": "costco-france"
+  },
+  {
+    "slug": "ubisoft",
+    "name": "Ubisoft",
+    "website": "https://www.ubisoft.com",
+    "sector": "Jeu vidéo",
+    "ats": "smartrecruiters",
+    "boardToken": "Ubisoft2",
+    "active": false
+  },
+  {
+    "slug": "devoteam",
+    "name": "Devoteam",
+    "website": "https://www.devoteam.com",
+    "sector": "Conseil / services numériques",
+    "ats": "smartrecruiters",
+    "boardToken": "Devoteam",
+    "active": false
+  },
+  {
+    "slug": "saint-gobain",
+    "name": "Saint-Gobain",
+    "website": "https://www.saint-gobain.com",
+    "sector": "Industrie / matériaux de construction",
+    "ats": "smartrecruiters",
+    "boardToken": "SaintGobain",
+    "active": false
+  },
+  {
+    "slug": "alten",
+    "name": "Alten",
+    "website": "https://www.alten.fr",
+    "sector": "Ingénierie / conseil technologique",
+    "ats": "smartrecruiters",
+    "boardToken": "Alten",
+    "active": false
+  },
+  {
+    "slug": "nexity",
+    "name": "Nexity",
+    "website": "https://www.nexity.fr",
+    "sector": "Immobilier",
+    "ats": "smartrecruiters",
+    "boardToken": "Nexity",
+    "active": false
+  },
+  {
+    "slug": "eurofins",
+    "name": "Eurofins",
+    "website": "https://www.eurofins.fr",
+    "sector": "Laboratoires / analyses",
+    "ats": "smartrecruiters",
+    "boardToken": "Eurofins",
+    "active": false
+  },
+  {
+    "slug": "sodexo",
+    "name": "Sodexo",
+    "website": "https://www.sodexo.fr",
+    "sector": "Services / restauration collective",
+    "ats": "smartrecruiters",
+    "boardToken": "Sodexo",
+    "active": false
+  },
+  {
+    "slug": "lvmh",
+    "name": "LVMH",
+    "website": "https://www.lvmh.fr",
+    "sector": "Luxe",
+    "ats": "smartrecruiters",
+    "boardToken": "LVMH",
+    "active": false
+  },
+  {
+    "slug": "cegid",
+    "name": "Cegid",
+    "website": "https://www.cegid.com",
+    "sector": "Logiciel de gestion",
+    "ats": "smartrecruiters",
+    "boardToken": "Cegid",
+    "active": false
+  },
+  {
+    "slug": "thales",
+    "name": "Thales",
+    "website": "https://www.thalesgroup.com",
+    "sector": "Aéronautique / défense",
+    "ats": "smartrecruiters",
+    "boardToken": "Thales",
+    "active": false
   }
 ]
