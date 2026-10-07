@@ -248,7 +248,7 @@ export function contractNegations(sentence: string, code: ContractTypeCode): boo
 
 /** Mention d'une offre concurrente (ou d'une autre proposition reçue). */
 const COMPETING_OFFER =
-  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)/iu;
+  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)|promesse d['’]embauche|lettre d['’](?:embauche|engagement)|(?:a|ont|avons|ai) (?:d[ée]j[àa] )?sign[ée]|contrat sign[ée]|offer letter|signed (?:an? )?(?:contract|offer|deal)|(?:has|have|had|already) signed|holds? a signed|contrato firmado|(?:ha|han|he) firmado|firm[óo]|carta de oferta|(?:ha|hanno|ho) (?:gi[àa] )?firmato|contratto firmato|lettera di assunzione|zusage|unterschrieben|unterzeichnet|getekend|ondertekend|arbeidsovereenkomst/iu;
 /**
  * Repère du marché présenté comme tel : « offres publiées », « published
  * offers »… (six langues). Exigé autour d'un chiffre qui ne vient que du repère.
@@ -283,7 +283,9 @@ const STAT_TO_AMOUNT =
  */
 const BENCHMARK_VOCABULARY = new Set(
   // fr
+  // Introductions du modèle (« Pour situer cette demande : », « For context: »…).
   (
+    "situer demande context como referencia come riferimento zur einordnung ter vergelijking " +
     "les le la l des de du d un une ce cette ces pour dans même mêmes postes poste similaires " +
     "comparables métier zone région pays offres annonces affichent montrent indiquent révèlent " +
     "situent est se premier première troisième brut brute annuel annuelle annuels par an et " +
@@ -306,10 +308,14 @@ const BENCHMARK_VOCABULARY = new Set(
   ).split(" "),
 );
 
+const STATISTIC_WORD = new RegExp(`^(?:${BENCHMARK_STATISTIC.source})`, "iu");
+const PUBLISHED_WORD = new RegExp(`^(?:${PUBLISHED_OFFERS.source})`, "iu");
+
 function isBenchmarkToken(token: string): boolean {
-  const word = token.replace(/^[(«"“]+|[.,;)»"”!?]+$/gu, "").toLowerCase();
+  const word = token.replace(/^[(«"“]+|[.,:;)»"”!?]+$/gu, "").toLowerCase();
   if (word === "" || /\d/u.test(word) || /^(?:€|k|k€|eur|euros?)$/u.test(word)) return true;
-  if (BENCHMARK_STATISTIC.test(word) || PUBLISHED_OFFERS.test(word)) return true;
+  // Ancré au début du mot : « unpublished », « ongepubliceerde » sont refusés.
+  if (STATISTIC_WORD.test(word) || PUBLISHED_WORD.test(word)) return true;
   return word
     .split(/['’-]/u)
     .filter(Boolean)
@@ -326,10 +332,12 @@ function isBenchmarkToken(token: string): boolean {
  * Toute autre forme est refusée : un faux refus ne coûte qu'un retour au modèle.
  */
 export function framesBenchmark(sentence: string, raw: string): boolean {
+  // Toute la phrase, pas seulement la proposition du montant : rien de libre
+  // après un « ; », « : » ou un tiret (un tiret isolé n'est pas du vocabulaire).
+  if (!sentence.split(/\s+/u).every(isBenchmarkToken)) return false;
   for (const clause of sentence.split(/\s*(?:[:;—–]|\s-\s)\s*/u)) {
     const at = clause.indexOf(raw);
     if (at < 0) continue;
-    if (!clause.split(/\s+/u).every(isBenchmarkToken)) return false;
     const published = PUBLISHED_OFFERS.exec(clause);
     if (!published || published.index > at) return false;
     const between = clause.slice(published.index, at);

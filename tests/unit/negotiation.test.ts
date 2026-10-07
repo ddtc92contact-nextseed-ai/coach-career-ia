@@ -95,6 +95,24 @@ describe("négociation : lecture des chiffres", () => {
     expect(claimsIn("Son salaire actuel est de 50 000 €.")).toEqual(["currentSalary"]);
     expect(claimsIn("Sie hat ein Konkurrenzangebot erhalten.")).toEqual(["competingOffer"]);
     expect(claimsIn("Elle n’a pas d’autre offre en cours.")).toEqual([]);
+    // Contrat signé, promesse d'embauche : même règle (bluff sauf si déclaré).
+    for (const signed of [
+      "Elle a déjà signé une promesse d'embauche.",
+      "She already holds a signed contract.",
+      "Sie hat eine Zusage über diesen Betrag.",
+      "Zij heeft al getekend.",
+      "Ha già firmato un contratto.",
+      "Ya firmó un contrato.",
+    ]) {
+      expect(claimsIn(signed), signed).toEqual(["competingOffer"]);
+    }
+    expect(claimsIn("Elle n’a signé aucun contrat.")).toEqual([]);
+    expect(
+      checkOutgoing("Elle a déjà signé une promesse d'embauche.", {
+        ...MANDATE,
+        facts: "J’ai une promesse d’embauche signée ailleurs.",
+      }),
+    ).toEqual([]);
   });
 });
 
@@ -464,6 +482,22 @@ describe("négociation : repère du marché (offres publiées)", () => {
       "Gepubliceerde vacatures zijn lager, zij tekent morgen op de mediaan van € 61.000.",
       "Le offerte pubblicate non contano, ha già firmato un contratto alla mediana di 61.000 €.",
       "Las ofertas publicadas no importan, ya firmó un contrato con una mediana de 61.000 €.",
+      // Texte libre dans une autre proposition de la même phrase (QA #41, tour 4).
+      "Les offres publiées affichent un p75 de 67 000 € — c'est exactement ce qu'elle a signé la semaine dernière.",
+      "Les offres publiées affichent un p75 de 67 000 € ; elle a déjà signé une promesse d'embauche à ce niveau.",
+      "Elle a déjà signé une promesse d'embauche à ce niveau : les offres publiées affichent un p75 de 67 000 €.",
+      "Published offers show a p75 of €67,000 - she already signed a contract at exactly that level.",
+      "She already holds a signed contract at this level; published offers show a p75 of €67,000.",
+      "Veröffentlichte Angebote zeigen einen Median von 61.000 € — genau das hat sie unterschrieben.",
+      "Gepubliceerde vacatures tonen een mediaan van € 61.000 – dat heeft zij al getekend.",
+      "Le offerte pubblicate indicano una mediana di 61.000 €: ha già firmato a questo livello.",
+      "Las ofertas publicadas muestran una mediana de 61.000 € - ya firmó un contrato a ese nivel.",
+      // « publi- » au milieu d'un mot : pas des offres publiées.
+      "Unpublished offers for similar roles show a p75 of €67,000.",
+      "Unveröffentlichte Angebote zeigen einen Median von 61.000 €.",
+      "Ongepubliceerde vacatures tonen een mediaan van € 61.000.",
+      // Affirmation dans la phrase précédente, sans montant.
+      "Elle a déjà signé une promesse d'embauche à ce niveau. Les offres publiées affichent un p75 de 67 000 €.",
     ]) {
       expect(
         checkOutgoing(bluff, MANDATE, { allowed }).map((i) => i.code),
@@ -523,6 +557,7 @@ describe("négociation : repère du marché (offres publiées)", () => {
       "Une start-up lui garantit 67 000 €, soit le troisième quartile des offres publiées.",
       "Les offres publiées sont plus basses, mais elle a signé une promesse d'embauche au p75 de 67 000 €.",
       "Published offers are lower, but she can sign tomorrow at the p75 of €67,000.",
+      "Les offres publiées affichent un p75 de 67 000 € — c'est exactement ce qu'elle a signé la semaine dernière.",
     ]) {
       const laundered = `Bonjour,\n\n${sentence} Elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,`;
       const d = await buildNegotiationDraft(
