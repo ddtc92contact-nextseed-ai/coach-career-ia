@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
+import { isAdminEmail } from "@/lib/auth/admin";
 import { requireUser } from "@/lib/auth/session";
 import { logout } from "./actions";
 import { AppNav } from "./nav";
@@ -32,7 +33,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
               </form>
             </div>
           </div>
-          <AppNav />
+          <AppNav isAdmin={isAdminEmail(user.email)} />
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
