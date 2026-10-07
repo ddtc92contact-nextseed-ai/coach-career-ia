@@ -286,6 +286,7 @@ export async function resolveCardLink(
       expiresAt: true,
       revokedAt: true,
       contact: { select: { id: true, status: true } },
+      negotiationMessage: { select: { contactId: true, status: true } },
     },
   });
   if (!link || !isLinkActive(link, now)) return null;
@@ -301,7 +302,13 @@ export async function resolveCardLink(
     linkId: link.id,
     userId: link.userId,
     // Seul un contact réellement envoyé ouvre la page de réponse.
-    contactId: link.contact?.status === "SENT" ? link.contact.id : null,
+    contactId:
+      link.contact?.status === "SENT"
+        ? link.contact.id
+        : // Lien d'un message de négociation transmis : réponse dans le même fil.
+          link.negotiationMessage?.status === "SENT"
+          ? link.negotiationMessage.contactId
+          : null,
     card: publicCard(check.card),
   };
 }

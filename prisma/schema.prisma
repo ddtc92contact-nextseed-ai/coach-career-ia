@@ -73,6 +73,9 @@ model User {
   handovers      Handover[]
   handoverEvents HandoverEvent[]
 
+  negotiationMandates NegotiationMandate[]
+  negotiationMessages NegotiationMessage[]
+
   @@map("users")
 }
 
@@ -940,8 +943,10 @@ model CardLink {
   lastViewedAt DateTime? @map("last_viewed_at")
   createdAt    DateTime  @default(now()) @map("created_at")
 
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  contact Contact?
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact            Contact?
+  /// Lien joint à un message de négociation (page de réponse comprise).
+  negotiationMessage NegotiationMessage?
 
   @@index([userId])
   @@map("card_links")
@@ -1002,6 +1007,9 @@ model Contact {
   replies        ContactReply[]
   handovers      Handover[]
   handoverEvents HandoverEvent[]
+
+  negotiationMandate  NegotiationMandate?
+  negotiationMessages NegotiationMessage[]
 
   @@unique([userId, offerId])
   /// Quota quotidien : envois récents du candidat.
@@ -1088,4 +1096,80 @@ model HandoverEvent {
 
   @@index([userId, contactId, createdAt])
   @@map("handover_events")
+}
+
+enum NegotiationStatus {
+  /// Négociation en cours : l'agent peut rédiger des contre-propositions.
+  ACTIVE
+  /// Mise en pause par le candidat.
+  PAUSED
+  /// Le candidat a décidé d'accepter (jamais l'agent à sa place).
+  ACCEPTED
+  /// Le candidat a décidé de décliner.
+  DECLINED
+}
+
+enum NegotiationDirection {
+  /// Message du candidat (rédigé par l'agent, approuvé par le candidat).
+  OUT
+  /// Réponse de l'entreprise (page de réponse à jeton).
+  IN
+}
+
+/// Mandat de négociation donné par le candidat à son agent, pour un contact :
+/// plancher, cible, points non négociables et souhaitables. Contenu chiffré
+/// (JSON, AAD `user:<id>:negotiation`) ; seuls le statut et les dates sont en clair.
+model NegotiationMandate {
+  id         String            @id @default(cuid())
+  userId     String            @map("user_id")
+  contactId  String            @unique @map("contact_id")
+  contentEnc String            @map("content_enc")
+  status     NegotiationStatus @default(ACTIVE)
+  /// Date de la décision (acceptée, déclinée) ; `null` en cours ou en pause.
+  closedAt   DateTime?         @map("closed_at")
+  createdAt  DateTime          @default(now()) @map("created_at")
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("negotiation_mandates")
+}
+
+/// Fil de négociation d'un contact. Sortant : même cycle que `Contact`
+/// (BROUILLON → APPROUVÉ, lié au texte exact par `approvedHash` → ENVOYÉ).
+/// Entrant : réponse de l'entreprise, reçue `SENT`. Corps chiffré (AAD
+/// `user:<id>:negotiation`).
+model NegotiationMessage {
+  id           String               @id @default(cuid())
+  userId       String               @map("user_id")
+  contactId    String               @map("contact_id")
+  direction    NegotiationDirection
+  /// `counter` (contre-proposition), `closing` (message de clôture) ou `reply` (entrant).
+  kind         String
+  status       ContactStatus        @default(DRAFT)
+  bodyEnc      String               @map("body_enc")
+  /// Brouillon du LLM (`llm`) ou du modèle déterministe (`rules`) ; `null` pour un entrant.
+  draftSource  String?              @map("draft_source")
+  approvedHash String?              @map("approved_hash")
+  approvedAt   DateTime?            @map("approved_at")
+  /// Message final tel qu'envoyé (ou à coller), mentions comprises, chiffré.
+  sentTextEnc  String?              @map("sent_text_enc")
+  sentAt       DateTime?            @map("sent_at")
+  /// Lecture par le candidat (entrants).
+  readAt       DateTime?            @map("read_at")
+  cardLinkId   String?              @unique @map("card_link_id")
+  lastError    String?              @map("last_error")
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact  Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  cardLink CardLink? @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
+
+  @@index([contactId, createdAt])
+  /// Quota quotidien commun avec les prises de contact.
+  @@index([userId, sentAt])
+  @@map("negotiation_messages")
 }

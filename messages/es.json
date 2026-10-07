@@ -156,6 +156,31 @@
       "expires": "Enlace válido hasta el {date}. La persona candidata puede revocarlo en cualquier momento.",
       "disclosure": "Este mensaje lo envía su agente de carrera IA (Coach Career IA), por decisión explícita suya.",
       "noReply": "Las respuestas a este correo no se leen."
+    },
+    "negotiation": {
+      "subject": "Negociación – {title}",
+      "disclosure": "Este mensaje lo ha redactado el asistente de IA (Coach Career IA) de la persona candidata, que lo ha revisado y aprobado antes de su envío. Nada es vinculante sin su confirmación personal.",
+      "replyText": "Responder: {url}",
+      "replyButton": "Responder",
+      "expires": "Enlace válido hasta el {date}.",
+      "noReply": "Las respuestas a este correo no se leen: utiliza el enlace «Responder».",
+      "draft": {
+        "greeting": "Hola:",
+        "intro": "Soy el agente de carrera de IA de la persona candidata. Gracias por su respuesta sobre el puesto «{title}».",
+        "salary": "En cuanto a la remuneración, busca un salario fijo anual bruto de {amount}.",
+        "essentials": "Puntos esenciales para ella:",
+        "remote": "al menos {days, plural, one {# día} other {# días}} de teletrabajo por semana",
+        "contract": "un contrato {contract}",
+        "location": "lugar de trabajo: {location}",
+        "startDate": "incorporación a partir del {date}",
+        "title": "denominación del puesto: {title}",
+        "niceToHave": "También se valoraría:",
+        "availability": "Queda a su disposición para hablarlo. Nada queda acordado hasta que ella lo confirme personalmente.",
+        "signoff": "Un cordial saludo,",
+        "closingAccepted": "Soy el agente de carrera de IA de la persona candidata. Le agradece su propuesta para el puesto «{title}» y desea avanzar sobre esa base. Se pondrá en contacto con ustedes personalmente para confirmar los detalles.",
+        "closingDeclined": "Soy el agente de carrera de IA de la persona candidata. Le agradece el tiempo dedicado a su candidatura al puesto «{title}», pero ha decidido no continuar. Les desea mucho éxito en este proceso.",
+        "closingPaused": "Soy el agente de carrera de IA de la persona candidata. Le agradece su propuesta para el puesto «{title}» y necesita un poco de tiempo para pensarlo. Se pondrá en contacto con ustedes en breve."
+      }
     }
   },
   "common": {
@@ -1206,7 +1231,8 @@
       "coachLimited": "Coach IA: {limit, plural, one {# mensaje} other {# mensajes}} cada 24 horas",
       "coachNone": "Coach IA no incluido",
       "everythingFree": "Todo lo que incluye el plan gratuito",
-      "coachUnlimited": "Coach IA ilimitado"
+      "coachUnlimited": "Coach IA ilimitado",
+      "negotiation": "Agente de negociación: contrapropuestas redactadas por ti"
     },
     "upgrade": "Pasar a Premium",
     "upgradeHint": "Pago mensual protegido por Stripe, cancelable en cualquier momento.",
@@ -1587,5 +1613,150 @@
     "card": "Perfil",
     "expires": "Enlace válido hasta el {date}, revocable en cualquier momento por la persona candidata.",
     "notice": "Esta información se te comunica únicamente para este proceso de selección."
+  },
+  "negotiation": {
+    "tab": "Negociar",
+    "tabFollowUp": "Seguimiento",
+    "title": "Negociación",
+    "intro": "Tu agente negocia por ti, con total transparencia: redacta y tú apruebas cada mensaje. No inventa ningún hecho y nunca acepta nada en tu lugar.",
+    "notSent": "La negociación se abre una vez enviado tu primer contacto.",
+    "waitReply": "La empresa aún no ha respondido: ya puedes preparar tu mandato.",
+    "mandate": {
+      "title": "Tu mandato",
+      "intro": "Lo que tu agente puede pedir. Un mensaje por debajo de tu mínimo, o que ceda en un punto innegociable, se bloquea.",
+      "salaryFloor": "Mínimo (fijo anual bruto, €)",
+      "salaryFloorHint": "Por defecto: el salario mínimo de tus límites. Nunca se revela a la empresa.",
+      "salaryTarget": "Objetivo (fijo anual bruto, €)",
+      "nonNegotiable": "Puntos innegociables",
+      "remoteDaysMin": "Teletrabajo mínimo (días por semana)",
+      "location": "Lugar de trabajo",
+      "contractType": "Tipo de contrato",
+      "contractAny": "Indiferente",
+      "startDate": "Incorporación como muy pronto",
+      "otherPoints": "Otros puntos innegociables (uno por línea)",
+      "niceToHave": "Deseables (uno por línea)",
+      "facts": "Hechos que el agente puede mencionar (opcional)",
+      "factsHint": "Por ejemplo, otra oferta en curso. Si no se indica aquí, el agente nunca menciona una oferta competidora ni tu salario actual.",
+      "save": "Guardar el mandato",
+      "saved": "Mandato guardado.",
+      "invalid": "Revisa: {fields}.",
+      "jobTitle": "Denominación del puesto"
+    },
+    "fields": {
+      "salaryFloor": "el mínimo (de 10 000 a 1 000 000 €)",
+      "salaryTarget": "el objetivo (al menos igual al mínimo)",
+      "remoteDaysMin": "el teletrabajo (de 0 a 5 días)",
+      "location": "el lugar (120 caracteres como máximo)",
+      "contractType": "el tipo de contrato",
+      "startDate": "la fecha de incorporación",
+      "title": "la denominación (120 caracteres como máximo)",
+      "otherPoints": "los otros puntos (10 como máximo, 200 caracteres cada uno)",
+      "niceToHave": "los deseables (10 como máximo, 200 caracteres cada uno)",
+      "facts": "los hechos (1000 caracteres como máximo)"
+    },
+    "analysis": {
+      "title": "Análisis de la última propuesta",
+      "estimate": "Estimación automática a partir del mensaje recibido el {date}: lee siempre el texto de la empresa.",
+      "none": "Todavía no hay ninguna propuesta que analizar.",
+      "noMandate": "Guarda tu mandato para comparar la propuesta de la empresa.",
+      "salary": {
+        "aboveTarget": "Remuneración: {amount}, igual o superior a tu objetivo.",
+        "aboveFloor": "Remuneración: {amount}, por encima de tu mínimo pero por debajo de tu objetivo.",
+        "belowFloor": "Remuneración: {amount}, por debajo de tu mínimo.",
+        "unknown": "Remuneración: no se ha detectado ningún importe."
+      },
+      "remote": {
+        "met": "Teletrabajo: {days} días por semana, conforme a tu mínimo.",
+        "notMet": "Teletrabajo: {days} días por semana, por debajo de tu mínimo.",
+        "unknown": "Teletrabajo: no especificado."
+      },
+      "contract": {
+        "met": "Contrato: {contract}, conforme.",
+        "notMet": "Contrato: {contract}, distinto del que exiges.",
+        "unknown": "Contrato: no especificado."
+      },
+      "unchecked": "{count, plural, one {# otro punto innegociable} other {# otros puntos innegociables}} que debes comprobar tú."
+    },
+    "thread": {
+      "title": "Hilo de la negociación",
+      "empty": "Todavía no hay mensajes de negociación.",
+      "out": "Tu agente, aprobado por ti",
+      "in": "La empresa",
+      "sentOn": "Enviado el {date}",
+      "submittedOn": "Transmitido el {date}",
+      "receivedOn": "Recibido el {date}"
+    },
+    "composer": {
+      "title": "Próximo mensaje",
+      "generateCounter": "Generar una contrapropuesta",
+      "generateClosing": "Redactar el mensaje de cierre",
+      "generating": "Redactando…",
+      "draftLlm": "Redactado por la IA a partir de tu mandato y de los mensajes de la empresa. Revísalo: se enviará tal cual.",
+      "draftRules": "Preparado a partir de una plantilla y de tu mandato. Revísalo y personalízalo.",
+      "fallback": "El asistente de IA no ha podido redactar este mensaje (servicio no disponible, demasiado lento o texto no conforme): se ha preparado una propuesta a partir de una plantilla.",
+      "generated": "Borrador listo: revísalo antes de aprobarlo.",
+      "body": "Mensaje",
+      "appended": "Se añaden automáticamente: la mención de que el mensaje lo ha redactado tu asistente de IA y lo has aprobado tú, y el enlace de respuesta.",
+      "language": "Idioma del mensaje: {language}",
+      "save": "Guardar",
+      "saved": "Borrador guardado. Apruébalo para poder enviarlo.",
+      "approve": "Apruebo este mensaje",
+      "approved": "Mensaje aprobado.",
+      "approvedOn": "Aprobado el {date}. Cualquier cambio anula la aprobación.",
+      "send": "Enviar ahora",
+      "sendHint": "Se envía desde la dirección de la plataforma, nunca desde la tuya.",
+      "sent": "Mensaje enviado.",
+      "paste": "Texto que debes transmitir a la empresa",
+      "pasteHint": "Esta oferta no tiene dirección de candidatura: transmite tú este texto. Contiene el enlace de respuesta.",
+      "markTransmitted": "He transmitido este mensaje",
+      "discard": "Eliminar este borrador",
+      "discardConfirm": "¿Eliminar este borrador?",
+      "blocked": "Este mensaje no se puede aprobar tal como está:"
+    },
+    "issues": {
+      "belowFloor": "un importe es inferior a tu mínimo ({excerpt});",
+      "remoteDays": "concede menos teletrabajo que tu mínimo;",
+      "contractType": "menciona un tipo de contrato distinto del que exiges;",
+      "competingOffer": "menciona una oferta competidora que no has declarado en tu mandato;",
+      "currentSalary": "menciona tu salario actual, que no figura en tu mandato;",
+      "inventedFigure": "cita una cifra que no procede ni de tu mandato ni de la empresa ({excerpt})."
+    },
+    "outcome": {
+      "title": "Tu decisión",
+      "intro": "Solo tú decides. Después, el agente redacta un mensaje de cierre que apruebas antes de cualquier envío.",
+      "status": {
+        "ACTIVE": "Negociación en curso",
+        "PAUSED": "Negociación en pausa",
+        "ACCEPTED": "Propuesta aceptada por ti",
+        "DECLINED": "Propuesta rechazada por ti"
+      },
+      "accept": "Acepto la propuesta",
+      "decline": "La rechazo",
+      "pause": "Poner en pausa",
+      "resume": "Reanudar la negociación",
+      "acceptConfirm": "¿Confirmas que aceptas la última propuesta de la empresa? Ningún mensaje se envía sin tu aprobación."
+    },
+    "upsell": {
+      "title": "Negociación asistida: plan Premium",
+      "text": "Con Premium, tu agente redacta tus contrapropuestas y tu mensaje de cierre. El mandato y el análisis siguen siendo gratuitos.",
+      "cta": "Descubrir Premium"
+    },
+    "errors": {
+      "notSent": "Primero debe enviarse el contacto.",
+      "noMandate": "Guarda primero tu mandato.",
+      "premium": "La redacción por el agente de negociación está reservada a Premium.",
+      "closed": "La negociación ya no está en curso: reanúdala para obtener una contrapropuesta.",
+      "notClosed": "Indica primero tu decisión.",
+      "blocked": "Tu mandato bloquea este mensaje: modifícalo.",
+      "reidentifying": "El mensaje contiene un elemento que podría identificarte: «{excerpt}». Modifícalo.",
+      "notApproved": "Aprueba primero este mensaje, en su versión actual.",
+      "alreadySent": "Este mensaje ya se ha enviado.",
+      "card": "Tu tarjeta anónima debe estar validada, sin problemas de reidentificación, para crear el enlace de respuesta.",
+      "quota": "Límite diario alcanzado: {limit} envíos cada 24 horas. Inténtalo de nuevo mañana.",
+      "noChannel": "Esta oferta ya no publica una dirección de candidatura.",
+      "sendUnavailable": "El envío de correos no está configurado en este servidor.",
+      "sendFailed": "El envío ha fallado. Inténtalo más tarde.",
+      "invalid": "El mensaje debe tener entre 20 y 3000 caracteres."
+    }
   }
 }

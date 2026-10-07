@@ -154,6 +154,7 @@ export default async function BillingPage({
             <ul className="mt-4 space-y-2 text-sm text-stone-700">
               <li>✓ {t("features.everythingFree")}</li>
               <li>✓ {t("features.coachUnlimited")}</li>
+              <li>✓ {t("features.negotiation")}</li>
             </ul>
             {!premium && configured ? (
               <form action={startCheckout} className="mt-5">
