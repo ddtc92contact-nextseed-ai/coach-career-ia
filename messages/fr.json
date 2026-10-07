@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Marché",
+    "intro": "Où se situe cette offre face aux salaires publiés pour des postes comparables.",
+    "quartiles": {
+      "p25": "1er quartile",
+      "median": "Médiane",
+      "p75": "3e quartile"
+    },
+    "estimate": "Estimation tirée de {count, plural, one {# offre publiée} other {# offres publiées}} avec un salaire, de {from} à {to} (brut annuel, part variable non comprise). Ce n’est pas une grille officielle.",
+    "fallback": {
+      "COUNTRY": "Repère élargi au pays : pas assez d’offres comparables dans la zone.",
+      "FAMILY_COUNTRY": "Repère élargi au métier, toutes séniorités : pas assez d’offres comparables plus précises."
+    },
+    "notEnoughData": "Pas assez de données : moins de {min} offres comparables avec un salaire publié. Aucun repère n’est affiché plutôt qu’un chiffre peu fiable.",
+    "remote": "télétravail complet ({country})",
+    "allSeniorities": "toutes séniorités",
+    "offerPosition": {
+      "BELOW": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est sous le 1er quartile du marché.",
+      "WITHIN": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est dans la fourchette courante du marché (entre le 1er et le 3e quartile).",
+      "ABOVE": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est au-dessus du 3e quartile du marché.",
+      "noSalary": "Cette offre n’annonce pas de salaire comparable : seul le repère du marché est affiché."
+    },
+    "floorPosition": {
+      "BELOW": "Votre plancher ({amount}) est sous le 1er quartile : il écarte peu d’offres comparables.",
+      "WITHIN": "Votre plancher ({amount}) est dans la fourchette courante du marché.",
+      "ABOVE": "Votre plancher ({amount}) dépasse le 3e quartile : il écarte la plupart des offres comparables."
+    },
+    "guardRails": {
+      "title": "Repère du marché",
+      "intro": "Salaires publiés pour votre métier (d’après votre poste le plus récent), en France."
+    }
+  },
   "card": {
     "title": "Ma carte anonyme",
     "intro": "Ce qu’une entreprise voit de vous avant que vous ne leviez l’anonymat. Elle est générée depuis votre mémoire de carrière pseudonymisée, jamais depuis votre coffre d’identité.",

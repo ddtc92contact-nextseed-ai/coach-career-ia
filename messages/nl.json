@@ -1314,6 +1314,38 @@
       "notAvailable": "—"
     }
   },
+  "salaryBenchmark": {
+    "title": "Markt",
+    "intro": "Hoe deze vacature zich verhoudt tot de gepubliceerde salarissen voor vergelijkbare functies.",
+    "quartiles": {
+      "p25": "1e kwartiel",
+      "median": "Mediaan",
+      "p75": "3e kwartiel"
+    },
+    "estimate": "Schatting op basis van {count, plural, one {# gepubliceerde vacature} other {# gepubliceerde vacatures}} met salaris, van {from} tot {to} (bruto per jaar, exclusief variabele beloning). Dit is geen officiële salarisschaal.",
+    "fallback": {
+      "COUNTRY": "Referentie verbreed naar het hele land: te weinig vergelijkbare vacatures in de regio.",
+      "FAMILY_COUNTRY": "Referentie verbreed naar de functiegroep, alle senioriteitsniveaus: te weinig preciezere vergelijkbare vacatures."
+    },
+    "notEnoughData": "Onvoldoende gegevens: minder dan {min} vergelijkbare vacatures met gepubliceerd salaris. Liever geen referentie dan een onbetrouwbaar cijfer.",
+    "remote": "volledig op afstand ({country})",
+    "allSeniorities": "alle niveaus",
+    "offerPosition": {
+      "BELOW": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt onder het 1e kwartiel van de markt.",
+      "WITHIN": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) valt binnen de gebruikelijke marktbandbreedte (tussen het 1e en 3e kwartiel).",
+      "ABOVE": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt boven het 3e kwartiel van de markt.",
+      "noSalary": "Deze vacature vermeldt geen vergelijkbaar salaris: alleen de marktreferentie wordt getoond."
+    },
+    "floorPosition": {
+      "BELOW": "Uw ondergrens ({amount}) ligt onder het 1e kwartiel: die sluit weinig vergelijkbare vacatures uit.",
+      "WITHIN": "Uw ondergrens ({amount}) valt binnen de gebruikelijke marktbandbreedte.",
+      "ABOVE": "Uw ondergrens ({amount}) ligt boven het 3e kwartiel: die sluit de meeste vergelijkbare vacatures uit."
+    },
+    "guardRails": {
+      "title": "Marktreferentie",
+      "intro": "Gepubliceerde salarissen voor uw functiegroep (op basis van uw meest recente functie), in Frankrijk."
+    }
+  },
   "card": {
     "title": "Mijn anonieme kaart",
     "intro": "Wat een bedrijf van je ziet voordat je je identiteit prijsgeeft. Ze wordt gemaakt op basis van je gepseudonimiseerde loopbaangeheugen, nooit op basis van je identiteitskluis.",
