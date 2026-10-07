@@ -35,6 +35,17 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
+  /// Offre freemium. Recalculée par le webhook Stripe à partir de l'état de
+  /// l'abonnement chez Stripe — jamais d'après une donnée du navigateur.
+  /// Lire les droits via `getEntitlements()` (`src/lib/billing`), jamais ici.
+  plan                 Plan                @default(FREE)
+  subscriptionStatus   SubscriptionStatus? @map("subscription_status")
+  /// Fin de la période payée en cours (renouvellement ou fin d'accès).
+  currentPeriodEnd     DateTime?           @map("current_period_end")
+  cancelAtPeriodEnd    Boolean             @default(false) @map("cancel_at_period_end")
+  stripeCustomerId     String?             @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
+
   accounts     Account[]
   sessions     Session[]
   profile      CareerProfile?
@@ -452,6 +463,39 @@ model IdentityVault {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("identity_vaults")
+}
+
+// ---------------------------------------------------------------------------
+// Abonnements (freemium candidat). Stripe ne reçoit que l'e-mail de connexion
+// et l'identifiant du compte ; aucune donnée de carte ne transite par nos
+// serveurs. La facturation côté entreprise (phase 2) aura ses propres
+// modèles, rattachés à l'entreprise et non au candidat.
+// ---------------------------------------------------------------------------
+
+enum Plan {
+  FREE
+  PREMIUM
+}
+
+/// Statuts d'abonnement Stripe (`subscription.status`).
+enum SubscriptionStatus {
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+  PAUSED
+}
+
+/// Évènements Stripe déjà traités : un évènement rejoué est ignoré.
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@map("stripe_events")
 }
 
 // ---------------------------------------------------------------------------

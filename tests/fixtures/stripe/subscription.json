@@ -1,0 +1,12 @@
+{
+  "id": "sub_fixture",
+  "object": "subscription",
+  "customer": "cus_fixture",
+  "status": "active",
+  "cancel_at_period_end": false,
+  "metadata": { "userId": "user_fixture" },
+  "items": {
+    "object": "list",
+    "data": [{ "id": "si_fixture", "object": "subscription_item", "current_period_end": 1793952000 }]
+  }
+}
