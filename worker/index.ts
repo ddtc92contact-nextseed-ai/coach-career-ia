@@ -6,13 +6,16 @@
  *   un board inchangé. Chaque passage recalcule ensuite les signaux faibles
  *   des entreprises et demande le recalcul des opportunités ;
  * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
- *   candidats en attente (regroupé), puis envoi des alertes e-mail dues.
+ *   candidats en attente (regroupé), puis envoi des alertes e-mail dues ;
+ * - purge des levées d'anonymat expirées toutes les heures (identité et CV
+ *   révélés effacés).
  * Arrêt propre sur SIGTERM / SIGINT.
  */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { aiClientFromEnv } from "../src/lib/ai/config";
 import type { AiClient } from "../src/lib/ai/client";
+import { purgeExpiredHandovers } from "../src/lib/handover/purge";
 import { createLogger } from "../src/lib/logger";
 import { smtpSender, smtpSettingsFromEnv } from "../src/lib/mail/smtp";
 import { runAlerts } from "../src/lib/matching/alerts";
@@ -25,6 +28,8 @@ import { runCompanySignals } from "../src/lib/radar/signals/job";
 const log = createLogger();
 let timer: NodeJS.Timeout | undefined;
 let matchingTimer: NodeJS.Timeout | undefined;
+let purgeTimer: NodeJS.Timeout | undefined;
+const PURGE_INTERVAL_MS = 3_600_000;
 let stopping = false;
 
 /** Client IA du matching, ou `null` (pas de fournisseur configuré : score et explications sans IA). */
@@ -63,6 +68,21 @@ function startMatching(prisma: PrismaClient, config: MatchingConfig) {
     if (!stopping) matchingTimer = setTimeout(tick, config.pollMs);
   };
   matchingTimer = setTimeout(tick, 0);
+}
+
+/** Levées d'anonymat expirées : données révélées effacées (au démarrage puis toutes les heures). */
+function startHandoverPurge(prisma: PrismaClient) {
+  const tick = async () => {
+    try {
+      await purgeExpiredHandovers(prisma, { logger: log });
+    } catch (error) {
+      log.error("worker.handover_purge.failed", {
+        error: error instanceof Error ? error : String(error),
+      });
+    }
+    if (!stopping) purgeTimer = setTimeout(tick, PURGE_INTERVAL_MS);
+  };
+  purgeTimer = setTimeout(tick, 0);
 }
 
 function start(config: RadarConfig, matching: MatchingConfig) {
@@ -109,12 +129,14 @@ function start(config: RadarConfig, matching: MatchingConfig) {
       if (!stopping) timer = setTimeout(tick, config.runOnStart ? 0 : intervalMs);
     });
   startMatching(prisma, matching);
+  startHandoverPurge(prisma);
 
   for (const signal of ["SIGTERM", "SIGINT"] as const) {
     process.on(signal, () => {
       stopping = true;
       clearTimeout(timer);
       clearTimeout(matchingTimer);
+      clearTimeout(purgeTimer);
       log.info("worker.stopped", { signal });
       void prisma.$disconnect().finally(() => process.exit(0));
     });

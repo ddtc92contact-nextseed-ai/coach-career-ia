@@ -70,6 +70,8 @@ model User {
   cardLinks      CardLink[]
   contacts       Contact[]
   contactReplies ContactReply[]
+  handovers      Handover[]
+  handoverEvents HandoverEvent[]
 
   @@map("users")
 }
@@ -967,37 +969,39 @@ enum ContactStatus {
 /// Les textes sont chiffrés (AAD `user:<id>:contact`) ; l'adresse de
 /// destination n'est pas copiée ici : elle reste celle publiée dans l'offre.
 model Contact {
-  id                  String         @id @default(cuid())
-  userId              String         @map("user_id")
-  offerId             String         @map("offer_id")
-  channel             ContactChannel
-  status              ContactStatus  @default(DRAFT)
+  id           String         @id @default(cuid())
+  userId       String         @map("user_id")
+  offerId      String         @map("offer_id")
+  channel      ContactChannel
+  status       ContactStatus  @default(DRAFT)
   /// Langue de l'offre : celle du message.
-  locale              String
-  subjectEnc          String         @map("subject_enc")
-  bodyEnc             String         @map("body_enc")
+  locale       String
+  subjectEnc   String         @map("subject_enc")
+  bodyEnc      String         @map("body_enc")
   /// Le brouillon vient du LLM (`llm`) ou du modèle déterministe (`rules`).
-  draftSource         String         @map("draft_source")
+  draftSource  String         @map("draft_source")
   /// Empreinte du texte approuvé : un texte modifié après approbation n'est plus envoyable.
-  approvedHash        String?        @map("approved_hash")
-  approvedAt          DateTime?      @map("approved_at")
+  approvedHash String?        @map("approved_hash")
+  approvedAt   DateTime?      @map("approved_at")
   /// Message final tel qu'envoyé (ou à coller), liens compris, chiffré.
-  sentTextEnc         String?        @map("sent_text_enc")
-  sentAt              DateTime?      @map("sent_at")
+  sentTextEnc  String?        @map("sent_text_enc")
+  sentAt       DateTime?      @map("sent_at")
   /// Lien de carte créé pour ce contact (page de réponse comprise).
-  cardLinkId          String?        @unique @map("card_link_id")
+  cardLinkId   String?        @unique @map("card_link_id")
   /// Dernier échec d'envoi (code, sans détail).
-  lastError           String?        @map("last_error")
-  /// Point d'accroche de la levée d'anonymat (issue à venir) : demandée par
-  /// le candidat pour cette entreprise. Aucun effet pour l'instant.
-  handoverRequestedAt DateTime?      @map("handover_requested_at")
-  createdAt           DateTime       @default(now()) @map("created_at")
-  updatedAt           DateTime       @updatedAt @map("updated_at")
+  lastError    String?        @map("last_error")
+  /// Fil passé d'anonyme à révélé : date de la dernière levée d'anonymat
+  /// (le fait reste acquis après révocation : l'entreprise a pu voir l'identité).
+  revealedAt   DateTime?      @map("revealed_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
 
-  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  offer    JobOffer       @relation(fields: [offerId], references: [id], onDelete: Cascade)
-  cardLink CardLink?      @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
-  replies  ContactReply[]
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer          JobOffer        @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  cardLink       CardLink?       @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
+  replies        ContactReply[]
+  handovers      Handover[]
+  handoverEvents HandoverEvent[]
 
   @@unique([userId, offerId])
   /// Quota quotidien : envois récents du candidat.
@@ -1021,4 +1025,67 @@ model ContactReply {
   @@index([userId, createdAt])
   @@index([contactId, createdAt])
   @@map("contact_replies")
+}
+
+/// Levée d'anonymat (handover) : le candidat révèle les champs de son identité
+/// qu'il a choisis à UNE entreprise (un contact), via un lien à jeton
+/// (empreinte seule stockée), expirant et révocable.
+///
+/// Les champs révélés sont déchiffrés du coffre DANS LE NAVIGATEUR et envoyés
+/// au serveur seulement à la confirmation ; ils sont alors chiffrés avec la
+/// clé de la plateforme (AAD `handover:<userId>:<id>`). À la révocation ou à
+/// l'expiration, `payloadEnc` et `cvEnc` sont effacés : la ligne ne garde que
+/// des métadonnées (noms des champs, dates) pour le journal du candidat.
+model Handover {
+  id           String    @id @default(cuid())
+  userId       String    @map("user_id")
+  contactId    String    @map("contact_id")
+  tokenHash    String    @unique @map("token_hash")
+  /// Noms des champs révélés (`name`, `email`, `cv`…), jamais leurs valeurs.
+  fields       String[]
+  /// Identité révélée (JSON chiffré), `null` une fois purgée.
+  payloadEnc   String?   @map("payload_enc")
+  /// CV d'origine (chiffré, nom et type compris), `null` s'il n'est pas révélé ou une fois purgé.
+  cvEnc        Bytes?    @map("cv_enc")
+  expiresAt    DateTime  @map("expires_at")
+  revokedAt    DateTime? @map("revoked_at")
+  /// Données révélées effacées (révocation ou expiration).
+  purgedAt     DateTime? @map("purged_at")
+  viewCount    Int       @default(0) @map("view_count")
+  lastViewedAt DateTime? @map("last_viewed_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  events  HandoverEvent[]
+
+  @@index([userId, contactId])
+  /// Purge du worker : levées expirées non encore effacées.
+  @@index([purgedAt, expiresAt])
+  @@map("handovers")
+}
+
+enum HandoverEventType {
+  REVEALED
+  REVOKED
+  EXPIRED
+}
+
+/// Journal des levées d'anonymat, visible par le candidat : quoi (noms des
+/// champs), quand, pour quel fil. Aucune valeur d'identité.
+model HandoverEvent {
+  id         String            @id @default(cuid())
+  userId     String            @map("user_id")
+  contactId  String            @map("contact_id")
+  handoverId String?           @map("handover_id")
+  type       HandoverEventType
+  fields     String[]
+  createdAt  DateTime          @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact  Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  handover Handover? @relation(fields: [handoverId], references: [id], onDelete: SetNull)
+
+  @@index([userId, contactId, createdAt])
+  @@map("handover_events")
 }

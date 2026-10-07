@@ -471,7 +471,7 @@ export async function discardContact(userId: string, id: unknown, now = new Date
 
 // --- Lecture ------------------------------------------------------------------------------
 
-export async function listContacts(userId: string) {
+export async function listContacts(userId: string, now = new Date()) {
   const rows = await db.contact.findMany({
     where: { userId },
     orderBy: [{ updatedAt: "desc" }],
@@ -484,6 +484,12 @@ export async function listContacts(userId: string) {
       createdAt: true,
       offer: { select: { title: true, companyName: true } },
       replies: { select: { readAt: true, createdAt: true }, orderBy: { createdAt: "desc" } },
+      // Levée d'anonymat active (métadonnée seulement).
+      handovers: {
+        where: { userId, revokedAt: null, purgedAt: null, expiresAt: { gt: now } },
+        select: { id: true },
+        take: 1,
+      },
     },
   });
   return rows.map((r) => ({
@@ -496,6 +502,7 @@ export async function listContacts(userId: string) {
     replies: r.replies.length,
     unread: r.replies.filter((x) => !x.readAt).length,
     lastReplyAt: r.replies[0]?.createdAt ?? null,
+    revealed: r.handovers.length > 0,
   }));
 }
 export type ContactListItem = Awaited<ReturnType<typeof listContacts>>[number];
@@ -561,7 +568,7 @@ export async function getContact(userId: string, id: unknown) {
       createdAt: r.createdAt,
       readAt: r.readAt,
     })),
-    handoverRequestedAt: row.handoverRequestedAt,
+    revealedAt: row.revealedAt,
   };
 }
 export type ContactView = NonNullable<Awaited<ReturnType<typeof getContact>>>;
