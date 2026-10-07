@@ -10,6 +10,10 @@ const LANGUAGE_NAMES: Record<AppLocale, string> = {
   nl: "Dutch",
 };
 
+export function languageName(locale: AppLocale): string {
+  return LANGUAGE_NAMES[locale];
+}
+
 /**
  * Consigne de langue des textes générés : ceux-ci suivent la langue de
  * l'utilisateur (`getUserLocale()`), quelle que soit la langue du document source.

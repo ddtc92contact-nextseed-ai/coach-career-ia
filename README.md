@@ -72,45 +72,46 @@ convient.
 
 Toutes sont documentées dans [`.env.example`](.env.example).
 
-| Variable                                                              | Requis   | Description                                              |
-| --------------------------------------------------------------------- | -------- | -------------------------------------------------------- |
-| `DATABASE_URL`                                                        | oui      | URL PostgreSQL                                           |
-| `TEST_DATABASE_URL`                                                   | tests    | base distincte pour les tests d'intégration              |
-| `POSTGRES_PORT`                                                       | dev      | port hôte de la base de dev (5433 par défaut)            |
-| `POSTGRES_USER` / `_PASSWORD` / `_DB`                                 | prod     | identifiants du conteneur PostgreSQL                     |
-| `AUTH_SECRET`                                                         | oui      | secret Auth.js (≥ 32 caractères)                         |
-| `AUTH_URL`                                                            | prod     | URL publique (`https://<SITE_DOMAIN>`)                   |
-| `EMAIL_FROM`                                                          | prod     | expéditeur des e-mails                                   |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE` | prod     | serveur SMTP du lien magique                             |
-| `DATA_ENCRYPTION_KEY`                                                 | oui      | clé AES-256 (32 octets base64) du chiffrement applicatif |
-| `DATA_ENCRYPTION_KEY_VERSION`                                         | non (1)  | version de la clé courante                               |
-| `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                   |
-| `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)    |
-| `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)          |
-| `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                         |
-| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`          |
-| `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar        |
-| `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage      |
-| `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                       |
-| `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)      |
-| `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)    |
-| `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)   |
-| `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                     |
-| `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)          |
-| `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)           |
-| `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)  |
-| `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)     |
-| `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`        |
-| `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)        |
-| `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API    |
-| `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)               |
-| `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)               |
-| `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub     |
-| `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                |
-| `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                         |
-| `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                         |
-| `TRAEFIK_CERTRESOLVER`                                                | prod     | resolver de certificats (`letsencrypt`)                  |
-| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs                           |
+| Variable                                                              | Requis   | Description                                               |
+| --------------------------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `DATABASE_URL`                                                        | oui      | URL PostgreSQL                                            |
+| `TEST_DATABASE_URL`                                                   | tests    | base distincte pour les tests d'intégration               |
+| `POSTGRES_PORT`                                                       | dev      | port hôte de la base de dev (5433 par défaut)             |
+| `POSTGRES_USER` / `_PASSWORD` / `_DB`                                 | prod     | identifiants du conteneur PostgreSQL                      |
+| `AUTH_SECRET`                                                         | oui      | secret Auth.js (≥ 32 caractères)                          |
+| `AUTH_URL`                                                            | prod     | URL publique (`https://<SITE_DOMAIN>`)                    |
+| `EMAIL_FROM`                                                          | prod     | expéditeur des e-mails                                    |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE` | prod     | serveur SMTP du lien magique                              |
+| `DATA_ENCRYPTION_KEY`                                                 | oui      | clé AES-256 (32 octets base64) du chiffrement applicatif  |
+| `DATA_ENCRYPTION_KEY_VERSION`                                         | non (1)  | version de la clé courante                                |
+| `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                    |
+| `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)     |
+| `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)           |
+| `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                          |
+| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`           |
+| `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar         |
+| `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage       |
+| `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                        |
+| `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)       |
+| `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)     |
+| `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)    |
+| `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                      |
+| `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)           |
+| `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)            |
+| `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)   |
+| `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)      |
+| `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`         |
+| `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)         |
+| `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API     |
+| `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)                |
+| `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)                |
+| `COACH_MESSAGES_PER_DAY`                                              | non (40) | messages au coach IA par utilisateur sur 24 h (0 = coupé) |
+| `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub      |
+| `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                 |
+| `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                          |
+| `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                          |
+| `TRAEFIK_CERTRESOLVER`                                                | prod     | resolver de certificats (`letsencrypt`)                   |
+| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs                            |
 
 ## Base de données et migrations
 
@@ -213,8 +214,7 @@ lieux du candidat reçoivent des coordonnées. Code : `src/lib/geo`.
 ### Couche IA (`src/lib/ai`)
 
 Une interface unique, indépendante du fournisseur, pour le chat (multi-tours, sortie JSON,
-appel d'outils) et les embeddings. Le futur agent coach réutilise `runTools()` et les messages
-`tool` sans réécriture.
+appel d'outils) et les embeddings. Le coach IA s'appuie sur `runTools()` et les messages `tool`.
 
 - **Fournisseurs** (`AI_PROVIDER`) : Mistral par défaut (`MISTRAL_API_KEY`), tout endpoint
   compatible OpenAI (Ollama local), et un simulateur déterministe (`createMockProvider`). Sous
@@ -261,6 +261,54 @@ allemand en PDF, export LinkedIn + GitHub) avec la réponse simulée du modèle 
 attendu. `tests/unit/import-pipeline.test.ts` vérifie le résultat et l'absence de nom, contact,
 employeur ou école dans le brouillon. `npm run ai:eval` passe ces fixtures au vrai fournisseur
 configuré et affiche un tableau (expériences, dates, codes, rappel des compétences, fuites).
+
+## Coach IA (`/app/coach`)
+
+Un agent conversationnel, présenté comme une IA, qui apprend à connaître le candidat et enrichit sa
+mémoire de carrière **uniquement par des suggestions qu'il valide**.
+
+- **Compétences** (choisies au début d'une conversation, `src/lib/coach/prompts.ts`) : chacune est
+  une consigne système et une liste d'outils autorisés.
+  - « Découvrir mon profil » : entretien STAR (situation, tâche, action, résultat chiffré, lien de
+    preuve) → `read_career_memory`, `propose_achievement`, `propose_experience_update`,
+    `propose_skill` ;
+  - « Clarifier ce que je veux » : salaire, lieu, télétravail, contrats, secteurs →
+    `read_career_memory`, `propose_guard_rail_change` ;
+  - « Préparer un entretien » : simulation avec retours → `read_career_memory` seul.
+- **Outils** (`src/lib/coach/tools.ts`) : `read_career_memory` renvoie le profil **pseudonymisé**
+  (expériences, réalisations, compétences, garde-fous ; jamais l'e-mail ni les entreprises
+  exclues). Les outils `propose_*` créent une `CoachSuggestion` **en attente**, affichée comme une
+  carte « Accepter / Modifier / Rejeter ». Seule `acceptSuggestion()` écrit dans la mémoire, après
+  revalidation zod (le contenu modifié par le candidat aussi).
+- **Garde-fous** : la consigne interdit d'inventer expériences, chiffres ou preuves et de demander
+  nom, employeur ou coordonnées. Indépendamment du modèle, chaque suggestion est pseudonymisée
+  (`src/lib/coach/redact.ts`) : e-mails, téléphones, liens, parties du nom du compte, entreprises
+  exclues et noms signalés par le modèle (`identifyingTerms`) sont remplacés par `[…]` ; un lien de
+  profil (LinkedIn…) n'est jamais une preuve. La carte signale ces retraits.
+- **Tour de conversation** : `POST /api/coach/conversations/:id/messages` enregistre d'abord le
+  message (rien n'est perdu si le fournisseur tombe), puis diffuse la réponse en NDJSON
+  (`accepted`, `status`, `suggestion`, `delta`, `done` ou `error`). Boucle d'outils limitée à 6
+  étapes et 90 s ; le navigateur abandonne à 105 s. Panne, lenteur ou sortie vide : erreur
+  traduite dans le fil et bouton « Réessayer » (`{ "retry": true }` relance le dernier message,
+  sans le décompter, 3 fois au plus par message). Un seul tour à la fois par conversation
+  (verrou atomique `turn_started_at`) : un envoi ou une relance simultanés reçoivent 409. Les
+  suggestions d'un tour échoué sont abandonnées.
+- **Données** : `CoachConversation`, `CoachMessage` (texte **chiffré**, AAD
+  `user:<id>:coach-message`), `CoachSuggestion` ; suppression en cascade avec la conversation ou
+  le compte, incluses dans l'export RGPD. La conversation d'un autre utilisateur répond 404.
+- **Quota** : `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h glissantes (40 par défaut),
+  compté en base sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des
+  envois simultanés ne peuvent pas dépasser la limite ; à 0, les relances sont aussi refusées. Défini dans `src/lib/coach/quota.ts`, seul endroit à modifier pour une future
+  offre premium.
+- **Langue** : le coach répond dans la langue de l'utilisateur (`getUserLocale()`).
+- **Journal** : compteurs (étapes, suggestions, durée) et codes d'erreur ; jamais le texte des
+  messages.
+- **Diffusion** : la couche fournisseur ne diffuse pas encore les jetons ; la progression (réflexion,
+  lecture de la mémoire, suggestion) et les cartes arrivent au fil de l'eau, la réponse finale par
+  morceaux.
+
+Tests : `tests/db/coach.test.ts` (séquence d'outils scriptée, acceptation / rejet, pannes,
+isolation, quota, cascade, journaux) et `tests/unit/coach.test.ts`, avec le fournisseur simulé.
 
 ## Authentification
 

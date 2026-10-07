@@ -160,7 +160,8 @@
       "guardRails": "Meine Leitplanken",
       "opportunities": "Chancen",
       "settings": "Einstellungen",
-      "radar": "Radar (Admin)"
+      "radar": "Radar (Admin)",
+      "coach": "KI-Coach"
     }
   },
   "dashboard": {
@@ -647,6 +648,136 @@
     "culture": {
       "title": "Unternehmenskultur",
       "intro": "Optional: was Ihnen wichtig ist. Diese Präferenzen verfeinern die Reihenfolge der Angebote."
+    }
+  },
+  "coach": {
+    "title": "KI-Coach",
+    "intro": "Ein Karrierecoach auf Basis künstlicher Intelligenz: Er lernt Sie kennen, hilft Ihnen, Ihre Erfolge zu belegen, Ihre Wünsche zu klären und Ihre Vorstellungsgespräche vorzubereiten. Er ändert Ihr Karrieregedächtnis nie ohne Ihre Zustimmung.",
+    "aiNotice": "Sie sprechen mit einer künstlichen Intelligenz, nicht mit einem Menschen. Ihre Antworten können Fehler enthalten: Prüfen Sie sie. Sie müssen ihr weder Ihren Namen noch die Namen Ihrer Arbeitgeber oder Ihre Kontaktdaten nennen.",
+    "aiBadge": "KI",
+    "notConfigured": "Der KI-Coach ist in diesem Dienst noch nicht aktiviert.",
+    "quota": "{remaining, plural, =0 {Keine Nachrichten mehr in den letzten 24 Stunden.} one {Noch # Nachricht in den letzten 24 Stunden.} other {Noch # Nachrichten in den letzten 24 Stunden.}}",
+    "start": {
+      "title": "Neues Gespräch",
+      "intro": "Wählen Sie, woran Sie mit dem Coach arbeiten möchten.",
+      "button": "Starten",
+      "buttonFor": "Starten: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Mein Profil entdecken",
+        "description": "Ein geführtes Interview (Situation, Aufgabe, Handlung, messbares Ergebnis, Nachweis), um Ihre Erfahrungen in belegte Erfolge zu verwandeln.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Erzählen Sie mir von einem Projekt oder einer Aufgabe, auf die Sie stolz sind: Wir machen daraus Schritt für Schritt einen belegten Erfolg. Ich werde Sie nie nach den Namen Ihrer Arbeitgeber oder Ihren Kontaktdaten fragen."
+      },
+      "CLARIFY": {
+        "title": "Klären, was ich will",
+        "description": "Gehalt, Ort, Homeoffice, Verträge, Branchen: Der Coach hilft Ihnen, klare Leitplanken festzulegen.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Wir klären, was Sie wirklich wollen: Vergütung, Ort, Homeoffice, Vertragsart, zu meidende Branchen. Ich schlage Ihnen Leitplanken vor, die Sie einzeln bestätigen."
+      },
+      "INTERVIEW": {
+        "title": "Ein Vorstellungsgespräch vorbereiten",
+        "description": "Ein simuliertes Vorstellungsgespräch für die angestrebte Stelle, mit konkretem Feedback nach jeder Antwort.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Beschreiben Sie die angestrebte Stelle (Titel, Ebene, Art des Unternehmens, ohne es zu nennen), und ich führe mit Ihnen ein Übungsgespräch mit Feedback nach jeder Antwort."
+      }
+    },
+    "history": {
+      "title": "Meine Gespräche",
+      "empty": "Noch keine Gespräche.",
+      "messages": "{count, plural, =0 {keine Nachrichten} one {# Nachricht} other {# Nachrichten}}",
+      "pending": "{count, plural, one {# Vorschlag zu prüfen} other {# Vorschläge zu prüfen}}",
+      "updated": "Aktualisiert am {date}",
+      "open": "Öffnen",
+      "confirmDelete": "Dieses Gespräch endgültig löschen? Nicht bestätigte Vorschläge gehen verloren; was in Ihr Karrieregedächtnis übernommen wurde, bleibt erhalten."
+    },
+    "chat": {
+      "back": "Alle Gespräche",
+      "label": "Gespräch mit dem Coach",
+      "you": "Sie",
+      "coach": "KI-Coach",
+      "inputLabel": "Ihre Nachricht an den Coach",
+      "placeholder": "Ihre Nachricht… (Eingabe zum Senden, Umschalt + Eingabe für eine neue Zeile)",
+      "send": "Senden",
+      "sending": "Antwort läuft…",
+      "tooLong": "Nachricht zu lang (höchstens {max} Zeichen).",
+      "unanswered": "Ihre letzte Nachricht wurde nicht beantwortet.",
+      "status": {
+        "thinking": "Der Coach denkt nach…",
+        "reading": "Der Coach liest Ihr Karrieregedächtnis…",
+        "suggesting": "Der Coach bereitet einen Vorschlag vor…"
+      }
+    },
+    "errors": {
+      "title": "Der Coach konnte nicht antworten",
+      "aiNotConfigured": "Der KI-Coach ist in diesem Dienst noch nicht aktiviert.",
+      "aiTimeout": "Der Coach hat zu lange für die Antwort gebraucht.",
+      "aiUnavailable": "Der KI-Dienst ist vorübergehend nicht verfügbar.",
+      "aiRateLimited": "Der KI-Dienst ist gerade stark ausgelastet.",
+      "aiInvalidOutput": "Der Coach hat eine unbrauchbare Antwort erzeugt.",
+      "quotaExceeded": "Sie haben das Limit von {limit} Nachrichten pro 24 Stunden erreicht. Bitte kommen Sie etwas später wieder.",
+      "tooManyRetries": "Diese Nachricht wurde bereits mehrmals erfolglos erneut gesendet. Formulieren Sie sie um oder senden Sie eine neue Nachricht.",
+      "busy": "Der Coach beantwortet in diesem Gespräch bereits eine Nachricht. Bitte warten Sie einige Sekunden.",
+      "notFound": "Dieses Gespräch existiert nicht mehr.",
+      "invalid": "Diese Nachricht konnte nicht gesendet werden.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und versuchen Sie es noch einmal.",
+      "network": "Die Verbindung wurde unterbrochen.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten.",
+      "kept": "Ihre Nachricht wurde gespeichert: Sie können den Coach erneut fragen.",
+      "retry": "Erneut versuchen"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Vorgeschlagener Erfolg",
+        "EXPERIENCE_UPDATE": "Vorgeschlagene Änderung einer Erfahrung",
+        "SKILL": "Vorgeschlagene Kompetenz",
+        "GUARD_RAIL": "Vorgeschlagene Leitplanken"
+      },
+      "pendingBadge": "Zu prüfen",
+      "acceptedBadge": "Angenommen",
+      "rejectedBadge": "Abgelehnt",
+      "draft": "Entwurf: Ohne Ihre Zustimmung wird nichts gespeichert.",
+      "why": "Warum: {rationale}",
+      "identityRemoved": "Identifizierende Angaben (Name, Arbeitgeber, Kontaktdaten) wurden aus diesem Vorschlag entfernt.",
+      "accept": "Annehmen",
+      "edit": "Bearbeiten",
+      "reject": "Ablehnen",
+      "cancel": "Abbrechen",
+      "saveAccept": "Speichern und annehmen",
+      "accepted": "Zu Ihrem Karrieregedächtnis hinzugefügt.",
+      "acceptedGuardRail": "Leitplanken aktualisiert.",
+      "rejected": "Vorschlag abgelehnt: Es wurde nichts gespeichert.",
+      "view": "Ansehen",
+      "nothingToEdit": "Hier gibt es kein bearbeitbares Feld: Nehmen Sie den Vorschlag an oder lehnen Sie ihn ab.",
+      "skillsHint": "durch Kommas getrennt",
+      "yes": "Ja",
+      "no": "Nein",
+      "remoteDays": "{count, plural, one {mindestens # Tag} other {mindestens # Tage}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Titel",
+        "experience": "Erfahrung",
+        "context": "Kontext",
+        "actions": "Maßnahmen",
+        "result": "Ergebnis",
+        "skills": "Kompetenzen",
+        "proofUrl": "Nachweis-Link",
+        "name": "Kompetenz",
+        "roleTitle": "Stellenbezeichnung",
+        "responsibilities": "Verantwortlichkeiten",
+        "seniority": "Ebene",
+        "contractType": "Vertrag",
+        "sector": "Branche",
+        "companySize": "Unternehmensgröße",
+        "companyStage": "Unternehmensart",
+        "minFixedSalary": "Mindestfixgehalt (brutto pro Jahr)",
+        "targetTotalPackage": "Angestrebte Gesamtvergütung (brutto pro Jahr)",
+        "remotePolicy": "Homeoffice",
+        "minRemoteDays": "Mindestanzahl Homeoffice-Tage pro Woche",
+        "contractTypes": "Akzeptierte Verträge",
+        "excludedSectors": "Ausgeschlossene Branchen",
+        "maxWeeklyHours": "Maximale Wochenstunden",
+        "acceptsOnCall": "Bereitschaftsdienst akzeptiert",
+        "locations": "Arbeitsgebiete"
+      }
     }
   },
   "settings": {
