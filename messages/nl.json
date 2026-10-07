@@ -163,6 +163,31 @@
       "disclosure": "Dit bericht wordt op uitdrukkelijke beslissing van de kandidaat verzonden door diens AI-loopbaanagent (Coach Career IA).",
       "noReply": "Antwoorden op deze e-mail worden niet gelezen."
     },
+    "negotiation": {
+      "subject": "Onderhandeling – {title}",
+      "disclosure": "Dit bericht is geschreven door de AI-assistent (Coach Career IA) van de kandidaat, die het vóór verzending heeft gelezen en goedgekeurd. Niets is bindend zonder persoonlijke bevestiging van de kandidaat.",
+      "replyText": "Antwoorden: {url}",
+      "replyButton": "Antwoorden",
+      "expires": "Link geldig tot {date}.",
+      "noReply": "Antwoorden op deze e-mail worden niet gelezen: gebruik de link ‘Antwoorden’.",
+      "draft": {
+        "greeting": "Goedendag,",
+        "intro": "Ik ben de AI-loopbaanagent van de kandidaat. Dank voor uw reactie over de functie ‘{title}’.",
+        "salary": "Wat de beloning betreft, zoekt de kandidaat een vast bruto jaarsalaris van {amount}.",
+        "essentials": "Essentiële punten voor de kandidaat:",
+        "remote": "minstens {days, plural, one {# dag} other {# dagen}} thuiswerken per week",
+        "contract": "contracttype: {contract}",
+        "location": "werkplek: {location}",
+        "startDate": "start niet eerder dan {date}",
+        "title": "functietitel: {title}",
+        "niceToHave": "Ook gewaardeerd:",
+        "availability": "De kandidaat bespreekt dit graag verder. Niets is afgesproken zolang de kandidaat het niet persoonlijk heeft bevestigd.",
+        "signoff": "Met vriendelijke groet,",
+        "closingAccepted": "Ik ben de AI-loopbaanagent van de kandidaat. De kandidaat dankt u voor uw voorstel voor de functie ‘{title}’ en wil op die basis verder. De kandidaat neemt persoonlijk contact met u op om de details te bevestigen.",
+        "closingDeclined": "Ik ben de AI-loopbaanagent van de kandidaat. De kandidaat dankt u voor de tijd die u aan de sollicitatie voor de functie ‘{title}’ heeft besteed, maar heeft besloten niet verder te gaan. De kandidaat wenst u veel succes met deze werving.",
+        "closingPaused": "Ik ben de AI-loopbaanagent van de kandidaat. De kandidaat dankt u voor uw voorstel voor de functie ‘{title}’ en heeft wat bedenktijd nodig. De kandidaat neemt binnenkort weer contact met u op."
+      }
+    },
     "employer": {
       "brand": "Coach Career IA — Werkgeversomgeving",
       "greeting": "Hallo,",
@@ -1244,7 +1269,8 @@
       "coachLimited": "AI-coach: {limit, plural, one {# bericht} other {# berichten}} per 24 uur",
       "coachNone": "AI-coach niet inbegrepen",
       "everythingFree": "Alles uit het gratis abonnement",
-      "coachUnlimited": "Onbeperkte AI-coach"
+      "coachUnlimited": "Onbeperkte AI-coach",
+      "negotiation": "Onderhandelingsagent: tegenvoorstellen voor u geschreven"
     },
     "upgrade": "Overstappen op Premium",
     "upgradeHint": "Maandelijkse betaling beveiligd door Stripe, op elk moment opzegbaar.",
@@ -1350,38 +1376,6 @@
       "signals": "Laatste signalen",
       "none": "Geen signaal",
       "notAvailable": "—"
-    }
-  },
-  "salaryBenchmark": {
-    "title": "Markt",
-    "intro": "Hoe deze vacature zich verhoudt tot de gepubliceerde salarissen voor vergelijkbare functies.",
-    "quartiles": {
-      "p25": "1e kwartiel",
-      "median": "Mediaan",
-      "p75": "3e kwartiel"
-    },
-    "estimate": "Schatting op basis van {count, plural, one {# gepubliceerde vacature} other {# gepubliceerde vacatures}} met salaris, van {from} tot {to} (bruto per jaar, exclusief variabele beloning). Dit is geen officiële salarisschaal.",
-    "fallback": {
-      "COUNTRY": "Referentie verbreed naar het hele land: te weinig vergelijkbare vacatures in de regio.",
-      "FAMILY_COUNTRY": "Referentie verbreed naar de functiegroep, alle senioriteitsniveaus: te weinig preciezere vergelijkbare vacatures."
-    },
-    "notEnoughData": "Onvoldoende gegevens: minder dan {min} vergelijkbare vacatures met gepubliceerd salaris. Liever geen referentie dan een onbetrouwbaar cijfer.",
-    "remote": "volledig op afstand ({country})",
-    "allSeniorities": "alle niveaus",
-    "offerPosition": {
-      "BELOW": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt onder het 1e kwartiel van de markt.",
-      "WITHIN": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) valt binnen de gebruikelijke marktbandbreedte (tussen het 1e en 3e kwartiel).",
-      "ABOVE": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt boven het 3e kwartiel van de markt.",
-      "noSalary": "Deze vacature vermeldt geen vergelijkbaar salaris: alleen de marktreferentie wordt getoond."
-    },
-    "floorPosition": {
-      "BELOW": "Uw ondergrens ({amount}) ligt onder het 1e kwartiel: die sluit weinig vergelijkbare vacatures uit.",
-      "WITHIN": "Uw ondergrens ({amount}) valt binnen de gebruikelijke marktbandbreedte.",
-      "ABOVE": "Uw ondergrens ({amount}) ligt boven het 3e kwartiel: die sluit de meeste vergelijkbare vacatures uit."
-    },
-    "guardRails": {
-      "title": "Marktreferentie",
-      "intro": "Gepubliceerde salarissen voor uw functiegroep (op basis van uw meest recente functie), in Frankrijk."
     }
   },
   "card": {
@@ -1657,6 +1651,183 @@
     "card": "Profiel",
     "expires": "Link geldig tot {date}, op elk moment in te trekken door de kandidaat.",
     "notice": "Deze gegevens worden alleen voor deze werving met je gedeeld."
+  },
+  "negotiation": {
+    "tab": "Onderhandelen",
+    "tabFollowUp": "Opvolging",
+    "title": "Onderhandeling",
+    "intro": "Uw agent onderhandelt voor u, volledig transparant: hij schrijft, u keurt elk bericht goed. Hij verzint geen feiten en accepteert nooit iets namens u.",
+    "notSent": "De onderhandeling begint zodra uw eerste contact is verzonden.",
+    "waitReply": "Het bedrijf heeft nog niet geantwoord: u kunt uw mandaat al voorbereiden.",
+    "mandate": {
+      "title": "Uw mandaat",
+      "intro": "Wat uw agent mag vragen. Een bericht onder uw ondergrens, of dat toegeeft op een niet-onderhandelbaar punt, wordt geblokkeerd.",
+      "salaryFloor": "Ondergrens (vast bruto jaarsalaris, €)",
+      "salaryFloorHint": "Standaard: het minimumsalaris van uw grenzen. Nooit aan het bedrijf bekendgemaakt.",
+      "salaryTarget": "Doel (vast bruto jaarsalaris, €)",
+      "nonNegotiable": "Niet-onderhandelbare punten",
+      "remoteDaysMin": "Minimaal thuiswerken (dagen per week)",
+      "location": "Werkplek",
+      "contractType": "Contracttype",
+      "contractAny": "Maakt niet uit",
+      "startDate": "Vroegste startdatum",
+      "otherPoints": "Andere niet-onderhandelbare punten (één per regel)",
+      "niceToHave": "Wenselijk (één per regel)",
+      "facts": "Feiten die de agent mag noemen (optioneel)",
+      "factsHint": "Bijvoorbeeld een ander lopend aanbod. Zonder vermelding hier noemt de agent nooit een concurrerend aanbod of uw huidige salaris.",
+      "save": "Mandaat opslaan",
+      "saved": "Mandaat opgeslagen.",
+      "invalid": "Controleer: {fields}.",
+      "jobTitle": "Functietitel"
+    },
+    "fields": {
+      "salaryFloor": "de ondergrens (€ 10.000 tot € 1.000.000)",
+      "salaryTarget": "het doel (minstens gelijk aan de ondergrens)",
+      "remoteDaysMin": "het thuiswerken (0 tot 5 dagen)",
+      "location": "de werkplek (maximaal 120 tekens)",
+      "contractType": "het contracttype",
+      "startDate": "de startdatum",
+      "title": "de functietitel (maximaal 120 tekens)",
+      "otherPoints": "de andere punten (maximaal 10, elk 200 tekens)",
+      "niceToHave": "de wenselijke punten (maximaal 10, elk 200 tekens)",
+      "facts": "de feiten (maximaal 1.000 tekens)"
+    },
+    "analysis": {
+      "title": "Analyse van het laatste voorstel",
+      "estimate": "Automatische schatting op basis van het bericht ontvangen op {date}: lees altijd zelf de tekst van het bedrijf.",
+      "none": "Nog geen voorstel om te analyseren.",
+      "noMandate": "Sla uw mandaat op om het voorstel van het bedrijf te vergelijken.",
+      "salary": {
+        "aboveTarget": "Beloning: {amount}, op of boven uw doel.",
+        "aboveFloor": "Beloning: {amount}, boven uw ondergrens maar onder uw doel.",
+        "belowFloor": "Beloning: {amount}, onder uw ondergrens.",
+        "unknown": "Beloning: geen bedrag gevonden."
+      },
+      "remote": {
+        "met": "Thuiswerken: {days, plural, one {# dag} other {# dagen}} per week, voldoet aan uw minimum.",
+        "notMet": "Thuiswerken: {days, plural, one {# dag} other {# dagen}} per week, onder uw minimum.",
+        "unknown": "Thuiswerken: niet vermeld."
+      },
+      "contract": {
+        "met": "Contract: {contract}, zoals vereist.",
+        "notMet": "Contract: {contract}, niet wat u vereist.",
+        "unknown": "Contract: niet vermeld."
+      },
+      "unchecked": "{count, plural, one {# ander niet-onderhandelbaar punt} other {# andere niet-onderhandelbare punten}} zelf te controleren."
+    },
+    "thread": {
+      "title": "Verloop van de onderhandeling",
+      "empty": "Nog geen onderhandelingsberichten.",
+      "out": "Uw agent, door u goedgekeurd",
+      "in": "Het bedrijf",
+      "sentOn": "Verzonden op {date}",
+      "submittedOn": "Doorgegeven op {date}",
+      "receivedOn": "Ontvangen op {date}"
+    },
+    "composer": {
+      "title": "Volgend bericht",
+      "generateCounter": "Tegenvoorstel genereren",
+      "generateClosing": "Afsluitend bericht schrijven",
+      "generating": "Bezig met schrijven…",
+      "draftLlm": "Door de AI geschreven op basis van uw mandaat en de berichten van het bedrijf. Lees het goed: het wordt ongewijzigd verzonden.",
+      "draftRules": "Opgesteld op basis van een sjabloon en uw mandaat. Lees en personaliseer het.",
+      "fallback": "De AI-assistent kon dit bericht niet schrijven (dienst niet beschikbaar, te traag of niet-conforme tekst): er is een voorstel opgesteld op basis van een sjabloon.",
+      "generated": "Concept klaar: lees het voordat u het goedkeurt.",
+      "body": "Bericht",
+      "appended": "Automatisch toegevoegd: de vermelding dat het bericht door uw AI-assistent is geschreven en door u is goedgekeurd, en de antwoordlink.",
+      "language": "Taal van het bericht: {language}",
+      "save": "Opslaan",
+      "saved": "Concept opgeslagen. Keur het goed om het te kunnen verzenden.",
+      "approve": "Ik keur dit bericht goed",
+      "approved": "Bericht goedgekeurd.",
+      "approvedOn": "Goedgekeurd op {date}. Elke wijziging trekt de goedkeuring in.",
+      "send": "Nu verzenden",
+      "sendHint": "Verzonden vanaf het adres van het platform, nooit vanaf het uwe.",
+      "sent": "Bericht verzonden.",
+      "paste": "Tekst om aan het bedrijf door te geven",
+      "pasteHint": "Deze vacature heeft geen sollicitatieadres: geef deze tekst zelf door. Hij bevat de antwoordlink.",
+      "markTransmitted": "Ik heb dit bericht doorgegeven",
+      "discard": "Dit concept verwijderen",
+      "discardConfirm": "Dit concept verwijderen?",
+      "blocked": "Dit bericht kan in deze vorm niet worden goedgekeurd:"
+    },
+    "issues": {
+      "belowFloor": "een bedrag ligt onder uw ondergrens ({excerpt});",
+      "remoteDays": "het geeft minder thuiswerken toe dan uw minimum;",
+      "contractType": "het noemt een ander contracttype dan u vereist;",
+      "competingOffer": "het noemt een concurrerend aanbod dat u niet in uw mandaat hebt vermeld;",
+      "currentSalary": "het noemt uw huidige salaris, dat niet in uw mandaat staat;",
+      "inventedFigure": "het noemt een cijfer dat niet uit uw mandaat of van het bedrijf komt ({excerpt})."
+    },
+    "outcome": {
+      "title": "Uw beslissing",
+      "intro": "Alleen u beslist. De agent schrijft daarna een afsluitend bericht, dat u goedkeurt vóór verzending.",
+      "status": {
+        "ACTIVE": "Onderhandeling loopt",
+        "PAUSED": "Onderhandeling gepauzeerd",
+        "ACCEPTED": "Voorstel door u aanvaard",
+        "DECLINED": "Voorstel door u afgewezen"
+      },
+      "accept": "Ik aanvaard het voorstel",
+      "decline": "Ik wijs af",
+      "pause": "Pauzeren",
+      "resume": "Onderhandeling hervatten",
+      "acceptConfirm": "Bevestigt u dat u het laatste voorstel van het bedrijf aanvaardt? Geen enkel bericht wordt verzonden zonder uw goedkeuring."
+    },
+    "upsell": {
+      "title": "Ondersteunde onderhandeling: Premium",
+      "text": "Met Premium schrijft uw agent uw tegenvoorstellen en uw afsluitende bericht. Het mandaat en de analyse blijven gratis.",
+      "cta": "Ontdek Premium"
+    },
+    "errors": {
+      "notSent": "Het eerste contact moet eerst worden verzonden.",
+      "noMandate": "Sla eerst uw mandaat op.",
+      "premium": "Schrijven door de onderhandelingsagent is voorbehouden aan Premium.",
+      "closed": "De onderhandeling loopt niet meer: hervat haar voor een tegenvoorstel.",
+      "notClosed": "Geef eerst uw beslissing aan.",
+      "blocked": "Dit bericht wordt door uw mandaat geblokkeerd: pas het aan.",
+      "reidentifying": "Het bericht bevat iets dat u kan identificeren: ‘{excerpt}’. Pas het aan.",
+      "notApproved": "Keur dit bericht eerst goed, in de huidige versie.",
+      "alreadySent": "Dit bericht is al verzonden.",
+      "card": "Uw anonieme kaart moet zijn goedgekeurd, zonder heridentificatieprobleem, om de antwoordlink te maken.",
+      "quota": "Daglimiet bereikt: {limit} berichten per 24 uur. Probeer het morgen opnieuw.",
+      "noChannel": "Deze vacature publiceert geen sollicitatieadres meer.",
+      "sendUnavailable": "Het verzenden van e-mails is niet geconfigureerd op deze server.",
+      "sendFailed": "Verzenden mislukt. Probeer het later opnieuw.",
+      "invalid": "Het bericht moet tussen 20 en 3.000 tekens lang zijn."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Markt",
+    "intro": "Hoe deze vacature zich verhoudt tot de gepubliceerde salarissen voor vergelijkbare functies.",
+    "quartiles": {
+      "p25": "1e kwartiel",
+      "median": "Mediaan",
+      "p75": "3e kwartiel"
+    },
+    "estimate": "Schatting op basis van {count, plural, one {# gepubliceerde vacature} other {# gepubliceerde vacatures}} met salaris, van {from} tot {to} (bruto per jaar, exclusief variabele beloning). Dit is geen officiële salarisschaal.",
+    "fallback": {
+      "COUNTRY": "Referentie verbreed naar het hele land: te weinig vergelijkbare vacatures in de regio.",
+      "FAMILY_COUNTRY": "Referentie verbreed naar de functiegroep, alle senioriteitsniveaus: te weinig preciezere vergelijkbare vacatures."
+    },
+    "notEnoughData": "Onvoldoende gegevens: minder dan {min} vergelijkbare vacatures met gepubliceerd salaris. Liever geen referentie dan een onbetrouwbaar cijfer.",
+    "remote": "volledig op afstand ({country})",
+    "allSeniorities": "alle niveaus",
+    "offerPosition": {
+      "BELOW": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt onder het 1e kwartiel van de markt.",
+      "WITHIN": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) valt binnen de gebruikelijke marktbandbreedte (tussen het 1e en 3e kwartiel).",
+      "ABOVE": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt boven het 3e kwartiel van de markt.",
+      "noSalary": "Deze vacature vermeldt geen vergelijkbaar salaris: alleen de marktreferentie wordt getoond."
+    },
+    "floorPosition": {
+      "BELOW": "Uw ondergrens ({amount}) ligt onder het 1e kwartiel: die sluit weinig vergelijkbare vacatures uit.",
+      "WITHIN": "Uw ondergrens ({amount}) valt binnen de gebruikelijke marktbandbreedte.",
+      "ABOVE": "Uw ondergrens ({amount}) ligt boven het 3e kwartiel: die sluit de meeste vergelijkbare vacatures uit."
+    },
+    "guardRails": {
+      "title": "Marktreferentie",
+      "intro": "Gepubliceerde salarissen voor uw functiegroep (op basis van uw meest recente functie), in Frankrijk."
+    }
   },
   "employer": {
     "metaTitle": "Werkgeversomgeving",

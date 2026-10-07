@@ -14,12 +14,16 @@ export const PLANS = ["FREE", "PREMIUM"] as const;
 export type PlanCode = (typeof PLANS)[number];
 
 /** Fonctionnalités payantes (ajouter ici, puis les rattacher à une offre). */
-export const FEATURES = ["coach.unlimited"] as const;
+export const FEATURES = [
+  "coach.unlimited",
+  /** Contre-propositions et messages de clôture rédigés par l'agent de négociation. */
+  "negotiation",
+] as const;
 export type Feature = (typeof FEATURES)[number];
 
 const PLAN_FEATURES: Record<PlanCode, readonly Feature[]> = {
   FREE: [],
-  PREMIUM: ["coach.unlimited"],
+  PREMIUM: ["coach.unlimited", "negotiation"],
 };
 
 /**

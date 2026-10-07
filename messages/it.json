@@ -163,6 +163,31 @@
       "disclosure": "Questo messaggio è inviato dal suo agente di carriera IA (Coach Career IA), su sua decisione esplicita.",
       "noReply": "Le risposte a questa e-mail non vengono lette."
     },
+    "negotiation": {
+      "subject": "Negoziazione – {title}",
+      "disclosure": "Questo messaggio è stato redatto dall’assistente IA (Coach Career IA) della persona candidata, che lo ha riletto e approvato prima dell’invio. Nulla è vincolante senza la sua conferma personale.",
+      "replyText": "Rispondi: {url}",
+      "replyButton": "Rispondi",
+      "expires": "Link valido fino al {date}.",
+      "noReply": "Le risposte a questa e-mail non vengono lette: usa il link «Rispondi».",
+      "draft": {
+        "greeting": "Buongiorno,",
+        "intro": "Sono l’agente di carriera IA della persona candidata. Grazie per il vostro riscontro sulla posizione «{title}».",
+        "salary": "Per quanto riguarda la retribuzione, desidera una retribuzione fissa annua lorda di {amount}.",
+        "essentials": "Punti essenziali per lei:",
+        "remote": "almeno {days, plural, one {# giorno} other {# giorni}} di smart working a settimana",
+        "contract": "un contratto a {contract}",
+        "location": "sede di lavoro: {location}",
+        "startDate": "inizio non prima del {date}",
+        "title": "titolo della posizione: {title}",
+        "niceToHave": "Sarebbero inoltre graditi:",
+        "availability": "Resta a disposizione per parlarne. Nulla è concordato finché non lo conferma personalmente.",
+        "signoff": "Cordiali saluti,",
+        "closingAccepted": "Sono l’agente di carriera IA della persona candidata. Vi ringrazia per la proposta relativa alla posizione «{title}» e desidera procedere su questa base. Vi ricontatterà personalmente per confermare i dettagli.",
+        "closingDeclined": "Sono l’agente di carriera IA della persona candidata. Vi ringrazia per il tempo dedicato alla sua candidatura per la posizione «{title}», ma ha deciso di non proseguire. Vi augura il meglio per questa selezione.",
+        "closingPaused": "Sono l’agente di carriera IA della persona candidata. Vi ringrazia per la proposta relativa alla posizione «{title}» e ha bisogno di un po’ di tempo per riflettere. Vi ricontatterà a breve."
+      }
+    },
     "employer": {
       "brand": "Coach Career IA — Area aziende",
       "greeting": "Buongiorno,",
@@ -1244,7 +1269,8 @@
       "coachLimited": "Coach IA: {limit, plural, one {# messaggio} other {# messaggi}} ogni 24 ore",
       "coachNone": "Coach IA non incluso",
       "everythingFree": "Tutto ciò che comprende il piano gratuito",
-      "coachUnlimited": "Coach IA illimitato"
+      "coachUnlimited": "Coach IA illimitato",
+      "negotiation": "Agente di negoziazione: controproposte redatte per te"
     },
     "upgrade": "Passa a Premium",
     "upgradeHint": "Pagamento mensile protetto da Stripe, disdicibile in qualsiasi momento.",
@@ -1350,38 +1376,6 @@
       "signals": "Ultimi segnali",
       "none": "Nessun segnale",
       "notAvailable": "—"
-    }
-  },
-  "salaryBenchmark": {
-    "title": "Mercato",
-    "intro": "Come si colloca questa offerta rispetto agli stipendi pubblicati per ruoli comparabili.",
-    "quartiles": {
-      "p25": "1° quartile",
-      "median": "Mediana",
-      "p75": "3° quartile"
-    },
-    "estimate": "Stima basata su {count, plural, one {# offerta pubblicata} other {# offerte pubblicate}} con stipendio, da {from} a {to} (lordo annuo, parte variabile esclusa). Non è una tabella retributiva ufficiale.",
-    "fallback": {
-      "COUNTRY": "Riferimento esteso all’intero paese: offerte comparabili insufficienti nella zona.",
-      "FAMILY_COUNTRY": "Riferimento esteso alla famiglia professionale, tutti i livelli di anzianità: offerte comparabili più precise insufficienti."
-    },
-    "notEnoughData": "Dati insufficienti: meno di {min} offerte comparabili con stipendio pubblicato. Nessun riferimento mostrato piuttosto che un dato poco affidabile.",
-    "remote": "full remote ({country})",
-    "allSeniorities": "tutti i livelli",
-    "offerPosition": {
-      "BELOW": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sotto il 1° quartile del mercato.",
-      "WITHIN": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) rientra nella forbice abituale del mercato (tra il 1° e il 3° quartile).",
-      "ABOVE": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sopra il 3° quartile del mercato.",
-      "noSalary": "Questa offerta non indica uno stipendio comparabile: viene mostrato solo il riferimento di mercato."
-    },
-    "floorPosition": {
-      "BELOW": "La Sua soglia minima ({amount}) è sotto il 1° quartile: esclude poche offerte comparabili.",
-      "WITHIN": "La Sua soglia minima ({amount}) rientra nella forbice abituale del mercato.",
-      "ABOVE": "La Sua soglia minima ({amount}) supera il 3° quartile: esclude la maggior parte delle offerte comparabili."
-    },
-    "guardRails": {
-      "title": "Riferimento di mercato",
-      "intro": "Stipendi pubblicati per la Sua famiglia professionale (in base al Suo ruolo più recente), in Francia."
     }
   },
   "card": {
@@ -1657,6 +1651,183 @@
     "card": "Profilo",
     "expires": "Link valido fino al {date}, revocabile in qualsiasi momento dalla persona candidata.",
     "notice": "Queste informazioni ti sono comunicate solo per questa selezione."
+  },
+  "negotiation": {
+    "tab": "Negozia",
+    "tabFollowUp": "Monitoraggio",
+    "title": "Negoziazione",
+    "intro": "Il tuo agente negozia per te, in piena trasparenza: redige, tu approvi ogni messaggio. Non inventa alcun fatto e non accetta mai nulla al posto tuo.",
+    "notSent": "La negoziazione si apre dopo l’invio del primo contatto.",
+    "waitReply": "L’azienda non ha ancora risposto: puoi già preparare il tuo mandato.",
+    "mandate": {
+      "title": "Il tuo mandato",
+      "intro": "Ciò che il tuo agente può chiedere. Un messaggio sotto la tua soglia minima, o che cede su un punto non negoziabile, viene bloccato.",
+      "salaryFloor": "Soglia minima (fisso annuo lordo, €)",
+      "salaryFloorHint": "Predefinita: la retribuzione minima dei tuoi paletti. Mai rivelata all’azienda.",
+      "salaryTarget": "Obiettivo (fisso annuo lordo, €)",
+      "nonNegotiable": "Punti non negoziabili",
+      "remoteDaysMin": "Smart working minimo (giorni a settimana)",
+      "location": "Sede di lavoro",
+      "contractType": "Tipo di contratto",
+      "contractAny": "Indifferente",
+      "startDate": "Data di inizio più vicina possibile",
+      "otherPoints": "Altri punti non negoziabili (uno per riga)",
+      "niceToHave": "Desiderabili (uno per riga)",
+      "facts": "Fatti che l’agente può menzionare (facoltativo)",
+      "factsHint": "Per esempio un’altra offerta in corso. Se non indicato qui, l’agente non menziona mai un’offerta concorrente né la tua retribuzione attuale.",
+      "save": "Salva il mandato",
+      "saved": "Mandato salvato.",
+      "invalid": "Controlla: {fields}.",
+      "jobTitle": "Titolo della posizione"
+    },
+    "fields": {
+      "salaryFloor": "la soglia minima (da 10.000 a 1.000.000 €)",
+      "salaryTarget": "l’obiettivo (almeno pari alla soglia minima)",
+      "remoteDaysMin": "lo smart working (da 0 a 5 giorni)",
+      "location": "la sede (massimo 120 caratteri)",
+      "contractType": "il tipo di contratto",
+      "startDate": "la data di inizio",
+      "title": "il titolo (massimo 120 caratteri)",
+      "otherPoints": "gli altri punti (massimo 10, 200 caratteri ciascuno)",
+      "niceToHave": "i desiderabili (massimo 10, 200 caratteri ciascuno)",
+      "facts": "i fatti (massimo 1.000 caratteri)"
+    },
+    "analysis": {
+      "title": "Analisi dell’ultima proposta",
+      "estimate": "Stima automatica basata sul messaggio ricevuto il {date}: rileggi sempre il testo dell’azienda.",
+      "none": "Ancora nessuna proposta da analizzare.",
+      "noMandate": "Salva il tuo mandato per confrontare la proposta dell’azienda.",
+      "salary": {
+        "aboveTarget": "Retribuzione: {amount}, pari o superiore al tuo obiettivo.",
+        "aboveFloor": "Retribuzione: {amount}, sopra la tua soglia minima ma sotto il tuo obiettivo.",
+        "belowFloor": "Retribuzione: {amount}, sotto la tua soglia minima.",
+        "unknown": "Retribuzione: nessun importo individuato."
+      },
+      "remote": {
+        "met": "Smart working: {days, plural, one {# giorno} other {# giorni}} a settimana, conforme al tuo minimo.",
+        "notMet": "Smart working: {days, plural, one {# giorno} other {# giorni}} a settimana, sotto il tuo minimo.",
+        "unknown": "Smart working: non specificato."
+      },
+      "contract": {
+        "met": "Contratto: {contract}, conforme.",
+        "notMet": "Contratto: {contract}, diverso da quello che richiedi.",
+        "unknown": "Contratto: non specificato."
+      },
+      "unchecked": "{count, plural, one {# altro punto non negoziabile} other {# altri punti non negoziabili}} da verificare personalmente."
+    },
+    "thread": {
+      "title": "Cronologia della negoziazione",
+      "empty": "Ancora nessun messaggio di negoziazione.",
+      "out": "Il tuo agente, approvato da te",
+      "in": "L’azienda",
+      "sentOn": "Inviato il {date}",
+      "submittedOn": "Trasmesso il {date}",
+      "receivedOn": "Ricevuto il {date}"
+    },
+    "composer": {
+      "title": "Prossimo messaggio",
+      "generateCounter": "Genera una controproposta",
+      "generateClosing": "Redigi il messaggio di chiusura",
+      "generating": "Redazione in corso…",
+      "draftLlm": "Redatto dall’IA a partire dal tuo mandato e dai messaggi dell’azienda. Rileggilo: partirà così com’è.",
+      "draftRules": "Preparato da un modello e dal tuo mandato. Rileggilo e personalizzalo.",
+      "fallback": "L’assistente IA non è riuscito a redigere questo messaggio (servizio non disponibile, troppo lento o testo non conforme): è stata preparata una proposta a partire da un modello.",
+      "generated": "Bozza pronta: rileggila prima di approvarla.",
+      "body": "Messaggio",
+      "appended": "Aggiunti automaticamente: la menzione che il messaggio è stato redatto dal tuo assistente IA e approvato da te, e il link per rispondere.",
+      "language": "Lingua del messaggio: {language}",
+      "save": "Salva",
+      "saved": "Bozza salvata. Approvala per poterla inviare.",
+      "approve": "Approvo questo messaggio",
+      "approved": "Messaggio approvato.",
+      "approvedOn": "Approvato il {date}. Qualsiasi modifica annulla l’approvazione.",
+      "send": "Invia ora",
+      "sendHint": "Inviato dall’indirizzo della piattaforma, mai dal tuo.",
+      "sent": "Messaggio inviato.",
+      "paste": "Testo da trasmettere all’azienda",
+      "pasteHint": "Questa offerta non ha un indirizzo di candidatura: trasmetti tu questo testo. Contiene il link per rispondere.",
+      "markTransmitted": "Ho trasmesso questo messaggio",
+      "discard": "Elimina questa bozza",
+      "discardConfirm": "Eliminare questa bozza?",
+      "blocked": "Questo messaggio non può essere approvato così com’è:"
+    },
+    "issues": {
+      "belowFloor": "un importo è inferiore alla tua soglia minima ({excerpt});",
+      "remoteDays": "concede meno smart working del tuo minimo;",
+      "contractType": "menziona un tipo di contratto diverso da quello che richiedi;",
+      "competingOffer": "menziona un’offerta concorrente che non hai dichiarato nel tuo mandato;",
+      "currentSalary": "menziona la tua retribuzione attuale, assente dal tuo mandato;",
+      "inventedFigure": "cita una cifra che non proviene né dal tuo mandato né dall’azienda ({excerpt})."
+    },
+    "outcome": {
+      "title": "La tua decisione",
+      "intro": "Decidi solo tu. L’agente redige poi un messaggio di chiusura, che approvi prima di qualsiasi invio.",
+      "status": {
+        "ACTIVE": "Negoziazione in corso",
+        "PAUSED": "Negoziazione in pausa",
+        "ACCEPTED": "Proposta accettata da te",
+        "DECLINED": "Proposta rifiutata da te"
+      },
+      "accept": "Accetto la proposta",
+      "decline": "Rifiuto",
+      "pause": "Metti in pausa",
+      "resume": "Riprendi la negoziazione",
+      "acceptConfirm": "Confermi di accettare l’ultima proposta dell’azienda? Nessun messaggio parte senza la tua approvazione."
+    },
+    "upsell": {
+      "title": "Negoziazione assistita: piano Premium",
+      "text": "Con Premium, il tuo agente redige le tue controproposte e il messaggio di chiusura. Il mandato e l’analisi restano gratuiti.",
+      "cta": "Scopri Premium"
+    },
+    "errors": {
+      "notSent": "Il primo contatto deve essere prima inviato.",
+      "noMandate": "Salva prima il tuo mandato.",
+      "premium": "La redazione da parte dell’agente di negoziazione è riservata a Premium.",
+      "closed": "La negoziazione non è più in corso: riprendila per una controproposta.",
+      "notClosed": "Indica prima la tua decisione.",
+      "blocked": "Questo messaggio è bloccato dal tuo mandato: modificalo.",
+      "reidentifying": "Il messaggio contiene un elemento che potrebbe identificarti: «{excerpt}». Modificalo.",
+      "notApproved": "Approva prima questo messaggio, nella versione attuale.",
+      "alreadySent": "Questo messaggio è già stato inviato.",
+      "card": "La tua scheda anonima deve essere convalidata, senza problemi di reidentificazione, per creare il link di risposta.",
+      "quota": "Limite giornaliero raggiunto: {limit} invii ogni 24 ore. Riprova domani.",
+      "noChannel": "Questa offerta non pubblica più un indirizzo di candidatura.",
+      "sendUnavailable": "L’invio di e-mail non è configurato su questo server.",
+      "sendFailed": "Invio non riuscito. Riprova più tardi.",
+      "invalid": "Il messaggio deve contenere da 20 a 3.000 caratteri."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Mercato",
+    "intro": "Come si colloca questa offerta rispetto agli stipendi pubblicati per ruoli comparabili.",
+    "quartiles": {
+      "p25": "1° quartile",
+      "median": "Mediana",
+      "p75": "3° quartile"
+    },
+    "estimate": "Stima basata su {count, plural, one {# offerta pubblicata} other {# offerte pubblicate}} con stipendio, da {from} a {to} (lordo annuo, parte variabile esclusa). Non è una tabella retributiva ufficiale.",
+    "fallback": {
+      "COUNTRY": "Riferimento esteso all’intero paese: offerte comparabili insufficienti nella zona.",
+      "FAMILY_COUNTRY": "Riferimento esteso alla famiglia professionale, tutti i livelli di anzianità: offerte comparabili più precise insufficienti."
+    },
+    "notEnoughData": "Dati insufficienti: meno di {min} offerte comparabili con stipendio pubblicato. Nessun riferimento mostrato piuttosto che un dato poco affidabile.",
+    "remote": "full remote ({country})",
+    "allSeniorities": "tutti i livelli",
+    "offerPosition": {
+      "BELOW": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sotto il 1° quartile del mercato.",
+      "WITHIN": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) rientra nella forbice abituale del mercato (tra il 1° e il 3° quartile).",
+      "ABOVE": "Lo stipendio annunciato ({amount} lordo annuo, valore medio della forbice) è sopra il 3° quartile del mercato.",
+      "noSalary": "Questa offerta non indica uno stipendio comparabile: viene mostrato solo il riferimento di mercato."
+    },
+    "floorPosition": {
+      "BELOW": "La Sua soglia minima ({amount}) è sotto il 1° quartile: esclude poche offerte comparabili.",
+      "WITHIN": "La Sua soglia minima ({amount}) rientra nella forbice abituale del mercato.",
+      "ABOVE": "La Sua soglia minima ({amount}) supera il 3° quartile: esclude la maggior parte delle offerte comparabili."
+    },
+    "guardRails": {
+      "title": "Riferimento di mercato",
+      "intro": "Stipendi pubblicati per la Sua famiglia professionale (in base al Suo ruolo più recente), in Francia."
+    }
   },
   "employer": {
     "metaTitle": "Area aziende",
