@@ -2,6 +2,8 @@ import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
 import { decrypt, encrypt } from "@/lib/crypto";
+import { isValidPoint, type GeoPoint } from "@/lib/geo/distance";
+import { locateLabels, type LabelLocator } from "@/lib/geo/server";
 import { isAppLocale, type AppLocale } from "@/i18n/routing";
 import { SECTORS, type SectorCode, type VisibilityStatusCode } from "./codes";
 import {
@@ -439,13 +441,60 @@ export async function getGuardRails(userId: string) {
     maxWeeklyHours: rails?.maxWeeklyHours ?? null,
     acceptsOnCall: rails?.acceptsOnCall ?? false,
     culturePreferences: rails?.culturePreferences ?? [],
-    locations: locations.map((l) => ({ id: l.id, label: l.label, radiusKm: l.radiusKm })),
+    locations: locations.map((l) => ({
+      id: l.id,
+      label: l.label,
+      radiusKm: l.radiusKm,
+      // Coordonnées non exposées au client : seul compte « localisé ou non ».
+      located: isValidPoint(l),
+    })),
     updatedAt: rails?.updatedAt ?? null,
   };
 }
 export type GuardRailsView = Awaited<ReturnType<typeof getGuardRails>>;
 
-export async function saveGuardRails(userId: string, input: GuardRailsInput) {
+/**
+ * Enregistre les garde-fous. Chaque lieu est géocodé côté serveur ; un lieu
+ * introuvable (ou un géocodeur en panne) est tout de même enregistré, sans
+ * coordonnées. Renvoie les index des lieux non localisés.
+ */
+export async function saveGuardRails(
+  userId: string,
+  input: GuardRailsInput,
+  locate: LabelLocator = locateLabels,
+): Promise<{ unlocated: number[] }> {
+  // Un libellé inchangé garde ses coordonnées : pas de nouvel appel, et pas de
+  // perte si le géocodeur est indisponible à ce moment-là.
+  const previous = await db.guardRailLocation.findMany({
+    where: { userId },
+    select: { label: true, latitude: true, longitude: true },
+  });
+  const known = new Map<string, GeoPoint>();
+  for (const p of previous) {
+    if (isValidPoint(p)) known.set(p.label, { latitude: p.latitude, longitude: p.longitude });
+  }
+  const toLocate = [...new Set(input.locations.map((l) => l.label).filter((l) => !known.has(l)))];
+  let located: (GeoPoint | null)[] = [];
+  try {
+    located = toLocate.length > 0 ? await locate(toLocate) : [];
+  } catch {
+    located = [];
+  }
+  toLocate.forEach((label, i) => {
+    const point = located[i];
+    if (isValidPoint(point)) known.set(label, point);
+  });
+  const locations = input.locations.map((l) => {
+    const point = known.get(l.label);
+    return {
+      userId,
+      label: l.label,
+      radiusKm: l.radiusKm,
+      latitude: point?.latitude ?? null,
+      longitude: point?.longitude ?? null,
+    };
+  });
+
   const data = {
     minFixedSalary: input.minFixedSalary ?? null,
     targetTotalPackage: input.targetTotalPackage ?? null,
@@ -463,10 +512,11 @@ export async function saveGuardRails(userId: string, input: GuardRailsInput) {
   await db.$transaction([
     db.guardRails.upsert({ where: { userId }, create: { userId, ...data }, update: data }),
     db.guardRailLocation.deleteMany({ where: { userId } }),
-    db.guardRailLocation.createMany({
-      data: input.locations.map((l) => ({ userId, label: l.label, radiusKm: l.radiusKm })),
-    }),
+    db.guardRailLocation.createMany({ data: locations }),
   ]);
+  return {
+    unlocated: locations.flatMap((l, i) => (l.latitude === null ? [i] : [])),
+  };
 }
 
 // --- Tableau de bord ------------------------------------------------------------------------

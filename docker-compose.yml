@@ -22,6 +22,10 @@ x-app-env: &app-env
   # Pièces justificatives chiffrées (volume `uploads`).
   UPLOAD_DIR: /app/storage/uploads
   ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+  # Géocodage des lieux des garde-fous (User-Agent : RADAR_CONTACT, sinon AUTH_URL).
+  RADAR_CONTACT: ${RADAR_CONTACT:-}
+  GEO_ENABLED: ${GEO_ENABLED:-true}
+  GEO_NOMINATIM_ENABLED: ${GEO_NOMINATIM_ENABLED:-true}
 
 services:
   app:
@@ -90,6 +94,9 @@ services:
       RADAR_FT_KEYWORDS: ${RADAR_FT_KEYWORDS:-}
       RADAR_FT_DEPARTMENTS: ${RADAR_FT_DEPARTMENTS:-}
       RADAR_FT_MAX_RESULTS: ${RADAR_FT_MAX_RESULTS:-1050}
+      GEO_ENABLED: ${GEO_ENABLED:-true}
+      GEO_NOMINATIM_ENABLED: ${GEO_NOMINATIM_ENABLED:-true}
+      GEO_NOMINATIM_MAX_PER_RUN: ${GEO_NOMINATIM_MAX_PER_RUN:-200}
     depends_on:
       postgres:
         condition: service_healthy

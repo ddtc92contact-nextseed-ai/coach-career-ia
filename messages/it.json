@@ -363,7 +363,9 @@
       "cityPlaceholder": "Ad esempio: Milano",
       "radius": "Raggio (km)",
       "remove": "Rimuovi",
-      "add": "Aggiungi una sede"
+      "add": "Aggiungi una sede",
+      "notLocated": "Luogo non ancora localizzato: è salvato, ma il filtro di distanza non potrà applicarsi. Controlla l’ortografia o indica il paese («Berlino, Germania»), poi salva di nuovo.",
+      "notLocatedSummary": "{count, plural, one {# luogo non è stato localizzato. È salvato, ma le offerte non saranno filtrate per distanza finché non viene riconosciuto.} other {# luoghi non sono stati localizzati. Sono salvati, ma le offerte non saranno filtrate per distanza finché non vengono riconosciuti.}}"
     },
     "remote": {
       "title": "Smart working",

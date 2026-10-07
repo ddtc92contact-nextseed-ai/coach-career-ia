@@ -363,7 +363,9 @@
       "cityPlaceholder": "Par exemple : Lyon",
       "radius": "Rayon (km)",
       "remove": "Retirer",
-      "add": "Ajouter un lieu"
+      "add": "Ajouter un lieu",
+      "notLocated": "Lieu non localisé pour l’instant : il est enregistré, mais le filtre de distance ne pourra pas s’y appliquer. Vérifiez l’orthographe ou précisez le pays (« Berlin, Allemagne »), puis enregistrez à nouveau.",
+      "notLocatedSummary": "{count, plural, one {# lieu n’a pas pu être localisé. Il est bien enregistré, mais les offres ne seront pas filtrées par distance autour de lui tant qu’il n’est pas reconnu.} other {# lieux n’ont pas pu être localisés. Ils sont bien enregistrés, mais les offres ne seront pas filtrées par distance autour d’eux tant qu’ils ne sont pas reconnus.}}"
     },
     "remote": {
       "title": "Télétravail",

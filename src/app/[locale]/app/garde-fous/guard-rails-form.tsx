@@ -11,14 +11,14 @@ import {
   inputClass,
   SavedNotice,
   SubmitButton,
-  type FormState,
 } from "@/components/form";
 import { CONTRACT_TYPES, CULTURE_PREFERENCES, REMOTE_POLICIES, SECTORS } from "@/lib/career/codes";
 import type { GuardRailsView } from "@/lib/career/repository";
 import { LIMITS } from "@/lib/career/schemas";
-import { updateGuardRails } from "./actions";
+import { updateGuardRails, type GuardRailsFormState } from "./actions";
 
-type Location = { key: string; label: string; radiusKm: number };
+/** `located` : `false` = enregistré mais introuvable ; `undefined` = pas encore enregistré. */
+type Location = { key: string; label: string; radiusKm: number; located?: boolean };
 
 const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
 const chipClass =
@@ -27,13 +27,32 @@ const chipClass =
 export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
   const t = useTranslations("guardRails");
   const tc = useTranslations("codes");
-  const [state, action, pending] = useActionState<FormState, FormData>(updateGuardRails, {});
+  const [state, action, pending] = useActionState<GuardRailsFormState, FormData>(
+    updateGuardRails,
+    {},
+  );
   const e = state.errors ?? {};
   const baseId = useId();
   const [remotePolicy, setRemotePolicy] = useState<string>(initial.remotePolicy ?? "");
   const [locations, setLocations] = useState<Location[]>(
-    initial.locations.map((l) => ({ key: l.id, label: l.label, radiusKm: l.radiusKm })),
+    initial.locations.map((l) => ({
+      key: l.id,
+      label: l.label,
+      radiusKm: l.radiusKm,
+      located: l.located,
+    })),
   );
+  // Après un enregistrement, marque les lieux que le serveur n'a pas pu localiser
+  // (ajustement d'état pendant le rendu, sans effet).
+  const [handledState, setHandledState] = useState(state);
+  if (handledState !== state) {
+    setHandledState(state);
+    if (state.ok && state.unlocated) {
+      const unlocated = new Set(state.unlocated);
+      setLocations((list) => list.map((l, i) => ({ ...l, located: !unlocated.has(i) })));
+    }
+  }
+  const unlocatedCount = locations.filter((l) => l.located === false).length;
 
   return (
     <ActionForm action={action} className="space-y-6">
@@ -109,10 +128,21 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                       maxLength={LIMITS.locationLabel}
                       placeholder={t("location.cityPlaceholder")}
                       aria-invalid={labelError ? true : undefined}
-                      aria-describedby={labelError ? `${labelId}-error` : undefined}
+                      aria-describedby={
+                        labelError
+                          ? `${labelId}-error`
+                          : location.located === false
+                            ? `${labelId}-geo`
+                            : undefined
+                      }
                       className={inputClass}
                     />
                     <FieldError id={labelId} error={labelError} />
+                    {location.located === false && !labelError ? (
+                      <p id={`${labelId}-geo`} className="mt-1.5 text-sm text-amber-800">
+                        {t("location.notLocated")}
+                      </p>
+                    ) : null}
                   </div>
                   <div>
                     <label htmlFor={`${labelId}-r`} className="block text-sm font-medium">
@@ -146,6 +176,14 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             })}
           </ul>
         )}
+        {unlocatedCount > 0 ? (
+          <p
+            role="status"
+            className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+          >
+            {t("location.notLocatedSummary", { count: unlocatedCount })}
+          </p>
+        ) : null}
         <FieldError id="locations" error={e.locations} />
         {locations.length < LIMITS.locations ? (
           <button

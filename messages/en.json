@@ -363,7 +363,9 @@
       "cityPlaceholder": "For example: Lyon",
       "radius": "Radius (km)",
       "remove": "Remove",
-      "add": "Add a location"
+      "add": "Add a location",
+      "notLocated": "Location not found on the map yet: it is saved, but the distance filter can’t apply to it. Check the spelling or add the country (“Berlin, Germany”), then save again.",
+      "notLocatedSummary": "{count, plural, one {# location could not be found on the map. It is saved, but offers won’t be filtered by distance around it until it is recognised.} other {# locations could not be found on the map. They are saved, but offers won’t be filtered by distance around them until they are recognised.}}"
     },
     "remote": {
       "title": "Remote work",

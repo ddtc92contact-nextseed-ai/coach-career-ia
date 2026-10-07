@@ -6,7 +6,13 @@ import { requireUser } from "@/lib/auth/session";
 import { saveGuardRails } from "@/lib/career/repository";
 import { guardRailsInput, toFieldErrors } from "@/lib/career/schemas";
 
-export async function updateGuardRails(_prev: FormState, formData: FormData): Promise<FormState> {
+/** `unlocated` : index des lieux enregistrés sans coordonnées (géocodage impossible). */
+export type GuardRailsFormState = FormState & { unlocated?: number[] };
+
+export async function updateGuardRails(
+  _prev: GuardRailsFormState,
+  formData: FormData,
+): Promise<GuardRailsFormState> {
   const user = await requireUser();
   const strings = (name: string) => formData.getAll(name).map(String);
   const radii = strings("locationRadius");
@@ -32,7 +38,7 @@ export async function updateGuardRails(_prev: FormState, formData: FormData): Pr
   });
   if (!parsed.success) return { errors: toFieldErrors(parsed.error) };
 
-  await saveGuardRails(user.id, parsed.data);
+  const { unlocated } = await saveGuardRails(user.id, parsed.data);
   revalidatePath("/[locale]/app", "layout");
-  return { ok: true };
+  return { ok: true, unlocated };
 }
