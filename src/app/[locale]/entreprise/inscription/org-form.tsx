@@ -11,6 +11,7 @@ import {
   SubmitButton,
   type FormState,
 } from "@/components/form";
+import { LegalConsent } from "@/components/legal-consent";
 import { COMPANY_SIZES, SECTORS } from "@/lib/career/codes";
 import { COUNTRIES, EMPLOYER_LIMITS } from "@/lib/employer/schema";
 import { createOrganizationAction } from "./actions";
@@ -86,6 +87,7 @@ export function OrganizationForm({ countryNames }: { countryNames: Record<string
         </Field>
       </div>
       <SubmitButton pending={pending}>{t("submit")}</SubmitButton>
+      <LegalConsent audience="company" />
     </ActionForm>
   );
 }

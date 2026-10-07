@@ -2066,5 +2066,364 @@
       "revealedDisclosure": "De kandidaat heeft besloten de anonimiteit tegenover uw organisatie op te heffen. Deze gegevens worden gedeeld door zijn of haar AI-loopbaanagent (Coach Career IA), op uitdrukkelijk besluit.",
       "candidateOn": "Bericht van de kandidaat van {date} — opgesteld door zijn of haar AI-assistent, door hem of haar goedgekeurd"
     }
+  },
+  "legal": {
+    "updated": "Laatst bijgewerkt: {date}",
+    "contents": "Op deze pagina",
+    "nav": {
+      "label": "Juridische informatie",
+      "notice": "Juridische kennisgeving",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "terms": "Gebruiksvoorwaarden",
+      "companyTerms": "Voorwaarden voor bedrijven",
+      "ai": "Hoe onze AI werkt"
+    },
+    "consent": {
+      "candidate": "Door verder te gaan, aanvaardt u de <terms>gebruiksvoorwaarden</terms> en het <privacy>privacybeleid</privacy>.",
+      "company": "Door de bedrijfsomgeving aan te maken, aanvaardt u de <terms>voorwaarden voor bedrijven</terms> en het <privacy>privacybeleid</privacy>."
+    },
+    "pages": {
+      "notice": {
+        "title": "Juridische kennisgeving",
+        "intro": "Wettelijk verplichte informatie over de uitgever en de hostingpartij van Coach Career IA, op grond van de Franse wet voor het vertrouwen in de digitale economie (LCEN, artikel 6).",
+        "sections": {
+          "publisher": {
+            "title": "Uitgever van de site",
+            "content": {
+              "list": {
+                "name": "Bedrijfsnaam: {publisher}",
+                "brand": "Merk: {brand}",
+                "form": "Rechtsvorm: {legalForm}",
+                "capital": "Maatschappelijk kapitaal: {shareCapital}",
+                "siren": "SIREN: {siren}",
+                "vat": "Intracommunautair btw-nummer: {vatNumber}",
+                "address": "Statutaire zetel: {address}",
+                "phone": "Telefoon: {phone}",
+                "email": "E-mail: {email}"
+              }
+            }
+          },
+          "director": {
+            "title": "Verantwoordelijk uitgever",
+            "content": {
+              "p1": "{director}"
+            }
+          },
+          "host": {
+            "title": "Hostingpartij",
+            "content": {
+              "list": {
+                "name": "Naam: {hostName}",
+                "address": "Adres: {hostAddress}",
+                "phone": "Telefoon: {hostPhone}"
+              },
+              "p1": "De gegevens van de applicatie worden gehost in de Europese Unie."
+            }
+          },
+          "property": {
+            "title": "Intellectueel eigendom",
+            "content": {
+              "p1": "De site, het merk, de teksten, de code en de grafische elementen behoren toe aan {publisher} of worden onder licentie gebruikt. Elke reproductie zonder toestemming is verboden. De inhoud die u zelf toevoegt (loopbaangeheugen, bewijsstukken, berichten) blijft van u."
+            }
+          },
+          "contact": {
+            "title": "Contact",
+            "content": {
+              "p1": "Voor vragen over de site of om inhoud te melden: {email}. Voor uw persoonsgegevens raadpleegt u het <privacy>privacybeleid</privacy>."
+            }
+          }
+        }
+      },
+      "privacy": {
+        "title": "Privacybeleid",
+        "intro": "Coach Career IA is een privéloopbaanagent: privacy is het product. Deze pagina legt uit welke gegevens wij verwerken, waarom, hoe lang, met wie, en hoe u uw rechten kunt uitoefenen (Algemene Verordening Gegevensbescherming, AVG).",
+        "sections": {
+          "controller": {
+            "title": "Verwerkingsverantwoordelijke",
+            "content": {
+              "p1": "{publisher} ({brand}), {address}. Contact voor uw gegevens: {email}."
+            }
+          },
+          "data": {
+            "title": "Verwerkte gegevens, per functionaliteit",
+            "content": {
+              "list": {
+                "account": "<strong>Account</strong>: e-mailadres, voorkeurstaal, datums van aanmaak en aanmelding, versie van de aanvaarde voorwaarden. Geen wachtwoord: u meldt zich aan via een link voor eenmalig gebruik.",
+                "memory": "<strong>Loopbaangeheugen</strong>: werkervaringen (functie, data, niveau, werkgever omschreven aan de hand van sector en omvang, nooit met naam), prestaties, vaardigheden, bewijsstukken (versleuteld op onze servers) en harde grenzen (salaris, locaties, thuiswerk, contracten, uitgesloten sectoren en bedrijven, laatstgenoemde versleuteld).",
+                "vault": "<strong>Identiteitskluis</strong>: uw naam, contactgegevens, de echte namen van uw werkgevers en uw oorspronkelijke cv worden in uw browser versleuteld met een sleutel die is afgeleid van uw geheime zin. De server slaat alleen versleutelde gegevens op die hij niet kan lezen; noch de geheime zin, noch de sleutel wordt ooit naar de server verstuurd.",
+                "import": "<strong>Imports</strong>: het cv, de LinkedIn-export of het openbare GitHub-profiel dat u importeert, wordt geanalyseerd om u een concept van uw loopbaangeheugen voor te stellen, dat u nalicht en goedkeurt vóór elke opslag.",
+                "coach": "<strong>AI-coach</strong>: uw gesprekken met de coach en de suggesties die hij u doet.",
+                "matching": "<strong>Kansen en meldingen</strong>: de voor u geselecteerde vacatures, hun score en toelichting, uw reacties; e-mailmeldingen worden alleen verstuurd als u ze inschakelt, en elke e-mail bevat een afmeldlink.",
+                "contacts": "<strong>Anonieme kaart, contactopnames en onderhandeling</strong>: uw anonieme kaart, de berichten die na uw goedkeuring naar bedrijven zijn verstuurd, het adres van de contactpersoon dat u opgeeft, de ontvangen antwoorden en uw onderhandelingsmandaat (versleuteld).",
+                "handover": "<strong>Opheffing van anonimiteit</strong>: uitsluitend de velden die u aan een bedrijf wilt onthullen, toegankelijk via een herroepbare link die na {handoverDays} dagen verloopt.",
+                "billing": "<strong>Abonnement</strong>: afgenomen formule, status en einddatum van het abonnement, identificatiegegevens van de betaaldienstverlener. Wij zien of bewaren nooit uw kaartnummer.",
+                "company": "<strong>Bedrijfsaccounts</strong>: zakelijk e-mailadres van het lid, naam, website, sector, omvang en land van de organisatie, gepubliceerde vacatures en bijbehorende betalingen.",
+                "logs": "<strong>Technische logbestanden</strong>: technische identificatiegegevens, tellers en fouten, zonder persoonlijke inhoud (geen e-mail, geen naam, geen ingevoerde tekst)."
+              }
+            }
+          },
+          "bases": {
+            "title": "Rechtsgronden",
+            "content": {
+              "list": {
+                "contract": "<strong>Uitvoering van de overeenkomst</strong> (artikel 6, lid 1, onder b, AVG): account, loopbaangeheugen, kluis, imports, coach, kansen, contactopnames en opheffingen van anonimiteit waar u om vraagt, abonnement, bedrijfsomgeving.",
+                "consent": "<strong>Toestemming</strong> (artikel 6, lid 1, onder a): e-mailmeldingen, die u op elk moment kunt intrekken via de instellingen of de afmeldlink.",
+                "interest": "<strong>Gerechtvaardigd belang</strong> (artikel 6, lid 1, onder f): beveiliging van de dienst, misbruikpreventie, moderatie van vacatures en organisaties, technische logbestanden.",
+                "obligation": "<strong>Wettelijke verplichting</strong> (artikel 6, lid 1, onder c): bewaring van boekhoudkundige stukken met betrekking tot betalingen."
+              }
+            }
+          },
+          "retention": {
+            "title": "Bewaartermijnen",
+            "content": {
+              "list": {
+                "account": "Gegevens van het account, het loopbaangeheugen, de kluis en de coach: zolang het account bestaat. Het verwijderen van het account wist al deze gegevens en al uw bestanden onmiddellijk; back-ups verdwijnen uiterlijk 30 dagen daarna.",
+                "auth": "Aanmeldlink: 15 minuten, voor eenmalig gebruik. Aanmeldsessie: 30 dagen, ingetrokken bij het afmelden.",
+                "card": "Links naar anonieme kaarten: {cardDays} dagen. Bij een opheffing van anonimiteit onthulde gegevens: {handoverDays} dagen, daarna automatische verwijdering.",
+                "postings": "Vacatures van bedrijven: {postingDays} dagen gepubliceerd en daarna gesloten; bewaard zolang de organisatie bestaat.",
+                "accounting": "Boekhoudkundige stukken met betrekking tot betalingen: 10 jaar (artikel L123-22 van het Franse Wetboek van Koophandel)."
+              }
+            }
+          },
+          "recipients": {
+            "title": "Ontvangers en verwerkers",
+            "content": {
+              "p1": "Uw gegevens worden nooit verkocht of verhuurd. Een bedrijf ontvangt alleen wat u hebt goedgekeurd: een bericht, uw anonieme kaart of de velden die u wilt onthullen. Onze verwerkers handelen uitsluitend in opdracht van ons:",
+              "list": {
+                "mistral": "<strong>Mistral AI</strong> (Frankrijk, hosting in de Europese Unie): taalmodel dat wordt gebruikt voor de imports, de coach, de toelichting bij kansen en de conceptberichten. Wij trainen geen enkel model met uw gegevens.",
+                "email": "<strong>Verzending van e-mails</strong> ({emailProvider}): aanmeldlinks, meldingen en berichten aan bedrijven.",
+                "host": "<strong>Hosting</strong> ({hostName}): virtuele privéserver in de Europese Unie, die de applicatie en de database host.",
+                "payment": "<strong>Betaling</strong>: {payments, select, stripe {Stripe Payments Europe (Ierland) verwerkt de kaartbetalingen; het ontvangt alleen uw aanmeld-e-mailadres en een account-ID, nooit uw loopbaangeheugen of uw identiteit.} other {tijdens de testfase worden betalingen gesimuleerd: er worden geen betaalgegevens verzameld. Zodra betalingen worden geopend, verwerkt Stripe Payments Europe (Ierland) ze.}}",
+                "geo": "<strong>Geocodering</strong>: plaatsnamen (nooit uw identiteit) worden verstuurd naar de Géoplateforme van het IGN (Frankrijk) en naar OpenStreetMap Nominatim om afstanden te berekenen.",
+                "github": "<strong>GitHub</strong>: uitsluitend als u een GitHub-profiel importeert, om de openbare informatie ervan te lezen."
+              }
+            }
+          },
+          "hosting": {
+            "title": "Hosting en doorgiften",
+            "content": {
+              "p1": "De gegevens worden gehost en verwerkt in de Europese Unie. Wij geven uw gegevens niet door buiten de Europese Unie; mocht een dienstverlener dat toch doen, dan gebeurt dit uitsluitend met de waarborgen waarin de AVG voorziet (modelcontractbepalingen van de Europese Commissie)."
+            }
+          },
+          "security": {
+            "title": "Beveiliging",
+            "content": {
+              "p1": "Aanmelden zonder wachtwoord, herroepbare sessies, AES-256-versleuteling van gevoelige velden en bewijsstukken, een end-to-end versleutelde identiteitskluis in uw browser, gegevenstoegang beperkt tot uw account, logbestanden zonder persoonsgegevens."
+            }
+          },
+          "rights": {
+            "title": "Uw rechten",
+            "content": {
+              "p1": "U hebt het recht op inzage, rectificatie, verwijdering, beperking, bezwaar en overdraagbaarheid, het recht om uw toestemming in te trekken, en het recht om richtlijnen vast te leggen over het lot van uw gegevens na uw overlijden.",
+              "list": {
+                "export": "<export>Al uw gegevens exporteren</export> (JSON-bestand) via de instellingen van uw account.",
+                "delete": "<delete>Uw account verwijderen</delete> met alle bijbehorende gegevens, op elk moment, via de instellingen.",
+                "edit": "Uw gegevens rechtstreeks in uw omgeving corrigeren (loopbaangeheugen, harde grenzen, identiteit).",
+                "contact": "Voor elk ander verzoek: {email}. Wij antwoorden binnen een maand."
+              },
+              "p2": "Als u van mening bent dat uw rechten niet worden gerespecteerd, kunt u een klacht indienen bij de <cnil>CNIL</cnil> (Franse toezichthouder voor informatica en vrijheden, Commission nationale de l’informatique et des libertés)."
+            }
+          },
+          "cookies": {
+            "title": "Cookies",
+            "content": {
+              "p1": "Wij plaatsen alleen cookies die strikt noodzakelijk zijn voor de werking van de dienst: hiervoor is geen toestemming nodig, daarom verschijnt er geen cookiebanner. Geen cookies voor bezoekersmetingen, reclame of tracking, en geen tracking-tools van derden.",
+              "list": {
+                "session": "<strong>authjs.session-token</strong>: houdt u aangemeld (30 dagen, verwijderd bij het afmelden).",
+                "csrf": "<strong>authjs.csrf-token</strong>: beschermt de aanmeldformulieren tegen vervalsing van verzoeken (browsersessie).",
+                "callback": "<strong>authjs.callback-url</strong>: pagina waarnaar na het aanmelden wordt teruggekeerd (browsersessie).",
+                "locale": "<strong>NEXT_LOCALE</strong>: gekozen weergavetaal (browsersessie)."
+              },
+              "p2": "Uw browser bewaart ook, in lokale opslag, de door u gekozen duur van de automatische vergrendeling van de identiteitskluis: dit zijn geen persoonsgegevens."
+            }
+          },
+          "changes": {
+            "title": "Wijzigingen",
+            "content": {
+              "p1": "Dit beleid kan met de dienst meeveranderen. De datum van de laatste bijwerking staat bovenaan de pagina; bij een belangrijke wijziging informeren wij u bij uw volgende aanmelding."
+            }
+          }
+        }
+      },
+      "terms": {
+        "title": "Gebruiksvoorwaarden (kandidaten)",
+        "intro": "Deze voorwaarden gelden voor iedereen die Coach Career IA gebruikt voor de eigen loopbaan. Ze worden aangeboden door {publisher} ({brand}).",
+        "sections": {
+          "service": {
+            "title": "De dienst",
+            "content": {
+              "p1": "Coach Career IA helpt u een op bewijs gebaseerd loopbaangeheugen op te bouwen, uw niet-onderhandelbare voorwaarden (harde grenzen) vast te leggen en toont u de kansen die deze respecteren. Een AI-agent helpt u bij het opstellen van uw berichten aan bedrijven, onder uw controle."
+            }
+          },
+          "account": {
+            "title": "Account",
+            "content": {
+              "p1": "Het account wordt aangemaakt bij de eerste aanmelding via een link die naar uw e-mailadres wordt gestuurd. U bent verantwoordelijk voor de toegang tot dit adres. Het account is persoonlijk: één account per persoon."
+            }
+          },
+          "plans": {
+            "title": "Gratis formule en Premium",
+            "content": {
+              "list": {
+                "free": "<strong>Gratis</strong>: loopbaangeheugen, identiteitskluis, harde grenzen, kansen, anonieme kaart, contactopnames en AI-coach binnen een dagelijks quotum.",
+                "premium": "<strong>Premium</strong>: maandelijks abonnement dat de onbeperkte AI-coach en de onderhandelingsagent toevoegt, tegen de prijs die vóór het afsluiten op de pagina Abonnement wordt getoond. Op elk moment opzegbaar vanuit uw omgeving, met ingang van het einde van de betaalde periode.",
+                "payment": "{payments, select, stripe {De betaling wordt verwerkt door Stripe.} other {Tijdens de testfase worden betalingen gesimuleerd: er wordt geen bedrag afgeschreven.}}",
+                "withdrawal": "Als u consument bent, hebt u een herroepingsrecht van 14 dagen. Door onmiddellijke toegang tot Premium te vragen, stemt u ermee in dat de dienst begint vóór het einde van deze termijn."
+              }
+            }
+          },
+          "agent": {
+            "title": "De agent en uw berichten",
+            "content": {
+              "p1": "<strong>Er wordt geen enkel bericht naar een bedrijf verstuurd zonder uw goedkeuring.</strong> De agent maakt concepten (contactopname, onderhandelingstegenvoorstel); u leest ze na, past ze zo nodig aan en beslist ze te versturen. Elk verstuurd bericht vermeldt dat het met hulp van een AI is voorbereid en door u is goedgekeurd.",
+              "p2": "Uw anonimiteit is de regel: uw identiteit wordt alleen aan een bedrijf onthuld als u dat beslist, veld voor veld, via een link die u kunt intrekken. Zie <ai>hoe onze AI werkt</ai>."
+            }
+          },
+          "content": {
+            "title": "Uw inhoud",
+            "content": {
+              "p1": "U staat in voor de juistheid van de informatie in uw loopbaangeheugen en voor het feit dat u rechten hebt op de documenten die u uploadt. U blijft eigenaar van uw inhoud; u geeft ons alleen toestemming om die te verwerken om de dienst aan u te leveren."
+            }
+          },
+          "use": {
+            "title": "Aanvaardbaar gebruik",
+            "content": {
+              "p1": "Het is verboden valse informatie te verstrekken, zich voor te doen als een ander, beledigende berichten te versturen, de beperkingen van de dienst te omzeilen of er geautomatiseerd gegevens uit te halen. Bij een tekortkoming kunnen wij het account schorsen nadat wij u hebben gewaarschuwd, behalve in spoedeisende gevallen."
+            }
+          },
+          "offers": {
+            "title": "Vacatures",
+            "content": {
+              "p1": "De vacatures komen uit gedocumenteerde openbare bronnen en van bedrijven die ze rechtstreeks publiceren. Wij garanderen niet dat ze juist of beschikbaar zijn, noch de uitkomst van een sollicitatie. Een salaris wordt alleen getoond als het door het bedrijf is gepubliceerd, nooit als schatting in zijn plaats."
+            }
+          },
+          "liability": {
+            "title": "Aansprakelijkheid",
+            "content": {
+              "p1": "Wij doen ons best om de dienst beschikbaar en veilig te houden, zonder een permanente beschikbaarheid te kunnen garanderen. De suggesties van de AI kunnen fouten bevatten: beslissingen over uw loopbaan zijn aan u."
+            }
+          },
+          "end": {
+            "title": "Duur en beëindiging",
+            "content": {
+              "p1": "U kunt uw account op elk moment verwijderen via de instellingen; al uw gegevens worden dan gewist (zie het <privacy>privacybeleid</privacy>)."
+            }
+          },
+          "law": {
+            "title": "Wijzigingen, toepasselijk recht en geschillen",
+            "content": {
+              "p1": "Wij kunnen deze voorwaarden wijzigen; de nieuwe versie wordt u voorgelegd en is van toepassing vanaf uw volgende aanmelding. Op deze voorwaarden is Frans recht van toepassing. Neem bij een geschil eerst contact met ons op ({email}); als u consument bent, kunt u kosteloos een beroep doen op de consumentenbemiddelaar ({mediator}) of op het Europese platform voor onlinebeslechting van geschillen, voordat u zich tot de bevoegde rechtbanken wendt."
+            }
+          }
+        }
+      },
+      "companyTerms": {
+        "title": "Voorwaarden voor bedrijven",
+        "intro": "Deze voorwaarden gelden voor organisaties die vacatures publiceren op Coach Career IA. Ze worden aangeboden door {publisher} ({brand}) aan professionele partijen.",
+        "sections": {
+          "account": {
+            "title": "Bedrijfsomgeving",
+            "content": {
+              "p1": "De omgeving wordt geopend door een lid van de organisatie met zijn of haar zakelijke e-mailadres. Als het domein van dit adres overeenkomt met de website van het bedrijf, wordt de omgeving onmiddellijk geactiveerd; anders controleert ons team haar vóór elke publicatie. U garandeert bevoegd te zijn om de organisatie te vertegenwoordigen."
+            }
+          },
+          "postings": {
+            "title": "Betaalde publicatie",
+            "content": {
+              "list": {
+                "price": "Elke vacature wordt per stuk betaald, tegen de vóór de betaling getoonde prijs, zonder abonnement.",
+                "duration": "Een betaalde en goedgekeurde vacature blijft {postingDays} dagen online en wordt daarna automatisch gesloten; opnieuw publiceren vereist een nieuwe betaling.",
+                "payment": "{payments, select, stripe {De betaling wordt verwerkt door Stripe.} other {Tijdens de testfase worden betalingen gesimuleerd: er wordt geen bedrag afgeschreven.}}"
+              }
+            }
+          },
+          "content": {
+            "title": "Inhoud van de vacatures",
+            "content": {
+              "p1": "<strong>De salarisrange is verplicht</strong> (minimum, maximum, valuta, periode): het is de eerste voorwaarde van kandidaten. De vacature moet een echte, beschikbare functie beschrijven, het contract, het thuiswerkbeleid en de locatie vermelden, en de wet naleven, met name het discriminatieverbod (leeftijd, geslacht, afkomst, gezinssituatie, handicap…)."
+            }
+          },
+          "moderation": {
+            "title": "Moderatie",
+            "content": {
+              "p1": "Elke vacature wordt gecontroleerd voordat ze online komt. Een vacature die mogelijk discriminerende criteria bevat, gaat naar handmatige beoordeling. Wij kunnen een vacature weigeren of een organisatie schorsen, met een per e-mail meegedeelde reden; bij schorsing worden de online vacatures van de organisatie gesloten."
+            }
+          },
+          "candidates": {
+            "title": "Relatie met kandidaten",
+            "content": {
+              "p1": "<strong>Bedrijven zoeken, raadplegen of rangschikken nooit kandidaten.</strong> Elke kandidaat wordt vertegenwoordigd door zijn of haar agent, die de vacatures toont die aan de voorwaarden van de kandidaat voldoen; de kandidaat beslist om contact met u op te nemen, eerst anoniem.",
+              "p2": "De berichten die u ontvangt, zijn met hulp van een AI voorbereid en door de kandidaat goedgekeurd. De ontvangen informatie, ook die uit een opheffing van anonimiteit, wordt uitsluitend gebruikt voor de betreffende werving: u onthoudt zich van elke poging om een anonieme kandidaat te heridentificeren en van elk hergebruik voor andere doeleinden. U bent verantwoordelijk voor de verwerking van de gegevens die een kandidaat u onthult."
+            }
+          },
+          "liability": {
+            "title": "Aansprakelijkheid",
+            "content": {
+              "p1": "U bent verantwoordelijk voor de inhoud van uw vacatures en uw contacten met kandidaten. Wij garanderen geen aantal contacten en evenmin de uitkomst van een wervingsprocedure. Het dashboard toont alleen geaggregeerde statistieken, zonder kandidaatgegevens."
+            }
+          },
+          "law": {
+            "title": "Duur, wijzigingen en toepasselijk recht",
+            "content": {
+              "p1": "U kunt de bedrijfsomgeving op elk moment verlaten; reeds betaalde vacatures worden niet terugbetaald zodra ze online staan. Wij kunnen deze voorwaarden wijzigen en stellen u daarvan op de hoogte. Op deze voorwaarden is Frans recht van toepassing; bij gebreke van een minnelijke schikking zijn de rechtbanken van de plaats van de zetel van de uitgever bevoegd. Contact: {email}. Zie ook het <privacy>privacybeleid</privacy>."
+            }
+          }
+        }
+      },
+      "ai": {
+        "title": "Hoe onze AI werkt",
+        "intro": "Coach Career IA gebruikt een taalmodel om u tijd te besparen, nooit om in uw plaats te beslissen. Deze pagina voldoet aan de transparantieverplichting van de Europese AI-verordening (artikel 50) en van de AVG.",
+        "sections": {
+          "does": {
+            "title": "Wat de agent doet",
+            "content": {
+              "list": {
+                "import": "Uw cv of geïmporteerde profiel omzetten in een concept van uw loopbaangeheugen, dat u goedkeurt.",
+                "coach": "U vragen stellen om uw prestaties en het bewijs ervoor naar boven te halen (AI-coach).",
+                "matching": "In een paar zinnen uitleggen waarom een vacature aansluit bij uw voorwaarden.",
+                "drafts": "Conceptberichten voor contactopnames en onderhandelingstegenvoorstellen opstellen, binnen het mandaat dat u hebt vastgelegd."
+              }
+            }
+          },
+          "doesNot": {
+            "title": "Wat de agent niet doet",
+            "content": {
+              "list": {
+                "send": "Hij verstuurt nooit iets zonder uw uitdrukkelijke goedkeuring, bericht voor bericht.",
+                "reveal": "Hij onthult nooit uw identiteit: alleen uw beslissing, veld voor veld, maakt dat mogelijk.",
+                "rank": "Hij beoordeelt of rangschikt geen kandidaten voor bedrijven: geen enkel bedrijf ziet een lijst of score van kandidaten.",
+                "decide": "Hij neemt geen enkel besluit met rechtsgevolgen voor u: geen geautomatiseerde besluitvorming in de zin van artikel 22 van de AVG.",
+                "train": "Hij wordt niet getraind met uw gegevens: wij trainen geen enkel model."
+              }
+            }
+          },
+          "human": {
+            "title": "Een mens in de lus",
+            "content": {
+              "p1": "Elk concept wordt u voorgelegd vóór verzending: u kunt het aanpassen, weigeren of versturen. Uw harde grenzen zijn uw eigen regels, die ongewijzigd worden toegepast; de score van een kans dient alleen om de vacatures die u worden voorgesteld te ordenen, en het staat u vrij ze allemaal te bekijken."
+            }
+          },
+          "marking": {
+            "title": "Berichten gemarkeerd als AI-ondersteund",
+            "content": {
+              "p1": "Elk bericht dat naar een bedrijf wordt verstuurd, vermeldt dat het door een AI-agent is voorbereid namens een kandidaat, die het heeft nagelezen en goedgekeurd."
+            }
+          },
+          "model": {
+            "title": "Het gebruikte model",
+            "content": {
+              "p1": "Wij gebruiken de modellen van Mistral AI, een Frans bedrijf, gehost in de Europese Unie. Alleen de gegevens die nodig zijn voor de gevraagde taak worden aan hen doorgegeven; uw identiteit, versleuteld in uw kluis, wordt dat nooit."
+            }
+          },
+          "limits": {
+            "title": "Beperkingen",
+            "content": {
+              "p1": "Een taalmodel kan zich vergissen of informatie verkeerd formuleren. Lees een concept altijd na voordat u het goedkeurt. Om een probleem te melden: {email}."
+            }
+          }
+        }
+      }
+    }
   }
 }

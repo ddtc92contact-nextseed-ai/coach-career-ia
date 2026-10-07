@@ -2066,5 +2066,364 @@
       "revealedDisclosure": "La personne candidate a décidé de lever son anonymat auprès de votre organisation. Ces informations vous sont communiquées par son agent de carrière IA (Coach Career IA), sur sa décision explicite.",
       "candidateOn": "Message de la personne candidate du {date} — rédigé par son assistant IA, approuvé par elle"
     }
+  },
+  "legal": {
+    "updated": "Dernière mise à jour : {date}",
+    "contents": "Sur cette page",
+    "nav": {
+      "label": "Informations légales",
+      "notice": "Mentions légales",
+      "privacy": "Confidentialité",
+      "cookies": "Cookies",
+      "terms": "Conditions d’utilisation",
+      "companyTerms": "Conditions entreprises",
+      "ai": "Comment fonctionne notre IA"
+    },
+    "consent": {
+      "candidate": "En continuant, vous acceptez les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>.",
+      "company": "En créant l’espace entreprise, vous acceptez les <terms>conditions entreprises</terms> et la <privacy>politique de confidentialité</privacy>."
+    },
+    "pages": {
+      "notice": {
+        "title": "Mentions légales",
+        "intro": "Informations prévues par la loi pour la confiance dans l’économie numérique (LCEN, article 6) sur l’éditeur et l’hébergeur de Coach Career IA.",
+        "sections": {
+          "publisher": {
+            "title": "Éditeur du site",
+            "content": {
+              "list": {
+                "name": "Raison sociale : {publisher}",
+                "brand": "Marque : {brand}",
+                "form": "Forme juridique : {legalForm}",
+                "capital": "Capital social : {shareCapital}",
+                "siren": "SIREN : {siren}",
+                "vat": "N° de TVA intracommunautaire : {vatNumber}",
+                "address": "Siège social : {address}",
+                "phone": "Téléphone : {phone}",
+                "email": "E-mail : {email}"
+              }
+            }
+          },
+          "director": {
+            "title": "Directeur de la publication",
+            "content": {
+              "p1": "{director}"
+            }
+          },
+          "host": {
+            "title": "Hébergeur",
+            "content": {
+              "list": {
+                "name": "Nom : {hostName}",
+                "address": "Adresse : {hostAddress}",
+                "phone": "Téléphone : {hostPhone}"
+              },
+              "p1": "Les données de l’application sont hébergées dans l’Union européenne."
+            }
+          },
+          "property": {
+            "title": "Propriété intellectuelle",
+            "content": {
+              "p1": "Le site, sa marque, ses textes, son code et ses éléments graphiques appartiennent à {publisher} ou font l’objet d’une licence. Toute reproduction sans autorisation est interdite. Les contenus que vous ajoutez (mémoire de carrière, pièces justificatives, messages) restent les vôtres."
+            }
+          },
+          "contact": {
+            "title": "Contact",
+            "content": {
+              "p1": "Pour toute question sur le site ou pour signaler un contenu : {email}. Pour vos données personnelles, consultez la <privacy>politique de confidentialité</privacy>."
+            }
+          }
+        }
+      },
+      "privacy": {
+        "title": "Politique de confidentialité",
+        "intro": "Coach Career IA est un agent de carrière privé : la confidentialité est le produit. Cette page explique quelles données nous traitons, pourquoi, combien de temps, avec qui, et comment exercer vos droits (règlement général sur la protection des données, RGPD).",
+        "sections": {
+          "controller": {
+            "title": "Responsable du traitement",
+            "content": {
+              "p1": "{publisher} ({brand}), {address}. Contact pour vos données : {email}."
+            }
+          },
+          "data": {
+            "title": "Données traitées, fonctionnalité par fonctionnalité",
+            "content": {
+              "list": {
+                "account": "<strong>Compte</strong> : adresse e-mail, langue préférée, dates de création et de connexion, version des conditions acceptées. Pas de mot de passe : la connexion se fait par lien à usage unique.",
+                "memory": "<strong>Mémoire de carrière</strong> : expériences (poste, dates, niveau, employeur décrit par son secteur et sa taille, jamais par son nom), réalisations, compétences, pièces justificatives (chiffrées sur nos serveurs) et garde-fous (salaire, lieux, télétravail, contrats, secteurs et entreprises exclus, ces derniers chiffrés).",
+                "vault": "<strong>Coffre d’identité</strong> : votre nom, vos coordonnées, les noms réels de vos employeurs et votre CV d’origine sont chiffrés dans votre navigateur avec une clé issue de votre phrase secrète. Le serveur ne stocke que des données chiffrées qu’il ne peut pas lire ; ni la phrase secrète ni la clé ne lui sont jamais envoyées.",
+                "import": "<strong>Imports</strong> : le CV, l’export LinkedIn ou le profil GitHub public que vous importez sont analysés pour vous proposer un brouillon de mémoire de carrière, que vous relisez et validez avant tout enregistrement.",
+                "coach": "<strong>Coach IA</strong> : vos conversations avec le coach et les suggestions qu’il vous fait.",
+                "matching": "<strong>Opportunités et alertes</strong> : les offres retenues pour vous, leur score et leur explication, vos réactions ; les alertes par e-mail ne sont envoyées que si vous les activez, et chaque e-mail contient un lien de désabonnement.",
+                "contacts": "<strong>Carte anonyme, prises de contact et négociation</strong> : votre carte anonyme, les messages envoyés aux entreprises après votre approbation, l’adresse de l’interlocuteur que vous indiquez, les réponses reçues et votre mandat de négociation (chiffré).",
+                "handover": "<strong>Levée d’anonymat</strong> : uniquement les champs que vous choisissez de révéler à une entreprise, accessibles par un lien révocable qui expire après {handoverDays} jours.",
+                "billing": "<strong>Abonnement</strong> : offre souscrite, état et échéance de l’abonnement, identifiants du prestataire de paiement. Nous ne voyons ni ne stockons jamais votre numéro de carte.",
+                "company": "<strong>Comptes entreprise</strong> : adresse e-mail professionnelle du membre, nom, site, secteur, taille et pays de l’organisation, offres publiées et paiements associés.",
+                "logs": "<strong>Journaux techniques</strong> : identifiants techniques, compteurs et erreurs, sans contenu personnel (ni e-mail, ni nom, ni texte saisi)."
+              }
+            }
+          },
+          "bases": {
+            "title": "Bases légales",
+            "content": {
+              "list": {
+                "contract": "<strong>Exécution du contrat</strong> (article 6.1.b du RGPD) : compte, mémoire de carrière, coffre, imports, coach, opportunités, prises de contact et levées d’anonymat que vous demandez, abonnement, espace entreprise.",
+                "consent": "<strong>Consentement</strong> (article 6.1.a) : alertes par e-mail, retirable à tout moment depuis les paramètres ou le lien de désabonnement.",
+                "interest": "<strong>Intérêt légitime</strong> (article 6.1.f) : sécurité du service, prévention des abus, modération des offres et des organisations, journaux techniques.",
+                "obligation": "<strong>Obligation légale</strong> (article 6.1.c) : conservation des pièces comptables liées aux paiements."
+              }
+            }
+          },
+          "retention": {
+            "title": "Durées de conservation",
+            "content": {
+              "list": {
+                "account": "Données du compte, de la mémoire de carrière, du coffre et du coach : tant que le compte existe. La suppression du compte efface immédiatement toutes ces données et tous vos fichiers ; les copies de sauvegarde disparaissent au plus tard 30 jours après.",
+                "auth": "Lien de connexion : 15 minutes, à usage unique. Session de connexion : 30 jours, révoquée à la déconnexion.",
+                "card": "Liens de carte anonyme : {cardDays} jours. Données révélées lors d’une levée d’anonymat : {handoverDays} jours, puis purge automatique.",
+                "postings": "Offres d’entreprise : publiées {postingDays} jours puis fermées ; conservées tant que l’organisation existe.",
+                "accounting": "Pièces comptables liées aux paiements : 10 ans (article L123-22 du Code de commerce)."
+              }
+            }
+          },
+          "recipients": {
+            "title": "Destinataires et sous-traitants",
+            "content": {
+              "p1": "Vos données ne sont jamais vendues ni louées. Une entreprise ne reçoit que ce que vous avez approuvé : un message, votre carte anonyme, ou les champs que vous choisissez de révéler. Nos sous-traitants agissent uniquement sur nos instructions :",
+              "list": {
+                "mistral": "<strong>Mistral AI</strong> (France, hébergement dans l’Union européenne) : modèle de langage utilisé pour les imports, le coach, les explications d’opportunités et les brouillons de messages. Nous n’entraînons aucun modèle avec vos données.",
+                "email": "<strong>Envoi d’e-mails</strong> ({emailProvider}) : liens de connexion, alertes et messages aux entreprises.",
+                "host": "<strong>Hébergement</strong> ({hostName}) : serveur privé virtuel situé dans l’Union européenne, qui héberge l’application et la base de données.",
+                "payment": "<strong>Paiement</strong> : {payments, select, stripe {Stripe Payments Europe (Irlande) traite les paiements par carte ; il ne reçoit que votre adresse e-mail de connexion et un identifiant de compte, jamais votre mémoire de carrière ni votre identité.} other {les paiements sont simulés pendant la phase de test : aucune donnée de paiement n’est collectée. À l’ouverture des paiements, Stripe Payments Europe (Irlande) les traitera.}}",
+                "geo": "<strong>Géocodage</strong> : les noms de villes (jamais votre identité) sont envoyés à la Géoplateforme de l’IGN (France) et à OpenStreetMap Nominatim pour calculer les distances.",
+                "github": "<strong>GitHub</strong> : uniquement si vous importez un profil GitHub, pour lire ses informations publiques."
+              }
+            }
+          },
+          "hosting": {
+            "title": "Hébergement et transferts",
+            "content": {
+              "p1": "Les données sont hébergées et traitées dans l’Union européenne. Nous ne transférons pas vos données hors de l’Union européenne ; si un prestataire devait le faire, ce serait uniquement avec les garanties prévues par le RGPD (clauses contractuelles types de la Commission européenne)."
+            }
+          },
+          "security": {
+            "title": "Sécurité",
+            "content": {
+              "p1": "Connexion sans mot de passe, sessions révocables, chiffrement AES-256 des champs sensibles et des pièces justificatives, coffre d’identité chiffré de bout en bout dans votre navigateur, accès aux données limité à votre compte, journaux sans donnée personnelle."
+            }
+          },
+          "rights": {
+            "title": "Vos droits",
+            "content": {
+              "p1": "Vous disposez des droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité, du droit de retirer votre consentement, et du droit de définir des directives sur le sort de vos données après votre décès.",
+              "list": {
+                "export": "<export>Exporter toutes vos données</export> (fichier JSON) depuis les paramètres de votre compte.",
+                "delete": "<delete>Supprimer votre compte</delete> et toutes ses données, à tout moment, depuis les paramètres.",
+                "edit": "Corriger vos informations directement dans votre espace (mémoire de carrière, garde-fous, identité).",
+                "contact": "Pour toute autre demande : {email}. Nous répondons dans un délai d’un mois."
+              },
+              "p2": "Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la <cnil>CNIL</cnil> (Commission nationale de l’informatique et des libertés)."
+            }
+          },
+          "cookies": {
+            "title": "Cookies",
+            "content": {
+              "p1": "Nous ne déposons que des cookies strictement nécessaires au fonctionnement du service : ils sont dispensés de consentement, c’est pourquoi aucun bandeau ne s’affiche. Aucun cookie de mesure d’audience, de publicité ni de suivi, aucun outil tiers de suivi.",
+              "list": {
+                "session": "<strong>authjs.session-token</strong> : maintient votre connexion (30 jours, supprimé à la déconnexion).",
+                "csrf": "<strong>authjs.csrf-token</strong> : protège les formulaires de connexion contre la falsification de requêtes (session du navigateur).",
+                "callback": "<strong>authjs.callback-url</strong> : page où revenir après la connexion (session du navigateur).",
+                "locale": "<strong>NEXT_LOCALE</strong> : langue d’affichage choisie (session du navigateur)."
+              },
+              "p2": "Votre navigateur conserve aussi, en stockage local, la durée de verrouillage automatique du coffre d’identité que vous avez choisie : aucune donnée personnelle."
+            }
+          },
+          "changes": {
+            "title": "Modifications",
+            "content": {
+              "p1": "Cette politique peut évoluer avec le service. La date de mise à jour figure en haut de la page ; en cas de changement important, nous vous en informerons à votre prochaine connexion."
+            }
+          }
+        }
+      },
+      "terms": {
+        "title": "Conditions d’utilisation (candidats)",
+        "intro": "Ces conditions s’appliquent à toute personne qui utilise Coach Career IA pour sa carrière. Elles sont proposées par {publisher} ({brand}).",
+        "sections": {
+          "service": {
+            "title": "Le service",
+            "content": {
+              "p1": "Coach Career IA vous aide à constituer une mémoire de carrière fondée sur des preuves, à fixer vos conditions non négociables (garde-fous) et vous présente les opportunités qui les respectent. Un agent IA vous aide à rédiger vos échanges avec les entreprises, sous votre contrôle."
+            }
+          },
+          "account": {
+            "title": "Compte",
+            "content": {
+              "p1": "Le compte est créé à la première connexion par lien envoyé à votre adresse e-mail. Vous êtes responsable de l’accès à cette adresse. Le compte est personnel : un compte par personne."
+            }
+          },
+          "plans": {
+            "title": "Offre gratuite et Premium",
+            "content": {
+              "list": {
+                "free": "<strong>Gratuit</strong> : mémoire de carrière, coffre d’identité, garde-fous, opportunités, carte anonyme, prises de contact et coach IA dans la limite d’un quota quotidien.",
+                "premium": "<strong>Premium</strong> : abonnement mensuel qui ajoute le coach IA illimité et l’agent de négociation, au prix affiché sur la page Abonnement avant toute souscription. Résiliable à tout moment depuis votre espace, avec effet à la fin de la période payée.",
+                "payment": "{payments, select, stripe {Le paiement est traité par Stripe.} other {Pendant la phase de test, les paiements sont simulés : aucun montant n’est prélevé.}}",
+                "withdrawal": "Si vous êtes un consommateur, vous disposez d’un droit de rétractation de 14 jours. En demandant l’accès immédiat à Premium, vous acceptez que le service commence avant la fin de ce délai."
+              }
+            }
+          },
+          "agent": {
+            "title": "L’agent et vos messages",
+            "content": {
+              "p1": "<strong>Aucun message n’est envoyé à une entreprise sans votre approbation.</strong> L’agent prépare des brouillons (prise de contact, contre-proposition de négociation) ; vous les relisez, les modifiez si besoin et décidez de les envoyer. Chaque message envoyé indique qu’il a été préparé avec l’aide d’une IA et approuvé par vous.",
+              "p2": "Votre anonymat est la règle : votre identité n’est révélée à une entreprise que si vous le décidez, champ par champ, par un lien que vous pouvez révoquer. Voir <ai>comment fonctionne notre IA</ai>."
+            }
+          },
+          "content": {
+            "title": "Vos contenus",
+            "content": {
+              "p1": "Vous garantissez l’exactitude des informations de votre mémoire de carrière et disposer des droits sur les documents que vous déposez. Vous restez propriétaire de vos contenus ; vous nous autorisez seulement à les traiter pour vous fournir le service."
+            }
+          },
+          "use": {
+            "title": "Usage acceptable",
+            "content": {
+              "p1": "Il est interdit de fournir de fausses informations, d’usurper l’identité d’autrui, d’envoyer des messages abusifs, de contourner les limites du service ou d’en extraire les données de manière automatisée. En cas de manquement, nous pouvons suspendre le compte après vous avoir prévenu, sauf urgence."
+            }
+          },
+          "offers": {
+            "title": "Offres d’emploi",
+            "content": {
+              "p1": "Les offres proviennent de sources publiques documentées et d’entreprises qui les publient directement. Nous ne garantissons ni leur exactitude ni leur disponibilité, ni l’issue d’une candidature. Un salaire n’est affiché que s’il est publié par l’entreprise, jamais estimé à sa place."
+            }
+          },
+          "liability": {
+            "title": "Responsabilité",
+            "content": {
+              "p1": "Nous mettons tout en œuvre pour que le service soit disponible et sûr, sans pouvoir garantir une disponibilité permanente. Les suggestions de l’IA peuvent comporter des erreurs : les décisions sur votre carrière vous appartiennent."
+            }
+          },
+          "end": {
+            "title": "Durée et résiliation",
+            "content": {
+              "p1": "Vous pouvez supprimer votre compte à tout moment depuis les paramètres ; toutes vos données sont alors effacées (voir la <privacy>politique de confidentialité</privacy>)."
+            }
+          },
+          "law": {
+            "title": "Modifications, droit applicable et litiges",
+            "content": {
+              "p1": "Nous pouvons faire évoluer ces conditions ; la nouvelle version vous est présentée et s’applique à votre connexion suivante. Ces conditions sont soumises au droit français. En cas de litige, contactez-nous d’abord ({email}) ; si vous êtes un consommateur, vous pouvez recourir gratuitement au médiateur de la consommation ({mediator}) ou à la plateforme européenne de règlement en ligne des litiges, avant de saisir les tribunaux compétents."
+            }
+          }
+        }
+      },
+      "companyTerms": {
+        "title": "Conditions entreprises",
+        "intro": "Ces conditions s’appliquent aux organisations qui publient des offres sur Coach Career IA. Elles sont proposées par {publisher} ({brand}) à des professionnels.",
+        "sections": {
+          "account": {
+            "title": "Espace entreprise",
+            "content": {
+              "p1": "L’espace est ouvert par un membre de l’organisation avec son adresse professionnelle. Si le domaine de cette adresse correspond au site de l’entreprise, l’espace est activé immédiatement ; sinon, notre équipe le vérifie avant toute publication. Vous garantissez être habilité à représenter l’organisation."
+            }
+          },
+          "postings": {
+            "title": "Publication payante",
+            "content": {
+              "list": {
+                "price": "Chaque offre est payée à l’unité, au prix affiché avant le paiement, sans abonnement.",
+                "duration": "Une offre payée et approuvée reste en ligne {postingDays} jours puis se ferme automatiquement ; la republier demande un nouveau paiement.",
+                "payment": "{payments, select, stripe {Le paiement est traité par Stripe.} other {Pendant la phase de test, les paiements sont simulés : aucun montant n’est prélevé.}}"
+              }
+            }
+          },
+          "content": {
+            "title": "Contenu des offres",
+            "content": {
+              "p1": "<strong>La fourchette de salaire est obligatoire</strong> (minimum, maximum, devise, période) : c’est la première condition des candidats. L’offre doit décrire un poste réel et disponible, indiquer le contrat, la politique de télétravail et le lieu, et respecter la loi, notamment l’interdiction des discriminations (âge, sexe, origine, situation de famille, handicap…)."
+            }
+          },
+          "moderation": {
+            "title": "Modération",
+            "content": {
+              "p1": "Chaque offre est vérifiée avant sa mise en ligne. Une offre qui contient des critères potentiellement discriminatoires part en revue manuelle. Nous pouvons refuser une offre ou suspendre une organisation, avec un motif communiqué par e-mail ; la suspension ferme ses offres en ligne."
+            }
+          },
+          "candidates": {
+            "title": "Relation avec les candidats",
+            "content": {
+              "p1": "<strong>Les entreprises ne recherchent, ne consultent et ne classent jamais de candidats.</strong> Chaque candidat est représenté par son agent, qui lui présente les offres respectant ses conditions ; c’est le candidat qui décide de vous contacter, d’abord de façon anonyme.",
+              "p2": "Les messages que vous recevez ont été préparés avec l’aide d’une IA et approuvés par le candidat. Les informations reçues, y compris celles d’une levée d’anonymat, ne servent qu’au recrutement concerné : vous vous interdisez toute tentative de ré-identification d’un candidat anonyme et toute réutilisation à d’autres fins. Vous êtes responsable du traitement des données qu’un candidat vous révèle."
+            }
+          },
+          "liability": {
+            "title": "Responsabilité",
+            "content": {
+              "p1": "Vous êtes responsable du contenu de vos offres et de vos échanges avec les candidats. Nous ne garantissons ni un nombre de contacts ni l’issue d’un recrutement. Le tableau de bord ne présente que des statistiques agrégées, sans donnée candidat."
+            }
+          },
+          "law": {
+            "title": "Durée, modifications et droit applicable",
+            "content": {
+              "p1": "Vous pouvez quitter l’espace entreprise à tout moment ; les offres déjà payées ne sont pas remboursées une fois en ligne. Nous pouvons faire évoluer ces conditions en vous en informant. Ces conditions sont soumises au droit français ; à défaut d’accord amiable, les tribunaux du ressort du siège de l’éditeur sont compétents. Contact : {email}. Voir aussi la <privacy>politique de confidentialité</privacy>."
+            }
+          }
+        }
+      },
+      "ai": {
+        "title": "Comment fonctionne notre IA",
+        "intro": "Coach Career IA utilise un modèle de langage pour vous faire gagner du temps, jamais pour décider à votre place. Cette page répond à l’obligation de transparence du règlement européen sur l’IA (article 50) et du RGPD.",
+        "sections": {
+          "does": {
+            "title": "Ce que fait l’agent",
+            "content": {
+              "list": {
+                "import": "Transformer votre CV ou votre profil importé en brouillon de mémoire de carrière, que vous validez.",
+                "coach": "Vous poser des questions pour faire ressortir vos réalisations et leurs preuves (coach IA).",
+                "matching": "Expliquer en quelques phrases pourquoi une offre correspond à vos conditions.",
+                "drafts": "Rédiger des brouillons de prise de contact et de contre-proposition de négociation, dans le cadre du mandat que vous avez fixé."
+              }
+            }
+          },
+          "doesNot": {
+            "title": "Ce qu’il ne fait pas",
+            "content": {
+              "list": {
+                "send": "Il n’envoie jamais rien sans votre approbation explicite, message par message.",
+                "reveal": "Il ne révèle jamais votre identité : seule votre décision, champ par champ, le permet.",
+                "rank": "Il n’évalue pas et ne classe pas les candidats pour les entreprises : aucune entreprise ne voit de liste ni de score de candidats.",
+                "decide": "Il ne prend aucune décision qui produise des effets juridiques à votre égard : aucune décision automatisée au sens de l’article 22 du RGPD.",
+                "train": "Il n’est pas entraîné avec vos données : nous n’entraînons aucun modèle."
+              }
+            }
+          },
+          "human": {
+            "title": "Un humain dans la boucle",
+            "content": {
+              "p1": "Chaque brouillon vous est présenté avant tout envoi : vous pouvez le modifier, le refuser ou l’envoyer. Vos garde-fous sont vos propres règles, appliquées telles quelles ; le score d’une opportunité ne sert qu’à ordonner les offres qui vous sont proposées, et vous restez libre de toutes les consulter."
+            }
+          },
+          "marking": {
+            "title": "Messages signalés comme assistés par l’IA",
+            "content": {
+              "p1": "Chaque message envoyé à une entreprise indique qu’il a été préparé par un agent IA pour le compte d’une personne candidate, qui l’a relu et approuvé."
+            }
+          },
+          "model": {
+            "title": "Le modèle utilisé",
+            "content": {
+              "p1": "Nous utilisons les modèles de Mistral AI, entreprise française, hébergés dans l’Union européenne. Seules les données nécessaires à la tâche demandée leur sont transmises ; votre identité, chiffrée dans votre coffre, ne l’est jamais."
+            }
+          },
+          "limits": {
+            "title": "Limites",
+            "content": {
+              "p1": "Un modèle de langage peut se tromper ou mal formuler une information. Relisez toujours un brouillon avant de l’approuver. Pour signaler un problème : {email}."
+            }
+          }
+        }
+      }
+    }
   }
 }

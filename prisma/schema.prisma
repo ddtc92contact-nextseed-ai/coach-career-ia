@@ -46,6 +46,12 @@ model User {
   stripeCustomerId     String?             @unique @map("stripe_customer_id")
   stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
 
+  /// Version des conditions d'utilisation et de la politique de confidentialité
+  /// acceptées (`LEGAL_TERMS_VERSION`, `src/config/legal.ts`) et date de
+  /// l'acceptation, enregistrées à la connexion qui suit leur affichage.
+  termsVersion    String?   @map("terms_version")
+  termsAcceptedAt DateTime? @map("terms_accepted_at")
+
   accounts     Account[]
   sessions     Session[]
   profile      CareerProfile?
@@ -1266,26 +1272,30 @@ enum OrganizationRole {
 /// Entreprise inscrite sur l'espace entreprise. Données de l'entreprise,
 /// pas d'une personne : seuls les membres (`OrganizationMember`) relient un compte.
 model Organization {
-  id         String             @id @default(cuid())
-  name       String
+  id              String             @id @default(cuid())
+  name            String
   /// Site web déclaré (https://…), et son domaine normalisé (sans `www.`).
-  website    String
-  domain     String
+  website         String
+  domain          String
   /// Code de secteur (`src/lib/career/codes.ts`).
-  sector     String
-  size       CompanySize
+  sector          String
+  size            CompanySize
   /// Code pays ISO 3166-1 alpha-2.
-  country    String
+  country         String
   /// Domaine de l'e-mail du membre fondateur vérifié contre celui du site, ou
   /// validation par un administrateur.
-  verifiedAt DateTime?          @map("verified_at")
-  status     OrganizationStatus @default(PENDING)
+  verifiedAt      DateTime?          @map("verified_at")
+  status          OrganizationStatus @default(PENDING)
   /// Motif du dernier refus ou de la suspension (saisi par l'administrateur).
-  reviewNote String?            @map("review_note")
+  reviewNote      String?            @map("review_note")
   /// Fiche `companies` sous laquelle les offres sont publiées.
-  companyId  String             @unique @map("company_id")
-  createdAt  DateTime           @default(now()) @map("created_at")
-  updatedAt  DateTime           @updatedAt @map("updated_at")
+  companyId       String             @unique @map("company_id")
+  /// Version des conditions entreprises acceptées à l'inscription, et sa date
+  /// (`null` pour les organisations créées avant ces conditions).
+  termsVersion    String?            @map("terms_version")
+  termsAcceptedAt DateTime?          @map("terms_accepted_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
 
   company  Company              @relation(fields: [companyId], references: [id], onDelete: Restrict)
   members  OrganizationMember[]

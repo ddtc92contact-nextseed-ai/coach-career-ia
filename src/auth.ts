@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { serverEnv } from "@/lib/env";
 import { logger } from "@/lib/logger";
 import { magicLinkLocale, sendMagicLink } from "@/lib/auth/mailer";
+import { recordTermsAcceptance } from "@/lib/legal/acceptance";
 import { DEFAULT_LOCALE, isAppLocale } from "@/i18n/routing";
 
 const MAGIC_LINK_MAX_AGE = 15 * 60; // 15 minutes
@@ -54,7 +55,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
       },
     },
     events: {
-      signIn: ({ user }) => logger.info("auth.sign_in", { userId: user.id }),
+      signIn: async ({ user }) => {
+        logger.info("auth.sign_in", { userId: user.id });
+        if (user.id && (await recordTermsAcceptance(user.id))) {
+          logger.info("legal.terms.accepted", { userId: user.id });
+        }
+      },
       signOut: (message) =>
         logger.info("auth.sign_out", {
           userId: "session" in message && message.session ? message.session.userId : undefined,

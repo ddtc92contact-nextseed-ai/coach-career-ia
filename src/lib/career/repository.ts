@@ -668,7 +668,13 @@ function exportNotice(locale: string | null): string {
 export async function exportUserData(userId: string) {
   const user = await db.user.findUniqueOrThrow({
     where: { id: userId },
-    select: { email: true, locale: true, createdAt: true },
+    select: {
+      email: true,
+      locale: true,
+      createdAt: true,
+      termsVersion: true,
+      termsAcceptedAt: true,
+    },
   });
   const [visibility, experiences, achievements, skills, guardRails, documents, identityVault] =
     await Promise.all([
