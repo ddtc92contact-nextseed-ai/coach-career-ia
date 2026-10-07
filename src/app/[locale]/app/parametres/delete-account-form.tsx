@@ -2,7 +2,14 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
-import { ActionForm, Field, fieldProps, inputClass, type FormState } from "@/components/form";
+import {
+  ActionForm,
+  Field,
+  fieldProps,
+  FormError,
+  inputClass,
+  type FormState,
+} from "@/components/form";
 import { deleteMyAccount } from "../actions";
 
 export function DeleteAccountForm() {
@@ -11,6 +18,7 @@ export function DeleteAccountForm() {
   const error = state.errors?.confirmEmail;
   return (
     <ActionForm action={action} className="space-y-4">
+      {state.errors?._form ? <FormError errors={state.errors} /> : null}
       <Field id="confirmEmail" label={t("confirmLabel")} hint={t("confirmHint")} error={error}>
         <input
           {...fieldProps("confirmEmail", error, "hint")}

@@ -10,7 +10,7 @@ export type {
   Tool,
 } from "./client";
 export { AI_ERROR_CODES, AiError, isAiError, type AiErrorCode } from "./errors";
-export { languageInstruction } from "./locale";
+export { languageInstruction, languageName } from "./locale";
 export { createMockProvider, mockEmbedding, scriptedReplies } from "./providers/mock";
 export type { MockProvider, MockReply, MockResponder } from "./providers/mock";
 export { createOpenAiCompatibleProvider } from "./providers/openai-compatible";

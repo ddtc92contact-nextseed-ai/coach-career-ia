@@ -71,6 +71,8 @@ export type RunToolsRequest = Omit<ChatRequest, "tools" | "responseFormat"> &
     tools: Tool[];
     /** Nombre maximal d'allers-retours avec le modèle. */
     maxSteps?: number;
+    /** Appelé avant chaque appel au modèle (progression affichée à l'utilisateur). */
+    onStep?: (step: number) => void;
   };
 
 export type RunToolsResult = {
@@ -304,12 +306,13 @@ export class AiClient {
    * Les erreurs d'un outil lui sont renvoyées sous forme de code, sans détail.
    */
   async runTools(request: RunToolsRequest): Promise<RunToolsResult> {
-    const { tools, maxSteps = 5, messages, ...rest } = request;
+    const { tools, maxSteps = 5, messages, onStep, ...rest } = request;
     const byName = new Map(tools.map((tool) => [tool.definition.name, tool]));
     const conversation: ChatMessage[] = [...messages];
     let usage = NO_USAGE;
 
     for (let step = 1; step <= maxSteps; step++) {
+      onStep?.(step);
       const response = await this.chat({
         ...rest,
         messages: conversation,

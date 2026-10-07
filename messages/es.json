@@ -104,6 +104,20 @@
       "htmlIntro": "Haga clic en el botón de abajo para iniciar sesión. Este enlace es válido durante 15 minutos y solo funciona una vez.",
       "button": "Iniciar sesión",
       "htmlIgnore": "Si no ha solicitado este acceso, ignore este mensaje: no se abrirá ninguna cuenta sin hacer clic en este enlace."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nueva oportunidad} other {# nuevas oportunidades}} para ti",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Tu agente ha encontrado una nueva oferta que cumple tus límites:} other {Tu agente ha encontrado # nuevas ofertas que cumplen tus límites:}}",
+      "score": "Puntuación {score}/100",
+      "companyUnknown": "Empresa no indicada",
+      "view": "Ver la explicación",
+      "original": "Oferta original",
+      "viewText": "Ver la explicación: {url}",
+      "originalText": "Oferta original: {url}",
+      "footer": "Recibes este resumen {frequency, select, DAILY {diario} other {semanal}} porque has activado las alertas.",
+      "unsubscribe": "Darse de baja",
+      "unsubscribeText": "Para dejar de recibir estos correos: {url}"
     }
   },
   "common": {
@@ -134,7 +148,8 @@
     "fileType": "Formato no admitido: envíe un PDF o una imagen (PNG, JPEG, WebP).",
     "fileQuota": "Ha alcanzado el número máximo de documentos. Elimine uno para añadir otro.",
     "confirmMismatch": "La dirección introducida no coincide con la de su cuenta.",
-    "notFound": "Este elemento no existe o ya no existe."
+    "notFound": "Este elemento no existe o ya no existe.",
+    "billingCancelFailed": "No se puede cancelar su suscripción en este momento: su cuenta no se ha eliminado. Inténtelo de nuevo en unos minutos."
   },
   "app": {
     "metaTitle": "Mi espacio",
@@ -148,7 +163,9 @@
       "guardRails": "Mis salvaguardas",
       "opportunities": "Oportunidades",
       "settings": "Ajustes",
-      "radar": "Radar (admin)"
+      "radar": "Radar (admin)",
+      "coach": "Coach IA",
+      "billing": "Suscripción"
     }
   },
   "dashboard": {
@@ -218,6 +235,102 @@
   "opportunities": {
     "title": "Oportunidades",
     "intro": "Solo ofertas que respetan sus salvaguardas, con la explicación de cada coincidencia.",
+    "empty": {
+      "noMemoryTitle": "Tu agente necesita tu memoria profesional",
+      "noMemoryText": "Añade al menos una experiencia, un logro o una competencia: es lo que tu agente compara con las ofertas.",
+      "noMemoryAction": "Completar mi memoria",
+      "noRailsTitle": "Define tus límites",
+      "noRailsText": "Salario mínimo, zona, teletrabajo, contratos: sin límites, tu agente no puede garantizar que las ofertas propuestas te convengan.",
+      "noRailsAction": "Definir mis límites",
+      "pendingTitle": "Análisis en curso",
+      "pendingText": "Tu agente está comparando las ofertas del mercado con tu perfil. Los resultados aparecerán aquí en unos minutos: no hace falta quedarse en la página.",
+      "noMatchTitle": "Ninguna oferta cualificada por ahora",
+      "noMatchText": "Ninguna oferta abierta cumple hoy todos tus límites con una puntuación suficiente. Tu agente sigue vigilando el mercado; demostrar más logros también mejora tus coincidencias.",
+      "noResultTitle": "Ninguna oportunidad con estos filtros",
+      "noResultText": "Cambia los filtros para ver tus otras oportunidades."
+    },
+    "pending": "Actualización en curso: tus últimos cambios se tendrán en cuenta en unos minutos.",
+    "lastComputed": "Último análisis: {date}",
+    "alertsHint": "Recibe las nuevas oportunidades por correo: <link>configura tus alertas</link>.",
+    "filters": {
+      "label": "Filtrar las oportunidades",
+      "status": "Estado",
+      "minScore": "Puntuación mínima",
+      "anyScore": "Todas las puntuaciones",
+      "scoreOption": "{score} o más",
+      "apply": "Filtrar",
+      "statusOptions": {
+        "active": "Por revisar",
+        "saved": "Guardadas",
+        "dismissed": "Descartadas",
+        "all": "Todas (salvo descartadas)"
+      }
+    },
+    "count": "{count, plural, =0 {Ninguna oportunidad} one {# oportunidad} other {# oportunidades}}",
+    "score": "{score}/100",
+    "scoreLabel": "Puntuación de coincidencia: {score} sobre 100",
+    "status": {
+      "NEW": "Nueva",
+      "SEEN": "Vista",
+      "SAVED": "Guardada",
+      "DISMISSED": "Descartada"
+    },
+    "companyUnknown": "Empresa no indicada",
+    "placeUnknown": "Lugar no indicado",
+    "remote": {
+      "ONSITE": "Presencial",
+      "HYBRID": "Híbrido",
+      "FULL_REMOTE": "Teletrabajo completo",
+      "UNKNOWN": "Teletrabajo no indicado"
+    },
+    "contract": {
+      "CDI": "Contrato indefinido",
+      "CDD": "Contrato temporal",
+      "FREELANCE": "Autónomo",
+      "INTERNSHIP": "Prácticas",
+      "APPRENTICESHIP": "Formación en alternancia",
+      "TEMPORARY": "Trabajo temporal",
+      "OTHER": "Otro contrato",
+      "UNKNOWN": "Contrato no indicado"
+    },
+    "salary": {
+      "notStated": "Salario no indicado",
+      "range": "{min} – {max}",
+      "from": "desde {min}",
+      "upTo": "hasta {max}",
+      "period": {
+        "HOUR": "/ hora",
+        "DAY": "/ día",
+        "MONTH": "/ mes",
+        "YEAR": "/ año"
+      }
+    },
+    "actions": {
+      "save": "Guardar",
+      "unsave": "Quitar de guardadas",
+      "dismiss": "Descartar",
+      "restore": "Volver a la lista",
+      "details": "Ver la explicación",
+      "original": "Ver la oferta original",
+      "back": "← Todas las oportunidades"
+    },
+    "detail": {
+      "why": "Por qué esta oferta",
+      "generatedBy": {
+        "llm": "Resumen redactado por tu agente a partir de los elementos siguientes.",
+        "rules": "Resumen generado automáticamente a partir de los elementos siguientes."
+      },
+      "proofs": "Tus logros que coinciden",
+      "proofsEmpty": "Ninguno de tus logros responde directamente a un requisito de la oferta.",
+      "skills": "Tus competencias citadas en la oferta",
+      "culture": "Tus preferencias de cultura mencionadas",
+      "gaps": "Puntos a tener en cuenta",
+      "unknowns": "Información que falta",
+      "components": "Detalle de la puntuación",
+      "description": "Descripción de la oferta",
+      "published": "Publicada el {date}",
+      "guardRailsOk": "Esta oferta cumple todos tus límites."
+    },
     "emptyTitle": "Todavía no hay oportunidades",
     "emptyText": "En cuanto complete su memoria de carrera y sus salvaguardas, su agente empezará a proponerle ofertas cualificadas."
   },
@@ -543,6 +656,146 @@
       "intro": "Opcional: lo que es importante para usted. Estas preferencias afinan la clasificación de las ofertas."
     }
   },
+  "coach": {
+    "title": "Coach IA",
+    "intro": "Un coach de carrera impulsado por inteligencia artificial: aprende a conocerle, le ayuda a demostrar sus logros, a aclarar lo que busca y a preparar sus entrevistas. Nunca modifica su memoria de carrera sin su aprobación.",
+    "aiNotice": "Está conversando con una inteligencia artificial, no con una persona. Sus respuestas pueden contener errores: compruébelas. No es necesario darle su nombre, el de sus empleadores ni sus datos de contacto.",
+    "aiBadge": "IA",
+    "notConfigured": "El coach IA aún no está activado en este servicio.",
+    "quota": "{remaining, plural, =0 {No le quedan mensajes en las últimas 24 h.} one {Le queda # mensaje en las últimas 24 h.} other {Le quedan # mensajes en las últimas 24 h.}}",
+    "start": {
+      "title": "Nueva conversación",
+      "intro": "Elija en qué quiere trabajar con el coach.",
+      "button": "Empezar",
+      "buttonFor": "Empezar: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Descubrir mi perfil",
+        "description": "Una entrevista guiada (situación, tarea, acción, resultado cuantificado, prueba) para convertir sus experiencias en logros demostrados.",
+        "welcome": "¡Hola! Soy el coach de Coach Career IA, una inteligencia artificial. Hábleme de un proyecto o una misión de la que esté orgulloso u orgullosa: lo convertiremos en un logro demostrado, paso a paso. Nunca le pediré el nombre de sus empleadores ni sus datos de contacto."
+      },
+      "CLARIFY": {
+        "title": "Aclarar lo que quiero",
+        "description": "Salario, ubicación, teletrabajo, contratos, sectores: el coach le ayuda a fijar salvaguardas claras.",
+        "welcome": "¡Hola! Soy el coach de Coach Career IA, una inteligencia artificial. Vamos a precisar lo que realmente quiere: remuneración, ubicación, teletrabajo, tipo de contrato, sectores que evitar. Le propondré salvaguardas que usted validará una a una."
+      },
+      "INTERVIEW": {
+        "title": "Preparar una entrevista",
+        "description": "Una simulación de entrevista para el puesto al que aspira, con comentarios concretos después de cada respuesta.",
+        "welcome": "¡Hola! Soy el coach de Coach Career IA, una inteligencia artificial. Describa el puesto al que aspira (título, nivel, tipo de empresa, sin nombrarla) y le haré una entrevista de práctica, con comentarios después de cada respuesta."
+      }
+    },
+    "history": {
+      "title": "Mis conversaciones",
+      "empty": "Todavía no hay conversaciones.",
+      "messages": "{count, plural, =0 {ningún mensaje} one {# mensaje} other {# mensajes}}",
+      "pending": "{count, plural, one {# sugerencia por validar} other {# sugerencias por validar}}",
+      "updated": "Actualizada el {date}",
+      "open": "Abrir",
+      "confirmDelete": "¿Eliminar definitivamente esta conversación? Las sugerencias no validadas se perderán; lo que se añadió a su memoria de carrera se conserva."
+    },
+    "chat": {
+      "back": "Todas las conversaciones",
+      "label": "Conversación con el coach",
+      "you": "Usted",
+      "coach": "Coach IA",
+      "inputLabel": "Su mensaje al coach",
+      "placeholder": "Su mensaje… (Intro para enviar, Mayús + Intro para un salto de línea)",
+      "send": "Enviar",
+      "sending": "Respondiendo…",
+      "tooLong": "Mensaje demasiado largo ({max} caracteres como máximo).",
+      "unanswered": "Su último mensaje no ha recibido respuesta.",
+      "status": {
+        "thinking": "El coach está pensando…",
+        "reading": "El coach está consultando su memoria de carrera…",
+        "suggesting": "El coach está preparando una sugerencia…"
+      }
+    },
+    "errors": {
+      "title": "El coach no ha podido responder",
+      "aiNotConfigured": "El coach IA aún no está activado en este servicio.",
+      "aiTimeout": "El coach ha tardado demasiado en responder.",
+      "aiUnavailable": "El servicio de IA no está disponible en este momento.",
+      "aiRateLimited": "El servicio de IA está muy solicitado en este momento.",
+      "aiInvalidOutput": "El coach ha producido una respuesta inutilizable.",
+      "quotaExceeded": "Ha alcanzado el límite de {limit} mensajes en 24 horas. Vuelva un poco más tarde.",
+      "tooManyRetries": "Este mensaje ya se ha reintentado varias veces sin éxito. Reformúlelo o envíe un mensaje nuevo.",
+      "busy": "El coach ya está respondiendo a un mensaje en esta conversación. Espere unos segundos.",
+      "notFound": "Esta conversación ya no existe.",
+      "invalid": "No se ha podido enviar este mensaje.",
+      "unauthorized": "Su sesión ha caducado. Vuelva a iniciar sesión e inténtelo de nuevo.",
+      "network": "Se ha interrumpido la conexión.",
+      "unknown": "Se ha producido un error inesperado.",
+      "kept": "Su mensaje se ha conservado: puede volver a preguntar al coach.",
+      "retry": "Reintentar"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Logro propuesto",
+        "EXPERIENCE_UPDATE": "Cambio de experiencia propuesto",
+        "SKILL": "Competencia propuesta",
+        "GUARD_RAIL": "Salvaguardas propuestas"
+      },
+      "pendingBadge": "Por validar",
+      "acceptedBadge": "Aceptada",
+      "rejectedBadge": "Rechazada",
+      "draft": "Borrador: no se guarda nada sin su aprobación.",
+      "why": "Por qué: {rationale}",
+      "identityRemoved": "Se ha eliminado información identificativa (nombre, empleador, datos de contacto) de esta sugerencia.",
+      "accept": "Aceptar",
+      "edit": "Modificar",
+      "reject": "Rechazar",
+      "cancel": "Cancelar",
+      "saveAccept": "Guardar y aceptar",
+      "accepted": "Añadido a su memoria de carrera.",
+      "acceptedGuardRail": "Salvaguardas actualizadas.",
+      "rejected": "Sugerencia rechazada: no se ha guardado nada.",
+      "view": "Ver",
+      "nothingToEdit": "No hay ningún campo modificable: acepte o rechace la sugerencia.",
+      "skillsHint": "separadas por comas",
+      "yes": "Sí",
+      "no": "No",
+      "remoteDays": "{count, plural, one {# día como mínimo} other {# días como mínimo}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Título",
+        "experience": "Experiencia",
+        "context": "Contexto",
+        "actions": "Acciones",
+        "result": "Resultado",
+        "skills": "Competencias",
+        "proofUrl": "Enlace de prueba",
+        "name": "Competencia",
+        "roleTitle": "Puesto",
+        "responsibilities": "Responsabilidades",
+        "seniority": "Nivel",
+        "contractType": "Contrato",
+        "sector": "Sector",
+        "companySize": "Tamaño de la empresa",
+        "companyStage": "Tipo de empresa",
+        "minFixedSalary": "Salario fijo mínimo (bruto anual)",
+        "targetTotalPackage": "Remuneración total deseada (bruta anual)",
+        "remotePolicy": "Teletrabajo",
+        "minRemoteDays": "Días mínimos de teletrabajo por semana",
+        "contractTypes": "Contratos aceptados",
+        "excludedSectors": "Sectores excluidos",
+        "maxWeeklyHours": "Horas semanales máximas",
+        "acceptsOnCall": "Guardias aceptadas",
+        "locations": "Zonas de trabajo"
+      }
+    },
+    "quotaUnlimited": "Mensajes ilimitados con Premium.",
+    "upsell": {
+      "title": "Ha utilizado sus mensajes gratuitos",
+      "text": "El plan gratuito incluye {limit, plural, one {# mensaje} other {# mensajes}} al coach en 24 horas móviles; se van liberando con el tiempo.",
+      "titlePremiumOnly": "El coach IA está reservado a Premium",
+      "textPremiumOnly": "En este servicio, el coach IA forma parte del plan Premium.",
+      "premium": "Con Premium, el coach es ilimitado.",
+      "later": "El pago en línea aún no está disponible: vuelva un poco más tarde.",
+      "cta": "Descubrir Premium"
+    }
+  },
   "settings": {
     "title": "Ajustes",
     "intro": "Su idioma, sus datos, su cuenta.",
@@ -562,6 +815,19 @@
       "confirmHint": "Recuerde exportar sus datos antes de eliminar su cuenta.",
       "submit": "Eliminar definitivamente mi cuenta",
       "deleting": "Eliminando…"
+    },
+    "alerts": {
+      "title": "Alertas de oportunidades",
+      "intro": "Recibe por correo un resumen de las nuevas ofertas cualificadas. El correo solo contiene información sobre las ofertas.",
+      "frequency": "Frecuencia",
+      "frequencyOptions": {
+        "OFF": "Desactivadas",
+        "DAILY": "Resumen diario",
+        "WEEKLY": "Resumen semanal"
+      },
+      "minScore": "Puntuación mínima",
+      "minScoreHint": "Solo se envían las oportunidades con al menos esta puntuación.",
+      "save": "Guardar"
     }
   },
   "import": {
@@ -791,5 +1057,101 @@
       "CONFIRMED": "Confirmada",
       "EXPERT": "Dominada"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Muy buena coincidencia ({score}/100).",
+      "good": "Buena coincidencia ({score}/100).",
+      "fair": "Coincidencia parcial ({score}/100).",
+      "provenSkills": "{count, plural, one {Se pide tu competencia demostrada {skills}.} other {Se piden tus competencias demostradas {skills}.}}",
+      "declaredSkills": "{count, plural, one {Se cita tu competencia {skills}, todavía sin prueba.} other {Se citan tus competencias {skills}, todavía sin prueba.}}",
+      "noSkills": "La oferta cita explícitamente pocas de tus competencias.",
+      "proofs": "{count, plural, one {Uno de tus logros responde directamente a un requisito.} other {# de tus logros responden directamente a requisitos.}}",
+      "seniorityAbove": "El puesto parece más sénior que tu puesto actual.",
+      "salaryUnknown": "El salario no está indicado."
+    },
+    "match": "Tu logro «{achievement}» responde al requisito «{requirement}».",
+    "matchSemantic": "Tu logro «{achievement}» se acerca a las funciones del puesto.",
+    "proven": "Demostrado",
+    "declared": "Declarado",
+    "gaps": {
+      "seniorityAbove": "El nivel esperado parece superior al de tu puesto actual.",
+      "seniorityBelow": "El puesto parece menos sénior que tu trayectoria.",
+      "salaryBelowTarget": "La remuneración indicada está por debajo de tu paquete objetivo.",
+      "unprovenSkill": "Se pide «{value}» pero aún no está demostrada: añade una prueba a un logro que la utilice.",
+      "fewSkills": "La oferta no cita explícitamente ninguna de tus competencias."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salario no indicado.",
+      "remoteNotStated": "Política de teletrabajo no indicada.",
+      "remoteDaysNotStated": "Número de días de teletrabajo no indicado.",
+      "contractNotStated": "Tipo de contrato no indicado.",
+      "hoursNotStated": "Jornada semanal no indicada.",
+      "locationNotChecked": "Distancia no comprobada: no se han podido localizar tus lugares.",
+      "seniorityNotStated": "Nivel de experiencia esperado no indicado.",
+      "cultureNotStated": "La oferta no menciona ninguna de tus preferencias de cultura."
+    },
+    "components": {
+      "skills": "Competencias y pruebas",
+      "seniority": "Seniority",
+      "salary": "Remuneración",
+      "culture": "Cultura de empresa"
+    }
+  },
+  "unsubscribe": {
+    "title": "Alertas de oportunidades",
+    "confirmText": "Ya no recibirás resúmenes de oportunidades por correo. Podrás reactivar las alertas en cualquier momento en tus ajustes.",
+    "button": "Confirmar la baja",
+    "doneTitle": "Baja confirmada",
+    "doneText": "Ya no recibirás alertas. Puedes reactivarlas en tus ajustes.",
+    "invalidTitle": "Enlace no válido",
+    "invalidText": "Este enlace de baja no es válido. Puedes gestionar tus alertas en tus ajustes."
+  },
+  "billing": {
+    "title": "Suscripción",
+    "intro": "Su plan actual y lo que añade Premium. Lo esencial del servicio sigue siendo gratuito.",
+    "notAvailable": "Los pagos aún no están disponibles. Todas las funciones gratuitas siguen accesibles con normalidad.",
+    "checkoutSuccess": "¡Gracias! Su pago se ha registrado: Premium se activará en unos instantes. Actualice la página si es necesario.",
+    "checkoutCancel": "Pago cancelado: no se ha cobrado ningún importe.",
+    "errors": {
+      "checkout": "No se puede abrir la página de pago en este momento. Inténtelo de nuevo en unos minutos.",
+      "portal": "No se puede abrir la gestión de la suscripción en este momento. Inténtelo de nuevo en unos minutos."
+    },
+    "current": {
+      "title": "Su plan",
+      "admin": "Premium se le ofrece de forma gratuita (cuenta de administrador).",
+      "renewsOn": "Renovación automática el {date}.",
+      "endsOn": "Suscripción cancelada: Premium sigue activo hasta el {date}.",
+      "free": "Coach IA: {limit, plural, =0 {reservado a Premium} one {# mensaje cada 24 horas} other {# mensajes cada 24 horas}}.",
+      "pastDue": "El último pago ha fallado. Actualice su método de pago para conservar Premium."
+    },
+    "manage": "Gestionar mi suscripción",
+    "manageHint": "Método de pago, facturas y cancelación, en la página segura de Stripe.",
+    "redirecting": "Redirigiendo…",
+    "compare": {
+      "title": "Los planes"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratuito",
+        "price": "0 €, sin compromiso"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {día} week {semana} year {año} other {mes}}",
+    "priceUnknown": "Suscripción mensual",
+    "features": {
+      "memory": "Memoria profesional, caja fuerte de identidad y límites innegociables",
+      "opportunities": "Oportunidades cualificadas según sus límites",
+      "coachLimited": "Coach IA: {limit, plural, one {# mensaje} other {# mensajes}} cada 24 horas",
+      "coachNone": "Coach IA no incluido",
+      "everythingFree": "Todo lo que incluye el plan gratuito",
+      "coachUnlimited": "Coach IA ilimitado"
+    },
+    "upgrade": "Pasar a Premium",
+    "upgradeHint": "Pago mensual protegido por Stripe, cancelable en cualquier momento.",
+    "privacy": "Privacidad: Stripe solo recibe su dirección de correo de inicio de sesión y un identificador de cuenta. Su memoria profesional y su identidad nunca se le transmiten, y los datos de su tarjeta no pasan por nuestros servidores."
   }
 }

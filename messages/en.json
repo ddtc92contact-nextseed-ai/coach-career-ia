@@ -104,6 +104,20 @@
       "htmlIntro": "Click the button below to sign in. This link is valid for 15 minutes and works only once.",
       "button": "Sign me in",
       "htmlIgnore": "If you didn’t request this, ignore this message: no account will be opened unless this link is clicked."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# new opportunity} other {# new opportunities}} for you",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Your agent found a new offer that meets your guard-rails:} other {Your agent found # new offers that meet your guard-rails:}}",
+      "score": "Score {score}/100",
+      "companyUnknown": "Company not disclosed",
+      "view": "See the explanation",
+      "original": "Original offer",
+      "viewText": "See the explanation: {url}",
+      "originalText": "Original offer: {url}",
+      "footer": "You receive this {frequency, select, DAILY {daily} other {weekly}} digest because you turned on alerts.",
+      "unsubscribe": "Unsubscribe",
+      "unsubscribeText": "To stop receiving these emails: {url}"
     }
   },
   "common": {
@@ -134,7 +148,8 @@
     "fileType": "Unsupported format: upload a PDF or an image (PNG, JPEG, WebP).",
     "fileQuota": "You have reached the maximum number of documents. Delete one to add another.",
     "confirmMismatch": "The address you entered doesn’t match your account’s address.",
-    "notFound": "This item doesn’t exist or no longer exists."
+    "notFound": "This item doesn’t exist or no longer exists.",
+    "billingCancelFailed": "Your subscription cannot be cancelled right now, so your account has not been deleted. Please try again in a few minutes."
   },
   "app": {
     "metaTitle": "My space",
@@ -148,7 +163,9 @@
       "guardRails": "My guard-rails",
       "opportunities": "Opportunities",
       "settings": "Settings",
-      "radar": "Radar (admin)"
+      "radar": "Radar (admin)",
+      "coach": "AI coach",
+      "billing": "Subscription"
     }
   },
   "dashboard": {
@@ -218,6 +235,102 @@
   "opportunities": {
     "title": "Opportunities",
     "intro": "Only offers that respect your guard-rails, with an explanation of every match.",
+    "empty": {
+      "noMemoryTitle": "Your agent needs your career memory",
+      "noMemoryText": "Add at least one experience, achievement or skill: that is what your agent compares with job offers.",
+      "noMemoryAction": "Complete my memory",
+      "noRailsTitle": "Set your guard-rails",
+      "noRailsText": "Minimum salary, area, remote work, contracts: without guard-rails, your agent cannot guarantee that the offers it suggests suit you.",
+      "noRailsAction": "Set my guard-rails",
+      "pendingTitle": "Analysis in progress",
+      "pendingText": "Your agent is comparing market offers with your profile. Results will appear here within a few minutes: no need to stay on this page.",
+      "noMatchTitle": "No qualified offer yet",
+      "noMatchText": "No open offer currently meets all your guard-rails with a high enough score. Your agent keeps watching the market; proving more achievements also improves your matches.",
+      "noResultTitle": "No opportunity with these filters",
+      "noResultText": "Change the filters to see your other opportunities."
+    },
+    "pending": "Update in progress: your latest changes will be taken into account within a few minutes.",
+    "lastComputed": "Last analysis: {date}",
+    "alertsHint": "Get new opportunities by email: <link>set up your alerts</link>.",
+    "filters": {
+      "label": "Filter opportunities",
+      "status": "Status",
+      "minScore": "Minimum score",
+      "anyScore": "Any score",
+      "scoreOption": "{score} and above",
+      "apply": "Filter",
+      "statusOptions": {
+        "active": "To review",
+        "saved": "Saved",
+        "dismissed": "Dismissed",
+        "all": "All (except dismissed)"
+      }
+    },
+    "count": "{count, plural, =0 {No opportunity} one {# opportunity} other {# opportunities}}",
+    "score": "{score}/100",
+    "scoreLabel": "Match score: {score} out of 100",
+    "status": {
+      "NEW": "New",
+      "SEEN": "Seen",
+      "SAVED": "Saved",
+      "DISMISSED": "Dismissed"
+    },
+    "companyUnknown": "Company not disclosed",
+    "placeUnknown": "Location not specified",
+    "remote": {
+      "ONSITE": "On site",
+      "HYBRID": "Hybrid",
+      "FULL_REMOTE": "Fully remote",
+      "UNKNOWN": "Remote policy not specified"
+    },
+    "contract": {
+      "CDI": "Permanent contract",
+      "CDD": "Fixed-term contract",
+      "FREELANCE": "Freelance",
+      "INTERNSHIP": "Internship",
+      "APPRENTICESHIP": "Apprenticeship",
+      "TEMPORARY": "Temporary work",
+      "OTHER": "Other contract",
+      "UNKNOWN": "Contract not specified"
+    },
+    "salary": {
+      "notStated": "Salary not disclosed",
+      "range": "{min} – {max}",
+      "from": "from {min}",
+      "upTo": "up to {max}",
+      "period": {
+        "HOUR": "/ hour",
+        "DAY": "/ day",
+        "MONTH": "/ month",
+        "YEAR": "/ year"
+      }
+    },
+    "actions": {
+      "save": "Save",
+      "unsave": "Remove from saved",
+      "dismiss": "Dismiss",
+      "restore": "Put back in the list",
+      "details": "See the explanation",
+      "original": "See the original offer",
+      "back": "← All opportunities"
+    },
+    "detail": {
+      "why": "Why this offer",
+      "generatedBy": {
+        "llm": "Summary written by your agent from the elements below.",
+        "rules": "Summary generated automatically from the elements below."
+      },
+      "proofs": "Your matching achievements",
+      "proofsEmpty": "None of your achievements directly meets a requirement of the offer.",
+      "skills": "Your skills mentioned in the offer",
+      "culture": "Your culture preferences mentioned",
+      "gaps": "Points to consider",
+      "unknowns": "Missing information",
+      "components": "Score breakdown",
+      "description": "Offer description",
+      "published": "Published on {date}",
+      "guardRailsOk": "This offer meets all your guard-rails."
+    },
     "emptyTitle": "No opportunities yet",
     "emptyText": "As soon as your career memory and guard-rails are filled in, your agent will start suggesting qualified offers."
   },
@@ -543,6 +656,146 @@
       "intro": "Optional: what matters to you. These preferences refine how offers are ranked."
     }
   },
+  "coach": {
+    "title": "AI coach",
+    "intro": "A career coach powered by artificial intelligence: it gets to know you, helps you prove your achievements, clarify what you want and prepare your interviews. It never changes your Career Memory without your approval.",
+    "aiNotice": "You are talking to an artificial intelligence, not a person. Its answers may contain mistakes: check them. There is no need to give it your name, your employers’ names or your contact details.",
+    "aiBadge": "AI",
+    "notConfigured": "The AI coach is not enabled on this service yet.",
+    "quota": "{remaining, plural, =0 {No messages left for the last 24 hours.} one {# message left for the last 24 hours.} other {# messages left for the last 24 hours.}}",
+    "start": {
+      "title": "New conversation",
+      "intro": "Choose what you want to work on with the coach.",
+      "button": "Start",
+      "buttonFor": "Start: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Discover my profile",
+        "description": "A guided interview (situation, task, action, measurable result, proof) to turn your experience into proven achievements.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Tell me about a project or assignment you are proud of: we will turn it into a proven achievement, step by step. I will never ask for your employers’ names or your contact details."
+      },
+      "CLARIFY": {
+        "title": "Clarify what I want",
+        "description": "Salary, location, remote work, contracts, sectors: the coach helps you set clear guard-rails.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Let’s pin down what you really want: pay, location, remote work, contract type, sectors to avoid. I will suggest guard-rails that you approve one by one."
+      },
+      "INTERVIEW": {
+        "title": "Prepare an interview",
+        "description": "A mock interview for the role you are targeting, with concrete feedback after each answer.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Describe the role you are targeting (title, level, type of company, without naming it) and I will run a practice interview with feedback after each answer."
+      }
+    },
+    "history": {
+      "title": "My conversations",
+      "empty": "No conversations yet.",
+      "messages": "{count, plural, =0 {no messages} one {# message} other {# messages}}",
+      "pending": "{count, plural, one {# suggestion to review} other {# suggestions to review}}",
+      "updated": "Updated on {date}",
+      "open": "Open",
+      "confirmDelete": "Permanently delete this conversation? Suggestions you have not reviewed will be lost; what was added to your Career Memory is kept."
+    },
+    "chat": {
+      "back": "All conversations",
+      "label": "Conversation with the coach",
+      "you": "You",
+      "coach": "AI coach",
+      "inputLabel": "Your message to the coach",
+      "placeholder": "Your message… (Enter to send, Shift + Enter for a new line)",
+      "send": "Send",
+      "sending": "Answering…",
+      "tooLong": "Message too long ({max} characters maximum).",
+      "unanswered": "Your last message has not been answered.",
+      "status": {
+        "thinking": "The coach is thinking…",
+        "reading": "The coach is reading your Career Memory…",
+        "suggesting": "The coach is preparing a suggestion…"
+      }
+    },
+    "errors": {
+      "title": "The coach could not answer",
+      "aiNotConfigured": "The AI coach is not enabled on this service yet.",
+      "aiTimeout": "The coach took too long to answer.",
+      "aiUnavailable": "The AI service is temporarily unavailable.",
+      "aiRateLimited": "The AI service is very busy right now.",
+      "aiInvalidOutput": "The coach produced an unusable answer.",
+      "quotaExceeded": "You have reached the limit of {limit} messages per 24 hours. Please come back a little later.",
+      "tooManyRetries": "This message has already been retried several times without success. Rephrase it or send a new message.",
+      "busy": "The coach is already answering a message in this conversation. Please wait a few seconds.",
+      "notFound": "This conversation no longer exists.",
+      "invalid": "This message could not be sent.",
+      "unauthorized": "Your session has expired. Sign in again and retry.",
+      "network": "The connection was interrupted.",
+      "unknown": "An unexpected error occurred.",
+      "kept": "Your message has been kept: you can ask the coach again.",
+      "retry": "Try again"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Suggested achievement",
+        "EXPERIENCE_UPDATE": "Suggested experience update",
+        "SKILL": "Suggested skill",
+        "GUARD_RAIL": "Suggested guard-rails"
+      },
+      "pendingBadge": "To review",
+      "acceptedBadge": "Accepted",
+      "rejectedBadge": "Rejected",
+      "draft": "Draft: nothing is saved without your approval.",
+      "why": "Why: {rationale}",
+      "identityRemoved": "Identifying information (name, employer, contact details) was removed from this suggestion.",
+      "accept": "Accept",
+      "edit": "Edit",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "saveAccept": "Save and accept",
+      "accepted": "Added to your Career Memory.",
+      "acceptedGuardRail": "Guard-rails updated.",
+      "rejected": "Suggestion rejected: nothing was saved.",
+      "view": "View",
+      "nothingToEdit": "No editable field here: accept or reject the suggestion.",
+      "skillsHint": "separated by commas",
+      "yes": "Yes",
+      "no": "No",
+      "remoteDays": "{count, plural, one {# day minimum} other {# days minimum}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Title",
+        "experience": "Experience",
+        "context": "Context",
+        "actions": "Actions",
+        "result": "Result",
+        "skills": "Skills",
+        "proofUrl": "Proof link",
+        "name": "Skill",
+        "roleTitle": "Job title",
+        "responsibilities": "Responsibilities",
+        "seniority": "Level",
+        "contractType": "Contract",
+        "sector": "Sector",
+        "companySize": "Company size",
+        "companyStage": "Company type",
+        "minFixedSalary": "Minimum fixed salary (gross per year)",
+        "targetTotalPackage": "Target total package (gross per year)",
+        "remotePolicy": "Remote work",
+        "minRemoteDays": "Minimum remote days per week",
+        "contractTypes": "Accepted contracts",
+        "excludedSectors": "Excluded sectors",
+        "maxWeeklyHours": "Maximum hours per week",
+        "acceptsOnCall": "On-call duty accepted",
+        "locations": "Work areas"
+      }
+    },
+    "quotaUnlimited": "Unlimited messages with Premium.",
+    "upsell": {
+      "title": "You have used your free messages",
+      "text": "The free plan includes {limit, plural, one {# message} other {# messages}} to the coach over a rolling 24 hours; they free up again over time.",
+      "titlePremiumOnly": "The AI coach is a Premium feature",
+      "textPremiumOnly": "On this service, the AI coach is part of the Premium plan.",
+      "premium": "With Premium, the coach is unlimited.",
+      "later": "Online payment is not available yet: please come back a little later.",
+      "cta": "Discover Premium"
+    }
+  },
   "settings": {
     "title": "Settings",
     "intro": "Your language, your data, your account.",
@@ -562,6 +815,19 @@
       "confirmHint": "Remember to export your data before deleting your account.",
       "submit": "Permanently delete my account",
       "deleting": "Deleting…"
+    },
+    "alerts": {
+      "title": "Opportunity alerts",
+      "intro": "Get an email digest of new qualified offers. The email only contains information about the offers.",
+      "frequency": "Frequency",
+      "frequencyOptions": {
+        "OFF": "Off",
+        "DAILY": "Daily digest",
+        "WEEKLY": "Weekly digest"
+      },
+      "minScore": "Minimum score",
+      "minScoreHint": "Only opportunities with at least this score are sent.",
+      "save": "Save"
     }
   },
   "import": {
@@ -791,5 +1057,101 @@
       "CONFIRMED": "Confirmed",
       "EXPERT": "Mastered"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Very good match ({score}/100).",
+      "good": "Good match ({score}/100).",
+      "fair": "Partial match ({score}/100).",
+      "provenSkills": "{count, plural, one {Your proven skill {skills} is required.} other {Your proven skills {skills} are required.}}",
+      "declaredSkills": "{count, plural, one {Your skill {skills} is mentioned, with no proof yet.} other {Your skills {skills} are mentioned, with no proof yet.}}",
+      "noSkills": "Few of your skills are explicitly mentioned in the offer.",
+      "proofs": "{count, plural, one {One of your achievements directly meets a requirement.} other {# of your achievements directly meet requirements.}}",
+      "seniorityAbove": "The role seems more senior than your current position.",
+      "salaryUnknown": "The salary is not stated."
+    },
+    "match": "Your achievement “{achievement}” meets the requirement “{requirement}”.",
+    "matchSemantic": "Your achievement “{achievement}” is close to the duties of the role.",
+    "proven": "Proven",
+    "declared": "Declared",
+    "gaps": {
+      "seniorityAbove": "The expected level seems higher than your current position.",
+      "seniorityBelow": "The role seems less senior than your background.",
+      "salaryBelowTarget": "The stated pay is below your target package.",
+      "unprovenSkill": "“{value}” is required but not proven yet: add a proof to an achievement that uses it.",
+      "fewSkills": "The offer does not explicitly mention any of your skills."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salary not stated.",
+      "remoteNotStated": "Remote policy not specified.",
+      "remoteDaysNotStated": "Number of remote days not specified.",
+      "contractNotStated": "Contract type not specified.",
+      "hoursNotStated": "Weekly hours not specified.",
+      "locationNotChecked": "Distance not checked: your locations could not be located.",
+      "seniorityNotStated": "Expected experience level not specified.",
+      "cultureNotStated": "The offer does not mention any of your culture preferences."
+    },
+    "components": {
+      "skills": "Skills and proofs",
+      "seniority": "Seniority",
+      "salary": "Pay",
+      "culture": "Company culture"
+    }
+  },
+  "unsubscribe": {
+    "title": "Opportunity alerts",
+    "confirmText": "You will no longer receive opportunity digests by email. You can turn alerts back on at any time in your settings.",
+    "button": "Confirm unsubscription",
+    "doneTitle": "Unsubscribed",
+    "doneText": "You will no longer receive alerts. You can turn them back on in your settings.",
+    "invalidTitle": "Invalid link",
+    "invalidText": "This unsubscribe link is not valid. You can manage your alerts in your settings."
+  },
+  "billing": {
+    "title": "Subscription",
+    "intro": "Your current plan and what Premium adds. The core of the service stays free.",
+    "notAvailable": "Payments are not available yet. All free features remain fully accessible.",
+    "checkoutSuccess": "Thank you! Your payment is recorded: Premium will be active in a few moments. Refresh the page if needed.",
+    "checkoutCancel": "Payment cancelled: you have not been charged.",
+    "errors": {
+      "checkout": "The payment page cannot be opened right now. Please try again in a few minutes.",
+      "portal": "Subscription management cannot be opened right now. Please try again in a few minutes."
+    },
+    "current": {
+      "title": "Your plan",
+      "admin": "Premium is offered to you (administrator account).",
+      "renewsOn": "Renews automatically on {date}.",
+      "endsOn": "Subscription cancelled: Premium stays active until {date}.",
+      "free": "AI coach: {limit, plural, =0 {Premium only} one {# message per 24 hours} other {# messages per 24 hours}}.",
+      "pastDue": "The last payment failed. Update your payment method to keep Premium."
+    },
+    "manage": "Manage my subscription",
+    "manageHint": "Payment method, invoices and cancellation, on Stripe’s secure page.",
+    "redirecting": "Redirecting…",
+    "compare": {
+      "title": "Plans"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Free",
+        "price": "€0, no commitment"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {day} week {week} year {year} other {month}}",
+    "priceUnknown": "Monthly subscription",
+    "features": {
+      "memory": "Career Memory, identity vault and guard-rails",
+      "opportunities": "Opportunities qualified against your guard-rails",
+      "coachLimited": "AI coach: {limit, plural, one {# message} other {# messages}} per 24 hours",
+      "coachNone": "AI coach not included",
+      "everythingFree": "Everything in the free plan",
+      "coachUnlimited": "Unlimited AI coach"
+    },
+    "upgrade": "Upgrade to Premium",
+    "upgradeHint": "Monthly payment secured by Stripe, cancel at any time.",
+    "privacy": "Privacy: Stripe only receives your login email address and an account identifier. Your Career Memory and identity are never sent to it, and your card details never pass through our servers."
   }
 }

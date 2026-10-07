@@ -1,0 +1,21 @@
+{
+  "id": "evt_subscription_updated_1",
+  "object": "event",
+  "type": "customer.subscription.updated",
+  "api_version": "2026-09-30.endive",
+  "created": 1791360100,
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": { "id": null, "idempotency_key": null },
+  "data": {
+    "object": {
+      "id": "sub_fixture",
+      "object": "subscription",
+      "customer": "cus_fixture",
+      "status": "active",
+      "cancel_at_period_end": true,
+      "metadata": { "userId": "user_fixture" },
+      "items": { "object": "list", "data": [] }
+    }
+  }
+}

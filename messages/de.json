@@ -104,6 +104,20 @@
       "htmlIntro": "Klicken Sie auf die Schaltfläche unten, um sich anzumelden. Dieser Link ist 15 Minuten gültig und funktioniert nur einmal.",
       "button": "Anmelden",
       "htmlIgnore": "Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese Nachricht: Ohne Klick auf diesen Link wird kein Konto eröffnet."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# neue Gelegenheit} other {# neue Gelegenheiten}} für Sie",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Ihr Agent hat ein neues Angebot gefunden, das Ihre Leitplanken erfüllt:} other {Ihr Agent hat # neue Angebote gefunden, die Ihre Leitplanken erfüllen:}}",
+      "score": "Punktzahl {score}/100",
+      "companyUnknown": "Unternehmen nicht angegeben",
+      "view": "Erklärung ansehen",
+      "original": "Originalangebot",
+      "viewText": "Erklärung ansehen: {url}",
+      "originalText": "Originalangebot: {url}",
+      "footer": "Sie erhalten diese {frequency, select, DAILY {tägliche} other {wöchentliche}} Zusammenfassung, weil Sie Benachrichtigungen aktiviert haben.",
+      "unsubscribe": "Abmelden",
+      "unsubscribeText": "Um diese E-Mails nicht mehr zu erhalten: {url}"
     }
   },
   "common": {
@@ -134,7 +148,8 @@
     "fileType": "Format nicht unterstützt: Laden Sie eine PDF-Datei oder ein Bild (PNG, JPEG, WebP) hoch.",
     "fileQuota": "Sie haben die maximale Anzahl an Dokumenten erreicht. Löschen Sie eines, um ein weiteres hinzuzufügen.",
     "confirmMismatch": "Die eingegebene Adresse stimmt nicht mit der Ihres Kontos überein.",
-    "notFound": "Dieses Element existiert nicht (mehr)."
+    "notFound": "Dieses Element existiert nicht (mehr).",
+    "billingCancelFailed": "Ihr Abonnement kann gerade nicht gekündigt werden, daher wurde Ihr Konto nicht gelöscht. Bitte versuchen Sie es in einigen Minuten erneut."
   },
   "app": {
     "metaTitle": "Mein Bereich",
@@ -148,7 +163,9 @@
       "guardRails": "Meine Leitplanken",
       "opportunities": "Chancen",
       "settings": "Einstellungen",
-      "radar": "Radar (Admin)"
+      "radar": "Radar (Admin)",
+      "coach": "KI-Coach",
+      "billing": "Abonnement"
     }
   },
   "dashboard": {
@@ -218,6 +235,102 @@
   "opportunities": {
     "title": "Chancen",
     "intro": "Nur Angebote, die Ihre Leitplanken respektieren, jeweils mit einer Erklärung der Übereinstimmung.",
+    "empty": {
+      "noMemoryTitle": "Ihr Agent braucht Ihr Karrieregedächtnis",
+      "noMemoryText": "Fügen Sie mindestens eine Erfahrung, einen Erfolg oder eine Kompetenz hinzu: Das vergleicht Ihr Agent mit den Stellenangeboten.",
+      "noMemoryAction": "Mein Gedächtnis ergänzen",
+      "noRailsTitle": "Legen Sie Ihre Leitplanken fest",
+      "noRailsText": "Mindestgehalt, Umkreis, Homeoffice, Vertragsarten: Ohne Leitplanken kann Ihr Agent nicht garantieren, dass die vorgeschlagenen Angebote zu Ihnen passen.",
+      "noRailsAction": "Meine Leitplanken festlegen",
+      "pendingTitle": "Analyse läuft",
+      "pendingText": "Ihr Agent vergleicht die Angebote des Marktes mit Ihrem Profil. Die Ergebnisse erscheinen hier in wenigen Minuten: Sie müssen nicht auf der Seite bleiben.",
+      "noMatchTitle": "Noch kein passendes Angebot",
+      "noMatchText": "Derzeit erfüllt kein offenes Angebot alle Ihre Leitplanken mit ausreichender Punktzahl. Ihr Agent beobachtet den Markt weiter; mehr belegte Erfolge verbessern Ihre Treffer ebenfalls.",
+      "noResultTitle": "Keine Gelegenheit mit diesen Filtern",
+      "noResultText": "Ändern Sie die Filter, um Ihre anderen Gelegenheiten zu sehen."
+    },
+    "pending": "Aktualisierung läuft: Ihre letzten Änderungen werden in wenigen Minuten berücksichtigt.",
+    "lastComputed": "Letzte Analyse: {date}",
+    "alertsHint": "Neue Gelegenheiten per E-Mail erhalten: <link>Benachrichtigungen einrichten</link>.",
+    "filters": {
+      "label": "Gelegenheiten filtern",
+      "status": "Status",
+      "minScore": "Mindestpunktzahl",
+      "anyScore": "Alle Punktzahlen",
+      "scoreOption": "{score} und mehr",
+      "apply": "Filtern",
+      "statusOptions": {
+        "active": "Zu prüfen",
+        "saved": "Gespeichert",
+        "dismissed": "Verworfen",
+        "all": "Alle (außer verworfene)"
+      }
+    },
+    "count": "{count, plural, =0 {Keine Gelegenheit} one {# Gelegenheit} other {# Gelegenheiten}}",
+    "score": "{score}/100",
+    "scoreLabel": "Übereinstimmung: {score} von 100",
+    "status": {
+      "NEW": "Neu",
+      "SEEN": "Gesehen",
+      "SAVED": "Gespeichert",
+      "DISMISSED": "Verworfen"
+    },
+    "companyUnknown": "Unternehmen nicht angegeben",
+    "placeUnknown": "Ort nicht angegeben",
+    "remote": {
+      "ONSITE": "Vor Ort",
+      "HYBRID": "Hybrid",
+      "FULL_REMOTE": "Vollständig remote",
+      "UNKNOWN": "Homeoffice nicht angegeben"
+    },
+    "contract": {
+      "CDI": "Unbefristeter Vertrag",
+      "CDD": "Befristeter Vertrag",
+      "FREELANCE": "Freiberuflich",
+      "INTERNSHIP": "Praktikum",
+      "APPRENTICESHIP": "Ausbildung",
+      "TEMPORARY": "Zeitarbeit",
+      "OTHER": "Anderer Vertrag",
+      "UNKNOWN": "Vertragsart nicht angegeben"
+    },
+    "salary": {
+      "notStated": "Gehalt nicht angegeben",
+      "range": "{min} – {max}",
+      "from": "ab {min}",
+      "upTo": "bis zu {max}",
+      "period": {
+        "HOUR": "/ Stunde",
+        "DAY": "/ Tag",
+        "MONTH": "/ Monat",
+        "YEAR": "/ Jahr"
+      }
+    },
+    "actions": {
+      "save": "Speichern",
+      "unsave": "Aus Gespeicherten entfernen",
+      "dismiss": "Verwerfen",
+      "restore": "Wieder in die Liste",
+      "details": "Erklärung ansehen",
+      "original": "Originalangebot ansehen",
+      "back": "← Alle Gelegenheiten"
+    },
+    "detail": {
+      "why": "Warum dieses Angebot",
+      "generatedBy": {
+        "llm": "Zusammenfassung Ihres Agenten auf Grundlage der folgenden Elemente.",
+        "rules": "Automatisch erstellte Zusammenfassung auf Grundlage der folgenden Elemente."
+      },
+      "proofs": "Ihre passenden Erfolge",
+      "proofsEmpty": "Keiner Ihrer Erfolge erfüllt direkt eine Anforderung des Angebots.",
+      "skills": "Ihre im Angebot genannten Kompetenzen",
+      "culture": "Ihre genannten Kulturpräferenzen",
+      "gaps": "Zu beachten",
+      "unknowns": "Fehlende Angaben",
+      "components": "Aufschlüsselung der Punktzahl",
+      "description": "Beschreibung des Angebots",
+      "published": "Veröffentlicht am {date}",
+      "guardRailsOk": "Dieses Angebot erfüllt alle Ihre Leitplanken."
+    },
     "emptyTitle": "Noch keine Chancen",
     "emptyText": "Sobald Ihr Karrieregedächtnis und Ihre Leitplanken ausgefüllt sind, beginnt Ihr Agent, Ihnen qualifizierte Angebote vorzuschlagen."
   },
@@ -543,6 +656,146 @@
       "intro": "Optional: was Ihnen wichtig ist. Diese Präferenzen verfeinern die Reihenfolge der Angebote."
     }
   },
+  "coach": {
+    "title": "KI-Coach",
+    "intro": "Ein Karrierecoach auf Basis künstlicher Intelligenz: Er lernt Sie kennen, hilft Ihnen, Ihre Erfolge zu belegen, Ihre Wünsche zu klären und Ihre Vorstellungsgespräche vorzubereiten. Er ändert Ihr Karrieregedächtnis nie ohne Ihre Zustimmung.",
+    "aiNotice": "Sie sprechen mit einer künstlichen Intelligenz, nicht mit einem Menschen. Ihre Antworten können Fehler enthalten: Prüfen Sie sie. Sie müssen ihr weder Ihren Namen noch die Namen Ihrer Arbeitgeber oder Ihre Kontaktdaten nennen.",
+    "aiBadge": "KI",
+    "notConfigured": "Der KI-Coach ist in diesem Dienst noch nicht aktiviert.",
+    "quota": "{remaining, plural, =0 {Keine Nachrichten mehr in den letzten 24 Stunden.} one {Noch # Nachricht in den letzten 24 Stunden.} other {Noch # Nachrichten in den letzten 24 Stunden.}}",
+    "start": {
+      "title": "Neues Gespräch",
+      "intro": "Wählen Sie, woran Sie mit dem Coach arbeiten möchten.",
+      "button": "Starten",
+      "buttonFor": "Starten: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Mein Profil entdecken",
+        "description": "Ein geführtes Interview (Situation, Aufgabe, Handlung, messbares Ergebnis, Nachweis), um Ihre Erfahrungen in belegte Erfolge zu verwandeln.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Erzählen Sie mir von einem Projekt oder einer Aufgabe, auf die Sie stolz sind: Wir machen daraus Schritt für Schritt einen belegten Erfolg. Ich werde Sie nie nach den Namen Ihrer Arbeitgeber oder Ihren Kontaktdaten fragen."
+      },
+      "CLARIFY": {
+        "title": "Klären, was ich will",
+        "description": "Gehalt, Ort, Homeoffice, Verträge, Branchen: Der Coach hilft Ihnen, klare Leitplanken festzulegen.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Wir klären, was Sie wirklich wollen: Vergütung, Ort, Homeoffice, Vertragsart, zu meidende Branchen. Ich schlage Ihnen Leitplanken vor, die Sie einzeln bestätigen."
+      },
+      "INTERVIEW": {
+        "title": "Ein Vorstellungsgespräch vorbereiten",
+        "description": "Ein simuliertes Vorstellungsgespräch für die angestrebte Stelle, mit konkretem Feedback nach jeder Antwort.",
+        "welcome": "Hallo! Ich bin der Coach von Coach Career IA, eine künstliche Intelligenz. Beschreiben Sie die angestrebte Stelle (Titel, Ebene, Art des Unternehmens, ohne es zu nennen), und ich führe mit Ihnen ein Übungsgespräch mit Feedback nach jeder Antwort."
+      }
+    },
+    "history": {
+      "title": "Meine Gespräche",
+      "empty": "Noch keine Gespräche.",
+      "messages": "{count, plural, =0 {keine Nachrichten} one {# Nachricht} other {# Nachrichten}}",
+      "pending": "{count, plural, one {# Vorschlag zu prüfen} other {# Vorschläge zu prüfen}}",
+      "updated": "Aktualisiert am {date}",
+      "open": "Öffnen",
+      "confirmDelete": "Dieses Gespräch endgültig löschen? Nicht bestätigte Vorschläge gehen verloren; was in Ihr Karrieregedächtnis übernommen wurde, bleibt erhalten."
+    },
+    "chat": {
+      "back": "Alle Gespräche",
+      "label": "Gespräch mit dem Coach",
+      "you": "Sie",
+      "coach": "KI-Coach",
+      "inputLabel": "Ihre Nachricht an den Coach",
+      "placeholder": "Ihre Nachricht… (Eingabe zum Senden, Umschalt + Eingabe für eine neue Zeile)",
+      "send": "Senden",
+      "sending": "Antwort läuft…",
+      "tooLong": "Nachricht zu lang (höchstens {max} Zeichen).",
+      "unanswered": "Ihre letzte Nachricht wurde nicht beantwortet.",
+      "status": {
+        "thinking": "Der Coach denkt nach…",
+        "reading": "Der Coach liest Ihr Karrieregedächtnis…",
+        "suggesting": "Der Coach bereitet einen Vorschlag vor…"
+      }
+    },
+    "errors": {
+      "title": "Der Coach konnte nicht antworten",
+      "aiNotConfigured": "Der KI-Coach ist in diesem Dienst noch nicht aktiviert.",
+      "aiTimeout": "Der Coach hat zu lange für die Antwort gebraucht.",
+      "aiUnavailable": "Der KI-Dienst ist vorübergehend nicht verfügbar.",
+      "aiRateLimited": "Der KI-Dienst ist gerade stark ausgelastet.",
+      "aiInvalidOutput": "Der Coach hat eine unbrauchbare Antwort erzeugt.",
+      "quotaExceeded": "Sie haben das Limit von {limit} Nachrichten pro 24 Stunden erreicht. Bitte kommen Sie etwas später wieder.",
+      "tooManyRetries": "Diese Nachricht wurde bereits mehrmals erfolglos erneut gesendet. Formulieren Sie sie um oder senden Sie eine neue Nachricht.",
+      "busy": "Der Coach beantwortet in diesem Gespräch bereits eine Nachricht. Bitte warten Sie einige Sekunden.",
+      "notFound": "Dieses Gespräch existiert nicht mehr.",
+      "invalid": "Diese Nachricht konnte nicht gesendet werden.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und versuchen Sie es noch einmal.",
+      "network": "Die Verbindung wurde unterbrochen.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten.",
+      "kept": "Ihre Nachricht wurde gespeichert: Sie können den Coach erneut fragen.",
+      "retry": "Erneut versuchen"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Vorgeschlagener Erfolg",
+        "EXPERIENCE_UPDATE": "Vorgeschlagene Änderung einer Erfahrung",
+        "SKILL": "Vorgeschlagene Kompetenz",
+        "GUARD_RAIL": "Vorgeschlagene Leitplanken"
+      },
+      "pendingBadge": "Zu prüfen",
+      "acceptedBadge": "Angenommen",
+      "rejectedBadge": "Abgelehnt",
+      "draft": "Entwurf: Ohne Ihre Zustimmung wird nichts gespeichert.",
+      "why": "Warum: {rationale}",
+      "identityRemoved": "Identifizierende Angaben (Name, Arbeitgeber, Kontaktdaten) wurden aus diesem Vorschlag entfernt.",
+      "accept": "Annehmen",
+      "edit": "Bearbeiten",
+      "reject": "Ablehnen",
+      "cancel": "Abbrechen",
+      "saveAccept": "Speichern und annehmen",
+      "accepted": "Zu Ihrem Karrieregedächtnis hinzugefügt.",
+      "acceptedGuardRail": "Leitplanken aktualisiert.",
+      "rejected": "Vorschlag abgelehnt: Es wurde nichts gespeichert.",
+      "view": "Ansehen",
+      "nothingToEdit": "Hier gibt es kein bearbeitbares Feld: Nehmen Sie den Vorschlag an oder lehnen Sie ihn ab.",
+      "skillsHint": "durch Kommas getrennt",
+      "yes": "Ja",
+      "no": "Nein",
+      "remoteDays": "{count, plural, one {mindestens # Tag} other {mindestens # Tage}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Titel",
+        "experience": "Erfahrung",
+        "context": "Kontext",
+        "actions": "Maßnahmen",
+        "result": "Ergebnis",
+        "skills": "Kompetenzen",
+        "proofUrl": "Nachweis-Link",
+        "name": "Kompetenz",
+        "roleTitle": "Stellenbezeichnung",
+        "responsibilities": "Verantwortlichkeiten",
+        "seniority": "Ebene",
+        "contractType": "Vertrag",
+        "sector": "Branche",
+        "companySize": "Unternehmensgröße",
+        "companyStage": "Unternehmensart",
+        "minFixedSalary": "Mindestfixgehalt (brutto pro Jahr)",
+        "targetTotalPackage": "Angestrebte Gesamtvergütung (brutto pro Jahr)",
+        "remotePolicy": "Homeoffice",
+        "minRemoteDays": "Mindestanzahl Homeoffice-Tage pro Woche",
+        "contractTypes": "Akzeptierte Verträge",
+        "excludedSectors": "Ausgeschlossene Branchen",
+        "maxWeeklyHours": "Maximale Wochenstunden",
+        "acceptsOnCall": "Bereitschaftsdienst akzeptiert",
+        "locations": "Arbeitsgebiete"
+      }
+    },
+    "quotaUnlimited": "Unbegrenzte Nachrichten mit Premium.",
+    "upsell": {
+      "title": "Sie haben Ihre kostenlosen Nachrichten aufgebraucht",
+      "text": "Der kostenlose Tarif umfasst {limit, plural, one {# Nachricht} other {# Nachrichten}} an den Coach in rollierenden 24 Stunden; sie werden nach und nach wieder frei.",
+      "titlePremiumOnly": "Der KI-Coach ist Premium vorbehalten",
+      "textPremiumOnly": "In diesem Dienst ist der KI-Coach Teil des Premium-Tarifs.",
+      "premium": "Mit Premium ist der Coach unbegrenzt.",
+      "later": "Die Online-Zahlung ist noch nicht verfügbar: Bitte kommen Sie etwas später wieder.",
+      "cta": "Premium entdecken"
+    }
+  },
   "settings": {
     "title": "Einstellungen",
     "intro": "Ihre Sprache, Ihre Daten, Ihr Konto.",
@@ -562,6 +815,19 @@
       "confirmHint": "Denken Sie daran, Ihre Daten zu exportieren, bevor Sie Ihr Konto löschen.",
       "submit": "Mein Konto endgültig löschen",
       "deleting": "Wird gelöscht…"
+    },
+    "alerts": {
+      "title": "Benachrichtigungen zu Gelegenheiten",
+      "intro": "Erhalten Sie per E-Mail eine Zusammenfassung neuer passender Angebote. Die E-Mail enthält nur Informationen zu den Angeboten.",
+      "frequency": "Häufigkeit",
+      "frequencyOptions": {
+        "OFF": "Deaktiviert",
+        "DAILY": "Tägliche Zusammenfassung",
+        "WEEKLY": "Wöchentliche Zusammenfassung"
+      },
+      "minScore": "Mindestpunktzahl",
+      "minScoreHint": "Nur Gelegenheiten mit mindestens dieser Punktzahl werden gesendet.",
+      "save": "Speichern"
     }
   },
   "import": {
@@ -791,5 +1057,101 @@
       "CONFIRMED": "Bestätigt",
       "EXPERT": "Beherrscht"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Sehr gute Übereinstimmung ({score}/100).",
+      "good": "Gute Übereinstimmung ({score}/100).",
+      "fair": "Teilweise Übereinstimmung ({score}/100).",
+      "provenSkills": "{count, plural, one {Ihre belegte Kompetenz {skills} wird verlangt.} other {Ihre belegten Kompetenzen {skills} werden verlangt.}}",
+      "declaredSkills": "{count, plural, one {Ihre Kompetenz {skills} wird genannt, bisher ohne Nachweis.} other {Ihre Kompetenzen {skills} werden genannt, bisher ohne Nachweis.}}",
+      "noSkills": "Das Angebot nennt nur wenige Ihrer Kompetenzen ausdrücklich.",
+      "proofs": "{count, plural, one {Einer Ihrer Erfolge erfüllt direkt eine Anforderung.} other {# Ihrer Erfolge erfüllen direkt Anforderungen.}}",
+      "seniorityAbove": "Die Stelle scheint höher angesiedelt als Ihre aktuelle Position.",
+      "salaryUnknown": "Das Gehalt ist nicht angegeben."
+    },
+    "match": "Ihr Erfolg „{achievement}“ erfüllt die Anforderung „{requirement}“.",
+    "matchSemantic": "Ihr Erfolg „{achievement}“ liegt nah an den Aufgaben der Stelle.",
+    "proven": "Belegt",
+    "declared": "Angegeben",
+    "gaps": {
+      "seniorityAbove": "Das erwartete Niveau scheint höher als das Ihrer aktuellen Position.",
+      "seniorityBelow": "Die Stelle scheint weniger senior als Ihr Werdegang.",
+      "salaryBelowTarget": "Die angegebene Vergütung liegt unter Ihrem Zielpaket.",
+      "unprovenSkill": "„{value}“ wird verlangt, ist aber noch nicht belegt: Fügen Sie einem Erfolg, der sie nutzt, einen Nachweis hinzu.",
+      "fewSkills": "Das Angebot nennt keine Ihrer Kompetenzen ausdrücklich."
+    },
+    "unknowns": {
+      "salaryNotStated": "Gehalt nicht angegeben.",
+      "remoteNotStated": "Homeoffice-Regelung nicht angegeben.",
+      "remoteDaysNotStated": "Anzahl der Homeoffice-Tage nicht angegeben.",
+      "contractNotStated": "Vertragsart nicht angegeben.",
+      "hoursNotStated": "Wochenarbeitszeit nicht angegeben.",
+      "locationNotChecked": "Entfernung nicht geprüft: Ihre Orte konnten nicht lokalisiert werden.",
+      "seniorityNotStated": "Erwartetes Erfahrungsniveau nicht angegeben.",
+      "cultureNotStated": "Das Angebot erwähnt keine Ihrer Kulturpräferenzen."
+    },
+    "components": {
+      "skills": "Kompetenzen und Nachweise",
+      "seniority": "Seniorität",
+      "salary": "Vergütung",
+      "culture": "Unternehmenskultur"
+    }
+  },
+  "unsubscribe": {
+    "title": "Benachrichtigungen zu Gelegenheiten",
+    "confirmText": "Sie erhalten keine Zusammenfassungen mehr per E-Mail. Sie können die Benachrichtigungen jederzeit in Ihren Einstellungen wieder aktivieren.",
+    "button": "Abmeldung bestätigen",
+    "doneTitle": "Abmeldung bestätigt",
+    "doneText": "Sie erhalten keine Benachrichtigungen mehr. Sie können sie in Ihren Einstellungen wieder aktivieren.",
+    "invalidTitle": "Ungültiger Link",
+    "invalidText": "Dieser Abmeldelink ist ungültig. Sie können Ihre Benachrichtigungen in Ihren Einstellungen verwalten."
+  },
+  "billing": {
+    "title": "Abonnement",
+    "intro": "Ihr aktueller Tarif und was Premium hinzufügt. Das Wesentliche des Dienstes bleibt kostenlos.",
+    "notAvailable": "Zahlungen sind noch nicht verfügbar. Alle kostenlosen Funktionen bleiben normal nutzbar.",
+    "checkoutSuccess": "Vielen Dank! Ihre Zahlung ist erfasst: Premium wird in wenigen Augenblicken aktiv. Laden Sie die Seite bei Bedarf neu.",
+    "checkoutCancel": "Zahlung abgebrochen: Es wurde nichts abgebucht.",
+    "errors": {
+      "checkout": "Die Zahlungsseite kann gerade nicht geöffnet werden. Bitte versuchen Sie es in einigen Minuten erneut.",
+      "portal": "Die Abonnementverwaltung kann gerade nicht geöffnet werden. Bitte versuchen Sie es in einigen Minuten erneut."
+    },
+    "current": {
+      "title": "Ihr Tarif",
+      "admin": "Premium wird Ihnen kostenlos bereitgestellt (Administratorkonto).",
+      "renewsOn": "Automatische Verlängerung am {date}.",
+      "endsOn": "Abonnement gekündigt: Premium bleibt bis zum {date} aktiv.",
+      "free": "KI-Coach: {limit, plural, =0 {nur mit Premium} one {# Nachricht pro 24 Stunden} other {# Nachrichten pro 24 Stunden}}.",
+      "pastDue": "Die letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Zahlungsmethode, um Premium zu behalten."
+    },
+    "manage": "Abonnement verwalten",
+    "manageHint": "Zahlungsmethode, Rechnungen und Kündigung auf der sicheren Seite von Stripe.",
+    "redirecting": "Weiterleitung…",
+    "compare": {
+      "title": "Die Tarife"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Kostenlos",
+        "price": "0 €, ohne Bindung"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {Tag} week {Woche} year {Jahr} other {Monat}}",
+    "priceUnknown": "Monatliches Abonnement",
+    "features": {
+      "memory": "Karrieregedächtnis, Identitätstresor und Leitplanken",
+      "opportunities": "Passende Angebote gemäß Ihren Leitplanken",
+      "coachLimited": "KI-Coach: {limit, plural, one {# Nachricht} other {# Nachrichten}} pro 24 Stunden",
+      "coachNone": "KI-Coach nicht enthalten",
+      "everythingFree": "Alles aus dem kostenlosen Tarif",
+      "coachUnlimited": "Unbegrenzter KI-Coach"
+    },
+    "upgrade": "Zu Premium wechseln",
+    "upgradeHint": "Monatliche Zahlung, abgesichert durch Stripe, jederzeit kündbar.",
+    "privacy": "Datenschutz: Stripe erhält nur Ihre Anmelde-E-Mail-Adresse und eine Kontokennung. Ihr Karrieregedächtnis und Ihre Identität werden nie übermittelt, und Ihre Kartendaten laufen nicht über unsere Server."
   }
 }

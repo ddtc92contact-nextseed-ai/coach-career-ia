@@ -1,21 +1,69 @@
 /**
- * Worker de tâches de fond : exécute le Market Radar toutes les
- * `RADAR_INTERVAL_HOURS` heures (6 par défaut), un passage à la fois.
- * Le même client HTTP est conservé entre passages : les requêtes
- * conditionnelles (ETag / Last-Modified) évitent de retélécharger un board
- * inchangé. Arrêt propre sur SIGTERM / SIGINT.
+ * Worker de tâches de fond :
+ * - Market Radar toutes les `RADAR_INTERVAL_HOURS` heures (6 par défaut), un
+ *   passage à la fois. Le même client HTTP est conservé entre passages : les
+ *   requêtes conditionnelles (ETag / Last-Modified) évitent de retélécharger
+ *   un board inchangé. Chaque passage demande le recalcul des opportunités ;
+ * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
+ *   candidats en attente (regroupé), puis envoi des alertes e-mail dues.
+ * Arrêt propre sur SIGTERM / SIGINT.
  */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { aiClientFromEnv } from "../src/lib/ai/config";
+import type { AiClient } from "../src/lib/ai/client";
 import { createLogger } from "../src/lib/logger";
+import { smtpSender, smtpSettingsFromEnv } from "../src/lib/mail/smtp";
+import { runAlerts } from "../src/lib/matching/alerts";
+import { matchingConfig, type MatchingConfig } from "../src/lib/matching/config";
+import { markAllCandidatesDirty, runMatchingCycle } from "../src/lib/matching/jobs";
 import { radarConfig, type RadarConfig } from "../src/lib/radar/config";
 import { radarHttpClient, runRadar } from "../src/lib/radar/job";
 
 const log = createLogger();
 let timer: NodeJS.Timeout | undefined;
+let matchingTimer: NodeJS.Timeout | undefined;
 let stopping = false;
 
-function start(config: RadarConfig) {
+/** Client IA du matching, ou `null` (pas de fournisseur configuré : score et explications sans IA). */
+function matchingAiClient(): AiClient | null {
+  try {
+    return aiClientFromEnv();
+  } catch {
+    log.warn("worker.matching.ai_disabled", { reason: "fournisseur IA non configuré" });
+    return null;
+  }
+}
+
+function startMatching(prisma: PrismaClient, config: MatchingConfig) {
+  if (!config.enabled) {
+    log.warn("worker.matching.disabled", { reason: "MATCHING_ENABLED=false" });
+    return;
+  }
+  const client = matchingAiClient();
+  const send = smtpSender(smtpSettingsFromEnv());
+  if (!send || !config.appUrl) {
+    log.warn("worker.alerts.disabled", {
+      reason: !send ? "SMTP non configuré" : "APP_URL / AUTH_URL absent",
+    });
+  }
+  const tick = async () => {
+    try {
+      await runMatchingCycle(prisma, { config, client, logger: log });
+      if (send && config.appUrl) {
+        await runAlerts(prisma, { send, appUrl: config.appUrl, logger: log });
+      }
+    } catch (error) {
+      log.error("worker.matching.failed", {
+        error: error instanceof Error ? error : String(error),
+      });
+    }
+    if (!stopping) matchingTimer = setTimeout(tick, config.pollMs);
+  };
+  matchingTimer = setTimeout(tick, 0);
+}
+
+function start(config: RadarConfig, matching: MatchingConfig) {
   const prisma = new PrismaClient({
     adapter: new PrismaPg({ connectionString: config.databaseUrl }),
   });
@@ -25,6 +73,8 @@ function start(config: RadarConfig) {
   const tick = async () => {
     try {
       await runRadar(prisma, config, { http, logger: log });
+      // Offres nouvelles, modifiées, fermées ou géolocalisées : recalcul (regroupé).
+      await markAllCandidatesDirty(prisma);
     } catch (error) {
       log.error("worker.radar.failed", { error: error instanceof Error ? error : String(error) });
     }
@@ -50,11 +100,13 @@ function start(config: RadarConfig) {
     .then(() => {
       if (!stopping) timer = setTimeout(tick, config.runOnStart ? 0 : intervalMs);
     });
+  startMatching(prisma, matching);
 
   for (const signal of ["SIGTERM", "SIGINT"] as const) {
     process.on(signal, () => {
       stopping = true;
       clearTimeout(timer);
+      clearTimeout(matchingTimer);
       log.info("worker.stopped", { signal });
       void prisma.$disconnect().finally(() => process.exit(0));
     });
@@ -62,7 +114,7 @@ function start(config: RadarConfig) {
 }
 
 try {
-  start(radarConfig());
+  start(radarConfig(), matchingConfig());
 } catch (error) {
   // Configuration incomplète : on le signale clairement et on s'arrête.
   log.error("worker.config.invalid", { error: error instanceof Error ? error : String(error) });

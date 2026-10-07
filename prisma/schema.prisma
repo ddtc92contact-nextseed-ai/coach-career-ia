@@ -35,6 +35,17 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
+  /// Offre freemium. Recalculée par le webhook Stripe à partir de l'état de
+  /// l'abonnement chez Stripe — jamais d'après une donnée du navigateur.
+  /// Lire les droits via `getEntitlements()` (`src/lib/billing`), jamais ici.
+  plan                 Plan                @default(FREE)
+  subscriptionStatus   SubscriptionStatus? @map("subscription_status")
+  /// Fin de la période payée en cours (renouvellement ou fin d'accès).
+  currentPeriodEnd     DateTime?           @map("current_period_end")
+  cancelAtPeriodEnd    Boolean             @default(false) @map("cancel_at_period_end")
+  stripeCustomerId     String?             @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
+
   accounts     Account[]
   sessions     Session[]
   profile      CareerProfile?
@@ -45,6 +56,13 @@ model User {
   guardRails   GuardRails?
   locations    GuardRailLocation[]
   vault        IdentityVault?
+  matches      Match[]
+  matching     MatchingState?
+  embeddings   MemoryEmbedding[]
+
+  coachConversations CoachConversation[]
+  coachMessages      CoachMessage[]
+  coachSuggestions   CoachSuggestion[]
 
   @@map("users")
 }
@@ -314,6 +332,110 @@ model GuardRailLocation {
 }
 
 // ---------------------------------------------------------------------------
+// Coach IA : conversations, messages et suggestions
+//
+// Le contenu des messages (texte libre du candidat, réponses du modèle) peut
+// contenir des données identifiantes : il est chiffré au niveau applicatif
+// (AAD `user:<id>:coach-message`). Les suggestions sont des BROUILLONS
+// pseudonymisés : rien n'est écrit dans la mémoire de carrière tant que le
+// candidat ne les a pas acceptées.
+// ---------------------------------------------------------------------------
+
+/// Compétence (« skill ») du coach choisie au début d'une conversation.
+enum CoachMode {
+  /// Découvrir mon profil : entretien STAR → réalisations prouvées.
+  DISCOVER
+  /// Clarifier ce que je veux : salaire, lieu, télétravail… → garde-fous.
+  CLARIFY
+  /// Préparer un entretien : simulation et retours.
+  INTERVIEW
+}
+
+enum CoachRole {
+  USER
+  ASSISTANT
+}
+
+enum CoachSuggestionKind {
+  ACHIEVEMENT
+  EXPERIENCE_UPDATE
+  SKILL
+  GUARD_RAIL
+}
+
+enum CoachSuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model CoachConversation {
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  mode          CoachMode
+  /// Tour en cours (verrou) : un seul appel au modèle à la fois par conversation.
+  /// Un verrou plus ancien que le budget d'un tour est considéré comme abandonné.
+  turnStartedAt DateTime? @map("turn_started_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    CoachMessage[]
+  suggestions CoachSuggestion[]
+
+  @@index([userId, updatedAt])
+  @@map("coach_conversations")
+}
+
+model CoachMessage {
+  id             String    @id @default(cuid())
+  userId         String    @map("user_id")
+  conversationId String    @map("conversation_id")
+  role           CoachRole
+  /// Texte chiffré (AAD `user:<id>:coach-message`).
+  contentEnc     String    @map("content_enc")
+  /// Message du candidat : nombre de relances après une panne (plafonné).
+  retryCount     Int       @default(0) @map("retry_count")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation CoachConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  suggestions  CoachSuggestion[]
+
+  @@index([conversationId, createdAt])
+  /// Quota quotidien : messages envoyés par l'utilisateur.
+  @@index([userId, role, createdAt])
+  @@map("coach_messages")
+}
+
+/// Suggestion du coach, affichée comme une carte que le candidat accepte,
+/// modifie ou rejette. `payload` : contenu pseudonymisé, validé par zod
+/// (`src/lib/coach/suggestions.ts`) avant tout enregistrement.
+model CoachSuggestion {
+  id              String                @id @default(cuid())
+  userId          String                @map("user_id")
+  conversationId  String                @map("conversation_id")
+  /// Réponse du coach qui porte la suggestion.
+  messageId       String?               @map("message_id")
+  kind            CoachSuggestionKind
+  status          CoachSuggestionStatus @default(PENDING)
+  payload         Json
+  /// Un nom, un contact ou un employeur a été retiré du texte proposé.
+  identityRemoved Boolean               @default(false) @map("identity_removed")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  decidedAt       DateTime?             @map("decided_at")
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation CoachConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  message      CoachMessage?     @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([conversationId])
+  @@index([messageId])
+  @@map("coach_suggestions")
+}
+
+// ---------------------------------------------------------------------------
 // Coffre d'identité « zéro connaissance »
 // ---------------------------------------------------------------------------
 
@@ -344,6 +466,39 @@ model IdentityVault {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("identity_vaults")
+}
+
+// ---------------------------------------------------------------------------
+// Abonnements (freemium candidat). Stripe ne reçoit que l'e-mail de connexion
+// et l'identifiant du compte ; aucune donnée de carte ne transite par nos
+// serveurs. La facturation côté entreprise (phase 2) aura ses propres
+// modèles, rattachés à l'entreprise et non au candidat.
+// ---------------------------------------------------------------------------
+
+enum Plan {
+  FREE
+  PREMIUM
+}
+
+/// Statuts d'abonnement Stripe (`subscription.status`).
+enum SubscriptionStatus {
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+  PAUSED
+}
+
+/// Évènements Stripe déjà traités : un évènement rejoué est ignoré.
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@map("stripe_events")
 }
 
 // ---------------------------------------------------------------------------
@@ -478,9 +633,11 @@ model JobOffer {
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
 
-  company     Company?   @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  duplicateOf JobOffer?  @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
-  duplicates  JobOffer[] @relation("OfferDuplicates")
+  company     Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  duplicateOf JobOffer?       @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates  JobOffer[]      @relation("OfferDuplicates")
+  matches     Match[]
+  embedding   OfferEmbedding?
 
   @@unique([source, sourceId])
   @@index([sourceKey, status])
@@ -538,4 +695,100 @@ model SourceRun {
   @@index([startedAt])
   @@index([sourceKey, startedAt])
   @@map("source_runs")
+}
+
+// ---------------------------------------------------------------------------
+// Matching : garde-fous (filtres durs) puis score expliqué (`src/lib/matching`)
+// ---------------------------------------------------------------------------
+
+enum MatchStatus {
+  NEW
+  SEEN
+  SAVED
+  DISMISSED
+}
+
+enum AlertFrequency {
+  OFF
+  DAILY
+  WEEKLY
+}
+
+/// Offre qualifiée pour un candidat : elle respecte TOUS ses garde-fous au
+/// moment du calcul (et la page les revérifie à l'affichage). Calculé par le
+/// worker, jamais au chargement d'une page.
+model Match {
+  id          String      @id @default(cuid())
+  userId      String      @map("user_id")
+  offerId     String      @map("offer_id")
+  /// Score de 0 à 100.
+  score       Int
+  /// Explication lisible (`src/lib/matching/explanation.ts`), dans la langue du candidat.
+  explanation Json
+  /// Empreinte des éléments du calcul : explication régénérée seulement s'ils changent.
+  inputHash   String      @map("input_hash")
+  status      MatchStatus @default(NEW)
+  computedAt  DateTime    @map("computed_at")
+  /// Date d'envoi dans un résumé d'alertes (`null` = jamais envoyé).
+  notifiedAt  DateTime?   @map("notified_at")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, offerId])
+  @@index([userId, score])
+  @@index([offerId])
+  @@map("matches")
+}
+
+/// État du matching d'un candidat (1-1) et préférences d'alertes e-mail.
+model MatchingState {
+  userId         String         @id @map("user_id")
+  /// Recalcul demandé (mémoire, garde-fous ou nouvelles offres) ; le worker
+  /// attend quelques secondes sans nouveau changement avant de recalculer.
+  dirtyAt        DateTime?      @map("dirty_at")
+  computedAt     DateTime?      @map("computed_at")
+  alertFrequency AlertFrequency @default(OFF) @map("alert_frequency")
+  /// Score minimal des opportunités envoyées par e-mail.
+  alertMinScore  Int            @default(70) @map("alert_min_score")
+  alertSentAt    DateTime?      @map("alert_sent_at")
+  /// Jeton aléatoire du lien de désabonnement (créé au premier envoi).
+  alertToken     String?        @unique @map("alert_token")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([dirtyAt])
+  @@map("matching_states")
+}
+
+/// Embedding (pgvector) du texte d'une offre. Donnée publique, sans lien avec un utilisateur.
+model OfferEmbedding {
+  offerId   String                @id @map("offer_id")
+  model     String
+  /// Empreinte du texte embarqué : un texte modifié est ré-embarqué.
+  textHash  String                @map("text_hash")
+  embedding Unsupported("vector")
+  createdAt DateTime              @default(now()) @map("created_at")
+
+  offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@map("offer_embeddings")
+}
+
+/// Embedding (pgvector) d'un élément de la mémoire de carrière, identifié par
+/// l'empreinte de son texte (le texte lui-même n'est pas stocké ici).
+model MemoryEmbedding {
+  userId    String                @map("user_id")
+  model     String
+  textHash  String                @map("text_hash")
+  embedding Unsupported("vector")
+  createdAt DateTime              @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, model, textHash])
+  @@map("memory_embeddings")
 }

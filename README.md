@@ -72,46 +72,50 @@ convient.
 
 Toutes sont documentées dans [`.env.example`](.env.example).
 
-| Variable                                                              | Requis   | Description                                              |
-| --------------------------------------------------------------------- | -------- | -------------------------------------------------------- |
-| `DATABASE_URL`                                                        | oui      | URL PostgreSQL                                           |
-| `TEST_DATABASE_URL`                                                   | tests    | base distincte pour les tests d'intégration              |
-| `POSTGRES_PORT`                                                       | dev      | port hôte de la base de dev (5433 par défaut)            |
-| `POSTGRES_USER` / `_PASSWORD` / `_DB`                                 | prod     | identifiants du conteneur PostgreSQL                     |
-| `AUTH_SECRET`                                                         | oui      | secret Auth.js (≥ 32 caractères)                         |
-| `AUTH_URL`                                                            | prod     | URL publique (`https://<SITE_DOMAIN>`)                   |
-| `EMAIL_FROM`                                                          | prod     | expéditeur des e-mails                                   |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE` | prod     | serveur SMTP du lien magique                             |
-| `DATA_ENCRYPTION_KEY`                                                 | oui      | clé AES-256 (32 octets base64) du chiffrement applicatif |
-| `DATA_ENCRYPTION_KEY_VERSION`                                         | non (1)  | version de la clé courante                               |
-| `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                   |
-| `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)    |
-| `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)          |
-| `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                         |
-| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`          |
-| `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar        |
-| `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage      |
-| `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                       |
-| `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)      |
-| `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)    |
-| `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)   |
-| `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                     |
-| `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)          |
-| `RADAR_HEALTH_FAILURE_THRESHOLD`                                      | non (3)  | échecs consécutifs avant alerte « source en panne »      |
-| `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)           |
-| `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)  |
-| `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)     |
-| `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`        |
-| `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)        |
-| `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API    |
-| `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)               |
-| `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)               |
-| `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub     |
-| `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                |
-| `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                         |
-| `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                         |
-| `TRAEFIK_CERTRESOLVER`                                                | prod     | resolver de certificats (`letsencrypt`)                  |
-| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs                           |
+| Variable                                                              | Requis   | Description                                               |
+| --------------------------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `DATABASE_URL`                                                        | oui      | URL PostgreSQL                                            |
+| `TEST_DATABASE_URL`                                                   | tests    | base distincte pour les tests d'intégration               |
+| `POSTGRES_PORT`                                                       | dev      | port hôte de la base de dev (5433 par défaut)             |
+| `POSTGRES_USER` / `_PASSWORD` / `_DB`                                 | prod     | identifiants du conteneur PostgreSQL                      |
+| `AUTH_SECRET`                                                         | oui      | secret Auth.js (≥ 32 caractères)                          |
+| `AUTH_URL`                                                            | prod     | URL publique (`https://<SITE_DOMAIN>`)                    |
+| `EMAIL_FROM`                                                          | prod     | expéditeur des e-mails                                    |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SECURE` | prod     | serveur SMTP du lien magique                              |
+| `DATA_ENCRYPTION_KEY`                                                 | oui      | clé AES-256 (32 octets base64) du chiffrement applicatif  |
+| `DATA_ENCRYPTION_KEY_VERSION`                                         | non (1)  | version de la clé courante                                |
+| `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                    |
+| `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)     |
+| `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)           |
+| `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                          |
+| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : `/app/radar` et Premium offert |
+| `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar         |
+| `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage       |
+| `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                        |
+| `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)       |
+| `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)     |
+| `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)    |
+| `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                      |
+| `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)           |
+| `RADAR_HEALTH_FAILURE_THRESHOLD`                                      | non (3)  | échecs consécutifs avant alerte « source en panne »       |
+| `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)            |
+| `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)   |
+| `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)      |
+| `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`         |
+| `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)         |
+| `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API     |
+| `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)                |
+| `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)                |
+| `COACH_MESSAGES_PER_DAY`                                              | non (40) | offre gratuite : messages au coach sur 24 h (0 = Premium) |
+| `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (sinon paiements indisponibles)        |
+| `STRIPE_WEBHOOK_SECRET`                                               | paiement | secret de signature du webhook (`whsec_…`)                |
+| `STRIPE_PRICE_PREMIUM_MONTHLY`                                        | paiement | prix mensuel récurrent de Premium (`price_…`)             |
+| `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub      |
+| `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                 |
+| `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                          |
+| `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                          |
+| `TRAEFIK_CERTRESOLVER`                                                | prod     | resolver de certificats (`letsencrypt`)                   |
+| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs                            |
 
 ## Base de données et migrations
 
@@ -257,8 +261,7 @@ lieux du candidat reçoivent des coordonnées. Code : `src/lib/geo`.
 ### Couche IA (`src/lib/ai`)
 
 Une interface unique, indépendante du fournisseur, pour le chat (multi-tours, sortie JSON,
-appel d'outils) et les embeddings. Le futur agent coach réutilise `runTools()` et les messages
-`tool` sans réécriture.
+appel d'outils) et les embeddings. Le coach IA s'appuie sur `runTools()` et les messages `tool`.
 
 - **Fournisseurs** (`AI_PROVIDER`) : Mistral par défaut (`MISTRAL_API_KEY`), tout endpoint
   compatible OpenAI (Ollama local), et un simulateur déterministe (`createMockProvider`). Sous
@@ -305,6 +308,102 @@ allemand en PDF, export LinkedIn + GitHub) avec la réponse simulée du modèle 
 attendu. `tests/unit/import-pipeline.test.ts` vérifie le résultat et l'absence de nom, contact,
 employeur ou école dans le brouillon. `npm run ai:eval` passe ces fixtures au vrai fournisseur
 configuré et affiche un tableau (expériences, dates, codes, rappel des compétences, fuites).
+
+## Coach IA (`/app/coach`)
+
+Un agent conversationnel, présenté comme une IA, qui apprend à connaître le candidat et enrichit sa
+mémoire de carrière **uniquement par des suggestions qu'il valide**.
+
+- **Compétences** (choisies au début d'une conversation, `src/lib/coach/prompts.ts`) : chacune est
+  une consigne système et une liste d'outils autorisés.
+  - « Découvrir mon profil » : entretien STAR (situation, tâche, action, résultat chiffré, lien de
+    preuve) → `read_career_memory`, `propose_achievement`, `propose_experience_update`,
+    `propose_skill` ;
+  - « Clarifier ce que je veux » : salaire, lieu, télétravail, contrats, secteurs →
+    `read_career_memory`, `propose_guard_rail_change` ;
+  - « Préparer un entretien » : simulation avec retours → `read_career_memory` seul.
+- **Outils** (`src/lib/coach/tools.ts`) : `read_career_memory` renvoie le profil **pseudonymisé**
+  (expériences, réalisations, compétences, garde-fous ; jamais l'e-mail ni les entreprises
+  exclues). Les outils `propose_*` créent une `CoachSuggestion` **en attente**, affichée comme une
+  carte « Accepter / Modifier / Rejeter ». Seule `acceptSuggestion()` écrit dans la mémoire, après
+  revalidation zod (le contenu modifié par le candidat aussi).
+- **Garde-fous** : la consigne interdit d'inventer expériences, chiffres ou preuves et de demander
+  nom, employeur ou coordonnées. Indépendamment du modèle, chaque suggestion est pseudonymisée
+  (`src/lib/coach/redact.ts`) : e-mails, téléphones, liens, parties du nom du compte, entreprises
+  exclues et noms signalés par le modèle (`identifyingTerms`) sont remplacés par `[…]` ; un lien de
+  profil (LinkedIn…) n'est jamais une preuve. La carte signale ces retraits.
+- **Tour de conversation** : `POST /api/coach/conversations/:id/messages` enregistre d'abord le
+  message (rien n'est perdu si le fournisseur tombe), puis diffuse la réponse en NDJSON
+  (`accepted`, `status`, `suggestion`, `delta`, `done` ou `error`). Boucle d'outils limitée à 6
+  étapes et 90 s ; le navigateur abandonne à 105 s. Panne, lenteur ou sortie vide : erreur
+  traduite dans le fil et bouton « Réessayer » (`{ "retry": true }` relance le dernier message,
+  sans le décompter, 3 fois au plus par message). Un seul tour à la fois par conversation
+  (verrou atomique `turn_started_at`) : un envoi ou une relance simultanés reçoivent 409. Les
+  suggestions d'un tour échoué sont abandonnées.
+- **Données** : `CoachConversation`, `CoachMessage` (texte **chiffré**, AAD
+  `user:<id>:coach-message`), `CoachSuggestion` ; suppression en cascade avec la conversation ou
+  le compte, incluses dans l'export RGPD. La conversation d'un autre utilisateur répond 404.
+- **Quota** : offre gratuite, `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h
+  glissantes (40 par défaut ; 0 = coach réservé à Premium) ; **Premium est illimité**. La limite
+  vient des droits de l'utilisateur (`getEntitlements()`, voir « Abonnements »). Comptée en base
+  sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des envois simultanés
+  ne peuvent pas la dépasser ; à 0, les relances sont aussi refusées. Limite atteinte : encart
+  d'information (pas une erreur) qui propose Premium quand le paiement est disponible.
+- **Langue** : le coach répond dans la langue de l'utilisateur (`getUserLocale()`).
+- **Journal** : compteurs (étapes, suggestions, durée) et codes d'erreur ; jamais le texte des
+  messages.
+- **Diffusion** : la couche fournisseur ne diffuse pas encore les jetons ; la progression (réflexion,
+  lecture de la mémoire, suggestion) et les cartes arrivent au fil de l'eau, la réponse finale par
+  morceaux.
+
+Tests : `tests/db/coach.test.ts` (séquence d'outils scriptée, acceptation / rejet, pannes,
+isolation, quota, cascade, journaux) et `tests/unit/coach.test.ts`, avec le fournisseur simulé.
+
+## Abonnements (Stripe, `/app/billing`)
+
+Modèle freemium côté candidat : le compte est gratuit, les fonctions avancées sont dans
+**Premium** (abonnement mensuel). Première fonction Premium : **coach IA illimité**.
+
+- **Droits** (`src/lib/billing/entitlements.ts`) : seul endroit qui traduit une offre en
+  fonctionnalités. Toute fonction payante appelle `getEntitlements(userId)`
+  (`src/lib/billing/server.ts`) puis `hasFeature(entitlements, "coach.unlimited")` ou lit
+  `entitlements.limits` — jamais `user.plan` dans un composant. Les adresses de `ADMIN_EMAILS` sont
+  Premium sans abonnement (comptes de test du gérant).
+- **Données** : sur `users`, `plan` (`FREE` par défaut, comptes existants compris),
+  `subscription_status`, `current_period_end`, `cancel_at_period_end`, `stripe_customer_id`,
+  `stripe_subscription_id` ; table `stripe_events` (évènements déjà traités). La facturation des
+  entreprises (phase 2) aura ses propres modèles, rattachés à l'entreprise.
+- **Paiement** : « Passer à Premium » crée (une fois) un client Stripe puis une session
+  **Checkout** hébergée ; « Gérer mon abonnement » ouvre le **portail client** Stripe (moyen de
+  paiement, factures, résiliation). Aucune donnée de carte ne passe par nos serveurs. Stripe ne
+  reçoit que l'e-mail de connexion et l'identifiant du compte (métadonnées `userId`) — jamais la
+  mémoire de carrière ni le coffre d'identité.
+- **Webhook** `POST /api/stripe/webhook` : signature vérifiée (400 sinon), évènements
+  `checkout.session.completed`, `customer.subscription.created/updated/deleted`,
+  `invoice.payment_failed`. L'offre est **toujours dérivée de l'état chez Stripe** : l'abonnement
+  concerné est relu (`subscriptions.retrieve`), ce qui rend l'ordre d'arrivée sans importance.
+  Statuts `active`, `trialing`, `past_due` (relances de paiement en cours) → Premium ; tout le
+  reste → gratuit. Chaque évènement est enregistré dans `stripe_events` dans la même transaction
+  que la mise à jour : un évènement rejoué est sans effet ; en cas d'erreur, rien n'est enregistré
+  et Stripe renvoie l'évènement.
+- **Suppression du compte** : le client Stripe est supprimé d'abord (abonnement résilié, e-mail
+  effacé chez Stripe) ; si Stripe est injoignable, la suppression est refusée et peut être
+  relancée.
+- **Sans configuration** (une des trois variables `STRIPE_*` absente) : build et application
+  normaux, la page « Abonnement » indique que les paiements ne sont pas encore disponibles, le
+  webhook répond 503 ; personne n'est bloqué (offre gratuite).
+
+Mise en service :
+
+1. Stripe → Produits : créer « Premium » avec un **prix récurrent mensuel** → `STRIPE_PRICE_PREMIUM_MONTHLY`.
+2. Développeurs → Webhooks : point de terminaison `https://<SITE_DOMAIN>/api/stripe/webhook`, avec
+   les cinq évènements ci-dessus → `STRIPE_WEBHOOK_SECRET`.
+3. Paramètres → Portail client : activer la résiliation et la mise à jour du moyen de paiement.
+4. En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+
+Tests (`tests/unit/billing.test.ts`, `tests/db/billing.test.ts`) : Stripe simulé, seule la
+vérification de signature du SDK est réelle (fixtures `tests/fixtures/stripe` signées en local) ;
+aucun appel à l'API Stripe.
 
 ## Authentification
 

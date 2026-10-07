@@ -104,6 +104,20 @@
       "htmlIntro": "Klik op de knop hieronder om in te loggen. Deze link is 15 minuten geldig en werkt maar één keer.",
       "button": "Inloggen",
       "htmlIgnore": "Heeft u dit niet zelf aangevraagd? Negeer dan dit bericht: er wordt geen account aangemaakt zonder op deze link te klikken."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nieuwe kans} other {# nieuwe kansen}} voor jou",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Je agent heeft een nieuwe vacature gevonden die aan je vangrails voldoet:} other {Je agent heeft # nieuwe vacatures gevonden die aan je vangrails voldoen:}}",
+      "score": "Score {score}/100",
+      "companyUnknown": "Bedrijf niet vermeld",
+      "view": "Uitleg bekijken",
+      "original": "Oorspronkelijke vacature",
+      "viewText": "Uitleg bekijken: {url}",
+      "originalText": "Oorspronkelijke vacature: {url}",
+      "footer": "Je ontvangt dit {frequency, select, DAILY {dagelijkse} other {wekelijkse}} overzicht omdat je meldingen hebt ingeschakeld.",
+      "unsubscribe": "Afmelden",
+      "unsubscribeText": "Om deze e-mails niet meer te ontvangen: {url}"
     }
   },
   "common": {
@@ -134,7 +148,8 @@
     "fileType": "Formaat niet toegestaan: upload een pdf of een afbeelding (PNG, JPEG, WebP).",
     "fileQuota": "U heeft het maximale aantal documenten bereikt. Verwijder er een om een nieuw document toe te voegen.",
     "confirmMismatch": "Het ingevulde adres komt niet overeen met dat van uw account.",
-    "notFound": "Dit item bestaat niet (meer)."
+    "notFound": "Dit item bestaat niet (meer).",
+    "billingCancelFailed": "Uw abonnement kan momenteel niet worden opgezegd, dus uw account is niet verwijderd. Probeer het over enkele minuten opnieuw."
   },
   "app": {
     "metaTitle": "Mijn omgeving",
@@ -148,7 +163,9 @@
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
       "settings": "Instellingen",
-      "radar": "Radar (beheer)"
+      "radar": "Radar (beheer)",
+      "coach": "AI-coach",
+      "billing": "Abonnement"
     }
   },
   "dashboard": {
@@ -217,7 +234,103 @@
   },
   "opportunities": {
     "title": "Kansen",
-    "intro": "Alleen vacatures die aan uw randvoorwaarden voldoen, met per match een toelichting.",
+    "intro": "Alleen vacatures die aan je vangrails voldoen, met per match een toelichting.",
+    "empty": {
+      "noMemoryTitle": "Je agent heeft je loopbaangeheugen nodig",
+      "noMemoryText": "Voeg minstens één ervaring, prestatie of vaardigheid toe: dat vergelijkt je agent met de vacatures.",
+      "noMemoryAction": "Mijn geheugen aanvullen",
+      "noRailsTitle": "Stel je vangrails in",
+      "noRailsText": "Minimumsalaris, regio, thuiswerk, contracten: zonder vangrails kan je agent niet garanderen dat de voorgestelde vacatures bij je passen.",
+      "noRailsAction": "Mijn vangrails instellen",
+      "pendingTitle": "Analyse bezig",
+      "pendingText": "Je agent vergelijkt de vacatures op de markt met je profiel. De resultaten verschijnen hier binnen enkele minuten: je hoeft niet op de pagina te blijven.",
+      "noMatchTitle": "Nog geen passende vacature",
+      "noMatchText": "Geen enkele open vacature voldoet op dit moment aan al je vangrails met een voldoende score. Je agent blijft de markt volgen; meer bewezen prestaties verbeteren ook je matches.",
+      "noResultTitle": "Geen kansen met deze filters",
+      "noResultText": "Pas de filters aan om je andere kansen te zien."
+    },
+    "pending": "Bijwerken bezig: je laatste wijzigingen worden binnen enkele minuten verwerkt.",
+    "lastComputed": "Laatste analyse: {date}",
+    "alertsHint": "Ontvang nieuwe kansen per e-mail: <link>stel je meldingen in</link>.",
+    "filters": {
+      "label": "Kansen filteren",
+      "status": "Status",
+      "minScore": "Minimale score",
+      "anyScore": "Alle scores",
+      "scoreOption": "{score} en hoger",
+      "apply": "Filteren",
+      "statusOptions": {
+        "active": "Te bekijken",
+        "saved": "Bewaard",
+        "dismissed": "Afgewezen",
+        "all": "Alle (behalve afgewezen)"
+      }
+    },
+    "count": "{count, plural, =0 {Geen kansen} one {# kans} other {# kansen}}",
+    "score": "{score}/100",
+    "scoreLabel": "Matchscore: {score} van 100",
+    "status": {
+      "NEW": "Nieuw",
+      "SEEN": "Bekeken",
+      "SAVED": "Bewaard",
+      "DISMISSED": "Afgewezen"
+    },
+    "companyUnknown": "Bedrijf niet vermeld",
+    "placeUnknown": "Locatie niet vermeld",
+    "remote": {
+      "ONSITE": "Op locatie",
+      "HYBRID": "Hybride",
+      "FULL_REMOTE": "Volledig op afstand",
+      "UNKNOWN": "Thuiswerkbeleid niet vermeld"
+    },
+    "contract": {
+      "CDI": "Vast contract",
+      "CDD": "Tijdelijk contract",
+      "FREELANCE": "Freelance",
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Leer-werktraject",
+      "TEMPORARY": "Uitzendwerk",
+      "OTHER": "Ander contract",
+      "UNKNOWN": "Contract niet vermeld"
+    },
+    "salary": {
+      "notStated": "Salaris niet vermeld",
+      "range": "{min} – {max}",
+      "from": "vanaf {min}",
+      "upTo": "tot {max}",
+      "period": {
+        "HOUR": "/ uur",
+        "DAY": "/ dag",
+        "MONTH": "/ maand",
+        "YEAR": "/ jaar"
+      }
+    },
+    "actions": {
+      "save": "Bewaren",
+      "unsave": "Uit bewaard halen",
+      "dismiss": "Afwijzen",
+      "restore": "Terugzetten in de lijst",
+      "details": "Uitleg bekijken",
+      "original": "Oorspronkelijke vacature bekijken",
+      "back": "← Alle kansen"
+    },
+    "detail": {
+      "why": "Waarom deze vacature",
+      "generatedBy": {
+        "llm": "Samenvatting geschreven door je agent op basis van de onderstaande elementen.",
+        "rules": "Automatisch opgestelde samenvatting op basis van de onderstaande elementen."
+      },
+      "proofs": "Je passende prestaties",
+      "proofsEmpty": "Geen van je prestaties beantwoordt rechtstreeks aan een eis van de vacature.",
+      "skills": "Je vaardigheden die de vacature noemt",
+      "culture": "Je genoemde cultuurvoorkeuren",
+      "gaps": "Aandachtspunten",
+      "unknowns": "Ontbrekende informatie",
+      "components": "Opbouw van de score",
+      "description": "Beschrijving van de vacature",
+      "published": "Gepubliceerd op {date}",
+      "guardRailsOk": "Deze vacature voldoet aan al je vangrails."
+    },
     "emptyTitle": "Nog geen kansen",
     "emptyText": "Zodra uw carrièregeheugen en uw randvoorwaarden zijn ingevuld, gaat uw agent u gekwalificeerde vacatures voorstellen."
   },
@@ -543,6 +656,146 @@
       "intro": "Optioneel: wat voor u belangrijk is. Deze voorkeuren verfijnen de rangschikking van vacatures."
     }
   },
+  "coach": {
+    "title": "AI-coach",
+    "intro": "Een loopbaancoach op basis van kunstmatige intelligentie: hij leert u kennen, helpt u uw prestaties te bewijzen, te verduidelijken wat u zoekt en uw sollicitatiegesprekken voor te bereiden. Hij wijzigt uw carrièregeheugen nooit zonder uw toestemming.",
+    "aiNotice": "U praat met een kunstmatige intelligentie, niet met een mens. De antwoorden kunnen fouten bevatten: controleer ze. U hoeft uw naam, de namen van uw werkgevers of uw contactgegevens niet te delen.",
+    "aiBadge": "AI",
+    "notConfigured": "De AI-coach is nog niet geactiveerd op deze dienst.",
+    "quota": "{remaining, plural, =0 {Geen berichten meer over in de afgelopen 24 uur.} one {Nog # bericht over in de afgelopen 24 uur.} other {Nog # berichten over in de afgelopen 24 uur.}}",
+    "start": {
+      "title": "Nieuw gesprek",
+      "intro": "Kies waaraan u met de coach wilt werken.",
+      "button": "Beginnen",
+      "buttonFor": "Beginnen: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Mijn profiel ontdekken",
+        "description": "Een begeleid interview (situatie, taak, actie, meetbaar resultaat, bewijs) om uw ervaring om te zetten in bewezen prestaties.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. Vertel me over een project of opdracht waar u trots op bent: we maken er stap voor stap een bewezen prestatie van. Ik vraag nooit naar de namen van uw werkgevers of uw contactgegevens."
+      },
+      "CLARIFY": {
+        "title": "Verduidelijken wat ik wil",
+        "description": "Salaris, locatie, thuiswerk, contracten, sectoren: de coach helpt u duidelijke randvoorwaarden vast te leggen.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. We bepalen wat u echt wilt: beloning, locatie, thuiswerk, contractvorm, sectoren om te vermijden. Ik stel randvoorwaarden voor die u één voor één bevestigt."
+      },
+      "INTERVIEW": {
+        "title": "Een sollicitatiegesprek voorbereiden",
+        "description": "Een proefgesprek voor de functie die u ambieert, met concrete feedback na elk antwoord.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. Beschrijf de functie die u ambieert (titel, niveau, soort bedrijf, zonder het te noemen) en ik neem een oefengesprek met u af, met feedback na elk antwoord."
+      }
+    },
+    "history": {
+      "title": "Mijn gesprekken",
+      "empty": "Nog geen gesprekken.",
+      "messages": "{count, plural, =0 {geen berichten} one {# bericht} other {# berichten}}",
+      "pending": "{count, plural, one {# voorstel te beoordelen} other {# voorstellen te beoordelen}}",
+      "updated": "Bijgewerkt op {date}",
+      "open": "Openen",
+      "confirmDelete": "Dit gesprek definitief verwijderen? Niet-beoordeelde voorstellen gaan verloren; wat aan uw carrièregeheugen is toegevoegd, blijft bewaard."
+    },
+    "chat": {
+      "back": "Alle gesprekken",
+      "label": "Gesprek met de coach",
+      "you": "U",
+      "coach": "AI-coach",
+      "inputLabel": "Uw bericht aan de coach",
+      "placeholder": "Uw bericht… (Enter om te verzenden, Shift + Enter voor een nieuwe regel)",
+      "send": "Verzenden",
+      "sending": "Bezig met antwoorden…",
+      "tooLong": "Bericht te lang (maximaal {max} tekens).",
+      "unanswered": "Uw laatste bericht is niet beantwoord.",
+      "status": {
+        "thinking": "De coach denkt na…",
+        "reading": "De coach raadpleegt uw carrièregeheugen…",
+        "suggesting": "De coach bereidt een voorstel voor…"
+      }
+    },
+    "errors": {
+      "title": "De coach kon niet antwoorden",
+      "aiNotConfigured": "De AI-coach is nog niet geactiveerd op deze dienst.",
+      "aiTimeout": "De coach deed er te lang over om te antwoorden.",
+      "aiUnavailable": "De AI-dienst is tijdelijk niet beschikbaar.",
+      "aiRateLimited": "De AI-dienst is op dit moment erg druk.",
+      "aiInvalidOutput": "De coach gaf een onbruikbaar antwoord.",
+      "quotaExceeded": "U hebt de limiet van {limit} berichten per 24 uur bereikt. Kom later terug.",
+      "tooManyRetries": "Dit bericht is al meerdere keren zonder succes opnieuw verzonden. Herformuleer het of stuur een nieuw bericht.",
+      "busy": "De coach beantwoordt al een bericht in dit gesprek. Wacht een paar seconden.",
+      "notFound": "Dit gesprek bestaat niet meer.",
+      "invalid": "Dit bericht kon niet worden verzonden.",
+      "unauthorized": "Uw sessie is verlopen. Meld u opnieuw aan en probeer het nog eens.",
+      "network": "De verbinding is verbroken.",
+      "unknown": "Er is een onverwachte fout opgetreden.",
+      "kept": "Uw bericht is bewaard: u kunt de coach opnieuw vragen.",
+      "retry": "Opnieuw proberen"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Voorgestelde prestatie",
+        "EXPERIENCE_UPDATE": "Voorgestelde wijziging van een ervaring",
+        "SKILL": "Voorgestelde vaardigheid",
+        "GUARD_RAIL": "Voorgestelde randvoorwaarden"
+      },
+      "pendingBadge": "Te beoordelen",
+      "acceptedBadge": "Geaccepteerd",
+      "rejectedBadge": "Afgewezen",
+      "draft": "Concept: zonder uw toestemming wordt niets opgeslagen.",
+      "why": "Waarom: {rationale}",
+      "identityRemoved": "Identificerende gegevens (naam, werkgever, contactgegevens) zijn uit dit voorstel verwijderd.",
+      "accept": "Accepteren",
+      "edit": "Bewerken",
+      "reject": "Afwijzen",
+      "cancel": "Annuleren",
+      "saveAccept": "Opslaan en accepteren",
+      "accepted": "Toegevoegd aan uw carrièregeheugen.",
+      "acceptedGuardRail": "Randvoorwaarden bijgewerkt.",
+      "rejected": "Voorstel afgewezen: er is niets opgeslagen.",
+      "view": "Bekijken",
+      "nothingToEdit": "Hier valt niets te bewerken: accepteer of wijs het voorstel af.",
+      "skillsHint": "gescheiden door komma’s",
+      "yes": "Ja",
+      "no": "Nee",
+      "remoteDays": "{count, plural, one {minimaal # dag} other {minimaal # dagen}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Titel",
+        "experience": "Ervaring",
+        "context": "Context",
+        "actions": "Acties",
+        "result": "Resultaat",
+        "skills": "Vaardigheden",
+        "proofUrl": "Bewijslink",
+        "name": "Vaardigheid",
+        "roleTitle": "Functietitel",
+        "responsibilities": "Verantwoordelijkheden",
+        "seniority": "Niveau",
+        "contractType": "Contract",
+        "sector": "Sector",
+        "companySize": "Bedrijfsgrootte",
+        "companyStage": "Soort bedrijf",
+        "minFixedSalary": "Minimaal vast salaris (bruto per jaar)",
+        "targetTotalPackage": "Beoogd totaalpakket (bruto per jaar)",
+        "remotePolicy": "Thuiswerk",
+        "minRemoteDays": "Minimaal aantal thuiswerkdagen per week",
+        "contractTypes": "Geaccepteerde contracten",
+        "excludedSectors": "Uitgesloten sectoren",
+        "maxWeeklyHours": "Maximaal aantal uren per week",
+        "acceptsOnCall": "Consignatiediensten geaccepteerd",
+        "locations": "Werkgebieden"
+      }
+    },
+    "quotaUnlimited": "Onbeperkt berichten met Premium.",
+    "upsell": {
+      "title": "U hebt uw gratis berichten gebruikt",
+      "text": "Het gratis abonnement omvat {limit, plural, one {# bericht} other {# berichten}} aan de coach per voortschrijdende 24 uur; ze komen geleidelijk weer vrij.",
+      "titlePremiumOnly": "De AI-coach is voorbehouden aan Premium",
+      "textPremiumOnly": "Op deze dienst maakt de AI-coach deel uit van het Premium-abonnement.",
+      "premium": "Met Premium is de coach onbeperkt.",
+      "later": "Online betalen is nog niet beschikbaar: kom iets later terug.",
+      "cta": "Ontdek Premium"
+    }
+  },
   "settings": {
     "title": "Instellingen",
     "intro": "Uw taal, uw gegevens, uw account.",
@@ -562,6 +815,19 @@
       "confirmHint": "Exporteer uw gegevens voordat u uw account verwijdert.",
       "submit": "Mijn account definitief verwijderen",
       "deleting": "Bezig met verwijderen…"
+    },
+    "alerts": {
+      "title": "Meldingen over kansen",
+      "intro": "Ontvang per e-mail een overzicht van nieuwe passende vacatures. De e-mail bevat alleen informatie over de vacatures.",
+      "frequency": "Frequentie",
+      "frequencyOptions": {
+        "OFF": "Uitgeschakeld",
+        "DAILY": "Dagelijks overzicht",
+        "WEEKLY": "Wekelijks overzicht"
+      },
+      "minScore": "Minimale score",
+      "minScoreHint": "Alleen kansen met minstens deze score worden verstuurd.",
+      "save": "Opslaan"
     }
   },
   "import": {
@@ -791,5 +1057,101 @@
       "CONFIRMED": "Bevestigd",
       "EXPERT": "Beheerst"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Zeer goede match ({score}/100).",
+      "good": "Goede match ({score}/100).",
+      "fair": "Gedeeltelijke match ({score}/100).",
+      "provenSkills": "{count, plural, one {Je bewezen vaardigheid {skills} wordt gevraagd.} other {Je bewezen vaardigheden {skills} worden gevraagd.}}",
+      "declaredSkills": "{count, plural, one {Je vaardigheid {skills} wordt genoemd, nog zonder bewijs.} other {Je vaardigheden {skills} worden genoemd, nog zonder bewijs.}}",
+      "noSkills": "De vacature noemt weinig van je vaardigheden expliciet.",
+      "proofs": "{count, plural, one {Een van je prestaties beantwoordt rechtstreeks aan een eis.} other {# van je prestaties beantwoorden rechtstreeks aan eisen.}}",
+      "seniorityAbove": "De functie lijkt senioriteit te vragen boven je huidige functie.",
+      "salaryUnknown": "Het salaris wordt niet vermeld."
+    },
+    "match": "Je prestatie ‘{achievement}’ beantwoordt aan de eis ‘{requirement}’.",
+    "matchSemantic": "Je prestatie ‘{achievement}’ ligt dicht bij de taken van de functie.",
+    "proven": "Bewezen",
+    "declared": "Opgegeven",
+    "gaps": {
+      "seniorityAbove": "Het verwachte niveau lijkt hoger dan dat van je huidige functie.",
+      "seniorityBelow": "De functie lijkt minder senior dan je loopbaan.",
+      "salaryBelowTarget": "De vermelde beloning ligt onder je beoogde pakket.",
+      "unprovenSkill": "‘{value}’ wordt gevraagd maar is nog niet bewezen: voeg een bewijs toe aan een prestatie waarin je deze gebruikt.",
+      "fewSkills": "De vacature noemt geen van je vaardigheden expliciet."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salaris niet vermeld.",
+      "remoteNotStated": "Thuiswerkbeleid niet vermeld.",
+      "remoteDaysNotStated": "Aantal thuiswerkdagen niet vermeld.",
+      "contractNotStated": "Contracttype niet vermeld.",
+      "hoursNotStated": "Aantal uren per week niet vermeld.",
+      "locationNotChecked": "Afstand niet gecontroleerd: je locaties konden niet worden gevonden.",
+      "seniorityNotStated": "Verwacht ervaringsniveau niet vermeld.",
+      "cultureNotStated": "De vacature noemt geen van je cultuurvoorkeuren."
+    },
+    "components": {
+      "skills": "Vaardigheden en bewijzen",
+      "seniority": "Senioriteit",
+      "salary": "Beloning",
+      "culture": "Bedrijfscultuur"
+    }
+  },
+  "unsubscribe": {
+    "title": "Meldingen over kansen",
+    "confirmText": "Je ontvangt geen overzichten van kansen meer per e-mail. Je kunt de meldingen op elk moment weer inschakelen in je instellingen.",
+    "button": "Afmelding bevestigen",
+    "doneTitle": "Afmelding bevestigd",
+    "doneText": "Je ontvangt geen meldingen meer. Je kunt ze weer inschakelen in je instellingen.",
+    "invalidTitle": "Ongeldige link",
+    "invalidText": "Deze afmeldlink is ongeldig. Je kunt je meldingen beheren in je instellingen."
+  },
+  "billing": {
+    "title": "Abonnement",
+    "intro": "Uw huidige abonnement en wat Premium toevoegt. De kern van de dienst blijft gratis.",
+    "notAvailable": "Betalingen zijn nog niet beschikbaar. Alle gratis functies blijven gewoon toegankelijk.",
+    "checkoutSuccess": "Bedankt! Uw betaling is geregistreerd: Premium wordt over enkele ogenblikken actief. Vernieuw de pagina indien nodig.",
+    "checkoutCancel": "Betaling geannuleerd: er is niets afgeschreven.",
+    "errors": {
+      "checkout": "De betaalpagina kan momenteel niet worden geopend. Probeer het over enkele minuten opnieuw.",
+      "portal": "Het abonnementsbeheer kan momenteel niet worden geopend. Probeer het over enkele minuten opnieuw."
+    },
+    "current": {
+      "title": "Uw abonnement",
+      "admin": "Premium wordt u aangeboden (beheerdersaccount).",
+      "renewsOn": "Wordt automatisch verlengd op {date}.",
+      "endsOn": "Abonnement opgezegd: Premium blijft actief tot {date}.",
+      "free": "AI-coach: {limit, plural, =0 {alleen met Premium} one {# bericht per 24 uur} other {# berichten per 24 uur}}.",
+      "pastDue": "De laatste betaling is mislukt. Werk uw betaalmethode bij om Premium te behouden."
+    },
+    "manage": "Mijn abonnement beheren",
+    "manageHint": "Betaalmethode, facturen en opzegging, op de beveiligde pagina van Stripe.",
+    "redirecting": "Doorsturen…",
+    "compare": {
+      "title": "De abonnementen"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratis",
+        "price": "€ 0, zonder verplichting"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {dag} week {week} year {jaar} other {maand}}",
+    "priceUnknown": "Maandabonnement",
+    "features": {
+      "memory": "Loopbaangeheugen, identiteitskluis en harde grenzen",
+      "opportunities": "Kansen die passen binnen uw harde grenzen",
+      "coachLimited": "AI-coach: {limit, plural, one {# bericht} other {# berichten}} per 24 uur",
+      "coachNone": "AI-coach niet inbegrepen",
+      "everythingFree": "Alles uit het gratis abonnement",
+      "coachUnlimited": "Onbeperkte AI-coach"
+    },
+    "upgrade": "Overstappen op Premium",
+    "upgradeHint": "Maandelijkse betaling beveiligd door Stripe, op elk moment opzegbaar.",
+    "privacy": "Privacy: Stripe ontvangt alleen uw e-mailadres voor inloggen en een accountidentificatie. Uw loopbaangeheugen en identiteit worden nooit doorgegeven, en uw kaartgegevens gaan niet via onze servers."
   }
 }
