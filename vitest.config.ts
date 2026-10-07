@@ -15,6 +15,7 @@ export default defineConfig({
     server: { deps: { inline: ["next-intl"] } },
     include: ["tests/**/*.test.ts"],
     globalSetup: ["tests/global-setup.ts"],
+    setupFiles: ["tests/setup/no-network.ts"],
     // Les tests de base partagent une même base : exécution séquentielle des fichiers.
     fileParallelism: false,
   },
