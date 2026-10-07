@@ -4,6 +4,7 @@ import { PageTitle } from "@/components/empty-state";
 import type { Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/admin";
 import { db } from "@/lib/db";
+import { failureThreshold, loadSourceHealth } from "@/lib/radar/health";
 import { formatSalary, REMOTE_LABELS, CONTRACT_LABELS, SOURCE_LABELS } from "./labels";
 
 export const metadata: Metadata = { title: "Market Radar" };
@@ -50,7 +51,9 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
       : {}),
   };
 
-  const [runs, offers, matching, open, closed, duplicates, located] = await Promise.all([
+  const threshold = failureThreshold();
+  const [health, runs, offers, matching, open, closed, duplicates, located] = await Promise.all([
+    loadSourceHealth(db, { threshold }),
     db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
     db.jobOffer.findMany({
       where,
@@ -105,6 +108,8 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
           </div>
         ))}
       </dl>
+
+      <SourceHealthSection health={health} threshold={threshold} />
 
       <section aria-labelledby="runs-title" className="mb-10">
         <h2 id="runs-title" className="mb-3 text-lg font-semibold">
@@ -272,6 +277,100 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
         ) : null}
       </section>
     </>
+  );
+}
+
+function SourceHealthSection({
+  health,
+  threshold,
+}: {
+  health: Awaited<ReturnType<typeof loadSourceHealth>>;
+  threshold: number;
+}) {
+  const failing = health.filter((h) => h.failing).length;
+  return (
+    <section aria-labelledby="health-title" className="mb-10">
+      <h2 id="health-title" className="mb-1 text-lg font-semibold">
+        Santé des sources
+      </h2>
+      <p className="mb-3 text-sm text-stone-500">
+        Dernier passage de chaque source. Une source est signalée après {threshold} échecs
+        consécutifs.
+        {failing > 0 ? (
+          <strong className="ml-1 font-medium text-red-700">
+            {failing} source{failing > 1 ? "s" : ""} en alerte.
+          </strong>
+        ) : null}
+      </p>
+      {health.length === 0 ? (
+        <p className="text-sm text-stone-500">Aucune source n&apos;a encore tourné.</p>
+      ) : (
+        <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-stone-50 text-stone-500">
+              <tr>
+                <th className="px-3 py-2 font-medium">Source</th>
+                <th className="px-3 py-2 font-medium">Dernier passage</th>
+                <th className="px-3 py-2 font-medium">Statut</th>
+                <th className="px-3 py-2 text-right font-medium">Reçues</th>
+                <th className="px-3 py-2 text-right font-medium">Créées</th>
+                <th className="px-3 py-2 text-right font-medium">Fermées</th>
+                <th className="px-3 py-2 text-right font-medium">Doublons</th>
+                <th className="px-3 py-2 font-medium">Échecs d&apos;affilée</th>
+                <th className="px-3 py-2 font-medium">Dernier succès</th>
+                <th className="px-3 py-2 font-medium">Dernière erreur</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {health.map((h) => (
+                <tr key={h.sourceKey} className={h.failing ? "bg-red-50" : undefined}>
+                  <td className="px-3 py-2 font-medium whitespace-nowrap">
+                    {h.sourceKey}
+                    <span className="block text-xs font-normal text-stone-500">
+                      {SOURCE_LABELS[h.source] ?? h.source}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap text-stone-600">
+                    {dateTime.format(h.lastRun.startedAt)}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    <RunStatus status={h.lastRun.status} complete={h.lastRun.complete} />
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">{h.lastRun.fetchedCount}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{h.lastRun.createdCount}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{h.lastRun.closedCount}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{h.lastRun.duplicateCount}</td>
+                  <td className="px-3 py-2 whitespace-nowrap tabular-nums">
+                    {h.failing ? (
+                      <span className="rounded bg-red-100 px-1.5 py-0.5 font-medium text-red-800">
+                        ⚠ {h.consecutiveFailures} — en alerte
+                      </span>
+                    ) : (
+                      h.consecutiveFailures
+                    )}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap text-stone-600">
+                    {h.lastSuccessAt ? dateTime.format(h.lastSuccessAt) : "—"}
+                  </td>
+                  <td className="max-w-xs px-3 py-2" title={h.lastError?.message}>
+                    {h.lastError ? (
+                      <>
+                        <span className="block truncate text-red-700">{h.lastError.message}</span>
+                        <span className="text-xs text-stone-500">
+                          {dateTime.format(h.lastError.at)}
+                        </span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 }
 
