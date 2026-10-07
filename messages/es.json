@@ -134,7 +134,8 @@
     "fileType": "Formato no admitido: envíe un PDF o una imagen (PNG, JPEG, WebP).",
     "fileQuota": "Ha alcanzado el número máximo de documentos. Elimine uno para añadir otro.",
     "confirmMismatch": "La dirección introducida no coincide con la de su cuenta.",
-    "notFound": "Este elemento no existe o ya no existe."
+    "notFound": "Este elemento no existe o ya no existe.",
+    "billingCancelFailed": "No se puede cancelar su suscripción en este momento: su cuenta no se ha eliminado. Inténtelo de nuevo en unos minutos."
   },
   "app": {
     "metaTitle": "Mi espacio",
@@ -149,7 +150,8 @@
       "opportunities": "Oportunidades",
       "settings": "Ajustes",
       "radar": "Radar (admin)",
-      "coach": "Coach IA"
+      "coach": "Coach IA",
+      "billing": "Suscripción"
     }
   },
   "dashboard": {
@@ -672,6 +674,16 @@
         "acceptsOnCall": "Guardias aceptadas",
         "locations": "Zonas de trabajo"
       }
+    },
+    "quotaUnlimited": "Mensajes ilimitados con Premium.",
+    "upsell": {
+      "title": "Ha utilizado sus mensajes gratuitos",
+      "text": "El plan gratuito incluye {limit, plural, one {# mensaje} other {# mensajes}} al coach en 24 horas móviles; se van liberando con el tiempo.",
+      "titlePremiumOnly": "El coach IA está reservado a Premium",
+      "textPremiumOnly": "En este servicio, el coach IA forma parte del plan Premium.",
+      "premium": "Con Premium, el coach es ilimitado.",
+      "later": "El pago en línea aún no está disponible: vuelva un poco más tarde.",
+      "cta": "Descubrir Premium"
     }
   },
   "settings": {
@@ -922,5 +934,52 @@
       "CONFIRMED": "Confirmada",
       "EXPERT": "Dominada"
     }
+  },
+  "billing": {
+    "title": "Suscripción",
+    "intro": "Su plan actual y lo que añade Premium. Lo esencial del servicio sigue siendo gratuito.",
+    "notAvailable": "Los pagos aún no están disponibles. Todas las funciones gratuitas siguen accesibles con normalidad.",
+    "checkoutSuccess": "¡Gracias! Su pago se ha registrado: Premium se activará en unos instantes. Actualice la página si es necesario.",
+    "checkoutCancel": "Pago cancelado: no se ha cobrado ningún importe.",
+    "errors": {
+      "checkout": "No se puede abrir la página de pago en este momento. Inténtelo de nuevo en unos minutos.",
+      "portal": "No se puede abrir la gestión de la suscripción en este momento. Inténtelo de nuevo en unos minutos."
+    },
+    "current": {
+      "title": "Su plan",
+      "admin": "Premium se le ofrece de forma gratuita (cuenta de administrador).",
+      "renewsOn": "Renovación automática el {date}.",
+      "endsOn": "Suscripción cancelada: Premium sigue activo hasta el {date}.",
+      "free": "Coach IA: {limit, plural, =0 {reservado a Premium} one {# mensaje cada 24 horas} other {# mensajes cada 24 horas}}.",
+      "pastDue": "El último pago ha fallado. Actualice su método de pago para conservar Premium."
+    },
+    "manage": "Gestionar mi suscripción",
+    "manageHint": "Método de pago, facturas y cancelación, en la página segura de Stripe.",
+    "redirecting": "Redirigiendo…",
+    "compare": {
+      "title": "Los planes"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratuito",
+        "price": "0 €, sin compromiso"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {día} week {semana} year {año} other {mes}}",
+    "priceUnknown": "Suscripción mensual",
+    "features": {
+      "memory": "Memoria profesional, caja fuerte de identidad y límites innegociables",
+      "opportunities": "Oportunidades cualificadas según sus límites",
+      "coachLimited": "Coach IA: {limit, plural, one {# mensaje} other {# mensajes}} cada 24 horas",
+      "coachNone": "Coach IA no incluido",
+      "everythingFree": "Todo lo que incluye el plan gratuito",
+      "coachUnlimited": "Coach IA ilimitado"
+    },
+    "upgrade": "Pasar a Premium",
+    "upgradeHint": "Pago mensual protegido por Stripe, cancelable en cualquier momento.",
+    "privacy": "Privacidad: Stripe solo recibe su dirección de correo de inicio de sesión y un identificador de cuenta. Su memoria profesional y su identidad nunca se le transmiten, y los datos de su tarjeta no pasan por nuestros servidores."
   }
 }

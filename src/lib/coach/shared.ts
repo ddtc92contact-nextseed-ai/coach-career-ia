@@ -194,5 +194,6 @@ export type CoachStreamEvent =
   | { type: "suggestion"; suggestion: SuggestionView }
   /** Morceau de la réponse. */
   | { type: "delta"; text: string }
-  | { type: "done"; message: CoachMessageView; remaining: number }
+  /** `remaining` : messages restants sur 24 h, `null` si illimité (Premium). */
+  | { type: "done"; message: CoachMessageView; remaining: number | null }
   | { type: "error"; code: CoachErrorCode };

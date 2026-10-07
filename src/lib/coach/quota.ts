@@ -1,10 +1,11 @@
 /**
- * Quota de messages du coach : LE seul endroit où la limite est définie
- * (future offre premium : la limite dépendra du plan de l'utilisateur).
+ * Quota de messages du coach de l'offre GRATUITE. La limite appliquée à un
+ * utilisateur vient de ses droits (`getEntitlements()` → `limits`) : Premium
+ * est illimité.
  *
  * `COACH_MESSAGES_PER_DAY` : messages envoyés par utilisateur sur 24 h
- * glissantes (40 par défaut ; 0 désactive le coach). Le décompte se fait en
- * base (`coach_messages`), il survit donc aux redémarrages.
+ * glissantes (40 par défaut ; 0 réserve le coach à Premium). Le décompte se
+ * fait en base (`coach_messages`), il survit donc aux redémarrages.
  */
 
 export const DEFAULT_COACH_MESSAGES_PER_DAY = 40;
@@ -17,7 +18,12 @@ export function coachMessagesPerDay(env: Record<string, string | undefined> = pr
   return Number.isInteger(value) && value >= 0 ? value : DEFAULT_COACH_MESSAGES_PER_DAY;
 }
 
-/** Messages restants, d'après le nombre déjà envoyés dans la fenêtre. */
-export function remainingMessages(sentInWindow: number, limit = coachMessagesPerDay()): number {
-  return Math.max(0, limit - sentInWindow);
+/**
+ * Messages restants, d'après le nombre déjà envoyés dans la fenêtre ;
+ * `null` si la limite est `null` (illimité).
+ */
+export function remainingMessages(sentInWindow: number, limit: number): number;
+export function remainingMessages(sentInWindow: number, limit: number | null): number | null;
+export function remainingMessages(sentInWindow: number, limit: number | null): number | null {
+  return limit === null ? null : Math.max(0, limit - sentInWindow);
 }

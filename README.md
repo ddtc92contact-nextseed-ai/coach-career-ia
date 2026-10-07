@@ -88,7 +88,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)     |
 | `NEXT_PUBLIC_VAULT_IDLE_MINUTES`                                      | non (15) | verrouillage auto. du coffre (min, lu au build)           |
 | `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                          |
-| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`           |
+| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : `/app/radar` et Premium offert |
 | `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar         |
 | `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage       |
 | `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                        |
@@ -105,7 +105,10 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API     |
 | `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)                |
 | `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)                |
-| `COACH_MESSAGES_PER_DAY`                                              | non (40) | messages au coach IA par utilisateur sur 24 h (0 = coupé) |
+| `COACH_MESSAGES_PER_DAY`                                              | non (40) | offre gratuite : messages au coach sur 24 h (0 = Premium) |
+| `STRIPE_SECRET_KEY`                                                   | paiement | clé secrète Stripe (sinon paiements indisponibles)        |
+| `STRIPE_WEBHOOK_SECRET`                                               | paiement | secret de signature du webhook (`whsec_…`)                |
+| `STRIPE_PRICE_PREMIUM_MONTHLY`                                        | paiement | prix mensuel récurrent de Premium (`price_…`)             |
 | `GITHUB_TOKEN`                                                        | non      | jeton GitHub (lecture publique) pour l'import GitHub      |
 | `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                 |
 | `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                          |
@@ -296,10 +299,12 @@ mémoire de carrière **uniquement par des suggestions qu'il valide**.
 - **Données** : `CoachConversation`, `CoachMessage` (texte **chiffré**, AAD
   `user:<id>:coach-message`), `CoachSuggestion` ; suppression en cascade avec la conversation ou
   le compte, incluses dans l'export RGPD. La conversation d'un autre utilisateur répond 404.
-- **Quota** : `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h glissantes (40 par défaut),
-  compté en base sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des
-  envois simultanés ne peuvent pas dépasser la limite ; à 0, les relances sont aussi refusées. Défini dans `src/lib/coach/quota.ts`, seul endroit à modifier pour une future
-  offre premium.
+- **Quota** : offre gratuite, `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h
+  glissantes (40 par défaut ; 0 = coach réservé à Premium) ; **Premium est illimité**. La limite
+  vient des droits de l'utilisateur (`getEntitlements()`, voir « Abonnements »). Comptée en base
+  sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des envois simultanés
+  ne peuvent pas la dépasser ; à 0, les relances sont aussi refusées. Limite atteinte : encart
+  d'information (pas une erreur) qui propose Premium quand le paiement est disponible.
 - **Langue** : le coach répond dans la langue de l'utilisateur (`getUserLocale()`).
 - **Journal** : compteurs (étapes, suggestions, durée) et codes d'erreur ; jamais le texte des
   messages.
@@ -309,6 +314,52 @@ mémoire de carrière **uniquement par des suggestions qu'il valide**.
 
 Tests : `tests/db/coach.test.ts` (séquence d'outils scriptée, acceptation / rejet, pannes,
 isolation, quota, cascade, journaux) et `tests/unit/coach.test.ts`, avec le fournisseur simulé.
+
+## Abonnements (Stripe, `/app/billing`)
+
+Modèle freemium côté candidat : le compte est gratuit, les fonctions avancées sont dans
+**Premium** (abonnement mensuel). Première fonction Premium : **coach IA illimité**.
+
+- **Droits** (`src/lib/billing/entitlements.ts`) : seul endroit qui traduit une offre en
+  fonctionnalités. Toute fonction payante appelle `getEntitlements(userId)`
+  (`src/lib/billing/server.ts`) puis `hasFeature(entitlements, "coach.unlimited")` ou lit
+  `entitlements.limits` — jamais `user.plan` dans un composant. Les adresses de `ADMIN_EMAILS` sont
+  Premium sans abonnement (comptes de test du gérant).
+- **Données** : sur `users`, `plan` (`FREE` par défaut, comptes existants compris),
+  `subscription_status`, `current_period_end`, `cancel_at_period_end`, `stripe_customer_id`,
+  `stripe_subscription_id` ; table `stripe_events` (évènements déjà traités). La facturation des
+  entreprises (phase 2) aura ses propres modèles, rattachés à l'entreprise.
+- **Paiement** : « Passer à Premium » crée (une fois) un client Stripe puis une session
+  **Checkout** hébergée ; « Gérer mon abonnement » ouvre le **portail client** Stripe (moyen de
+  paiement, factures, résiliation). Aucune donnée de carte ne passe par nos serveurs. Stripe ne
+  reçoit que l'e-mail de connexion et l'identifiant du compte (métadonnées `userId`) — jamais la
+  mémoire de carrière ni le coffre d'identité.
+- **Webhook** `POST /api/stripe/webhook` : signature vérifiée (400 sinon), évènements
+  `checkout.session.completed`, `customer.subscription.created/updated/deleted`,
+  `invoice.payment_failed`. L'offre est **toujours dérivée de l'état chez Stripe** : l'abonnement
+  concerné est relu (`subscriptions.retrieve`), ce qui rend l'ordre d'arrivée sans importance.
+  Statuts `active`, `trialing`, `past_due` (relances de paiement en cours) → Premium ; tout le
+  reste → gratuit. Chaque évènement est enregistré dans `stripe_events` dans la même transaction
+  que la mise à jour : un évènement rejoué est sans effet ; en cas d'erreur, rien n'est enregistré
+  et Stripe renvoie l'évènement.
+- **Suppression du compte** : le client Stripe est supprimé d'abord (abonnement résilié, e-mail
+  effacé chez Stripe) ; si Stripe est injoignable, la suppression est refusée et peut être
+  relancée.
+- **Sans configuration** (une des trois variables `STRIPE_*` absente) : build et application
+  normaux, la page « Abonnement » indique que les paiements ne sont pas encore disponibles, le
+  webhook répond 503 ; personne n'est bloqué (offre gratuite).
+
+Mise en service :
+
+1. Stripe → Produits : créer « Premium » avec un **prix récurrent mensuel** → `STRIPE_PRICE_PREMIUM_MONTHLY`.
+2. Développeurs → Webhooks : point de terminaison `https://<SITE_DOMAIN>/api/stripe/webhook`, avec
+   les cinq évènements ci-dessus → `STRIPE_WEBHOOK_SECRET`.
+3. Paramètres → Portail client : activer la résiliation et la mise à jour du moyen de paiement.
+4. En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+
+Tests (`tests/unit/billing.test.ts`, `tests/db/billing.test.ts`) : Stripe simulé, seule la
+vérification de signature du SDK est réelle (fixtures `tests/fixtures/stripe` signées en local) ;
+aucun appel à l'API Stripe.
 
 ## Authentification
 

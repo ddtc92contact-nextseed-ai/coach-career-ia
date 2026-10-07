@@ -134,7 +134,8 @@
     "fileType": "Format nicht unterstützt: Laden Sie eine PDF-Datei oder ein Bild (PNG, JPEG, WebP) hoch.",
     "fileQuota": "Sie haben die maximale Anzahl an Dokumenten erreicht. Löschen Sie eines, um ein weiteres hinzuzufügen.",
     "confirmMismatch": "Die eingegebene Adresse stimmt nicht mit der Ihres Kontos überein.",
-    "notFound": "Dieses Element existiert nicht (mehr)."
+    "notFound": "Dieses Element existiert nicht (mehr).",
+    "billingCancelFailed": "Ihr Abonnement kann gerade nicht gekündigt werden, daher wurde Ihr Konto nicht gelöscht. Bitte versuchen Sie es in einigen Minuten erneut."
   },
   "app": {
     "metaTitle": "Mein Bereich",
@@ -149,7 +150,8 @@
       "opportunities": "Chancen",
       "settings": "Einstellungen",
       "radar": "Radar (Admin)",
-      "coach": "KI-Coach"
+      "coach": "KI-Coach",
+      "billing": "Abonnement"
     }
   },
   "dashboard": {
@@ -672,6 +674,16 @@
         "acceptsOnCall": "Bereitschaftsdienst akzeptiert",
         "locations": "Arbeitsgebiete"
       }
+    },
+    "quotaUnlimited": "Unbegrenzte Nachrichten mit Premium.",
+    "upsell": {
+      "title": "Sie haben Ihre kostenlosen Nachrichten aufgebraucht",
+      "text": "Der kostenlose Tarif umfasst {limit, plural, one {# Nachricht} other {# Nachrichten}} an den Coach in rollierenden 24 Stunden; sie werden nach und nach wieder frei.",
+      "titlePremiumOnly": "Der KI-Coach ist Premium vorbehalten",
+      "textPremiumOnly": "In diesem Dienst ist der KI-Coach Teil des Premium-Tarifs.",
+      "premium": "Mit Premium ist der Coach unbegrenzt.",
+      "later": "Die Online-Zahlung ist noch nicht verfügbar: Bitte kommen Sie etwas später wieder.",
+      "cta": "Premium entdecken"
     }
   },
   "settings": {
@@ -922,5 +934,52 @@
       "CONFIRMED": "Bestätigt",
       "EXPERT": "Beherrscht"
     }
+  },
+  "billing": {
+    "title": "Abonnement",
+    "intro": "Ihr aktueller Tarif und was Premium hinzufügt. Das Wesentliche des Dienstes bleibt kostenlos.",
+    "notAvailable": "Zahlungen sind noch nicht verfügbar. Alle kostenlosen Funktionen bleiben normal nutzbar.",
+    "checkoutSuccess": "Vielen Dank! Ihre Zahlung ist erfasst: Premium wird in wenigen Augenblicken aktiv. Laden Sie die Seite bei Bedarf neu.",
+    "checkoutCancel": "Zahlung abgebrochen: Es wurde nichts abgebucht.",
+    "errors": {
+      "checkout": "Die Zahlungsseite kann gerade nicht geöffnet werden. Bitte versuchen Sie es in einigen Minuten erneut.",
+      "portal": "Die Abonnementverwaltung kann gerade nicht geöffnet werden. Bitte versuchen Sie es in einigen Minuten erneut."
+    },
+    "current": {
+      "title": "Ihr Tarif",
+      "admin": "Premium wird Ihnen kostenlos bereitgestellt (Administratorkonto).",
+      "renewsOn": "Automatische Verlängerung am {date}.",
+      "endsOn": "Abonnement gekündigt: Premium bleibt bis zum {date} aktiv.",
+      "free": "KI-Coach: {limit, plural, =0 {nur mit Premium} one {# Nachricht pro 24 Stunden} other {# Nachrichten pro 24 Stunden}}.",
+      "pastDue": "Die letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Zahlungsmethode, um Premium zu behalten."
+    },
+    "manage": "Abonnement verwalten",
+    "manageHint": "Zahlungsmethode, Rechnungen und Kündigung auf der sicheren Seite von Stripe.",
+    "redirecting": "Weiterleitung…",
+    "compare": {
+      "title": "Die Tarife"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Kostenlos",
+        "price": "0 €, ohne Bindung"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {Tag} week {Woche} year {Jahr} other {Monat}}",
+    "priceUnknown": "Monatliches Abonnement",
+    "features": {
+      "memory": "Karrieregedächtnis, Identitätstresor und Leitplanken",
+      "opportunities": "Passende Angebote gemäß Ihren Leitplanken",
+      "coachLimited": "KI-Coach: {limit, plural, one {# Nachricht} other {# Nachrichten}} pro 24 Stunden",
+      "coachNone": "KI-Coach nicht enthalten",
+      "everythingFree": "Alles aus dem kostenlosen Tarif",
+      "coachUnlimited": "Unbegrenzter KI-Coach"
+    },
+    "upgrade": "Zu Premium wechseln",
+    "upgradeHint": "Monatliche Zahlung, abgesichert durch Stripe, jederzeit kündbar.",
+    "privacy": "Datenschutz: Stripe erhält nur Ihre Anmelde-E-Mail-Adresse und eine Kontokennung. Ihr Karrieregedächtnis und Ihre Identität werden nie übermittelt, und Ihre Kartendaten laufen nicht über unsere Server."
   }
 }

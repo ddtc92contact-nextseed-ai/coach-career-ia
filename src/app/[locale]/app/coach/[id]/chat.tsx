@@ -11,6 +11,7 @@ import {
   type CoachStreamEvent,
   type SuggestionView,
 } from "@/lib/coach/shared";
+import { CoachUpsell } from "../upsell";
 import { SuggestionCard } from "./suggestion-card";
 
 type Pending = {
@@ -53,13 +54,17 @@ export function CoachChat({
   initialRemaining,
   limit,
   configured,
+  billing,
 }: {
   conversationId: string;
   mode: CoachModeCode;
   initialMessages: CoachMessageView[];
-  initialRemaining: number;
-  limit: number;
+  /** `null` : illimité (Premium). */
+  initialRemaining: number | null;
+  limit: number | null;
   configured: boolean;
+  /** Paiement disponible : la limite atteinte propose Premium. */
+  billing: boolean;
 }) {
   const t = useTranslations("coach");
   const [messages, setMessages] = useState(initialMessages);
@@ -81,7 +86,8 @@ export function CoachChat({
   // Dernier message sans réponse (panne, onglet fermé) : on propose de relancer.
   const canRetry = !busy && last?.role === "USER" && !String(last.id).startsWith("local-");
   const tooLong = input.length > COACH_LIMITS.messageMaxChars;
-  const canSend = configured && !busy && input.trim().length > 0 && !tooLong && remaining > 0;
+  const exhausted = remaining === 0;
+  const canSend = configured && !busy && input.trim().length > 0 && !tooLong && !exhausted;
 
   async function run(body: SendBody) {
     const abort = new AbortController();
@@ -263,13 +269,14 @@ export function CoachChat({
         ) : null}
       </p>
 
-      {error ? (
+      {exhausted && limit !== null ? <CoachUpsell limit={limit} billing={billing} /> : null}
+      {error && error !== "quotaExceeded" ? (
         <div
           role="alert"
           className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
         >
           <p className="font-medium">{t("errors.title")}</p>
-          <p className="mt-1">{t(`errors.${error}`, { limit })}</p>
+          <p className="mt-1">{t(`errors.${error}`, { limit: limit ?? 0 })}</p>
           {canRetry ? <p className="mt-1">{t("errors.kept")}</p> : null}
         </div>
       ) : null}
@@ -296,7 +303,7 @@ export function CoachChat({
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={onKeyDown}
           rows={3}
-          disabled={!configured || remaining === 0}
+          disabled={!configured || exhausted}
           placeholder={t("chat.placeholder")}
           aria-invalid={tooLong || undefined}
           aria-describedby="coach-input-hint"
@@ -308,7 +315,9 @@ export function CoachChat({
               ? t("chat.tooLong", { max: COACH_LIMITS.messageMaxChars })
               : !configured
                 ? t("notConfigured")
-                : t("quota", { remaining })}
+                : remaining === null
+                  ? t("quotaUnlimited")
+                  : t("quota", { remaining })}
           </p>
           <button type="submit" disabled={!canSend} className={buttonClass}>
             {busy ? t("chat.sending") : t("chat.send")}

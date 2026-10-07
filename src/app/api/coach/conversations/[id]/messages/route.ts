@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { getAiClient, isAiConfigured } from "@/lib/ai/server";
 import { getCurrentUser } from "@/lib/auth/session";
-import { coachMessagesPerDay, remainingMessages } from "@/lib/coach/quota";
+import { getEntitlements } from "@/lib/billing/server";
+import { remainingMessages } from "@/lib/coach/quota";
 import {
   acquireTurn,
   addUserMessageWithinQuota,
@@ -63,14 +64,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!parsed.success) return fail("invalid");
   if (!isAiConfigured()) return fail("aiNotConfigured");
 
-  const limit = coachMessagesPerDay();
-  // Limite à 0 : coach coupé, relances comprises.
+  // Limite selon l'offre (`null` = illimité, Premium).
+  const limit = (await getEntitlements(user.id)).limits.coachMessagesPerDay;
+  // Limite à 0 : coach réservé à Premium, relances comprises.
   if (limit === 0) return fail("quotaExceeded", { limit });
   // Un seul tour à la fois par conversation : envois ou relances simultanés → 409.
   if (!(await acquireTurn(user.id, id))) return fail("busy");
 
   let userMessage: { id: string; createdAt: Date };
-  let remaining: number;
+  let remaining: number | null;
   try {
     if (parsed.data.retry) {
       // Nouvel essai : seulement si le dernier message est du candidat, sans réponse.

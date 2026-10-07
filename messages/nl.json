@@ -134,7 +134,8 @@
     "fileType": "Formaat niet toegestaan: upload een pdf of een afbeelding (PNG, JPEG, WebP).",
     "fileQuota": "U heeft het maximale aantal documenten bereikt. Verwijder er een om een nieuw document toe te voegen.",
     "confirmMismatch": "Het ingevulde adres komt niet overeen met dat van uw account.",
-    "notFound": "Dit item bestaat niet (meer)."
+    "notFound": "Dit item bestaat niet (meer).",
+    "billingCancelFailed": "Uw abonnement kan momenteel niet worden opgezegd, dus uw account is niet verwijderd. Probeer het over enkele minuten opnieuw."
   },
   "app": {
     "metaTitle": "Mijn omgeving",
@@ -149,7 +150,8 @@
       "opportunities": "Kansen",
       "settings": "Instellingen",
       "radar": "Radar (beheer)",
-      "coach": "AI-coach"
+      "coach": "AI-coach",
+      "billing": "Abonnement"
     }
   },
   "dashboard": {
@@ -672,6 +674,16 @@
         "acceptsOnCall": "Consignatiediensten geaccepteerd",
         "locations": "Werkgebieden"
       }
+    },
+    "quotaUnlimited": "Onbeperkt berichten met Premium.",
+    "upsell": {
+      "title": "U hebt uw gratis berichten gebruikt",
+      "text": "Het gratis abonnement omvat {limit, plural, one {# bericht} other {# berichten}} aan de coach per voortschrijdende 24 uur; ze komen geleidelijk weer vrij.",
+      "titlePremiumOnly": "De AI-coach is voorbehouden aan Premium",
+      "textPremiumOnly": "Op deze dienst maakt de AI-coach deel uit van het Premium-abonnement.",
+      "premium": "Met Premium is de coach onbeperkt.",
+      "later": "Online betalen is nog niet beschikbaar: kom iets later terug.",
+      "cta": "Ontdek Premium"
     }
   },
   "settings": {
@@ -922,5 +934,52 @@
       "CONFIRMED": "Bevestigd",
       "EXPERT": "Beheerst"
     }
+  },
+  "billing": {
+    "title": "Abonnement",
+    "intro": "Uw huidige abonnement en wat Premium toevoegt. De kern van de dienst blijft gratis.",
+    "notAvailable": "Betalingen zijn nog niet beschikbaar. Alle gratis functies blijven gewoon toegankelijk.",
+    "checkoutSuccess": "Bedankt! Uw betaling is geregistreerd: Premium wordt over enkele ogenblikken actief. Vernieuw de pagina indien nodig.",
+    "checkoutCancel": "Betaling geannuleerd: er is niets afgeschreven.",
+    "errors": {
+      "checkout": "De betaalpagina kan momenteel niet worden geopend. Probeer het over enkele minuten opnieuw.",
+      "portal": "Het abonnementsbeheer kan momenteel niet worden geopend. Probeer het over enkele minuten opnieuw."
+    },
+    "current": {
+      "title": "Uw abonnement",
+      "admin": "Premium wordt u aangeboden (beheerdersaccount).",
+      "renewsOn": "Wordt automatisch verlengd op {date}.",
+      "endsOn": "Abonnement opgezegd: Premium blijft actief tot {date}.",
+      "free": "AI-coach: {limit, plural, =0 {alleen met Premium} one {# bericht per 24 uur} other {# berichten per 24 uur}}.",
+      "pastDue": "De laatste betaling is mislukt. Werk uw betaalmethode bij om Premium te behouden."
+    },
+    "manage": "Mijn abonnement beheren",
+    "manageHint": "Betaalmethode, facturen en opzegging, op de beveiligde pagina van Stripe.",
+    "redirecting": "Doorsturen…",
+    "compare": {
+      "title": "De abonnementen"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Gratis",
+        "price": "€ 0, zonder verplichting"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {dag} week {week} year {jaar} other {maand}}",
+    "priceUnknown": "Maandabonnement",
+    "features": {
+      "memory": "Loopbaangeheugen, identiteitskluis en harde grenzen",
+      "opportunities": "Kansen die passen binnen uw harde grenzen",
+      "coachLimited": "AI-coach: {limit, plural, one {# bericht} other {# berichten}} per 24 uur",
+      "coachNone": "AI-coach niet inbegrepen",
+      "everythingFree": "Alles uit het gratis abonnement",
+      "coachUnlimited": "Onbeperkte AI-coach"
+    },
+    "upgrade": "Overstappen op Premium",
+    "upgradeHint": "Maandelijkse betaling beveiligd door Stripe, op elk moment opzegbaar.",
+    "privacy": "Privacy: Stripe ontvangt alleen uw e-mailadres voor inloggen en een accountidentificatie. Uw loopbaangeheugen en identiteit worden nooit doorgegeven, en uw kaartgegevens gaan niet via onze servers."
   }
 }

@@ -134,7 +134,8 @@
     "fileType": "Unsupported format: upload a PDF or an image (PNG, JPEG, WebP).",
     "fileQuota": "You have reached the maximum number of documents. Delete one to add another.",
     "confirmMismatch": "The address you entered doesn’t match your account’s address.",
-    "notFound": "This item doesn’t exist or no longer exists."
+    "notFound": "This item doesn’t exist or no longer exists.",
+    "billingCancelFailed": "Your subscription cannot be cancelled right now, so your account has not been deleted. Please try again in a few minutes."
   },
   "app": {
     "metaTitle": "My space",
@@ -149,7 +150,8 @@
       "opportunities": "Opportunities",
       "settings": "Settings",
       "radar": "Radar (admin)",
-      "coach": "AI coach"
+      "coach": "AI coach",
+      "billing": "Subscription"
     }
   },
   "dashboard": {
@@ -672,6 +674,16 @@
         "acceptsOnCall": "On-call duty accepted",
         "locations": "Work areas"
       }
+    },
+    "quotaUnlimited": "Unlimited messages with Premium.",
+    "upsell": {
+      "title": "You have used your free messages",
+      "text": "The free plan includes {limit, plural, one {# message} other {# messages}} to the coach over a rolling 24 hours; they free up again over time.",
+      "titlePremiumOnly": "The AI coach is a Premium feature",
+      "textPremiumOnly": "On this service, the AI coach is part of the Premium plan.",
+      "premium": "With Premium, the coach is unlimited.",
+      "later": "Online payment is not available yet: please come back a little later.",
+      "cta": "Discover Premium"
     }
   },
   "settings": {
@@ -922,5 +934,52 @@
       "CONFIRMED": "Confirmed",
       "EXPERT": "Mastered"
     }
+  },
+  "billing": {
+    "title": "Subscription",
+    "intro": "Your current plan and what Premium adds. The core of the service stays free.",
+    "notAvailable": "Payments are not available yet. All free features remain fully accessible.",
+    "checkoutSuccess": "Thank you! Your payment is recorded: Premium will be active in a few moments. Refresh the page if needed.",
+    "checkoutCancel": "Payment cancelled: you have not been charged.",
+    "errors": {
+      "checkout": "The payment page cannot be opened right now. Please try again in a few minutes.",
+      "portal": "Subscription management cannot be opened right now. Please try again in a few minutes."
+    },
+    "current": {
+      "title": "Your plan",
+      "admin": "Premium is offered to you (administrator account).",
+      "renewsOn": "Renews automatically on {date}.",
+      "endsOn": "Subscription cancelled: Premium stays active until {date}.",
+      "free": "AI coach: {limit, plural, =0 {Premium only} one {# message per 24 hours} other {# messages per 24 hours}}.",
+      "pastDue": "The last payment failed. Update your payment method to keep Premium."
+    },
+    "manage": "Manage my subscription",
+    "manageHint": "Payment method, invoices and cancellation, on Stripe’s secure page.",
+    "redirecting": "Redirecting…",
+    "compare": {
+      "title": "Plans"
+    },
+    "plans": {
+      "FREE": {
+        "name": "Free",
+        "price": "€0, no commitment"
+      },
+      "PREMIUM": {
+        "name": "Premium"
+      }
+    },
+    "price": "{price} / {interval, select, day {day} week {week} year {year} other {month}}",
+    "priceUnknown": "Monthly subscription",
+    "features": {
+      "memory": "Career Memory, identity vault and guard-rails",
+      "opportunities": "Opportunities qualified against your guard-rails",
+      "coachLimited": "AI coach: {limit, plural, one {# message} other {# messages}} per 24 hours",
+      "coachNone": "AI coach not included",
+      "everythingFree": "Everything in the free plan",
+      "coachUnlimited": "Unlimited AI coach"
+    },
+    "upgrade": "Upgrade to Premium",
+    "upgradeHint": "Monthly payment secured by Stripe, cancel at any time.",
+    "privacy": "Privacy: Stripe only receives your login email address and an account identifier. Your Career Memory and identity are never sent to it, and your card details never pass through our servers."
   }
 }
