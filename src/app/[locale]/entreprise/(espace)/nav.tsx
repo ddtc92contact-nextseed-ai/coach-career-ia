@@ -5,11 +5,13 @@ import { Link, usePathname } from "@/i18n/navigation";
 
 export const EMPLOYER_NAV = [
   { href: "/entreprise", key: "dashboard" },
+  { href: "/entreprise/messages", key: "messages" },
   { href: "/entreprise/offres/nouvelle", key: "newPosting" },
   { href: "/entreprise/organisation", key: "organization" },
 ] as const;
 
-export function EmployerNav() {
+/** `newThreads` : fils de la messagerie jamais ouverts (pastille). */
+export function EmployerNav({ newThreads = 0 }: { newThreads?: number }) {
   const t = useTranslations("employer.nav");
   const pathname = usePathname();
   return (
@@ -33,6 +35,12 @@ export function EmployerNav() {
             }`}
           >
             {t(item.key)}
+            {item.key === "messages" && newThreads > 0 ? (
+              <span className="bg-brand-700 ml-1.5 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold text-white">
+                <span aria-hidden="true">{newThreads}</span>
+                <span className="sr-only">{t("newThreads", { count: newThreads })}</span>
+              </span>
+            ) : null}
           </Link>
         );
       })}

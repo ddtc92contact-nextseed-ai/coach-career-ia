@@ -166,7 +166,7 @@ export async function NegotiationSection({
                   {m.direction === "OUT" ? t("thread.out") : t("thread.in")} ·{" "}
                   {m.direction === "IN"
                     ? t("thread.receivedOn", { date: format.dateTime(m.createdAt, "short") })
-                    : t(view.channel === "EMAIL" ? "thread.sentOn" : "thread.submittedOn", {
+                    : t(view.channel === "APPLY_URL" ? "thread.submittedOn" : "thread.sentOn", {
                         date: format.dateTime(m.sentAt ?? m.createdAt, "short"),
                       })}
                 </p>

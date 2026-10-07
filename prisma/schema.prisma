@@ -46,6 +46,12 @@ model User {
   stripeCustomerId     String?             @unique @map("stripe_customer_id")
   stripeSubscriptionId String?             @unique @map("stripe_subscription_id")
 
+  /// Version des conditions d'utilisation et de la politique de confidentialité
+  /// acceptées (`LEGAL_TERMS_VERSION`, `src/config/legal.ts`) et date de
+  /// l'acceptation, enregistrées à la connexion qui suit leur affichage.
+  termsVersion    String?   @map("terms_version")
+  termsAcceptedAt DateTime? @map("terms_accepted_at")
+
   accounts     Account[]
   sessions     Session[]
   profile      CareerProfile?
@@ -66,12 +72,14 @@ model User {
 
   simulatedSubscriptions SimulatedSubscription[]
 
-  profileCard    ProfileCard?
-  cardLinks      CardLink[]
-  contacts       Contact[]
-  contactReplies ContactReply[]
-  handovers      Handover[]
-  handoverEvents HandoverEvent[]
+  profileCard     ProfileCard?
+  cardLinks       CardLink[]
+  contacts        Contact[]
+  contactReplies  ContactReply[]
+  /// Réponses écrites en tant que membre d'une organisation (espace entreprise).
+  authoredReplies ContactReply[]  @relation("ContactReplyAuthor")
+  handovers       Handover[]
+  handoverEvents  HandoverEvent[]
 
   negotiationMandates NegotiationMandate[]
   negotiationMessages NegotiationMessage[]
@@ -1006,6 +1014,9 @@ enum ContactChannel {
   EMAIL
   /// Offre sans adresse : le candidat colle lui-même le message sur la page « Postuler ».
   APPLY_URL
+  /// Offre publiée directement (`source = "direct"`) : remis dans la messagerie de
+  /// l'espace entreprise de l'organisation, sans e-mail contenant le message.
+  PORTAL
 }
 
 enum ContactStatus {
@@ -1047,11 +1058,18 @@ model Contact {
   /// Fil passé d'anonyme à révélé : date de la dernière levée d'anonymat
   /// (le fait reste acquis après révocation : l'entreprise a pu voir l'identité).
   revealedAt   DateTime?      @map("revealed_at")
+  /// Canal `PORTAL` : organisation destinataire (seuls ses membres voient le fil).
+  orgId        String?        @map("org_id")
+  /// Fil ouvert pour la première fois par un membre de l'organisation (« lu »).
+  orgReadAt    DateTime?      @map("org_read_at")
+  /// Fil clos poliment par l'organisation (message type envoyé au candidat).
+  orgClosedAt  DateTime?      @map("org_closed_at")
   createdAt    DateTime       @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at")
 
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   offer          JobOffer        @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  organization   Organization?   @relation(fields: [orgId], references: [id], onDelete: SetNull)
   cardLink       CardLink?       @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
   replies        ContactReply[]
   handovers      Handover[]
@@ -1063,6 +1081,8 @@ model Contact {
   @@unique([userId, offerId])
   /// Quota quotidien : envois récents du candidat.
   @@index([userId, sentAt])
+  /// Messagerie de l'espace entreprise.
+  @@index([orgId, status])
   @@map("contacts")
 }
 
@@ -1074,9 +1094,14 @@ model ContactReply {
   contactId String    @map("contact_id")
   bodyEnc   String    @map("body_enc")
   readAt    DateTime? @map("read_at")
+  /// Réponse écrite dans l'espace entreprise : membre auteur (`null` : page à jeton).
+  authorId  String?   @map("author_id")
+  /// Message type de clôture du fil par l'entreprise.
+  closing   Boolean   @default(false)
   createdAt DateTime  @default(now()) @map("created_at")
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  author  User?   @relation("ContactReplyAuthor", fields: [authorId], references: [id], onDelete: SetNull)
   contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
@@ -1247,31 +1272,36 @@ enum OrganizationRole {
 /// Entreprise inscrite sur l'espace entreprise. Données de l'entreprise,
 /// pas d'une personne : seuls les membres (`OrganizationMember`) relient un compte.
 model Organization {
-  id         String             @id @default(cuid())
-  name       String
+  id              String             @id @default(cuid())
+  name            String
   /// Site web déclaré (https://…), et son domaine normalisé (sans `www.`).
-  website    String
-  domain     String
+  website         String
+  domain          String
   /// Code de secteur (`src/lib/career/codes.ts`).
-  sector     String
-  size       CompanySize
+  sector          String
+  size            CompanySize
   /// Code pays ISO 3166-1 alpha-2.
-  country    String
+  country         String
   /// Domaine de l'e-mail du membre fondateur vérifié contre celui du site, ou
   /// validation par un administrateur.
-  verifiedAt DateTime?          @map("verified_at")
-  status     OrganizationStatus @default(PENDING)
+  verifiedAt      DateTime?          @map("verified_at")
+  status          OrganizationStatus @default(PENDING)
   /// Motif du dernier refus ou de la suspension (saisi par l'administrateur).
-  reviewNote String?            @map("review_note")
+  reviewNote      String?            @map("review_note")
   /// Fiche `companies` sous laquelle les offres sont publiées.
-  companyId  String             @unique @map("company_id")
-  createdAt  DateTime           @default(now()) @map("created_at")
-  updatedAt  DateTime           @updatedAt @map("updated_at")
+  companyId       String             @unique @map("company_id")
+  /// Version des conditions entreprises acceptées à l'inscription, et sa date
+  /// (`null` pour les organisations créées avant ces conditions).
+  termsVersion    String?            @map("terms_version")
+  termsAcceptedAt DateTime?          @map("terms_accepted_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
 
   company  Company              @relation(fields: [companyId], references: [id], onDelete: Restrict)
   members  OrganizationMember[]
   postings JobPosting[]
   payments JobPostingPayment[]
+  contacts Contact[]
 
   @@index([status])
   @@index([domain])

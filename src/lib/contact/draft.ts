@@ -32,6 +32,8 @@ export type DraftFacts = {
   card: CardContent;
   /** Compétences de la carte que l'offre demande (explication du matching). */
   matchedSkills: { name: string; proven: boolean }[];
+  /** Remis dans la messagerie de l'espace entreprise (canal PORTAL), pas par e-mail. */
+  portal?: boolean;
 };
 
 export type Draft = { subject: string; body: string; source: "llm" | "rules" };
@@ -95,7 +97,7 @@ export function ruleDraftBody(facts: DraftFacts): string {
       }),
     );
   }
-  lines.push("", t("draft.closing"), "", t("draft.signoff"));
+  lines.push("", t(facts.portal ? "draft.closingPortal" : "draft.closing"), "", t("draft.signoff"));
   return lines.join("\n");
 }
 
@@ -145,7 +147,7 @@ export async function llmDraftBody(
       {
         role: "system",
         content: [
-          "You are the AI career agent of an anonymous job candidate. You write, on their behalf, a short first message (90 to 180 words) to a company about one of its job offers, to be sent to the application address published in the offer.",
+          `You are the AI career agent of an anonymous job candidate. You write, on their behalf, a short first message (90 to 180 words) to a company about one of its job offers, ${facts.portal ? "delivered to the company's inbox on the recruiting platform, next to the candidate's anonymous card" : "to be sent to the application address published in the offer"}.`,
           'Speak as the agent ("I am the AI career agent of a candidate…"), never as the candidate. Start with a greeting and end with a polite closing formula, without any signature or name.',
           "Explain concisely why the profile matches the offer, using ONLY the facts given as JSON. Never invent experience, figures, employers, schools, dates, availability or salary. Say honestly when an achievement is declared rather than proven. No flattery, no bluff, no urgency.",
           "Never write a name, an email address, a phone number, a link, a company the candidate worked for, a school or a date: the candidate must stay anonymous. Do not mention links: they are appended separately.",

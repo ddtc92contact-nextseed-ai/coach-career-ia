@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
+import { LegalConsent } from "@/components/legal-consent";
 import { requestMagicLink, type LoginState } from "./actions";
 
 export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
@@ -41,6 +42,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
       >
         {pending ? t("submitting") : t("submit")}
       </button>
+      <LegalConsent audience="candidate" />
     </form>
   );
 }

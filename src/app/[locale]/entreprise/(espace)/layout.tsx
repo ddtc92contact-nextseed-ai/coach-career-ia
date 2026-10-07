@@ -3,8 +3,10 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { Logo } from "@/components/logo";
+import { SiteFooter } from "@/components/site-footer";
 import { Link } from "@/i18n/navigation";
 import { initUserLocale } from "@/lib/career/repository";
+import { countNewThreads } from "@/lib/employer/inbox";
 import { requireEmployer } from "@/lib/employer/session";
 import { logout } from "../../app/actions";
 import { EmployerNav } from "./nav";
@@ -19,13 +21,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Espace entreprise : réservé aux membres d'une organisation (404 pour un
- * compte uniquement candidat). Aucune donnée candidat n'y est affichée.
+ * compte uniquement candidat). Seules les personnes candidates qui ont
+ * contacté l'organisation y apparaissent, dans la messagerie, anonymement.
  */
 export default async function EmployerLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { user, org } = await requireEmployer();
-  const [t, locale] = await Promise.all([getTranslations("employer"), getLocale()]);
+  const [t, locale, newThreads] = await Promise.all([
+    getTranslations("employer"),
+    getLocale(),
+    countNewThreads(org.id),
+  ]);
   await initUserLocale(user.id, locale);
 
   return (
@@ -60,10 +67,11 @@ export default async function EmployerLayout({
               </form>
             </div>
           </div>
-          <EmployerNav />
+          <EmployerNav newThreads={newThreads} />
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+      <SiteFooter />
     </div>
   );
 }

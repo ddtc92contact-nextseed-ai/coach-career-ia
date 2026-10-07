@@ -143,7 +143,8 @@
         "provenSkills": "Gefragte und belegte Kompetenzen: {skills}.",
         "skills": "Gefragte Kompetenzen: {skills}.",
         "closing": "Wenn dieses Profil Sie interessiert, finden Sie unten die anonyme Karte und einen Link zum Antworten. Die Person entscheidet anschließend, ob sie ihre Identität offenlegt.",
-        "signoff": "Mit freundlichen Grüßen"
+        "signoff": "Mit freundlichen Grüßen",
+        "closingPortal": "Wenn Sie dieses Profil interessiert: Die anonyme Karte finden Sie in diesem Austausch, und Sie können direkt hier antworten. Die Person entscheidet danach, ob sie ihre Anonymität aufhebt."
       }
     },
     "reply": {
@@ -215,6 +216,17 @@
       "postingRejected": {
         "subject": "Stelle abgelehnt: {title}",
         "body": "Ihre Stelle „{title}“ wurde nicht freigegeben. Sie können sie bearbeiten und erneut einreichen."
+      },
+      "portalContact": {
+        "subject": "Sie haben eine anonyme Bewerbung für {title} erhalten",
+        "body": "Sie haben eine anonyme Bewerbung für Ihr Angebot „{title}“ erhalten. Sie wartet im Postfach Ihres Unternehmensbereichs.",
+        "open": "Postfach öffnen",
+        "openText": "Postfach öffnen: {url}",
+        "privacy": "Zum Schutz der Person enthält diese E-Mail keine Angaben über sie: Melden Sie sich an, um die Bewerbung zu lesen."
+      },
+      "portalMessage": {
+        "subject": "Neue Nachricht der Person zu {title}",
+        "body": "Die Person, die Sie zu Ihrem Angebot „{title}“ kontaktiert hat, hat Ihnen eine neue Nachricht gesendet. Sie wartet im Postfach Ihres Unternehmensbereichs."
       }
     }
   },
@@ -451,7 +463,8 @@
         "APPROVED": "Nachricht genehmigt, noch nicht gesendet.",
         "SENDING": "Wird gesendet.",
         "SENT": "Unternehmen kontaktiert."
-      }
+      },
+      "portal": "Direkt vom Unternehmen veröffentlichtes Angebot: Ihr Agent verfasst eine kurze Nachricht, die mit Ihrer anonymen Karte in dessen Postfach zugestellt wird. Sie prüfen und genehmigen sie: Nichts wird ohne Sie gesendet."
     },
     "directBadge": "Direkt vom Unternehmen veröffentlicht"
   },
@@ -1488,7 +1501,8 @@
     "emptyAction": "Meine Chancen ansehen",
     "channel": {
       "EMAIL": "Bewerbungs-E-Mail",
-      "APPLY_URL": "„Bewerben“-Seite"
+      "APPLY_URL": "„Bewerben“-Seite",
+      "PORTAL": "Unternehmensbereich"
     },
     "status": {
       "DRAFT": "Entwurf",
@@ -1536,7 +1550,14 @@
       "noReply": "Noch keine Antwort. Sie werden per E-Mail benachrichtigt.",
       "receivedOn": "Erhalten am {date}",
       "approved": "Nachricht genehmigt.",
-      "discardConfirm": "Diesen Kontakt verwerfen? Der Entwurf wird gelöscht."
+      "discardConfirm": "Diesen Kontakt verwerfen? Der Entwurf wird gelöscht.",
+      "recipientPortal": "Empfänger: das Postfach im Unternehmensbereich der Organisation, die das Angebot veröffentlicht hat (keine E-Mail enthält Ihre Nachricht).",
+      "portalCard": "Karte im Unternehmensbereich sichtbar bis {date}, {views, plural, =0 {nie angesehen} one {# Mal angesehen} other {# Mal angesehen}}.",
+      "portalCardRevoked": "Karte zurückgezogen: Das Unternehmen sieht sie nicht mehr in seinem Postfach.",
+      "closedOn": "Vom Unternehmen am {date} abgeschlossen",
+      "sendPortal": "An den Unternehmensbereich senden",
+      "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt. Ihre Identität wird nicht weitergegeben.",
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten vorbereitet und von Ihnen freigegeben wurde, sowie Ihre anonyme Karte."
     },
     "errors": {
       "noChannel": "Diese Stelle veröffentlicht keinen nutzbaren Bewerbungskanal.",
@@ -1629,8 +1650,13 @@
       "notFound": "Dieser Kontakt wurde nicht gefunden.",
       "network": "Ein Netzwerkfehler ist aufgetreten. Versuchen Sie es erneut.",
       "wrongPassphrase": "Falsche Passphrase.",
-      "nothingSelected": "Wählen Sie mindestens eine Angabe zum Offenlegen aus."
-    }
+      "nothingSelected": "Wählen Sie mindestens eine Angabe zum Offenlegen aus.",
+      "closed": "Das Unternehmen hat diesen Austausch abgeschlossen."
+    },
+    "activePortal": "Im Unternehmensbereich sichtbar bis {date}, {views, plural, =0 {nie angesehen} one {# Mal angesehen} other {# Mal angesehen}}.",
+    "closed": "Das Unternehmen hat diesen Austausch abgeschlossen: Die Aufhebung der Anonymität wird nicht mehr angeboten.",
+    "donePortal": "Erledigt: Die gewählten Angaben erscheinen im Unternehmensbereich von {company}, nur für dessen Mitglieder.",
+    "previewPortal": "Diese Angaben erscheinen im Postfach des Unternehmensbereichs der Organisation, nur für deren Mitglieder. Sie laufen automatisch ab und Sie können sie jederzeit zurückziehen."
   },
   "replyPage": {
     "title": "Der Person antworten",
@@ -1759,7 +1785,10 @@
       "markTransmitted": "Ich habe diese Nachricht weitergegeben",
       "discard": "Diesen Entwurf löschen",
       "discardConfirm": "Diesen Entwurf löschen?",
-      "blocked": "Diese Nachricht kann so nicht genehmigt werden:"
+      "blocked": "Diese Nachricht kann so nicht genehmigt werden:",
+      "sendPortal": "An den Unternehmensbereich senden",
+      "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt.",
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen freigegeben wurde; es antwortet direkt in seinem Postfach."
     },
     "issues": {
       "belowFloor": "ein Betrag liegt unter Ihrer Untergrenze ({excerpt});",
@@ -1848,7 +1877,9 @@
       "dashboard": "Meine Stellen",
       "newPosting": "Stelle veröffentlichen",
       "organization": "Meine Organisation",
-      "candidate": "Kandidatenbereich"
+      "candidate": "Kandidatenbereich",
+      "messages": "Postfach",
+      "newThreads": "{count, plural, one {# neue Nachricht} other {# neue Nachrichten}}"
     },
     "signup": {
       "metaTitle": "Für Unternehmen",
@@ -1997,6 +2028,412 @@
       "days": "{days} Tage",
       "total": "Betrag",
       "back": "Zurück zur Stelle"
+    },
+    "inbox": {
+      "title": "Postfach",
+      "intro": "Die anonymen Bewerbungen auf Ihre Angebote. Jede Person hat sich entschieden, Sie zu kontaktieren; sie allein entscheidet, ob sie ihre Anonymität aufhebt.",
+      "emptyTitle": "Noch keine Bewerbung",
+      "emptyText": "Wenn eine Person, deren Bedingungen Ihre Angebote erfüllen, Sie kontaktiert, erscheint ihre anonyme Bewerbung hier.",
+      "threadTitle": "Anonyme Bewerbung — {title}",
+      "lastActivity": "Letzte Aktivität am {date}",
+      "privacy": "Sie sehen nur Personen, die Sie kontaktiert haben. Auf der Plattform gibt es keine Suche und kein Ranking von Kandidaten.",
+      "status": {
+        "NEW": "Neu",
+        "READ": "Gelesen",
+        "REPLIED": "Beantwortet",
+        "CLOSED": "Abgeschlossen"
+      },
+      "back": "← Postfach",
+      "receivedOn": "Erhalten am {date}",
+      "revealedTitle": "Offengelegte Identität",
+      "revealedExpires": "Sichtbar bis {date}. Die Person kann diese Angaben jederzeit zurückziehen.",
+      "cardTitle": "Anonyme Karte",
+      "cardGone": "Die anonyme Karte ist nicht mehr verfügbar: Sie ist abgelaufen oder wurde zurückgezogen.",
+      "messageTitle": "Nachricht",
+      "aiDisclosure": "Nachricht vom KI-Assistenten der Person verfasst, von ihr vor dem Versand geprüft und freigegeben.",
+      "repliesTitle": "Austausch",
+      "noReply": "Sie haben noch nicht geantwortet.",
+      "repliedOn": "Ihre Antwort vom {date}",
+      "closedOn": "Abgeschlossen am {date}",
+      "closedNotice": "Dieser Austausch ist abgeschlossen: Die Person hat Ihre Abschlussnachricht erhalten.",
+      "closeHint": "Passt das Profil nicht? Schließen Sie höflich ab: Eine Standardnachricht wird gesendet.",
+      "close": "Höflich abschließen",
+      "closeConfirm": "Diesen Austausch abschließen? Die Person erhält eine Dankesnachricht und Sie können nicht mehr antworten.",
+      "closing": {
+        "message": "Guten Tag,\n\nvielen Dank für Ihr Interesse an unserem Angebot „{title}“. Nach Prüfung Ihres Profils werden wir diese Bewerbung nicht weiterverfolgen. Wir wünschen Ihnen viel Erfolg bei Ihrer Suche.\n\nMit freundlichen Grüßen.",
+        "pending": "Wird abgeschlossen…"
+      },
+      "replyLabel": "Ihre Antwort",
+      "replyHint": "Die Person wird per E-Mail benachrichtigt und liest Ihre Antwort in ihrem Bereich. Danach entscheidet sie, ob sie ihre Anonymität aufhebt.",
+      "replySubmit": "Antwort senden",
+      "replySent": "Antwort gesendet.",
+      "errors": {
+        "invalid": "Ihre Antwort muss zwischen 2 und 5.000 Zeichen enthalten.",
+        "closed": "Dieser Austausch ist abgeschlossen.",
+        "rateLimited": "Heute zu viele Nachrichten in diesem Austausch. Versuchen Sie es morgen erneut."
+      },
+      "threadPrivacy": "Diese Angaben sind den Mitgliedern Ihrer Organisation vorbehalten, nur für diese Bewerbung.",
+      "revealedDisclosure": "Die Person hat entschieden, ihre Anonymität gegenüber Ihrer Organisation aufzuheben. Diese Angaben übermittelt ihr KI-Karriereagent (Coach Career IA) auf ihre ausdrückliche Entscheidung.",
+      "candidateOn": "Nachricht der Person vom {date} — von ihrem KI-Assistenten verfasst, von ihr freigegeben"
+    }
+  },
+  "legal": {
+    "updated": "Zuletzt aktualisiert: {date}",
+    "contents": "Auf dieser Seite",
+    "nav": {
+      "label": "Rechtliche Hinweise",
+      "notice": "Impressum",
+      "privacy": "Datenschutz",
+      "cookies": "Cookies",
+      "terms": "Nutzungsbedingungen",
+      "companyTerms": "Bedingungen für Unternehmen",
+      "ai": "So funktioniert unsere KI"
+    },
+    "consent": {
+      "candidate": "Indem Sie fortfahren, akzeptieren Sie die <terms>Nutzungsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy>.",
+      "company": "Mit der Erstellung des Unternehmensbereichs akzeptieren Sie die <terms>Bedingungen für Unternehmen</terms> und die <privacy>Datenschutzerklärung</privacy>."
+    },
+    "pages": {
+      "notice": {
+        "title": "Impressum",
+        "intro": "Angaben nach dem französischen Gesetz über das Vertrauen in die digitale Wirtschaft (LCEN, Artikel 6) zum Herausgeber und zum Hosting-Anbieter von Coach Career IA.",
+        "sections": {
+          "publisher": {
+            "title": "Herausgeber der Website",
+            "content": {
+              "list": {
+                "name": "Firma: {publisher}",
+                "brand": "Marke: {brand}",
+                "form": "Rechtsform: {legalForm}",
+                "capital": "Stammkapital: {shareCapital}",
+                "siren": "SIREN: {siren}",
+                "vat": "Umsatzsteuer-Identifikationsnummer: {vatNumber}",
+                "address": "Firmensitz: {address}",
+                "phone": "Telefon: {phone}",
+                "email": "E-Mail: {email}"
+              }
+            }
+          },
+          "director": {
+            "title": "Verantwortlicher für den Inhalt",
+            "content": {
+              "p1": "{director}"
+            }
+          },
+          "host": {
+            "title": "Hosting-Anbieter",
+            "content": {
+              "list": {
+                "name": "Name: {hostName}",
+                "address": "Adresse: {hostAddress}",
+                "phone": "Telefon: {hostPhone}"
+              },
+              "p1": "Die Daten der Anwendung werden in der Europäischen Union gehostet."
+            }
+          },
+          "property": {
+            "title": "Geistiges Eigentum",
+            "content": {
+              "p1": "Die Website, ihre Marke, ihre Texte, ihr Code und ihre grafischen Elemente gehören {publisher} oder sind lizenziert. Jede Vervielfältigung ohne Genehmigung ist untersagt. Die Inhalte, die Sie hinzufügen (Karriere-Gedächtnis, Nachweise, Nachrichten), bleiben Ihr Eigentum."
+            }
+          },
+          "contact": {
+            "title": "Kontakt",
+            "content": {
+              "p1": "Bei Fragen zur Website oder zur Meldung eines Inhalts: {email}. Informationen zu Ihren personenbezogenen Daten finden Sie in der <privacy>Datenschutzerklärung</privacy>."
+            }
+          }
+        }
+      },
+      "privacy": {
+        "title": "Datenschutzerklärung",
+        "intro": "Coach Career IA ist ein privater Karriere-Agent: Vertraulichkeit ist das Produkt. Diese Seite erklärt, welche Daten wir verarbeiten, warum, wie lange, mit wem und wie Sie Ihre Rechte ausüben (Datenschutz-Grundverordnung, DSGVO).",
+        "sections": {
+          "controller": {
+            "title": "Verantwortlicher",
+            "content": {
+              "p1": "{publisher} ({brand}), {address}. Kontakt für Ihre Daten: {email}."
+            }
+          },
+          "data": {
+            "title": "Verarbeitete Daten, Funktion für Funktion",
+            "content": {
+              "list": {
+                "account": "<strong>Konto</strong>: E-Mail-Adresse, bevorzugte Sprache, Erstellungs- und Anmeldedaten, Version der akzeptierten Bedingungen. Kein Passwort: Die Anmeldung erfolgt über einen Einmal-Link.",
+                "memory": "<strong>Karriere-Gedächtnis</strong>: Erfahrungen (Position, Zeiträume, Level, Arbeitgeber beschrieben nach Branche und Größe, niemals mit Namen), Erfolge, Kompetenzen, Nachweise (auf unseren Servern verschlüsselt) und Leitplanken (Gehalt, Orte, Homeoffice, Vertragsarten, ausgeschlossene Branchen und Unternehmen, letztere verschlüsselt).",
+                "vault": "<strong>Identitätstresor</strong>: Ihr Name, Ihre Kontaktdaten, die echten Namen Ihrer Arbeitgeber und Ihr ursprünglicher Lebenslauf werden in Ihrem Browser mit einem aus Ihrer Passphrase abgeleiteten Schlüssel verschlüsselt. Der Server speichert nur verschlüsselte Daten, die er nicht lesen kann; weder die Passphrase noch der Schlüssel werden ihm jemals übermittelt.",
+                "import": "<strong>Importe</strong>: Der Lebenslauf, der LinkedIn-Export oder das öffentliche GitHub-Profil, die Sie importieren, werden analysiert, um Ihnen einen Entwurf Ihres Karriere-Gedächtnisses vorzuschlagen, den Sie vor jeder Speicherung prüfen und bestätigen.",
+                "coach": "<strong>KI-Coach</strong>: Ihre Gespräche mit dem Coach und die Vorschläge, die er Ihnen macht.",
+                "matching": "<strong>Chancen und Benachrichtigungen</strong>: die für Sie ausgewählten Stellenangebote, ihr Score und ihre Begründung, Ihre Reaktionen; E-Mail-Benachrichtigungen werden nur versendet, wenn Sie sie aktivieren, und jede E-Mail enthält einen Abmeldelink.",
+                "contacts": "<strong>Anonyme Karte, Kontaktaufnahmen und Verhandlung</strong>: Ihre anonyme Karte, die nach Ihrer Freigabe an Unternehmen gesendeten Nachrichten, die von Ihnen angegebene Adresse der Ansprechperson, die erhaltenen Antworten und Ihr Verhandlungsmandat (verschlüsselt).",
+                "handover": "<strong>Aufhebung der Anonymität</strong>: ausschließlich die Felder, die Sie einem Unternehmen offenlegen möchten, abrufbar über einen widerrufbaren Link, der nach {handoverDays} Tagen abläuft.",
+                "billing": "<strong>Abonnement</strong>: gebuchtes Angebot, Status und Fälligkeit des Abonnements, Kennungen des Zahlungsdienstleisters. Wir sehen oder speichern niemals Ihre Kartennummer.",
+                "company": "<strong>Unternehmenskonten</strong>: geschäftliche E-Mail-Adresse des Mitglieds, Name, Website, Branche, Größe und Land der Organisation, veröffentlichte Stellenangebote und zugehörige Zahlungen.",
+                "logs": "<strong>Technische Protokolle</strong>: technische Kennungen, Zähler und Fehler, ohne personenbezogene Inhalte (weder E-Mail noch Name noch eingegebener Text)."
+              }
+            }
+          },
+          "bases": {
+            "title": "Rechtsgrundlagen",
+            "content": {
+              "list": {
+                "contract": "<strong>Vertragserfüllung</strong> (Art. 6 Abs. 1 lit. b DSGVO): Konto, Karriere-Gedächtnis, Tresor, Importe, Coach, Chancen, von Ihnen veranlasste Kontaktaufnahmen und Aufhebungen der Anonymität, Abonnement, Unternehmensbereich.",
+                "consent": "<strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a): E-Mail-Benachrichtigungen, jederzeit widerrufbar über die Einstellungen oder den Abmeldelink.",
+                "interest": "<strong>Berechtigtes Interesse</strong> (Art. 6 Abs. 1 lit. f): Sicherheit des Dienstes, Missbrauchsprävention, Moderation von Stellenangeboten und Organisationen, technische Protokolle.",
+                "obligation": "<strong>Rechtliche Verpflichtung</strong> (Art. 6 Abs. 1 lit. c): Aufbewahrung der Buchungsbelege im Zusammenhang mit Zahlungen."
+              }
+            }
+          },
+          "retention": {
+            "title": "Aufbewahrungsfristen",
+            "content": {
+              "list": {
+                "account": "Daten des Kontos, des Karriere-Gedächtnisses, des Tresors und des Coachs: solange das Konto besteht. Die Löschung des Kontos entfernt sofort alle diese Daten und alle Ihre Dateien; Sicherungskopien verschwinden spätestens 30 Tage danach.",
+                "auth": "Anmeldelink: 15 Minuten, einmalig verwendbar. Anmeldesitzung: 30 Tage, bei Abmeldung widerrufen.",
+                "card": "Links zur anonymen Karte: {cardDays} Tage. Bei einer Aufhebung der Anonymität offengelegte Daten: {handoverDays} Tage, danach automatische Löschung.",
+                "postings": "Stellenangebote von Unternehmen: {postingDays} Tage veröffentlicht, danach geschlossen; aufbewahrt, solange die Organisation besteht.",
+                "accounting": "Buchungsbelege im Zusammenhang mit Zahlungen: 10 Jahre (Art. L123-22 des französischen Handelsgesetzbuchs)."
+              }
+            }
+          },
+          "recipients": {
+            "title": "Empfänger und Auftragsverarbeiter",
+            "content": {
+              "p1": "Ihre Daten werden niemals verkauft oder vermietet. Ein Unternehmen erhält nur das, was Sie freigegeben haben: eine Nachricht, Ihre anonyme Karte oder die Felder, die Sie offenlegen möchten. Unsere Auftragsverarbeiter handeln ausschließlich auf unsere Weisung:",
+              "list": {
+                "mistral": "<strong>Mistral AI</strong> (Frankreich, Hosting in der Europäischen Union): Sprachmodell, das für Importe, den Coach, die Begründungen zu Chancen und die Nachrichtenentwürfe verwendet wird. Wir trainieren kein Modell mit Ihren Daten.",
+                "email": "<strong>E-Mail-Versand</strong> ({emailProvider}): Anmeldelinks, Benachrichtigungen und Nachrichten an Unternehmen.",
+                "host": "<strong>Hosting</strong> ({hostName}): virtueller privater Server in der Europäischen Union, der die Anwendung und die Datenbank hostet.",
+                "payment": "<strong>Zahlung</strong>: {payments, select, stripe {Stripe Payments Europe (Irland) wickelt die Kartenzahlungen ab; es erhält nur Ihre Anmelde-E-Mail-Adresse und eine Kontokennung, niemals Ihr Karriere-Gedächtnis oder Ihre Identität.} other {Zahlungen werden in der Testphase simuliert: Es werden keine Zahlungsdaten erhoben. Sobald Zahlungen freigeschaltet sind, wickelt Stripe Payments Europe (Irland) sie ab.}}",
+                "geo": "<strong>Geokodierung</strong>: Städtenamen (niemals Ihre Identität) werden zur Berechnung von Entfernungen an die Géoplateforme des IGN (Frankreich) und an OpenStreetMap Nominatim gesendet.",
+                "github": "<strong>GitHub</strong>: nur wenn Sie ein GitHub-Profil importieren, um dessen öffentliche Informationen zu lesen."
+              }
+            }
+          },
+          "hosting": {
+            "title": "Hosting und Übermittlungen",
+            "content": {
+              "p1": "Die Daten werden in der Europäischen Union gehostet und verarbeitet. Wir übermitteln Ihre Daten nicht außerhalb der Europäischen Union; sollte ein Dienstleister dies tun, geschähe dies ausschließlich mit den von der DSGVO vorgesehenen Garantien (Standardvertragsklauseln der Europäischen Kommission)."
+            }
+          },
+          "security": {
+            "title": "Sicherheit",
+            "content": {
+              "p1": "Anmeldung ohne Passwort, widerrufbare Sitzungen, AES-256-Verschlüsselung sensibler Felder und der Nachweise, im Browser Ende-zu-Ende verschlüsselter Identitätstresor, auf Ihr Konto beschränkter Datenzugriff, Protokolle ohne personenbezogene Daten."
+            }
+          },
+          "rights": {
+            "title": "Ihre Rechte",
+            "content": {
+              "p1": "Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch und Datenübertragbarkeit zu, das Recht, Ihre Einwilligung zu widerrufen, sowie das Recht, Richtlinien über das Schicksal Ihrer Daten nach Ihrem Tod festzulegen.",
+              "list": {
+                "export": "<export>Alle Ihre Daten exportieren</export> (JSON-Datei) in den Einstellungen Ihres Kontos.",
+                "delete": "<delete>Ihr Konto löschen</delete> samt aller Daten, jederzeit, in den Einstellungen.",
+                "edit": "Ihre Angaben direkt in Ihrem Bereich korrigieren (Karriere-Gedächtnis, Leitplanken, Identität).",
+                "contact": "Für jede weitere Anfrage: {email}. Wir antworten innerhalb eines Monats."
+              },
+              "p2": "Wenn Sie der Ansicht sind, dass Ihre Rechte nicht gewahrt werden, können Sie bei der <cnil>CNIL</cnil> (Commission nationale de l’informatique et des libertés) Beschwerde einlegen."
+            }
+          },
+          "cookies": {
+            "title": "Cookies",
+            "content": {
+              "p1": "Wir setzen ausschließlich Cookies ein, die für den Betrieb des Dienstes unbedingt erforderlich sind: Sie sind von der Einwilligungspflicht ausgenommen, weshalb kein Banner angezeigt wird. Keine Cookies zur Reichweitenmessung, Werbung oder Nachverfolgung, keine Tracking-Tools von Drittanbietern.",
+              "list": {
+                "session": "<strong>authjs.session-token</strong>: hält Ihre Anmeldung aufrecht (30 Tage, bei Abmeldung gelöscht).",
+                "csrf": "<strong>authjs.csrf-token</strong>: schützt die Anmeldeformulare vor Cross-Site-Request-Forgery (Browsersitzung).",
+                "callback": "<strong>authjs.callback-url</strong>: Seite, auf die Sie nach der Anmeldung zurückkehren (Browsersitzung).",
+                "locale": "<strong>NEXT_LOCALE</strong>: gewählte Anzeigesprache (Browsersitzung)."
+              },
+              "p2": "Ihr Browser speichert außerdem im lokalen Speicher die von Ihnen gewählte Dauer der automatischen Sperre des Identitätstresors: keine personenbezogenen Daten."
+            }
+          },
+          "changes": {
+            "title": "Änderungen",
+            "content": {
+              "p1": "Diese Erklärung kann sich mit dem Dienst weiterentwickeln. Das Datum der Aktualisierung steht oben auf der Seite; bei wesentlichen Änderungen informieren wir Sie bei Ihrer nächsten Anmeldung."
+            }
+          }
+        }
+      },
+      "terms": {
+        "title": "Nutzungsbedingungen (Kandidaten)",
+        "intro": "Diese Bedingungen gelten für jede Person, die Coach Career IA für ihre Karriere nutzt. Sie werden von {publisher} ({brand}) angeboten.",
+        "sections": {
+          "service": {
+            "title": "Der Dienst",
+            "content": {
+              "p1": "Coach Career IA hilft Ihnen, ein belegbasiertes Karriere-Gedächtnis aufzubauen, Ihre nicht verhandelbaren Bedingungen (Leitplanken) festzulegen, und zeigt Ihnen die Chancen, die diese einhalten. Ein KI-Agent unterstützt Sie unter Ihrer Kontrolle beim Verfassen Ihrer Kommunikation mit Unternehmen."
+            }
+          },
+          "account": {
+            "title": "Konto",
+            "content": {
+              "p1": "Das Konto wird bei der ersten Anmeldung über einen an Ihre E-Mail-Adresse gesendeten Link erstellt. Sie sind für den Zugang zu dieser Adresse verantwortlich. Das Konto ist persönlich: ein Konto pro Person."
+            }
+          },
+          "plans": {
+            "title": "Kostenloses Angebot und Premium",
+            "content": {
+              "list": {
+                "free": "<strong>Kostenlos</strong>: Karriere-Gedächtnis, Identitätstresor, Leitplanken, Chancen, anonyme Karte, Kontaktaufnahmen und KI-Coach im Rahmen eines täglichen Kontingents.",
+                "premium": "<strong>Premium</strong>: monatliches Abonnement, das den unbegrenzten KI-Coach und den Verhandlungsagenten hinzufügt, zu dem vor Vertragsabschluss auf der Seite Abonnement angezeigten Preis. Jederzeit über Ihren Bereich kündbar, mit Wirkung zum Ende des bezahlten Zeitraums.",
+                "payment": "{payments, select, stripe {Die Zahlung wird von Stripe abgewickelt.} other {In der Testphase werden Zahlungen simuliert: Es wird kein Betrag abgebucht.}}",
+                "withdrawal": "Wenn Sie Verbraucher sind, steht Ihnen ein Widerrufsrecht von 14 Tagen zu. Indem Sie den sofortigen Zugang zu Premium verlangen, stimmen Sie zu, dass der Dienst vor Ablauf dieser Frist beginnt."
+              }
+            }
+          },
+          "agent": {
+            "title": "Der Agent und Ihre Nachrichten",
+            "content": {
+              "p1": "<strong>Keine Nachricht wird ohne Ihre Freigabe an ein Unternehmen gesendet.</strong> Der Agent erstellt Entwürfe (Kontaktaufnahme, Gegenvorschlag in der Verhandlung); Sie lesen sie durch, ändern sie bei Bedarf und entscheiden über den Versand. Jede gesendete Nachricht weist darauf hin, dass sie mit Unterstützung einer KI erstellt und von Ihnen freigegeben wurde.",
+              "p2": "Ihre Anonymität ist die Regel: Ihre Identität wird einem Unternehmen nur offengelegt, wenn Sie es entscheiden, Feld für Feld, über einen Link, den Sie widerrufen können. Siehe <ai>so funktioniert unsere KI</ai>."
+            }
+          },
+          "content": {
+            "title": "Ihre Inhalte",
+            "content": {
+              "p1": "Sie gewährleisten die Richtigkeit der Angaben in Ihrem Karriere-Gedächtnis und dass Sie über die Rechte an den von Ihnen hochgeladenen Dokumenten verfügen. Sie bleiben Eigentümer Ihrer Inhalte; Sie ermächtigen uns lediglich, diese zu verarbeiten, um Ihnen den Dienst bereitzustellen."
+            }
+          },
+          "use": {
+            "title": "Zulässige Nutzung",
+            "content": {
+              "p1": "Untersagt sind falsche Angaben, die Annahme der Identität anderer, das Versenden missbräuchlicher Nachrichten, die Umgehung der Grenzen des Dienstes sowie das automatisierte Auslesen seiner Daten. Bei einem Verstoß können wir das Konto nach vorheriger Benachrichtigung sperren, außer in dringenden Fällen."
+            }
+          },
+          "offers": {
+            "title": "Stellenangebote",
+            "content": {
+              "p1": "Die Stellenangebote stammen aus dokumentierten öffentlichen Quellen und von Unternehmen, die sie direkt veröffentlichen. Wir garantieren weder ihre Richtigkeit noch ihre Verfügbarkeit noch den Ausgang einer Bewerbung. Ein Gehalt wird nur angezeigt, wenn das Unternehmen es veröffentlicht hat, niemals an dessen Stelle geschätzt."
+            }
+          },
+          "liability": {
+            "title": "Haftung",
+            "content": {
+              "p1": "Wir tun alles, damit der Dienst verfügbar und sicher ist, können jedoch keine dauerhafte Verfügbarkeit garantieren. Die Vorschläge der KI können Fehler enthalten: Die Entscheidungen über Ihre Karriere liegen bei Ihnen."
+            }
+          },
+          "end": {
+            "title": "Laufzeit und Kündigung",
+            "content": {
+              "p1": "Sie können Ihr Konto jederzeit in den Einstellungen löschen; alle Ihre Daten werden dann gelöscht (siehe <privacy>Datenschutzerklärung</privacy>)."
+            }
+          },
+          "law": {
+            "title": "Änderungen, anwendbares Recht und Streitigkeiten",
+            "content": {
+              "p1": "Wir können diese Bedingungen weiterentwickeln; die neue Fassung wird Ihnen angezeigt und gilt ab Ihrer nächsten Anmeldung. Diese Bedingungen unterliegen französischem Recht. Im Streitfall kontaktieren Sie uns bitte zuerst ({email}); sind Sie Verbraucher, können Sie vor Anrufung der zuständigen Gerichte kostenlos den Verbrauchermediator ({mediator}) oder die europäische Plattform zur Online-Streitbeilegung in Anspruch nehmen."
+            }
+          }
+        }
+      },
+      "companyTerms": {
+        "title": "Bedingungen für Unternehmen",
+        "intro": "Diese Bedingungen gelten für Organisationen, die Stellenangebote auf Coach Career IA veröffentlichen. Sie werden von {publisher} ({brand}) gegenüber Unternehmern angeboten.",
+        "sections": {
+          "account": {
+            "title": "Unternehmensbereich",
+            "content": {
+              "p1": "Der Bereich wird von einem Mitglied der Organisation mit seiner geschäftlichen Adresse eröffnet. Entspricht die Domain dieser Adresse der Website des Unternehmens, wird der Bereich sofort freigeschaltet; andernfalls prüft unser Team ihn vor jeder Veröffentlichung. Sie sichern zu, zur Vertretung der Organisation befugt zu sein."
+            }
+          },
+          "postings": {
+            "title": "Kostenpflichtige Veröffentlichung",
+            "content": {
+              "list": {
+                "price": "Jedes Stellenangebot wird einzeln bezahlt, zu dem vor der Zahlung angezeigten Preis, ohne Abonnement.",
+                "duration": "Ein bezahltes und genehmigtes Stellenangebot bleibt {postingDays} Tage online und wird dann automatisch geschlossen; eine erneute Veröffentlichung erfordert eine neue Zahlung.",
+                "payment": "{payments, select, stripe {Die Zahlung wird von Stripe abgewickelt.} other {In der Testphase werden Zahlungen simuliert: Es wird kein Betrag abgebucht.}}"
+              }
+            }
+          },
+          "content": {
+            "title": "Inhalt der Stellenangebote",
+            "content": {
+              "p1": "<strong>Die Gehaltsspanne ist verpflichtend</strong> (Minimum, Maximum, Währung, Zeitraum): Sie ist die erste Bedingung der Kandidaten. Das Stellenangebot muss eine reale, verfügbare Stelle beschreiben, die Vertragsart, die Homeoffice-Regelung und den Ort angeben und das Gesetz einhalten, insbesondere das Diskriminierungsverbot (Alter, Geschlecht, Herkunft, Familienstand, Behinderung …)."
+            }
+          },
+          "moderation": {
+            "title": "Moderation",
+            "content": {
+              "p1": "Jedes Stellenangebot wird vor der Veröffentlichung geprüft. Ein Stellenangebot, das potenziell diskriminierende Kriterien enthält, geht in die manuelle Prüfung. Wir können ein Stellenangebot ablehnen oder eine Organisation sperren, mit einer per E-Mail mitgeteilten Begründung; die Sperrung schließt deren online befindliche Stellenangebote."
+            }
+          },
+          "candidates": {
+            "title": "Beziehung zu den Kandidaten",
+            "content": {
+              "p1": "<strong>Unternehmen suchen, durchsuchen und bewerten niemals Kandidaten.</strong> Jeder Kandidat wird von seinem Agenten vertreten, der ihm die Stellenangebote zeigt, die seine Bedingungen einhalten; der Kandidat entscheidet, Sie zu kontaktieren, zunächst anonym.",
+              "p2": "Die Nachrichten, die Sie erhalten, wurden mit Unterstützung einer KI erstellt und vom Kandidaten freigegeben. Die erhaltenen Informationen, einschließlich derjenigen aus einer Aufhebung der Anonymität, dienen ausschließlich der betreffenden Einstellung: Sie verpflichten sich, jeden Versuch der Re-Identifizierung eines anonymen Kandidaten sowie jede Weiterverwendung zu anderen Zwecken zu unterlassen. Sie sind für die Verarbeitung der Daten verantwortlich, die ein Kandidat Ihnen offenlegt."
+            }
+          },
+          "liability": {
+            "title": "Haftung",
+            "content": {
+              "p1": "Sie sind für den Inhalt Ihrer Stellenangebote und Ihrer Kommunikation mit den Kandidaten verantwortlich. Wir garantieren weder eine Anzahl von Kontakten noch den Ausgang einer Einstellung. Das Dashboard zeigt nur aggregierte Statistiken, ohne Kandidatendaten."
+            }
+          },
+          "law": {
+            "title": "Laufzeit, Änderungen und anwendbares Recht",
+            "content": {
+              "p1": "Sie können den Unternehmensbereich jederzeit verlassen; bereits bezahlte Stellenangebote werden nach der Veröffentlichung nicht erstattet. Wir können diese Bedingungen unter Mitteilung an Sie weiterentwickeln. Diese Bedingungen unterliegen französischem Recht; mangels gütlicher Einigung sind die Gerichte am Sitz des Herausgebers zuständig. Kontakt: {email}. Siehe auch die <privacy>Datenschutzerklärung</privacy>."
+            }
+          }
+        }
+      },
+      "ai": {
+        "title": "So funktioniert unsere KI",
+        "intro": "Coach Career IA nutzt ein Sprachmodell, um Ihnen Zeit zu sparen, niemals um an Ihrer Stelle zu entscheiden. Diese Seite erfüllt die Transparenzpflicht der europäischen KI-Verordnung (Artikel 50) und der DSGVO.",
+        "sections": {
+          "does": {
+            "title": "Was der Agent tut",
+            "content": {
+              "list": {
+                "import": "Ihren Lebenslauf oder Ihr importiertes Profil in einen Entwurf Ihres Karriere-Gedächtnisses umwandeln, den Sie bestätigen.",
+                "coach": "Ihnen Fragen stellen, um Ihre Erfolge und deren Belege herauszuarbeiten (KI-Coach).",
+                "matching": "In wenigen Sätzen erklären, warum ein Stellenangebot zu Ihren Bedingungen passt.",
+                "drafts": "Entwürfe für Kontaktaufnahmen und Gegenvorschläge in der Verhandlung verfassen, im Rahmen des von Ihnen festgelegten Mandats."
+              }
+            }
+          },
+          "doesNot": {
+            "title": "Was er nicht tut",
+            "content": {
+              "list": {
+                "send": "Er sendet niemals etwas ohne Ihre ausdrückliche Freigabe, Nachricht für Nachricht.",
+                "reveal": "Er gibt niemals Ihre Identität preis: Nur Ihre Entscheidung, Feld für Feld, erlaubt dies.",
+                "rank": "Er bewertet und reiht keine Kandidaten für Unternehmen: Kein Unternehmen sieht eine Liste oder einen Score von Kandidaten.",
+                "decide": "Er trifft keine Entscheidung, die Ihnen gegenüber rechtliche Wirkung entfaltet: keine automatisierte Entscheidung im Sinne von Art. 22 DSGVO.",
+                "train": "Er wird nicht mit Ihren Daten trainiert: Wir trainieren kein Modell."
+              }
+            }
+          },
+          "human": {
+            "title": "Ein Mensch im Entscheidungsprozess",
+            "content": {
+              "p1": "Jeder Entwurf wird Ihnen vor jedem Versand vorgelegt: Sie können ihn ändern, ablehnen oder senden. Ihre Leitplanken sind Ihre eigenen Regeln und werden unverändert angewendet; der Score einer Chance dient nur dazu, die Ihnen vorgeschlagenen Stellenangebote zu ordnen, und es steht Ihnen frei, alle einzusehen."
+            }
+          },
+          "marking": {
+            "title": "Als KI-unterstützt gekennzeichnete Nachrichten",
+            "content": {
+              "p1": "Jede an ein Unternehmen gesendete Nachricht weist darauf hin, dass sie von einem KI-Agenten im Auftrag einer Bewerberin oder eines Bewerbers erstellt wurde, die oder der sie gelesen und freigegeben hat."
+            }
+          },
+          "model": {
+            "title": "Das verwendete Modell",
+            "content": {
+              "p1": "Wir nutzen die Modelle von Mistral AI, einem französischen Unternehmen, gehostet in der Europäischen Union. Ihnen werden nur die für die jeweilige Aufgabe erforderlichen Daten übermittelt; Ihre in Ihrem Tresor verschlüsselte Identität wird ihnen niemals übermittelt."
+            }
+          },
+          "limits": {
+            "title": "Grenzen",
+            "content": {
+              "p1": "Ein Sprachmodell kann sich irren oder eine Information falsch formulieren. Lesen Sie einen Entwurf immer durch, bevor Sie ihn freigeben. Um ein Problem zu melden: {email}."
+            }
+          }
+        }
+      }
     }
   }
 }

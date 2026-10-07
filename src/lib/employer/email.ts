@@ -55,3 +55,42 @@ export function employerEmail(
 </body></html>`;
   return { subject, text, html };
 }
+
+/**
+ * Notification aux membres : une prise de contact anonyme est arrivée dans la
+ * messagerie de l'espace entreprise. AUCUNE donnée candidat (ni carte, ni
+ * message, ni compétence) : seulement l'intitulé de l'offre de l'organisation
+ * et le lien vers le fil, qui exige d'être connecté comme membre.
+ */
+export type PortalEmailKind = "portalContact" | "portalMessage";
+
+export function portalContactEmail(
+  locale: AppLocale,
+  input: { title: string; url: string },
+  kind: PortalEmailKind = "portalContact",
+): Omit<MailMessage, "to"> {
+  const t = createTranslator({ locale, messages: MESSAGES[locale], namespace: "email.employer" });
+  const subject = t(`${kind}.subject`, { title: input.title });
+  const body = t(`${kind}.body`, { title: input.title });
+  const text = [
+    t("greeting"),
+    "",
+    body,
+    "",
+    t("portalContact.openText", { url: input.url }),
+    "",
+    t("signature"),
+  ].join("\n");
+  const html = `<!doctype html>
+<html lang="${locale}"><body style="font-family:system-ui,sans-serif;color:#1c1917;background:#fafaf9;padding:24px">
+  <div style="max-width:560px;margin:auto;background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:32px">
+    <p style="margin:0 0 16px;font-weight:600">${escapeHtml(t("brand"))}</p>
+    <p>${escapeHtml(t("greeting"))}</p>
+    <p>${escapeHtml(body)}</p>
+    <p style="margin:24px 0"><a href="${escapeHtml(input.url)}" style="display:inline-block;background:#1c1917;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">${escapeHtml(t("portalContact.open"))}</a></p>
+    <p style="font-size:13px;color:#78716c">${escapeHtml(t("portalContact.privacy"))}</p>
+    <p style="font-size:13px;color:#78716c">${escapeHtml(t("signature"))}</p>
+  </div>
+</body></html>`;
+  return { subject, text, html };
+}

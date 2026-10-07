@@ -11,6 +11,7 @@ import { CONTRACT_TYPES, type ContractTypeCode } from "@/lib/career/codes";
 import { getGuardRails, NotFoundError } from "@/lib/career/repository";
 import { contactDailyLimit } from "@/lib/contact/config";
 import { decryptReply, sentInWindow } from "@/lib/contact/repository";
+import { notifyPortalMessage } from "@/lib/employer/notify";
 import { db } from "@/lib/db";
 import { redactText } from "@/lib/import/pseudonymise";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
@@ -96,6 +97,7 @@ async function ownedContact(userId: string, contactId: unknown) {
       channel: true,
       locale: true,
       revealedAt: true,
+      orgId: true,
       offer: {
         select: {
           title: true,
@@ -544,6 +546,8 @@ async function preflight(
 
 export type SendDeps = {
   send: MailSender | null;
+  /** Canal PORTAL : expéditeur des notifications aux membres (sinon `send`). */
+  notify?: MailSender | null;
   appUrl: string | null;
   now?: () => Date;
   logger?: Logger;
@@ -598,7 +602,11 @@ export async function approveMessage(
   return { ok: true };
 }
 
-/** Envoi par l'e-mail de la plateforme, à la demande du candidat (quota commun aux contacts). */
+/**
+ * Envoi par l'e-mail de la plateforme — ou, canal PORTAL, remise dans la
+ * messagerie de l'espace entreprise de l'organisation (membres prévenus sans
+ * le contenu) — à la demande du candidat (quota commun aux contacts).
+ */
 export async function sendMessage(
   userId: string,
   contactId: unknown,
@@ -610,14 +618,19 @@ export async function sendMessage(
   const contact = await ownedContact(userId, contactId);
   const row = await ownedMessage(userId, contact.id, messageId);
   if (row.status === "SENT" || row.status === "SENDING") return { ok: false, error: "alreadySent" };
-  if (contact.channel !== "EMAIL" || row.status !== "APPROVED" || !row.approvedHash) {
+  const portal = contact.channel === "PORTAL";
+  if ((contact.channel !== "EMAIL" && !portal) || row.status !== "APPROVED" || !row.approvedHash) {
     return { ok: false, error: "notApproved" };
   }
   const checked = await preflight(userId, contact, row);
   if (!checked.ok) return checked;
   if (messageHash(checked.body) !== row.approvedHash) return { ok: false, error: "notApproved" };
-  if (!deps.send || !deps.appUrl) return { ok: false, error: "sendUnavailable" };
-  if (!contact.offer.applyEmail) return { ok: false, error: "noChannel" };
+  if (portal) {
+    if (!contact.orgId) return { ok: false, error: "noChannel" };
+  } else {
+    if (!deps.send || !deps.appUrl) return { ok: false, error: "sendUnavailable" };
+    if (!contact.offer.applyEmail) return { ok: false, error: "noChannel" };
+  }
   const limit = contactDailyLimit();
   if (limit === 0) return { ok: false, error: "quota" };
 
@@ -636,19 +649,38 @@ export async function sendMessage(
     await release();
     return { ok: false, error: "quota" };
   }
+  const locale = localeOf(contact);
+  if (portal) {
+    // Le fil de l'espace entreprise affiche le message et permet d'y répondre : aucun lien.
+    await db.negotiationMessage.updateMany({
+      where: { id: row.id, userId, status: "SENDING" },
+      data: {
+        status: "SENT",
+        sentAt: now,
+        sentTextEnc: encNegotiation(userId, checked.body),
+        lastError: null,
+      },
+    });
+    await dropPreparedLink(userId, row.cardLinkId, now);
+    log.info("negotiation.sent", { kind: row.kind, locale, channel: "PORTAL" });
+    await notifyPortalMessage(
+      { orgId: contact.orgId!, contactId: contact.id, offerTitle: contact.offer.title },
+      { send: deps.notify ?? deps.send, appUrl: deps.appUrl, logger: log },
+    );
+    return { ok: true };
+  }
   const created = await createCardLink(userId, { now });
   if (!created.ok) {
     await release();
     return { ok: false, error: "card" };
   }
-  const locale = localeOf(contact);
   const message = negotiationEmail(
     locale,
     { offerTitle: contact.offer.title, body: checked.body },
-    replyLink(deps.appUrl, locale, created.link.token, created.link.expiresAt),
+    replyLink(deps.appUrl!, locale, created.link.token, created.link.expiresAt),
   );
   try {
-    await deps.send({ to: contact.offer.applyEmail, ...message });
+    await deps.send!({ to: contact.offer.applyEmail!, ...message });
   } catch (error) {
     await db.cardLink.update({ where: { id: created.link.id }, data: { revokedAt: now } });
     await release({ lastError: "sendFailed" });

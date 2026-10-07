@@ -1,5 +1,6 @@
 import "server-only";
 import { createHash, randomUUID } from "node:crypto";
+import { LEGAL_TERMS_VERSION } from "@/config/legal";
 import type { CurrentUser } from "@/lib/auth/session";
 import { isAdminEmail } from "@/lib/auth/admin-emails";
 import { getBillingProvider, type BillingRedirect } from "@/lib/billing/provider";
@@ -95,6 +96,9 @@ export async function createOrganization(
         status,
         verifiedAt: status === "ACTIVE" ? now : null,
         companyId: company.id,
+        // L'inscription affiche « en continuant, vous acceptez les conditions entreprises… ».
+        termsVersion: LEGAL_TERMS_VERSION,
+        termsAcceptedAt: now,
         members: { create: { userId: user.id, role: "OWNER" } },
       },
       select: { id: true },

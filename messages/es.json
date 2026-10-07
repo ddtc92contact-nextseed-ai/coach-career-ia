@@ -143,7 +143,8 @@
         "provenSkills": "Competencias requeridas y probadas: {skills}.",
         "skills": "Competencias requeridas: {skills}.",
         "closing": "Si este perfil le interesa, encontrará a continuación su tarjeta anónima y un enlace para responder. La persona candidata decidirá después si revela su identidad.",
-        "signoff": "Atentamente,"
+        "signoff": "Atentamente,",
+        "closingPortal": "Si este perfil le interesa, su tarjeta anónima figura en esta conversación y puede responder directamente aquí. La persona candidata decidirá después si levanta o no su anonimato."
       }
     },
     "reply": {
@@ -215,6 +216,17 @@
       "postingRejected": {
         "subject": "Oferta rechazada: {title}",
         "body": "Su oferta «{title}» no ha sido validada. Puede modificarla y volver a enviarla."
+      },
+      "portalContact": {
+        "subject": "Has recibido una candidatura anónima para {title}",
+        "body": "Has recibido una candidatura anónima para tu oferta «{title}». Te espera en la mensajería de tu espacio empresa.",
+        "open": "Abrir la mensajería",
+        "openText": "Abrir la mensajería: {url}",
+        "privacy": "Para proteger a la persona candidata, este correo no contiene ninguna información sobre ella: inicia sesión para leer la candidatura."
+      },
+      "portalMessage": {
+        "subject": "Nuevo mensaje de la persona candidata para {title}",
+        "body": "La persona candidata que te contactó sobre tu oferta «{title}» te ha enviado un nuevo mensaje. Te espera en la mensajería de tu espacio empresa."
       }
     }
   },
@@ -451,7 +463,8 @@
         "APPROVED": "Mensaje aprobado, todavía no enviado.",
         "SENDING": "Enviando.",
         "SENT": "Empresa contactada."
-      }
+      },
+      "portal": "Oferta publicada directamente por la empresa: tu agente redacta un mensaje breve, entregado con tu tarjeta anónima en su mensajería. Lo revisas y lo apruebas: nada se envía sin ti."
     },
     "directBadge": "Publicada directamente por la empresa"
   },
@@ -1488,7 +1501,8 @@
     "emptyAction": "Ver mis oportunidades",
     "channel": {
       "EMAIL": "Correo de candidatura",
-      "APPLY_URL": "Página «Postular»"
+      "APPLY_URL": "Página «Postular»",
+      "PORTAL": "Espacio empresa"
     },
     "status": {
       "DRAFT": "Borrador",
@@ -1536,7 +1550,14 @@
       "noReply": "Todavía no hay respuesta. Se te avisará por correo electrónico.",
       "receivedOn": "Recibido el {date}",
       "approved": "Mensaje aprobado.",
-      "discardConfirm": "¿Abandonar este contacto? Se eliminará el borrador."
+      "discardConfirm": "¿Abandonar este contacto? Se eliminará el borrador.",
+      "recipientPortal": "Destinatario: la mensajería del espacio empresa de la organización que publica la oferta (ningún correo contiene tu mensaje).",
+      "portalCard": "Tarjeta visible en el espacio empresa hasta el {date}, {views, plural, =0 {nunca consultada} one {consultada # vez} other {consultada # veces}}.",
+      "portalCardRevoked": "Tarjeta retirada: la empresa ya no la ve en su mensajería.",
+      "closedOn": "Conversación cerrada por la empresa el {date}",
+      "sendPortal": "Enviar al espacio empresa",
+      "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido. Tu identidad no se comunica.",
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue preparado por tu asistente de IA y aprobado por ti, junto con tu tarjeta anónima."
     },
     "errors": {
       "noChannel": "Esta oferta no publica ningún canal de candidatura utilizable.",
@@ -1629,8 +1650,13 @@
       "notFound": "No se encuentra este contacto.",
       "network": "Se ha producido un error de red. Inténtalo de nuevo.",
       "wrongPassphrase": "Frase secreta incorrecta.",
-      "nothingSelected": "Marca al menos una información que revelar."
-    }
+      "nothingSelected": "Marca al menos una información que revelar.",
+      "closed": "La empresa cerró esta conversación."
+    },
+    "activePortal": "Visible en el espacio empresa hasta el {date}, {views, plural, =0 {nunca consultado} one {consultado # vez} other {consultado # veces}}.",
+    "closed": "La empresa cerró esta conversación: ya no se ofrece levantar el anonimato.",
+    "donePortal": "Hecho: la información elegida aparece en el espacio empresa de {company}, solo para sus miembros.",
+    "previewPortal": "Esta información aparecerá en la mensajería del espacio empresa de la organización, solo para sus miembros. Caduca automáticamente y puedes retirarla en cualquier momento."
   },
   "replyPage": {
     "title": "Responder a la persona candidata",
@@ -1759,7 +1785,10 @@
       "markTransmitted": "He transmitido este mensaje",
       "discard": "Eliminar este borrador",
       "discardConfirm": "¿Eliminar este borrador?",
-      "blocked": "Este mensaje no se puede aprobar tal como está:"
+      "blocked": "Este mensaje no se puede aprobar tal como está:",
+      "sendPortal": "Enviar al espacio empresa",
+      "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido.",
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue redactado por tu asistente de IA y aprobado por ti; responde directamente en su mensajería."
     },
     "issues": {
       "belowFloor": "un importe es inferior a tu mínimo ({excerpt});",
@@ -1848,7 +1877,9 @@
       "dashboard": "Mis ofertas",
       "newPosting": "Publicar una oferta",
       "organization": "Mi organización",
-      "candidate": "Espacio candidato"
+      "candidate": "Espacio candidato",
+      "messages": "Mensajería",
+      "newThreads": "{count, plural, one {# mensaje nuevo} other {# mensajes nuevos}}"
     },
     "signup": {
       "metaTitle": "Para empresas",
@@ -1997,6 +2028,412 @@
       "days": "{days} días",
       "total": "Importe",
       "back": "Volver a la oferta"
+    },
+    "inbox": {
+      "title": "Mensajería",
+      "intro": "Las candidaturas anónimas recibidas en tus ofertas. Cada persona eligió contactarte; solo ella decide si levanta su anonimato.",
+      "emptyTitle": "Ninguna candidatura por ahora",
+      "emptyText": "Cuando una persona candidata cuyas condiciones cumplen tus ofertas decida contactarte, su candidatura anónima llegará aquí.",
+      "threadTitle": "Candidatura anónima — {title}",
+      "lastActivity": "Última actividad el {date}",
+      "privacy": "Solo ves a las personas que te han contactado. No existe ninguna búsqueda ni clasificación de candidatos en la plataforma.",
+      "status": {
+        "NEW": "Nuevo",
+        "READ": "Leído",
+        "REPLIED": "Respondido",
+        "CLOSED": "Cerrado"
+      },
+      "back": "← Mensajería",
+      "receivedOn": "Recibida el {date}",
+      "revealedTitle": "Identidad revelada",
+      "revealedExpires": "Visible hasta el {date}. La persona candidata puede retirar esta información en cualquier momento.",
+      "cardTitle": "Tarjeta anónima",
+      "cardGone": "La tarjeta anónima ya no está disponible: ha caducado o la persona candidata la ha retirado.",
+      "messageTitle": "Mensaje",
+      "aiDisclosure": "Mensaje redactado por el asistente de IA de la persona candidata, revisado y aprobado por ella antes del envío.",
+      "repliesTitle": "Conversación",
+      "noReply": "Aún no has respondido.",
+      "repliedOn": "Tu respuesta del {date}",
+      "closedOn": "Cierre del {date}",
+      "closedNotice": "Esta conversación está cerrada: la persona candidata recibió tu mensaje de cierre.",
+      "closeHint": "¿El perfil no encaja? Cierra con cortesía: se le envía un mensaje estándar.",
+      "close": "Cerrar con cortesía",
+      "closeConfirm": "¿Cerrar esta conversación? Se enviará un mensaje de agradecimiento a la persona candidata y ya no podrás responder.",
+      "closing": {
+        "message": "Hola:\n\nGracias por tu interés en nuestra oferta «{title}». Tras estudiar tu perfil, no seguiremos adelante con esta candidatura. Te deseamos mucho éxito en tu búsqueda.\n\nUn cordial saludo.",
+        "pending": "Cerrando…"
+      },
+      "replyLabel": "Tu respuesta",
+      "replyHint": "La persona candidata recibe un aviso por correo y lee tu respuesta en su espacio. Después decide si levanta su anonimato.",
+      "replySubmit": "Enviar la respuesta",
+      "replySent": "Respuesta enviada.",
+      "errors": {
+        "invalid": "Tu respuesta debe tener entre 2 y 5000 caracteres.",
+        "closed": "Esta conversación está cerrada.",
+        "rateLimited": "Demasiados mensajes hoy en esta conversación. Vuelve a intentarlo mañana."
+      },
+      "threadPrivacy": "Esta información está reservada a los miembros de tu organización, solo para esta candidatura.",
+      "revealedDisclosure": "La persona candidata ha decidido levantar su anonimato ante tu organización. Su agente de carrera IA (Coach Career IA) te comunica esta información por decisión explícita suya.",
+      "candidateOn": "Mensaje de la persona candidata del {date} — redactado por su asistente de IA, aprobado por ella"
+    }
+  },
+  "legal": {
+    "updated": "Última actualización: {date}",
+    "contents": "En esta página",
+    "nav": {
+      "label": "Información legal",
+      "notice": "Aviso legal",
+      "privacy": "Privacidad",
+      "cookies": "Cookies",
+      "terms": "Condiciones de uso",
+      "companyTerms": "Condiciones para empresas",
+      "ai": "Cómo funciona nuestra IA"
+    },
+    "consent": {
+      "candidate": "Al continuar, usted acepta las <terms>condiciones de uso</terms> y la <privacy>política de privacidad</privacy>.",
+      "company": "Al crear el espacio de empresa, usted acepta las <terms>condiciones para empresas</terms> y la <privacy>política de privacidad</privacy>."
+    },
+    "pages": {
+      "notice": {
+        "title": "Aviso legal",
+        "intro": "Información exigida por la ley francesa para la confianza en la economía digital (LCEN, artículo 6) sobre el editor y el proveedor de alojamiento de Coach Career IA.",
+        "sections": {
+          "publisher": {
+            "title": "Editor del sitio",
+            "content": {
+              "list": {
+                "name": "Razón social: {publisher}",
+                "brand": "Marca: {brand}",
+                "form": "Forma jurídica: {legalForm}",
+                "capital": "Capital social: {shareCapital}",
+                "siren": "SIREN: {siren}",
+                "vat": "N.º de IVA intracomunitario: {vatNumber}",
+                "address": "Domicilio social: {address}",
+                "phone": "Teléfono: {phone}",
+                "email": "Correo electrónico: {email}"
+              }
+            }
+          },
+          "director": {
+            "title": "Director de la publicación",
+            "content": {
+              "p1": "{director}"
+            }
+          },
+          "host": {
+            "title": "Proveedor de alojamiento",
+            "content": {
+              "list": {
+                "name": "Nombre: {hostName}",
+                "address": "Dirección: {hostAddress}",
+                "phone": "Teléfono: {hostPhone}"
+              },
+              "p1": "Los datos de la aplicación se alojan en la Unión Europea."
+            }
+          },
+          "property": {
+            "title": "Propiedad intelectual",
+            "content": {
+              "p1": "El sitio, su marca, sus textos, su código y sus elementos gráficos pertenecen a {publisher} o son objeto de licencia. Queda prohibida toda reproducción sin autorización. Los contenidos que usted añade (memoria profesional, justificantes, mensajes) siguen siendo suyos."
+            }
+          },
+          "contact": {
+            "title": "Contacto",
+            "content": {
+              "p1": "Para cualquier pregunta sobre el sitio o para denunciar un contenido: {email}. Para sus datos personales, consulte la <privacy>política de privacidad</privacy>."
+            }
+          }
+        }
+      },
+      "privacy": {
+        "title": "Política de privacidad",
+        "intro": "Coach Career IA es un agente profesional privado: la confidencialidad es el producto. Esta página explica qué datos tratamos, por qué, durante cuánto tiempo, con quién y cómo ejercer sus derechos (Reglamento general de protección de datos, RGPD).",
+        "sections": {
+          "controller": {
+            "title": "Responsable del tratamiento",
+            "content": {
+              "p1": "{publisher} ({brand}), {address}. Contacto para sus datos: {email}."
+            }
+          },
+          "data": {
+            "title": "Datos tratados, funcionalidad por funcionalidad",
+            "content": {
+              "list": {
+                "account": "<strong>Cuenta</strong>: dirección de correo electrónico, idioma preferido, fechas de creación y de acceso, versión de las condiciones aceptadas. No hay contraseña: el acceso se realiza mediante un enlace de un solo uso.",
+                "memory": "<strong>Memoria profesional</strong>: experiencias (puesto, fechas, nivel, empleador descrito por su sector y tamaño, nunca por su nombre), logros, competencias, justificantes (cifrados en nuestros servidores) y líneas rojas (salario, lugares, teletrabajo, contratos, sectores y empresas excluidos, estos últimos cifrados).",
+                "vault": "<strong>Caja fuerte de identidad</strong>: su nombre, sus datos de contacto, los nombres reales de sus empleadores y su CV original se cifran en su navegador con una clave derivada de su frase secreta. El servidor solo almacena datos cifrados que no puede leer; ni la frase secreta ni la clave se le envían jamás.",
+                "import": "<strong>Importaciones</strong>: el CV, la exportación de LinkedIn o el perfil público de GitHub que usted importa se analizan para proponerle un borrador de memoria profesional, que usted revisa y valida antes de cualquier registro.",
+                "coach": "<strong>Coach IA</strong>: sus conversaciones con el coach y las sugerencias que le hace.",
+                "matching": "<strong>Oportunidades y alertas</strong>: las ofertas seleccionadas para usted, su puntuación y su explicación, sus reacciones; las alertas por correo electrónico solo se envían si usted las activa, y cada correo incluye un enlace para darse de baja.",
+                "contacts": "<strong>Tarjeta anónima, contactos y negociación</strong>: su tarjeta anónima, los mensajes enviados a las empresas tras su aprobación, la dirección del interlocutor que usted indica, las respuestas recibidas y su mandato de negociación (cifrado).",
+                "handover": "<strong>Revelación de identidad</strong>: únicamente los campos que usted decide revelar a una empresa, accesibles mediante un enlace revocable que caduca a los {handoverDays} días.",
+                "billing": "<strong>Suscripción</strong>: plan contratado, estado y vencimiento de la suscripción, identificadores del proveedor de pago. Nunca vemos ni almacenamos su número de tarjeta.",
+                "company": "<strong>Cuentas de empresa</strong>: dirección de correo electrónico profesional del miembro, nombre, sitio web, sector, tamaño y país de la organización, ofertas publicadas y pagos asociados.",
+                "logs": "<strong>Registros técnicos</strong>: identificadores técnicos, contadores y errores, sin contenido personal (ni correo electrónico, ni nombre, ni texto introducido)."
+              }
+            }
+          },
+          "bases": {
+            "title": "Bases jurídicas",
+            "content": {
+              "list": {
+                "contract": "<strong>Ejecución del contrato</strong> (artículo 6.1.b del RGPD): cuenta, memoria profesional, caja fuerte, importaciones, coach, oportunidades, contactos y revelaciones de identidad que usted solicita, suscripción, espacio de empresa.",
+                "consent": "<strong>Consentimiento</strong> (artículo 6.1.a): alertas por correo electrónico, que puede retirar en cualquier momento desde los ajustes o con el enlace de baja.",
+                "interest": "<strong>Interés legítimo</strong> (artículo 6.1.f): seguridad del servicio, prevención de abusos, moderación de las ofertas y de las organizaciones, registros técnicos.",
+                "obligation": "<strong>Obligación legal</strong> (artículo 6.1.c): conservación de los documentos contables relacionados con los pagos."
+              }
+            }
+          },
+          "retention": {
+            "title": "Plazos de conservación",
+            "content": {
+              "list": {
+                "account": "Datos de la cuenta, de la memoria profesional, de la caja fuerte y del coach: mientras exista la cuenta. La eliminación de la cuenta borra de inmediato todos estos datos y todos sus archivos; las copias de seguridad desaparecen como máximo 30 días después.",
+                "auth": "Enlace de acceso: 15 minutos, de un solo uso. Sesión de acceso: 30 días, revocada al cerrar sesión.",
+                "card": "Enlaces de tarjeta anónima: {cardDays} días. Datos revelados en una revelación de identidad: {handoverDays} días, y después se eliminan automáticamente.",
+                "postings": "Ofertas de empresa: publicadas durante {postingDays} días y después cerradas; conservadas mientras exista la organización.",
+                "accounting": "Documentos contables relacionados con los pagos: 10 años (artículo L123-22 del Código de Comercio francés)."
+              }
+            }
+          },
+          "recipients": {
+            "title": "Destinatarios y encargados del tratamiento",
+            "content": {
+              "p1": "Sus datos nunca se venden ni se alquilan. Una empresa solo recibe lo que usted ha aprobado: un mensaje, su tarjeta anónima o los campos que usted decide revelar. Nuestros encargados del tratamiento actúan únicamente siguiendo nuestras instrucciones:",
+              "list": {
+                "mistral": "<strong>Mistral AI</strong> (Francia, alojamiento en la Unión Europea): modelo de lenguaje utilizado para las importaciones, el coach, las explicaciones de las oportunidades y los borradores de mensajes. No entrenamos ningún modelo con sus datos.",
+                "email": "<strong>Envío de correos electrónicos</strong> ({emailProvider}): enlaces de acceso, alertas y mensajes a las empresas.",
+                "host": "<strong>Alojamiento</strong> ({hostName}): servidor privado virtual situado en la Unión Europea, que aloja la aplicación y la base de datos.",
+                "payment": "<strong>Pago</strong>: {payments, select, stripe {Stripe Payments Europe (Irlanda) procesa los pagos con tarjeta; solo recibe su dirección de correo electrónico de acceso y un identificador de cuenta, nunca su memoria profesional ni su identidad.} other {los pagos son simulados durante la fase de pruebas: no se recoge ningún dato de pago. Cuando se abran los pagos, los procesará Stripe Payments Europe (Irlanda).}}",
+                "geo": "<strong>Geocodificación</strong>: los nombres de ciudades (nunca su identidad) se envían a la Géoplateforme del IGN (Francia) y a OpenStreetMap Nominatim para calcular las distancias.",
+                "github": "<strong>GitHub</strong>: únicamente si usted importa un perfil de GitHub, para leer su información pública."
+              }
+            }
+          },
+          "hosting": {
+            "title": "Alojamiento y transferencias",
+            "content": {
+              "p1": "Los datos se alojan y se tratan en la Unión Europea. No transferimos sus datos fuera de la Unión Europea; si un proveedor tuviera que hacerlo, sería únicamente con las garantías previstas por el RGPD (cláusulas contractuales tipo de la Comisión Europea)."
+            }
+          },
+          "security": {
+            "title": "Seguridad",
+            "content": {
+              "p1": "Acceso sin contraseña, sesiones revocables, cifrado AES-256 de los campos sensibles y de los justificantes, caja fuerte de identidad cifrada de extremo a extremo en su navegador, acceso a los datos limitado a su cuenta, registros sin datos personales."
+            }
+          },
+          "rights": {
+            "title": "Sus derechos",
+            "content": {
+              "p1": "Usted dispone de los derechos de acceso, rectificación, supresión, limitación, oposición y portabilidad, del derecho a retirar su consentimiento y del derecho a establecer directrices sobre el destino de sus datos tras su fallecimiento.",
+              "list": {
+                "export": "<export>Exportar todos sus datos</export> (archivo JSON) desde los ajustes de su cuenta.",
+                "delete": "<delete>Eliminar su cuenta</delete> y todos sus datos, en cualquier momento, desde los ajustes.",
+                "edit": "Corregir su información directamente en su espacio (memoria profesional, líneas rojas, identidad).",
+                "contact": "Para cualquier otra solicitud: {email}. Respondemos en el plazo de un mes."
+              },
+              "p2": "Si considera que no se respetan sus derechos, puede presentar una reclamación ante la <cnil>CNIL</cnil> (Comisión Nacional de Informática y Libertades de Francia)."
+            }
+          },
+          "cookies": {
+            "title": "Cookies",
+            "content": {
+              "p1": "Solo instalamos cookies estrictamente necesarias para el funcionamiento del servicio: están exentas de consentimiento, por eso no se muestra ningún banner. No hay cookies de medición de audiencia, de publicidad ni de seguimiento, ni herramientas de seguimiento de terceros.",
+              "list": {
+                "session": "<strong>authjs.session-token</strong>: mantiene su sesión iniciada (30 días, se elimina al cerrar sesión).",
+                "csrf": "<strong>authjs.csrf-token</strong>: protege los formularios de acceso contra la falsificación de solicitudes (sesión del navegador).",
+                "callback": "<strong>authjs.callback-url</strong>: página a la que volver tras iniciar sesión (sesión del navegador).",
+                "locale": "<strong>NEXT_LOCALE</strong>: idioma de visualización elegido (sesión del navegador)."
+              },
+              "p2": "Su navegador también conserva, en el almacenamiento local, el tiempo de bloqueo automático de la caja fuerte de identidad que usted ha elegido: no es un dato personal."
+            }
+          },
+          "changes": {
+            "title": "Modificaciones",
+            "content": {
+              "p1": "Esta política puede evolucionar con el servicio. La fecha de actualización figura en la parte superior de la página; en caso de cambio importante, se lo comunicaremos en su próximo acceso."
+            }
+          }
+        }
+      },
+      "terms": {
+        "title": "Condiciones de uso (candidatos)",
+        "intro": "Estas condiciones se aplican a toda persona que utilice Coach Career IA para su carrera profesional. Las ofrece {publisher} ({brand}).",
+        "sections": {
+          "service": {
+            "title": "El servicio",
+            "content": {
+              "p1": "Coach Career IA le ayuda a construir una memoria profesional basada en pruebas, a fijar sus condiciones innegociables (líneas rojas) y le presenta las oportunidades que las respetan. Un agente de IA le ayuda a redactar sus intercambios con las empresas, bajo su control."
+            }
+          },
+          "account": {
+            "title": "Cuenta",
+            "content": {
+              "p1": "La cuenta se crea en el primer acceso mediante un enlace enviado a su dirección de correo electrónico. Usted es responsable del acceso a esa dirección. La cuenta es personal: una cuenta por persona."
+            }
+          },
+          "plans": {
+            "title": "Plan gratuito y Premium",
+            "content": {
+              "list": {
+                "free": "<strong>Gratuito</strong>: memoria profesional, caja fuerte de identidad, líneas rojas, oportunidades, tarjeta anónima, contactos y coach IA dentro del límite de una cuota diaria.",
+                "premium": "<strong>Premium</strong>: suscripción mensual que añade el coach IA ilimitado y el agente de negociación, al precio indicado en la página de Suscripción antes de cualquier contratación. Puede cancelarse en cualquier momento desde su espacio, con efecto al final del periodo pagado.",
+                "payment": "{payments, select, stripe {El pago lo procesa Stripe.} other {Durante la fase de pruebas, los pagos son simulados: no se cobra ningún importe.}}",
+                "withdrawal": "Si usted es consumidor, dispone de un derecho de desistimiento de 14 días. Al solicitar el acceso inmediato a Premium, usted acepta que el servicio comience antes de que finalice ese plazo."
+              }
+            }
+          },
+          "agent": {
+            "title": "El agente y sus mensajes",
+            "content": {
+              "p1": "<strong>Ningún mensaje se envía a una empresa sin su aprobación.</strong> El agente prepara borradores (contacto inicial, contrapropuesta de negociación); usted los revisa, los modifica si es necesario y decide enviarlos. Cada mensaje enviado indica que ha sido preparado con la ayuda de una IA y aprobado por usted.",
+              "p2": "Su anonimato es la norma: su identidad solo se revela a una empresa si usted lo decide, campo por campo, mediante un enlace que puede revocar. Véase <ai>cómo funciona nuestra IA</ai>."
+            }
+          },
+          "content": {
+            "title": "Sus contenidos",
+            "content": {
+              "p1": "Usted garantiza la exactitud de la información de su memoria profesional y que dispone de los derechos sobre los documentos que sube. Usted sigue siendo el propietario de sus contenidos; solo nos autoriza a tratarlos para prestarle el servicio."
+            }
+          },
+          "use": {
+            "title": "Uso aceptable",
+            "content": {
+              "p1": "Queda prohibido facilitar información falsa, suplantar la identidad de otra persona, enviar mensajes abusivos, eludir los límites del servicio o extraer sus datos de forma automatizada. En caso de incumplimiento, podemos suspender la cuenta tras avisarle, salvo urgencia."
+            }
+          },
+          "offers": {
+            "title": "Ofertas de empleo",
+            "content": {
+              "p1": "Las ofertas proceden de fuentes públicas documentadas y de empresas que las publican directamente. No garantizamos su exactitud ni su disponibilidad, ni el resultado de una candidatura. Un salario solo se muestra si lo publica la empresa, nunca se estima en su lugar."
+            }
+          },
+          "liability": {
+            "title": "Responsabilidad",
+            "content": {
+              "p1": "Hacemos todo lo posible para que el servicio esté disponible y sea seguro, sin poder garantizar una disponibilidad permanente. Las sugerencias de la IA pueden contener errores: las decisiones sobre su carrera le corresponden a usted."
+            }
+          },
+          "end": {
+            "title": "Duración y resolución",
+            "content": {
+              "p1": "Usted puede eliminar su cuenta en cualquier momento desde los ajustes; todos sus datos se borran entonces (véase la <privacy>política de privacidad</privacy>)."
+            }
+          },
+          "law": {
+            "title": "Modificaciones, derecho aplicable y litigios",
+            "content": {
+              "p1": "Podemos modificar estas condiciones; la nueva versión se le presentará y se aplicará a su siguiente acceso. Estas condiciones se rigen por el derecho francés. En caso de litigio, póngase primero en contacto con nosotros ({email}); si usted es consumidor, puede recurrir gratuitamente al mediador de consumo ({mediator}) o a la plataforma europea de resolución de litigios en línea, antes de acudir a los tribunales competentes."
+            }
+          }
+        }
+      },
+      "companyTerms": {
+        "title": "Condiciones para empresas",
+        "intro": "Estas condiciones se aplican a las organizaciones que publican ofertas en Coach Career IA. Las ofrece {publisher} ({brand}) a profesionales.",
+        "sections": {
+          "account": {
+            "title": "Espacio de empresa",
+            "content": {
+              "p1": "El espacio lo abre un miembro de la organización con su dirección profesional. Si el dominio de esa dirección coincide con el sitio web de la empresa, el espacio se activa de inmediato; en caso contrario, nuestro equipo lo verifica antes de cualquier publicación. Usted garantiza estar facultado para representar a la organización."
+            }
+          },
+          "postings": {
+            "title": "Publicación de pago",
+            "content": {
+              "list": {
+                "price": "Cada oferta se paga por unidad, al precio indicado antes del pago, sin suscripción.",
+                "duration": "Una oferta pagada y aprobada permanece en línea {postingDays} días y después se cierra automáticamente; volver a publicarla requiere un nuevo pago.",
+                "payment": "{payments, select, stripe {El pago lo procesa Stripe.} other {Durante la fase de pruebas, los pagos son simulados: no se cobra ningún importe.}}"
+              }
+            }
+          },
+          "content": {
+            "title": "Contenido de las ofertas",
+            "content": {
+              "p1": "<strong>El rango salarial es obligatorio</strong> (mínimo, máximo, moneda, periodo): es la primera condición de los candidatos. La oferta debe describir un puesto real y disponible, indicar el contrato, la política de teletrabajo y el lugar, y cumplir la ley, en particular la prohibición de discriminación (edad, sexo, origen, situación familiar, discapacidad…)."
+            }
+          },
+          "moderation": {
+            "title": "Moderación",
+            "content": {
+              "p1": "Cada oferta se verifica antes de su publicación. Una oferta que contenga criterios potencialmente discriminatorios pasa a revisión manual. Podemos rechazar una oferta o suspender a una organización, con un motivo comunicado por correo electrónico; la suspensión cierra sus ofertas en línea."
+            }
+          },
+          "candidates": {
+            "title": "Relación con los candidatos",
+            "content": {
+              "p1": "<strong>Las empresas nunca buscan, consultan ni clasifican candidatos.</strong> Cada candidato está representado por su agente, que le presenta las ofertas que respetan sus condiciones; es el candidato quien decide ponerse en contacto con usted, primero de forma anónima.",
+              "p2": "Los mensajes que usted recibe se han preparado con la ayuda de una IA y han sido aprobados por el candidato. La información recibida, incluida la de una revelación de identidad, solo sirve para el proceso de selección en cuestión: usted se prohíbe cualquier intento de reidentificación de un candidato anónimo y cualquier reutilización con otros fines. Usted es responsable del tratamiento de los datos que un candidato le revele."
+            }
+          },
+          "liability": {
+            "title": "Responsabilidad",
+            "content": {
+              "p1": "Usted es responsable del contenido de sus ofertas y de sus intercambios con los candidatos. No garantizamos un número de contactos ni el resultado de un proceso de selección. El panel de control solo presenta estadísticas agregadas, sin datos de candidatos."
+            }
+          },
+          "law": {
+            "title": "Duración, modificaciones y derecho aplicable",
+            "content": {
+              "p1": "Usted puede abandonar el espacio de empresa en cualquier momento; las ofertas ya pagadas no se reembolsan una vez publicadas. Podemos modificar estas condiciones informándole de ello. Estas condiciones se rigen por el derecho francés; a falta de acuerdo amistoso, son competentes los tribunales de la jurisdicción del domicilio del editor. Contacto: {email}. Véase también la <privacy>política de privacidad</privacy>."
+            }
+          }
+        }
+      },
+      "ai": {
+        "title": "Cómo funciona nuestra IA",
+        "intro": "Coach Career IA utiliza un modelo de lenguaje para ahorrarle tiempo, nunca para decidir en su lugar. Esta página responde a la obligación de transparencia del Reglamento europeo de IA (artículo 50) y del RGPD.",
+        "sections": {
+          "does": {
+            "title": "Lo que hace el agente",
+            "content": {
+              "list": {
+                "import": "Transformar su CV o su perfil importado en un borrador de memoria profesional, que usted valida.",
+                "coach": "Hacerle preguntas para sacar a la luz sus logros y sus pruebas (coach IA).",
+                "matching": "Explicar en unas pocas frases por qué una oferta se ajusta a sus condiciones.",
+                "drafts": "Redactar borradores de contacto inicial y de contrapropuesta de negociación, dentro del mandato que usted ha fijado."
+              }
+            }
+          },
+          "doesNot": {
+            "title": "Lo que no hace",
+            "content": {
+              "list": {
+                "send": "Nunca envía nada sin su aprobación explícita, mensaje por mensaje.",
+                "reveal": "Nunca revela su identidad: solo su decisión, campo por campo, lo permite.",
+                "rank": "No evalúa ni clasifica a los candidatos para las empresas: ninguna empresa ve una lista ni una puntuación de candidatos.",
+                "decide": "No toma ninguna decisión que produzca efectos jurídicos sobre usted: ninguna decisión automatizada en el sentido del artículo 22 del RGPD.",
+                "train": "No se entrena con sus datos: no entrenamos ningún modelo."
+              }
+            }
+          },
+          "human": {
+            "title": "Una persona en el circuito",
+            "content": {
+              "p1": "Cada borrador se le presenta antes de cualquier envío: puede modificarlo, rechazarlo o enviarlo. Sus líneas rojas son sus propias reglas, aplicadas tal cual; la puntuación de una oportunidad solo sirve para ordenar las ofertas que se le proponen, y usted es libre de consultarlas todas."
+            }
+          },
+          "marking": {
+            "title": "Mensajes señalados como asistidos por IA",
+            "content": {
+              "p1": "Cada mensaje enviado a una empresa indica que ha sido preparado por un agente de IA en nombre de una persona candidata, que lo ha revisado y aprobado."
+            }
+          },
+          "model": {
+            "title": "El modelo utilizado",
+            "content": {
+              "p1": "Utilizamos los modelos de Mistral AI, empresa francesa, alojados en la Unión Europea. Solo se les transmiten los datos necesarios para la tarea solicitada; su identidad, cifrada en su caja fuerte, no se les transmite nunca."
+            }
+          },
+          "limits": {
+            "title": "Límites",
+            "content": {
+              "p1": "Un modelo de lenguaje puede equivocarse o formular mal una información. Revise siempre un borrador antes de aprobarlo. Para comunicar un problema: {email}."
+            }
+          }
+        }
+      }
     }
   }
 }
