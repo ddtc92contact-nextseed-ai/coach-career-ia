@@ -178,6 +178,7 @@ export async function startContact(
       score: match.score,
       card: publicCard(card.card),
       matchedSkills: match.explanation?.skills ?? [],
+      portal: channel === "PORTAL",
     },
     deps.ai,
     terms,

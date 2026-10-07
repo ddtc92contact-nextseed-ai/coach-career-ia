@@ -29,11 +29,7 @@ export default async function EmployerThreadPage({ params }: Props) {
   const { id } = await params;
   const thread = await getThread(org.id, id, { open: true });
   if (!thread) notFound();
-  const [t, tr, format] = await Promise.all([
-    getTranslations("employer.inbox"),
-    getTranslations("revealedPage"),
-    getFormatter(),
-  ]);
+  const [t, format] = await Promise.all([getTranslations("employer.inbox"), getFormatter()]);
   const closed = thread.status === "CLOSED";
 
   return (
@@ -60,7 +56,7 @@ export default async function EmployerThreadPage({ params }: Props) {
             {t("revealedTitle")}
           </h2>
           <p className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
-            {tr("disclosure")}
+            {t("revealedDisclosure")}
           </p>
           <RevealedIdentityView
             identity={thread.revealed.identity}

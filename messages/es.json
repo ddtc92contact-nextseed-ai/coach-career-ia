@@ -143,7 +143,8 @@
         "provenSkills": "Competencias requeridas y probadas: {skills}.",
         "skills": "Competencias requeridas: {skills}.",
         "closing": "Si este perfil le interesa, encontrará a continuación su tarjeta anónima y un enlace para responder. La persona candidata decidirá después si revela su identidad.",
-        "signoff": "Atentamente,"
+        "signoff": "Atentamente,",
+        "closingPortal": "Si este perfil le interesa, su tarjeta anónima figura en esta conversación y puede responder directamente aquí. La persona candidata decidirá después si levanta o no su anonimato."
       }
     },
     "reply": {
@@ -1883,7 +1884,8 @@
         "closed": "Esta conversación está cerrada.",
         "rateLimited": "Demasiados mensajes hoy en esta conversación. Vuelve a intentarlo mañana."
       },
-      "threadPrivacy": "Esta información está reservada a los miembros de tu organización, solo para esta candidatura."
+      "threadPrivacy": "Esta información está reservada a los miembros de tu organización, solo para esta candidatura.",
+      "revealedDisclosure": "La persona candidata ha decidido levantar su anonimato ante tu organización. Su agente de carrera IA (Coach Career IA) te comunica esta información por decisión explícita suya."
     }
   }
 }

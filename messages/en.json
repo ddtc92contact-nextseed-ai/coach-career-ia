@@ -143,7 +143,8 @@
         "provenSkills": "Required skills, backed by proofs: {skills}.",
         "skills": "Required skills: {skills}.",
         "closing": "If this profile interests you, their anonymous card and a link to reply are below. The candidate will then decide whether to reveal their identity.",
-        "signoff": "Kind regards,"
+        "signoff": "Kind regards,",
+        "closingPortal": "If this profile interests you, the anonymous card is in this thread and you can reply directly here. The candidate will then decide whether to reveal their identity."
       }
     },
     "reply": {
@@ -1883,7 +1884,8 @@
         "closed": "This thread is closed.",
         "rateLimited": "Too many messages on this thread today. Try again tomorrow."
       },
-      "threadPrivacy": "This information is reserved for members of your organisation, for this application only."
+      "threadPrivacy": "This information is reserved for members of your organisation, for this application only.",
+      "revealedDisclosure": "The candidate has decided to reveal their identity to your organisation. This information is shared by their AI career agent (Coach Career IA), on their explicit decision."
     }
   }
 }

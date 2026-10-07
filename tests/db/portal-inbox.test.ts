@@ -280,6 +280,9 @@ describe.skipIf(!url)(
       expect(portalRow).toMatchObject({ channel: "PORTAL", orgId: orgA.id, status: "APPROVED" });
       const emailRow = await db.contact.findUniqueOrThrow({ where: { id: viaEmail.id } });
       expect(emailRow).toMatchObject({ channel: "EMAIL", orgId: null });
+      // Brouillon adapté au canal : pas de « lien pour répondre » dans la messagerie.
+      expect(contacts.decryptSentMessage(portalRow).body).toContain("répondre directement ici");
+      expect(contacts.decryptSentMessage(emailRow).body).toContain("un lien pour répondre");
       expect((await contacts.contactOptions(alice.id, viaPortal.matchId))!.channel).toBe("PORTAL");
       // Approuvé mais pas envoyé : rien n'apparaît dans la messagerie.
       expect(await inbox.listThreads(orgA.id)).toEqual([]);

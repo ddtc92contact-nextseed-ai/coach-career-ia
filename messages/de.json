@@ -143,7 +143,8 @@
         "provenSkills": "Gefragte und belegte Kompetenzen: {skills}.",
         "skills": "Gefragte Kompetenzen: {skills}.",
         "closing": "Wenn dieses Profil Sie interessiert, finden Sie unten die anonyme Karte und einen Link zum Antworten. Die Person entscheidet anschließend, ob sie ihre Identität offenlegt.",
-        "signoff": "Mit freundlichen Grüßen"
+        "signoff": "Mit freundlichen Grüßen",
+        "closingPortal": "Wenn Sie dieses Profil interessiert: Die anonyme Karte finden Sie in diesem Austausch, und Sie können direkt hier antworten. Die Person entscheidet danach, ob sie ihre Anonymität aufhebt."
       }
     },
     "reply": {
@@ -1883,7 +1884,8 @@
         "closed": "Dieser Austausch ist abgeschlossen.",
         "rateLimited": "Heute zu viele Nachrichten in diesem Austausch. Versuchen Sie es morgen erneut."
       },
-      "threadPrivacy": "Diese Angaben sind den Mitgliedern Ihrer Organisation vorbehalten, nur für diese Bewerbung."
+      "threadPrivacy": "Diese Angaben sind den Mitgliedern Ihrer Organisation vorbehalten, nur für diese Bewerbung.",
+      "revealedDisclosure": "Die Person hat entschieden, ihre Anonymität gegenüber Ihrer Organisation aufzuheben. Diese Angaben übermittelt ihr KI-Karriereagent (Coach Career IA) auf ihre ausdrückliche Entscheidung."
     }
   }
 }

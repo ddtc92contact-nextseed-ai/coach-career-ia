@@ -143,7 +143,8 @@
         "provenSkills": "Gevraagde en bewezen vaardigheden: {skills}.",
         "skills": "Gevraagde vaardigheden: {skills}.",
         "closing": "Als dit profiel u interesseert, vindt u hieronder de anonieme kaart en een link om te antwoorden. De kandidaat beslist daarna of die de anonimiteit opheft.",
-        "signoff": "Met vriendelijke groet,"
+        "signoff": "Met vriendelijke groet,",
+        "closingPortal": "Als dit profiel u interesseert: de anonieme kaart staat in dit gesprek en u kunt hier direct antwoorden. De kandidaat beslist daarna of hij of zij de anonimiteit opheft."
       }
     },
     "reply": {
@@ -1883,7 +1884,8 @@
         "closed": "Dit gesprek is afgesloten.",
         "rateLimited": "Te veel berichten vandaag in dit gesprek. Probeer het morgen opnieuw."
       },
-      "threadPrivacy": "Deze gegevens zijn voorbehouden aan de leden van uw organisatie, alleen voor deze sollicitatie."
+      "threadPrivacy": "Deze gegevens zijn voorbehouden aan de leden van uw organisatie, alleen voor deze sollicitatie.",
+      "revealedDisclosure": "De kandidaat heeft besloten de anonimiteit tegenover uw organisatie op te heffen. Deze gegevens worden gedeeld door zijn of haar AI-loopbaanagent (Coach Career IA), op uitdrukkelijk besluit."
     }
   }
 }
