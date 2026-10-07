@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { geoConfig, type GeoConfig } from "@/lib/geo";
 
 /**
  * Configuration du radar, lue depuis l'environnement (aucun secret dans le
@@ -51,6 +52,8 @@ export type RadarConfig = {
     departments: string[];
     maxResultsPerSearch: number;
   } | null;
+  /** Géocodage des offres (`src/lib/geo`). Absent : coordonnées des sources seules. */
+  geo?: GeoConfig;
 };
 
 export const RADAR_PRODUCT = "CoachCareerIA-Radar/1.0";
@@ -84,5 +87,6 @@ export function radarConfig(env: NodeJS.ProcessEnv = process.env): RadarConfig {
           maxResultsPerSearch: e.RADAR_FT_MAX_RESULTS,
         }
       : null,
+    geo: geoConfig(env),
   };
 }

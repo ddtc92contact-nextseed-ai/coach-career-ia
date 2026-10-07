@@ -509,7 +509,9 @@
       "cityPlaceholder": "Zum Beispiel: München",
       "radius": "Umkreis (km)",
       "remove": "Entfernen",
-      "add": "Ort hinzufügen"
+      "add": "Ort hinzufügen",
+      "notLocated": "Ort noch nicht lokalisiert: Er ist gespeichert, aber der Entfernungsfilter kann nicht angewendet werden. Prüfen Sie die Schreibweise oder geben Sie das Land an („Berlin, Deutschland“) und speichern Sie erneut.",
+      "notLocatedSummary": "{count, plural, one {# Ort konnte nicht lokalisiert werden. Er ist gespeichert, aber Angebote werden erst nach Entfernung gefiltert, wenn er erkannt wird.} other {# Orte konnten nicht lokalisiert werden. Sie sind gespeichert, aber Angebote werden erst nach Entfernung gefiltert, wenn sie erkannt werden.}}"
     },
     "remote": {
       "title": "Homeoffice",

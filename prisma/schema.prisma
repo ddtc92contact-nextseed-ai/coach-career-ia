@@ -294,8 +294,10 @@ model GuardRails {
   @@map("guard_rails")
 }
 
-/// Zone de travail acceptée : une ville et un rayon. Les coordonnées seront
-/// renseignées par géocodage (fonctionnalité future) pour le filtrage.
+/// Zone de travail acceptée : une ville et un rayon. Les coordonnées sont
+/// renseignées par géocodage à l'enregistrement (`src/lib/geo`) ; `null` si la
+/// ville n'a pas pu être localisée (le lieu est tout de même conservé).
+/// Donnée du candidat : ni le libellé ni les coordonnées ne sont journalisés.
 model GuardRailLocation {
   id        String   @id @default(cuid())
   userId    String   @map("user_id")
@@ -439,6 +441,13 @@ model JobOffer {
   region         String?
   /// Code pays ISO 3166-1 alpha-2 quand il est connu.
   country        String?
+  /// Coordonnées de la ville (fournies par la source ou géocodées), `null` si
+  /// inconnues. Servent au filtre de distance du matching.
+  latitude       Float?
+  longitude      Float?
+  /// Date du dernier géocodage abouti (trouvé ou introuvable). `null` = à
+  /// (re)tenter : nouvelle offre, lieu modifié ou géocodeur indisponible.
+  geocodedAt     DateTime?     @map("geocoded_at")
   remotePolicy   RemotePolicy  @default(UNKNOWN) @map("remote_policy")
   contractType   ContractType  @default(UNKNOWN) @map("contract_type")
   /// Libellé de contrat tel que fourni par la source.
@@ -476,7 +485,30 @@ model JobOffer {
   @@index([dedupKey])
   @@index([status, lastSeenAt])
   @@index([companyId])
+  @@index([status, geocodedAt])
   @@map("job_offers")
+}
+
+/// Cache persistant du géocodage : une même requête normalisée (ville, pays,
+/// code commune) n'est jamais géocodée deux fois. Aucune donnée personnelle :
+/// la clé ne désigne qu'un lieu, sans lien avec un utilisateur.
+model GeoCache {
+  /// Requête normalisée (`src/lib/geo/geocoder.ts`, `geoCacheKey`).
+  key       String   @id
+  /// Faux = lieu introuvable (réessayé après expiration, voir `NOT_FOUND_TTL_MS`).
+  found     Boolean
+  latitude  Float?
+  longitude Float?
+  /// Code pays ISO 3166-1 alpha-2 du résultat.
+  country   String?
+  /// Précision : address, street, locality, municipality, region.
+  precision String?
+  /// Fournisseur qui a répondu (ban, nominatim).
+  provider  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("geo_cache")
 }
 
 /// Journal d'exécution d'un connecteur (une ligne par périmètre et par passage).

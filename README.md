@@ -66,6 +66,7 @@ convient.
 | `npm run radar:run`      | un passage du Market Radar sur toutes les sources                 |
 | `npm run ai:eval`        | fixtures de l'import IA passées au vrai fournisseur (manuel)      |
 | `npm run worker`         | worker de tâches de fond (radar planifié)                         |
+| `npm run geo:backfill`   | géocode les offres ouvertes encore sans coordonnées               |
 
 ## Variables d'environnement
 
@@ -96,6 +97,9 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)   |
 | `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                     |
 | `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)          |
+| `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)           |
+| `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)  |
+| `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)     |
 | `AI_PROVIDER`                                                         | non      | `mistral` (défaut), `openai-compatible` ou `mock`        |
 | `MISTRAL_API_KEY`                                                     | import   | clé API Mistral (sinon l'import IA est désactivé)        |
 | `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API    |
@@ -159,6 +163,50 @@ client identifié et poli. Code : `src/lib/radar`.
   `RADAR_INTERVAL_HOURS`). Suivi : `/app/radar`, réservé à `ADMIN_EMAILS`.
 - **Tests** : tous sur des fixtures enregistrées (`tests/fixtures/radar`), jamais sur le
   réseau.
+
+### Géocodage (filtre de distance)
+
+Le garde-fou de lieu (« ville X + rayon N km ») est un filtre dur du matching : offres et
+lieux du candidat reçoivent des coordonnées. Code : `src/lib/geo`.
+
+- **Fournisseurs**, derrière une interface commune (`GeocodingProvider`) :
+  - **Base Adresse Nationale** pour la France (métropole et outre-mer) : géocodeur officiel,
+    gratuit, sans clé. Servi depuis 2025 par la Géoplateforme de l'IGN
+    (`data.geopf.fr/geocodage/search`) ; l'ancienne adresse `api-adresse.data.gouv.fr` est
+    décommissionnée. Recherche limitée aux communes, filtrée par code commune INSEE ou code
+    postal quand la source les donne. Sa réponse fait foi : une commune introuvable n'est pas
+    redemandée ailleurs.
+  - **Nominatim** (OpenStreetMap) pour les autres pays, ou une saisie sans pays que la BAN ne
+    reconnaît pas. Sa [politique d'usage](https://operations.osmfoundation.org/policies/nominatim/)
+    est respectée : 1 requête/s au plus, User-Agent identifiant, cache, plafond de requêtes par
+    passage (`GEO_NOMINATIM_MAX_PER_RUN`), pas de géocodage en masse. Données © les
+    contributeurs d'OpenStreetMap (ODbL). `GEO_NOMINATIM_URL` permet une instance
+    auto-hébergée ; `GEO_NOMINATIM_ENABLED=false` le désactive.
+  - Choix écarté : un jeu de données statique de villes (à maintenir, couverture partielle).
+- **Client poli** : même client que le radar (`http.ts`), User-Agent
+  `CoachCareerIA-Geo/1.0 (+RADAR_CONTACT ou AUTH_URL)`, délai de 5 s, un seul nouvel essai.
+  Sans contact configuré, le géocodage est désactivé (rien n'est envoyé).
+- **Cache persistant** (`geo_cache`) : clé normalisée (pays, code commune, code postal, ville
+  sans accents ni casse) → coordonnées, pays, précision. Une ville n'est jamais géocodée deux
+  fois ; un lieu introuvable est retenté après 30 jours. La table ne référence aucun
+  utilisateur.
+- **Offres** (`JobOffer.latitude` / `longitude` / `geocodedAt`) : les coordonnées fournies par
+  France Travail sont reprises telles quelles ; sinon la ville est géocodée à la création ou
+  quand le lieu change. Sans ville (région ou pays seul, « Remote »), aucune coordonnée n'est
+  inventée. Après chaque passage, le worker rattrape les offres ouvertes encore sans
+  géocodage (`npm run geo:backfill` pour le lancer à la main). `/app/radar` affiche la part
+  des offres ouvertes géolocalisées.
+- **Garde-fous** : chaque lieu est géocodé côté serveur à l'enregistrement. En cas d'échec, le
+  lieu est enregistré sans coordonnées et le formulaire l'indique (message traduit).
+- **Robustesse** : le géocodeur ne lève jamais ; un fournisseur en panne est mis de côté
+  quelques minutes (disjoncteur). Ni un passage du radar ni l'enregistrement des garde-fous
+  n'échouent à cause du géocodage.
+- **Confidentialité** : les lieux des garde-fous sont des données du candidat : ni libellé,
+  ni coordonnées, ni URL de requête ne sont journalisés (seulement fournisseur, type
+  d'erreur et compteurs).
+- **Pour le matching** : `distanceKm(a, b)` (haversine) et `isWithinRadius(offre, lieux)`
+  (`src/lib/geo/distance.ts`, purs). Sans coordonnées, une offre ne correspond à aucun lieu ;
+  le cas du télétravail complet relève du moteur de matching.
 
 ## Couche IA et import du parcours
 
@@ -275,7 +323,7 @@ le vérifie sur le schéma). Les données identifiantes relèvent du coffre d'id
 | `Proof`             | lien, document privé chiffré, ou témoignage écrit                                                                                      |
 | `Skill`             | compétence ; niveau et dernière utilisation calculés depuis les réalisations                                                           |
 | `GuardRails`        | salaire fixe minimum, package visé, télétravail, contrats, secteurs et entreprises exclus (chiffrées), heures max, astreintes, culture |
-| `GuardRailLocation` | ville acceptée + rayon (coordonnées réservées au futur géocodage)                                                                      |
+| `GuardRailLocation` | ville acceptée + rayon, coordonnées géocodées à l’enregistrement (voir « Géocodage »)                                                  |
 | `CareerProfile`     | statut de visibilité : `ACTIVE`, `OPEN`, `INVISIBLE`                                                                                   |
 
 - Accès aux données : `src/lib/career/repository.ts`. Chaque fonction prend `userId` et filtre

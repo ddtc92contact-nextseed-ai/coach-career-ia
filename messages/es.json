@@ -509,7 +509,9 @@
       "cityPlaceholder": "Por ejemplo: Valencia",
       "radius": "Radio (km)",
       "remove": "Quitar",
-      "add": "Añadir una ubicación"
+      "add": "Añadir una ubicación",
+      "notLocated": "Lugar aún no localizado: está guardado, pero el filtro de distancia no podrá aplicarse. Revisa la ortografía o indica el país («Berlín, Alemania») y vuelve a guardar.",
+      "notLocatedSummary": "{count, plural, one {No se ha podido localizar # lugar. Está guardado, pero las ofertas no se filtrarán por distancia a su alrededor hasta que se reconozca.} other {No se han podido localizar # lugares. Están guardados, pero las ofertas no se filtrarán por distancia a su alrededor hasta que se reconozcan.}}"
     },
     "remote": {
       "title": "Teletrabajo",

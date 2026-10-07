@@ -509,7 +509,9 @@
       "cityPlaceholder": "Bijvoorbeeld: Utrecht",
       "radius": "Straal (km)",
       "remove": "Verwijderen",
-      "add": "Een locatie toevoegen"
+      "add": "Een locatie toevoegen",
+      "notLocated": "Locatie nog niet gevonden: ze is opgeslagen, maar het afstandsfilter kan er niet op worden toegepast. Controleer de spelling of vermeld het land (‘Berlijn, Duitsland’) en sla opnieuw op.",
+      "notLocatedSummary": "{count, plural, one {# locatie kon niet worden gevonden. Ze is opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend is.} other {# locaties konden niet worden gevonden. Ze zijn opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend zijn.}}"
     },
     "remote": {
       "title": "Thuiswerken",

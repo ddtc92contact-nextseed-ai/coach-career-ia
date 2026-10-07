@@ -34,6 +34,11 @@ export type NormalizedOffer = {
   companyId?: string | null;
   description: string;
   location: Location;
+  /** Coordonnées de la ville quand la source les fournit (sinon géocodées). */
+  coordinates?: { latitude: number; longitude: number } | null;
+  /** Code postal et code commune INSEE, s'ils sont connus : affinent le géocodage. */
+  postalCode?: string | null;
+  cityCode?: string | null;
   remotePolicy: RemotePolicy;
   contractType: ContractType;
   contractLabel: string | null;

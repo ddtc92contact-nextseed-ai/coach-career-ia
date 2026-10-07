@@ -1,3 +1,4 @@
+import { isValidPoint } from "@/lib/geo/distance";
 import type { HttpClient } from "../http";
 import {
   detectContractType,
@@ -44,7 +45,14 @@ export type FranceTravailOffer = {
   description?: string;
   dateCreation?: string;
   dateActualisation?: string;
-  lieuTravail?: { libelle?: string; codePostal?: string; commune?: string } | null;
+  lieuTravail?: {
+    libelle?: string;
+    codePostal?: string;
+    /** Code commune INSEE. */
+    commune?: string;
+    latitude?: number;
+    longitude?: number;
+  } | null;
   entreprise?: { nom?: string; url?: string } | null;
   typeContrat?: string;
   typeContratLibelle?: string;
@@ -216,6 +224,12 @@ export function mapFranceTravailOffer(offer: FranceTravailOffer): NormalizedOffe
     companyName: cleanString(offer.entreprise?.nom),
     description,
     location: parseFranceTravailLocation(offer.lieuTravail?.libelle, offer.lieuTravail?.codePostal),
+    // Coordonnées et code commune fournis par l'API : utilisés tels quels.
+    coordinates: isValidPoint(offer.lieuTravail)
+      ? { latitude: offer.lieuTravail.latitude, longitude: offer.lieuTravail.longitude }
+      : null,
+    postalCode: cleanString(offer.lieuTravail?.codePostal),
+    cityCode: cleanString(offer.lieuTravail?.commune),
     remotePolicy: detectRemotePolicy(title, description),
     contractType,
     contractLabel: cleanString(offer.typeContratLibelle),
