@@ -148,7 +148,8 @@
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
       "settings": "Instellingen",
-      "radar": "Radar (beheer)"
+      "radar": "Radar (beheer)",
+      "coach": "AI-coach"
     }
   },
   "dashboard": {
@@ -541,6 +542,136 @@
     "culture": {
       "title": "Bedrijfscultuur",
       "intro": "Optioneel: wat voor u belangrijk is. Deze voorkeuren verfijnen de rangschikking van vacatures."
+    }
+  },
+  "coach": {
+    "title": "AI-coach",
+    "intro": "Een loopbaancoach op basis van kunstmatige intelligentie: hij leert u kennen, helpt u uw prestaties te bewijzen, te verduidelijken wat u zoekt en uw sollicitatiegesprekken voor te bereiden. Hij wijzigt uw carrièregeheugen nooit zonder uw toestemming.",
+    "aiNotice": "U praat met een kunstmatige intelligentie, niet met een mens. De antwoorden kunnen fouten bevatten: controleer ze. U hoeft uw naam, de namen van uw werkgevers of uw contactgegevens niet te delen.",
+    "aiBadge": "AI",
+    "notConfigured": "De AI-coach is nog niet geactiveerd op deze dienst.",
+    "quota": "{remaining, plural, =0 {Geen berichten meer over in de afgelopen 24 uur.} one {Nog # bericht over in de afgelopen 24 uur.} other {Nog # berichten over in de afgelopen 24 uur.}}",
+    "start": {
+      "title": "Nieuw gesprek",
+      "intro": "Kies waaraan u met de coach wilt werken.",
+      "button": "Beginnen",
+      "buttonFor": "Beginnen: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Mijn profiel ontdekken",
+        "description": "Een begeleid interview (situatie, taak, actie, meetbaar resultaat, bewijs) om uw ervaring om te zetten in bewezen prestaties.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. Vertel me over een project of opdracht waar u trots op bent: we maken er stap voor stap een bewezen prestatie van. Ik vraag nooit naar de namen van uw werkgevers of uw contactgegevens."
+      },
+      "CLARIFY": {
+        "title": "Verduidelijken wat ik wil",
+        "description": "Salaris, locatie, thuiswerk, contracten, sectoren: de coach helpt u duidelijke randvoorwaarden vast te leggen.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. We bepalen wat u echt wilt: beloning, locatie, thuiswerk, contractvorm, sectoren om te vermijden. Ik stel randvoorwaarden voor die u één voor één bevestigt."
+      },
+      "INTERVIEW": {
+        "title": "Een sollicitatiegesprek voorbereiden",
+        "description": "Een proefgesprek voor de functie die u ambieert, met concrete feedback na elk antwoord.",
+        "welcome": "Hallo! Ik ben de coach van Coach Career IA, een kunstmatige intelligentie. Beschrijf de functie die u ambieert (titel, niveau, soort bedrijf, zonder het te noemen) en ik neem een oefengesprek met u af, met feedback na elk antwoord."
+      }
+    },
+    "history": {
+      "title": "Mijn gesprekken",
+      "empty": "Nog geen gesprekken.",
+      "messages": "{count, plural, =0 {geen berichten} one {# bericht} other {# berichten}}",
+      "pending": "{count, plural, one {# voorstel te beoordelen} other {# voorstellen te beoordelen}}",
+      "updated": "Bijgewerkt op {date}",
+      "open": "Openen",
+      "confirmDelete": "Dit gesprek definitief verwijderen? Niet-beoordeelde voorstellen gaan verloren; wat aan uw carrièregeheugen is toegevoegd, blijft bewaard."
+    },
+    "chat": {
+      "back": "Alle gesprekken",
+      "label": "Gesprek met de coach",
+      "you": "U",
+      "coach": "AI-coach",
+      "inputLabel": "Uw bericht aan de coach",
+      "placeholder": "Uw bericht… (Enter om te verzenden, Shift + Enter voor een nieuwe regel)",
+      "send": "Verzenden",
+      "sending": "Bezig met antwoorden…",
+      "tooLong": "Bericht te lang (maximaal {max} tekens).",
+      "unanswered": "Uw laatste bericht is niet beantwoord.",
+      "status": {
+        "thinking": "De coach denkt na…",
+        "reading": "De coach raadpleegt uw carrièregeheugen…",
+        "suggesting": "De coach bereidt een voorstel voor…"
+      }
+    },
+    "errors": {
+      "title": "De coach kon niet antwoorden",
+      "aiNotConfigured": "De AI-coach is nog niet geactiveerd op deze dienst.",
+      "aiTimeout": "De coach deed er te lang over om te antwoorden.",
+      "aiUnavailable": "De AI-dienst is tijdelijk niet beschikbaar.",
+      "aiRateLimited": "De AI-dienst is op dit moment erg druk.",
+      "aiInvalidOutput": "De coach gaf een onbruikbaar antwoord.",
+      "quotaExceeded": "U hebt de limiet van {limit} berichten per 24 uur bereikt. Kom later terug.",
+      "tooManyRetries": "Dit bericht is al meerdere keren zonder succes opnieuw verzonden. Herformuleer het of stuur een nieuw bericht.",
+      "busy": "De coach beantwoordt al een bericht in dit gesprek. Wacht een paar seconden.",
+      "notFound": "Dit gesprek bestaat niet meer.",
+      "invalid": "Dit bericht kon niet worden verzonden.",
+      "unauthorized": "Uw sessie is verlopen. Meld u opnieuw aan en probeer het nog eens.",
+      "network": "De verbinding is verbroken.",
+      "unknown": "Er is een onverwachte fout opgetreden.",
+      "kept": "Uw bericht is bewaard: u kunt de coach opnieuw vragen.",
+      "retry": "Opnieuw proberen"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Voorgestelde prestatie",
+        "EXPERIENCE_UPDATE": "Voorgestelde wijziging van een ervaring",
+        "SKILL": "Voorgestelde vaardigheid",
+        "GUARD_RAIL": "Voorgestelde randvoorwaarden"
+      },
+      "pendingBadge": "Te beoordelen",
+      "acceptedBadge": "Geaccepteerd",
+      "rejectedBadge": "Afgewezen",
+      "draft": "Concept: zonder uw toestemming wordt niets opgeslagen.",
+      "why": "Waarom: {rationale}",
+      "identityRemoved": "Identificerende gegevens (naam, werkgever, contactgegevens) zijn uit dit voorstel verwijderd.",
+      "accept": "Accepteren",
+      "edit": "Bewerken",
+      "reject": "Afwijzen",
+      "cancel": "Annuleren",
+      "saveAccept": "Opslaan en accepteren",
+      "accepted": "Toegevoegd aan uw carrièregeheugen.",
+      "acceptedGuardRail": "Randvoorwaarden bijgewerkt.",
+      "rejected": "Voorstel afgewezen: er is niets opgeslagen.",
+      "view": "Bekijken",
+      "nothingToEdit": "Hier valt niets te bewerken: accepteer of wijs het voorstel af.",
+      "skillsHint": "gescheiden door komma’s",
+      "yes": "Ja",
+      "no": "Nee",
+      "remoteDays": "{count, plural, one {minimaal # dag} other {minimaal # dagen}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Titel",
+        "experience": "Ervaring",
+        "context": "Context",
+        "actions": "Acties",
+        "result": "Resultaat",
+        "skills": "Vaardigheden",
+        "proofUrl": "Bewijslink",
+        "name": "Vaardigheid",
+        "roleTitle": "Functietitel",
+        "responsibilities": "Verantwoordelijkheden",
+        "seniority": "Niveau",
+        "contractType": "Contract",
+        "sector": "Sector",
+        "companySize": "Bedrijfsgrootte",
+        "companyStage": "Soort bedrijf",
+        "minFixedSalary": "Minimaal vast salaris (bruto per jaar)",
+        "targetTotalPackage": "Beoogd totaalpakket (bruto per jaar)",
+        "remotePolicy": "Thuiswerk",
+        "minRemoteDays": "Minimaal aantal thuiswerkdagen per week",
+        "contractTypes": "Geaccepteerde contracten",
+        "excludedSectors": "Uitgesloten sectoren",
+        "maxWeeklyHours": "Maximaal aantal uren per week",
+        "acceptsOnCall": "Consignatiediensten geaccepteerd",
+        "locations": "Werkgebieden"
+      }
     }
   },
   "settings": {

@@ -148,7 +148,8 @@
       "guardRails": "My guard-rails",
       "opportunities": "Opportunities",
       "settings": "Settings",
-      "radar": "Radar (admin)"
+      "radar": "Radar (admin)",
+      "coach": "AI coach"
     }
   },
   "dashboard": {
@@ -541,6 +542,136 @@
     "culture": {
       "title": "Company culture",
       "intro": "Optional: what matters to you. These preferences refine how offers are ranked."
+    }
+  },
+  "coach": {
+    "title": "AI coach",
+    "intro": "A career coach powered by artificial intelligence: it gets to know you, helps you prove your achievements, clarify what you want and prepare your interviews. It never changes your Career Memory without your approval.",
+    "aiNotice": "You are talking to an artificial intelligence, not a person. Its answers may contain mistakes: check them. There is no need to give it your name, your employers’ names or your contact details.",
+    "aiBadge": "AI",
+    "notConfigured": "The AI coach is not enabled on this service yet.",
+    "quota": "{remaining, plural, =0 {No messages left for the last 24 hours.} one {# message left for the last 24 hours.} other {# messages left for the last 24 hours.}}",
+    "start": {
+      "title": "New conversation",
+      "intro": "Choose what you want to work on with the coach.",
+      "button": "Start",
+      "buttonFor": "Start: {mode}"
+    },
+    "modes": {
+      "DISCOVER": {
+        "title": "Discover my profile",
+        "description": "A guided interview (situation, task, action, measurable result, proof) to turn your experience into proven achievements.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Tell me about a project or assignment you are proud of: we will turn it into a proven achievement, step by step. I will never ask for your employers’ names or your contact details."
+      },
+      "CLARIFY": {
+        "title": "Clarify what I want",
+        "description": "Salary, location, remote work, contracts, sectors: the coach helps you set clear guard-rails.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Let’s pin down what you really want: pay, location, remote work, contract type, sectors to avoid. I will suggest guard-rails that you approve one by one."
+      },
+      "INTERVIEW": {
+        "title": "Prepare an interview",
+        "description": "A mock interview for the role you are targeting, with concrete feedback after each answer.",
+        "welcome": "Hello! I’m the Coach Career IA coach, an artificial intelligence. Describe the role you are targeting (title, level, type of company, without naming it) and I will run a practice interview with feedback after each answer."
+      }
+    },
+    "history": {
+      "title": "My conversations",
+      "empty": "No conversations yet.",
+      "messages": "{count, plural, =0 {no messages} one {# message} other {# messages}}",
+      "pending": "{count, plural, one {# suggestion to review} other {# suggestions to review}}",
+      "updated": "Updated on {date}",
+      "open": "Open",
+      "confirmDelete": "Permanently delete this conversation? Suggestions you have not reviewed will be lost; what was added to your Career Memory is kept."
+    },
+    "chat": {
+      "back": "All conversations",
+      "label": "Conversation with the coach",
+      "you": "You",
+      "coach": "AI coach",
+      "inputLabel": "Your message to the coach",
+      "placeholder": "Your message… (Enter to send, Shift + Enter for a new line)",
+      "send": "Send",
+      "sending": "Answering…",
+      "tooLong": "Message too long ({max} characters maximum).",
+      "unanswered": "Your last message has not been answered.",
+      "status": {
+        "thinking": "The coach is thinking…",
+        "reading": "The coach is reading your Career Memory…",
+        "suggesting": "The coach is preparing a suggestion…"
+      }
+    },
+    "errors": {
+      "title": "The coach could not answer",
+      "aiNotConfigured": "The AI coach is not enabled on this service yet.",
+      "aiTimeout": "The coach took too long to answer.",
+      "aiUnavailable": "The AI service is temporarily unavailable.",
+      "aiRateLimited": "The AI service is very busy right now.",
+      "aiInvalidOutput": "The coach produced an unusable answer.",
+      "quotaExceeded": "You have reached the limit of {limit} messages per 24 hours. Please come back a little later.",
+      "tooManyRetries": "This message has already been retried several times without success. Rephrase it or send a new message.",
+      "busy": "The coach is already answering a message in this conversation. Please wait a few seconds.",
+      "notFound": "This conversation no longer exists.",
+      "invalid": "This message could not be sent.",
+      "unauthorized": "Your session has expired. Sign in again and retry.",
+      "network": "The connection was interrupted.",
+      "unknown": "An unexpected error occurred.",
+      "kept": "Your message has been kept: you can ask the coach again.",
+      "retry": "Try again"
+    },
+    "suggestion": {
+      "kinds": {
+        "ACHIEVEMENT": "Suggested achievement",
+        "EXPERIENCE_UPDATE": "Suggested experience update",
+        "SKILL": "Suggested skill",
+        "GUARD_RAIL": "Suggested guard-rails"
+      },
+      "pendingBadge": "To review",
+      "acceptedBadge": "Accepted",
+      "rejectedBadge": "Rejected",
+      "draft": "Draft: nothing is saved without your approval.",
+      "why": "Why: {rationale}",
+      "identityRemoved": "Identifying information (name, employer, contact details) was removed from this suggestion.",
+      "accept": "Accept",
+      "edit": "Edit",
+      "reject": "Reject",
+      "cancel": "Cancel",
+      "saveAccept": "Save and accept",
+      "accepted": "Added to your Career Memory.",
+      "acceptedGuardRail": "Guard-rails updated.",
+      "rejected": "Suggestion rejected: nothing was saved.",
+      "view": "View",
+      "nothingToEdit": "No editable field here: accept or reject the suggestion.",
+      "skillsHint": "separated by commas",
+      "yes": "Yes",
+      "no": "No",
+      "remoteDays": "{count, plural, one {# day minimum} other {# days minimum}}",
+      "location": "{label} ({radius} km)",
+      "fields": {
+        "title": "Title",
+        "experience": "Experience",
+        "context": "Context",
+        "actions": "Actions",
+        "result": "Result",
+        "skills": "Skills",
+        "proofUrl": "Proof link",
+        "name": "Skill",
+        "roleTitle": "Job title",
+        "responsibilities": "Responsibilities",
+        "seniority": "Level",
+        "contractType": "Contract",
+        "sector": "Sector",
+        "companySize": "Company size",
+        "companyStage": "Company type",
+        "minFixedSalary": "Minimum fixed salary (gross per year)",
+        "targetTotalPackage": "Target total package (gross per year)",
+        "remotePolicy": "Remote work",
+        "minRemoteDays": "Minimum remote days per week",
+        "contractTypes": "Accepted contracts",
+        "excludedSectors": "Excluded sectors",
+        "maxWeeklyHours": "Maximum hours per week",
+        "acceptsOnCall": "On-call duty accepted",
+        "locations": "Work areas"
+      }
     }
   },
   "settings": {
