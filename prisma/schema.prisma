@@ -74,3 +74,164 @@ model VerificationToken {
   @@id([identifier, token])
   @@map("verification_tokens")
 }
+
+// ---------------------------------------------------------------------------
+// Market Radar : offres d'emploi collectées auprès de sources autorisées
+// (API France Travail, endpoints publics des job boards ATS). Données
+// publiques, non rattachées à un utilisateur : aucune donnée personnelle n'y
+// est stockée (les contacts recruteurs fournis par certaines sources sont
+// volontairement ignorés).
+// ---------------------------------------------------------------------------
+
+enum AtsType {
+  GREENHOUSE
+  LEVER
+  ASHBY
+}
+
+enum RemotePolicy {
+  ONSITE
+  HYBRID
+  FULL_REMOTE
+  UNKNOWN
+}
+
+enum ContractType {
+  CDI
+  CDD
+  FREELANCE
+  INTERNSHIP
+  APPRENTICESHIP
+  TEMPORARY
+  OTHER
+  UNKNOWN
+}
+
+enum SalaryPeriod {
+  HOUR
+  DAY
+  MONTH
+  YEAR
+}
+
+enum OfferStatus {
+  OPEN
+  CLOSED
+}
+
+enum SourceRunStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+/// Entreprise suivie par le radar (job board ATS public).
+model Company {
+  id         String   @id @default(cuid())
+  /// Identifiant stable issu de la configuration (`config/radar-companies.json`).
+  slug       String   @unique
+  name       String
+  website    String?
+  sector     String?
+  atsType    AtsType? @map("ats_type")
+  boardToken String?  @map("board_token")
+  /// Région de l'API (ex. Lever « eu »), si l'ATS en distingue plusieurs.
+  atsRegion  String?  @map("ats_region")
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  offers JobOffer[]
+
+  @@unique([atsType, boardToken])
+  @@map("companies")
+}
+
+/// Offre d'emploi normalisée. Le salaire reste `null` quand l'offre ne
+/// l'indique pas : il n'est jamais estimé dans cette couche.
+model JobOffer {
+  id             String        @id @default(cuid())
+  /// Connecteur d'origine : france_travail, greenhouse, lever, ashby.
+  source         String
+  /// Périmètre d'une collecte complète (ex. `greenhouse:dataiku`) : sert à
+  /// fermer les offres disparues.
+  sourceKey      String        @map("source_key")
+  sourceId       String        @map("source_id")
+  url            String
+  /// URL normalisée, pour la déduplication inter-sources.
+  urlKey         String        @map("url_key")
+  /// Entreprise + intitulé + lieu normalisés, pour la déduplication.
+  dedupKey       String?       @map("dedup_key")
+  title          String
+  companyName    String?       @map("company_name")
+  companyId      String?       @map("company_id")
+  description    String        @db.Text
+  city           String?
+  region         String?
+  /// Code pays ISO 3166-1 alpha-2 quand il est connu.
+  country        String?
+  remotePolicy   RemotePolicy  @default(UNKNOWN) @map("remote_policy")
+  contractType   ContractType  @default(UNKNOWN) @map("contract_type")
+  /// Libellé de contrat tel que fourni par la source.
+  contractLabel  String?       @map("contract_label")
+  salaryMin      Decimal?      @map("salary_min") @db.Decimal(12, 2)
+  salaryMax      Decimal?      @map("salary_max") @db.Decimal(12, 2)
+  salaryCurrency String?       @map("salary_currency")
+  salaryPeriod   SalaryPeriod? @map("salary_period")
+  /// Part variable (primes, bonus, commissions) telle qu'annoncée.
+  salaryVariable String?       @map("salary_variable")
+  /// Equity / BSPCE tels qu'annoncés.
+  salaryEquity   String?       @map("salary_equity")
+  /// Texte de rémunération brut fourni par la source.
+  salaryRaw      String?       @map("salary_raw")
+  sector         String?
+  seniority      String?
+  publishedAt    DateTime?     @map("published_at")
+  firstSeenAt    DateTime      @map("first_seen_at")
+  lastSeenAt     DateTime      @map("last_seen_at")
+  closedAt       DateTime?     @map("closed_at")
+  status         OfferStatus   @default(OPEN)
+  contentHash    String        @map("content_hash")
+  /// Offre canonique dont celle-ci est un doublon (autre source).
+  duplicateOfId  String?       @map("duplicate_of_id")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  company     Company?   @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  duplicateOf JobOffer?  @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates  JobOffer[] @relation("OfferDuplicates")
+
+  @@unique([source, sourceId])
+  @@index([sourceKey, status])
+  @@index([urlKey])
+  @@index([dedupKey])
+  @@index([status, lastSeenAt])
+  @@index([companyId])
+  @@map("job_offers")
+}
+
+/// Journal d'exécution d'un connecteur (une ligne par périmètre et par passage).
+model SourceRun {
+  id             String          @id @default(cuid())
+  source         String
+  sourceKey      String          @map("source_key")
+  status         SourceRunStatus @default(RUNNING)
+  startedAt      DateTime        @map("started_at")
+  finishedAt     DateTime?       @map("finished_at")
+  /// Vrai si la collecte a couvert tout le périmètre (condition pour fermer
+  /// les offres disparues).
+  complete       Boolean         @default(false)
+  fetchedCount   Int             @default(0) @map("fetched_count")
+  createdCount   Int             @default(0) @map("created_count")
+  updatedCount   Int             @default(0) @map("updated_count")
+  unchangedCount Int             @default(0) @map("unchanged_count")
+  closedCount    Int             @default(0) @map("closed_count")
+  skippedCount   Int             @default(0) @map("skipped_count")
+  duplicateCount Int             @default(0) @map("duplicate_count")
+  /// Message d'erreur nettoyé (jamais de secret ni de donnée personnelle).
+  error          String?         @db.Text
+
+  @@index([startedAt])
+  @@index([sourceKey, startedAt])
+  @@map("source_runs")
+}
