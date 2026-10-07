@@ -6,14 +6,21 @@ import { CompanySignalList } from "@/components/company-signals";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
+import { contactOptions, type ContactError } from "@/lib/contact/repository";
 import { displaySummary, factLines } from "@/lib/matching/explanation";
 import { getMatch, markMatchSeen } from "@/lib/matching/repository";
 import { WEIGHTS } from "@/lib/matching/score";
+import { startContactAction } from "../../contacts/actions";
 import { SIGNAL_THRESHOLDS } from "@/lib/radar/signals/config";
 import { getCompanySignals } from "@/lib/radar/signals/server";
 import { OfferFacts, ScoreBadge, StatusActions } from "../opportunity-parts";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const CONTACT_ERRORS: readonly ContactError[] = ["noChannel", "guardRail", "card"];
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("opportunities");
@@ -22,27 +29,30 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
 
-export default async function OpportunityPage({ params }: Props) {
+export default async function OpportunityPage({ params, searchParams }: Props) {
   const user = await requireUser();
-  const { id } = await params;
+  const [{ id }, query = {}] = await Promise.all([params, searchParams]);
   // Identifiant d'une autre personne, offre fermée ou hors garde-fous : 404.
   const match = await getMatch(user.id, id);
   if (!match) notFound();
   if (match.status === "NEW") await markMatchSeen(user.id, id);
 
-  const [t, tm, tc, ts, format, locale, signals] = await Promise.all([
+  const [t, tm, tc, tce, ts, format, locale, contact, signals] = await Promise.all([
     getTranslations("opportunities"),
     getTranslations("matching"),
     getTranslations("codes.culture"),
+    getTranslations("contacts.errors"),
     getTranslations("companySignals"),
     getFormatter(),
     getLocale() as Promise<AppLocale>,
+    contactOptions(user.id, id),
     match.offer.companyId
       ? getCompanySignals(match.offer.companyId, {
           limit: SIGNAL_THRESHOLDS.display.maxPerOffer,
         })
       : [],
   ]);
+  const contactError = CONTACT_ERRORS.find((code) => code === query.contact) ?? null;
   const explanation = match.explanation;
   const lines = explanation ? factLines(explanation, locale) : null;
   const fromLlm = explanation?.source === "llm" && explanation.locale === locale;
@@ -79,6 +89,57 @@ export default async function OpportunityPage({ params }: Props) {
         </a>
         <StatusActions id={match.id} status={match.status === "NEW" ? "SEEN" : match.status} />
       </div>
+
+      {contact ? (
+        <section className={sectionClass} aria-labelledby="contacter-titre" id="contacter">
+          <h2 id="contacter-titre" className="text-lg font-semibold">
+            {t("contact.title")}
+          </h2>
+          {contact.contact ? (
+            <>
+              <p className="mt-2 text-sm text-stone-700">
+                {t(`contact.status.${contact.contact.status}`)}
+              </p>
+              <Link
+                href={`/app/contacts/${contact.contact.id}`}
+                className="mt-3 inline-block rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium hover:bg-stone-100"
+              >
+                {t("contact.existing")}
+              </Link>
+            </>
+          ) : contact.channel === null ? (
+            <p className="mt-2 text-sm text-stone-700">{t("contact.none")}</p>
+          ) : (
+            <>
+              <p className="mt-2 text-sm text-stone-700">
+                {t(contact.channel === "EMAIL" ? "contact.email" : "contact.applyUrl")}
+              </p>
+              {contactError ? (
+                <p role="alert" className="mt-2 text-sm text-red-700">
+                  {tce(contactError, { excerpt: "", limit: 0 })}
+                </p>
+              ) : null}
+              {!contact.cardApproved ? (
+                <p className="mt-2 text-sm text-amber-800">
+                  {t("contact.cardNeeded")}{" "}
+                  <Link href="/app/carte" className="underline">
+                    {t("contact.cardLink")}
+                  </Link>
+                </p>
+              ) : (
+                <form action={startContactAction.bind(null, match.id)} className="mt-3">
+                  <button
+                    type="submit"
+                    className="rounded-lg bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700"
+                  >
+                    {t("contact.button")}
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+        </section>
+      ) : null}
 
       <section className={sectionClass} aria-labelledby="pourquoi">
         <h2 id="pourquoi" className="text-lg font-semibold">

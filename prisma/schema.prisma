@@ -66,6 +66,11 @@ model User {
 
   simulatedSubscriptions SimulatedSubscription[]
 
+  profileCard    ProfileCard?
+  cardLinks      CardLink[]
+  contacts       Contact[]
+  contactReplies ContactReply[]
+
   @@map("users")
 }
 
@@ -532,9 +537,9 @@ model SimulatedSubscription {
 // ---------------------------------------------------------------------------
 // Market Radar : offres d'emploi collectées auprès de sources autorisées
 // (API France Travail, endpoints publics des job boards ATS). Données
-// publiques, non rattachées à un utilisateur : aucune donnée personnelle n'y
-// est stockée (les contacts recruteurs fournis par certaines sources sont
-// volontairement ignorés).
+// publiques, non rattachées à un utilisateur. Des contacts recruteurs fournis
+// par certaines sources, seul le canal de CANDIDATURE publié est conservé
+// (e-mail de candidature, URL « Postuler ») : jamais de nom ni de téléphone.
 // ---------------------------------------------------------------------------
 
 enum AtsType {
@@ -609,69 +614,78 @@ model Company {
 /// Offre d'emploi normalisée. Le salaire reste `null` quand l'offre ne
 /// l'indique pas : il n'est jamais estimé dans cette couche.
 model JobOffer {
-  id             String        @id @default(cuid())
+  id                 String        @id @default(cuid())
   /// Connecteur d'origine : france_travail, greenhouse, lever, ashby.
-  source         String
+  source             String
   /// Périmètre d'une collecte complète (ex. `greenhouse:dataiku`) : sert à
   /// fermer les offres disparues.
-  sourceKey      String        @map("source_key")
-  sourceId       String        @map("source_id")
-  url            String
+  sourceKey          String        @map("source_key")
+  sourceId           String        @map("source_id")
+  url                String
   /// URL normalisée, pour la déduplication inter-sources.
-  urlKey         String        @map("url_key")
+  urlKey             String        @map("url_key")
   /// Entreprise + intitulé + lieu normalisés, pour la déduplication.
-  dedupKey       String?       @map("dedup_key")
-  title          String
-  companyName    String?       @map("company_name")
-  companyId      String?       @map("company_id")
-  description    String        @db.Text
-  city           String?
-  region         String?
+  dedupKey           String?       @map("dedup_key")
+  title              String
+  companyName        String?       @map("company_name")
+  companyId          String?       @map("company_id")
+  description        String        @db.Text
+  city               String?
+  region             String?
   /// Code pays ISO 3166-1 alpha-2 quand il est connu.
-  country        String?
+  country            String?
   /// Coordonnées de la ville (fournies par la source ou géocodées), `null` si
   /// inconnues. Servent au filtre de distance du matching.
-  latitude       Float?
-  longitude      Float?
+  latitude           Float?
+  longitude          Float?
   /// Date du dernier géocodage abouti (trouvé ou introuvable). `null` = à
   /// (re)tenter : nouvelle offre, lieu modifié ou géocodeur indisponible.
-  geocodedAt     DateTime?     @map("geocoded_at")
-  remotePolicy   RemotePolicy  @default(UNKNOWN) @map("remote_policy")
-  contractType   ContractType  @default(UNKNOWN) @map("contract_type")
+  geocodedAt         DateTime?     @map("geocoded_at")
+  remotePolicy       RemotePolicy  @default(UNKNOWN) @map("remote_policy")
+  contractType       ContractType  @default(UNKNOWN) @map("contract_type")
   /// Libellé de contrat tel que fourni par la source.
-  contractLabel  String?       @map("contract_label")
-  salaryMin      Decimal?      @map("salary_min") @db.Decimal(12, 2)
-  salaryMax      Decimal?      @map("salary_max") @db.Decimal(12, 2)
-  salaryCurrency String?       @map("salary_currency")
-  salaryPeriod   SalaryPeriod? @map("salary_period")
+  contractLabel      String?       @map("contract_label")
+  salaryMin          Decimal?      @map("salary_min") @db.Decimal(12, 2)
+  salaryMax          Decimal?      @map("salary_max") @db.Decimal(12, 2)
+  salaryCurrency     String?       @map("salary_currency")
+  salaryPeriod       SalaryPeriod? @map("salary_period")
   /// Part variable (primes, bonus, commissions) telle qu'annoncée.
-  salaryVariable String?       @map("salary_variable")
+  salaryVariable     String?       @map("salary_variable")
   /// Equity / BSPCE tels qu'annoncés.
-  salaryEquity   String?       @map("salary_equity")
+  salaryEquity       String?       @map("salary_equity")
   /// Texte de rémunération brut fourni par la source.
-  salaryRaw      String?       @map("salary_raw")
-  sector         String?
-  seniority      String?
-  publishedAt    DateTime?     @map("published_at")
-  firstSeenAt    DateTime      @map("first_seen_at")
-  lastSeenAt     DateTime      @map("last_seen_at")
-  closedAt       DateTime?     @map("closed_at")
+  salaryRaw          String?       @map("salary_raw")
+  sector             String?
+  seniority          String?
+  publishedAt        DateTime?     @map("published_at")
+  firstSeenAt        DateTime      @map("first_seen_at")
+  lastSeenAt         DateTime      @map("last_seen_at")
+  closedAt           DateTime?     @map("closed_at")
   /// Dernière réapparition après une fermeture (même offre republiée), et
   /// nombre de réapparitions : signal « offre difficile à pourvoir ».
-  reopenedAt     DateTime?     @map("reopened_at")
-  reopenCount    Int           @default(0) @map("reopen_count")
-  status         OfferStatus   @default(OPEN)
-  contentHash    String        @map("content_hash")
+  reopenedAt         DateTime?     @map("reopened_at")
+  reopenCount        Int           @default(0) @map("reopen_count")
+  status             OfferStatus   @default(OPEN)
+  contentHash        String        @map("content_hash")
   /// Offre canonique dont celle-ci est un doublon (autre source).
-  duplicateOfId  String?       @map("duplicate_of_id")
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
+  duplicateOfId      String?       @map("duplicate_of_id")
+  /// Canal de candidature publié dans l'offre (`src/lib/radar/apply.ts`) :
+  /// adresse e-mail de candidature et/ou URL « Postuler ». Jamais de nom ni de
+  /// téléphone de recruteur.
+  applyEmail         String?       @map("apply_email")
+  /// L'adresse semble nominative : elle ne sert qu'à l'envoi, n'est jamais
+  /// affichée ni journalisée.
+  applyEmailPersonal Boolean       @default(false) @map("apply_email_personal")
+  applyUrl           String?       @map("apply_url")
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
 
   company     Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
   duplicateOf JobOffer?       @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
   duplicates  JobOffer[]      @relation("OfferDuplicates")
   matches     Match[]
   embedding   OfferEmbedding?
+  contacts    Contact[]
 
   @@unique([source, sourceId])
   @@index([sourceKey, status])
@@ -886,4 +900,125 @@ model MemoryEmbedding {
 
   @@id([userId, model, textHash])
   @@map("memory_embeddings")
+}
+
+// ---------------------------------------------------------------------------
+// Stealth Proxy : carte de profil anonyme et prise de contact par l'agent
+// (`src/lib/card`, `src/lib/contact`). Tout est rattaché au candidat et filtré
+// par `userId` ; les liens publics passent par un jeton aléatoire dont seule
+// l'empreinte est stockée.
+// ---------------------------------------------------------------------------
+
+/// Carte de profil anonyme (1-1), générée depuis la mémoire PSEUDONYMISÉE
+/// (jamais depuis le coffre) puis relue et modifiée par le candidat.
+/// `content` : contenu validé par zod (`src/lib/card/schema.ts`).
+model ProfileCard {
+  userId     String    @id @map("user_id")
+  content    Json
+  /// Validation par le candidat (contrôle de ré-identification réussi). Toute
+  /// modification la remet à `null` : la carte n'est plus partageable.
+  approvedAt DateTime? @map("approved_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profile_cards")
+}
+
+/// Lien public vers la carte (`/p/<jeton>`) : imprévisible, expirant, révocable.
+/// Seule l'empreinte SHA-256 du jeton est stockée.
+model CardLink {
+  id           String    @id @default(cuid())
+  userId       String    @map("user_id")
+  tokenHash    String    @unique @map("token_hash")
+  expiresAt    DateTime  @map("expires_at")
+  revokedAt    DateTime? @map("revoked_at")
+  viewCount    Int       @default(0) @map("view_count")
+  lastViewedAt DateTime? @map("last_viewed_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact Contact?
+
+  @@index([userId])
+  @@map("card_links")
+}
+
+enum ContactChannel {
+  /// Envoyé par l'application à l'adresse de candidature de l'offre.
+  EMAIL
+  /// Offre sans adresse : le candidat colle lui-même le message sur la page « Postuler ».
+  APPLY_URL
+}
+
+enum ContactStatus {
+  /// Brouillon de l'agent, modifiable.
+  DRAFT
+  /// Approuvé explicitement par le candidat : seul état envoyable.
+  APPROVED
+  /// Envoi en cours (réservation contre le double envoi).
+  SENDING
+  /// Envoyé (e-mail) ou marqué comme transmis par le candidat (URL).
+  SENT
+}
+
+/// Prise de contact avec une entreprise pour une offre (une seule par offre).
+/// Les textes sont chiffrés (AAD `user:<id>:contact`) ; l'adresse de
+/// destination n'est pas copiée ici : elle reste celle publiée dans l'offre.
+model Contact {
+  id                  String         @id @default(cuid())
+  userId              String         @map("user_id")
+  offerId             String         @map("offer_id")
+  channel             ContactChannel
+  status              ContactStatus  @default(DRAFT)
+  /// Langue de l'offre : celle du message.
+  locale              String
+  subjectEnc          String         @map("subject_enc")
+  bodyEnc             String         @map("body_enc")
+  /// Le brouillon vient du LLM (`llm`) ou du modèle déterministe (`rules`).
+  draftSource         String         @map("draft_source")
+  /// Empreinte du texte approuvé : un texte modifié après approbation n'est plus envoyable.
+  approvedHash        String?        @map("approved_hash")
+  approvedAt          DateTime?      @map("approved_at")
+  /// Message final tel qu'envoyé (ou à coller), liens compris, chiffré.
+  sentTextEnc         String?        @map("sent_text_enc")
+  sentAt              DateTime?      @map("sent_at")
+  /// Lien de carte créé pour ce contact (page de réponse comprise).
+  cardLinkId          String?        @unique @map("card_link_id")
+  /// Dernier échec d'envoi (code, sans détail).
+  lastError           String?        @map("last_error")
+  /// Point d'accroche de la levée d'anonymat (issue à venir) : demandée par
+  /// le candidat pour cette entreprise. Aucun effet pour l'instant.
+  handoverRequestedAt DateTime?      @map("handover_requested_at")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer    JobOffer       @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  cardLink CardLink?      @relation(fields: [cardLinkId], references: [id], onDelete: SetNull)
+  replies  ContactReply[]
+
+  @@unique([userId, offerId])
+  /// Quota quotidien : envois récents du candidat.
+  @@index([userId, sentAt])
+  @@map("contacts")
+}
+
+/// Réponse d'une entreprise, déposée sur la page de réponse liée au jeton.
+/// Texte chiffré (AAD `user:<id>:contact-reply`) : il peut nommer le recruteur.
+model ContactReply {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  contactId String    @map("contact_id")
+  bodyEnc   String    @map("body_enc")
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([contactId, createdAt])
+  @@map("contact_replies")
 }

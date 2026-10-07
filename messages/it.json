@@ -118,6 +118,35 @@
       "footer": "Ricevi questo riepilogo {frequency, select, DAILY {giornaliero} other {settimanale}} perché hai attivato gli avvisi.",
       "unsubscribe": "Annulla l’iscrizione",
       "unsubscribeText": "Per non ricevere più queste e-mail: {url}"
+    },
+    "contact": {
+      "subject": "Candidatura anonima – {title}",
+      "disclosure": "Questo messaggio è stato preparato da un agente IA (Coach Career IA) per conto di una persona candidata che desidera restare anonima in questa fase. Lo ha riletto e approvato prima dell’invio.",
+      "cardText": "Scheda anonima del profilo: {url}",
+      "replyText": "Rispondi senza conoscerne l’identità: {url}",
+      "cardButton": "Vedi la scheda anonima",
+      "replyButton": "Rispondi",
+      "expires": "Link validi fino al {date}.",
+      "noReply": "Le risposte a questa e-mail non vengono lette: usa il link «Rispondi».",
+      "draft": {
+        "greeting": "Buongiorno,",
+        "intro": "Sono l’agente di carriera IA di una persona candidata interessata alla vostra offerta «{title}».",
+        "profile": "Il suo profilo: {profile}.",
+        "profileYears": "Il suo profilo: {profile}, {years, plural, one {# anno} other {# anni}} di esperienza.",
+        "highlights": "Ciò che risponde alla vostra esigenza:",
+        "provenSkills": "Competenze richieste e dimostrate: {skills}.",
+        "skills": "Competenze richieste: {skills}.",
+        "closing": "Se questo profilo vi interessa, qui sotto trovate la sua scheda anonima e un link per rispondere. La persona candidata deciderà poi se rivelare la propria identità.",
+        "signoff": "Cordiali saluti,"
+      }
+    },
+    "reply": {
+      "subject": "Un’azienda ha risposto al tuo contatto",
+      "brand": "Coach Career IA",
+      "intro": "Un’azienda ha risposto al tuo contatto anonimo per l’offerta «{title}».",
+      "view": "Leggi la risposta",
+      "viewText": "Leggi la risposta: {url}",
+      "privacy": "La tua identità non è stata comunicata. Decidi tu come proseguire dal tuo spazio."
     }
   },
   "common": {
@@ -166,7 +195,9 @@
       "radar": "Radar (admin)",
       "coach": "Coach IA",
       "billing": "Abbonamento",
-      "billingSimulator": "Simulatore di pagamento (admin)"
+      "billingSimulator": "Simulatore di pagamento (admin)",
+      "card": "La mia scheda anonima",
+      "contacts": "Contatti"
     }
   },
   "dashboard": {
@@ -333,7 +364,23 @@
       "guardRailsOk": "Questa offerta rispetta tutti i tuoi paletti."
     },
     "emptyTitle": "Ancora nessuna opportunità",
-    "emptyText": "Non appena avrà compilato la Sua memoria di carriera e i Suoi paletti, il Suo agente inizierà a proporLe offerte qualificate."
+    "emptyText": "Non appena avrà compilato la Sua memoria di carriera e i Suoi paletti, il Suo agente inizierà a proporLe offerte qualificate.",
+    "contact": {
+      "title": "Contatta questa azienda",
+      "email": "Il tuo agente scrive un breve messaggio per l’indirizzo di candidatura pubblicato nell’offerta, con un link alla tua scheda anonima. Tu lo rileggi e lo approvi: nulla viene inviato senza di te.",
+      "applyUrl": "L’offerta pubblica solo una pagina «Candidati»: il tuo agente prepara il messaggio e il link della scheda, che incolli tu stesso.",
+      "none": "Questa offerta non pubblica alcun canale di candidatura utilizzabile: usa l’offerta originale.",
+      "button": "Contatta questa azienda",
+      "existing": "Vedi il contatto",
+      "cardNeeded": "Prima convalida la tua scheda anonima: è ciò che scoprirà l’azienda.",
+      "cardLink": "La mia scheda anonima",
+      "status": {
+        "DRAFT": "Bozza in attesa della tua revisione.",
+        "APPROVED": "Messaggio approvato, non ancora inviato.",
+        "SENDING": "Invio in corso.",
+        "SENT": "Azienda contattata."
+      }
+    }
   },
   "memory": {
     "title": "La mia memoria di carriera",
@@ -1257,5 +1304,190 @@
       "none": "Nessun segnale",
       "notAvailable": "—"
     }
+  },
+  "card": {
+    "title": "La mia scheda anonima",
+    "intro": "Ciò che un’azienda vede di te prima che tu decida di rivelare la tua identità. Viene generata dalla tua memoria professionale pseudonimizzata, mai dalla tua cassaforte dell’identità.",
+    "status": {
+      "approved": "Scheda convalidata il {date}: può essere condivisa.",
+      "notApproved": "Scheda non convalidata: non può ancora essere condivisa.",
+      "generated": "Proposta generata dalla tua memoria: rileggila, modificala e poi convalidala."
+    },
+    "issues": {
+      "title": "Prima di condividerla, correggi questi punti",
+      "none": "Nessun elemento identificativo rilevato nella scheda.",
+      "contact": "Recapito: «{excerpt}»",
+      "url": "Link nel testo: «{excerpt}»",
+      "identityUrl": "Link a un profilo personale: «{excerpt}»",
+      "knownTerm": "Nome che può identificarti: «{excerpt}»",
+      "employer": "Nome di un datore di lavoro: «{excerpt}»",
+      "school": "Nome di una scuola: «{excerpt}»",
+      "date": "Data precisa: «{excerpt}» (meglio una durata)",
+      "headlineMissing": "Aggiungi un titolo.",
+      "where": "{field} — {problem}"
+    },
+    "fields": {
+      "headline": "Titolo",
+      "achievementTitle": "Risultato {n} — titolo",
+      "achievementResult": "Risultato {n} — esito",
+      "achievementSkill": "Risultato {n} — competenza",
+      "achievementProof": "Risultato {n} — link di prova",
+      "skill": "Competenze",
+      "location": "Zona di ricerca",
+      "subject": "Oggetto",
+      "body": "Messaggio"
+    },
+    "vault": {
+      "title": "Verifica con la tua cassaforte dell’identità",
+      "locked": "Sblocca la cassaforte (pagina «La mia identità») per verificare anche che nome, datori di lavoro, scuole e link non compaiano. Questa verifica avviene solo nel tuo browser.",
+      "clean": "Nessun nome, datore di lavoro, scuola o link della tua cassaforte compare nella scheda.",
+      "found": "Questi elementi della tua cassaforte compaiono nella scheda: correggili prima di convalidarla."
+    },
+    "form": {
+      "headline": "Titolo",
+      "headlineHint": "Il tuo mestiere in poche parole, senza nomi di aziende né date.",
+      "achievements": "Risultati chiave",
+      "achievementsHint": "Prima i meglio documentati. Mantieni i risultati quantificati.",
+      "include": "Mostra nella scheda",
+      "achievementTitle": "Titolo",
+      "achievementResult": "Esito",
+      "skills": "Competenze",
+      "skillsHint": "Solo competenze usate nei tuoi risultati.",
+      "conditions": "Condizioni cercate",
+      "showSalary": "Mostra la mia retribuzione fissa minima ({amount})",
+      "showLocations": "Mostra la mia zona di ricerca",
+      "allowProofUrls": "Consenti di mostrare i link pubblici delle mie prove",
+      "allowProofUrlsHint": "Disattivato per impostazione predefinita: un link può rivelare la tua identità. I link a un profilo personale sono sempre rifiutati.",
+      "save": "Salva",
+      "saved": "Scheda salvata. Convalidala per poterla condividere.",
+      "approve": "Convalida la scheda",
+      "approved": "Scheda convalidata.",
+      "regenerate": "Ripartire dalla mia memoria professionale",
+      "regenerateHint": "Le modifiche alla scheda saranno sostituite.",
+      "invalid": "Alcuni campi non sono validi o sono troppo lunghi."
+    },
+    "preview": "Anteprima — ciò che vede l’azienda",
+    "links": {
+      "title": "Link di condivisione",
+      "intro": "Ogni link è impossibile da indovinare, scade e può essere revocato in qualsiasi momento. I link inviati a un’azienda vengono creati automaticamente.",
+      "create": "Crea un link",
+      "created": "Link creato: copialo ora, non verrà più mostrato.",
+      "empty": "Ancora nessun link.",
+      "forContact": "Inviato per «{title}»",
+      "manual": "Link creato manualmente",
+      "createdAt": "Creato il {date}",
+      "expiresAt": "Scade il {date}",
+      "views": "{count, plural, =0 {Mai consultato} one {# consultazione} other {# consultazioni}}",
+      "active": "Attivo",
+      "expired": "Scaduto",
+      "revoked": "Revocato",
+      "revoke": "Revoca",
+      "notShareable": "Prima convalida la tua scheda (senza problemi di reidentificazione)."
+    }
+  },
+  "publicCard": {
+    "title": "Profilo anonimo",
+    "badge": "Profilo anonimo",
+    "years": "{years, plural, one {# anno di esperienza} other {# anni di esperienza}}",
+    "achievements": "Risultati chiave",
+    "skills": "Competenze",
+    "proven": "Dimostrata",
+    "declared": "Dichiarata",
+    "proof": "Vedi la prova",
+    "conditions": "Condizioni cercate",
+    "salary": "Retribuzione fissa minima: {amount} lordi annui",
+    "remote": "Telelavoro: {policy}",
+    "remoteDays": "{days, plural, one {Almeno # giorno di telelavoro} other {Almeno # giorni di telelavoro}}",
+    "contracts": "Contratti: {contracts}",
+    "location": "{label} (raggio di {km} km)",
+    "notice": "Profilo presentato da Coach Career IA. L’identità della persona candidata viene comunicata solo con il suo consenso.",
+    "reply": "Rispondi alla persona candidata",
+    "unavailableTitle": "Link non disponibile",
+    "unavailableText": "Questo link è scaduto o è stato revocato dalla persona candidata."
+  },
+  "contacts": {
+    "title": "Contatti",
+    "intro": "I tuoi contatti anonimi e le risposte delle aziende. Approvi ogni messaggio prima dell’invio.",
+    "quota": "Invii rimanenti oggi: {remaining} su {limit}.",
+    "emptyTitle": "Nessun contatto",
+    "emptyText": "Da un’opportunità, scegli «Contatta questa azienda»: il tuo agente prepara un messaggio che approvi tu.",
+    "emptyAction": "Vedi le mie opportunità",
+    "channel": {
+      "EMAIL": "E-mail di candidatura",
+      "APPLY_URL": "Pagina «Candidati»"
+    },
+    "status": {
+      "DRAFT": "Bozza",
+      "APPROVED": "Approvato, non inviato",
+      "SENDING": "Invio in corso",
+      "SENT": "Inviato"
+    },
+    "sentOn": "Inviato il {date}",
+    "submittedOn": "Trasmesso il {date}",
+    "replies": "{count, plural, =0 {Nessuna risposta} one {# risposta} other {# risposte}}",
+    "unread": "{count, plural, one {# non letta} other {# non lette}}",
+    "companyUnknown": "Azienda non indicata",
+    "open": "Apri",
+    "detail": {
+      "back": "← Tutti i contatti",
+      "recipient": "Destinatario: {email}",
+      "recipientHidden": "Destinatario: indirizzo di candidatura pubblicato nell’offerta (non mostrato)",
+      "applyPage": "Pagina di candidatura dell’offerta",
+      "original": "Offerta originale",
+      "opportunity": "Spiegazione della corrispondenza",
+      "offerClosed": "Questa offerta è chiusa.",
+      "language": "Lingua del messaggio: {language}",
+      "draftLlm": "Bozza scritta dall’IA a partire dalla tua scheda convalidata e dalla corrispondenza. Rileggila: partirà così com’è.",
+      "draftRules": "Bozza preparata da un modello, con la tua scheda convalidata. Rileggila e personalizzala.",
+      "appended": "Vengono aggiunti automaticamente: la menzione che il messaggio è stato preparato da un agente IA per una persona candidata anonima, il link alla tua scheda e il link di risposta.",
+      "subject": "Oggetto",
+      "body": "Messaggio",
+      "save": "Salva la bozza",
+      "saved": "Bozza salvata. Approvala per poterla inviare.",
+      "approve": "Approvo questo messaggio",
+      "approvedOn": "Approvato il {date}. Qualsiasi modifica annulla l’approvazione.",
+      "send": "Invia ora",
+      "sendHint": "Inviato dall’indirizzo della piattaforma, mai dal tuo.",
+      "sent": "Messaggio inviato.",
+      "paste": "Testo da incollare nella pagina «Candidati»",
+      "pasteHint": "Incolla questo testo nel modulo di candidatura dell’azienda. Nessun modulo viene compilato automaticamente.",
+      "copy": "Copia il testo",
+      "copied": "Copiato.",
+      "markSubmitted": "Ho trasmesso questo messaggio",
+      "discard": "Abbandona questo contatto",
+      "sentText": "Messaggio trasmesso",
+      "link": "Link della scheda: valido fino al {date}, {views, plural, =0 {mai consultato} one {consultato # volta} other {consultato # volte}}.",
+      "linkRevoked": "Link della scheda revocato: l’azienda non può più vedere la tua scheda né rispondere.",
+      "replies": "Risposte dell’azienda",
+      "noReply": "Ancora nessuna risposta. Riceverai un avviso via e-mail.",
+      "receivedOn": "Ricevuto il {date}",
+      "handover": "Rivelare la tua identità a questa azienda: presto disponibile. Per ora la tua identità non viene mai comunicata.",
+      "approved": "Messaggio approvato.",
+      "discardConfirm": "Abbandonare questo contatto? La bozza sarà eliminata."
+    },
+    "errors": {
+      "noChannel": "Questa offerta non pubblica alcun canale di candidatura utilizzabile.",
+      "guardRail": "Questa offerta non rispetta più i tuoi paletti: nessun contatto è possibile.",
+      "card": "La tua scheda anonima deve essere convalidata, senza problemi di reidentificazione, prima di qualsiasi condivisione.",
+      "notApproved": "Prima approva questo messaggio, nella sua versione attuale.",
+      "alreadySent": "Questo contatto è già stato effettuato.",
+      "reidentifying": "Il messaggio contiene un elemento che potrebbe identificarti: «{excerpt}». Modificalo.",
+      "quota": "Limite giornaliero raggiunto: {limit} invii ogni 24 ore. Riprova domani.",
+      "sendUnavailable": "L’invio di e-mail non è configurato su questo server.",
+      "sendFailed": "Invio non riuscito. Riprova più tardi.",
+      "invalid": "L’oggetto (massimo 160 caratteri) e il messaggio (da 20 a 3.000 caratteri) sono obbligatori."
+    }
+  },
+  "replyPage": {
+    "title": "Rispondi alla persona candidata",
+    "intro": "Il tuo messaggio sarà recapitato nello spazio della persona candidata, a proposito dell’offerta «{title}». Conosce solo ciò che scrivi qui.",
+    "hint": "Se desideri essere ricontattato, indica un indirizzo professionale nel messaggio. Non riceverai alcuna informazione sulla sua identità finché non lo deciderà.",
+    "label": "Il tuo messaggio",
+    "submit": "Invia la risposta",
+    "sent": "Messaggio recapitato. La persona candidata è stata avvisata.",
+    "invalid": "Il messaggio è vuoto o troppo lungo (massimo 5.000 caratteri).",
+    "rateLimited": "Troppi messaggi oggi per questo contatto. Riprova domani.",
+    "notFound": "Questo link di risposta è scaduto o non è più valido.",
+    "back": "← Torna alla scheda"
   }
 }

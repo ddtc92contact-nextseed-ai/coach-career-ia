@@ -118,6 +118,35 @@
       "footer": "Recibes este resumen {frequency, select, DAILY {diario} other {semanal}} porque has activado las alertas.",
       "unsubscribe": "Darse de baja",
       "unsubscribeText": "Para dejar de recibir estos correos: {url}"
+    },
+    "contact": {
+      "subject": "Candidatura anónima – {title}",
+      "disclosure": "Este mensaje lo ha preparado un agente de IA (Coach Career IA) en nombre de una persona candidata que desea permanecer en el anonimato por ahora. Lo ha revisado y aprobado antes de su envío.",
+      "cardText": "Tarjeta anónima del perfil: {url}",
+      "replyText": "Responder sin conocer su identidad: {url}",
+      "cardButton": "Ver la tarjeta anónima",
+      "replyButton": "Responder",
+      "expires": "Enlaces válidos hasta el {date}.",
+      "noReply": "Las respuestas a este correo no se leen: utiliza el enlace «Responder».",
+      "draft": {
+        "greeting": "Buenos días:",
+        "intro": "Soy el agente profesional de IA de una persona candidata interesada en su oferta «{title}».",
+        "profile": "Su perfil: {profile}.",
+        "profileYears": "Su perfil: {profile}, {years, plural, one {# año} other {# años}} de experiencia.",
+        "highlights": "Lo que responde a su necesidad:",
+        "provenSkills": "Competencias requeridas y probadas: {skills}.",
+        "skills": "Competencias requeridas: {skills}.",
+        "closing": "Si este perfil le interesa, encontrará a continuación su tarjeta anónima y un enlace para responder. La persona candidata decidirá después si revela su identidad.",
+        "signoff": "Atentamente,"
+      }
+    },
+    "reply": {
+      "subject": "Una empresa ha respondido a tu contacto",
+      "brand": "Coach Career IA",
+      "intro": "Una empresa ha respondido a tu contacto anónimo sobre la oferta «{title}».",
+      "view": "Leer la respuesta",
+      "viewText": "Leer la respuesta: {url}",
+      "privacy": "Tu identidad no se ha comunicado. Tú decides los siguientes pasos desde tu espacio."
     }
   },
   "common": {
@@ -166,7 +195,9 @@
       "radar": "Radar (admin)",
       "coach": "Coach IA",
       "billing": "Suscripción",
-      "billingSimulator": "Simulador de pagos (admin)"
+      "billingSimulator": "Simulador de pagos (admin)",
+      "card": "Mi tarjeta anónima",
+      "contacts": "Contactos"
     }
   },
   "dashboard": {
@@ -333,7 +364,23 @@
       "guardRailsOk": "Esta oferta cumple todos tus límites."
     },
     "emptyTitle": "Todavía no hay oportunidades",
-    "emptyText": "En cuanto complete su memoria de carrera y sus salvaguardas, su agente empezará a proponerle ofertas cualificadas."
+    "emptyText": "En cuanto complete su memoria de carrera y sus salvaguardas, su agente empezará a proponerle ofertas cualificadas.",
+    "contact": {
+      "title": "Contactar con esta empresa",
+      "email": "Tu agente redacta un mensaje breve para la dirección de candidatura publicada en la oferta, con un enlace a tu tarjeta anónima. Tú lo revisas y lo apruebas: no se envía nada sin ti.",
+      "applyUrl": "La oferta solo publica una página «Postular»: tu agente prepara el mensaje y el enlace de tu tarjeta, que pegas tú mismo.",
+      "none": "Esta oferta no publica ningún canal de candidatura utilizable: usa la oferta original.",
+      "button": "Contactar con esta empresa",
+      "existing": "Ver el contacto",
+      "cardNeeded": "Primero valida tu tarjeta anónima: es lo que descubrirá la empresa.",
+      "cardLink": "Mi tarjeta anónima",
+      "status": {
+        "DRAFT": "Borrador pendiente de tu revisión.",
+        "APPROVED": "Mensaje aprobado, todavía no enviado.",
+        "SENDING": "Enviando.",
+        "SENT": "Empresa contactada."
+      }
+    }
   },
   "memory": {
     "title": "Mi memoria de carrera",
@@ -1257,5 +1304,190 @@
       "none": "Ninguna señal",
       "notAvailable": "—"
     }
+  },
+  "card": {
+    "title": "Mi tarjeta anónima",
+    "intro": "Lo que una empresa ve de ti antes de que decidas revelar tu identidad. Se genera a partir de tu memoria profesional seudonimizada, nunca de tu caja fuerte de identidad.",
+    "status": {
+      "approved": "Tarjeta validada el {date}: se puede compartir.",
+      "notApproved": "Tarjeta no validada: todavía no se puede compartir.",
+      "generated": "Propuesta generada a partir de tu memoria: revísala, modifícala y valídala."
+    },
+    "issues": {
+      "title": "Antes de compartirla, corrige estos puntos",
+      "none": "No se ha detectado ningún dato identificativo en la tarjeta.",
+      "contact": "Dato de contacto: «{excerpt}»",
+      "url": "Enlace en el texto: «{excerpt}»",
+      "identityUrl": "Enlace a un perfil personal: «{excerpt}»",
+      "knownTerm": "Nombre que puede identificarte: «{excerpt}»",
+      "employer": "Nombre de empleador: «{excerpt}»",
+      "school": "Nombre de centro de estudios: «{excerpt}»",
+      "date": "Fecha precisa: «{excerpt}» (mejor una duración)",
+      "headlineMissing": "Añade un titular.",
+      "where": "{field} — {problem}"
+    },
+    "fields": {
+      "headline": "Titular",
+      "achievementTitle": "Logro {n} — título",
+      "achievementResult": "Logro {n} — resultado",
+      "achievementSkill": "Logro {n} — competencia",
+      "achievementProof": "Logro {n} — enlace de prueba",
+      "skill": "Competencias",
+      "location": "Zona de búsqueda",
+      "subject": "Asunto",
+      "body": "Mensaje"
+    },
+    "vault": {
+      "title": "Comprobación con tu caja fuerte de identidad",
+      "locked": "Desbloquea tu caja fuerte (página «Mi identidad») para comprobar también que tu nombre, tus empleadores, tus centros de estudios y tus enlaces no aparecen. Esta comprobación se hace solo en tu navegador.",
+      "clean": "Ningún nombre, empleador, centro o enlace de tu caja fuerte aparece en la tarjeta.",
+      "found": "Estos elementos de tu caja fuerte aparecen en la tarjeta: corrígelos antes de validarla."
+    },
+    "form": {
+      "headline": "Titular",
+      "headlineHint": "Tu profesión en pocas palabras, sin nombres de empresa ni fechas.",
+      "achievements": "Logros clave",
+      "achievementsHint": "Primero los mejor probados. Conserva los resultados cuantificados.",
+      "include": "Mostrar en la tarjeta",
+      "achievementTitle": "Título",
+      "achievementResult": "Resultado",
+      "skills": "Competencias",
+      "skillsHint": "Solo competencias utilizadas en tus logros.",
+      "conditions": "Condiciones buscadas",
+      "showSalary": "Mostrar mi salario fijo mínimo ({amount})",
+      "showLocations": "Mostrar mi zona de búsqueda",
+      "allowProofUrls": "Permitir mostrar los enlaces públicos de mis pruebas",
+      "allowProofUrlsHint": "Desactivado por defecto: un enlace puede revelar tu identidad. Los enlaces a un perfil personal siempre se rechazan.",
+      "save": "Guardar",
+      "saved": "Tarjeta guardada. Valídala para poder compartirla.",
+      "approve": "Validar la tarjeta",
+      "approved": "Tarjeta validada.",
+      "regenerate": "Volver a partir de mi memoria profesional",
+      "regenerateHint": "Tus cambios en la tarjeta se sustituirán.",
+      "invalid": "Algunos campos no son válidos o son demasiado largos."
+    },
+    "preview": "Vista previa — lo que ve la empresa",
+    "links": {
+      "title": "Enlaces para compartir",
+      "intro": "Cada enlace es imposible de adivinar, caduca y puede revocarse en cualquier momento. Los enlaces enviados a una empresa se crean automáticamente.",
+      "create": "Crear un enlace",
+      "created": "Enlace creado: cópialo ahora, no se volverá a mostrar.",
+      "empty": "Todavía no hay enlaces.",
+      "forContact": "Enviado para «{title}»",
+      "manual": "Enlace creado manualmente",
+      "createdAt": "Creado el {date}",
+      "expiresAt": "Caduca el {date}",
+      "views": "{count, plural, =0 {Nunca consultado} one {# consulta} other {# consultas}}",
+      "active": "Activo",
+      "expired": "Caducado",
+      "revoked": "Revocado",
+      "revoke": "Revocar",
+      "notShareable": "Primero valida tu tarjeta (sin problemas de reidentificación)."
+    }
+  },
+  "publicCard": {
+    "title": "Perfil anónimo",
+    "badge": "Perfil anónimo",
+    "years": "{years, plural, one {# año de experiencia} other {# años de experiencia}}",
+    "achievements": "Logros clave",
+    "skills": "Competencias",
+    "proven": "Probada",
+    "declared": "Declarada",
+    "proof": "Ver la prueba",
+    "conditions": "Condiciones buscadas",
+    "salary": "Salario fijo mínimo: {amount} brutos al año",
+    "remote": "Teletrabajo: {policy}",
+    "remoteDays": "{days, plural, one {Al menos # día de teletrabajo} other {Al menos # días de teletrabajo}}",
+    "contracts": "Contratos: {contracts}",
+    "location": "{label} (radio de {km} km)",
+    "notice": "Perfil presentado por Coach Career IA. La identidad de la persona candidata solo se comunica con su consentimiento.",
+    "reply": "Responder a la persona candidata",
+    "unavailableTitle": "Enlace no disponible",
+    "unavailableText": "Este enlace ha caducado o la persona candidata lo ha revocado."
+  },
+  "contacts": {
+    "title": "Contactos",
+    "intro": "Tus contactos anónimos y las respuestas de las empresas. Apruebas cada mensaje antes de su envío.",
+    "quota": "Envíos restantes hoy: {remaining} de {limit}.",
+    "emptyTitle": "Ningún contacto",
+    "emptyText": "Desde una oportunidad, elige «Contactar con esta empresa»: tu agente prepara un mensaje que tú apruebas.",
+    "emptyAction": "Ver mis oportunidades",
+    "channel": {
+      "EMAIL": "Correo de candidatura",
+      "APPLY_URL": "Página «Postular»"
+    },
+    "status": {
+      "DRAFT": "Borrador",
+      "APPROVED": "Aprobado, no enviado",
+      "SENDING": "Enviando",
+      "SENT": "Enviado"
+    },
+    "sentOn": "Enviado el {date}",
+    "submittedOn": "Transmitido el {date}",
+    "replies": "{count, plural, =0 {Ninguna respuesta} one {# respuesta} other {# respuestas}}",
+    "unread": "{count, plural, one {# sin leer} other {# sin leer}}",
+    "companyUnknown": "Empresa no indicada",
+    "open": "Abrir",
+    "detail": {
+      "back": "← Todos los contactos",
+      "recipient": "Destinatario: {email}",
+      "recipientHidden": "Destinatario: dirección de candidatura publicada en la oferta (no se muestra)",
+      "applyPage": "Página de candidatura de la oferta",
+      "original": "Oferta original",
+      "opportunity": "Explicación de la coincidencia",
+      "offerClosed": "Esta oferta está cerrada.",
+      "language": "Idioma del mensaje: {language}",
+      "draftLlm": "Borrador redactado por la IA a partir de tu tarjeta validada y de la coincidencia. Revísalo: se enviará tal cual.",
+      "draftRules": "Borrador preparado a partir de una plantilla, con tu tarjeta validada. Revísalo y personalízalo.",
+      "appended": "Se añaden automáticamente: la mención de que el mensaje lo ha preparado un agente de IA para una persona candidata anónima, el enlace a tu tarjeta y el enlace de respuesta.",
+      "subject": "Asunto",
+      "body": "Mensaje",
+      "save": "Guardar el borrador",
+      "saved": "Borrador guardado. Apruébalo para poder enviarlo.",
+      "approve": "Apruebo este mensaje",
+      "approvedOn": "Aprobado el {date}. Cualquier cambio anula la aprobación.",
+      "send": "Enviar ahora",
+      "sendHint": "Se envía desde la dirección de la plataforma, nunca desde la tuya.",
+      "sent": "Mensaje enviado.",
+      "paste": "Texto para pegar en la página «Postular»",
+      "pasteHint": "Pega este texto en el formulario de candidatura de la empresa. Ningún formulario se rellena automáticamente.",
+      "copy": "Copiar el texto",
+      "copied": "Copiado.",
+      "markSubmitted": "He transmitido este mensaje",
+      "discard": "Abandonar este contacto",
+      "sentText": "Mensaje transmitido",
+      "link": "Enlace de la tarjeta: válido hasta el {date}, {views, plural, =0 {nunca consultado} one {consultado # vez} other {consultado # veces}}.",
+      "linkRevoked": "Enlace de la tarjeta revocado: la empresa ya no puede ver tu tarjeta ni responder.",
+      "replies": "Respuestas de la empresa",
+      "noReply": "Todavía no hay respuesta. Se te avisará por correo electrónico.",
+      "receivedOn": "Recibido el {date}",
+      "handover": "Revelar tu identidad a esta empresa: próximamente. Por ahora, tu identidad nunca se comunica.",
+      "approved": "Mensaje aprobado.",
+      "discardConfirm": "¿Abandonar este contacto? Se eliminará el borrador."
+    },
+    "errors": {
+      "noChannel": "Esta oferta no publica ningún canal de candidatura utilizable.",
+      "guardRail": "Esta oferta ya no respeta tus límites: no es posible contactar.",
+      "card": "Tu tarjeta anónima debe estar validada, sin problemas de reidentificación, antes de compartirla.",
+      "notApproved": "Primero aprueba este mensaje, en su versión actual.",
+      "alreadySent": "Este contacto ya se ha realizado.",
+      "reidentifying": "El mensaje contiene un elemento que podría identificarte: «{excerpt}». Modifícalo.",
+      "quota": "Límite diario alcanzado: {limit} envíos cada 24 horas. Inténtalo de nuevo mañana.",
+      "sendUnavailable": "El envío de correos no está configurado en este servidor.",
+      "sendFailed": "El envío ha fallado. Inténtalo más tarde.",
+      "invalid": "El asunto (160 caracteres como máximo) y el mensaje (de 20 a 3.000 caracteres) son obligatorios."
+    }
+  },
+  "replyPage": {
+    "title": "Responder a la persona candidata",
+    "intro": "Tu mensaje se entregará en el espacio de la persona candidata, sobre la oferta «{title}». Solo conoce lo que escribas aquí.",
+    "hint": "Si quieres que te contacten, indica una dirección profesional en tu mensaje. No recibirás ninguna información sobre su identidad hasta que ella lo decida.",
+    "label": "Tu mensaje",
+    "submit": "Enviar la respuesta",
+    "sent": "Mensaje entregado. Se ha avisado a la persona candidata.",
+    "invalid": "Tu mensaje está vacío o es demasiado largo (5.000 caracteres como máximo).",
+    "rateLimited": "Demasiados mensajes hoy para este contacto. Inténtalo de nuevo mañana.",
+    "notFound": "Este enlace de respuesta ha caducado o ya no es válido.",
+    "back": "← Volver a la tarjeta"
   }
 }

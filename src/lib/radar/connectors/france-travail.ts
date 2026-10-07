@@ -1,4 +1,5 @@
 import { isValidPoint } from "@/lib/geo/distance";
+import { applyChannel } from "../apply";
 import type { HttpClient } from "../http";
 import {
   detectContractType,
@@ -73,7 +74,11 @@ export type FranceTravailOffer = {
     urlOrigine?: string;
     partenaires?: { nom?: string; url?: string }[];
   } | null;
-  // `contact` (nom, téléphone, courriel du recruteur) est volontairement ignoré.
+  /**
+   * Seuls le courriel de candidature et l'URL « Postuler » sont lus ; le nom,
+   * le téléphone et l'adresse postale du recruteur sont volontairement ignorés.
+   */
+  contact?: { courriel?: string; urlPostulation?: string } | null;
 };
 
 type SearchResponse = { resultats?: FranceTravailOffer[] };
@@ -189,6 +194,12 @@ export function franceTravailOfferUrl(id: string): string {
   return `https://candidat.francetravail.fr/offres/recherche/detail/${encodeURIComponent(id)}`;
 }
 
+/** Lien cité dans un texte libre, s'il n'y a pas d'adresse e-mail. */
+function urlIn(text: string | null | undefined): string | null {
+  if (!text || /@/.test(text)) return null;
+  return /https?:\/\/\S+/.exec(text)?.[0] ?? null;
+}
+
 export function mapFranceTravailOffer(offer: FranceTravailOffer): NormalizedOffer | null {
   const title = cleanString(offer.intitule);
   if (!offer.id || !title) return null;
@@ -238,5 +249,11 @@ export function mapFranceTravailOffer(offer: FranceTravailOffer): NormalizedOffe
     seniority:
       offer.experienceExige === "D" ? "Débutant accepté" : cleanString(offer.experienceLibelle),
     publishedAt: parseDate(offer.dateCreation),
+    // `courriel` contient parfois une phrase (« Pour postuler, utiliser le lien suivant : https://… »).
+    apply: applyChannel({
+      email: offer.contact?.courriel,
+      url: cleanString(offer.contact?.urlPostulation) ?? urlIn(offer.contact?.courriel),
+      description,
+    }),
   };
 }

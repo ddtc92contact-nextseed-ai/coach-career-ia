@@ -72,6 +72,9 @@ function offerData(offer: NormalizedOffer) {
     sector: offer.sector,
     seniority: offer.seniority,
     publishedAt: offer.publishedAt,
+    applyEmail: offer.apply?.email ?? null,
+    applyEmailPersonal: offer.apply?.email ? offer.apply.emailPersonal : false,
+    applyUrl: offer.apply?.url ?? null,
   };
 }
 

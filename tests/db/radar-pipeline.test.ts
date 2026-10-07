@@ -208,7 +208,7 @@ describe.skipIf(!url)("Market Radar (pipeline en base)", () => {
     expect((await byId("france_travail", "201TSTB")).duplicateOfId).toBeNull();
   });
 
-  it("enregistre le salaire annoncé, null sinon, et jamais le contact recruteur", async () => {
+  it("enregistre le salaire annoncé (null sinon) et seul le canal de candidature", async () => {
     await run("2026-10-07T06:00:00Z");
     const dev = await prisma.jobOffer.findUniqueOrThrow({
       where: { source_sourceId: { source: "france_travail", sourceId: "201TSTA" } },
@@ -220,7 +220,12 @@ describe.skipIf(!url)("Market Radar (pipeline en base)", () => {
       salaryPeriod: "YEAR",
       salaryVariable: "Prime, Intéressement",
     });
-    expect(JSON.stringify(dev)).not.toMatch(/Claire|acme-logiciel\.example/);
+    expect(dev).toMatchObject({
+      applyEmail: "recrutement@acme-logiciel.example",
+      applyEmailPersonal: false,
+      applyUrl: null,
+    });
+    expect(JSON.stringify(dev)).not.toMatch(/Claire|Fictive|01 23 45/);
 
     const noSalary = await prisma.jobOffer.findUniqueOrThrow({
       where: { source_sourceId: { source: "greenhouse", sourceId: "6148066004" } },

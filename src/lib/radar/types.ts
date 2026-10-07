@@ -1,4 +1,5 @@
 import type { ContractType, RemotePolicy, SalaryPeriod } from "@/generated/prisma/enums";
+import type { ApplyChannel } from "./apply";
 import type { HttpClient } from "./http";
 
 export type { ContractType, RemotePolicy, SalaryPeriod };
@@ -53,6 +54,8 @@ export type NormalizedOffer = {
   sector: string | null;
   seniority: string | null;
   publishedAt: Date | null;
+  /** Canal de candidature publié par la source (`apply.ts`), s'il y en a un. */
+  apply?: ApplyChannel | null;
 };
 
 export type FetchResult<Raw> = {

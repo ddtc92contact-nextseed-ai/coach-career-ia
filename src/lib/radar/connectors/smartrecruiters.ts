@@ -1,3 +1,4 @@
+import { applyChannel } from "../apply";
 import { HttpError } from "../http";
 import {
   cleanCity,
@@ -32,6 +33,7 @@ export type SmartRecruitersPosting = {
   name?: string;
   releasedDate?: string;
   postingUrl?: string;
+  applyUrl?: string;
   active?: boolean;
   visibility?: string;
   company?: { identifier?: string; name?: string } | null;
@@ -196,5 +198,6 @@ export function mapSmartRecruitersPosting(
         ? null
         : cleanString(posting.experienceLevel?.label),
     publishedAt: parseDate(posting.releasedDate),
+    apply: applyChannel({ url: posting.applyUrl, description }),
   };
 }
