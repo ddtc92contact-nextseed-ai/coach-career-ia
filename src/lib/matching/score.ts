@@ -78,7 +78,8 @@ function normalizeSimilarity(similarity: number, range: SemanticRange): number {
 function requirementFor(offer: MatchOffer, pattern: RegExp): string | null {
   if (pattern.test(normalizeText(offer.title))) return truncate(offer.title, 140);
   const hit = sentences(offer.description).find((s) => pattern.test(normalizeText(s)));
-  return hit ? truncate(hit, 140) : null;
+  // Sans ponctuation finale : la phrase est citée entre guillemets dans une autre phrase.
+  return hit ? truncate(hit.replace(/[\s.;:!]+$/, ""), 140) : null;
 }
 
 function seniorityComponent(candidateRank: number | null, offerRank: number | null) {
