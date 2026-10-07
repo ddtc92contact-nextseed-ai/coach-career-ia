@@ -1,0 +1,76 @@
+// Schéma de données coach-career-ia.
+//
+// Règle de confidentialité : les champs identifiants (nom, coordonnées,
+// employeur…) vivent dans des modèles d'identité dédiés, séparés du profil
+// partageable. Ici, seul `User` (et les tables techniques d'Auth.js) porte une
+// donnée identifiante : l'adresse e-mail de connexion. Toute table métier
+// future doit référencer `User.id` et chaque requête doit être filtrée par
+// l'utilisateur courant (voir `requireUser()`).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Compte d'identité. Donnée personnelle : `email`. Ne jamais l'exposer
+/// dans un profil anonymisé ni dans les logs.
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  accounts Account[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+/// Comptes de fournisseurs d'identité (Auth.js). Inutilisé tant que seule la
+/// connexion par lien magique est proposée, mais requis par l'adaptateur.
+model Account {
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+/// Sessions persistées en base : la déconnexion les révoque immédiatement.
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+/// Jetons de lien magique (stockés hachés par Auth.js).
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
