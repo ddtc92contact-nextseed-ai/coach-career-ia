@@ -15,6 +15,7 @@ const config = [
   {
     files: [
       "scripts/**",
+      "worker/**",
       "tests/**",
       "prisma/seed.ts",
       "src/lib/logger.ts",
