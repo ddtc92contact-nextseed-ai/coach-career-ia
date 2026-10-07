@@ -1666,8 +1666,8 @@
         "unknown": "Beloning: geen bedrag gevonden."
       },
       "remote": {
-        "met": "Thuiswerken: {days} dagen per week, voldoet aan uw minimum.",
-        "notMet": "Thuiswerken: {days} dagen per week, onder uw minimum.",
+        "met": "Thuiswerken: {days, plural, one {# dag} other {# dagen}} per week, voldoet aan uw minimum.",
+        "notMet": "Thuiswerken: {days, plural, one {# dag} other {# dagen}} per week, onder uw minimum.",
         "unknown": "Thuiswerken: niet vermeld."
       },
       "contract": {

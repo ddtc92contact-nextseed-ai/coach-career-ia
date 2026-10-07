@@ -157,19 +157,33 @@ const COUNT = `(?<![\\p{L}\\d])(\\d|${Object.keys(NUMBER_WORDS).join("|")})`;
 const DAYS = "(?:jours?|days?|días?|dias?|giorn[oi]|tage?n?|dagen?)";
 const REMOTE =
   "(?:t[ée]l[ée]travail|remote|home[- ]?office|teletrabajo|smart[- ]working|lavoro da remoto|thuiswerk\\w*|telewerk\\w*|à distance|a distanza|en remoto|da remoto)";
+/** « un seul jour », « a single day », « un solo día »… */
+const ONLY = "(?:seule?|single|solo|sol[oa]|einzigen?|enkele)\\s";
 const REMOTE_DAYS = [
-  new RegExp(`${COUNT}\\s?${DAYS}\\s(?:\\S+\\s){0,4}?${REMOTE}`, "iu"),
+  new RegExp(`${COUNT}\\s?(?:${ONLY})?${DAYS}\\s(?:\\S+\\s){0,4}?${REMOTE}`, "iu"),
   new RegExp(`${REMOTE}\\s(?:\\S+\\s){0,3}?${COUNT}\\s?${DAYS}`, "iu"),
 ];
 const FULL_REMOTE =
   /full[- ]?remote|100\s?%\s?(?:t[ée]l[ée]travail|remote|à distance)|enti[èe]rement (?:à distance|en t[ée]l[ée]travail)|fully remote|vollständig remote|completamente (?:da remoto|en remoto)|volledig (?:op afstand|thuis)/iu;
-const NO_REMOTE =
-  /100\s?%\s?(?:pr[ée]sentiel|on[- ]?site|sur site|vor ort|in sede|presencial|op kantoor)|(?:pas de|no|kein|sin|nessun|geen)\s(?:\S+\s)?(?:t[ée]l[ée]travail|remote|home[- ]?office|teletrabajo|smart working|thuiswerk\w*)|fully on[- ]?site|sur site uniquement/iu;
+const NO_REMOTE = new RegExp(
+  [
+    "100\\s?%\\s?(?:pr[ée]sentiel|on[- ]?site|sur site|vor ort|in sede|presencial|op kantoor)",
+    // « pas de télétravail », « sans télétravail », « no remote », « kein Homeoffice »…
+    `(?<![\\p{L}])(?:pas de|pas d['’]|sans|aucun\\w*|z[ée]ro|no|without|kein\\w*|ohne|sin|nada de|nessun\\w*|senza|niente|geen|zonder)\\s(?:\\S+\\s)?${REMOTE}`,
+    "fully on[- ]?site|full[- ]time on[- ]?site|on[- ]?site full[- ]time|sur site uniquement",
+    "(?:sur site|en pr[ée]sentiel|pr[ée]sentiel|au bureau) (?:à|a) temps (?:plein|complet)",
+    "(?:5|cinq|five) (?:jours|days) (?:sur site|au bureau|en pr[ée]sentiel|on[- ]?site|in the office)",
+  ].join("|"),
+  "iu",
+);
+/**
+ * Rappel d'un minimum (« au moins 2 jours », « pas moins de 2 jours », « not
+ * fewer than ») : la seule forme où une négation ne vaut pas concession.
+ */
+const AT_LEAST =
+  /au moins|pas moins d|minimum|at least|no (?:fewer|less) than|not (?:fewer|less) than|mindestens|nicht weniger als|al menos|no menos de|almeno|non meno di|minstens|niet minder dan|ten minste/iu;
 
-/** Jours de télétravail hebdomadaires mentionnés dans une phrase, ou `null`. */
-export function remoteDaysIn(sentence: string): number | null {
-  if (NO_REMOTE.test(sentence)) return 0;
-  if (FULL_REMOTE.test(sentence)) return 5;
+function countedRemoteDays(sentence: string): number | null {
   for (const pattern of REMOTE_DAYS) {
     const m = pattern.exec(sentence);
     if (m) {
@@ -179,6 +193,18 @@ export function remoteDaysIn(sentence: string): number | null {
     }
   }
   return null;
+}
+
+/** Jours de télétravail hebdomadaires mentionnés dans une phrase, ou `null`. */
+export function remoteDaysIn(sentence: string): number | null {
+  // « au moins 2 jours de télétravail » : le minimum rappelé fait foi.
+  if (AT_LEAST.test(sentence)) {
+    const n = countedRemoteDays(sentence);
+    if (n !== null) return n;
+  }
+  if (NO_REMOTE.test(sentence)) return 0;
+  if (FULL_REMOTE.test(sentence)) return 5;
+  return countedRemoteDays(sentence);
 }
 
 // --- Contrat -------------------------------------------------------------------------
@@ -200,6 +226,21 @@ const CONTRACT_PATTERNS: Record<ContractTypeCode, RegExp> = {
 export function contractsIn(text: string): ContractTypeCode[] {
   return (Object.keys(CONTRACT_PATTERNS) as ContractTypeCode[]).filter((code) =>
     CONTRACT_PATTERNS[code].test(text),
+  );
+}
+
+/**
+ * Négation ou refus juste avant le type de contrat, à deux mots près :
+ * « pas de CDD », « ni intérim », « refuse un CDD », « non un CDI ».
+ */
+const NEGATED_BEFORE =
+  /(?:^|[^\p{L}])(?:pas|non|ni|no|not|nor|never|jamais|aucun\w*|sans|without|kein\w*|nicht|weder|noch|ohne|sin|nunca|nessun\w*|senza|né|niet|geen|zonder|refuse\w*|exclu\w*|rejet\w*|reject\w*|declin\w*|rechaz\w*|rifiut\w*|weiger\w*)(?:\s+|\s*[dl]['’])(?:[\p{L}'’]+\s+){0,2}$/iu;
+
+/** Chaque mention du type de contrat dans la phrase : niée (`true`) ou non. */
+export function contractNegations(sentence: string, code: ContractTypeCode): boolean[] {
+  const pattern = new RegExp(CONTRACT_PATTERNS[code].source, "giu");
+  return [...sentence.matchAll(pattern)].map((m) =>
+    NEGATED_BEFORE.test(sentence.slice(Math.max(0, m.index - 40), m.index)),
   );
 }
 

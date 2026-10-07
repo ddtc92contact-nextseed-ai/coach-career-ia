@@ -122,6 +122,43 @@ describe("négociation : contrôle bloquant des messages", () => {
     expect(checkOutgoing("Elle tient à 2 jours de télétravail et à un CDI.", MANDATE)).toEqual([]);
   });
 
+  it("une phrase négative ne contourne pas le contrôle des points non négociables", () => {
+    const codes = (text: string) => checkOutgoing(text, MANDATE).map((i) => i.code);
+    for (const text of [
+      "Elle accepte qu'il n'y ait pas de télétravail.",
+      "Elle accepte un poste sans télétravail.",
+      "The candidate accepts no remote work.",
+      "Die Kandidatin akzeptiert kein Homeoffice.",
+      "La candidata acepta un puesto sin teletrabajo.",
+      "De kandidaat accepteert geen thuiswerk.",
+      "1 jour de télétravail, pas plus.",
+      "Un seul jour de télétravail lui conviendrait.",
+      "Elle accepte d'être sur site à temps plein.",
+      "Elle accepte au moins 1 jour de télétravail.",
+    ]) {
+      expect(codes(text), text).toContain("remoteDays");
+    }
+    for (const text of [
+      "Elle accepte un CDD et non un CDI.",
+      "Elle ne demande pas de télétravail particulier, mais un CDD lui irait.",
+      "Elle accepte de renoncer au CDI : pas de CDI, donc.",
+    ]) {
+      expect(codes(text), text).toContain("contractType");
+    }
+    // Rappels et refus explicites : autorisés.
+    for (const text of [
+      "Elle demande au moins 2 jours de télétravail.",
+      "Elle ne descendra pas en dessous de 2 jours de télétravail par semaine.",
+      "Pas moins de 2 jours de télétravail par semaine.",
+      "Not fewer than 2 remote days per week.",
+      "Pas de CDD, uniquement un CDI.",
+      "Elle n'acceptera ni CDD ni intérim : un CDI uniquement.",
+      "Elle refuse un CDD.",
+    ]) {
+      expect(codes(text), text).toEqual([]);
+    }
+  });
+
   it("anti-bluff : offre concurrente ou salaire actuel non déclarés au mandat", () => {
     const bluff = "Elle a reçu une autre offre à 70 000 €, merci d’en tenir compte.";
     expect(checkOutgoing(bluff, MANDATE).map((i) => i.code)).toEqual(["competingOffer"]);

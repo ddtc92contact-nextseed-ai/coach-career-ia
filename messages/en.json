@@ -1666,8 +1666,8 @@
         "unknown": "Compensation: no amount found."
       },
       "remote": {
-        "met": "Remote work: {days} days per week, meets your minimum.",
-        "notMet": "Remote work: {days} days per week, below your minimum.",
+        "met": "Remote work: {days, plural, one {# day} other {# days}} per week, meets your minimum.",
+        "notMet": "Remote work: {days, plural, one {# day} other {# days}} per week, below your minimum.",
         "unknown": "Remote work: not specified."
       },
       "contract": {

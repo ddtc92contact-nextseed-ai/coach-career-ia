@@ -1,9 +1,9 @@
 import {
   claimsIn,
+  contractNegations,
   contractsIn,
   findAmounts,
   findPercentages,
-  isNegated,
   mentionsClaim,
   remoteDaysIn,
   salaryAmounts,
@@ -90,15 +90,22 @@ export function checkOutgoing(
   );
   if (below) push("belowFloor", below.raw);
 
+  // Points non négociables : une phrase négative n'est PAS exemptée (« accepte
+  // qu'il n'y ait pas de télétravail », « un CDD et non un CDI » concèdent).
+  // Seuls le rappel d'un minimum et le refus explicite d'un autre contrat passent.
   for (const sentence of sentences(text)) {
-    const negated = isNegated(sentence);
-    if (mandate.remoteDaysMin !== null && !negated) {
+    if (mandate.remoteDaysMin !== null) {
       const days = remoteDaysIn(sentence);
       if (days !== null && days < mandate.remoteDaysMin) push("remoteDays", sentence);
     }
-    if (mandate.contractType && !negated) {
-      const other = contractsIn(sentence).find((c) => c !== mandate.contractType);
-      if (other) push("contractType", sentence);
+    const required = mandate.contractType;
+    if (required) {
+      // Un autre contrat cité sans être refusé, ou le contrat exigé nié.
+      const conceded =
+        contractsIn(sentence).some(
+          (c) => c !== required && contractNegations(sentence, c).some((negated) => !negated),
+        ) || contractNegations(sentence, required).some(Boolean);
+      if (conceded) push("contractType", sentence);
     }
   }
 

@@ -1666,8 +1666,8 @@
         "unknown": "Vergütung: kein Betrag gefunden."
       },
       "remote": {
-        "met": "Homeoffice: {days} Tage pro Woche, entspricht Ihrem Minimum.",
-        "notMet": "Homeoffice: {days} Tage pro Woche, unter Ihrem Minimum.",
+        "met": "Homeoffice: {days, plural, one {# Tag} other {# Tage}} pro Woche, entspricht Ihrem Minimum.",
+        "notMet": "Homeoffice: {days, plural, one {# Tag} other {# Tage}} pro Woche, unter Ihrem Minimum.",
         "unknown": "Homeoffice: nicht angegeben."
       },
       "contract": {

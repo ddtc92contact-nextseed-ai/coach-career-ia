@@ -1666,8 +1666,8 @@
         "unknown": "Remuneración: no se ha detectado ningún importe."
       },
       "remote": {
-        "met": "Teletrabajo: {days} días por semana, conforme a tu mínimo.",
-        "notMet": "Teletrabajo: {days} días por semana, por debajo de tu mínimo.",
+        "met": "Teletrabajo: {days, plural, one {# día} other {# días}} por semana, conforme a tu mínimo.",
+        "notMet": "Teletrabajo: {days, plural, one {# día} other {# días}} por semana, por debajo de tu mínimo.",
         "unknown": "Teletrabajo: no especificado."
       },
       "contract": {

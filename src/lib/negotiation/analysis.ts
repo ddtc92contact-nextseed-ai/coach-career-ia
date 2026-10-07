@@ -1,6 +1,6 @@
 import type { ContractTypeCode } from "@/lib/career/codes";
 import { bestSalary } from "./check";
-import { contractsIn, isNegated, remoteDaysIn, sentences } from "./figures";
+import { contractNegations, contractsIn, remoteDaysIn, sentences } from "./figures";
 import type { Mandate } from "./mandate";
 
 /**
@@ -48,9 +48,9 @@ export function analyseOffer(text: string, mandate: Mandate): OfferAnalysis {
 
   let contract: OfferAnalysis["contract"] = null;
   if (mandate.contractType) {
-    const found = sentences(text)
-      .filter((s) => !isNegated(s))
-      .flatMap(contractsIn);
+    const found = sentences(text).flatMap((s) =>
+      contractsIn(s).filter((c) => contractNegations(s, c).some((negated) => !negated)),
+    );
     const offeredContract = found.includes(mandate.contractType)
       ? mandate.contractType
       : (found[0] ?? null);

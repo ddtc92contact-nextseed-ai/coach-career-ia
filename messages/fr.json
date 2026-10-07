@@ -1666,8 +1666,8 @@
         "unknown": "Rémunération : aucun montant repéré."
       },
       "remote": {
-        "met": "Télétravail : {days} j par semaine, conforme à votre minimum.",
-        "notMet": "Télétravail : {days} j par semaine, sous votre minimum.",
+        "met": "Télétravail : {days, plural, one {# jour} other {# jours}} par semaine, conforme à votre minimum.",
+        "notMet": "Télétravail : {days, plural, one {# jour} other {# jours}} par semaine, sous votre minimum.",
         "unknown": "Télétravail : non précisé."
       },
       "contract": {

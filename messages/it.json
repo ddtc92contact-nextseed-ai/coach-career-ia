@@ -1666,8 +1666,8 @@
         "unknown": "Retribuzione: nessun importo individuato."
       },
       "remote": {
-        "met": "Smart working: {days} giorni a settimana, conforme al tuo minimo.",
-        "notMet": "Smart working: {days} giorni a settimana, sotto il tuo minimo.",
+        "met": "Smart working: {days, plural, one {# giorno} other {# giorni}} a settimana, conforme al tuo minimo.",
+        "notMet": "Smart working: {days, plural, one {# giorno} other {# giorni}} a settimana, sotto il tuo minimo.",
         "unknown": "Smart working: non specificato."
       },
       "contract": {
