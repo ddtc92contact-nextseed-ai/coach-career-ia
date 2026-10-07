@@ -3,8 +3,9 @@ import { cache } from "react";
 import Stripe from "stripe";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
-import { billingConfigFromEnv } from "./config";
+import { billingConfigFromEnv, billingMode, isSimulatedId } from "./config";
 import { entitlementsFor, type Entitlements } from "./entitlements";
+import { settleDueSimulatedSubscription } from "./simulator-server";
 
 /**
  * Point d'entrée serveur de la facturation. `server-only` : la clé Stripe ne
@@ -16,6 +17,12 @@ import { entitlementsFor, type Entitlements } from "./entitlements";
  * par TOUTE fonctionnalité soumise à l'offre. Mémoïsé pour la requête.
  */
 export const getEntitlements = cache(async (userId: string): Promise<Entitlements> => {
+  if (billingMode() === "simulator") {
+    // Échéance passée dans le simulateur : appliquée avant de lire l'offre.
+    await settleDueSimulatedSubscription(userId).catch((error: unknown) =>
+      logger.error("billing.simulator.settleFailed", { userId, error }),
+    );
+  }
   const account = await db.user.findUnique({
     where: { id: userId },
     select: { email: true, plan: true },
@@ -95,7 +102,8 @@ export async function closeStripeCustomer(
     select: { stripeCustomerId: true },
   });
   const customerId = account?.stripeCustomerId;
-  if (!customerId) return true;
+  // Client du simulateur : rien chez Stripe (l'état simulé part avec le compte).
+  if (!customerId || isSimulatedId(customerId)) return true;
   if (!stripe) {
     logger.warn("billing.customer.notClosed", { userId, reason: "billingNotConfigured" });
     return true;
