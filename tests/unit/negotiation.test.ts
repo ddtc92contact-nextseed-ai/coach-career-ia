@@ -26,6 +26,19 @@ import {
 } from "@/lib/negotiation/market";
 
 // Données fictives uniquement : aucun profil réel n'est envoyé à un fournisseur.
+// Phrases que le candidat peut écrire : aucune n'affirme un engagement signé.
+const ORDINARY_SENTENCES = [
+  "Clara pourra signer dès réception du contrat.",
+  "Elle va signer rapidement si ces points sont confirmés.",
+  "Le confirmo que el teletrabajo de 2 días es esencial.",
+  "Como confirmó en su último mensaje, el contrato es indefinido.",
+  "Wir freuen uns auf Ihre Zusage zu diesen Punkten.",
+  "Sobald der Vertrag unterzeichnet ist, kann sie am 4. Januar beginnen.",
+  "Graag nemen we de twee thuiswerkdagen op in de arbeidsovereenkomst.",
+  "Could you send the offer letter with these terms?",
+  "Ha firmato? No, non ancora.",
+];
+
 const MANDATE: Mandate = {
   salaryFloor: 55_000,
   salaryTarget: 62_000,
@@ -107,6 +120,10 @@ describe("négociation : lecture des chiffres", () => {
       expect(claimsIn(signed), signed).toEqual(["competingOffer"]);
     }
     expect(claimsIn("Elle n’a signé aucun contrat.")).toEqual([]);
+    // Phrases ordinaires du candidat : ni affirmation ni blocage (QA #41, tour 5).
+    for (const ordinary of ORDINARY_SENTENCES) {
+      expect(claimsIn(ordinary), ordinary).toEqual([]);
+    }
     expect(
       checkOutgoing("Elle a déjà signé une promesse d'embauche.", {
         ...MANDATE,
@@ -510,6 +527,16 @@ describe("négociation : repère du marché (offres publiées)", () => {
     expect(checkOutgoing(mixed, declared, { allowed }).map((i) => i.code)).toEqual([
       "competingOffer",
     ]);
+  });
+
+  it("texte du candidat : le modèle suivi d'une phrase ordinaire reste approuvable", () => {
+    for (const locale of ["fr", "es", "de"] as const) {
+      const counter = ruleCounterBody(withMarket({ locale }));
+      for (const ordinary of ORDINARY_SENTENCES) {
+        const text = `${counter}\n\n${ordinary}`;
+        expect(checkOutgoing(text, MANDATE), `${locale}: ${ordinary}`).toEqual([]);
+      }
+    }
   });
 
   it("le modèle cite la médiane comme offres publiées, dans les six langues, sans bluff", () => {

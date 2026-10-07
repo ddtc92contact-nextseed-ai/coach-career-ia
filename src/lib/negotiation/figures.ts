@@ -248,7 +248,7 @@ export function contractNegations(sentence: string, code: ContractTypeCode): boo
 
 /** Mention d'une offre concurrente (ou d'une autre proposition reçue). */
 const COMPETING_OFFER =
-  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)|promesse d['’]embauche|lettre d['’](?:embauche|engagement)|(?:a|ont|avons|ai) (?:d[ée]j[àa] )?sign[ée]|contrat sign[ée]|offer letter|signed (?:an? )?(?:contract|offer|deal)|(?:has|have|had|already) signed|holds? a signed|contrato firmado|(?:ha|han|he) firmado|firm[óo]|carta de oferta|(?:ha|hanno|ho) (?:gi[àa] )?firmato|contratto firmato|lettera di assunzione|zusage|unterschrieben|unterzeichnet|getekend|ondertekend|arbeidsovereenkomst/iu;
+  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)/iu;
 /**
  * Repère du marché présenté comme tel : « offres publiées », « published
  * offers »… (six langues). Exigé autour d'un chiffre qui ne vient que du repère.
@@ -359,9 +359,50 @@ export function mentionsOfferToSomeone(sentence: string): boolean {
   return OFFER_TO_SOMEONE.test(sentence);
 }
 
+/**
+ * Engagement déjà signé ou promesse obtenue (six langues). Mots entiers et
+ * contexte de possession ou de passé exigés : ce motif s'applique aussi au
+ * texte du candidat (« pourra signer », « confirmó », « Ihre Zusage zu… »,
+ * « send the offer letter » ne sont pas des affirmations).
+ */
+const SIGNED_COMMITMENT = new RegExp(
+  [
+    // fr
+    "(?:a|ont|avons|ai) (?:d[ée]j[àa] )?sign[ée](?:e|s)?",
+    "(?:a|ont|avons|ai) (?:d[ée]j[àa] )?(?:re[çc]u |obtenu )?une promesse d['’]embauche",
+    "dispose d['’]une promesse d['’]embauche",
+    "(?:a|ont|avons|ai|dispose d['’]un|d[ée]tient) (?:d[ée]j[àa] )?(?:un |le )?contrat sign[ée]",
+    // en
+    "(?:has|have|had|already) signed",
+    "(?:she|he|they|i|we) (?:already )?signed",
+    "holds? an? signed",
+    "(?:has|have|holds?|received|got) an? (?:signed )?offer letter",
+    // es
+    "(?:ya |ha |he )?firmó",
+    "(?:ha|han|he|hemos) (?:ya )?firmado",
+    "(?:tiene|tengo|tienen) (?:ya )?un contrato firmado",
+    // it
+    "(?:ha|hanno|ho|abbiamo) (?:già )?firmato (?:un|il|una|la|l['’])",
+    "(?:ha|hanno|ho) (?:già )?un contratto firmato",
+    "(?:ha|hanno|ho) (?:già )?ricevuto una lettera di assunzione",
+    // de
+    "(?:eine|die) zusage (?:erhalten|bekommen|von|über)",
+    "(?:hat|haben|habe) (?:\\p{L}+ ){0,3}(?:unterschrieben|unterzeichnet)",
+    // nl
+    "(?:heeft|hebben|heb) (?:al )?(?:\\p{L}+ ){0,3}(?:getekend|ondertekend)",
+    "getekende arbeidsovereenkomst",
+  ]
+    .map((p) => `(?<!\\p{L})${p}(?!\\p{L})`)
+    .join("|"),
+  "iu",
+);
+
+const claimsCompetingOffer = (text: string) =>
+  COMPETING_OFFER.test(text) || SIGNED_COMMITMENT.test(text);
+
 /** La phrase évoque-t-elle une offre reçue, ou faite par une autre entreprise ? */
 export function mentionsCompetingOffer(sentence: string): boolean {
-  return COMPETING_OFFER.test(sentence);
+  return claimsCompetingOffer(sentence);
 }
 /** Mention du salaire actuel ou passé du candidat. */
 const CURRENT_SALARY =
@@ -373,7 +414,7 @@ export type ClaimCode = "competingOffer" | "currentSalary";
 export function claimsIn(text: string): ClaimCode[] {
   const found = new Set<ClaimCode>();
   for (const sentence of sentences(text)) {
-    if (COMPETING_OFFER.test(sentence) && !isNegated(sentence)) found.add("competingOffer");
+    if (claimsCompetingOffer(sentence) && !isNegated(sentence)) found.add("competingOffer");
     if (CURRENT_SALARY.test(sentence) && !isNegated(sentence)) found.add("currentSalary");
   }
   return [...found];
@@ -381,5 +422,5 @@ export function claimsIn(text: string): ClaimCode[] {
 
 /** Le texte (faits déclarés par le candidat) évoque-t-il ce type de fait ? */
 export function mentionsClaim(text: string, claim: ClaimCode): boolean {
-  return (claim === "competingOffer" ? COMPETING_OFFER : CURRENT_SALARY).test(text);
+  return claim === "competingOffer" ? claimsCompetingOffer(text) : CURRENT_SALARY.test(text);
 }
