@@ -38,7 +38,18 @@ export default async function CareerMemoryPage() {
 
   return (
     <>
-      <PageTitle title={t("title")} intro={t("intro")} />
+      <PageTitle
+        title={t("title")}
+        intro={t("intro")}
+        action={
+          <div className="flex shrink-0 flex-col gap-1 sm:items-end">
+            <Link href="/app/memoire/importer" className={buttonClass}>
+              {t("importCta")}
+            </Link>
+            <p className="max-w-xs text-xs text-stone-500 sm:text-right">{t("importHint")}</p>
+          </div>
+        }
+      />
 
       <nav aria-label={t("sectionsNav")} className="mb-8 flex flex-wrap gap-2 text-sm">
         {(["experiences", "realisations", "competences"] as const).map((anchor) => (

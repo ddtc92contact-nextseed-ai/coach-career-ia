@@ -15,6 +15,7 @@ import {
 import { checkDocument, MAX_DOCUMENTS_PER_USER, type DocumentMimeType } from "./documents";
 import type {
   AchievementInput,
+  CareerMemoryDraft,
   ExperienceInput,
   GuardRailsInput,
   TextProofInput,
@@ -365,6 +366,71 @@ export async function getProofDocument(userId: string, proofId: string) {
     mimeType: proof.mimeType as DocumentMimeType,
     bytes: await readDocument(proof.storageKey),
   };
+}
+
+// --- Import IA validé -------------------------------------------------------------------
+
+export type ImportedDraftSummary = {
+  /** Identifiant créé pour chaque `ref` d'expérience du brouillon (lien avec le coffre d'identité). */
+  experienceIds: Record<string, string>;
+  experiences: number;
+  achievements: number;
+  skills: number;
+};
+
+/**
+ * Enregistre les éléments d'un brouillon d'import que le candidat a ACCEPTÉS
+ * (le tri est fait avant l'appel). Tout ou rien, en une transaction. Une
+ * réalisation démarre au niveau `DECLARED`, ou `DOCUMENT` si une preuve est jointe.
+ */
+export async function importDraft(
+  userId: string,
+  draft: CareerMemoryDraft,
+): Promise<ImportedDraftSummary> {
+  return db.$transaction(
+    async (tx) => {
+      const experienceIds: Record<string, string> = {};
+      for (const { ref, ...experience } of draft.experiences) {
+        const created = await tx.experience.create({
+          data: { userId, ...experienceData(experience) },
+          select: { id: true },
+        });
+        experienceIds[ref] = created.id;
+      }
+      for (const achievement of draft.achievements) {
+        const skillIds = await upsertSkills(tx, userId, achievement.skills);
+        await tx.achievement.create({
+          data: {
+            userId,
+            experienceId: achievement.experienceRef
+              ? (experienceIds[achievement.experienceRef] ?? null)
+              : null,
+            title: achievement.title,
+            context: achievement.context,
+            actions: achievement.actions,
+            result: achievement.result,
+            evidenceLevel: evidenceLevelFor("DECLARED", achievement.proofs.length),
+            skills: { create: skillIds.map((skillId) => ({ skillId })) },
+            proofs: {
+              create: achievement.proofs.map((proof) =>
+                proof.kind === "URL"
+                  ? { userId, kind: "URL" as const, url: proof.url }
+                  : { userId, kind: "REFERENCE" as const, referenceText: proof.referenceText },
+              ),
+            },
+          },
+        });
+      }
+      const skillIds = await upsertSkills(tx, userId, draft.skills);
+      return {
+        experienceIds,
+        experiences: draft.experiences.length,
+        achievements: draft.achievements.length,
+        skills: skillIds.length,
+      };
+    },
+    { timeout: 30_000 },
+  );
 }
 
 // --- Compétences ------------------------------------------------------------------------

@@ -23,6 +23,7 @@
     "db:up": "docker compose -f docker-compose.dev.yml up -d --wait",
     "db:down": "docker compose -f docker-compose.dev.yml down",
     "radar:run": "tsx scripts/radar-run.ts",
+    "ai:eval": "tsx scripts/ai-eval-import.ts",
     "worker": "node --import tsx worker/index.ts",
     "postinstall": "prisma generate"
   },
@@ -30,6 +31,7 @@
     "@auth/prisma-adapter": "^2.11.3",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "fflate": "^0.8.3",
     "next": "^16.4.0",
     "next-auth": "^5.0.0-beta.32",
     "next-intl": "^4.14.9",
@@ -38,6 +40,7 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "server-only": "^0.0.1",
+    "unpdf": "^1.8.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {

@@ -1,0 +1,70 @@
+{
+  "identity": {
+    "fullName": "Oliver Brandt",
+    "schools": [{ "name": "Kingsbridge School of Art", "degree": "BA (Hons) Interaction Design" }],
+    "organizations": ["Northwind Health"]
+  },
+  "experiences": [
+    {
+      "ref": "exp-1",
+      "employerName": "Pixelfjord Studio",
+      "roleTitle": "Lead Product Designer chez Pixelfjord Studio",
+      "startMonth": "2022-01",
+      "endMonth": null,
+      "seniority": "LEAD",
+      "contractType": "CDI",
+      "sector": "MARKETING_ADVERTISING",
+      "companySize": "S11_50",
+      "companyStage": "SME",
+      "responsibilities": "Direction du design produit dans une agence travaillant pour des clients de la santé et de la fintech.",
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-2",
+      "employerName": "Northwind Health",
+      "roleTitle": "Product Designer",
+      "startMonth": "2018-06",
+      "endMonth": "2021-12",
+      "seniority": "MID",
+      "contractType": "CDI",
+      "sector": "HEALTHCARE_HEALTHTECH",
+      "companySize": "S5001_PLUS",
+      "companyStage": "LARGE_CORP",
+      "responsibilities": "Conception des parcours patients numériques d'un groupe hospitalier privé.",
+      "rareDetails": ["Intervention publique à la conférence « UX for Hospitals 2020 »."]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Refonte d'une application de prise de rendez-vous patients",
+      "context": "Application de réservation d'un client du secteur de la santé (Northwind Health).",
+      "actions": "Pilotage de la refonte de l'application, de la recherche utilisateur aux maquettes finales.",
+      "result": "Taux de réservations abouties passé de 61 % à 78 %.",
+      "skills": ["Figma", "User research"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Design system partagé par quatre équipes produit",
+      "context": "",
+      "actions": "Construction et maintenance d'un design system dans Figma et Storybook.",
+      "result": "Utilisé par 4 équipes produit.",
+      "skills": ["Figma", "Storybook", "Design systems"],
+      "experienceRef": "exp-1",
+      "links": ["LINK 1"],
+      "rareDetails": []
+    },
+    {
+      "title": "Parcours de pré-admission en ligne",
+      "context": "Les admissions recevaient de nombreux appels pour la pré-admission.",
+      "actions": "Conception du parcours de pré-admission en ligne et plus de 40 tests utilisateurs avec des patients de 65 ans et plus.",
+      "result": "Appels au service des admissions réduits de 25 %.",
+      "skills": ["Usability testing", "Accessibility (WCAG 2.2)"],
+      "experienceRef": "exp-2",
+      "links": [],
+      "rareDetails": []
+    }
+  ],
+  "skills": ["Prototyping", "Figma", "Mentoring"]
+}

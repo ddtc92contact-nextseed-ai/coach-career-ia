@@ -1,0 +1,32 @@
+Camille Rousset
+Data engineer senior
+camille.rousset@exemple.test · 06 12 34 56 78 · Rennes
+https://www.linkedin.com/in/camille-rousset-exemple
+https://github.com/crousset-data
+
+EXPÉRIENCE
+
+Data engineer senior — Banque Lumière (CDI)
+Mars 2021 – aujourd'hui
+Banque de détail régionale, 3 200 salariés.
+- Migration de l'entrepôt de données Oracle vers une plateforme Snowflake + dbt : 40 pipelines migrés, coût d'infrastructure réduit de 35 %.
+- Mise en place de tests de qualité de données (Great Expectations) sur les flux réglementaires ; incidents de reporting divisés par trois.
+- Encadrement de deux data engineers juniors.
+
+Data engineer — Trajecto SAS (CDI)
+Septembre 2018 – février 2021
+Start-up de logistique urbaine (35 personnes), mission principale pour le client Groupe Hexadis.
+- Conception du pipeline d'ingestion temps réel des positions GPS (Kafka, Python) : 2 millions d'événements par jour.
+- Création du tableau de bord de suivi des tournées (Metabase).
+- Lauréate du hackathon interne « Trajecto Data Cup 2019 ».
+
+Stage data analyst — Banque Lumière
+Avril 2018 – août 2018
+- Automatisation de rapports hebdomadaires en Python.
+
+FORMATION
+Diplôme d'ingénieur, spécialité données — École Nationale des Données de Brest (2015-2018)
+
+COMPÉTENCES
+Python, SQL, dbt, Snowflake, Kafka, Airflow, Great Expectations, Metabase, Docker
+Anglais courant

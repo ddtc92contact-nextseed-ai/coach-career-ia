@@ -335,7 +335,9 @@
       "backedBy": "Respaldada por",
       "unprovenHint": "No probada: menciónela en un logro respaldado por una prueba.",
       "confirmDelete": "¿Eliminar la competencia «{name}»? Se quitará de los logros que la mencionan."
-    }
+    },
+    "importCta": "Importar mi trayectoria",
+    "importHint": "CV, exportación de LinkedIn o GitHub: la IA prepara un borrador que tú validas."
   },
   "guardRails": {
     "title": "Mis salvaguardas",
@@ -414,6 +416,117 @@
       "confirmHint": "Recuerde exportar sus datos antes de eliminar su cuenta.",
       "submit": "Eliminar definitivamente mi cuenta",
       "deleting": "Eliminando…"
+    }
+  },
+  "import": {
+    "title": "Importar mi trayectoria",
+    "back": "← Volver a mi memoria de carrera",
+    "intro": "Parte de tu CV, de tu exportación de LinkedIn o de tu GitHub: la IA prepara un borrador de memoria de carrera que validas elemento por elemento.",
+    "privacy": {
+      "title": "Qué pasa con tus datos",
+      "files": "Tus archivos se leen en memoria y luego se descartan: nunca se guardan en nuestros servidores.",
+      "contacts": "Tus datos de contacto (correo, teléfono, enlaces de perfil) se eliminan antes del análisis por nuestro proveedor de IA.",
+      "identity": "Los nombres (el tuyo, los de tus empleadores y tus centros de estudios) se guardan aparte: nunca entran en tu perfil.",
+      "review": "Nada se añade a tu memoria sin tu validación explícita."
+    },
+    "form": {
+      "cv": "CV",
+      "cvHint": "PDF o DOCX, {maxMb} MB como máximo.",
+      "linkedin": "Exportación de LinkedIn",
+      "linkedinHint": "Archivo ZIP con tus datos, {maxMb} MB como máximo. En LinkedIn: Preferencias › Privacidad de datos › Obtener una copia de tus datos.",
+      "github": "Usuario de GitHub",
+      "githubHint": "Tus repositorios públicos sirven de prueba de tus logros.",
+      "githubPlaceholder": "mi-usuario",
+      "submit": "Analizar mi trayectoria",
+      "notConfigured": "El análisis con IA aún no está activado en este servicio. Puedes completar tu memoria de carrera a mano."
+    },
+    "progress": {
+      "label": "Análisis en curso",
+      "reading": "Lectura de tus documentos",
+      "analysing": "Análisis con IA",
+      "drafting": "Preparación del borrador",
+      "elapsed": "{seconds, plural, one {# segundo} other {# segundos}}",
+      "slow": "Está tardando más de lo habitual. Espera un poco más, por favor.",
+      "cancel": "Cancelar"
+    },
+    "errors": {
+      "title": "La importación no se ha completado",
+      "noSource": "Añade al menos un CV, una exportación de LinkedIn o un usuario de GitHub.",
+      "cvTooLarge": "Este CV supera los {cvMaxMb} MB.",
+      "cvType": "Formato de CV no reconocido: envía un PDF o un DOCX sin protección.",
+      "cvEmpty": "No se ha podido leer ningún texto en este CV (¿documento escaneado?). Prueba con un PDF exportado desde tu procesador de textos.",
+      "linkedinTooLarge": "Archivos demasiado grandes: la exportación de LinkedIn está limitada a {linkedinMaxMb} MB y el CV a {cvMaxMb} MB.",
+      "linkedinInvalid": "Este archivo no es una exportación de LinkedIn reconocida (se espera un archivo ZIP).",
+      "githubInvalid": "Este usuario de GitHub no es válido.",
+      "githubNotFound": "Ninguna cuenta pública de GitHub corresponde a este usuario.",
+      "githubUnavailable": "GitHub no responde en este momento.",
+      "aiNotConfigured": "El análisis con IA no está activado en este servicio.",
+      "aiTimeout": "El análisis ha tardado demasiado.",
+      "aiUnavailable": "El servicio de análisis no está disponible temporalmente.",
+      "aiRateLimited": "El servicio de análisis está muy solicitado en este momento.",
+      "aiInvalidOutput": "El análisis ha producido un resultado inutilizable.",
+      "tooManyImports": "Has iniciado muchas importaciones recientemente. Vuelve a intentarlo dentro de una hora.",
+      "unauthorized": "Tu sesión ha caducado. Vuelve a iniciar sesión y empieza de nuevo.",
+      "network": "La conexión se ha interrumpido.",
+      "unknown": "Se ha producido un error inesperado.",
+      "retryHint": "Tus archivos no se conservan: basta con volver a lanzar el análisis.",
+      "retry": "Reintentar"
+    },
+    "review": {
+      "title": "Revisa el borrador",
+      "intro": "No se guarda nada hasta que lo valides. Acepta, modifica o rechaza cada elemento.",
+      "found": "Encontrado: {experiences, plural, =0 {ninguna experiencia} one {# experiencia} other {# experiencias}}, {achievements, plural, =0 {ningún logro} one {# logro} other {# logros}}, {skills, plural, =0 {ninguna otra competencia} one {# otra competencia} other {# otras competencias}}.",
+      "acceptAll": "Aceptar todo",
+      "rejectAll": "Rechazar todo",
+      "accept": "Aceptar",
+      "edit": "Modificar",
+      "reject": "Rechazar",
+      "applyEdit": "Validar y aceptar",
+      "status": {
+        "pending": "Por validar",
+        "accepted": "Aceptado",
+        "edited": "Modificado y aceptado",
+        "rejected": "Rechazado"
+      },
+      "experiencesTitle": "Experiencias",
+      "achievementsTitle": "Logros",
+      "skillsTitle": "Otras competencias",
+      "skillsIntro": "Toca una competencia para añadirla o quitarla.",
+      "empty": "No se ha encontrado ningún elemento de este tipo.",
+      "linkedTo": "Vinculado a: {role}",
+      "linkedRejected": "Esta experiencia está rechazada: el logro se guardará sin vínculo.",
+      "proofs": "Prueba adjunta",
+      "removeProof": "Quitar",
+      "flags": {
+        "identityRemoved": "Se han eliminado nombres o datos de contacto de este texto (sustituidos por […]). Reléelo.",
+        "identifyingLink": "Este enlace contiene tu usuario de GitHub: sigue siendo privado, pero permite identificarte. Quítalo si lo prefieres.",
+        "adjusted": "Algunos valores se han completado automáticamente: compruébalos.",
+        "rareDetail": "Detalle poco común que podría permitir reconocerte:"
+      },
+      "identity": {
+        "title": "Datos identificativos detectados",
+        "intro": "Se guardan aparte: no se almacenan en nuestros servidores y no aparecerán en tu perfil.",
+        "vault": "La caja fuerte de identidad cifrada llegará pronto. Mientras tanto, estos datos se olvidarán en cuanto salgas de esta página.",
+        "fullName": "Nombre",
+        "emails": "Correos electrónicos",
+        "phones": "Teléfonos",
+        "links": "Enlaces personales",
+        "employers": "Empleadores",
+        "schools": "Centros de estudios",
+        "organizations": "Otras organizaciones"
+      },
+      "saveHint": "Solo los elementos aceptados se añadirán a tu memoria.",
+      "save": "{count, plural, =0 {Ningún elemento aceptado} one {Guardar # elemento} other {Guardar # elementos}}",
+      "saving": "Guardando…",
+      "restart": "Empezar de nuevo"
+    },
+    "done": {
+      "title": "Tu memoria de carrera está al día",
+      "text": "Añadido: {experiences, plural, =0 {ninguna experiencia} one {# experiencia} other {# experiencias}}, {achievements, plural, =0 {ningún logro} one {# logro} other {# logros}} y {skills, plural, =0 {ninguna competencia} one {# competencia} other {# competencias}}.",
+      "next": "Añade ahora pruebas a tus logros declarados: son lo que más cuenta.",
+      "identityForgotten": "Los datos identificativos detectados no se han guardado.",
+      "cta": "Ver mi memoria de carrera",
+      "again": "Importar otras fuentes"
     }
   },
   "codes": {

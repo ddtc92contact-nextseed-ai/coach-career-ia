@@ -335,7 +335,9 @@
       "backedBy": "Belegt durch",
       "unprovenHint": "Nicht belegt: Nennen Sie sie in einem Erfolg mit Nachweis.",
       "confirmDelete": "Die Kompetenz „{name}“ löschen? Sie wird aus allen Erfolgen entfernt, in denen sie genannt wird."
-    }
+    },
+    "importCta": "Meinen Werdegang importieren",
+    "importHint": "Lebenslauf, LinkedIn-Export oder GitHub: Die KI erstellt einen Entwurf, den Sie freigeben."
   },
   "guardRails": {
     "title": "Meine Leitplanken",
@@ -414,6 +416,117 @@
       "confirmHint": "Denken Sie daran, Ihre Daten zu exportieren, bevor Sie Ihr Konto löschen.",
       "submit": "Mein Konto endgültig löschen",
       "deleting": "Wird gelöscht…"
+    }
+  },
+  "import": {
+    "title": "Meinen Werdegang importieren",
+    "back": "← Zurück zu meinem Karrieregedächtnis",
+    "intro": "Starten Sie mit Ihrem Lebenslauf, Ihrem LinkedIn-Export oder Ihrem GitHub: Die KI erstellt einen Entwurf Ihres Karrieregedächtnisses, den Sie Punkt für Punkt freigeben.",
+    "privacy": {
+      "title": "Was mit Ihren Daten geschieht",
+      "files": "Ihre Dateien werden im Arbeitsspeicher gelesen und danach verworfen: Sie werden nie auf unseren Servern gespeichert.",
+      "contacts": "Ihre Kontaktdaten (E-Mail, Telefon, Profillinks) werden entfernt, bevor unser KI-Anbieter den Text analysiert.",
+      "identity": "Namen (Ihrer, die Ihrer Arbeitgeber und Ihrer Hochschulen) werden getrennt gehalten: Sie gelangen nie in Ihr Profil.",
+      "review": "Ohne Ihre ausdrückliche Freigabe wird nichts in Ihr Gedächtnis übernommen."
+    },
+    "form": {
+      "cv": "Lebenslauf",
+      "cvHint": "PDF oder DOCX, maximal {maxMb} MB.",
+      "linkedin": "LinkedIn-Export",
+      "linkedinHint": "ZIP-Archiv Ihrer Daten, maximal {maxMb} MB. Auf LinkedIn: Einstellungen › Datenschutz › Kopie Ihrer Daten anfordern.",
+      "github": "GitHub-Benutzername",
+      "githubHint": "Ihre öffentlichen Repositorys dienen als Belege für Ihre Erfolge.",
+      "githubPlaceholder": "mein-name",
+      "submit": "Werdegang analysieren",
+      "notConfigured": "Die KI-Analyse ist für diesen Dienst noch nicht aktiviert. Sie können Ihr Karrieregedächtnis von Hand ausfüllen."
+    },
+    "progress": {
+      "label": "Analyse läuft",
+      "reading": "Ihre Dokumente werden gelesen",
+      "analysing": "KI-Analyse",
+      "drafting": "Entwurf wird vorbereitet",
+      "elapsed": "{seconds, plural, one {# Sekunde} other {# Sekunden}}",
+      "slow": "Das dauert länger als üblich. Bitte haben Sie noch etwas Geduld.",
+      "cancel": "Abbrechen"
+    },
+    "errors": {
+      "title": "Der Import ist fehlgeschlagen",
+      "noSource": "Fügen Sie mindestens einen Lebenslauf, einen LinkedIn-Export oder einen GitHub-Benutzernamen hinzu.",
+      "cvTooLarge": "Dieser Lebenslauf ist größer als {cvMaxMb} MB.",
+      "cvType": "Lebenslaufformat nicht erkannt: Senden Sie eine ungeschützte PDF- oder DOCX-Datei.",
+      "cvEmpty": "In diesem Lebenslauf konnte kein Text gelesen werden (gescanntes Dokument?). Versuchen Sie ein aus Ihrer Textverarbeitung exportiertes PDF.",
+      "linkedinTooLarge": "Dateien zu groß: Der LinkedIn-Export ist auf {linkedinMaxMb} MB und der Lebenslauf auf {cvMaxMb} MB begrenzt.",
+      "linkedinInvalid": "Diese Datei ist kein erkannter LinkedIn-Export (ZIP-Archiv erwartet).",
+      "githubInvalid": "Dieser GitHub-Benutzername ist ungültig.",
+      "githubNotFound": "Zu diesem Benutzernamen gibt es kein öffentliches GitHub-Konto.",
+      "githubUnavailable": "GitHub antwortet im Moment nicht.",
+      "aiNotConfigured": "Die KI-Analyse ist für diesen Dienst nicht aktiviert.",
+      "aiTimeout": "Die Analyse hat zu lange gedauert.",
+      "aiUnavailable": "Der Analysedienst ist vorübergehend nicht verfügbar.",
+      "aiRateLimited": "Der Analysedienst ist gerade stark ausgelastet.",
+      "aiInvalidOutput": "Die Analyse hat ein unbrauchbares Ergebnis geliefert.",
+      "tooManyImports": "Sie haben in letzter Zeit viele Importe gestartet. Versuchen Sie es in einer Stunde erneut.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und beginnen Sie von vorn.",
+      "network": "Die Verbindung wurde unterbrochen.",
+      "unknown": "Ein unerwarteter Fehler ist aufgetreten.",
+      "retryHint": "Ihre Dateien werden nicht aufbewahrt: Starten Sie die Analyse einfach erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "review": {
+      "title": "Entwurf prüfen",
+      "intro": "Nichts wird gespeichert, bevor Sie es freigeben. Übernehmen, bearbeiten oder verwerfen Sie jeden Eintrag.",
+      "found": "Gefunden: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}}, {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}}, {skills, plural, =0 {keine weitere Kompetenz} one {# weitere Kompetenz} other {# weitere Kompetenzen}}.",
+      "acceptAll": "Alle übernehmen",
+      "rejectAll": "Alle verwerfen",
+      "accept": "Übernehmen",
+      "edit": "Bearbeiten",
+      "reject": "Verwerfen",
+      "applyEdit": "Bestätigen und übernehmen",
+      "status": {
+        "pending": "Zu prüfen",
+        "accepted": "Übernommen",
+        "edited": "Bearbeitet und übernommen",
+        "rejected": "Verworfen"
+      },
+      "experiencesTitle": "Berufserfahrung",
+      "achievementsTitle": "Erfolge",
+      "skillsTitle": "Weitere Kompetenzen",
+      "skillsIntro": "Tippen Sie auf eine Kompetenz, um sie hinzuzufügen oder zu entfernen.",
+      "empty": "Kein Eintrag dieser Art gefunden.",
+      "linkedTo": "Verknüpft mit: {role}",
+      "linkedRejected": "Diese Station ist verworfen: Der Erfolg wird ohne Verknüpfung gespeichert.",
+      "proofs": "Beigefügter Beleg",
+      "removeProof": "Entfernen",
+      "flags": {
+        "identityRemoved": "Namen oder Kontaktdaten wurden aus diesem Text entfernt (ersetzt durch […]). Bitte lesen Sie ihn noch einmal.",
+        "identifyingLink": "Dieser Link enthält Ihren GitHub-Benutzernamen: Er bleibt privat, kann Sie aber identifizieren. Entfernen Sie ihn, wenn Sie möchten.",
+        "adjusted": "Einige Werte wurden automatisch ergänzt: Bitte prüfen Sie sie.",
+        "rareDetail": "Seltenes Detail, an dem man Sie erkennen könnte:"
+      },
+      "identity": {
+        "title": "Erkannte identifizierende Daten",
+        "intro": "Sie werden getrennt gehalten: Sie werden nicht auf unseren Servern gespeichert und erscheinen nicht in Ihrem Profil.",
+        "vault": "Der verschlüsselte Identitätstresor kommt bald. Bis dahin werden diese Daten vergessen, sobald Sie diese Seite verlassen.",
+        "fullName": "Name",
+        "emails": "E-Mail-Adressen",
+        "phones": "Telefonnummern",
+        "links": "Persönliche Links",
+        "employers": "Arbeitgeber",
+        "schools": "Hochschulen und Schulen",
+        "organizations": "Weitere Organisationen"
+      },
+      "saveHint": "Nur übernommene Einträge werden Ihrem Gedächtnis hinzugefügt.",
+      "save": "{count, plural, =0 {Kein Eintrag übernommen} one {# Eintrag speichern} other {# Einträge speichern}}",
+      "saving": "Wird gespeichert…",
+      "restart": "Neu beginnen"
+    },
+    "done": {
+      "title": "Ihr Karrieregedächtnis ist aktuell",
+      "text": "Hinzugefügt: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}}, {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}} und {skills, plural, =0 {keine Kompetenz} one {# Kompetenz} other {# Kompetenzen}}.",
+      "next": "Fügen Sie jetzt Belege zu Ihren angegebenen Erfolgen hinzu: Sie zählen am meisten.",
+      "identityForgotten": "Die erkannten identifizierenden Daten wurden nicht gespeichert.",
+      "cta": "Mein Karrieregedächtnis ansehen",
+      "again": "Weitere Quellen importieren"
     }
   },
   "codes": {
