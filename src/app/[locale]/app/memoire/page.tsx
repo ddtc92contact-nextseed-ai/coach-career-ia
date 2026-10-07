@@ -86,7 +86,9 @@ export default async function CareerMemoryPage() {
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       <Badge>{tc(`seniority.${experience.seniority}`)}</Badge>
-                      <Badge>{tc(`contractType.${experience.contractType as ContractTypeCode}`)}</Badge>
+                      <Badge>
+                        {tc(`contractType.${experience.contractType as ContractTypeCode}`)}
+                      </Badge>
                       <Badge>
                         {t("experiences.achievementCount", {
                           count: experience._count.achievements,

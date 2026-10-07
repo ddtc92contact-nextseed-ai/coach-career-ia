@@ -12,8 +12,8 @@ import {
   SubmitButton,
   type FormState,
 } from "@/components/form";
-import { DOCUMENT_ACCEPT, MAX_DOCUMENT_BYTES } from "@/lib/career/documents";
-import { LIMITS } from "@/lib/career/schemas";
+import { checkDocumentSize, DOCUMENT_ACCEPT, MAX_DOCUMENT_BYTES } from "@/lib/career/documents";
+import { LIMITS, type ValidationError } from "@/lib/career/schemas";
 import { addProof } from "./actions";
 
 const KINDS = ["URL", "DOCUMENT", "REFERENCE"] as const;
@@ -27,7 +27,22 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
     addProof.bind(null, achievementId),
     {},
   );
-  const e = state.errors ?? {};
+  // Erreur détectée dans le navigateur (fichier trop lourd) : l'action n'est pas appelée.
+  const [fileError, setFileError] = useState<ValidationError | undefined>();
+  const e = fileError ? { file: fileError } : (state.errors ?? {});
+
+  const submit = (formData: FormData) => {
+    if (kind === "DOCUMENT") {
+      const file = formData.get("file");
+      const error = checkDocumentSize(file instanceof File ? file : null);
+      if (error) {
+        setFileError(error);
+        return;
+      }
+    }
+    setFileError(undefined);
+    action(formData);
+  };
 
   return (
     <div className="rounded-xl border border-stone-200 bg-white p-4 sm:p-5">
@@ -39,7 +54,10 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
             type="button"
             role="radio"
             aria-checked={kind === k}
-            onClick={() => setKind(k)}
+            onClick={() => {
+              setKind(k);
+              setFileError(undefined);
+            }}
             className={`rounded-full border px-3 py-1.5 text-sm font-medium ${
               kind === k
                 ? "border-stone-900 bg-stone-900 text-white"
@@ -51,7 +69,7 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
         ))}
       </div>
 
-      <ActionForm key={kind} action={action} resetOn={state} className="mt-4 space-y-4">
+      <ActionForm key={kind} action={submit} resetOn={state} className="mt-4 space-y-4">
         <input type="hidden" name="kind" value={kind} />
         <FormError errors={e._form ? state.errors : undefined} />
         {kind === "URL" ? (
@@ -77,6 +95,16 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
               {...fieldProps("file", e.file, "hint")}
               type="file"
               accept={DOCUMENT_ACCEPT}
+              onChange={(event) => {
+                const input = event.currentTarget;
+                const error = checkDocumentSize(input.files?.[0]);
+                if (error === "fileTooLarge") {
+                  input.value = "";
+                  setFileError(error);
+                } else {
+                  setFileError(undefined);
+                }
+              }}
               className="mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-stone-100 file:px-3 file:py-2 file:font-medium"
             />
           </Field>

@@ -7,14 +7,24 @@ describe("codes partagés", () => {
   it.each([
     ["VisibilityStatus", codes.VISIBILITY_STATUSES],
     ["Seniority", codes.SENIORITIES],
-    ["ContractType", codes.CONTRACT_TYPES],
     ["CompanySize", codes.COMPANY_SIZES],
     ["CompanyStage", codes.COMPANY_STAGES],
     ["EvidenceLevel", codes.EVIDENCE_LEVELS],
     ["ProofKind", codes.PROOF_KINDS],
-    ["RemotePolicy", codes.REMOTE_POLICIES],
   ] as const)("%s correspond à l'enum Prisma", (name, list) => {
     expect(Object.values(PrismaEnums[name]).sort()).toEqual([...list].sort());
+  });
+
+  // Enums partagés avec le Market Radar : le candidat n'en choisit qu'une partie
+  // (jamais les valeurs « inconnu » / « autre » du radar).
+  it.each([
+    ["ContractType", codes.CONTRACT_TYPES],
+    ["RemotePolicy", codes.REMOTE_POLICIES],
+  ] as const)("%s est un sous-ensemble explicite de l'enum Prisma", (name, list) => {
+    const values: string[] = Object.values(PrismaEnums[name]);
+    for (const code of list) expect(values).toContain(code);
+    expect(list).not.toContain("UNKNOWN");
+    expect(list).not.toContain("OTHER");
   });
 
   it.each([

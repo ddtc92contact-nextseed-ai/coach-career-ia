@@ -75,6 +75,7 @@ export const COMPLETENESS_STEPS = [
   "addExperience",
   "addAchievement",
   "addProof",
+  "moreProofs",
   "provenSkills",
   "setSalary",
   "setLocation",
@@ -100,9 +101,10 @@ export function computeCompleteness(input: CompletenessInput): Completeness {
   const proven = input.achievements.filter((a) => isProven(a.evidenceLevel)).length;
   const declared = input.achievements.length - proven;
 
+  const achievementPoints = proven * 15 + declared * 5;
   let score = 0;
   if (input.experienceCount > 0) score += 15;
-  score += Math.min(45, proven * 15 + declared * 5);
+  score += Math.min(45, achievementPoints);
   score += input.provenSkillCount >= 3 ? 10 : input.provenSkillCount > 0 ? 5 : 0;
   if (input.guardRails.hasSalary) score += 10;
   if (input.guardRails.hasLocationOrRemote) score += 10;
@@ -112,6 +114,8 @@ export function computeCompleteness(input: CompletenessInput): Completeness {
     addExperience: input.experienceCount > 0,
     addAchievement: input.achievements.length > 0,
     addProof: proven > 0,
+    // Toutes les étapes faites ⇔ score de 100 : on n'affiche jamais « complet » en dessous.
+    moreProofs: achievementPoints >= 45,
     provenSkills: input.provenSkillCount >= 3,
     setSalary: input.guardRails.hasSalary,
     setLocation: input.guardRails.hasLocationOrRemote,

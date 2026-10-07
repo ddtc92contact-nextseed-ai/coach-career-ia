@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import {
   checkDocument,
+  checkDocumentSize,
   MAX_DOCUMENT_BYTES,
   safeFileName,
   sniffDocumentType,
@@ -27,6 +28,17 @@ describe("pièces justificatives", () => {
     const big = Buffer.concat([PDF, Buffer.alloc(MAX_DOCUMENT_BYTES)]);
     expect(checkDocument(big)).toEqual({ ok: false, error: "fileTooLarge" });
     expect(checkDocument(PDF)).toEqual({ ok: true, mimeType: "application/pdf" });
+  });
+
+  it("refuse dans le navigateur un fichier trop lourd, sans attendre le serveur", () => {
+    // Au-delà de `bodySizeLimit` (6 Mo), l'action serveur échouerait avant toute validation.
+    const sevenMb = new File([new Uint8Array(7 * 1024 * 1024)], "preuve.pdf");
+    expect(checkDocumentSize(sevenMb)).toBe("fileTooLarge");
+    expect(checkDocumentSize({ size: MAX_DOCUMENT_BYTES + 1 })).toBe("fileTooLarge");
+    expect(checkDocumentSize({ size: MAX_DOCUMENT_BYTES })).toBeNull();
+    expect(checkDocumentSize(new File([PDF], "preuve.pdf"))).toBeNull();
+    expect(checkDocumentSize(new File([], ""))).toBe("fileRequired");
+    expect(checkDocumentSize(null)).toBe("fileRequired");
   });
 
   it("produit un nom de téléchargement sûr avec l'extension du type réel", () => {

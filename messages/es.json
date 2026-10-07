@@ -57,6 +57,12 @@
     "text": "Esta página no existe o se ha movido.",
     "back": "Volver al inicio"
   },
+  "errorPage": {
+    "title": "Se ha producido un error",
+    "text": "No se ha podido completar la operación. Sus datos guardados no se ven afectados: vuelva a intentarlo en unos instantes.",
+    "retry": "Reintentar",
+    "back": "Volver al inicio"
+  },
   "auth": {
     "login": {
       "metaTitle": "Iniciar sesión",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Probar un logro",
           "text": "Adjunte un enlace, un documento o un testimonio."
+        },
+        "moreProofs": {
+          "title": "Demostrar más logros",
+          "text": "Tres logros demostrados otorgan la puntuación máxima."
         },
         "provenSkills": {
           "title": "Tres competencias probadas",

@@ -10,6 +10,7 @@ const STEP_LINKS: Record<CompletenessStep, string> = {
   addExperience: "/app/memoire/experiences/nouvelle",
   addAchievement: "/app/memoire/realisations/nouvelle",
   addProof: "/app/memoire#realisations",
+  moreProofs: "/app/memoire/realisations/nouvelle",
   provenSkills: "/app/memoire#competences",
   setSalary: "/app/garde-fous",
   setLocation: "/app/garde-fous",

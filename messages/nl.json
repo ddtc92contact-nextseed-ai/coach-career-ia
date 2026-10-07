@@ -57,6 +57,12 @@
     "text": "Deze pagina bestaat niet of is verplaatst.",
     "back": "Terug naar de startpagina"
   },
+  "errorPage": {
+    "title": "Er is iets misgegaan",
+    "text": "De bewerking kon niet worden voltooid. Uw opgeslagen gegevens zijn niet getroffen: probeer het zo meteen opnieuw.",
+    "retry": "Opnieuw proberen",
+    "back": "Terug naar de startpagina"
+  },
   "auth": {
     "login": {
       "metaTitle": "Inloggen",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Een prestatie onderbouwen",
           "text": "Voeg een link, een document of een getuigenis toe."
+        },
+        "moreProofs": {
+          "title": "Meer prestaties aantonen",
+          "text": "Drie aangetoonde prestaties leveren de maximale score op."
         },
         "provenSkills": {
           "title": "Drie bewezen vaardigheden",

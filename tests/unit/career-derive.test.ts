@@ -98,6 +98,17 @@ describe("computeCompleteness", () => {
     });
     expect(result).toMatchObject({ score: 100, todo: [] });
   });
+
+  it("ne déclare jamais le profil complet sous 100", () => {
+    const result = computeCompleteness({
+      experienceCount: 1,
+      achievements: [{ evidenceLevel: "DOCUMENT" }],
+      provenSkillCount: 3,
+      guardRails: { hasSalary: true, hasLocationOrRemote: true, hasContractTypes: true },
+    });
+    expect(result.score).toBeLessThan(100);
+    expect(result.todo).toEqual(["moreProofs"]);
+  });
 });
 
 describe("utilitaires", () => {

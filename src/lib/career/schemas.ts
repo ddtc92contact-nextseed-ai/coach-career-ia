@@ -240,10 +240,11 @@ export const guardRailsInput = z
     ...value,
     // Le nombre de jours n'a de sens qu'en hybride.
     minRemoteDays: value.remotePolicy === "HYBRID" ? value.minRemoteDays : undefined,
-    // Doublons retirés, casse conservée.
-    excludedCompanies: [
-      ...new Map(value.excludedCompanies.map((c) => [c.toLowerCase(), c])).values(),
-    ],
+    // Doublons retirés ; la première saisie (et sa casse) est conservée.
+    excludedCompanies: value.excludedCompanies.filter(
+      (company, index, all) =>
+        all.findIndex((other) => other.toLowerCase() === company.toLowerCase()) === index,
+    ),
   }));
 export type GuardRailsInput = z.infer<typeof guardRailsInput>;
 

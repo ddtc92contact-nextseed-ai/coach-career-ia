@@ -57,6 +57,12 @@
     "text": "Cette page n’existe pas ou a été déplacée.",
     "back": "Retour à l’accueil"
   },
+  "errorPage": {
+    "title": "Une erreur est survenue",
+    "text": "L’opération n’a pas pu aboutir. Vos données enregistrées ne sont pas affectées : réessayez dans quelques instants.",
+    "retry": "Réessayer",
+    "back": "Retour à l’accueil"
+  },
   "auth": {
     "login": {
       "metaTitle": "Connexion",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Prouver une réalisation",
           "text": "Joignez un lien, un document ou un témoignage."
+        },
+        "moreProofs": {
+          "title": "Prouver davantage de réalisations",
+          "text": "Trois réalisations prouvées donnent le maximum de points."
         },
         "provenSkills": {
           "title": "Trois compétences prouvées",

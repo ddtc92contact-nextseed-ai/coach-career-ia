@@ -57,6 +57,12 @@
     "text": "This page doesn’t exist or has been moved.",
     "back": "Back to home"
   },
+  "errorPage": {
+    "title": "Something went wrong",
+    "text": "The operation could not be completed. Your saved data is not affected: please try again in a moment.",
+    "retry": "Try again",
+    "back": "Back to home"
+  },
   "auth": {
     "login": {
       "metaTitle": "Sign in",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Prove an achievement",
           "text": "Attach a link, a document or a testimonial."
+        },
+        "moreProofs": {
+          "title": "Prove more achievements",
+          "text": "Three proven achievements earn the maximum score."
         },
         "provenSkills": {
           "title": "Three proven skills",

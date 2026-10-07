@@ -47,6 +47,17 @@ export function checkDocument(bytes: Uint8Array): DocumentCheck {
   return mimeType ? { ok: true, mimeType } : { ok: false, error: "fileType" };
 }
 
+/**
+ * Contrôle côté navigateur, avant l'envoi : un fichier au-delà de la limite
+ * de corps des actions serveur (`bodySizeLimit`) ferait échouer la requête
+ * avant toute validation. Le contenu reste vérifié côté serveur.
+ */
+export function checkDocumentSize(file: { size: number } | null | undefined) {
+  if (!file || file.size === 0) return "fileRequired" as const;
+  if (file.size > MAX_DOCUMENT_BYTES) return "fileTooLarge" as const;
+  return null;
+}
+
 /** Nom de fichier sûr pour l'en-tête `Content-Disposition` (repli ASCII). */
 export function safeFileName(name: string, mimeType: DocumentMimeType): string {
   const base = (name.split(/[/\\]/).pop() ?? "")

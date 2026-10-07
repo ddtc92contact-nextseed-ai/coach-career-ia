@@ -57,6 +57,12 @@
     "text": "Diese Seite existiert nicht oder wurde verschoben.",
     "back": "Zur Startseite"
   },
+  "errorPage": {
+    "title": "Ein Fehler ist aufgetreten",
+    "text": "Der Vorgang konnte nicht abgeschlossen werden. Ihre gespeicherten Daten sind nicht betroffen: Versuchen Sie es gleich noch einmal.",
+    "retry": "Erneut versuchen",
+    "back": "Zur Startseite"
+  },
   "auth": {
     "login": {
       "metaTitle": "Anmeldung",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Einen Erfolg belegen",
           "text": "Fügen Sie einen Link, ein Dokument oder eine Referenz hinzu."
+        },
+        "moreProofs": {
+          "title": "Weitere Erfolge belegen",
+          "text": "Drei belegte Erfolge ergeben die volle Punktzahl."
         },
         "provenSkills": {
           "title": "Drei belegte Kompetenzen",

@@ -129,7 +129,7 @@ describe("guardRailsInput", () => {
       minFixedSalary: 45000,
       targetTotalPackage: 55000,
       minRemoteDays: undefined, // ignoré hors hybride
-      excludedCompanies: ["ACME", "Globex"],
+      excludedCompanies: ["Acme", "Globex"],
       maxWeeklyHours: undefined,
       locations: [{ label: "Lyon", radiusKm: 30 }],
     });
@@ -141,7 +141,7 @@ describe("guardRailsInput", () => {
         guardRailsInput.safeParse({
           minFixedSalary: "beaucoup",
           locations: [{ label: "", radiusKm: "999" }],
-          contractTypes: ["CDI"],
+          contractTypes: ["UNKNOWN"], // valeur du radar, jamais saisissable,
         }),
       ),
     ).toEqual({

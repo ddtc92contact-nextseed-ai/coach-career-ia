@@ -57,6 +57,12 @@
     "text": "Questa pagina non esiste o è stata spostata.",
     "back": "Torna alla home"
   },
+  "errorPage": {
+    "title": "Si è verificato un errore",
+    "text": "Non è stato possibile completare l’operazione. I suoi dati salvati non sono interessati: riprovi tra qualche istante.",
+    "retry": "Riprova",
+    "back": "Torna alla home"
+  },
   "auth": {
     "login": {
       "metaTitle": "Accesso",
@@ -165,6 +171,10 @@
         "addProof": {
           "title": "Comprovare un risultato",
           "text": "Alleghi un link, un documento o una testimonianza."
+        },
+        "moreProofs": {
+          "title": "Dimostrare altri risultati",
+          "text": "Tre risultati dimostrati danno il punteggio massimo."
         },
         "provenSkills": {
           "title": "Tre competenze comprovate",
