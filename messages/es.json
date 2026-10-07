@@ -144,6 +144,7 @@
       "label": "Espacio del candidato",
       "dashboard": "Panel",
       "memory": "Mi memoria de carrera",
+      "identity": "Mi identidad",
       "guardRails": "Mis salvaguardas",
       "opportunities": "Oportunidades",
       "settings": "Ajustes",
@@ -335,6 +336,148 @@
       "backedBy": "Respaldada por",
       "unprovenHint": "No probada: menciónela en un logro respaldado por una prueba.",
       "confirmDelete": "¿Eliminar la competencia «{name}»? Se quitará de los logros que la mencionan."
+    }
+  },
+  "identity": {
+    "title": "Mi identidad",
+    "intro": "Tu identidad real, cifrada en tu navegador. Se mantiene separada de tu perfil profesional, que está anonimizado.",
+    "employerLabel": "Empleador (desde tu caja fuerte):",
+    "lock": "Bloquear",
+    "loading": "Abriendo la caja fuerte…",
+    "retry": "Reintentar",
+    "badge": {
+      "unlocked": "Identidad desbloqueada"
+    },
+    "explain": {
+      "title": "Nadie, ni siquiera nosotros, puede leer estos datos",
+      "encrypted": "Tu nombre, datos de contacto, empleadores, centros de estudio, enlaces y CV original se cifran en tu navegador antes de cualquier envío. Nuestros servidores solo reciben y almacenan un bloque ilegible.",
+      "nobody": "Ni nuestro equipo, ni nuestro proveedor de alojamiento, ni quien robara nuestra base de datos puede descifrarlos: la clave solo existe en tu lado.",
+      "you": "Solo tú los desbloqueas, con tu frase secreta. Nuestros servicios nunca la reciben ni la guardan.",
+      "handover": "Tu identidad solo se revela a un reclutador si tú lo decides, para ese reclutador concreto.",
+      "lossTitle": "Consecuencia importante:",
+      "loss": "si pierdes a la vez tu frase secreta y tu clave de recuperación, estos datos se pierden para siempre. No podremos recuperarlos por ti. Tu perfil profesional no se ve afectado."
+    },
+    "setup": {
+      "title": "Crear mi caja fuerte de identidad",
+      "intro": "Elige una frase secreta propia de esta caja fuerte, distinta de tus otras contraseñas. Una serie de varias palabras es fácil de recordar y difícil de adivinar.",
+      "passphrase": "Frase secreta",
+      "passphraseHint": "Al menos {min} caracteres.",
+      "confirm": "Confirma la frase secreta",
+      "understand": "Entiendo que si pierdo mi frase secreta y mi clave de recuperación, nadie podrá recuperar mi identidad.",
+      "submit": "Crear mi caja fuerte",
+      "working": "Creando la caja fuerte… (unos segundos)"
+    },
+    "recovery": {
+      "title": "Tu clave de recuperación",
+      "intro": "Permite volver a abrir tu caja fuerte si olvidas tu frase secreta. No se volverá a mostrar.",
+      "warning": "Guárdala fuera de línea: impresa, en un gestor de contraseñas o en un archivo guardado en un lugar seguro. No la compartas con nadie.",
+      "download": "Descargar (.txt)",
+      "print": "Imprimir",
+      "copy": "Copiar",
+      "copied": "Copiada",
+      "confirm": "He guardado mi clave de recuperación en un lugar seguro.",
+      "continue": "Continuar a mi identidad",
+      "fileName": "coach-career-ia-clave-de-recuperacion.txt",
+      "fileText": "Coach Career IA — clave de recuperación de la caja fuerte de identidad\nCreada el {date}\n\n{key}\n\nEsta clave permite volver a abrir tu caja fuerte si olvidas tu frase secreta.\nGuárdala en un lugar seguro y no la compartas: sin ella ni tu frase secreta, tus datos de identidad se pierden para siempre."
+    },
+    "unlock": {
+      "title": "Desbloquear mi identidad",
+      "intro": "Tu caja fuerte está bloqueada. Introduce tu frase secreta: el descifrado se hace en este navegador.",
+      "passphrase": "Frase secreta",
+      "submit": "Desbloquear",
+      "working": "Desbloqueando…",
+      "forgot": "¿Olvidaste tu frase secreta?"
+    },
+    "recover": {
+      "title": "Recuperar con mi clave de recuperación",
+      "intro": "Introduce la clave de recuperación obtenida al crear la caja fuerte y elige una nueva frase secreta.",
+      "recoveryKey": "Clave de recuperación",
+      "recoveryKeyHint": "Los guiones, espacios y mayúsculas son opcionales.",
+      "newPassphrase": "Nueva frase secreta",
+      "newPassphraseHint": "Al menos {min} caracteres.",
+      "confirm": "Confirma la nueva frase secreta",
+      "submit": "Recuperar mi caja fuerte",
+      "working": "Recuperando…",
+      "back": "Volver a la frase secreta"
+    },
+    "unlocked": {
+      "status": "Caja fuerte desbloqueada en este navegador",
+      "idle": "Bloqueo automático tras",
+      "idleOption": "{minutes} min de inactividad"
+    },
+    "form": {
+      "title": "Mis datos de identidad",
+      "intro": "Se cifran en tu navegador al guardarlos. Nunca se usan para el matching.",
+      "identityTitle": "Identidad",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "contactTitle": "Datos de contacto visibles para reclutadores",
+      "contactIntro": "Solo se comunican al reclutador al que decidas revelar tu identidad.",
+      "email": "Correo de contacto",
+      "phone": "Teléfono",
+      "employersTitle": "Empleadores",
+      "employersIntro": "El nombre real de cada empleador, vinculado a la experiencia correspondiente de tu memoria profesional. Se muestra allí cuando tu caja fuerte está desbloqueada.",
+      "employerName": "Nombre del empleador",
+      "employerExperience": "Experiencia correspondiente",
+      "noExperience": "Sin vincular",
+      "addEmployer": "Añadir un empleador",
+      "schoolsTitle": "Centros de estudio y formación",
+      "schoolName": "Nombre del centro",
+      "addSchool": "Añadir un centro",
+      "linksTitle": "Enlaces personales",
+      "linksIntro": "Perfil de LinkedIn, sitio personal, repositorio de código… cualquier enlace que permita identificarte.",
+      "linkLabel": "Etiqueta",
+      "linkUrl": "Dirección (URL)",
+      "addLink": "Añadir un enlace",
+      "remove": "Quitar",
+      "none": "Nada por ahora.",
+      "save": "Cifrar y guardar",
+      "saving": "Cifrando…",
+      "saved": "Guardado, cifrado.",
+      "saveHint": "Solo la versión cifrada sale de tu navegador."
+    },
+    "cv": {
+      "title": "CV original",
+      "intro": "Tu CV completo, con tu nombre y datos de contacto. Se cifra en tu navegador antes del envío: no vemos ni su contenido ni su nombre de archivo.",
+      "none": "Ningún CV guardado.",
+      "current": "Hay un CV cifrado guardado.",
+      "choose": "Añadir mi CV",
+      "replace": "Sustituir el CV",
+      "uploading": "Cifrando y enviando…",
+      "download": "Descargar mi CV",
+      "delete": "Eliminar el CV",
+      "working": "Espera…",
+      "confirmDelete": "¿Eliminar definitivamente tu CV original?",
+      "hint": "PDF, Word u OpenDocument, {max} MB como máximo."
+    },
+    "change": {
+      "title": "Cambiar mi frase secreta",
+      "intro": "No es necesario volver a cifrar tus datos. Tu clave de recuperación sigue siendo válida.",
+      "current": "Frase secreta actual",
+      "next": "Nueva frase secreta",
+      "confirm": "Confirma la nueva frase",
+      "submit": "Cambiar la frase secreta",
+      "working": "Modificando…",
+      "done": "Frase secreta modificada."
+    },
+    "reset": {
+      "title": "Restablecer la caja fuerte",
+      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si has perdido tu frase secreta y tu clave de recuperación: después podrás crear una nueva caja fuerte. Tu memoria profesional no se modifica.",
+      "button": "Eliminar mi caja fuerte",
+      "confirm": "¿Eliminar definitivamente tu caja fuerte de identidad y tu CV? Esta acción es irreversible.",
+      "working": "Eliminando…"
+    },
+    "errors": {
+      "tooShort": "La frase secreta debe tener al menos {min} caracteres.",
+      "mismatch": "Las dos frases secretas no coinciden.",
+      "understand": "Marca la casilla para confirmar que lo has entendido.",
+      "wrongPassphrase": "Frase secreta incorrecta.",
+      "wrongRecoveryKey": "Clave de recuperación incorrecta.",
+      "conflict": "Tu caja fuerte se ha modificado desde otra pestaña o dispositivo. Se ha recargado la última versión: revísala y vuelve a guardar.",
+      "network": "No se puede conectar con el servidor. Comprueba tu red e inténtalo de nuevo.",
+      "cvTooLarge": "Archivo demasiado grande.",
+      "cvType": "Formato no admitido: solo PDF, Word u OpenDocument.",
+      "generic": "Se ha producido un error. Inténtalo de nuevo."
     }
   },
   "guardRails": {

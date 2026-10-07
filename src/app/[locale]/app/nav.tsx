@@ -6,6 +6,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 export const APP_NAV = [
   { href: "/app", key: "dashboard" },
   { href: "/app/memoire", key: "memory" },
+  { href: "/app/identite", key: "identity" },
   { href: "/app/garde-fous", key: "guardRails" },
   { href: "/app/opportunites", key: "opportunities" },
   { href: "/app/parametres", key: "settings" },

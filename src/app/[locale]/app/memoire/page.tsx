@@ -3,6 +3,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { DeleteButton } from "@/components/delete-button";
 import { EmptyState, PageTitle } from "@/components/empty-state";
+import { VaultEmployerName } from "@/components/vault/vault-widgets";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { isProven } from "@/lib/career/derive";
@@ -74,6 +75,7 @@ export default async function CareerMemoryPage() {
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <h3 className="font-semibold break-words">{experience.roleTitle}</h3>
+                    <VaultEmployerName experienceId={experience.id} />
                     <p className="mt-0.5 text-sm text-stone-500">
                       {period(experience.startMonth, experience.endMonth)}
                     </p>

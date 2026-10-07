@@ -144,6 +144,7 @@
       "label": "Candidate space",
       "dashboard": "Dashboard",
       "memory": "My career memory",
+      "identity": "My identity",
       "guardRails": "My guard-rails",
       "opportunities": "Opportunities",
       "settings": "Settings",
@@ -335,6 +336,148 @@
       "backedBy": "Backed by",
       "unprovenHint": "Unproven: mention it in an achievement backed by proof.",
       "confirmDelete": "Delete the skill “{name}”? It will be removed from the achievements that mention it."
+    }
+  },
+  "identity": {
+    "title": "My identity",
+    "intro": "Your real identity, encrypted in your browser. It is kept apart from your professional profile, which is anonymised.",
+    "employerLabel": "Employer (from your vault):",
+    "lock": "Lock",
+    "loading": "Opening the vault…",
+    "retry": "Try again",
+    "badge": {
+      "unlocked": "Identity unlocked"
+    },
+    "explain": {
+      "title": "No one, not even us, can read this data",
+      "encrypted": "Your name, contact details, employers, schools, links and original CV are encrypted in your browser before anything is sent. Our servers only receive and store an unreadable blob.",
+      "nobody": "Neither our team, nor our host, nor someone who stole our database can decrypt them: the key only exists on your side.",
+      "you": "Only you unlock them, with your passphrase. It is never sent to or stored by our services.",
+      "handover": "Your identity is only revealed to a recruiter if you decide so, for that specific recruiter.",
+      "lossTitle": "Important consequence:",
+      "loss": "if you lose both your passphrase and your recovery key, this data is lost for good. We will not be able to recover it for you. Your professional profile is not affected."
+    },
+    "setup": {
+      "title": "Create my identity vault",
+      "intro": "Choose a passphrase dedicated to this vault, different from your other passwords. A sequence of several words is easy to remember and hard to guess.",
+      "passphrase": "Passphrase",
+      "passphraseHint": "At least {min} characters.",
+      "confirm": "Confirm the passphrase",
+      "understand": "I understand that if I lose my passphrase and my recovery key, no one will be able to recover my identity.",
+      "submit": "Create my vault",
+      "working": "Creating the vault… (a few seconds)"
+    },
+    "recovery": {
+      "title": "Your recovery key",
+      "intro": "It lets you reopen your vault if you forget your passphrase. It will never be shown again.",
+      "warning": "Keep it offline: printed, in a password manager or in a file stored somewhere safe. Never share it.",
+      "download": "Download (.txt)",
+      "print": "Print",
+      "copy": "Copy",
+      "copied": "Copied",
+      "confirm": "I have stored my recovery key somewhere safe.",
+      "continue": "Continue to my identity",
+      "fileName": "coach-career-ia-recovery-key.txt",
+      "fileText": "Coach Career IA — identity vault recovery key\nCreated on {date}\n\n{key}\n\nThis key lets you reopen your vault if you forget your passphrase.\nKeep it somewhere safe and never share it: without it or your passphrase, your identity data is lost for good."
+    },
+    "unlock": {
+      "title": "Unlock my identity",
+      "intro": "Your vault is locked. Enter your passphrase: decryption happens in this browser.",
+      "passphrase": "Passphrase",
+      "submit": "Unlock",
+      "working": "Unlocking…",
+      "forgot": "Forgot your passphrase?"
+    },
+    "recover": {
+      "title": "Recover with my recovery key",
+      "intro": "Enter the recovery key you got when creating the vault, then choose a new passphrase.",
+      "recoveryKey": "Recovery key",
+      "recoveryKeyHint": "Dashes, spaces and capital letters are optional.",
+      "newPassphrase": "New passphrase",
+      "newPassphraseHint": "At least {min} characters.",
+      "confirm": "Confirm the new passphrase",
+      "submit": "Recover my vault",
+      "working": "Recovering…",
+      "back": "Back to passphrase"
+    },
+    "unlocked": {
+      "status": "Vault unlocked in this browser",
+      "idle": "Lock automatically after",
+      "idleOption": "{minutes} min of inactivity"
+    },
+    "form": {
+      "title": "My identity details",
+      "intro": "Encrypted in your browser when saved. They are never used for matching.",
+      "identityTitle": "Identity",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "contactTitle": "Contact details shown to recruiters",
+      "contactIntro": "Only shared with the recruiter you choose to reveal your identity to.",
+      "email": "Contact email",
+      "phone": "Phone",
+      "employersTitle": "Employers",
+      "employersIntro": "The real name of each employer, linked to the matching experience in your career memory. It shows there when your vault is unlocked.",
+      "employerName": "Employer name",
+      "employerExperience": "Matching experience",
+      "noExperience": "Not linked",
+      "addEmployer": "Add an employer",
+      "schoolsTitle": "Schools and education",
+      "schoolName": "Institution name",
+      "addSchool": "Add a school",
+      "linksTitle": "Personal links",
+      "linksIntro": "LinkedIn profile, personal website, code repository… any link that identifies you.",
+      "linkLabel": "Label",
+      "linkUrl": "Address (URL)",
+      "addLink": "Add a link",
+      "remove": "Remove",
+      "none": "Nothing yet.",
+      "save": "Encrypt and save",
+      "saving": "Encrypting…",
+      "saved": "Saved, encrypted.",
+      "saveHint": "Only the encrypted version leaves your browser."
+    },
+    "cv": {
+      "title": "Original CV",
+      "intro": "Your full CV, with your name and contact details. It is encrypted in your browser before upload: we see neither its content nor its file name.",
+      "none": "No CV saved.",
+      "current": "An encrypted CV is saved.",
+      "choose": "Add my CV",
+      "replace": "Replace the CV",
+      "uploading": "Encrypting and uploading…",
+      "download": "Download my CV",
+      "delete": "Delete the CV",
+      "working": "Please wait…",
+      "confirmDelete": "Permanently delete your original CV?",
+      "hint": "PDF, Word or OpenDocument, {max} MB maximum."
+    },
+    "change": {
+      "title": "Change my passphrase",
+      "intro": "Your data does not need to be re-encrypted. Your recovery key stays valid.",
+      "current": "Current passphrase",
+      "next": "New passphrase",
+      "confirm": "Confirm the new passphrase",
+      "submit": "Change passphrase",
+      "working": "Updating…",
+      "done": "Passphrase changed."
+    },
+    "reset": {
+      "title": "Reset the vault",
+      "intro": "Permanently deletes your encrypted identity and original CV. Useful if you lost both your passphrase and recovery key: you can then create a new vault. Your career memory is not affected.",
+      "button": "Delete my vault",
+      "confirm": "Permanently delete your identity vault and CV? This cannot be undone.",
+      "working": "Deleting…"
+    },
+    "errors": {
+      "tooShort": "The passphrase must be at least {min} characters long.",
+      "mismatch": "The two passphrases do not match.",
+      "understand": "Tick the box to confirm you understand.",
+      "wrongPassphrase": "Incorrect passphrase.",
+      "wrongRecoveryKey": "Incorrect recovery key.",
+      "conflict": "Your vault was changed from another tab or device. The latest version has been reloaded: check it and save again.",
+      "network": "Cannot reach the server. Check your connection and try again.",
+      "cvTooLarge": "File too large.",
+      "cvType": "Unsupported format: PDF, Word or OpenDocument only.",
+      "generic": "Something went wrong. Please try again."
     }
   },
   "guardRails": {

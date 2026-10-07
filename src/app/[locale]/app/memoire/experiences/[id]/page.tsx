@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { DeleteButton } from "@/components/delete-button";
 import { PageTitle } from "@/components/empty-state";
+import { VaultEmployerName } from "@/components/vault/vault-widgets";
 import { requireUser } from "@/lib/auth/session";
 import { dateToMonth } from "@/lib/career/derive";
 import { getExperience } from "@/lib/career/repository";
@@ -26,6 +27,9 @@ export default async function EditExperiencePage({ params }: Props) {
   return (
     <div className="max-w-3xl">
       <PageTitle title={t("editTitle")} intro={t("formIntro")} />
+      <div className="-mt-5 mb-6">
+        <VaultEmployerName experienceId={experience.id} />
+      </div>
       <ExperienceForm
         id={experience.id}
         defaults={{
