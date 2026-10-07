@@ -147,6 +147,15 @@
       "view": "Antwort lesen",
       "viewText": "Antwort lesen: {url}",
       "privacy": "Ihre Identität wurde nicht mitgeteilt. Sie entscheiden in Ihrem Bereich, wie es weitergeht."
+    },
+    "handover": {
+      "subject": "Offengelegtes Profil – {title}",
+      "intro": "Die Person, die Sie wegen Ihrer Stelle „{title}“ kontaktiert hat, hat entschieden, ihre Anonymität Ihnen gegenüber aufzuheben.",
+      "view": "Offengelegtes Profil ansehen",
+      "viewText": "Offengelegtes Profil: {url}",
+      "expires": "Link gültig bis {date}. Die Person kann ihn jederzeit widerrufen.",
+      "disclosure": "Diese Nachricht wird von ihrem KI-Karriereagenten (Coach Career IA) auf ihre ausdrückliche Entscheidung hin gesendet.",
+      "noReply": "Antworten auf diese E-Mail werden nicht gelesen."
     }
   },
   "common": {
@@ -1461,7 +1470,6 @@
       "replies": "Antworten des Unternehmens",
       "noReply": "Noch keine Antwort. Sie werden per E-Mail benachrichtigt.",
       "receivedOn": "Erhalten am {date}",
-      "handover": "Ihre Identität diesem Unternehmen offenlegen: bald verfügbar. Bis dahin wird Ihre Identität nie mitgeteilt.",
       "approved": "Nachricht genehmigt.",
       "discardConfirm": "Diesen Kontakt verwerfen? Der Entwurf wird gelöscht."
     },
@@ -1478,6 +1486,87 @@
       "invalid": "Betreff (höchstens 160 Zeichen) und Nachricht (20 bis 3.000 Zeichen) sind erforderlich."
     }
   },
+  "handover": {
+    "title": "Anonymität aufheben",
+    "intro": "Sie entscheiden, ob und wann {company} erfährt, wer Sie sind. Sie wählen genau aus, was offengelegt wird – nur für dieses Unternehmen.",
+    "start": "Anonymität gegenüber diesem Unternehmen aufheben",
+    "cancel": "Abbrechen",
+    "retry": "Erneut versuchen",
+    "vaultLoading": "Ihr Identitätstresor wird geladen …",
+    "noVault": "Um Ihre Anonymität aufzuheben, legen Sie zuerst Ihren Identitätstresor an: Dort werden Name, Kontaktdaten und Lebenslauf in Ihrem Browser verschlüsselt.",
+    "createVault": "Identitätstresor anlegen",
+    "unlockIntro": "Entsperren Sie Ihren Tresor: Er wird in Ihrem Browser entschlüsselt, zu diesem Zeitpunkt wird nichts gesendet.",
+    "passphrase": "Passphrase des Tresors",
+    "unlock": "Entsperren",
+    "unlocking": "Wird entsperrt …",
+    "emptyVault": "Ihr Identitätstresor ist leer: Fügen Sie zuerst die Angaben hinzu, die Sie offenlegen möchten.",
+    "completeVault": "Tresor vervollständigen",
+    "selectIntro": "Wählen Sie nur aus, was {company} sehen darf. Standardmäßig ist nichts ausgewählt.",
+    "selectTitle": "Offenzulegende Angaben",
+    "preview": "Vorschau",
+    "previewTitle": "Was {company} sehen wird",
+    "previewIntro": "Ihre anonyme Profilkarte bleibt sichtbar, ergänzt um diese Angaben:",
+    "previewEmail": "Ihr Agent sendet einen Link zu dieser Seite an die Bewerbungsadresse der Stelle. Der Link läuft automatisch ab, und Sie können ihn jederzeit widerrufen.",
+    "previewManual": "Diese Stelle hat keine E-Mail-Adresse: Sie erhalten einen Link, den Sie selbst weitergeben. Er läuft automatisch ab, und Sie können ihn jederzeit widerrufen.",
+    "confirmLabel": "Ich entscheide, diese Angaben {company} offenzulegen – und nur diesem Unternehmen.",
+    "confirm": "Anonymität aufheben",
+    "revealing": "Wird gesendet …",
+    "back": "Auswahl ändern",
+    "doneEmail": "Erledigt: {company} hat den Link zu Ihrem offengelegten Profil erhalten.",
+    "doneManual": "Erledigt. Geben Sie diesen Link an das Unternehmen weiter (er wird nur einmal angezeigt):",
+    "thisCompany": "dieses Unternehmen",
+    "waitReply": "Sie können Ihre Anonymität aufheben, sobald das Unternehmen geantwortet hat.",
+    "active": "Anonymität aufgehoben am {date}: {fields}.",
+    "activeLink": "Link gültig bis {date}, {views, plural, =0 {noch nie aufgerufen} one {# Mal aufgerufen} other {# Mal aufgerufen}}.",
+    "revoke": "Widerrufen",
+    "revokeConfirm": "Aufhebung der Anonymität widerrufen? Der Link funktioniert dann nicht mehr und die offengelegten Angaben werden gelöscht.",
+    "logTitle": "Protokoll der Anonymität",
+    "status": {
+      "anonymous": "Anonym",
+      "revealed": "Identität offengelegt"
+    },
+    "log": {
+      "REVEALED": "{date}: dem Unternehmen offengelegt – {fields}",
+      "REVOKED": "{date}: von Ihnen widerrufen, Angaben gelöscht",
+      "EXPIRED": "{date}: Link abgelaufen, Angaben gelöscht"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "links": "Links",
+      "link": "Link",
+      "employers": "Arbeitgeber",
+      "employer": "Arbeitgeber",
+      "schools": "Ausbildung",
+      "school": "Bildungseinrichtung",
+      "cv": "Lebenslauf",
+      "cvOriginal": "Originaler Lebenslauf (Datei)",
+      "cvDownload": "Lebenslauf herunterladen ({name})"
+    },
+    "fieldNames": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "links": "Links",
+      "employers": "Arbeitgeber",
+      "schools": "Bildungseinrichtungen",
+      "cv": "Lebenslauf"
+    },
+    "errors": {
+      "notSent": "Die Anonymität kann erst nach dem Versand Ihrer Nachricht aufgehoben werden.",
+      "noReply": "Das Unternehmen hat noch nicht geantwortet.",
+      "alreadyRevealed": "Die Anonymität gegenüber diesem Unternehmen ist bereits aufgehoben.",
+      "invalid": "Ungültige Auswahl. Prüfen Sie die ausgewählten Angaben.",
+      "cvInvalid": "Der Lebenslauf muss eine PDF-, DOC-, DOCX- oder ODT-Datei von höchstens 5 MB sein.",
+      "sendUnavailable": "Der E-Mail-Versand ist auf diesem Server nicht eingerichtet.",
+      "sendFailed": "Versand fehlgeschlagen: Es wurde nichts offengelegt. Versuchen Sie es später erneut.",
+      "notFound": "Dieser Kontakt wurde nicht gefunden.",
+      "network": "Ein Netzwerkfehler ist aufgetreten. Versuchen Sie es erneut.",
+      "wrongPassphrase": "Falsche Passphrase.",
+      "nothingSelected": "Wählen Sie mindestens eine Angabe zum Offenlegen aus."
+    }
+  },
   "replyPage": {
     "title": "Der Person antworten",
     "intro": "Ihre Nachricht wird im Bereich der Person zugestellt, zur Stelle „{title}“. Sie kennt nur, was Sie hier schreiben.",
@@ -1489,5 +1578,14 @@
     "rateLimited": "Heute zu viele Nachrichten für diesen Kontakt. Bitte morgen erneut versuchen.",
     "notFound": "Dieser Antwortlink ist abgelaufen oder nicht mehr gültig.",
     "back": "← Zurück zur Karte"
+  },
+  "revealedPage": {
+    "title": "Offengelegtes Profil",
+    "context": "Bewerbung auf Ihre Stelle „{title}“",
+    "disclosure": "Die Person hat entschieden, ihre Anonymität Ihnen gegenüber aufzuheben. Dieser Link wurde Ihnen von ihrem KI-Karriereagenten (Coach Career IA) auf ihre ausdrückliche Entscheidung hin übermittelt.",
+    "identity": "Identität",
+    "card": "Profil",
+    "expires": "Link gültig bis {date}, jederzeit von der Person widerrufbar.",
+    "notice": "Diese Angaben werden Ihnen nur für dieses Auswahlverfahren mitgeteilt."
   }
 }

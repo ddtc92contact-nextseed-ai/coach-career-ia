@@ -17,6 +17,7 @@ import {
   type ContactError,
 } from "@/lib/contact/repository";
 import { contactDeps } from "@/lib/contact/server";
+import { revokeHandover } from "@/lib/handover/repository";
 
 /**
  * Actions de prise de contact. Chacune repart de l'utilisateur courant :
@@ -111,4 +112,11 @@ export async function discardContactAction(id: string) {
   await guard(() => discardContact(user.id, id));
   refresh();
   return redirect({ href: "/app/contacts", locale: await getLocale() });
+}
+
+/** Révocation de la levée d'anonymat d'un fil : lien coupé, identité révélée effacée. */
+export async function revokeHandoverAction(id: string) {
+  const user = await requireUser();
+  await guard(() => revokeHandover(user.id, id));
+  refresh();
 }

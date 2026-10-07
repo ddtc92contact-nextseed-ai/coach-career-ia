@@ -142,12 +142,12 @@ export function DraftPanel({
 }
 
 /** Copie du texte à coller sur la page « Postuler ». */
-export function CopyText({ text }: { text: string }) {
+export function CopyText({ text, rows = 12 }: { text: string; rows?: number }) {
   const t = useTranslations("contacts.detail");
   const [copied, setCopied] = useState(false);
   return (
     <div className="space-y-2">
-      <textarea readOnly value={text} rows={12} aria-label={t("paste")} className={inputClass} />
+      <textarea readOnly value={text} rows={rows} aria-label={t("paste")} className={inputClass} />
       <div className="flex items-center gap-3">
         <button
           type="button"

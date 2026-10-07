@@ -147,6 +147,15 @@
       "view": "Leggi la risposta",
       "viewText": "Leggi la risposta: {url}",
       "privacy": "La tua identità non è stata comunicata. Decidi tu come proseguire dal tuo spazio."
+    },
+    "handover": {
+      "subject": "Profilo rivelato – {title}",
+      "intro": "La persona candidata che ti ha contattato per la tua offerta «{title}» ha deciso di rinunciare all’anonimato nei tuoi confronti.",
+      "view": "Vedi il profilo rivelato",
+      "viewText": "Profilo rivelato: {url}",
+      "expires": "Link valido fino al {date}. La persona candidata può revocarlo in qualsiasi momento.",
+      "disclosure": "Questo messaggio è inviato dal suo agente di carriera IA (Coach Career IA), su sua decisione esplicita.",
+      "noReply": "Le risposte a questa e-mail non vengono lette."
     }
   },
   "common": {
@@ -1461,7 +1470,6 @@
       "replies": "Risposte dell’azienda",
       "noReply": "Ancora nessuna risposta. Riceverai un avviso via e-mail.",
       "receivedOn": "Ricevuto il {date}",
-      "handover": "Rivelare la tua identità a questa azienda: presto disponibile. Per ora la tua identità non viene mai comunicata.",
       "approved": "Messaggio approvato.",
       "discardConfirm": "Abbandonare questo contatto? La bozza sarà eliminata."
     },
@@ -1478,6 +1486,87 @@
       "invalid": "L’oggetto (massimo 160 caratteri) e il messaggio (da 20 a 3.000 caratteri) sono obbligatori."
     }
   },
+  "handover": {
+    "title": "Rinunciare all’anonimato",
+    "intro": "Decidi tu se, e quando, {company} saprà chi sei. Scegli esattamente cosa rivelare, solo a questa azienda.",
+    "start": "Rinuncia all’anonimato con questa azienda",
+    "cancel": "Annulla",
+    "retry": "Riprova",
+    "vaultLoading": "Caricamento della tua cassaforte d’identità…",
+    "noVault": "Per rinunciare all’anonimato, crea prima la tua cassaforte d’identità: è lì che nome, recapiti e CV vengono cifrati, nel tuo browser.",
+    "createVault": "Crea la mia cassaforte d’identità",
+    "unlockIntro": "Sblocca la cassaforte: viene decifrata nel tuo browser, per ora non viene inviato nulla.",
+    "passphrase": "Frase segreta della cassaforte",
+    "unlock": "Sblocca",
+    "unlocking": "Sblocco…",
+    "emptyVault": "La tua cassaforte d’identità è vuota: aggiungi prima le informazioni che vuoi rivelare.",
+    "completeVault": "Completa la mia cassaforte",
+    "selectIntro": "Seleziona solo ciò che {company} potrà vedere. Nulla è selezionato per impostazione predefinita.",
+    "selectTitle": "Informazioni da rivelare",
+    "preview": "Anteprima",
+    "previewTitle": "Cosa vedrà {company}",
+    "previewIntro": "La tua scheda anonima resta visibile, completata da queste informazioni:",
+    "previewEmail": "Il tuo agente invierà un link a questa pagina all’indirizzo di candidatura dell’offerta. Il link scade automaticamente e puoi revocarlo in qualsiasi momento.",
+    "previewManual": "Questa offerta non ha un indirizzo e-mail: riceverai un link da trasmettere tu stesso. Scade automaticamente e puoi revocarlo in qualsiasi momento.",
+    "confirmLabel": "Decido di rivelare queste informazioni a {company}, e solo a lei.",
+    "confirm": "Rinuncia all’anonimato",
+    "revealing": "Invio…",
+    "back": "Modifica la selezione",
+    "doneEmail": "Fatto: {company} ha ricevuto il link al tuo profilo rivelato.",
+    "doneManual": "Fatto. Trasmetti questo link all’azienda (viene mostrato una sola volta):",
+    "thisCompany": "questa azienda",
+    "waitReply": "Potrai rinunciare all’anonimato non appena l’azienda avrà risposto.",
+    "active": "Anonimato revocato il {date}: {fields}.",
+    "activeLink": "Link valido fino al {date}, {views, plural, =0 {mai consultato} one {consultato # volta} other {consultato # volte}}.",
+    "revoke": "Revoca",
+    "revokeConfirm": "Revocare la rinuncia all’anonimato? Il link smetterà di funzionare e le informazioni rivelate saranno cancellate.",
+    "logTitle": "Registro dell’anonimato",
+    "status": {
+      "anonymous": "Anonimo",
+      "revealed": "Identità rivelata"
+    },
+    "log": {
+      "REVEALED": "{date}: rivelato all’azienda — {fields}",
+      "REVOKED": "{date}: revocato da te, informazioni cancellate",
+      "EXPIRED": "{date}: link scaduto, informazioni cancellate"
+    },
+    "fields": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefono",
+      "links": "Link",
+      "link": "Link",
+      "employers": "Datori di lavoro",
+      "employer": "Datore di lavoro",
+      "schools": "Formazione",
+      "school": "Scuola",
+      "cv": "CV",
+      "cvOriginal": "CV originale (file)",
+      "cvDownload": "Scarica il CV ({name})"
+    },
+    "fieldNames": {
+      "name": "nome",
+      "email": "e-mail",
+      "phone": "telefono",
+      "links": "link",
+      "employers": "datori di lavoro",
+      "schools": "scuole",
+      "cv": "CV"
+    },
+    "errors": {
+      "notSent": "Puoi rinunciare all’anonimato solo dopo l’invio del tuo messaggio.",
+      "noReply": "L’azienda non ha ancora risposto.",
+      "alreadyRevealed": "Hai già rinunciato all’anonimato con questa azienda.",
+      "invalid": "Selezione non valida. Controlla le informazioni selezionate.",
+      "cvInvalid": "Il CV deve essere un file PDF, DOC, DOCX o ODT di massimo 5 MB.",
+      "sendUnavailable": "L’invio di e-mail non è configurato su questo server.",
+      "sendFailed": "Invio non riuscito: non è stato rivelato nulla. Riprova più tardi.",
+      "notFound": "Contatto non trovato.",
+      "network": "Si è verificato un errore di rete. Riprova.",
+      "wrongPassphrase": "Frase segreta errata.",
+      "nothingSelected": "Seleziona almeno un’informazione da rivelare."
+    }
+  },
   "replyPage": {
     "title": "Rispondi alla persona candidata",
     "intro": "Il tuo messaggio sarà recapitato nello spazio della persona candidata, a proposito dell’offerta «{title}». Conosce solo ciò che scrivi qui.",
@@ -1489,5 +1578,14 @@
     "rateLimited": "Troppi messaggi oggi per questo contatto. Riprova domani.",
     "notFound": "Questo link di risposta è scaduto o non è più valido.",
     "back": "← Torna alla scheda"
+  },
+  "revealedPage": {
+    "title": "Profilo rivelato",
+    "context": "Candidatura alla tua offerta «{title}»",
+    "disclosure": "La persona candidata ha deciso di rinunciare all’anonimato nei tuoi confronti. Questo link ti è stato trasmesso dal suo agente di carriera IA (Coach Career IA), su sua decisione esplicita.",
+    "identity": "Identità",
+    "card": "Profilo",
+    "expires": "Link valido fino al {date}, revocabile in qualsiasi momento dalla persona candidata.",
+    "notice": "Queste informazioni ti sono comunicate solo per questa selezione."
   }
 }

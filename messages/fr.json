@@ -147,6 +147,15 @@
       "view": "Lire la réponse",
       "viewText": "Lire la réponse : {url}",
       "privacy": "Votre identité n’a pas été communiquée. Vous décidez de la suite depuis votre espace."
+    },
+    "handover": {
+      "subject": "Profil révélé – {title}",
+      "intro": "La personne candidate qui vous a contacté au sujet de votre offre « {title} » a décidé de lever son anonymat auprès de vous.",
+      "view": "Voir le profil révélé",
+      "viewText": "Profil révélé : {url}",
+      "expires": "Lien valable jusqu’au {date}. La personne candidate peut le révoquer à tout moment.",
+      "disclosure": "Ce message est envoyé par son agent de carrière IA (Coach Career IA), sur sa décision explicite.",
+      "noReply": "Les réponses à cet e-mail ne sont pas lues."
     }
   },
   "common": {
@@ -1461,7 +1470,6 @@
       "replies": "Réponses de l’entreprise",
       "noReply": "Pas encore de réponse. Vous serez prévenu par e-mail.",
       "receivedOn": "Reçu le {date}",
-      "handover": "Lever l’anonymat auprès de cette entreprise : bientôt disponible. Pour l’instant, votre identité n’est jamais communiquée.",
       "approved": "Message approuvé.",
       "discardConfirm": "Abandonner ce contact ? Le brouillon sera supprimé."
     },
@@ -1478,6 +1486,87 @@
       "invalid": "L’objet (160 caractères maximum) et le message (20 à 3 000 caractères) sont obligatoires."
     }
   },
+  "handover": {
+    "title": "Lever l’anonymat",
+    "intro": "Vous décidez si, et quand, {company} apprend qui vous êtes. Vous choisissez précisément ce qui est révélé, pour cette entreprise seulement.",
+    "start": "Lever l’anonymat auprès de cette entreprise",
+    "cancel": "Annuler",
+    "retry": "Réessayer",
+    "vaultLoading": "Chargement de votre coffre d’identité…",
+    "noVault": "Pour lever l’anonymat, créez d’abord votre coffre d’identité : c’est là que vos nom, coordonnées et CV sont chiffrés, dans votre navigateur.",
+    "createVault": "Créer mon coffre d’identité",
+    "unlockIntro": "Déverrouillez votre coffre : il est déchiffré dans votre navigateur, rien n’est envoyé à ce stade.",
+    "passphrase": "Phrase secrète du coffre",
+    "unlock": "Déverrouiller",
+    "unlocking": "Déverrouillage…",
+    "emptyVault": "Votre coffre d’identité est vide : ajoutez-y d’abord les informations que vous voudrez révéler.",
+    "completeVault": "Compléter mon coffre",
+    "selectIntro": "Cochez uniquement ce que {company} pourra voir. Rien n’est coché par défaut.",
+    "selectTitle": "Informations à révéler",
+    "preview": "Prévisualiser",
+    "previewTitle": "Ce que verra {company}",
+    "previewIntro": "Votre carte anonyme reste visible, complétée par ces informations :",
+    "previewEmail": "Votre agent enverra un lien vers cette page à l’adresse de candidature de l’offre. Le lien expire automatiquement et vous pouvez le révoquer à tout moment.",
+    "previewManual": "Cette offre n’a pas d’adresse e-mail : vous recevrez un lien à transmettre vous-même. Il expire automatiquement et vous pouvez le révoquer à tout moment.",
+    "confirmLabel": "Je décide de révéler ces informations à {company}, et à elle seulement.",
+    "confirm": "Lever l’anonymat",
+    "revealing": "Envoi…",
+    "back": "Modifier la sélection",
+    "doneEmail": "C’est fait : {company} a reçu le lien vers votre profil révélé.",
+    "doneManual": "C’est fait. Transmettez ce lien à l’entreprise (il n’est affiché qu’une fois) :",
+    "thisCompany": "cette entreprise",
+    "waitReply": "Vous pourrez lever votre anonymat dès que l’entreprise aura répondu.",
+    "active": "Anonymat levé le {date} : {fields}.",
+    "activeLink": "Lien valable jusqu’au {date}, {views, plural, =0 {jamais consulté} one {consulté # fois} other {consulté # fois}}.",
+    "revoke": "Révoquer",
+    "revokeConfirm": "Révoquer la levée d’anonymat ? Le lien ne fonctionnera plus et les informations révélées seront effacées.",
+    "logTitle": "Journal de l’anonymat",
+    "status": {
+      "anonymous": "Anonyme",
+      "revealed": "Identité révélée"
+    },
+    "log": {
+      "REVEALED": "{date} : révélé à l’entreprise — {fields}",
+      "REVOKED": "{date} : révoqué par vous, informations effacées",
+      "EXPIRED": "{date} : lien expiré, informations effacées"
+    },
+    "fields": {
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "links": "Liens",
+      "link": "Lien",
+      "employers": "Employeurs",
+      "employer": "Employeur",
+      "schools": "Formation",
+      "school": "École",
+      "cv": "CV",
+      "cvOriginal": "CV d’origine (fichier)",
+      "cvDownload": "Télécharger le CV ({name})"
+    },
+    "fieldNames": {
+      "name": "nom",
+      "email": "e-mail",
+      "phone": "téléphone",
+      "links": "liens",
+      "employers": "employeurs",
+      "schools": "écoles",
+      "cv": "CV"
+    },
+    "errors": {
+      "notSent": "La levée d’anonymat n’est possible qu’après l’envoi de votre message.",
+      "noReply": "L’entreprise n’a pas encore répondu.",
+      "alreadyRevealed": "L’anonymat est déjà levé pour cette entreprise.",
+      "invalid": "Sélection invalide. Vérifiez les informations cochées.",
+      "cvInvalid": "Le CV doit être un PDF, DOC, DOCX ou ODT de 5 Mo maximum.",
+      "sendUnavailable": "L’envoi d’e-mails n’est pas configuré sur ce serveur.",
+      "sendFailed": "L’envoi a échoué : rien n’a été révélé. Réessayez plus tard.",
+      "notFound": "Ce contact est introuvable.",
+      "network": "Une erreur réseau est survenue. Réessayez.",
+      "wrongPassphrase": "Phrase secrète incorrecte.",
+      "nothingSelected": "Cochez au moins une information à révéler."
+    }
+  },
   "replyPage": {
     "title": "Répondre à la personne candidate",
     "intro": "Votre message sera transmis à la personne candidate dans son espace, au sujet de l’offre « {title} ». Elle ne connaît que ce que vous écrivez ici.",
@@ -1489,5 +1578,14 @@
     "rateLimited": "Trop de messages aujourd’hui pour cette prise de contact. Réessayez demain.",
     "notFound": "Ce lien de réponse a expiré ou n’est plus valable.",
     "back": "← Revenir à la carte"
+  },
+  "revealedPage": {
+    "title": "Profil révélé",
+    "context": "Candidature à votre offre « {title} »",
+    "disclosure": "La personne candidate a décidé de lever son anonymat auprès de vous. Ce lien vous a été transmis par son agent de carrière IA (Coach Career IA), sur sa décision explicite.",
+    "identity": "Identité",
+    "card": "Profil",
+    "expires": "Lien valable jusqu’au {date}, révocable à tout moment par la personne candidate.",
+    "notice": "Ces informations vous sont communiquées pour ce recrutement uniquement."
   }
 }

@@ -14,8 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
 /** Boîte de réception : prises de contact (historique complet) et réponses des entreprises. */
 export default async function ContactsPage() {
   const user = await requireUser();
-  const [t, format, contacts, quota] = await Promise.all([
+  const [t, th, format, contacts, quota] = await Promise.all([
     getTranslations("contacts"),
+    getTranslations("handover"),
     getFormatter(),
     listContacts(user.id),
     getQuota(user.id),
@@ -68,6 +69,7 @@ export default async function ContactsPage() {
                   <Badge tone={c.status === "SENT" ? "proven" : "neutral"}>
                     {t(`status.${c.status}`)}
                   </Badge>
+                  {c.revealed ? <Badge tone="proven">{th("status.revealed")}</Badge> : null}
                   {c.replies > 0 ? (
                     <Badge tone={c.unread > 0 ? "warning" : "neutral"}>
                       {c.unread > 0

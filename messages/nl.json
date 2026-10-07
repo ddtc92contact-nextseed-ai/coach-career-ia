@@ -147,6 +147,15 @@
       "view": "Antwoord lezen",
       "viewText": "Antwoord lezen: {url}",
       "privacy": "Je identiteit is niet gedeeld. Jij beslist over het vervolg vanuit je omgeving."
+    },
+    "handover": {
+      "subject": "Onthuld profiel – {title}",
+      "intro": "De kandidaat die contact met je opnam over je vacature ‘{title}’ heeft besloten de anonimiteit tegenover jou op te heffen.",
+      "view": "Onthuld profiel bekijken",
+      "viewText": "Onthuld profiel: {url}",
+      "expires": "Link geldig tot {date}. De kandidaat kan hem op elk moment intrekken.",
+      "disclosure": "Dit bericht wordt op uitdrukkelijke beslissing van de kandidaat verzonden door diens AI-loopbaanagent (Coach Career IA).",
+      "noReply": "Antwoorden op deze e-mail worden niet gelezen."
     }
   },
   "common": {
@@ -1461,7 +1470,6 @@
       "replies": "Antwoorden van het bedrijf",
       "noReply": "Nog geen antwoord. Je krijgt een e-mail zodra er een is.",
       "receivedOn": "Ontvangen op {date}",
-      "handover": "Je identiteit aan dit bedrijf bekendmaken: binnenkort beschikbaar. Voorlopig wordt je identiteit nooit gedeeld.",
       "approved": "Bericht goedgekeurd.",
       "discardConfirm": "Dit contact laten vallen? Het concept wordt verwijderd."
     },
@@ -1478,6 +1486,87 @@
       "invalid": "Het onderwerp (maximaal 160 tekens) en het bericht (20 tot 3.000 tekens) zijn verplicht."
     }
   },
+  "handover": {
+    "title": "Anonimiteit opheffen",
+    "intro": "Jij beslist of, en wanneer, {company} te weten komt wie je bent. Je kiest precies wat er wordt onthuld, alleen aan dit bedrijf.",
+    "start": "Anonimiteit opheffen bij dit bedrijf",
+    "cancel": "Annuleren",
+    "retry": "Opnieuw proberen",
+    "vaultLoading": "Je identiteitskluis wordt geladen…",
+    "noVault": "Maak eerst je identiteitskluis aan om je anonimiteit op te heffen: daarin worden je naam, contactgegevens en cv versleuteld, in je browser.",
+    "createVault": "Mijn identiteitskluis aanmaken",
+    "unlockIntro": "Ontgrendel je kluis: hij wordt in je browser ontsleuteld, er wordt nu nog niets verzonden.",
+    "passphrase": "Wachtzin van de kluis",
+    "unlock": "Ontgrendelen",
+    "unlocking": "Ontgrendelen…",
+    "emptyVault": "Je identiteitskluis is leeg: voeg eerst de gegevens toe die je wilt onthullen.",
+    "completeVault": "Mijn kluis aanvullen",
+    "selectIntro": "Vink alleen aan wat {company} mag zien. Standaard is niets aangevinkt.",
+    "selectTitle": "Te onthullen gegevens",
+    "preview": "Voorbeeld",
+    "previewTitle": "Wat {company} te zien krijgt",
+    "previewIntro": "Je anonieme profielkaart blijft zichtbaar, aangevuld met deze gegevens:",
+    "previewEmail": "Je agent stuurt een link naar deze pagina naar het sollicitatieadres van de vacature. De link verloopt automatisch en je kunt hem altijd intrekken.",
+    "previewManual": "Deze vacature heeft geen e-mailadres: je krijgt een link om zelf door te geven. Hij verloopt automatisch en je kunt hem altijd intrekken.",
+    "confirmLabel": "Ik besluit deze gegevens aan {company} te onthullen, en alleen aan dit bedrijf.",
+    "confirm": "Anonimiteit opheffen",
+    "revealing": "Verzenden…",
+    "back": "Selectie wijzigen",
+    "doneEmail": "Klaar: {company} heeft de link naar je onthulde profiel ontvangen.",
+    "doneManual": "Klaar. Geef deze link door aan het bedrijf (hij wordt maar één keer getoond):",
+    "thisCompany": "dit bedrijf",
+    "waitReply": "Je kunt je anonimiteit opheffen zodra het bedrijf heeft geantwoord.",
+    "active": "Anonimiteit opgeheven op {date}: {fields}.",
+    "activeLink": "Link geldig tot {date}, {views, plural, =0 {nog nooit bekeken} one {# keer bekeken} other {# keer bekeken}}.",
+    "revoke": "Intrekken",
+    "revokeConfirm": "Opheffing van de anonimiteit intrekken? De link werkt dan niet meer en de onthulde gegevens worden gewist.",
+    "logTitle": "Logboek van de anonimiteit",
+    "status": {
+      "anonymous": "Anoniem",
+      "revealed": "Identiteit onthuld"
+    },
+    "log": {
+      "REVEALED": "{date}: onthuld aan het bedrijf — {fields}",
+      "REVOKED": "{date}: door jou ingetrokken, gegevens gewist",
+      "EXPIRED": "{date}: link verlopen, gegevens gewist"
+    },
+    "fields": {
+      "name": "Naam",
+      "email": "E-mail",
+      "phone": "Telefoon",
+      "links": "Links",
+      "link": "Link",
+      "employers": "Werkgevers",
+      "employer": "Werkgever",
+      "schools": "Opleiding",
+      "school": "Onderwijsinstelling",
+      "cv": "Cv",
+      "cvOriginal": "Oorspronkelijk cv (bestand)",
+      "cvDownload": "Cv downloaden ({name})"
+    },
+    "fieldNames": {
+      "name": "naam",
+      "email": "e-mail",
+      "phone": "telefoon",
+      "links": "links",
+      "employers": "werkgevers",
+      "schools": "onderwijsinstellingen",
+      "cv": "cv"
+    },
+    "errors": {
+      "notSent": "Je kunt je anonimiteit pas opheffen nadat je bericht is verzonden.",
+      "noReply": "Het bedrijf heeft nog niet geantwoord.",
+      "alreadyRevealed": "De anonimiteit is al opgeheven voor dit bedrijf.",
+      "invalid": "Ongeldige selectie. Controleer de aangevinkte gegevens.",
+      "cvInvalid": "Het cv moet een PDF-, DOC-, DOCX- of ODT-bestand van maximaal 5 MB zijn.",
+      "sendUnavailable": "Het verzenden van e-mails is niet ingesteld op deze server.",
+      "sendFailed": "Verzenden mislukt: er is niets onthuld. Probeer het later opnieuw.",
+      "notFound": "Dit contact is niet gevonden.",
+      "network": "Er is een netwerkfout opgetreden. Probeer het opnieuw.",
+      "wrongPassphrase": "Onjuiste wachtzin.",
+      "nothingSelected": "Vink minstens één gegeven aan om te onthullen."
+    }
+  },
   "replyPage": {
     "title": "De kandidaat antwoorden",
     "intro": "Je bericht wordt afgeleverd in de omgeving van de kandidaat, over de vacature ‘{title}’. De kandidaat kent alleen wat je hier schrijft.",
@@ -1489,5 +1578,14 @@
     "rateLimited": "Te veel berichten vandaag voor dit contact. Probeer het morgen opnieuw.",
     "notFound": "Deze antwoordlink is verlopen of niet meer geldig.",
     "back": "← Terug naar de kaart"
+  },
+  "revealedPage": {
+    "title": "Onthuld profiel",
+    "context": "Sollicitatie op je vacature ‘{title}’",
+    "disclosure": "De kandidaat heeft besloten de anonimiteit tegenover jou op te heffen. Deze link is je op diens uitdrukkelijke beslissing toegestuurd door diens AI-loopbaanagent (Coach Career IA).",
+    "identity": "Identiteit",
+    "card": "Profiel",
+    "expires": "Link geldig tot {date}, op elk moment in te trekken door de kandidaat.",
+    "notice": "Deze gegevens worden alleen voor deze werving met je gedeeld."
   }
 }
