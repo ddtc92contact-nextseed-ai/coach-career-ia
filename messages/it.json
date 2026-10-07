@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Navigazione principale",
-    "signIn": "Accedi"
+    "signIn": "Accedi",
+    "recruiter": "Per le aziende"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "La Sua carriera, le Sue regole, i Suoi tempi.",
     "closingText": "Accesso senza password, tramite un link inviato al Suo indirizzo e-mail. Nessun dato viene condiviso senza il Suo consenso esplicito.",
-    "closingCta": "Inizia"
+    "closingCta": "Inizia",
+    "recruiter": {
+      "title": "State assumendo?",
+      "text": "Pubblicate le vostre offerte con una fascia retributiva chiara: gli agenti dei candidati le propongono solo ai profili di cui rispettano le condizioni. Ricevete profili anonimi che i candidati scelgono di inviarvi.",
+      "cta": "Pubblicare offerte"
+    }
   },
   "notFound": {
     "title": "Pagina non trovata",
@@ -156,6 +162,34 @@
       "expires": "Link valido fino al {date}. La persona candidata può revocarlo in qualsiasi momento.",
       "disclosure": "Questo messaggio è inviato dal suo agente di carriera IA (Coach Career IA), su sua decisione esplicita.",
       "noReply": "Le risposte a questa e-mail non vengono lette."
+    },
+    "employer": {
+      "brand": "Coach Career IA — Area aziende",
+      "greeting": "Buongiorno,",
+      "reason": "Motivo: {reason}",
+      "dashboard": "Apri la mia area aziende",
+      "dashboardText": "La vostra area aziende: {url}",
+      "signature": "Il team di Coach Career IA",
+      "orgApproved": {
+        "subject": "{org}: la vostra area aziende è convalidata",
+        "body": "La vostra organizzazione {org} è stata convalidata. Le offerte pagate sono pubblicate e potete pubblicarne di nuove."
+      },
+      "orgRejected": {
+        "subject": "{org}: la registrazione non è stata convalidata",
+        "body": "Non abbiamo potuto convalidare l’organizzazione {org}. Nessuna offerta sarà pubblicata."
+      },
+      "orgSuspended": {
+        "subject": "{org}: la vostra area aziende è sospesa",
+        "body": "L’organizzazione {org} è stata sospesa e le sue offerte non sono più pubblicate."
+      },
+      "postingApproved": {
+        "subject": "Offerta convalidata: {title}",
+        "body": "La vostra offerta «{title}» è stata convalidata dal nostro team."
+      },
+      "postingRejected": {
+        "subject": "Offerta rifiutata: {title}",
+        "body": "La vostra offerta «{title}» non è stata convalidata. Potete modificarla e inviarla di nuovo."
+      }
     }
   },
   "common": {
@@ -187,7 +221,8 @@
     "fileQuota": "Ha raggiunto il numero massimo di documenti. Ne elimini uno per aggiungerne un altro.",
     "confirmMismatch": "L’indirizzo inserito non corrisponde a quello del Suo account.",
     "notFound": "Questo elemento non esiste o non esiste più.",
-    "billingCancelFailed": "Impossibile disdire il Suo abbonamento al momento: l’account non è stato eliminato. Riprovi tra qualche minuto."
+    "billingCancelFailed": "Impossibile disdire il Suo abbonamento al momento: l’account non è stato eliminato. Riprovi tra qualche minuto.",
+    "salaryRange": "Lo stipendio massimo deve essere maggiore o uguale al minimo."
   },
   "app": {
     "metaTitle": "Il mio spazio",
@@ -206,7 +241,9 @@
       "billing": "Abbonamento",
       "billingSimulator": "Simulatore di pagamento (admin)",
       "card": "La mia scheda anonima",
-      "contacts": "Contatti"
+      "contacts": "Contatti",
+      "employer": "Area aziende",
+      "moderation": "Moderazione (admin)"
     }
   },
   "dashboard": {
@@ -389,7 +426,8 @@
         "SENDING": "Invio in corso.",
         "SENT": "Azienda contattata."
       }
-    }
+    },
+    "directBadge": "Pubblicata direttamente dall’azienda"
   },
   "memory": {
     "title": "La mia memoria di carriera",
@@ -1587,5 +1625,165 @@
     "card": "Profilo",
     "expires": "Link valido fino al {date}, revocabile in qualsiasi momento dalla persona candidata.",
     "notice": "Queste informazioni ti sono comunicate solo per questa selezione."
+  },
+  "employer": {
+    "metaTitle": "Area aziende",
+    "titleTemplate": "%s · Area aziende",
+    "signOut": "Esci",
+    "nav": {
+      "label": "Area aziende",
+      "dashboard": "Le mie offerte",
+      "newPosting": "Pubblica un’offerta",
+      "organization": "La mia organizzazione",
+      "candidate": "Area candidato"
+    },
+    "signup": {
+      "metaTitle": "Per le aziende",
+      "eyebrow": "Area aziende",
+      "title": "Pubblicate le vostre offerte per candidati qualificati",
+      "intro": "Ogni candidato è rappresentato da un agente che gli propone solo le offerte che rispettano le sue condizioni: stipendio, luogo, telelavoro, contratto. Un’offerta chiara raggiunge i profili giusti.",
+      "points": {
+        "salary": "Fascia retributiva obbligatoria: è la prima condizione dei candidati.",
+        "pay": "Pagamento per offerta, pubblicazione di {days} giorni, senza abbonamento.",
+        "privacy": "Non cercate i candidati: sono loro a scegliere di inviarvi il proprio profilo anonimo."
+      },
+      "cta": "Crea la mia area aziende",
+      "formTitle": "La vostra organizzazione",
+      "formIntro": "Registratevi con l’indirizzo e-mail aziendale: se il dominio corrisponde al sito dell’azienda, l’area viene attivata subito. Altrimenti il nostro team la verifica prima di qualsiasi pubblicazione.",
+      "submit": "Crea l’area aziende",
+      "signedInAs": "Connesso come {email}",
+      "fields": {
+        "name": "Nome dell’azienda",
+        "website": "Sito web",
+        "websiteHint": "Per esempio https://www.azienda.it",
+        "sector": "Settore",
+        "size": "Dimensione",
+        "country": "Paese"
+      },
+      "choose": "Scegli…"
+    },
+    "org": {
+      "title": "La mia organizzazione",
+      "status": {
+        "PENDING": "In attesa di convalida",
+        "ACTIVE": "Attiva",
+        "SUSPENDED": "Sospesa"
+      },
+      "pendingTitle": "Organizzazione in verifica",
+      "pendingText": "Il dominio del vostro indirizzo e-mail non corrisponde a quello del sito dell’azienda (oppure è una webmail pubblica). Potete preparare e pagare le offerte: saranno pubblicate appena il nostro team avrà convalidato l’organizzazione.",
+      "suspendedTitle": "Organizzazione sospesa",
+      "suspendedText": "Le vostre offerte non sono più pubblicate. Contattateci per saperne di più.",
+      "reason": "Motivo: {reason}",
+      "website": "Sito web",
+      "domain": "Dominio",
+      "sector": "Settore",
+      "size": "Dimensione",
+      "country": "Paese",
+      "verified": "Verificata",
+      "verifiedOn": "Verificata il {date}",
+      "notVerified": "Non verificata"
+    },
+    "dashboard": {
+      "title": "Le mie offerte",
+      "intro": "Le vostre offerte, il loro stato e la scadenza. Un’offerta è pubblicata dopo il pagamento e la verifica, per {days} giorni.",
+      "newPosting": "Pubblica un’offerta",
+      "emptyTitle": "Ancora nessuna offerta",
+      "emptyText": "Scrivete la vostra prima offerta: resta una bozza modificabile fino all’invio.",
+      "columns": {
+        "title": "Offerta",
+        "status": "Stato",
+        "expires": "Scadenza",
+        "views": "Visualizzazioni"
+      },
+      "noDate": "—",
+      "privacy": "Qui non compare alcun dato dei candidati: vedete solo quanti candidati hanno aperto la vostra offerta tra le loro opportunità."
+    },
+    "status": {
+      "DRAFT": "Bozza",
+      "AWAITING_PAYMENT": "In attesa di pagamento",
+      "IN_REVIEW": "In verifica",
+      "LIVE": "Online",
+      "CLOSED": "Chiusa",
+      "REJECTED": "Rifiutata"
+    },
+    "posting": {
+      "newTitle": "Pubblica un’offerta",
+      "newIntro": "L’offerta viene salvata come bozza. Poi la inviate per il pagamento e la verifica.",
+      "back": "← Le mie offerte",
+      "sections": {
+        "job": "Il ruolo",
+        "place": "Luogo e contratto",
+        "salary": "Retribuzione"
+      },
+      "salaryIntro": "Obbligatoria: fascia lorda, con valuta e periodo. I candidati il cui stipendio minimo non è raggiunto non vedranno l’offerta.",
+      "fields": {
+        "title": "Titolo del ruolo",
+        "description": "Descrizione",
+        "descriptionHint": "Mansioni, team, competenze richieste (almeno {min} caratteri). Nessun criterio di età, sesso, origine o situazione familiare.",
+        "seniority": "Livello di esperienza",
+        "sector": "Settore",
+        "contractType": "Tipo di contratto",
+        "remotePolicy": "Telelavoro",
+        "city": "Città",
+        "country": "Paese",
+        "salaryMin": "Minimo",
+        "salaryMax": "Massimo",
+        "salaryCurrency": "Valuta",
+        "salaryPeriod": "Periodo"
+      },
+      "periods": {
+        "YEAR": "All’anno",
+        "MONTH": "Al mese",
+        "DAY": "Al giorno",
+        "HOUR": "All’ora"
+      },
+      "create": "Crea la bozza",
+      "save": "Salva",
+      "saved": "Offerta salvata.",
+      "help": {
+        "DRAFT": "Bozza: modificate l’offerta quanto serve, poi inviatela.",
+        "AWAITING_PAYMENT": "Resta da pagare la pubblicazione. L’offerta andrà online dopo il pagamento e la verifica.",
+        "IN_REVIEW": "Pagamento ricevuto. Il nostro team sta verificando l’offerta; riceverete un’e-mail.",
+        "LIVE": "Online: l’offerta è proposta ai candidati di cui rispetta le condizioni.",
+        "CLOSED": "Chiusa: l’offerta non è più proposta. Potete ripubblicarla (nuovo pagamento).",
+        "REJECTED": "Rifiutata: modificate l’offerta e inviatela di nuovo."
+      },
+      "reviewPendingOrg": "La vostra organizzazione deve prima essere convalidata: l’offerta sarà pubblicata dopo.",
+      "flagged": "Alcune formulazioni dell’offerta saranno riviste dal nostro team prima della pubblicazione (criteri vietati: età, sesso, origine, situazione familiare).",
+      "rejectedReason": "Motivo del rifiuto: {reason}",
+      "liveUntil": "Online fino al {date}",
+      "views": "{count, plural, =0 {Nessuna visualizzazione} one {# visualizzazione} other {# visualizzazioni}}",
+      "price": "Pubblicazione di {days} giorni: {price}",
+      "actions": {
+        "submit": "Invia l’offerta",
+        "pay": "Paga e pubblica",
+        "extend": "Prolunga di {days} giorni",
+        "renew": "Ripubblica",
+        "close": "Chiudi l’offerta",
+        "delete": "Elimina la bozza",
+        "adminFree": "Pubblica gratis (amministratore)"
+      },
+      "notice": {
+        "paid": "Pagamento ricevuto, grazie.",
+        "canceled": "Pagamento annullato: non è stato addebitato nulla.",
+        "submitted": "Offerta inviata.",
+        "closed": "Offerta chiusa.",
+        "renewed": "Offerta pronta per essere ripubblicata: pagate il nuovo periodo.",
+        "published": "Offerta pubblicata."
+      },
+      "errors": {
+        "notAllowed": "Questa azione non è possibile nello stato attuale dell’offerta.",
+        "unavailable": "Il pagamento non è al momento disponibile. Riprovate più tardi.",
+        "suspended": "La vostra organizzazione è sospesa: nessuna pubblicazione è possibile."
+      }
+    },
+    "checkout": {
+      "title": "Pagamento della pubblicazione",
+      "offer": "Offerta",
+      "duration": "Durata",
+      "days": "{days} giorni",
+      "total": "Importo",
+      "back": "Torna all’offerta"
+    }
   }
 }

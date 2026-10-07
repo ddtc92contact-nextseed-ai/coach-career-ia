@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Main navigation",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "recruiter": "I’m hiring"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "Your career, your rules, your pace.",
     "closingText": "Passwordless sign-in, via a link sent to your email address. No data is shared without your explicit consent.",
-    "closingCta": "Get started"
+    "closingCta": "Get started",
+    "recruiter": {
+      "title": "Hiring?",
+      "text": "Post your jobs with a clear salary range: candidates’ agents only show them to profiles whose conditions they meet. You receive anonymous profiles that candidates choose to send you.",
+      "cta": "I’m hiring"
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -156,6 +162,34 @@
       "expires": "Link valid until {date}. The candidate can revoke it at any time.",
       "disclosure": "This message is sent by their AI career agent (Coach Career IA), on their explicit decision.",
       "noReply": "Replies to this email are not read."
+    },
+    "employer": {
+      "brand": "Coach Career IA — Employer area",
+      "greeting": "Hello,",
+      "reason": "Reason: {reason}",
+      "dashboard": "Open my employer area",
+      "dashboardText": "Your employer area: {url}",
+      "signature": "The Coach Career IA team",
+      "orgApproved": {
+        "subject": "{org}: your employer area is approved",
+        "body": "Your organisation {org} has been approved. Your paid jobs are published, and you can post new ones."
+      },
+      "orgRejected": {
+        "subject": "{org}: your sign-up was not approved",
+        "body": "We could not approve the organisation {org}. No job will be published."
+      },
+      "orgSuspended": {
+        "subject": "{org}: your employer area is suspended",
+        "body": "The organisation {org} has been suspended and its jobs are no longer published."
+      },
+      "postingApproved": {
+        "subject": "Job approved: {title}",
+        "body": "Your job “{title}” has been approved by our team."
+      },
+      "postingRejected": {
+        "subject": "Job rejected: {title}",
+        "body": "Your job “{title}” was not approved. You can edit it and submit it again."
+      }
     }
   },
   "common": {
@@ -187,7 +221,8 @@
     "fileQuota": "You have reached the maximum number of documents. Delete one to add another.",
     "confirmMismatch": "The address you entered doesn’t match your account’s address.",
     "notFound": "This item doesn’t exist or no longer exists.",
-    "billingCancelFailed": "Your subscription cannot be cancelled right now, so your account has not been deleted. Please try again in a few minutes."
+    "billingCancelFailed": "Your subscription cannot be cancelled right now, so your account has not been deleted. Please try again in a few minutes.",
+    "salaryRange": "The maximum salary must be greater than or equal to the minimum."
   },
   "app": {
     "metaTitle": "My space",
@@ -206,7 +241,9 @@
       "billing": "Subscription",
       "billingSimulator": "Payment simulator (admin)",
       "card": "My anonymous card",
-      "contacts": "Contacts"
+      "contacts": "Contacts",
+      "employer": "Employer area",
+      "moderation": "Moderation (admin)"
     }
   },
   "dashboard": {
@@ -389,7 +426,8 @@
         "SENDING": "Sending.",
         "SENT": "Company contacted."
       }
-    }
+    },
+    "directBadge": "Posted directly by the company"
   },
   "memory": {
     "title": "My career memory",
@@ -1587,5 +1625,165 @@
     "card": "Profile",
     "expires": "Link valid until {date}, revocable at any time by the candidate.",
     "notice": "This information is shared with you for this recruitment only."
+  },
+  "employer": {
+    "metaTitle": "Employer area",
+    "titleTemplate": "%s · Employer area",
+    "signOut": "Sign out",
+    "nav": {
+      "label": "Employer area",
+      "dashboard": "My jobs",
+      "newPosting": "Post a job",
+      "organization": "My organisation",
+      "candidate": "Candidate area"
+    },
+    "signup": {
+      "metaTitle": "I’m hiring",
+      "eyebrow": "Employer area",
+      "title": "Post your jobs to qualified candidates",
+      "intro": "Each candidate is represented by an agent that only shows them jobs meeting their conditions: salary, location, remote work, contract. A clear job post reaches the right profiles.",
+      "points": {
+        "salary": "Salary range required: it is candidates’ first condition.",
+        "pay": "Pay per job, {days}-day posting, no subscription.",
+        "privacy": "You don’t search for candidates: they choose to send you their anonymous profile."
+      },
+      "cta": "Create my employer area",
+      "formTitle": "Your organisation",
+      "formIntro": "Sign up with your work email: if its domain matches the company website, your area is activated right away. Otherwise our team checks it before anything is published.",
+      "submit": "Create the employer area",
+      "signedInAs": "Signed in as {email}",
+      "fields": {
+        "name": "Company name",
+        "website": "Website",
+        "websiteHint": "For example https://www.company.com",
+        "sector": "Sector",
+        "size": "Size",
+        "country": "Country"
+      },
+      "choose": "Choose…"
+    },
+    "org": {
+      "title": "My organisation",
+      "status": {
+        "PENDING": "Awaiting approval",
+        "ACTIVE": "Active",
+        "SUSPENDED": "Suspended"
+      },
+      "pendingTitle": "Organisation being verified",
+      "pendingText": "Your email domain does not match the company website (or it is a public webmail). You can prepare and pay for your jobs: they will be published as soon as our team has approved your organisation.",
+      "suspendedTitle": "Organisation suspended",
+      "suspendedText": "Your jobs are no longer published. Contact us to find out more.",
+      "reason": "Reason: {reason}",
+      "website": "Website",
+      "domain": "Domain",
+      "sector": "Sector",
+      "size": "Size",
+      "country": "Country",
+      "verified": "Verified",
+      "verifiedOn": "Verified on {date}",
+      "notVerified": "Not verified"
+    },
+    "dashboard": {
+      "title": "My jobs",
+      "intro": "Your jobs, their status and expiry date. A job is published after payment and review, for {days} days.",
+      "newPosting": "Post a job",
+      "emptyTitle": "No jobs yet",
+      "emptyText": "Write your first job post: it stays an editable draft until you submit it.",
+      "columns": {
+        "title": "Job",
+        "status": "Status",
+        "expires": "Expires",
+        "views": "Views"
+      },
+      "noDate": "—",
+      "privacy": "No candidate data appears here: you only see how many candidates opened your job among their opportunities."
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "AWAITING_PAYMENT": "Awaiting payment",
+      "IN_REVIEW": "In review",
+      "LIVE": "Live",
+      "CLOSED": "Closed",
+      "REJECTED": "Rejected"
+    },
+    "posting": {
+      "newTitle": "Post a job",
+      "newIntro": "The job is saved as a draft. You then submit it for payment and review.",
+      "back": "← My jobs",
+      "sections": {
+        "job": "The role",
+        "place": "Location and contract",
+        "salary": "Pay"
+      },
+      "salaryIntro": "Required: gross range, with currency and period. Candidates whose minimum salary is not met will not see the job.",
+      "fields": {
+        "title": "Job title",
+        "description": "Description",
+        "descriptionHint": "Responsibilities, team, expected skills (at least {min} characters). No criteria on age, sex, origin or family situation.",
+        "seniority": "Experience level",
+        "sector": "Sector",
+        "contractType": "Contract type",
+        "remotePolicy": "Remote work",
+        "city": "City",
+        "country": "Country",
+        "salaryMin": "Minimum",
+        "salaryMax": "Maximum",
+        "salaryCurrency": "Currency",
+        "salaryPeriod": "Period"
+      },
+      "periods": {
+        "YEAR": "Per year",
+        "MONTH": "Per month",
+        "DAY": "Per day",
+        "HOUR": "Per hour"
+      },
+      "create": "Create the draft",
+      "save": "Save",
+      "saved": "Job saved.",
+      "help": {
+        "DRAFT": "Draft: edit the job as much as you need, then submit it.",
+        "AWAITING_PAYMENT": "The posting still needs to be paid. The job goes live after payment and review.",
+        "IN_REVIEW": "Payment received. Our team is reviewing the job; you will be notified by email.",
+        "LIVE": "Live: the job is shown to candidates whose conditions it meets.",
+        "CLOSED": "Closed: the job is no longer shown. You can republish it (new payment).",
+        "REJECTED": "Rejected: edit the job, then submit it again."
+      },
+      "reviewPendingOrg": "Your organisation must be approved first: the job will be published afterwards.",
+      "flagged": "Some wording in the job will be reviewed by our team before publication (prohibited criteria: age, sex, origin, family situation).",
+      "rejectedReason": "Reason for rejection: {reason}",
+      "liveUntil": "Live until {date}",
+      "views": "{count, plural, =0 {No views} one {# view} other {# views}}",
+      "price": "{days}-day posting: {price}",
+      "actions": {
+        "submit": "Submit the job",
+        "pay": "Pay and publish",
+        "extend": "Extend by {days} days",
+        "renew": "Republish",
+        "close": "Close the job",
+        "delete": "Delete the draft",
+        "adminFree": "Publish for free (admin)"
+      },
+      "notice": {
+        "paid": "Payment received, thank you.",
+        "canceled": "Payment cancelled: nothing was charged.",
+        "submitted": "Job submitted.",
+        "closed": "Job closed.",
+        "renewed": "Job ready to be republished: pay for the new period.",
+        "published": "Job published."
+      },
+      "errors": {
+        "notAllowed": "This action is not possible in the job’s current state.",
+        "unavailable": "Payment is temporarily unavailable. Please try again later.",
+        "suspended": "Your organisation is suspended: nothing can be published."
+      }
+    },
+    "checkout": {
+      "title": "Job posting payment",
+      "offer": "Job",
+      "duration": "Duration",
+      "days": "{days} days",
+      "total": "Amount",
+      "back": "Back to the job"
+    }
   }
 }

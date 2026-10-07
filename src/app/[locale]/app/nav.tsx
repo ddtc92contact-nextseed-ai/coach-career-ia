@@ -18,6 +18,7 @@ export const APP_NAV = [
 
 /** Entrée visible des seuls administrateurs. */
 export const ADMIN_NAV = [
+  { href: "/app/moderation", key: "moderation" },
   { href: "/app/radar", key: "radar" },
   { href: "/app/simulateur-paiement", key: "billingSimulator" },
 ] as const;

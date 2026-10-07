@@ -4,14 +4,19 @@ import { PATHNAME_HEADER } from "@/lib/auth/redirect";
 import { LOCALES, routing } from "@/i18n/routing";
 
 const SESSION_COOKIES = ["authjs.session-token", "__Secure-authjs.session-token"];
-const APP_PATH = new RegExp(`^/(${LOCALES.join("|")})(/app(?:/.*)?)$`);
+// Espaces connectés : candidat (`/app`) et entreprise (`/entreprise`, sauf la
+// page d'inscription « Je recrute », publique).
+const APP_PATH = new RegExp(
+  `^/(${LOCALES.join("|")})(/app(?:/.*)?|/entreprise(?!/inscription(?:/|$))(?:/.*)?)$`,
+);
 
 const intl = createMiddleware(routing);
 
 /**
  * 1. Langue : `/` et toute URL sans préfixe redirigent vers la meilleure langue
  *    (cookie `NEXT_LOCALE`, puis Accept-Language, puis français).
- * 2. Filtre optimiste : sans cookie de session, `/<langue>/app` renvoie vers la
+ * 2. Filtre optimiste : sans cookie de session, `/<langue>/app` (et
+ *    `/<langue>/entreprise`, hors inscription) renvoie vers la
  *    connexion en conservant la page demandée. La vérification qui fait foi
  *    reste `requireUser()` côté serveur (session validée en base) ; le chemin
  *    demandé (sans langue) lui est transmis par en-tête pour qu'elle conserve

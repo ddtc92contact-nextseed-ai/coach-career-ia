@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Hauptnavigation",
-    "signIn": "Anmelden"
+    "signIn": "Anmelden",
+    "recruiter": "Für Unternehmen"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "Ihre Karriere, Ihre Regeln, Ihr Tempo.",
     "closingText": "Anmeldung ohne Passwort, per Link an Ihre E-Mail-Adresse. Keine Daten werden ohne Ihre ausdrückliche Zustimmung weitergegeben.",
-    "closingCta": "Jetzt starten"
+    "closingCta": "Jetzt starten",
+    "recruiter": {
+      "title": "Sie stellen ein?",
+      "text": "Veröffentlichen Sie Ihre Stellen mit einer klaren Gehaltsspanne: Die Agenten der Kandidaten zeigen sie nur Profilen, deren Bedingungen sie erfüllen. Sie erhalten anonyme Profile, die Kandidaten Ihnen bewusst senden.",
+      "cta": "Stellen veröffentlichen"
+    }
   },
   "notFound": {
     "title": "Seite nicht gefunden",
@@ -156,6 +162,34 @@
       "expires": "Link gültig bis {date}. Die Person kann ihn jederzeit widerrufen.",
       "disclosure": "Diese Nachricht wird von ihrem KI-Karriereagenten (Coach Career IA) auf ihre ausdrückliche Entscheidung hin gesendet.",
       "noReply": "Antworten auf diese E-Mail werden nicht gelesen."
+    },
+    "employer": {
+      "brand": "Coach Career IA — Unternehmensbereich",
+      "greeting": "Guten Tag,",
+      "reason": "Grund: {reason}",
+      "dashboard": "Meinen Unternehmensbereich öffnen",
+      "dashboardText": "Ihr Unternehmensbereich: {url}",
+      "signature": "Das Team von Coach Career IA",
+      "orgApproved": {
+        "subject": "{org}: Ihr Unternehmensbereich ist freigegeben",
+        "body": "Ihre Organisation {org} wurde freigegeben. Ihre bezahlten Stellen sind veröffentlicht, und Sie können neue veröffentlichen."
+      },
+      "orgRejected": {
+        "subject": "{org}: Ihre Registrierung wurde nicht freigegeben",
+        "body": "Wir konnten die Organisation {org} nicht freigeben. Es wird keine Stelle veröffentlicht."
+      },
+      "orgSuspended": {
+        "subject": "{org}: Ihr Unternehmensbereich ist gesperrt",
+        "body": "Die Organisation {org} wurde gesperrt, und ihre Stellen werden nicht mehr veröffentlicht."
+      },
+      "postingApproved": {
+        "subject": "Stelle freigegeben: {title}",
+        "body": "Ihre Stelle „{title}“ wurde von unserem Team freigegeben."
+      },
+      "postingRejected": {
+        "subject": "Stelle abgelehnt: {title}",
+        "body": "Ihre Stelle „{title}“ wurde nicht freigegeben. Sie können sie bearbeiten und erneut einreichen."
+      }
     }
   },
   "common": {
@@ -187,7 +221,8 @@
     "fileQuota": "Sie haben die maximale Anzahl an Dokumenten erreicht. Löschen Sie eines, um ein weiteres hinzuzufügen.",
     "confirmMismatch": "Die eingegebene Adresse stimmt nicht mit der Ihres Kontos überein.",
     "notFound": "Dieses Element existiert nicht (mehr).",
-    "billingCancelFailed": "Ihr Abonnement kann gerade nicht gekündigt werden, daher wurde Ihr Konto nicht gelöscht. Bitte versuchen Sie es in einigen Minuten erneut."
+    "billingCancelFailed": "Ihr Abonnement kann gerade nicht gekündigt werden, daher wurde Ihr Konto nicht gelöscht. Bitte versuchen Sie es in einigen Minuten erneut.",
+    "salaryRange": "Das Höchstgehalt muss größer oder gleich dem Mindestgehalt sein."
   },
   "app": {
     "metaTitle": "Mein Bereich",
@@ -206,7 +241,9 @@
       "billing": "Abonnement",
       "billingSimulator": "Zahlungssimulator (Admin)",
       "card": "Meine anonyme Karte",
-      "contacts": "Kontakte"
+      "contacts": "Kontakte",
+      "employer": "Unternehmensbereich",
+      "moderation": "Moderation (Admin)"
     }
   },
   "dashboard": {
@@ -389,7 +426,8 @@
         "SENDING": "Wird gesendet.",
         "SENT": "Unternehmen kontaktiert."
       }
-    }
+    },
+    "directBadge": "Direkt vom Unternehmen veröffentlicht"
   },
   "memory": {
     "title": "Mein Karrieregedächtnis",
@@ -1587,5 +1625,165 @@
     "card": "Profil",
     "expires": "Link gültig bis {date}, jederzeit von der Person widerrufbar.",
     "notice": "Diese Angaben werden Ihnen nur für dieses Auswahlverfahren mitgeteilt."
+  },
+  "employer": {
+    "metaTitle": "Unternehmensbereich",
+    "titleTemplate": "%s · Unternehmensbereich",
+    "signOut": "Abmelden",
+    "nav": {
+      "label": "Unternehmensbereich",
+      "dashboard": "Meine Stellen",
+      "newPosting": "Stelle veröffentlichen",
+      "organization": "Meine Organisation",
+      "candidate": "Kandidatenbereich"
+    },
+    "signup": {
+      "metaTitle": "Für Unternehmen",
+      "eyebrow": "Unternehmensbereich",
+      "title": "Veröffentlichen Sie Ihre Stellen für qualifizierte Kandidaten",
+      "intro": "Jeder Kandidat wird von einem Agenten vertreten, der ihm nur Stellen zeigt, die seine Bedingungen erfüllen: Gehalt, Ort, Homeoffice, Vertrag. Eine klare Stellenanzeige erreicht die passenden Profile.",
+      "points": {
+        "salary": "Gehaltsspanne verpflichtend: Sie ist die erste Bedingung der Kandidaten.",
+        "pay": "Bezahlung pro Stelle, {days} Tage Laufzeit, kein Abonnement.",
+        "privacy": "Sie suchen keine Kandidaten: Diese entscheiden selbst, Ihnen ihr anonymes Profil zu senden."
+      },
+      "cta": "Unternehmensbereich anlegen",
+      "formTitle": "Ihre Organisation",
+      "formIntro": "Registrieren Sie sich mit Ihrer beruflichen E-Mail-Adresse: Stimmt deren Domain mit der Website des Unternehmens überein, wird Ihr Bereich sofort aktiviert. Andernfalls prüft unser Team ihn vor jeder Veröffentlichung.",
+      "submit": "Unternehmensbereich anlegen",
+      "signedInAs": "Angemeldet als {email}",
+      "fields": {
+        "name": "Name des Unternehmens",
+        "website": "Website",
+        "websiteHint": "Zum Beispiel https://www.unternehmen.de",
+        "sector": "Branche",
+        "size": "Größe",
+        "country": "Land"
+      },
+      "choose": "Auswählen…"
+    },
+    "org": {
+      "title": "Meine Organisation",
+      "status": {
+        "PENDING": "Freigabe ausstehend",
+        "ACTIVE": "Aktiv",
+        "SUSPENDED": "Gesperrt"
+      },
+      "pendingTitle": "Organisation wird geprüft",
+      "pendingText": "Die Domain Ihrer E-Mail-Adresse stimmt nicht mit der Website des Unternehmens überein (oder es handelt sich um einen öffentlichen E-Mail-Dienst). Sie können Ihre Stellen vorbereiten und bezahlen: Sie werden veröffentlicht, sobald unser Team Ihre Organisation freigegeben hat.",
+      "suspendedTitle": "Organisation gesperrt",
+      "suspendedText": "Ihre Stellen werden nicht mehr veröffentlicht. Kontaktieren Sie uns für weitere Informationen.",
+      "reason": "Grund: {reason}",
+      "website": "Website",
+      "domain": "Domain",
+      "sector": "Branche",
+      "size": "Größe",
+      "country": "Land",
+      "verified": "Verifiziert",
+      "verifiedOn": "Verifiziert am {date}",
+      "notVerified": "Nicht verifiziert"
+    },
+    "dashboard": {
+      "title": "Meine Stellen",
+      "intro": "Ihre Stellen, ihr Status und ihr Ablaufdatum. Eine Stelle wird nach Zahlung und Prüfung für {days} Tage veröffentlicht.",
+      "newPosting": "Stelle veröffentlichen",
+      "emptyTitle": "Noch keine Stellen",
+      "emptyText": "Verfassen Sie Ihre erste Stelle: Sie bleibt ein bearbeitbarer Entwurf, bis Sie sie einreichen.",
+      "columns": {
+        "title": "Stelle",
+        "status": "Status",
+        "expires": "Ablauf",
+        "views": "Aufrufe"
+      },
+      "noDate": "—",
+      "privacy": "Hier erscheinen keine Kandidatendaten: Sie sehen nur, wie viele Kandidaten Ihre Stelle unter ihren Chancen geöffnet haben."
+    },
+    "status": {
+      "DRAFT": "Entwurf",
+      "AWAITING_PAYMENT": "Zahlung ausstehend",
+      "IN_REVIEW": "In Prüfung",
+      "LIVE": "Online",
+      "CLOSED": "Geschlossen",
+      "REJECTED": "Abgelehnt"
+    },
+    "posting": {
+      "newTitle": "Stelle veröffentlichen",
+      "newIntro": "Die Stelle wird als Entwurf gespeichert. Anschließend reichen Sie sie zur Zahlung und Prüfung ein.",
+      "back": "← Meine Stellen",
+      "sections": {
+        "job": "Die Position",
+        "place": "Ort und Vertrag",
+        "salary": "Vergütung"
+      },
+      "salaryIntro": "Pflichtangabe: Bruttospanne mit Währung und Zeitraum. Kandidaten, deren Mindestgehalt nicht erreicht wird, sehen die Stelle nicht.",
+      "fields": {
+        "title": "Stellenbezeichnung",
+        "description": "Beschreibung",
+        "descriptionHint": "Aufgaben, Team, erwartete Kompetenzen (mindestens {min} Zeichen). Keine Kriterien zu Alter, Geschlecht, Herkunft oder Familienstand.",
+        "seniority": "Erfahrungsstufe",
+        "sector": "Branche",
+        "contractType": "Vertragsart",
+        "remotePolicy": "Homeoffice",
+        "city": "Stadt",
+        "country": "Land",
+        "salaryMin": "Minimum",
+        "salaryMax": "Maximum",
+        "salaryCurrency": "Währung",
+        "salaryPeriod": "Zeitraum"
+      },
+      "periods": {
+        "YEAR": "Pro Jahr",
+        "MONTH": "Pro Monat",
+        "DAY": "Pro Tag",
+        "HOUR": "Pro Stunde"
+      },
+      "create": "Entwurf anlegen",
+      "save": "Speichern",
+      "saved": "Stelle gespeichert.",
+      "help": {
+        "DRAFT": "Entwurf: Bearbeiten Sie die Stelle beliebig und reichen Sie sie dann ein.",
+        "AWAITING_PAYMENT": "Die Veröffentlichung muss noch bezahlt werden. Die Stelle geht nach Zahlung und Prüfung online.",
+        "IN_REVIEW": "Zahlung erhalten. Unser Team prüft die Stelle; Sie werden per E-Mail benachrichtigt.",
+        "LIVE": "Online: Die Stelle wird Kandidaten angezeigt, deren Bedingungen sie erfüllt.",
+        "CLOSED": "Geschlossen: Die Stelle wird nicht mehr angezeigt. Sie können sie erneut veröffentlichen (neue Zahlung).",
+        "REJECTED": "Abgelehnt: Bearbeiten Sie die Stelle und reichen Sie sie erneut ein."
+      },
+      "reviewPendingOrg": "Ihre Organisation muss zuerst freigegeben werden: Die Stelle wird danach veröffentlicht.",
+      "flagged": "Einige Formulierungen der Stelle werden vor der Veröffentlichung von unserem Team geprüft (unzulässige Kriterien: Alter, Geschlecht, Herkunft, Familienstand).",
+      "rejectedReason": "Ablehnungsgrund: {reason}",
+      "liveUntil": "Online bis {date}",
+      "views": "{count, plural, =0 {Keine Aufrufe} one {# Aufruf} other {# Aufrufe}}",
+      "price": "Veröffentlichung für {days} Tage: {price}",
+      "actions": {
+        "submit": "Stelle einreichen",
+        "pay": "Bezahlen und veröffentlichen",
+        "extend": "Um {days} Tage verlängern",
+        "renew": "Erneut veröffentlichen",
+        "close": "Stelle schließen",
+        "delete": "Entwurf löschen",
+        "adminFree": "Kostenlos veröffentlichen (Admin)"
+      },
+      "notice": {
+        "paid": "Zahlung erhalten, vielen Dank.",
+        "canceled": "Zahlung abgebrochen: Es wurde nichts abgebucht.",
+        "submitted": "Stelle eingereicht.",
+        "closed": "Stelle geschlossen.",
+        "renewed": "Stelle bereit zur erneuten Veröffentlichung: Bezahlen Sie den neuen Zeitraum.",
+        "published": "Stelle veröffentlicht."
+      },
+      "errors": {
+        "notAllowed": "Diese Aktion ist im aktuellen Status der Stelle nicht möglich.",
+        "unavailable": "Die Zahlung ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
+        "suspended": "Ihre Organisation ist gesperrt: Es kann nichts veröffentlicht werden."
+      }
+    },
+    "checkout": {
+      "title": "Zahlung der Veröffentlichung",
+      "offer": "Stelle",
+      "duration": "Laufzeit",
+      "days": "{days} Tage",
+      "total": "Betrag",
+      "back": "Zurück zur Stelle"
+    }
   }
 }
