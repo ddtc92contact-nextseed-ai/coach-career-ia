@@ -335,7 +335,9 @@
       "backedBy": "Onderbouwd door",
       "unprovenHint": "Onbewezen: vermeld haar bij een prestatie die met een bewijs is onderbouwd.",
       "confirmDelete": "De vaardigheid “{name}” verwijderen? Ze wordt weggehaald bij de prestaties waarin ze vermeld staat."
-    }
+    },
+    "importCta": "Mijn loopbaan importeren",
+    "importHint": "Cv, LinkedIn-export of GitHub: de AI maakt een concept dat u goedkeurt."
   },
   "guardRails": {
     "title": "Mijn randvoorwaarden",
@@ -414,6 +416,117 @@
       "confirmHint": "Exporteer uw gegevens voordat u uw account verwijdert.",
       "submit": "Mijn account definitief verwijderen",
       "deleting": "Bezig met verwijderen…"
+    }
+  },
+  "import": {
+    "title": "Mijn loopbaan importeren",
+    "back": "← Terug naar mijn carrièregeheugen",
+    "intro": "Begin met uw cv, uw LinkedIn-export of uw GitHub: de AI maakt een concept van uw carrièregeheugen dat u onderdeel voor onderdeel goedkeurt.",
+    "privacy": {
+      "title": "Wat er met uw gegevens gebeurt",
+      "files": "Uw bestanden worden in het geheugen gelezen en daarna weggegooid: ze worden nooit op onze servers opgeslagen.",
+      "contacts": "Uw contactgegevens (e-mail, telefoon, profiellinks) worden verwijderd voordat onze AI-leverancier de tekst analyseert.",
+      "identity": "Namen (die van u, uw werkgevers en uw opleidingen) worden apart gehouden: ze komen nooit in uw profiel.",
+      "review": "Niets wordt aan uw geheugen toegevoegd zonder uw uitdrukkelijke goedkeuring."
+    },
+    "form": {
+      "cv": "Cv",
+      "cvHint": "PDF of DOCX, maximaal {maxMb} MB.",
+      "linkedin": "LinkedIn-export",
+      "linkedinHint": "ZIP-archief van uw gegevens, maximaal {maxMb} MB. Op LinkedIn: Instellingen › Gegevensprivacy › Een kopie van uw gegevens downloaden.",
+      "github": "GitHub-gebruikersnaam",
+      "githubHint": "Uw openbare repositories dienen als bewijs van uw prestaties.",
+      "githubPlaceholder": "mijn-naam",
+      "submit": "Mijn loopbaan analyseren",
+      "notConfigured": "AI-analyse is op deze dienst nog niet ingeschakeld. U kunt uw carrièregeheugen met de hand invullen."
+    },
+    "progress": {
+      "label": "Analyse bezig",
+      "reading": "Uw documenten worden gelezen",
+      "analysing": "AI-analyse",
+      "drafting": "Concept wordt voorbereid",
+      "elapsed": "{seconds, plural, one {# seconde} other {# seconden}}",
+      "slow": "Dit duurt langer dan normaal. Nog even geduld, alstublieft.",
+      "cancel": "Annuleren"
+    },
+    "errors": {
+      "title": "De import is niet gelukt",
+      "noSource": "Voeg ten minste een cv, een LinkedIn-export of een GitHub-gebruikersnaam toe.",
+      "cvTooLarge": "Dit cv is groter dan {cvMaxMb} MB.",
+      "cvType": "Cv-formaat niet herkend: stuur een onbeveiligde PDF of DOCX.",
+      "cvEmpty": "Er kon geen tekst uit dit cv worden gelezen (gescand document?). Probeer een PDF die u vanuit uw tekstverwerker exporteert.",
+      "linkedinTooLarge": "Bestanden te groot: de LinkedIn-export is beperkt tot {linkedinMaxMb} MB en het cv tot {cvMaxMb} MB.",
+      "linkedinInvalid": "Dit bestand is geen herkende LinkedIn-export (ZIP-archief verwacht).",
+      "githubInvalid": "Deze GitHub-gebruikersnaam is ongeldig.",
+      "githubNotFound": "Er is geen openbaar GitHub-account met deze gebruikersnaam.",
+      "githubUnavailable": "GitHub reageert op dit moment niet.",
+      "aiNotConfigured": "AI-analyse is op deze dienst niet ingeschakeld.",
+      "aiTimeout": "De analyse duurde te lang.",
+      "aiUnavailable": "De analysedienst is tijdelijk niet beschikbaar.",
+      "aiRateLimited": "De analysedienst is op dit moment erg druk.",
+      "aiInvalidOutput": "De analyse gaf een onbruikbaar resultaat.",
+      "tooManyImports": "U hebt onlangs veel imports gestart. Probeer het over een uur opnieuw.",
+      "unauthorized": "Uw sessie is verlopen. Meld u opnieuw aan en begin opnieuw.",
+      "network": "De verbinding is onderbroken.",
+      "unknown": "Er is een onverwachte fout opgetreden.",
+      "retryHint": "Uw bestanden worden niet bewaard: start de analyse gewoon opnieuw.",
+      "retry": "Opnieuw proberen"
+    },
+    "review": {
+      "title": "Controleer het concept",
+      "intro": "Er wordt niets opgeslagen voordat u het goedkeurt. Accepteer, bewerk of weiger elk onderdeel.",
+      "found": "Gevonden: {experiences, plural, =0 {geen functie} one {# functie} other {# functies}}, {achievements, plural, =0 {geen prestatie} one {# prestatie} other {# prestaties}}, {skills, plural, =0 {geen andere vaardigheid} one {# andere vaardigheid} other {# andere vaardigheden}}.",
+      "acceptAll": "Alles accepteren",
+      "rejectAll": "Alles weigeren",
+      "accept": "Accepteren",
+      "edit": "Bewerken",
+      "reject": "Weigeren",
+      "applyEdit": "Bevestigen en accepteren",
+      "status": {
+        "pending": "Te controleren",
+        "accepted": "Geaccepteerd",
+        "edited": "Bewerkt en geaccepteerd",
+        "rejected": "Geweigerd"
+      },
+      "experiencesTitle": "Werkervaring",
+      "achievementsTitle": "Prestaties",
+      "skillsTitle": "Andere vaardigheden",
+      "skillsIntro": "Tik op een vaardigheid om die toe te voegen of te verwijderen.",
+      "empty": "Er is geen onderdeel van dit type gevonden.",
+      "linkedTo": "Gekoppeld aan: {role}",
+      "linkedRejected": "Deze functie is geweigerd: de prestatie wordt zonder koppeling opgeslagen.",
+      "proofs": "Bijgevoegd bewijs",
+      "removeProof": "Verwijderen",
+      "flags": {
+        "identityRemoved": "Er zijn namen of contactgegevens uit deze tekst verwijderd (vervangen door […]). Lees hem nog eens na.",
+        "identifyingLink": "Deze link bevat uw GitHub-gebruikersnaam: hij blijft privé, maar kan u identificeren. Verwijder hem als u dat liever hebt.",
+        "adjusted": "Sommige waarden zijn automatisch aangevuld: controleer ze.",
+        "rareDetail": "Zeldzaam detail waaraan u herkend zou kunnen worden:"
+      },
+      "identity": {
+        "title": "Gevonden identificerende gegevens",
+        "intro": "Ze worden apart gehouden: ze worden niet op onze servers opgeslagen en verschijnen niet in uw profiel.",
+        "vault": "De versleutelde identiteitskluis komt binnenkort. Tot dan worden deze gegevens vergeten zodra u deze pagina verlaat.",
+        "fullName": "Naam",
+        "emails": "E-mailadressen",
+        "phones": "Telefoonnummers",
+        "links": "Persoonlijke links",
+        "employers": "Werkgevers",
+        "schools": "Opleidingen",
+        "organizations": "Andere organisaties"
+      },
+      "saveHint": "Alleen geaccepteerde onderdelen worden aan uw geheugen toegevoegd.",
+      "save": "{count, plural, =0 {Geen onderdeel geaccepteerd} one {# onderdeel opslaan} other {# onderdelen opslaan}}",
+      "saving": "Opslaan…",
+      "restart": "Opnieuw beginnen"
+    },
+    "done": {
+      "title": "Uw carrièregeheugen is bijgewerkt",
+      "text": "Toegevoegd: {experiences, plural, =0 {geen functie} one {# functie} other {# functies}}, {achievements, plural, =0 {geen prestatie} one {# prestatie} other {# prestaties}} en {skills, plural, =0 {geen vaardigheid} one {# vaardigheid} other {# vaardigheden}}.",
+      "next": "Voeg nu bewijs toe aan uw opgegeven prestaties: dat telt het zwaarst.",
+      "identityForgotten": "De gevonden identificerende gegevens zijn niet opgeslagen.",
+      "cta": "Mijn carrièregeheugen bekijken",
+      "again": "Andere bronnen importeren"
     }
   },
   "codes": {

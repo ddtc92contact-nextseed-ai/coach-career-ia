@@ -335,7 +335,9 @@
       "backedBy": "Backed by",
       "unprovenHint": "Unproven: mention it in an achievement backed by proof.",
       "confirmDelete": "Delete the skill “{name}”? It will be removed from the achievements that mention it."
-    }
+    },
+    "importCta": "Import my background",
+    "importHint": "CV, LinkedIn export or GitHub: the AI prepares a draft that you approve."
   },
   "guardRails": {
     "title": "My guard-rails",
@@ -414,6 +416,117 @@
       "confirmHint": "Remember to export your data before deleting your account.",
       "submit": "Permanently delete my account",
       "deleting": "Deleting…"
+    }
+  },
+  "import": {
+    "title": "Import my background",
+    "back": "← Back to my career memory",
+    "intro": "Start from your CV, your LinkedIn export or your GitHub: the AI prepares a career memory draft that you approve item by item.",
+    "privacy": {
+      "title": "What happens to your data",
+      "files": "Your files are read in memory, then discarded: they are never stored on our servers.",
+      "contacts": "Your contact details (email, phone, profile links) are removed before our AI provider analyses the text.",
+      "identity": "Names (yours, your employers’ and your schools’) are kept apart: they never enter your profile.",
+      "review": "Nothing is added to your memory without your explicit approval."
+    },
+    "form": {
+      "cv": "CV",
+      "cvHint": "PDF or DOCX, {maxMb} MB max.",
+      "linkedin": "LinkedIn export",
+      "linkedinHint": "ZIP archive of your data, {maxMb} MB max. On LinkedIn: Settings › Data privacy › Get a copy of your data.",
+      "github": "GitHub username",
+      "githubHint": "Your public repositories serve as proof of your achievements.",
+      "githubPlaceholder": "my-username",
+      "submit": "Analyse my background",
+      "notConfigured": "AI analysis is not enabled on this service yet. You can still fill in your career memory by hand."
+    },
+    "progress": {
+      "label": "Analysis in progress",
+      "reading": "Reading your documents",
+      "analysing": "AI analysis",
+      "drafting": "Preparing the draft",
+      "elapsed": "{seconds, plural, one {# second} other {# seconds}}",
+      "slow": "This is taking longer than usual. Please wait a little longer.",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "title": "The import did not complete",
+      "noSource": "Add at least a CV, a LinkedIn export or a GitHub username.",
+      "cvTooLarge": "This CV is larger than {cvMaxMb} MB.",
+      "cvType": "Unrecognised CV format: send an unprotected PDF or DOCX.",
+      "cvEmpty": "No text could be read from this CV (scanned document?). Try a PDF exported from your word processor.",
+      "linkedinTooLarge": "Files too large: the LinkedIn export is limited to {linkedinMaxMb} MB and the CV to {cvMaxMb} MB.",
+      "linkedinInvalid": "This file is not a recognised LinkedIn export (ZIP archive expected).",
+      "githubInvalid": "This GitHub username is not valid.",
+      "githubNotFound": "No public GitHub account matches this username.",
+      "githubUnavailable": "GitHub is not responding at the moment.",
+      "aiNotConfigured": "AI analysis is not enabled on this service.",
+      "aiTimeout": "The analysis took too long.",
+      "aiUnavailable": "The analysis service is temporarily unavailable.",
+      "aiRateLimited": "The analysis service is very busy right now.",
+      "aiInvalidOutput": "The analysis produced an unusable result.",
+      "tooManyImports": "You have started many imports recently. Try again in an hour.",
+      "unauthorized": "Your session has expired. Sign in again, then start over.",
+      "network": "The connection was interrupted.",
+      "unknown": "An unexpected error occurred.",
+      "retryHint": "Your files are not kept: just run the analysis again.",
+      "retry": "Try again"
+    },
+    "review": {
+      "title": "Check the draft",
+      "intro": "Nothing is saved until you approve it. Accept, edit or reject each item.",
+      "found": "Found: {experiences, plural, =0 {no experience} one {# experience} other {# experiences}}, {achievements, plural, =0 {no achievement} one {# achievement} other {# achievements}}, {skills, plural, =0 {no other skill} one {# other skill} other {# other skills}}.",
+      "acceptAll": "Accept all",
+      "rejectAll": "Reject all",
+      "accept": "Accept",
+      "edit": "Edit",
+      "reject": "Reject",
+      "applyEdit": "Confirm and accept",
+      "status": {
+        "pending": "To review",
+        "accepted": "Accepted",
+        "edited": "Edited and accepted",
+        "rejected": "Rejected"
+      },
+      "experiencesTitle": "Experience",
+      "achievementsTitle": "Achievements",
+      "skillsTitle": "Other skills",
+      "skillsIntro": "Tap a skill to add or remove it.",
+      "empty": "No item of this kind was found.",
+      "linkedTo": "Linked to: {role}",
+      "linkedRejected": "This experience is rejected: the achievement will be saved without a link.",
+      "proofs": "Attached proof",
+      "removeProof": "Remove",
+      "flags": {
+        "identityRemoved": "Names or contact details were removed from this text (replaced with […]). Please reread it.",
+        "identifyingLink": "This link contains your GitHub username: it stays private, but it can identify you. Remove it if you prefer.",
+        "adjusted": "Some values were filled in automatically: please check them.",
+        "rareDetail": "Rare detail that could make you recognisable:"
+      },
+      "identity": {
+        "title": "Identifying data found",
+        "intro": "It is kept apart: it is not stored on our servers and will not appear in your profile.",
+        "vault": "The encrypted identity vault is coming soon. Until then, this data will be forgotten as soon as you leave this page.",
+        "fullName": "Name",
+        "emails": "Emails",
+        "phones": "Phone numbers",
+        "links": "Personal links",
+        "employers": "Employers",
+        "schools": "Schools",
+        "organizations": "Other organisations"
+      },
+      "saveHint": "Only accepted items will be added to your memory.",
+      "save": "{count, plural, =0 {No item accepted} one {Save # item} other {Save # items}}",
+      "saving": "Saving…",
+      "restart": "Start over"
+    },
+    "done": {
+      "title": "Your career memory is up to date",
+      "text": "Added: {experiences, plural, =0 {no experience} one {# experience} other {# experiences}}, {achievements, plural, =0 {no achievement} one {# achievement} other {# achievements}} and {skills, plural, =0 {no skill} one {# skill} other {# skills}}.",
+      "next": "Now add proof to your declared achievements: proof is what counts most.",
+      "identityForgotten": "The identifying data found was not saved.",
+      "cta": "View my career memory",
+      "again": "Import other sources"
     }
   },
   "codes": {

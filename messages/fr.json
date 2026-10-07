@@ -335,7 +335,9 @@
       "backedBy": "Appuyée par",
       "unprovenHint": "Non prouvée : citez-la dans une réalisation appuyée par une preuve.",
       "confirmDelete": "Supprimer la compétence « {name} » ? Elle sera retirée des réalisations qui la citent."
-    }
+    },
+    "importCta": "Importer mon parcours",
+    "importHint": "CV, export LinkedIn ou GitHub : l’IA prépare un brouillon que vous validez."
   },
   "guardRails": {
     "title": "Mes garde-fous",
@@ -414,6 +416,117 @@
       "confirmHint": "Pensez à exporter vos données avant de supprimer votre compte.",
       "submit": "Supprimer définitivement mon compte",
       "deleting": "Suppression en cours…"
+    }
+  },
+  "import": {
+    "title": "Importer mon parcours",
+    "back": "← Retour à ma mémoire de carrière",
+    "intro": "Partez de votre CV, de votre export LinkedIn ou de votre GitHub : l’IA prépare un brouillon de mémoire de carrière que vous validez élément par élément.",
+    "privacy": {
+      "title": "Ce que deviennent vos données",
+      "files": "Vos fichiers sont lus en mémoire puis oubliés : ils ne sont jamais enregistrés sur nos serveurs.",
+      "contacts": "Vos coordonnées (e-mail, téléphone, liens de profil) sont retirées avant l’analyse par notre fournisseur d’IA.",
+      "identity": "Les noms (le vôtre, ceux de vos employeurs et de vos écoles) sont mis à part : ils n’entrent jamais dans votre profil.",
+      "review": "Rien n’est ajouté à votre mémoire sans votre validation explicite."
+    },
+    "form": {
+      "cv": "CV",
+      "cvHint": "PDF ou DOCX, {maxMb} Mo maximum.",
+      "linkedin": "Export LinkedIn",
+      "linkedinHint": "Archive ZIP de vos données, {maxMb} Mo maximum. Sur LinkedIn : Préférences › Confidentialité des données › Obtenir une copie de vos données.",
+      "github": "Identifiant GitHub",
+      "githubHint": "Vos dépôts publics servent de preuves à vos réalisations.",
+      "githubPlaceholder": "mon-pseudo",
+      "submit": "Analyser mon parcours",
+      "notConfigured": "L’analyse par l’IA n’est pas encore activée sur ce service. Vous pouvez remplir votre mémoire de carrière à la main."
+    },
+    "progress": {
+      "label": "Analyse en cours",
+      "reading": "Lecture de vos documents",
+      "analysing": "Analyse par l’IA",
+      "drafting": "Préparation du brouillon",
+      "elapsed": "{seconds, plural, one {# seconde} other {# secondes}}",
+      "slow": "C’est plus long que d’habitude. Merci de patienter encore un peu.",
+      "cancel": "Annuler"
+    },
+    "errors": {
+      "title": "L’import n’a pas abouti",
+      "noSource": "Ajoutez au moins un CV, un export LinkedIn ou un identifiant GitHub.",
+      "cvTooLarge": "Ce CV dépasse {cvMaxMb} Mo.",
+      "cvType": "Format de CV non reconnu : envoyez un PDF ou un DOCX non protégé.",
+      "cvEmpty": "Aucun texte n’a pu être lu dans ce CV (document scanné ?). Essayez un PDF exporté depuis votre traitement de texte.",
+      "linkedinTooLarge": "Fichiers trop volumineux : l’export LinkedIn est limité à {linkedinMaxMb} Mo et le CV à {cvMaxMb} Mo.",
+      "linkedinInvalid": "Ce fichier n’est pas un export LinkedIn reconnu (archive ZIP attendue).",
+      "githubInvalid": "Cet identifiant GitHub n’est pas valide.",
+      "githubNotFound": "Aucun compte GitHub public ne correspond à cet identifiant.",
+      "githubUnavailable": "GitHub ne répond pas pour le moment.",
+      "aiNotConfigured": "L’analyse par l’IA n’est pas activée sur ce service.",
+      "aiTimeout": "L’analyse a pris trop de temps.",
+      "aiUnavailable": "Le service d’analyse est momentanément indisponible.",
+      "aiRateLimited": "Le service d’analyse est très sollicité en ce moment.",
+      "aiInvalidOutput": "L’analyse a produit un résultat inutilisable.",
+      "tooManyImports": "Vous avez lancé beaucoup d’imports récemment. Réessayez dans une heure.",
+      "unauthorized": "Votre session a expiré. Reconnectez-vous puis recommencez.",
+      "network": "La connexion a été interrompue.",
+      "unknown": "Une erreur inattendue est survenue.",
+      "retryHint": "Vos fichiers ne sont pas conservés : il suffit de relancer l’analyse.",
+      "retry": "Réessayer"
+    },
+    "review": {
+      "title": "Vérifiez le brouillon",
+      "intro": "Rien n’est enregistré tant que vous n’avez pas validé. Acceptez, modifiez ou rejetez chaque élément.",
+      "found": "Trouvé : {experiences, plural, =0 {aucune expérience} one {# expérience} other {# expériences}}, {achievements, plural, =0 {aucune réalisation} one {# réalisation} other {# réalisations}}, {skills, plural, =0 {aucune autre compétence} one {# autre compétence} other {# autres compétences}}.",
+      "acceptAll": "Tout accepter",
+      "rejectAll": "Tout rejeter",
+      "accept": "Accepter",
+      "edit": "Modifier",
+      "reject": "Rejeter",
+      "applyEdit": "Valider et accepter",
+      "status": {
+        "pending": "À valider",
+        "accepted": "Acceptée",
+        "edited": "Modifiée et acceptée",
+        "rejected": "Rejetée"
+      },
+      "experiencesTitle": "Expériences",
+      "achievementsTitle": "Réalisations",
+      "skillsTitle": "Autres compétences",
+      "skillsIntro": "Touchez une compétence pour l’ajouter ou la retirer.",
+      "empty": "Aucun élément de ce type n’a été trouvé.",
+      "linkedTo": "Liée à : {role}",
+      "linkedRejected": "Cette expérience est rejetée : la réalisation sera enregistrée sans lien.",
+      "proofs": "Preuve jointe",
+      "removeProof": "Retirer",
+      "flags": {
+        "identityRemoved": "Des noms ou des coordonnées ont été retirés de ce texte (remplacés par […]). Relisez-le.",
+        "identifyingLink": "Ce lien contient votre pseudo GitHub : il reste privé, mais il permet de vous identifier. Retirez-le si vous préférez.",
+        "adjusted": "Certaines valeurs ont été complétées automatiquement : vérifiez-les.",
+        "rareDetail": "Détail rare, qui pourrait permettre de vous reconnaître :"
+      },
+      "identity": {
+        "title": "Données identifiantes repérées",
+        "intro": "Elles sont mises à part : elles ne sont pas enregistrées sur nos serveurs et n’apparaîtront pas dans votre profil.",
+        "vault": "Le coffre d’identité chiffré arrive bientôt. En attendant, ces données seront oubliées dès que vous quitterez cette page.",
+        "fullName": "Nom",
+        "emails": "E-mails",
+        "phones": "Téléphones",
+        "links": "Liens personnels",
+        "employers": "Employeurs",
+        "schools": "Écoles",
+        "organizations": "Autres organisations"
+      },
+      "saveHint": "Seuls les éléments acceptés seront ajoutés à votre mémoire.",
+      "save": "{count, plural, =0 {Aucun élément accepté} one {Enregistrer # élément} other {Enregistrer # éléments}}",
+      "saving": "Enregistrement…",
+      "restart": "Recommencer"
+    },
+    "done": {
+      "title": "Votre mémoire de carrière est à jour",
+      "text": "Ajouté : {experiences, plural, =0 {aucune expérience} one {# expérience} other {# expériences}}, {achievements, plural, =0 {aucune réalisation} one {# réalisation} other {# réalisations}} et {skills, plural, =0 {aucune compétence} one {# compétence} other {# compétences}}.",
+      "next": "Ajoutez maintenant des preuves à vos réalisations déclarées : ce sont elles qui comptent le plus.",
+      "identityForgotten": "Les données identifiantes repérées n’ont pas été enregistrées.",
+      "cta": "Voir ma mémoire de carrière",
+      "again": "Importer d’autres sources"
     }
   },
   "codes": {
