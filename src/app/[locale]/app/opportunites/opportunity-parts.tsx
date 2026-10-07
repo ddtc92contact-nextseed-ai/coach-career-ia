@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { Badge } from "@/components/badge";
 import { scoreBand } from "@/lib/matching/explanation";
 import type { MatchView } from "@/lib/matching/repository";
 import { changeMatchStatus } from "./actions";
@@ -57,6 +58,11 @@ export async function OfferFacts({ offer }: { offer: MatchView["offer"] }) {
         <span>{t(`remote.${offer.remotePolicy}`)}</span>
         <span>{salary}</span>
       </p>
+      {offer.direct ? (
+        <p className="mt-2">
+          <Badge tone="proven">{t("directBadge")}</Badge>
+        </p>
+      ) : null}
     </>
   );
 }

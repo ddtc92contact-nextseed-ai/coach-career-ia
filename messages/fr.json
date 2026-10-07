@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Navigation principale",
-    "signIn": "Se connecter"
+    "signIn": "Se connecter",
+    "recruiter": "Je recrute"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "Votre carrière, vos règles, votre rythme.",
     "closingText": "Connexion sans mot de passe, par lien envoyé à votre adresse e-mail. Aucune donnée n’est partagée sans votre accord explicite.",
-    "closingCta": "Commencer"
+    "closingCta": "Commencer",
+    "recruiter": {
+      "title": "Vous recrutez ?",
+      "text": "Publiez vos offres avec une fourchette de salaire claire : les agents des candidats les proposent uniquement aux profils dont elles respectent les conditions. Vous recevez des profils anonymes que les candidats choisissent de vous envoyer.",
+      "cta": "Je recrute"
+    }
   },
   "notFound": {
     "title": "Page introuvable",
@@ -181,6 +187,34 @@
         "closingDeclined": "Je suis l’agent de carrière IA de la personne candidate. Elle vous remercie pour le temps consacré à sa candidature au poste « {title} », mais a décidé de ne pas donner suite. Elle vous souhaite une belle réussite dans ce recrutement.",
         "closingPaused": "Je suis l’agent de carrière IA de la personne candidate. Elle vous remercie pour votre proposition concernant le poste « {title} » et a besoin d’un peu de temps pour y réfléchir. Elle reviendra vers vous prochainement."
       }
+    },
+    "employer": {
+      "brand": "Coach Career IA — Espace entreprise",
+      "greeting": "Bonjour,",
+      "reason": "Motif : {reason}",
+      "dashboard": "Ouvrir mon espace entreprise",
+      "dashboardText": "Votre espace entreprise : {url}",
+      "signature": "L’équipe Coach Career IA",
+      "orgApproved": {
+        "subject": "{org} : votre espace entreprise est validé",
+        "body": "Votre organisation {org} a été validée. Vos offres payées sont publiées, et vous pouvez en publier de nouvelles."
+      },
+      "orgRejected": {
+        "subject": "{org} : votre inscription n’a pas été validée",
+        "body": "Nous n’avons pas pu valider l’organisation {org}. Aucune offre ne sera publiée."
+      },
+      "orgSuspended": {
+        "subject": "{org} : votre espace entreprise est suspendu",
+        "body": "L’organisation {org} a été suspendue et ses offres ne sont plus publiées."
+      },
+      "postingApproved": {
+        "subject": "Offre validée : {title}",
+        "body": "Votre offre « {title} » a été validée par notre équipe."
+      },
+      "postingRejected": {
+        "subject": "Offre refusée : {title}",
+        "body": "Votre offre « {title} » n’a pas été validée. Vous pouvez la modifier puis la soumettre de nouveau."
+      }
     }
   },
   "common": {
@@ -212,7 +246,8 @@
     "fileQuota": "Vous avez atteint le nombre maximal de documents. Supprimez-en un pour en ajouter un autre.",
     "confirmMismatch": "L’adresse saisie ne correspond pas à celle de votre compte.",
     "notFound": "Cet élément n’existe pas ou plus.",
-    "billingCancelFailed": "Impossible de résilier votre abonnement pour le moment : votre compte n’a pas été supprimé. Réessayez dans quelques minutes."
+    "billingCancelFailed": "Impossible de résilier votre abonnement pour le moment : votre compte n’a pas été supprimé. Réessayez dans quelques minutes.",
+    "salaryRange": "Le salaire maximum doit être supérieur ou égal au minimum."
   },
   "app": {
     "metaTitle": "Mon espace",
@@ -231,7 +266,9 @@
       "billing": "Abonnement",
       "billingSimulator": "Simulateur de paiement (admin)",
       "card": "Ma carte anonyme",
-      "contacts": "Contacts"
+      "contacts": "Contacts",
+      "employer": "Espace entreprise",
+      "moderation": "Modération (admin)"
     }
   },
   "dashboard": {
@@ -414,7 +451,8 @@
         "SENDING": "Envoi en cours.",
         "SENT": "Prise de contact effectuée."
       }
-    }
+    },
+    "directBadge": "Publiée directement par l’entreprise"
   },
   "memory": {
     "title": "Ma mémoire de carrière",
@@ -1757,6 +1795,198 @@
       "sendUnavailable": "L’envoi d’e-mails n’est pas configuré sur ce serveur.",
       "sendFailed": "L’envoi a échoué. Réessayez plus tard.",
       "invalid": "Le message doit faire entre 20 et 3 000 caractères."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Marché",
+    "intro": "Où se situe cette offre face aux salaires publiés pour des postes comparables.",
+    "quartiles": {
+      "p25": "1er quartile",
+      "median": "Médiane",
+      "p75": "3e quartile"
+    },
+    "estimate": "Estimation tirée de {count, plural, one {# offre publiée} other {# offres publiées}} avec un salaire, de {from} à {to} (brut annuel, part variable non comprise). Ce n’est pas une grille officielle.",
+    "fallback": {
+      "COUNTRY": "Repère élargi au pays : pas assez d’offres comparables dans la zone.",
+      "FAMILY_COUNTRY": "Repère élargi au métier, toutes séniorités : pas assez d’offres comparables plus précises."
+    },
+    "notEnoughData": "Pas assez de données : moins de {min} offres comparables avec un salaire publié. Aucun repère n’est affiché plutôt qu’un chiffre peu fiable.",
+    "remote": "télétravail complet ({country})",
+    "allSeniorities": "toutes séniorités",
+    "offerPosition": {
+      "BELOW": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est sous le 1er quartile du marché.",
+      "WITHIN": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est dans la fourchette courante du marché (entre le 1er et le 3e quartile).",
+      "ABOVE": "Le salaire annoncé ({amount} brut annuel, milieu de fourchette) est au-dessus du 3e quartile du marché.",
+      "noSalary": "Cette offre n’annonce pas de salaire comparable : seul le repère du marché est affiché."
+    },
+    "floorPosition": {
+      "BELOW": "Votre plancher ({amount}) est sous le 1er quartile : il écarte peu d’offres comparables.",
+      "WITHIN": "Votre plancher ({amount}) est dans la fourchette courante du marché.",
+      "ABOVE": "Votre plancher ({amount}) dépasse le 3e quartile : il écarte la plupart des offres comparables."
+    },
+    "guardRails": {
+      "title": "Repère du marché",
+      "intro": "Salaires publiés pour votre métier (d’après votre poste le plus récent), en France."
+    }
+  },
+  "employer": {
+    "metaTitle": "Espace entreprise",
+    "titleTemplate": "%s · Espace entreprise",
+    "signOut": "Se déconnecter",
+    "nav": {
+      "label": "Espace entreprise",
+      "dashboard": "Mes offres",
+      "newPosting": "Publier une offre",
+      "organization": "Mon organisation",
+      "candidate": "Espace candidat"
+    },
+    "signup": {
+      "metaTitle": "Je recrute",
+      "eyebrow": "Espace entreprise",
+      "title": "Publiez vos offres auprès de candidats qualifiés",
+      "intro": "Chaque candidat est représenté par un agent qui ne lui propose que les offres respectant ses conditions : salaire, lieu, télétravail, contrat. Une offre claire touche les bons profils.",
+      "points": {
+        "salary": "Fourchette de salaire obligatoire : c’est la première condition des candidats.",
+        "pay": "Paiement à l’offre, publication de {days} jours, sans abonnement.",
+        "privacy": "Vous ne cherchez pas les candidats : ce sont eux qui choisissent de vous envoyer leur profil anonyme."
+      },
+      "cta": "Créer mon espace entreprise",
+      "formTitle": "Votre organisation",
+      "formIntro": "Inscrivez-vous avec votre adresse professionnelle : si son domaine correspond au site de l’entreprise, votre espace est activé tout de suite. Sinon, notre équipe le vérifie avant toute publication.",
+      "submit": "Créer l’espace entreprise",
+      "signedInAs": "Connecté avec {email}",
+      "fields": {
+        "name": "Nom de l’entreprise",
+        "website": "Site web",
+        "websiteHint": "Par exemple https://www.entreprise.fr",
+        "sector": "Secteur",
+        "size": "Taille",
+        "country": "Pays"
+      },
+      "choose": "Choisir…"
+    },
+    "org": {
+      "title": "Mon organisation",
+      "status": {
+        "PENDING": "En attente de validation",
+        "ACTIVE": "Active",
+        "SUSPENDED": "Suspendue"
+      },
+      "pendingTitle": "Organisation en cours de vérification",
+      "pendingText": "Le domaine de votre adresse e-mail ne correspond pas à celui du site de l’entreprise (ou il s’agit d’une messagerie grand public). Vous pouvez préparer et payer vos offres : elles seront publiées dès que notre équipe aura validé votre organisation.",
+      "suspendedTitle": "Organisation suspendue",
+      "suspendedText": "Vos offres ne sont plus publiées. Contactez-nous pour en savoir plus.",
+      "reason": "Motif : {reason}",
+      "website": "Site web",
+      "domain": "Domaine",
+      "sector": "Secteur",
+      "size": "Taille",
+      "country": "Pays",
+      "verified": "Vérifiée",
+      "verifiedOn": "Vérifiée le {date}",
+      "notVerified": "Non vérifiée"
+    },
+    "dashboard": {
+      "title": "Mes offres",
+      "intro": "Vos offres, leur statut et leur échéance. Une offre est publiée après paiement et vérification, pour {days} jours.",
+      "newPosting": "Publier une offre",
+      "emptyTitle": "Aucune offre pour le moment",
+      "emptyText": "Rédigez votre première offre : elle reste un brouillon modifiable jusqu’à sa soumission.",
+      "columns": {
+        "title": "Offre",
+        "status": "Statut",
+        "expires": "Échéance",
+        "views": "Consultations"
+      },
+      "noDate": "—",
+      "privacy": "Aucune donnée candidat n’apparaît ici : vous voyez seulement combien de candidats ont ouvert votre offre parmi leurs opportunités."
+    },
+    "status": {
+      "DRAFT": "Brouillon",
+      "AWAITING_PAYMENT": "En attente de paiement",
+      "IN_REVIEW": "En vérification",
+      "LIVE": "En ligne",
+      "CLOSED": "Fermée",
+      "REJECTED": "Refusée"
+    },
+    "posting": {
+      "newTitle": "Publier une offre",
+      "newIntro": "L’offre est enregistrée en brouillon. Vous la soumettez ensuite pour paiement et vérification.",
+      "back": "← Mes offres",
+      "sections": {
+        "job": "Le poste",
+        "place": "Lieu et contrat",
+        "salary": "Rémunération"
+      },
+      "salaryIntro": "Obligatoire : fourchette brute, avec la devise et la période. Les candidats dont le salaire plancher n’est pas atteint ne verront pas l’offre.",
+      "fields": {
+        "title": "Intitulé du poste",
+        "description": "Description",
+        "descriptionHint": "Missions, équipe, compétences attendues ({min} caractères minimum). Pas de critère d’âge, de sexe, d’origine ou de situation familiale.",
+        "seniority": "Niveau d’expérience",
+        "sector": "Secteur",
+        "contractType": "Type de contrat",
+        "remotePolicy": "Télétravail",
+        "city": "Ville",
+        "country": "Pays",
+        "salaryMin": "Minimum",
+        "salaryMax": "Maximum",
+        "salaryCurrency": "Devise",
+        "salaryPeriod": "Période"
+      },
+      "periods": {
+        "YEAR": "Par an",
+        "MONTH": "Par mois",
+        "DAY": "Par jour",
+        "HOUR": "Par heure"
+      },
+      "create": "Créer le brouillon",
+      "save": "Enregistrer",
+      "saved": "Offre enregistrée.",
+      "help": {
+        "DRAFT": "Brouillon : modifiez l’offre autant que nécessaire, puis soumettez-la.",
+        "AWAITING_PAYMENT": "Il reste à régler la publication. L’offre sera mise en ligne après paiement et vérification.",
+        "IN_REVIEW": "Paiement reçu. Notre équipe vérifie l’offre ; vous serez prévenu par e-mail.",
+        "LIVE": "En ligne : l’offre est proposée aux candidats dont elle respecte les conditions.",
+        "CLOSED": "Fermée : l’offre n’est plus proposée. Vous pouvez la republier (nouveau paiement).",
+        "REJECTED": "Refusée : modifiez l’offre puis soumettez-la de nouveau."
+      },
+      "reviewPendingOrg": "Votre organisation doit d’abord être validée : l’offre sera publiée ensuite.",
+      "flagged": "Certaines formulations de l’offre seront relues par notre équipe avant publication (critères interdits : âge, sexe, origine, situation familiale).",
+      "rejectedReason": "Motif du refus : {reason}",
+      "liveUntil": "En ligne jusqu’au {date}",
+      "views": "{count, plural, =0 {Aucune consultation} one {# consultation} other {# consultations}}",
+      "price": "Publication de {days} jours : {price}",
+      "actions": {
+        "submit": "Soumettre l’offre",
+        "pay": "Payer et publier",
+        "extend": "Prolonger de {days} jours",
+        "renew": "Republier",
+        "close": "Fermer l’offre",
+        "delete": "Supprimer le brouillon",
+        "adminFree": "Publier gratuitement (administrateur)"
+      },
+      "notice": {
+        "paid": "Paiement reçu, merci.",
+        "canceled": "Paiement annulé : rien n’a été prélevé.",
+        "submitted": "Offre soumise.",
+        "closed": "Offre fermée.",
+        "renewed": "Offre prête à être republiée : réglez la nouvelle période.",
+        "published": "Offre publiée."
+      },
+      "errors": {
+        "notAllowed": "Cette action n’est pas possible dans l’état actuel de l’offre.",
+        "unavailable": "Le paiement est momentanément indisponible. Réessayez plus tard.",
+        "suspended": "Votre organisation est suspendue : aucune publication n’est possible."
+      }
+    },
+    "checkout": {
+      "title": "Paiement de la publication",
+      "offer": "Offre",
+      "duration": "Durée",
+      "days": "{days} jours",
+      "total": "Montant",
+      "back": "Retour à l’offre"
     }
   }
 }

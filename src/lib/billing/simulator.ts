@@ -5,6 +5,7 @@ import { SIMULATOR_ID_PREFIX } from "./config";
 import {
   handleStripeWebhook,
   type BillingStore,
+  type OneTimeKind,
   type StripeWebhookClient,
   type SubscriptionStatusCode,
 } from "./webhook";
@@ -77,12 +78,24 @@ export const SIMULATED_EVENTS = [
 export type SimEventType = (typeof SIMULATED_EVENTS)[number];
 
 /** Évènement au format Stripe (cf. `tests/fixtures/stripe`). */
+export type SimulatorEvent = {
+  id: string;
+  object: "event";
+  type: SimEventType;
+  api_version: string;
+  created: number;
+  livemode: false;
+  pending_webhooks: number;
+  request: { id: null; idempotency_key: null };
+  data: { object: Record<string, unknown> };
+};
+
 export function simulatorEvent(
   type: SimEventType,
   sub: SimSubscription,
   now: Date = new Date(),
   id: string = simId("evt"),
-) {
+): SimulatorEvent {
   let object: Record<string, unknown>;
   switch (type) {
     case "checkout.session.completed":
@@ -123,6 +136,50 @@ export function simulatorEvent(
     pending_webhooks: 1,
     request: { id: null, idempotency_key: null },
     data: { object },
+  };
+}
+
+/** Session de paiement unitaire simulée (Checkout `mode=payment`). */
+export type SimOneTimeCheckout = {
+  checkoutSessionId: string;
+  userId: string | null;
+  kind: OneTimeKind;
+  paymentId: string;
+  amountCents: number;
+  currency: string;
+};
+
+/**
+ * `checkout.session.completed` d'un paiement unitaire accepté, tel que Stripe
+ * l'enverrait (traité par le même code que le webhook).
+ */
+export function simulatorPaymentEvent(
+  checkout: SimOneTimeCheckout,
+  now: Date = new Date(),
+  id: string = simId("evt"),
+): SimulatorEvent {
+  return {
+    id,
+    object: "event",
+    type: "checkout.session.completed",
+    api_version: "simulator",
+    created: seconds(now),
+    livemode: false,
+    pending_webhooks: 1,
+    request: { id: null, idempotency_key: null },
+    data: {
+      object: {
+        id: checkout.checkoutSessionId,
+        object: "checkout.session",
+        mode: "payment",
+        status: "complete",
+        payment_status: "paid",
+        client_reference_id: checkout.userId,
+        amount_total: checkout.amountCents,
+        currency: checkout.currency.toLowerCase(),
+        metadata: { kind: checkout.kind, paymentId: checkout.paymentId },
+      },
+    },
   };
 }
 
@@ -262,7 +319,7 @@ export function simulatorClient(
  * sera relu au prochain évènement).
  */
 export async function deliverSimulatorEvents(input: {
-  events: ReturnType<typeof simulatorEvent>[];
+  events: SimulatorEvent[];
   lookup: (subscriptionId: string) => Promise<SimSubscription | null>;
   store: BillingStore;
   logger: Logger;

@@ -56,7 +56,8 @@ export async function loadCompanyHistory(
 ): Promise<HistoryOffer[]> {
   const rows = await prisma.jobOffer.findMany({
     // Les doublons d'une autre source ne sont jamais comptés deux fois.
-    where: { companyId, duplicateOfId: null },
+    // Brouillons des offres directes (jamais publiés) exclus.
+    where: { companyId, duplicateOfId: null, status: { not: "DRAFT" } },
     select: historySelect,
   });
   return rows.map(({ salaryMin, salaryMax, ...row }) => ({

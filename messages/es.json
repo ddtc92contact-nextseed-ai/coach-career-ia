@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Navegación principal",
-    "signIn": "Iniciar sesión"
+    "signIn": "Iniciar sesión",
+    "recruiter": "Para empresas"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "Su carrera, sus reglas, su ritmo.",
     "closingText": "Acceso sin contraseña, mediante un enlace enviado a su correo electrónico. Ningún dato se comparte sin su consentimiento explícito.",
-    "closingCta": "Empezar"
+    "closingCta": "Empezar",
+    "recruiter": {
+      "title": "¿Está contratando?",
+      "text": "Publique sus ofertas con una banda salarial clara: los agentes de los candidatos solo las muestran a los perfiles cuyas condiciones cumplen. Recibe perfiles anónimos que los candidatos deciden enviarle.",
+      "cta": "Publicar ofertas"
+    }
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -181,6 +187,34 @@
         "closingDeclined": "Soy el agente de carrera de IA de la persona candidata. Le agradece el tiempo dedicado a su candidatura al puesto «{title}», pero ha decidido no continuar. Les desea mucho éxito en este proceso.",
         "closingPaused": "Soy el agente de carrera de IA de la persona candidata. Le agradece su propuesta para el puesto «{title}» y necesita un poco de tiempo para pensarlo. Se pondrá en contacto con ustedes en breve."
       }
+    },
+    "employer": {
+      "brand": "Coach Career IA — Espacio empresa",
+      "greeting": "Hola:",
+      "reason": "Motivo: {reason}",
+      "dashboard": "Abrir mi espacio empresa",
+      "dashboardText": "Su espacio empresa: {url}",
+      "signature": "El equipo de Coach Career IA",
+      "orgApproved": {
+        "subject": "{org}: su espacio empresa ha sido validado",
+        "body": "Su organización {org} ha sido validada. Sus ofertas pagadas se han publicado y puede publicar otras nuevas."
+      },
+      "orgRejected": {
+        "subject": "{org}: su registro no ha sido validado",
+        "body": "No hemos podido validar la organización {org}. No se publicará ninguna oferta."
+      },
+      "orgSuspended": {
+        "subject": "{org}: su espacio empresa está suspendido",
+        "body": "La organización {org} ha sido suspendida y sus ofertas ya no se publican."
+      },
+      "postingApproved": {
+        "subject": "Oferta validada: {title}",
+        "body": "Su oferta «{title}» ha sido validada por nuestro equipo."
+      },
+      "postingRejected": {
+        "subject": "Oferta rechazada: {title}",
+        "body": "Su oferta «{title}» no ha sido validada. Puede modificarla y volver a enviarla."
+      }
     }
   },
   "common": {
@@ -212,7 +246,8 @@
     "fileQuota": "Ha alcanzado el número máximo de documentos. Elimine uno para añadir otro.",
     "confirmMismatch": "La dirección introducida no coincide con la de su cuenta.",
     "notFound": "Este elemento no existe o ya no existe.",
-    "billingCancelFailed": "No se puede cancelar su suscripción en este momento: su cuenta no se ha eliminado. Inténtelo de nuevo en unos minutos."
+    "billingCancelFailed": "No se puede cancelar su suscripción en este momento: su cuenta no se ha eliminado. Inténtelo de nuevo en unos minutos.",
+    "salaryRange": "El salario máximo debe ser mayor o igual que el mínimo."
   },
   "app": {
     "metaTitle": "Mi espacio",
@@ -231,7 +266,9 @@
       "billing": "Suscripción",
       "billingSimulator": "Simulador de pagos (admin)",
       "card": "Mi tarjeta anónima",
-      "contacts": "Contactos"
+      "contacts": "Contactos",
+      "employer": "Espacio empresa",
+      "moderation": "Moderación (admin)"
     }
   },
   "dashboard": {
@@ -414,7 +451,8 @@
         "SENDING": "Enviando.",
         "SENT": "Empresa contactada."
       }
-    }
+    },
+    "directBadge": "Publicada directamente por la empresa"
   },
   "memory": {
     "title": "Mi memoria de carrera",
@@ -1757,6 +1795,198 @@
       "sendUnavailable": "El envío de correos no está configurado en este servidor.",
       "sendFailed": "El envío ha fallado. Inténtalo más tarde.",
       "invalid": "El mensaje debe tener entre 20 y 3000 caracteres."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Mercado",
+    "intro": "Cómo se sitúa esta oferta frente a los salarios publicados para puestos comparables.",
+    "quartiles": {
+      "p25": "1.er cuartil",
+      "median": "Mediana",
+      "p75": "3.er cuartil"
+    },
+    "estimate": "Estimación basada en {count, plural, one {# oferta publicada} other {# ofertas publicadas}} con salario, de {from} a {to} (bruto anual, sin la parte variable). No es una tabla salarial oficial.",
+    "fallback": {
+      "COUNTRY": "Referencia ampliada a todo el país: no hay suficientes ofertas comparables en la zona.",
+      "FAMILY_COUNTRY": "Referencia ampliada a la familia de puestos, todos los niveles de experiencia: no hay suficientes ofertas comparables más precisas."
+    },
+    "notEnoughData": "No hay datos suficientes: menos de {min} ofertas comparables con salario publicado. Preferimos no mostrar ninguna referencia antes que una cifra poco fiable.",
+    "remote": "teletrabajo completo ({country})",
+    "allSeniorities": "todos los niveles",
+    "offerPosition": {
+      "BELOW": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está por debajo del 1.er cuartil del mercado.",
+      "WITHIN": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está dentro de la horquilla habitual del mercado (entre el 1.er y el 3.er cuartil).",
+      "ABOVE": "El salario anunciado ({amount} bruto anual, punto medio de la horquilla) está por encima del 3.er cuartil del mercado.",
+      "noSalary": "Esta oferta no indica un salario comparable: solo se muestra la referencia del mercado."
+    },
+    "floorPosition": {
+      "BELOW": "Su salario mínimo ({amount}) está por debajo del 1.er cuartil: descarta pocas ofertas comparables.",
+      "WITHIN": "Su salario mínimo ({amount}) está dentro de la horquilla habitual del mercado.",
+      "ABOVE": "Su salario mínimo ({amount}) supera el 3.er cuartil: descarta la mayoría de las ofertas comparables."
+    },
+    "guardRails": {
+      "title": "Referencia del mercado",
+      "intro": "Salarios publicados para su familia de puestos (según su puesto más reciente), en Francia."
+    }
+  },
+  "employer": {
+    "metaTitle": "Espacio empresa",
+    "titleTemplate": "%s · Espacio empresa",
+    "signOut": "Cerrar sesión",
+    "nav": {
+      "label": "Espacio empresa",
+      "dashboard": "Mis ofertas",
+      "newPosting": "Publicar una oferta",
+      "organization": "Mi organización",
+      "candidate": "Espacio candidato"
+    },
+    "signup": {
+      "metaTitle": "Para empresas",
+      "eyebrow": "Espacio empresa",
+      "title": "Publique sus ofertas para candidatos cualificados",
+      "intro": "Cada candidato está representado por un agente que solo le propone ofertas que respetan sus condiciones: salario, ubicación, teletrabajo, contrato. Una oferta clara llega a los perfiles adecuados.",
+      "points": {
+        "salary": "Banda salarial obligatoria: es la primera condición de los candidatos.",
+        "pay": "Pago por oferta, publicación de {days} días, sin suscripción.",
+        "privacy": "Usted no busca candidatos: son ellos quienes eligen enviarle su perfil anónimo."
+      },
+      "cta": "Crear mi espacio empresa",
+      "formTitle": "Su organización",
+      "formIntro": "Regístrese con su correo profesional: si su dominio coincide con el sitio web de la empresa, su espacio se activa al instante. Si no, nuestro equipo lo verifica antes de cualquier publicación.",
+      "submit": "Crear el espacio empresa",
+      "signedInAs": "Conectado como {email}",
+      "fields": {
+        "name": "Nombre de la empresa",
+        "website": "Sitio web",
+        "websiteHint": "Por ejemplo https://www.empresa.es",
+        "sector": "Sector",
+        "size": "Tamaño",
+        "country": "País"
+      },
+      "choose": "Elegir…"
+    },
+    "org": {
+      "title": "Mi organización",
+      "status": {
+        "PENDING": "Pendiente de validación",
+        "ACTIVE": "Activa",
+        "SUSPENDED": "Suspendida"
+      },
+      "pendingTitle": "Organización en verificación",
+      "pendingText": "El dominio de su correo no coincide con el del sitio web de la empresa (o es un correo público). Puede preparar y pagar sus ofertas: se publicarán en cuanto nuestro equipo valide su organización.",
+      "suspendedTitle": "Organización suspendida",
+      "suspendedText": "Sus ofertas ya no se publican. Contáctenos para más información.",
+      "reason": "Motivo: {reason}",
+      "website": "Sitio web",
+      "domain": "Dominio",
+      "sector": "Sector",
+      "size": "Tamaño",
+      "country": "País",
+      "verified": "Verificada",
+      "verifiedOn": "Verificada el {date}",
+      "notVerified": "No verificada"
+    },
+    "dashboard": {
+      "title": "Mis ofertas",
+      "intro": "Sus ofertas, su estado y su vencimiento. Una oferta se publica tras el pago y la verificación, durante {days} días.",
+      "newPosting": "Publicar una oferta",
+      "emptyTitle": "Todavía no hay ofertas",
+      "emptyText": "Redacte su primera oferta: seguirá siendo un borrador editable hasta que la envíe.",
+      "columns": {
+        "title": "Oferta",
+        "status": "Estado",
+        "expires": "Vencimiento",
+        "views": "Consultas"
+      },
+      "noDate": "—",
+      "privacy": "Aquí no aparece ningún dato de candidatos: solo ve cuántos candidatos abrieron su oferta entre sus oportunidades."
+    },
+    "status": {
+      "DRAFT": "Borrador",
+      "AWAITING_PAYMENT": "Pendiente de pago",
+      "IN_REVIEW": "En verificación",
+      "LIVE": "Publicada",
+      "CLOSED": "Cerrada",
+      "REJECTED": "Rechazada"
+    },
+    "posting": {
+      "newTitle": "Publicar una oferta",
+      "newIntro": "La oferta se guarda como borrador. Después la envía para el pago y la verificación.",
+      "back": "← Mis ofertas",
+      "sections": {
+        "job": "El puesto",
+        "place": "Ubicación y contrato",
+        "salary": "Remuneración"
+      },
+      "salaryIntro": "Obligatorio: banda bruta, con la moneda y el periodo. Los candidatos cuyo salario mínimo no se alcance no verán la oferta.",
+      "fields": {
+        "title": "Título del puesto",
+        "description": "Descripción",
+        "descriptionHint": "Funciones, equipo, competencias esperadas (mínimo {min} caracteres). Ningún criterio de edad, sexo, origen o situación familiar.",
+        "seniority": "Nivel de experiencia",
+        "sector": "Sector",
+        "contractType": "Tipo de contrato",
+        "remotePolicy": "Teletrabajo",
+        "city": "Ciudad",
+        "country": "País",
+        "salaryMin": "Mínimo",
+        "salaryMax": "Máximo",
+        "salaryCurrency": "Moneda",
+        "salaryPeriod": "Periodo"
+      },
+      "periods": {
+        "YEAR": "Al año",
+        "MONTH": "Al mes",
+        "DAY": "Al día",
+        "HOUR": "Por hora"
+      },
+      "create": "Crear el borrador",
+      "save": "Guardar",
+      "saved": "Oferta guardada.",
+      "help": {
+        "DRAFT": "Borrador: modifique la oferta tanto como necesite y luego envíela.",
+        "AWAITING_PAYMENT": "Falta pagar la publicación. La oferta se publicará tras el pago y la verificación.",
+        "IN_REVIEW": "Pago recibido. Nuestro equipo está verificando la oferta; recibirá un correo.",
+        "LIVE": "Publicada: la oferta se propone a los candidatos cuyas condiciones cumple.",
+        "CLOSED": "Cerrada: la oferta ya no se propone. Puede volver a publicarla (nuevo pago).",
+        "REJECTED": "Rechazada: modifique la oferta y vuelva a enviarla."
+      },
+      "reviewPendingOrg": "Primero debe validarse su organización: la oferta se publicará después.",
+      "flagged": "Algunas formulaciones de la oferta serán revisadas por nuestro equipo antes de publicarla (criterios prohibidos: edad, sexo, origen, situación familiar).",
+      "rejectedReason": "Motivo del rechazo: {reason}",
+      "liveUntil": "Publicada hasta el {date}",
+      "views": "{count, plural, =0 {Ninguna consulta} one {# consulta} other {# consultas}}",
+      "price": "Publicación de {days} días: {price}",
+      "actions": {
+        "submit": "Enviar la oferta",
+        "pay": "Pagar y publicar",
+        "extend": "Prolongar {days} días",
+        "renew": "Volver a publicar",
+        "close": "Cerrar la oferta",
+        "delete": "Eliminar el borrador",
+        "adminFree": "Publicar gratis (administrador)"
+      },
+      "notice": {
+        "paid": "Pago recibido, gracias.",
+        "canceled": "Pago cancelado: no se ha cobrado nada.",
+        "submitted": "Oferta enviada.",
+        "closed": "Oferta cerrada.",
+        "renewed": "Oferta lista para volver a publicarse: pague el nuevo periodo.",
+        "published": "Oferta publicada."
+      },
+      "errors": {
+        "notAllowed": "Esta acción no es posible en el estado actual de la oferta.",
+        "unavailable": "El pago no está disponible por el momento. Inténtelo más tarde.",
+        "suspended": "Su organización está suspendida: no es posible publicar."
+      }
+    },
+    "checkout": {
+      "title": "Pago de la publicación",
+      "offer": "Oferta",
+      "duration": "Duración",
+      "days": "{days} días",
+      "total": "Importe",
+      "back": "Volver a la oferta"
     }
   }
 }

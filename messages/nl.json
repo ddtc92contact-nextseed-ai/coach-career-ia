@@ -7,7 +7,8 @@
   },
   "header": {
     "mainNav": "Hoofdnavigatie",
-    "signIn": "Inloggen"
+    "signIn": "Inloggen",
+    "recruiter": "Voor werkgevers"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
@@ -50,7 +51,12 @@
     },
     "closingTitle": "Uw carrière, uw regels, uw tempo.",
     "closingText": "Inloggen zonder wachtwoord, via een link naar uw e-mailadres. Er worden geen gegevens gedeeld zonder uw uitdrukkelijke toestemming.",
-    "closingCta": "Beginnen"
+    "closingCta": "Beginnen",
+    "recruiter": {
+      "title": "Werft u aan?",
+      "text": "Publiceer uw vacatures met een duidelijke salarisrange: de agenten van kandidaten tonen ze alleen aan profielen waarvan ze de voorwaarden respecteren. U ontvangt anonieme profielen die kandidaten zelf naar u sturen.",
+      "cta": "Vacatures publiceren"
+    }
   },
   "notFound": {
     "title": "Pagina niet gevonden",
@@ -181,6 +187,34 @@
         "closingDeclined": "Ik ben de AI-loopbaanagent van de kandidaat. De kandidaat dankt u voor de tijd die u aan de sollicitatie voor de functie ‘{title}’ heeft besteed, maar heeft besloten niet verder te gaan. De kandidaat wenst u veel succes met deze werving.",
         "closingPaused": "Ik ben de AI-loopbaanagent van de kandidaat. De kandidaat dankt u voor uw voorstel voor de functie ‘{title}’ en heeft wat bedenktijd nodig. De kandidaat neemt binnenkort weer contact met u op."
       }
+    },
+    "employer": {
+      "brand": "Coach Career IA — Werkgeversomgeving",
+      "greeting": "Hallo,",
+      "reason": "Reden: {reason}",
+      "dashboard": "Mijn werkgeversomgeving openen",
+      "dashboardText": "Uw werkgeversomgeving: {url}",
+      "signature": "Het team van Coach Career IA",
+      "orgApproved": {
+        "subject": "{org}: uw werkgeversomgeving is goedgekeurd",
+        "body": "Uw organisatie {org} is goedgekeurd. Uw betaalde vacatures zijn gepubliceerd en u kunt nieuwe publiceren."
+      },
+      "orgRejected": {
+        "subject": "{org}: uw aanmelding is niet goedgekeurd",
+        "body": "We konden de organisatie {org} niet goedkeuren. Er wordt geen vacature gepubliceerd."
+      },
+      "orgSuspended": {
+        "subject": "{org}: uw werkgeversomgeving is opgeschort",
+        "body": "De organisatie {org} is opgeschort en haar vacatures worden niet meer gepubliceerd."
+      },
+      "postingApproved": {
+        "subject": "Vacature goedgekeurd: {title}",
+        "body": "Uw vacature ‘{title}’ is door ons team goedgekeurd."
+      },
+      "postingRejected": {
+        "subject": "Vacature afgewezen: {title}",
+        "body": "Uw vacature ‘{title}’ is niet goedgekeurd. U kunt ze aanpassen en opnieuw indienen."
+      }
     }
   },
   "common": {
@@ -212,7 +246,8 @@
     "fileQuota": "U heeft het maximale aantal documenten bereikt. Verwijder er een om een nieuw document toe te voegen.",
     "confirmMismatch": "Het ingevulde adres komt niet overeen met dat van uw account.",
     "notFound": "Dit item bestaat niet (meer).",
-    "billingCancelFailed": "Uw abonnement kan momenteel niet worden opgezegd, dus uw account is niet verwijderd. Probeer het over enkele minuten opnieuw."
+    "billingCancelFailed": "Uw abonnement kan momenteel niet worden opgezegd, dus uw account is niet verwijderd. Probeer het over enkele minuten opnieuw.",
+    "salaryRange": "Het maximumsalaris moet groter dan of gelijk aan het minimum zijn."
   },
   "app": {
     "metaTitle": "Mijn omgeving",
@@ -231,7 +266,9 @@
       "billing": "Abonnement",
       "billingSimulator": "Betalingssimulator (admin)",
       "card": "Mijn anonieme kaart",
-      "contacts": "Contacten"
+      "contacts": "Contacten",
+      "employer": "Werkgeversomgeving",
+      "moderation": "Moderatie (admin)"
     }
   },
   "dashboard": {
@@ -414,7 +451,8 @@
         "SENDING": "Bezig met versturen.",
         "SENT": "Bedrijf gecontacteerd."
       }
-    }
+    },
+    "directBadge": "Rechtstreeks door het bedrijf gepubliceerd"
   },
   "memory": {
     "title": "Mijn carrièregeheugen",
@@ -1757,6 +1795,198 @@
       "sendUnavailable": "Het verzenden van e-mails is niet geconfigureerd op deze server.",
       "sendFailed": "Verzenden mislukt. Probeer het later opnieuw.",
       "invalid": "Het bericht moet tussen 20 en 3.000 tekens lang zijn."
+    }
+  },
+  "salaryBenchmark": {
+    "title": "Markt",
+    "intro": "Hoe deze vacature zich verhoudt tot de gepubliceerde salarissen voor vergelijkbare functies.",
+    "quartiles": {
+      "p25": "1e kwartiel",
+      "median": "Mediaan",
+      "p75": "3e kwartiel"
+    },
+    "estimate": "Schatting op basis van {count, plural, one {# gepubliceerde vacature} other {# gepubliceerde vacatures}} met salaris, van {from} tot {to} (bruto per jaar, exclusief variabele beloning). Dit is geen officiële salarisschaal.",
+    "fallback": {
+      "COUNTRY": "Referentie verbreed naar het hele land: te weinig vergelijkbare vacatures in de regio.",
+      "FAMILY_COUNTRY": "Referentie verbreed naar de functiegroep, alle senioriteitsniveaus: te weinig preciezere vergelijkbare vacatures."
+    },
+    "notEnoughData": "Onvoldoende gegevens: minder dan {min} vergelijkbare vacatures met gepubliceerd salaris. Liever geen referentie dan een onbetrouwbaar cijfer.",
+    "remote": "volledig op afstand ({country})",
+    "allSeniorities": "alle niveaus",
+    "offerPosition": {
+      "BELOW": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt onder het 1e kwartiel van de markt.",
+      "WITHIN": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) valt binnen de gebruikelijke marktbandbreedte (tussen het 1e en 3e kwartiel).",
+      "ABOVE": "Het vermelde salaris ({amount} bruto per jaar, midden van de bandbreedte) ligt boven het 3e kwartiel van de markt.",
+      "noSalary": "Deze vacature vermeldt geen vergelijkbaar salaris: alleen de marktreferentie wordt getoond."
+    },
+    "floorPosition": {
+      "BELOW": "Uw ondergrens ({amount}) ligt onder het 1e kwartiel: die sluit weinig vergelijkbare vacatures uit.",
+      "WITHIN": "Uw ondergrens ({amount}) valt binnen de gebruikelijke marktbandbreedte.",
+      "ABOVE": "Uw ondergrens ({amount}) ligt boven het 3e kwartiel: die sluit de meeste vergelijkbare vacatures uit."
+    },
+    "guardRails": {
+      "title": "Marktreferentie",
+      "intro": "Gepubliceerde salarissen voor uw functiegroep (op basis van uw meest recente functie), in Frankrijk."
+    }
+  },
+  "employer": {
+    "metaTitle": "Werkgeversomgeving",
+    "titleTemplate": "%s · Werkgeversomgeving",
+    "signOut": "Afmelden",
+    "nav": {
+      "label": "Werkgeversomgeving",
+      "dashboard": "Mijn vacatures",
+      "newPosting": "Vacature publiceren",
+      "organization": "Mijn organisatie",
+      "candidate": "Kandidaatomgeving"
+    },
+    "signup": {
+      "metaTitle": "Voor werkgevers",
+      "eyebrow": "Werkgeversomgeving",
+      "title": "Publiceer uw vacatures voor gekwalificeerde kandidaten",
+      "intro": "Elke kandidaat wordt vertegenwoordigd door een agent die alleen vacatures toont die aan zijn voorwaarden voldoen: salaris, locatie, thuiswerk, contract. Een duidelijke vacature bereikt de juiste profielen.",
+      "points": {
+        "salary": "Salarisrange verplicht: dat is de eerste voorwaarde van kandidaten.",
+        "pay": "Betaling per vacature, publicatie van {days} dagen, zonder abonnement.",
+        "privacy": "U zoekt geen kandidaten: zij kiezen zelf of ze u hun anonieme profiel sturen."
+      },
+      "cta": "Mijn werkgeversomgeving aanmaken",
+      "formTitle": "Uw organisatie",
+      "formIntro": "Meld u aan met uw zakelijke e-mailadres: als het domein overeenkomt met de website van het bedrijf, wordt uw omgeving direct geactiveerd. Anders controleert ons team die vóór elke publicatie.",
+      "submit": "Werkgeversomgeving aanmaken",
+      "signedInAs": "Aangemeld als {email}",
+      "fields": {
+        "name": "Naam van het bedrijf",
+        "website": "Website",
+        "websiteHint": "Bijvoorbeeld https://www.bedrijf.nl",
+        "sector": "Sector",
+        "size": "Grootte",
+        "country": "Land"
+      },
+      "choose": "Kiezen…"
+    },
+    "org": {
+      "title": "Mijn organisatie",
+      "status": {
+        "PENDING": "Wacht op goedkeuring",
+        "ACTIVE": "Actief",
+        "SUSPENDED": "Opgeschort"
+      },
+      "pendingTitle": "Organisatie wordt gecontroleerd",
+      "pendingText": "Het domein van uw e-mailadres komt niet overeen met de website van het bedrijf (of het is een openbare webmail). U kunt uw vacatures voorbereiden en betalen: ze worden gepubliceerd zodra ons team uw organisatie heeft goedgekeurd.",
+      "suspendedTitle": "Organisatie opgeschort",
+      "suspendedText": "Uw vacatures worden niet meer gepubliceerd. Neem contact met ons op voor meer informatie.",
+      "reason": "Reden: {reason}",
+      "website": "Website",
+      "domain": "Domein",
+      "sector": "Sector",
+      "size": "Grootte",
+      "country": "Land",
+      "verified": "Geverifieerd",
+      "verifiedOn": "Geverifieerd op {date}",
+      "notVerified": "Niet geverifieerd"
+    },
+    "dashboard": {
+      "title": "Mijn vacatures",
+      "intro": "Uw vacatures, hun status en vervaldatum. Een vacature wordt na betaling en controle gepubliceerd, voor {days} dagen.",
+      "newPosting": "Vacature publiceren",
+      "emptyTitle": "Nog geen vacatures",
+      "emptyText": "Schrijf uw eerste vacature: die blijft een bewerkbaar concept tot u ze indient.",
+      "columns": {
+        "title": "Vacature",
+        "status": "Status",
+        "expires": "Vervalt",
+        "views": "Weergaven"
+      },
+      "noDate": "—",
+      "privacy": "Hier verschijnen geen kandidaatgegevens: u ziet alleen hoeveel kandidaten uw vacature tussen hun kansen hebben geopend."
+    },
+    "status": {
+      "DRAFT": "Concept",
+      "AWAITING_PAYMENT": "Wacht op betaling",
+      "IN_REVIEW": "In controle",
+      "LIVE": "Online",
+      "CLOSED": "Gesloten",
+      "REJECTED": "Afgewezen"
+    },
+    "posting": {
+      "newTitle": "Vacature publiceren",
+      "newIntro": "De vacature wordt als concept opgeslagen. Daarna dient u ze in voor betaling en controle.",
+      "back": "← Mijn vacatures",
+      "sections": {
+        "job": "De functie",
+        "place": "Locatie en contract",
+        "salary": "Beloning"
+      },
+      "salaryIntro": "Verplicht: brutorange, met valuta en periode. Kandidaten van wie het minimumsalaris niet wordt gehaald, zien de vacature niet.",
+      "fields": {
+        "title": "Functietitel",
+        "description": "Beschrijving",
+        "descriptionHint": "Taken, team, verwachte vaardigheden (minimaal {min} tekens). Geen criteria over leeftijd, geslacht, afkomst of gezinssituatie.",
+        "seniority": "Ervaringsniveau",
+        "sector": "Sector",
+        "contractType": "Contracttype",
+        "remotePolicy": "Thuiswerk",
+        "city": "Stad",
+        "country": "Land",
+        "salaryMin": "Minimum",
+        "salaryMax": "Maximum",
+        "salaryCurrency": "Valuta",
+        "salaryPeriod": "Periode"
+      },
+      "periods": {
+        "YEAR": "Per jaar",
+        "MONTH": "Per maand",
+        "DAY": "Per dag",
+        "HOUR": "Per uur"
+      },
+      "create": "Concept aanmaken",
+      "save": "Opslaan",
+      "saved": "Vacature opgeslagen.",
+      "help": {
+        "DRAFT": "Concept: pas de vacature zo vaak aan als nodig en dien ze daarna in.",
+        "AWAITING_PAYMENT": "De publicatie moet nog worden betaald. De vacature gaat online na betaling en controle.",
+        "IN_REVIEW": "Betaling ontvangen. Ons team controleert de vacature; u krijgt een e-mail.",
+        "LIVE": "Online: de vacature wordt getoond aan kandidaten van wie ze de voorwaarden respecteert.",
+        "CLOSED": "Gesloten: de vacature wordt niet meer getoond. U kunt ze opnieuw publiceren (nieuwe betaling).",
+        "REJECTED": "Afgewezen: pas de vacature aan en dien ze opnieuw in."
+      },
+      "reviewPendingOrg": "Uw organisatie moet eerst worden goedgekeurd: de vacature wordt daarna gepubliceerd.",
+      "flagged": "Sommige formuleringen in de vacature worden vóór publicatie door ons team nagelezen (verboden criteria: leeftijd, geslacht, afkomst, gezinssituatie).",
+      "rejectedReason": "Reden van afwijzing: {reason}",
+      "liveUntil": "Online tot {date}",
+      "views": "{count, plural, =0 {Geen weergaven} one {# weergave} other {# weergaven}}",
+      "price": "Publicatie van {days} dagen: {price}",
+      "actions": {
+        "submit": "Vacature indienen",
+        "pay": "Betalen en publiceren",
+        "extend": "Met {days} dagen verlengen",
+        "renew": "Opnieuw publiceren",
+        "close": "Vacature sluiten",
+        "delete": "Concept verwijderen",
+        "adminFree": "Gratis publiceren (beheerder)"
+      },
+      "notice": {
+        "paid": "Betaling ontvangen, bedankt.",
+        "canceled": "Betaling geannuleerd: er is niets afgeschreven.",
+        "submitted": "Vacature ingediend.",
+        "closed": "Vacature gesloten.",
+        "renewed": "Vacature klaar om opnieuw te publiceren: betaal de nieuwe periode.",
+        "published": "Vacature gepubliceerd."
+      },
+      "errors": {
+        "notAllowed": "Deze actie is niet mogelijk in de huidige status van de vacature.",
+        "unavailable": "Betalen is tijdelijk niet mogelijk. Probeer het later opnieuw.",
+        "suspended": "Uw organisatie is opgeschort: publiceren is niet mogelijk."
+      }
+    },
+    "checkout": {
+      "title": "Betaling van de publicatie",
+      "offer": "Vacature",
+      "duration": "Duur",
+      "days": "{days} dagen",
+      "total": "Bedrag",
+      "back": "Terug naar de vacature"
     }
   }
 }

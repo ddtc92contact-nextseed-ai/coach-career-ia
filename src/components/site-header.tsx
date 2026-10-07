@@ -12,6 +12,12 @@ export function SiteHeader() {
         <nav aria-label={t("mainNav")} className="flex items-center gap-2 sm:gap-3">
           <LocaleSwitcher />
           <Link
+            href="/entreprise/inscription"
+            className="hidden rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-stone-700 hover:bg-stone-100 sm:inline-block"
+          >
+            {t("recruiter")}
+          </Link>
+          <Link
             href="/connexion"
             className="rounded-lg bg-stone-900 px-3 py-2 text-sm font-medium whitespace-nowrap text-white hover:bg-stone-700 sm:px-4"
           >

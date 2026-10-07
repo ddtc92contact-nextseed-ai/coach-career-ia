@@ -7,6 +7,7 @@ import { loadCandidate, loadRails, matchOfferSelect, toMatchOffer } from "./cand
 import { parseExplanation } from "./explanation";
 import { checkGuardRails } from "./filters";
 import type { CandidateRails } from "./types";
+import { DIRECT_SOURCE } from "@/lib/employer/config";
 
 /**
  * Accès aux correspondances depuis l'application. Toutes les requêtes sont
@@ -40,6 +41,7 @@ const matchSelect = {
   offer: {
     select: {
       ...matchOfferSelect,
+      source: true,
       companyId: true,
       url: true,
       city: true,
@@ -63,6 +65,8 @@ function present(row: MatchRow) {
     offer: {
       ...offer,
       companyId: row.offer.companyId,
+      /** Publiée directement par l'entreprise (espace entreprise), pas collectée. */
+      direct: row.offer.source === DIRECT_SOURCE,
       url: row.offer.url,
       city: row.offer.city,
       region: row.offer.region,
@@ -130,7 +134,17 @@ export async function getMatch(userId: string, id: string): Promise<MatchView | 
 /** Première consultation : `NEW` → `SEEN`. */
 export async function markMatchSeen(userId: string, id: string) {
   if (typeof id !== "string") return;
-  await db.match.updateMany({ where: { id, userId, status: "NEW" }, data: { status: "SEEN" } });
+  const { count } = await db.match.updateMany({
+    where: { id, userId, status: "NEW" },
+    data: { status: "SEEN" },
+  });
+  // Offre directe : un candidat de plus l'a consultée (compteur seul, aucune identité).
+  if (count > 0) {
+    await db.jobPosting.updateMany({
+      where: { offer: { source: DIRECT_SOURCE, matches: { some: { id, userId } } } },
+      data: { viewCount: { increment: 1 } },
+    });
+  }
 }
 
 export async function setMatchStatus(
