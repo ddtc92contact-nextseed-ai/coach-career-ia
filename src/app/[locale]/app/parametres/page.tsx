@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server";
 import { PageTitle } from "@/components/empty-state";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { requireUser } from "@/lib/auth/session";
+import { getAlertSettings } from "@/lib/matching/repository";
+import { AlertsForm } from "./alerts-form";
 import { DeleteAccountForm } from "./delete-account-form";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -13,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
 
 export default async function SettingsPage() {
-  await requireUser();
-  const t = await getTranslations("settings");
+  const user = await requireUser();
+  const [t, alerts] = await Promise.all([getTranslations("settings"), getAlertSettings(user.id)]);
   return (
     <div className="max-w-3xl space-y-6">
       <PageTitle title={t("title")} intro={t("intro")} />
@@ -25,6 +27,18 @@ export default async function SettingsPage() {
         </h2>
         <p className="mt-1 mb-4 text-sm text-stone-600">{t("language.intro")}</p>
         <LocaleSwitcher persist showLabel />
+      </section>
+
+      <section
+        id="alertes"
+        className={`${sectionClass} scroll-mt-6`}
+        aria-labelledby="alertes-titre"
+      >
+        <h2 id="alertes-titre" className="text-lg font-semibold">
+          {t("alerts.title")}
+        </h2>
+        <p className="mt-1 mb-4 text-sm text-stone-600">{t("alerts.intro")}</p>
+        <AlertsForm frequency={alerts.frequency} minScore={alerts.minScore} />
       </section>
 
       <section className={sectionClass} aria-labelledby="export">

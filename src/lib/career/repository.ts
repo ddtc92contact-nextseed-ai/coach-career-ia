@@ -26,6 +26,8 @@ import type {
 } from "./schemas";
 import { deleteDocument, deleteUserDocuments, readDocument, saveDocument } from "./storage";
 import { exportVault } from "@/lib/vault/repository";
+import { excludedCompanyAad } from "@/lib/matching/candidate";
+import { markMatchingDirty } from "@/lib/matching/jobs";
 
 /**
  * Accès aux données de la mémoire de carrière.
@@ -34,6 +36,9 @@ import { exportVault } from "@/lib/vault/repository";
  * de `requireUser()`) et TOUTES les requêtes sont filtrées par `userId`. Un
  * élément appartenant à un autre utilisateur est traité comme inexistant
  * (`NotFoundError`, ou `null`) : on ne révèle jamais son existence.
+ *
+ * Toute modification de la mémoire, des garde-fous ou de la langue demande un
+ * recalcul des opportunités (`requestMatching`), fait plus tard par le worker.
  */
 
 export class NotFoundError extends Error {
@@ -45,11 +50,15 @@ export class NotFoundError extends Error {
 
 type Tx = Prisma.TransactionClient;
 
-const excludedCompanyAad = (userId: string) => `user:${userId}:excluded-company`;
 const fileNameAad = (userId: string) => `user:${userId}:proof-file-name`;
 
 export function asSector(value: string): SectorCode {
   return (SECTORS as readonly string[]).includes(value) ? (value as SectorCode) : "OTHER";
+}
+
+/** Demande au worker de recalculer les opportunités (regroupé, voir `matching/jobs.ts`). */
+async function requestMatching(userId: string) {
+  await markMatchingDirty(db, userId);
 }
 
 // --- Profil -----------------------------------------------------------------------
@@ -69,6 +78,8 @@ export async function setVisibility(userId: string, visibility: VisibilityStatus
 
 export async function setUserLocale(userId: string, locale: AppLocale) {
   await db.user.update({ where: { id: userId }, data: { locale } });
+  // Les explications sont rédigées dans la langue du candidat.
+  await requestMatching(userId);
 }
 
 /** Enregistre la langue courante si l'utilisateur n'a encore rien choisi. */
@@ -110,7 +121,9 @@ export function getExperience(userId: string, id: string) {
 }
 
 export async function createExperience(userId: string, input: ExperienceInput) {
-  return db.experience.create({ data: { userId, ...experienceData(input) } });
+  const experience = await db.experience.create({ data: { userId, ...experienceData(input) } });
+  await requestMatching(userId);
+  return experience;
 }
 
 export async function updateExperience(userId: string, id: string, input: ExperienceInput) {
@@ -119,12 +132,14 @@ export async function updateExperience(userId: string, id: string, input: Experi
     data: experienceData(input),
   });
   if (count === 0) throw new NotFoundError();
+  await requestMatching(userId);
 }
 
 /** Les réalisations liées sont conservées, détachées de l'expérience. */
 export async function deleteExperience(userId: string, id: string) {
   const { count } = await db.experience.deleteMany({ where: { id, userId } });
   if (count === 0) throw new NotFoundError();
+  await requestMatching(userId);
 }
 
 // --- Compétences (création à partir des réalisations) -------------------------------
@@ -210,7 +225,7 @@ async function assertOwnExperience(tx: Tx, userId: string, experienceId?: string
 }
 
 export async function createAchievement(userId: string, input: AchievementInput) {
-  return db.$transaction(async (tx) => {
+  const created = await db.$transaction(async (tx) => {
     const experienceId = await assertOwnExperience(tx, userId, input.experienceId);
     const skillIds = await upsertSkills(tx, userId, input.skills);
     return tx.achievement.create({
@@ -226,6 +241,8 @@ export async function createAchievement(userId: string, input: AchievementInput)
       select: { id: true },
     });
   });
+  await requestMatching(userId);
+  return created;
 }
 
 export async function updateAchievement(userId: string, id: string, input: AchievementInput) {
@@ -249,6 +266,7 @@ export async function updateAchievement(userId: string, id: string, input: Achie
       },
     });
   });
+  await requestMatching(userId);
 }
 
 export async function deleteAchievement(userId: string, id: string) {
@@ -262,6 +280,7 @@ export async function deleteAchievement(userId: string, id: string) {
     return proofs.map((p) => p.storageKey!);
   });
   await Promise.all(files.map(deleteDocument));
+  await requestMatching(userId);
 }
 
 // --- Preuves --------------------------------------------------------------------------
@@ -296,6 +315,7 @@ export async function addTextProof(userId: string, achievementId: string, input:
     });
     await refreshEvidence(tx, achievementId);
   });
+  await requestMatching(userId);
 }
 
 export type DocumentUploadResult =
@@ -335,6 +355,7 @@ export async function addDocumentProof(
       await refreshEvidence(tx, achievementId);
       return created;
     });
+    await requestMatching(userId);
     return { ok: true, proofId: proof.id };
   } catch (error) {
     await deleteDocument(storageKey);
@@ -354,6 +375,7 @@ export async function deleteProof(userId: string, proofId: string) {
     return proof.storageKey;
   });
   if (storageKey) await deleteDocument(storageKey);
+  await requestMatching(userId);
 }
 
 /** Contenu déchiffré d'une pièce justificative, ou `null` si elle n'appartient pas à l'utilisateur. */
@@ -391,7 +413,7 @@ export async function importDraft(
   userId: string,
   draft: CareerMemoryDraft,
 ): Promise<ImportedDraftSummary> {
-  return db.$transaction(
+  const summary = await db.$transaction(
     async (tx) => {
       const experienceIds: Record<string, string> = {};
       for (const { ref, ...experience } of draft.experiences) {
@@ -435,6 +457,8 @@ export async function importDraft(
     },
     { timeout: 30_000 },
   );
+  await requestMatching(userId);
+  return summary;
 }
 
 // --- Compétences ------------------------------------------------------------------------
@@ -482,11 +506,13 @@ export type SkillView = Awaited<ReturnType<typeof listSkills>>[number];
 /** Compétence déclarée sans réalisation : autorisée, affichée comme non prouvée. */
 export async function addDeclaredSkill(userId: string, name: string) {
   await db.$transaction((tx) => upsertSkills(tx, userId, [name]));
+  await requestMatching(userId);
 }
 
 export async function deleteSkill(userId: string, id: string) {
   const { count } = await db.skill.deleteMany({ where: { id, userId } });
   if (count === 0) throw new NotFoundError();
+  await requestMatching(userId);
 }
 
 // --- Garde-fous --------------------------------------------------------------------------
@@ -582,6 +608,7 @@ export async function saveGuardRails(
     db.guardRailLocation.deleteMany({ where: { userId } }),
     db.guardRailLocation.createMany({ data: locations }),
   ]);
+  await requestMatching(userId);
   return {
     unlocated: locations.flatMap((l, i) => (l.latitude === null ? [i] : [])),
   };

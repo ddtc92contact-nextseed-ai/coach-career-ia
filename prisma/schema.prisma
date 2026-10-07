@@ -45,6 +45,9 @@ model User {
   guardRails   GuardRails?
   locations    GuardRailLocation[]
   vault        IdentityVault?
+  matches      Match[]
+  matching     MatchingState?
+  embeddings   MemoryEmbedding[]
 
   coachConversations CoachConversation[]
   coachMessages      CoachMessage[]
@@ -583,9 +586,11 @@ model JobOffer {
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
 
-  company     Company?   @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  duplicateOf JobOffer?  @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
-  duplicates  JobOffer[] @relation("OfferDuplicates")
+  company     Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  duplicateOf JobOffer?       @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates  JobOffer[]      @relation("OfferDuplicates")
+  matches     Match[]
+  embedding   OfferEmbedding?
 
   @@unique([source, sourceId])
   @@index([sourceKey, status])
@@ -643,4 +648,100 @@ model SourceRun {
   @@index([startedAt])
   @@index([sourceKey, startedAt])
   @@map("source_runs")
+}
+
+// ---------------------------------------------------------------------------
+// Matching : garde-fous (filtres durs) puis score expliqué (`src/lib/matching`)
+// ---------------------------------------------------------------------------
+
+enum MatchStatus {
+  NEW
+  SEEN
+  SAVED
+  DISMISSED
+}
+
+enum AlertFrequency {
+  OFF
+  DAILY
+  WEEKLY
+}
+
+/// Offre qualifiée pour un candidat : elle respecte TOUS ses garde-fous au
+/// moment du calcul (et la page les revérifie à l'affichage). Calculé par le
+/// worker, jamais au chargement d'une page.
+model Match {
+  id          String      @id @default(cuid())
+  userId      String      @map("user_id")
+  offerId     String      @map("offer_id")
+  /// Score de 0 à 100.
+  score       Int
+  /// Explication lisible (`src/lib/matching/explanation.ts`), dans la langue du candidat.
+  explanation Json
+  /// Empreinte des éléments du calcul : explication régénérée seulement s'ils changent.
+  inputHash   String      @map("input_hash")
+  status      MatchStatus @default(NEW)
+  computedAt  DateTime    @map("computed_at")
+  /// Date d'envoi dans un résumé d'alertes (`null` = jamais envoyé).
+  notifiedAt  DateTime?   @map("notified_at")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, offerId])
+  @@index([userId, score])
+  @@index([offerId])
+  @@map("matches")
+}
+
+/// État du matching d'un candidat (1-1) et préférences d'alertes e-mail.
+model MatchingState {
+  userId         String         @id @map("user_id")
+  /// Recalcul demandé (mémoire, garde-fous ou nouvelles offres) ; le worker
+  /// attend quelques secondes sans nouveau changement avant de recalculer.
+  dirtyAt        DateTime?      @map("dirty_at")
+  computedAt     DateTime?      @map("computed_at")
+  alertFrequency AlertFrequency @default(OFF) @map("alert_frequency")
+  /// Score minimal des opportunités envoyées par e-mail.
+  alertMinScore  Int            @default(70) @map("alert_min_score")
+  alertSentAt    DateTime?      @map("alert_sent_at")
+  /// Jeton aléatoire du lien de désabonnement (créé au premier envoi).
+  alertToken     String?        @unique @map("alert_token")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([dirtyAt])
+  @@map("matching_states")
+}
+
+/// Embedding (pgvector) du texte d'une offre. Donnée publique, sans lien avec un utilisateur.
+model OfferEmbedding {
+  offerId   String                @id @map("offer_id")
+  model     String
+  /// Empreinte du texte embarqué : un texte modifié est ré-embarqué.
+  textHash  String                @map("text_hash")
+  embedding Unsupported("vector")
+  createdAt DateTime              @default(now()) @map("created_at")
+
+  offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@map("offer_embeddings")
+}
+
+/// Embedding (pgvector) d'un élément de la mémoire de carrière, identifié par
+/// l'empreinte de son texte (le texte lui-même n'est pas stocké ici).
+model MemoryEmbedding {
+  userId    String                @map("user_id")
+  model     String
+  textHash  String                @map("text_hash")
+  embedding Unsupported("vector")
+  createdAt DateTime              @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, model, textHash])
+  @@map("memory_embeddings")
 }
