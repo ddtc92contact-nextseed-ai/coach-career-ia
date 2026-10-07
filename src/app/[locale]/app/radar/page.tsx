@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { CompanySignalList } from "@/components/company-signals";
 import { PageTitle } from "@/components/empty-state";
 import type { Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/admin";
 import { db } from "@/lib/db";
 import { failureThreshold, loadSourceHealth } from "@/lib/radar/health";
+import { loadCompanyMomentum, type CompanyMomentum } from "@/lib/radar/signals/query";
 import { formatSalary, REMOTE_LABELS, CONTRACT_LABELS, SOURCE_LABELS } from "./labels";
 
 export const metadata: Metadata = { title: "Market Radar" };
@@ -52,24 +55,26 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
   };
 
   const threshold = failureThreshold();
-  const [health, runs, offers, matching, open, closed, duplicates, located] = await Promise.all([
-    loadSourceHealth(db, { threshold }),
-    db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
-    db.jobOffer.findMany({
-      where,
-      orderBy: [{ lastSeenAt: "desc" }, { publishedAt: "desc" }],
-      take: PAGE_SIZE,
-      skip: (page - 1) * PAGE_SIZE,
-      include: { _count: { select: { duplicates: true } } },
-    }),
-    db.jobOffer.count({ where }),
-    db.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
-    db.jobOffer.count({ where: { status: "CLOSED", duplicateOfId: null } }),
-    db.jobOffer.count({ where: { duplicateOfId: { not: null } } }),
-    db.jobOffer.count({
-      where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
-    }),
-  ]);
+  const [health, momentum, runs, offers, matching, open, closed, duplicates, located] =
+    await Promise.all([
+      loadSourceHealth(db, { threshold }),
+      loadCompanyMomentum(db),
+      db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
+      db.jobOffer.findMany({
+        where,
+        orderBy: [{ lastSeenAt: "desc" }, { publishedAt: "desc" }],
+        take: PAGE_SIZE,
+        skip: (page - 1) * PAGE_SIZE,
+        include: { _count: { select: { duplicates: true } } },
+      }),
+      db.jobOffer.count({ where }),
+      db.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
+      db.jobOffer.count({ where: { status: "CLOSED", duplicateOfId: null } }),
+      db.jobOffer.count({ where: { duplicateOfId: { not: null } } }),
+      db.jobOffer.count({
+        where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
+      }),
+    ]);
   const locatedShare = open > 0 ? Math.round((located / open) * 100) : 0;
   const pages = Math.max(1, Math.ceil(matching / PAGE_SIZE));
   const pageHref = (p: number) => {
@@ -110,6 +115,8 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
       </dl>
 
       <SourceHealthSection health={health} threshold={threshold} />
+
+      <CompanyMomentumSection companies={momentum} />
 
       <section aria-labelledby="runs-title" className="mb-10">
         <h2 id="runs-title" className="mb-3 text-lg font-semibold">
@@ -362,6 +369,71 @@ function SourceHealthSection({
                       </>
                     ) : (
                       ""
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+async function CompanyMomentumSection({ companies }: { companies: CompanyMomentum[] }) {
+  const [t, format] = await Promise.all([getTranslations("companySignals.admin"), getFormatter()]);
+  const share = (value: number | null | undefined) =>
+    value === null || value === undefined ? t("notAvailable") : t("percent", { value });
+  return (
+    <section aria-labelledby="momentum-title" className="mb-10">
+      <h2 id="momentum-title" className="mb-1 text-lg font-semibold">
+        {t("title")}
+      </h2>
+      <p className="mb-3 text-sm text-stone-500">{t("intro")}</p>
+      {companies.length === 0 ? (
+        <p className="text-sm text-stone-500">{t("empty")}</p>
+      ) : (
+        <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-stone-50 text-stone-500">
+              <tr>
+                <th className="px-3 py-2 font-medium">{t("company")}</th>
+                <th className="px-3 py-2 text-right font-medium">{t("open")}</th>
+                <th className="px-3 py-2 text-right font-medium">{t("lastWeek")}</th>
+                <th className="px-3 py-2 text-right font-medium">{t("timeToClose")}</th>
+                <th className="px-3 py-2 text-right font-medium">{t("salaryShare")}</th>
+                <th className="px-3 py-2 font-medium">{t("signals")}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {companies.map((c) => (
+                <tr key={c.id} className="align-top">
+                  <td className="px-3 py-2 font-medium whitespace-nowrap">{c.name}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {format.number(c.openOffers)}
+                  </td>
+                  <td className="px-3 py-2 text-right whitespace-nowrap tabular-nums">
+                    {c.lastWeek
+                      ? t("lastWeekValue", {
+                          newOffers: c.lastWeek.newOffers,
+                          closedOffers: c.lastWeek.closedOffers,
+                        })
+                      : t("notAvailable")}
+                  </td>
+                  <td className="px-3 py-2 text-right whitespace-nowrap tabular-nums">
+                    {c.lastWeek?.medianDaysToClose != null
+                      ? t("days", { days: c.lastWeek.medianDaysToClose })
+                      : t("notAvailable")}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {share(c.lastWeek?.salaryShare)}
+                  </td>
+                  <td className="min-w-72 px-3 py-2">
+                    {c.signals.length > 0 ? (
+                      <CompanySignalList signals={c.signals} compact />
+                    ) : (
+                      <span className="text-stone-500">{t("none")}</span>
                     )}
                   </td>
                 </tr>

@@ -40,6 +40,7 @@ const matchSelect = {
   offer: {
     select: {
       ...matchOfferSelect,
+      companyId: true,
       url: true,
       city: true,
       region: true,
@@ -61,6 +62,7 @@ function present(row: MatchRow) {
     explanation: parseExplanation(row.explanation),
     offer: {
       ...offer,
+      companyId: row.offer.companyId,
       url: row.offer.url,
       city: row.offer.city,
       region: row.offer.region,
