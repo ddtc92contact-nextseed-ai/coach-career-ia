@@ -1,0 +1,23 @@
+[
+  {
+    "id": "0f0e7c1a-1111-4c3b-9a55-000000000001",
+    "text": "Senior Backend Engineer (CDI)",
+    "hostedUrl": "https://jobs.lever.co/exemple/0f0e7c1a-1111-4c3b-9a55-000000000001",
+    "applyUrl": "https://jobs.lever.co/exemple/0f0e7c1a-1111-4c3b-9a55-000000000001/apply",
+    "createdAt": 1790000000000,
+    "country": "FR",
+    "workplaceType": "unspecified",
+    "categories": {
+      "commitment": "Permanent",
+      "department": "Engineering",
+      "location": "Lyon",
+      "team": "Platform",
+      "allLocations": ["Lyon"]
+    },
+    "descriptionPlain": "Build our core APIs. Hybrid work: 3 days remote per week.",
+    "lists": [],
+    "additionalPlain": "",
+    "salaryRange": { "min": 60000, "max": 72000, "currency": "EUR", "interval": "per-year-salary" },
+    "salaryDescriptionPlain": "60–72 k€ + BSPCE"
+  }
+]

@@ -5,3 +5,4 @@ prisma/migrations
 coverage
 package-lock.json
 next-env.d.ts
+tests/fixtures

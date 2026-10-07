@@ -1,0 +1,5 @@
+[
+  { "slug": "dataiku", "name": "Dataiku", "sector": "Logiciel / IA", "ats": "greenhouse", "boardToken": "dataiku" },
+  { "slug": "qonto", "name": "Qonto", "sector": "Fintech", "ats": "lever", "boardToken": "qonto" },
+  { "slug": "alan", "name": "Alan", "sector": "Assurance santé", "ats": "ashby", "boardToken": "alan" }
+]

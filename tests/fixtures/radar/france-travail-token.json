@@ -1,0 +1,6 @@
+{
+  "scope": "api_offresdemploiv2 o2dsoffre",
+  "expires_in": 1499,
+  "token_type": "Bearer",
+  "access_token": "fixture-access-token"
+}
