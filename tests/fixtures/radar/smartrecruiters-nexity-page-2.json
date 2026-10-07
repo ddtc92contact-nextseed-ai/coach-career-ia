@@ -1,0 +1,225 @@
+{
+  "offset": 3,
+  "limit": 3,
+  "totalFound": 5,
+  "content": [
+    {
+      "id": "744000152970685",
+      "name": "Responsable juridique droit des sociétés H/F - CDI",
+      "uuid": "7830ade0-6dac-4c4e-83fe-ac2e7e255298",
+      "jobAdId": "fa846457-b20e-41b0-a1ae-7d6e58be2e19",
+      "defaultJobAd": true,
+      "refNumber": "REF15437M",
+      "company": {
+        "identifier": "Nexity",
+        "name": "Nexity"
+      },
+      "releasedDate": "2026-10-01T15:12:37.186Z",
+      "location": {
+        "city": "Saint-Ouen-sur-Seine",
+        "region": "IDF",
+        "country": "fr",
+        "postalCode": "93400",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "Saint-Ouen-sur-Seine, IDF, France"
+      },
+      "industry": {
+        "id": "real_estate",
+        "label": "Real Estate"
+      },
+      "department": {
+        "id": "1023424",
+        "label": "Juridique"
+      },
+      "function": {
+        "id": "legal",
+        "label": "Legal"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "not_applicable",
+        "label": "Not Applicable"
+      },
+      "customField": [
+        {
+          "fieldId": "5a046e17b60a5e36a4e0548e",
+          "fieldLabel": "Niveau",
+          "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+          "valueLabel": "Cadre"
+        },
+        {
+          "fieldId": "5a0468ba6d8bc55d3924410a",
+          "fieldLabel": "Pôle",
+          "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+          "valueLabel": "HOLDING"
+        },
+        {
+          "fieldId": "5f623677772192746bce79af",
+          "fieldLabel": "Poste CAPRECRUTEMENT",
+          "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+          "valueLabel": "Oui"
+        },
+        {
+          "fieldId": "5a16e07cb60a5e36a4e05726",
+          "fieldLabel": "Filiale",
+          "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+          "valueLabel": "NEXITY SA"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633d0",
+          "fieldLabel": "Department",
+          "valueId": "1023424",
+          "valueLabel": "Juridique"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "fr",
+          "valueLabel": "France"
+        },
+        {
+          "fieldId": "5a04697fb60a5e36a4e0548a",
+          "fieldLabel": "Type de contrat",
+          "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+          "valueLabel": "CDI"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633cf",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Nexity"
+        },
+        {
+          "fieldId": "5d2334f011bbec26b66f5246",
+          "fieldLabel": "Code postal",
+          "valueLabel": "93400"
+        },
+        {
+          "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+          "fieldLabel": "Manager sur le poste",
+          "valueLabel": "Camille Ricaud Le Borgne"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Nexity/postings/744000152970685",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    },
+    {
+      "id": "744000152202129",
+      "name": "Juriste immobilier H/F - CDI",
+      "uuid": "410cf423-dca4-4402-b333-a3c29c51ecca",
+      "jobAdId": "b4a66c51-2e1a-41d2-a12f-c81cc55d5146",
+      "defaultJobAd": true,
+      "refNumber": "REF15435O",
+      "company": {
+        "identifier": "Nexity",
+        "name": "Nexity"
+      },
+      "releasedDate": "2026-09-28T14:50:04.649Z",
+      "location": {
+        "city": "Saint-Ouen-sur-Seine",
+        "region": "IDF",
+        "country": "fr",
+        "postalCode": "93400",
+        "remote": false,
+        "hybrid": true,
+        "fullLocation": "Saint-Ouen-sur-Seine, IDF, France"
+      },
+      "industry": {
+        "id": "real_estate",
+        "label": "Real Estate"
+      },
+      "department": {
+        "id": "1023424",
+        "label": "Juridique"
+      },
+      "function": {
+        "id": "other",
+        "label": "Other"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "5a046e17b60a5e36a4e0548e",
+          "fieldLabel": "Niveau",
+          "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+          "valueLabel": "Cadre"
+        },
+        {
+          "fieldId": "5a0468ba6d8bc55d3924410a",
+          "fieldLabel": "Pôle",
+          "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+          "valueLabel": "HOLDING"
+        },
+        {
+          "fieldId": "5f623677772192746bce79af",
+          "fieldLabel": "Poste CAPRECRUTEMENT",
+          "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+          "valueLabel": "Oui"
+        },
+        {
+          "fieldId": "5a16e07cb60a5e36a4e05726",
+          "fieldLabel": "Filiale",
+          "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+          "valueLabel": "NEXITY SA"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633d0",
+          "fieldLabel": "Department",
+          "valueId": "1023424",
+          "valueLabel": "Juridique"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "fr",
+          "valueLabel": "France"
+        },
+        {
+          "fieldId": "5a04697fb60a5e36a4e0548a",
+          "fieldLabel": "Type de contrat",
+          "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+          "valueLabel": "CDI"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633cf",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Nexity"
+        },
+        {
+          "fieldId": "5d2334f011bbec26b66f5246",
+          "fieldLabel": "Code postal",
+          "valueLabel": "93400"
+        },
+        {
+          "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+          "fieldLabel": "Manager sur le poste",
+          "valueLabel": "Pauline DAVAL"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Nexity/postings/744000152202129",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    }
+  ]
+}

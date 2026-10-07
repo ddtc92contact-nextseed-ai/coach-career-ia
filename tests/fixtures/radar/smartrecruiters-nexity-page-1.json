@@ -1,0 +1,336 @@
+{
+  "offset": 0,
+  "limit": 3,
+  "totalFound": 5,
+  "content": [
+    {
+      "id": "744000153698949",
+      "name": "Contrôleur de Gestion H/F - CDI",
+      "uuid": "7cdfca6e-0c77-4eed-bbd6-f091077622b9",
+      "jobAdId": "dafa1a4f-c318-4935-8050-327c7981f806",
+      "defaultJobAd": true,
+      "refNumber": "REF15423H",
+      "company": {
+        "identifier": "Nexity",
+        "name": "Nexity"
+      },
+      "releasedDate": "2026-10-06T08:51:43.139Z",
+      "location": {
+        "city": "La Madeleine",
+        "region": "Hauts-de-France",
+        "country": "fr",
+        "postalCode": "59110",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "La Madeleine, Hauts-de-France, France"
+      },
+      "industry": {
+        "id": "real_estate",
+        "label": "Real Estate"
+      },
+      "department": {
+        "id": "1020602",
+        "label": "Finance"
+      },
+      "function": {
+        "id": "other",
+        "label": "Other"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "not_applicable",
+        "label": "Not Applicable"
+      },
+      "customField": [
+        {
+          "fieldId": "5a046e17b60a5e36a4e0548e",
+          "fieldLabel": "Niveau",
+          "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+          "valueLabel": "Cadre"
+        },
+        {
+          "fieldId": "5a0468ba6d8bc55d3924410a",
+          "fieldLabel": "Pôle",
+          "valueId": "f299d22c-e39f-4ade-abd4-0b6f937e77ba",
+          "valueLabel": "HOLDING"
+        },
+        {
+          "fieldId": "5f623677772192746bce79af",
+          "fieldLabel": "Poste CAPRECRUTEMENT",
+          "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+          "valueLabel": "Oui"
+        },
+        {
+          "fieldId": "5a16e07cb60a5e36a4e05726",
+          "fieldLabel": "Filiale",
+          "valueId": "8b4251a5-761c-40c1-bb63-ceeedc242ffa",
+          "valueLabel": "NEXITY SA"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633d0",
+          "fieldLabel": "Department",
+          "valueId": "1020602",
+          "valueLabel": "Finance"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "fr",
+          "valueLabel": "France"
+        },
+        {
+          "fieldId": "5a04697fb60a5e36a4e0548a",
+          "fieldLabel": "Type de contrat",
+          "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+          "valueLabel": "CDI"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633cf",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Nexity"
+        },
+        {
+          "fieldId": "5d2334f011bbec26b66f5246",
+          "fieldLabel": "Code postal",
+          "valueLabel": "59110"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Nexity/postings/744000153698949",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    },
+    {
+      "id": "744000153687839",
+      "name": "Responsable Développement Foncier H/F",
+      "uuid": "ddb59c6f-8f1b-4ef6-aa7f-7668538765d9",
+      "jobAdId": "97cabc06-098a-49bc-845b-cb2c47e6ac78",
+      "defaultJobAd": true,
+      "refNumber": "REF15440O",
+      "company": {
+        "identifier": "Nexity",
+        "name": "Nexity"
+      },
+      "releasedDate": "2026-10-06T08:05:39.377Z",
+      "location": {
+        "city": "Toulouse",
+        "country": "fr",
+        "postalCode": "31000",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "Toulouse, , France"
+      },
+      "industry": {
+        "id": "real_estate",
+        "label": "Real Estate"
+      },
+      "department": {
+        "id": "1025464",
+        "label": "Développement Foncier"
+      },
+      "function": {
+        "id": "other",
+        "label": "Other"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "not_applicable",
+        "label": "Not Applicable"
+      },
+      "customField": [
+        {
+          "fieldId": "5a046e17b60a5e36a4e0548e",
+          "fieldLabel": "Niveau",
+          "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+          "valueLabel": "Cadre"
+        },
+        {
+          "fieldId": "5a16e090b60a5e36a4e05727",
+          "fieldLabel": "Agence",
+          "valueId": "f5d48395-393e-4093-bb0d-d056516a6b86",
+          "valueLabel": "NEXITY MIDI PYRENEES"
+        },
+        {
+          "fieldId": "5a0468ba6d8bc55d3924410a",
+          "fieldLabel": "Pôle",
+          "valueId": "f5a5f4c6-4d61-4ecd-b0cb-2e8a231e0b42",
+          "valueLabel": "PROMOTION ET AMENAGEMENT"
+        },
+        {
+          "fieldId": "5f623677772192746bce79af",
+          "fieldLabel": "Poste CAPRECRUTEMENT",
+          "valueId": "db975f85-1f79-4c1b-a1a5-2c4d5bd58c69",
+          "valueLabel": "Oui"
+        },
+        {
+          "fieldId": "5a16e07cb60a5e36a4e05726",
+          "fieldLabel": "Filiale",
+          "valueId": "e3dd96b2-da25-4384-ac6f-f397b50657f9",
+          "valueLabel": "NEXITY MIDI PYRENEES"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633d0",
+          "fieldLabel": "Department",
+          "valueId": "1025464",
+          "valueLabel": "Développement Foncier"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "fr",
+          "valueLabel": "France"
+        },
+        {
+          "fieldId": "5a04697fb60a5e36a4e0548a",
+          "fieldLabel": "Type de contrat",
+          "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+          "valueLabel": "CDI"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633cf",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Nexity"
+        },
+        {
+          "fieldId": "5d2334f011bbec26b66f5246",
+          "fieldLabel": "Code postal",
+          "valueLabel": "31000"
+        },
+        {
+          "fieldId": "5a5e08d6b60a5e20ef9bc7c4",
+          "fieldLabel": "Manager sur le poste",
+          "valueLabel": "Christophe BROCHET"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Nexity/postings/744000153687839",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    },
+    {
+      "id": "744000153108379",
+      "name": "Chef de projet Growth Marketing Acquisition & Data",
+      "uuid": "b0f6b63d-2908-4fe5-b658-9d919506a7b8",
+      "jobAdId": "8bf36067-2586-4833-995c-643bc83d548c",
+      "defaultJobAd": true,
+      "refNumber": "REF15438V",
+      "company": {
+        "identifier": "Nexity",
+        "name": "Nexity"
+      },
+      "releasedDate": "2026-10-02T07:17:47.475Z",
+      "location": {
+        "city": "Nice",
+        "region": "Provence-Alpes-Côte d'Azur",
+        "country": "fr",
+        "remote": false,
+        "hybrid": false,
+        "latitude": "43.7101728",
+        "longitude": "7.261953200000001",
+        "fullLocation": "Nice, Provence-Alpes-Côte d'Azur, France"
+      },
+      "industry": {
+        "id": "marketing_and_advertising",
+        "label": "Marketing And Advertising"
+      },
+      "department": {
+        "id": "1020670",
+        "label": "Marketing"
+      },
+      "function": {
+        "id": "marketing",
+        "label": "Marketing"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "5a046e17b60a5e36a4e0548e",
+          "fieldLabel": "Niveau",
+          "valueId": "32c2b40f-adad-41c5-88e6-0d45a3f73cbc",
+          "valueLabel": "Cadre"
+        },
+        {
+          "fieldId": "5a16e090b60a5e36a4e05727",
+          "fieldLabel": "Agence",
+          "valueId": "38cf54bd-bbc6-40b3-b9a8-ed7177b0eabb",
+          "valueLabel": "PERLIS Nice"
+        },
+        {
+          "fieldId": "5a0468ba6d8bc55d3924410a",
+          "fieldLabel": "Pôle",
+          "valueId": "e1085180-d91a-4e41-b74a-d6441a05eb9b",
+          "valueLabel": "PERLIS"
+        },
+        {
+          "fieldId": "5f623677772192746bce79af",
+          "fieldLabel": "Poste CAPRECRUTEMENT",
+          "valueId": "f6e08ddc-8c47-4b1b-9b0e-33e191502dec",
+          "valueLabel": "Non"
+        },
+        {
+          "fieldId": "5a16e07cb60a5e36a4e05726",
+          "fieldLabel": "Filiale",
+          "valueId": "98ab3544-8e45-4c9c-865e-e14060231666",
+          "valueLabel": "PERLIS"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633d0",
+          "fieldLabel": "Department",
+          "valueId": "1020670",
+          "valueLabel": "Marketing"
+        },
+        {
+          "fieldId": "COUNTRY",
+          "fieldLabel": "Country/Region",
+          "valueId": "fr",
+          "valueLabel": "France"
+        },
+        {
+          "fieldId": "5a04697fb60a5e36a4e0548a",
+          "fieldLabel": "Type de contrat",
+          "valueId": "29b03633-90c8-49c6-b778-e25f0d7f22ff",
+          "valueLabel": "CDI"
+        },
+        {
+          "fieldId": "59e8cbba6d8bc53c6dd633cf",
+          "fieldLabel": "Brands",
+          "valueId": "default",
+          "valueLabel": "Nexity"
+        },
+        {
+          "fieldId": "5d2334f011bbec26b66f5246",
+          "fieldLabel": "Code postal",
+          "valueLabel": "06000"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/Nexity/postings/744000153108379",
+      "language": {
+        "code": "fr",
+        "label": "French",
+        "labelNative": "français"
+      }
+    }
+  ]
+}

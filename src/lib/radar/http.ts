@@ -37,6 +37,12 @@ export type RequestOptions = {
   body?: string;
   /** `page` = URL non-API : robots.txt est vérifié avant toute requête. */
   kind?: "api" | "page";
+  /**
+   * Vérifie aussi robots.txt pour une API : endpoints publics servis par le
+   * site carrière ou par un hôte qui publie des règles (Recruitee, Workable,
+   * SmartRecruiters).
+   */
+  robots?: boolean;
 };
 
 export type HttpResponse = {
@@ -134,7 +140,8 @@ export class HttpClient {
 
   async request(url: string, options: RequestOptions = {}): Promise<HttpResponse> {
     const method = options.method ?? "GET";
-    if (options.kind === "page" && !(await this.robotsFor(url)).isAllowed(pathOf(url))) {
+    const checkRobots = options.kind === "page" || options.robots === true;
+    if (checkRobots && !(await this.robotsFor(url)).isAllowed(pathOf(url))) {
       throw new RobotsDisallowedError(url);
     }
 

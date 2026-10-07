@@ -4,7 +4,14 @@ import type { PrismaClient } from "@/generated/prisma/client";
 import type { AtsType } from "@/generated/prisma/enums";
 import type { AtsCompany } from "./connectors/ats";
 
-const ATS: Record<string, AtsType> = { greenhouse: "GREENHOUSE", lever: "LEVER", ashby: "ASHBY" };
+const ATS: Record<string, AtsType> = {
+  greenhouse: "GREENHOUSE",
+  lever: "LEVER",
+  ashby: "ASHBY",
+  smartrecruiters: "SMARTRECRUITERS",
+  recruitee: "RECRUITEE",
+  workable: "WORKABLE",
+};
 
 export const companyConfigSchema = z
   .array(
@@ -13,7 +20,7 @@ export const companyConfigSchema = z
       name: z.string().min(1),
       website: z.url().optional(),
       sector: z.string().optional(),
-      ats: z.enum(["greenhouse", "lever", "ashby"]),
+      ats: z.enum(["greenhouse", "lever", "ashby", "smartrecruiters", "recruitee", "workable"]),
       boardToken: z.string().regex(/^[A-Za-z0-9._-]+$/),
       region: z.enum(["eu"]).optional(),
       active: z.boolean().default(true),

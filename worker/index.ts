@@ -18,8 +18,7 @@ import { runAlerts } from "../src/lib/matching/alerts";
 import { matchingConfig, type MatchingConfig } from "../src/lib/matching/config";
 import { markAllCandidatesDirty, runMatchingCycle } from "../src/lib/matching/jobs";
 import { radarConfig, type RadarConfig } from "../src/lib/radar/config";
-import { HttpClient } from "../src/lib/radar/http";
-import { runRadar } from "../src/lib/radar/job";
+import { radarHttpClient, runRadar } from "../src/lib/radar/job";
 
 const log = createLogger();
 let timer: NodeJS.Timeout | undefined;
@@ -68,7 +67,7 @@ function start(config: RadarConfig, matching: MatchingConfig) {
   const prisma = new PrismaClient({
     adapter: new PrismaPg({ connectionString: config.databaseUrl }),
   });
-  const http = new HttpClient({ userAgent: config.userAgent, minIntervalMs: config.minIntervalMs });
+  const http = radarHttpClient(config);
   const intervalMs = config.intervalHours * 3_600_000;
 
   const tick = async () => {

@@ -97,6 +97,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)    |
 | `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                      |
 | `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)           |
+| `RADAR_HEALTH_FAILURE_THRESHOLD`                                      | non (3)  | échecs consécutifs avant alerte « source en panne »       |
 | `GEO_ENABLED`, `GEO_NOMINATIM_ENABLED`                                | non      | géocodage (BAN, puis Nominatim hors de France)            |
 | `GEO_BAN_URL`, `GEO_NOMINATIM_URL`                                    | non      | points d'accès (Géoplateforme IGN, OSM ou auto-hébergé)   |
 | `GEO_NOMINATIM_MAX_PER_RUN`, `GEO_TIMEOUT_MS`                         | non      | plafond Nominatim par passage (200), délai (5000 ms)      |
@@ -143,8 +144,17 @@ client identifié et poli. Code : `src/lib/radar`.
     3149). Sans identifiants, la source est ignorée.
   - Job boards ATS publics des entreprises de `config/radar-companies.json` : Greenhouse
     (`boards-api.greenhouse.io`), Lever (`api.lever.co`, `region: "eu"` pour
-    `api.eu.lever.co`) et Ashby (`api.ashbyhq.com/posting-api`). Ajouter une entreprise =
-    ajouter une entrée (`slug`, `name`, `ats`, `boardToken`, `sector`, `website`).
+    `api.eu.lever.co`), Ashby (`api.ashbyhq.com/posting-api`), SmartRecruiters (Posting API
+    `api.smartrecruiters.com/v1/companies/{id}/postings`, paginée + une requête par annonce),
+    Recruitee (`{entreprise}.recruitee.com/api/offers/` du site carrière) et Workable (widget
+    public `apply.workable.com/api/v1/widget/accounts/{compte}?details=true`, hôte limité à
+    une requête toutes les 5 s). Pour ces trois derniers, robots.txt est vérifié avant
+    l'appel.
+  - **SmartRecruiters — décision en attente** : le robots.txt de `api.smartrecruiters.com`
+    n'autorise que LinkedInBot (`User-agent: * / Disallow: /`), bien que l'API soit documentée
+    comme publique. Le connecteur respecte ce robots.txt : les entreprises SmartRecruiters
+    sont livrées `"active": false` et une source activée échouerait avec « robots.txt
+    interdit ». À activer après accord de SmartRecruiters (ou levée de la règle).
   - Hors périmètre : LinkedIn, Indeed, Glassdoor, Welcome to the Jungle (CGU interdisant la
     collecte automatisée). Aucune source n'est « scrapée ».
 - **Client poli** (`http.ts`) : User-Agent `CoachCareerIA-Radar/1.0 (+RADAR_CONTACT)`, débit
@@ -161,12 +171,46 @@ client identifié et poli. Code : `src/lib/radar`.
   mensuel, journalier, horaire, variable, BSPCE) ; sinon `null`, jamais estimé.
 - **Robustesse** : chaque périmètre (France Travail, `greenhouse:dataiku`…) est journalisé
   dans `SourceRun` ; une source en échec est consignée et n'arrête pas les autres.
+- **Santé des sources** (`health.ts`, section de `/app/radar`) : par périmètre, dernier
+  passage, statut, compteurs (reçues / créées / fermées / doublons), dernière erreur, dernier
+  succès, et alerte quand les `RADAR_HEALTH_FAILURE_THRESHOLD` (3) derniers passages ont
+  échoué (également journalisée : `radar.source.unhealthy`).
 - **Données personnelles** : les contacts recruteurs fournis par France Travail ne sont pas
   stockés ; les logs ne contiennent que des compteurs et des erreurs nettoyées.
 - **Exécution** : `npm run radar:run` (un passage), ou le service `worker` (toutes les
   `RADAR_INTERVAL_HOURS`). Suivi : `/app/radar`, réservé à `ADMIN_EMAILS`.
 - **Tests** : tous sur des fixtures enregistrées (`tests/fixtures/radar`), jamais sur le
   réseau.
+
+### Ajouter une entreprise au radar
+
+Une entrée dans `config/radar-companies.json` (vérifiée au chargement ; `slug` unique, en
+minuscules). Vérifier d'abord que l'entreprise publie bien ses offres sur l'ATS, via son
+endpoint public (une requête manuelle suffit) :
+
+| `ats`             | `boardToken`                                   | Où le trouver / vérifier                                                                      |
+| ----------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `greenhouse`      | jeton du board (`dataiku`)                     | `job-boards.greenhouse.io/{jeton}` ; `boards-api.greenhouse.io/v1/boards/{jeton}/jobs`        |
+| `lever`           | site Lever (`qonto`), `region: "eu"` si besoin | `jobs.lever.co/{site}` ou `jobs.eu.lever.co/{site}` ; `api.lever.co/v0/postings/{site}`       |
+| `ashby`           | nom du board (`alan`)                          | `jobs.ashbyhq.com/{board}` ; `api.ashbyhq.com/posting-api/job-board/{board}`                  |
+| `smartrecruiters` | identifiant, sensible à la casse (`Nexity`)    | `careers.smartrecruiters.com/{id}` (l'API est exclue par son robots.txt)                      |
+| `recruitee`       | sous-domaine (`matera`)                        | `{sous-domaine}.recruitee.com` ; `{sous-domaine}.recruitee.com/api/offers/`                   |
+| `workable`        | compte (`exotec`)                              | `apply.workable.com/{compte}` ; `apply.workable.com/api/v1/widget/accounts/{compte}` (`jobs`) |
+
+```json
+{
+  "slug": "exotec",
+  "name": "Exotec",
+  "website": "https://www.exotec.com",
+  "sector": "Robotique / logistique",
+  "ats": "workable",
+  "boardToken": "exotec"
+}
+```
+
+`"active": false` garde l'entreprise en base sans la collecter (une entreprise retirée du
+fichier est désactivée de la même façon). `npm run radar:run` prend la liste en compte au
+passage suivant.
 
 ### Géocodage (filtre de distance)
 

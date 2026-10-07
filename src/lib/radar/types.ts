@@ -3,7 +3,14 @@ import type { HttpClient } from "./http";
 
 export type { ContractType, RemotePolicy, SalaryPeriod };
 
-export type SourceName = "france_travail" | "greenhouse" | "lever" | "ashby";
+export type SourceName =
+  | "france_travail"
+  | "greenhouse"
+  | "lever"
+  | "ashby"
+  | "smartrecruiters"
+  | "recruitee"
+  | "workable";
 
 /** Rémunération telle qu'annoncée. `null` partout quand rien n'est indiqué. */
 export type Salary = {
