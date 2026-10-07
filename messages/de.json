@@ -113,6 +113,8 @@
       "companyUnknown": "Unternehmen nicht angegeben",
       "view": "Erklärung ansehen",
       "original": "Originalangebot",
+      "viewText": "Erklärung ansehen: {url}",
+      "originalText": "Originalangebot: {url}",
       "footer": "Sie erhalten diese {frequency, select, DAILY {tägliche} other {wöchentliche}} Zusammenfassung, weil Sie Benachrichtigungen aktiviert haben.",
       "unsubscribe": "Abmelden",
       "unsubscribeText": "Um diese E-Mails nicht mehr zu erhalten: {url}"

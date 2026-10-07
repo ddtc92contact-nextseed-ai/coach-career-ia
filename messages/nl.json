@@ -113,6 +113,8 @@
       "companyUnknown": "Bedrijf niet vermeld",
       "view": "Uitleg bekijken",
       "original": "Oorspronkelijke vacature",
+      "viewText": "Uitleg bekijken: {url}",
+      "originalText": "Oorspronkelijke vacature: {url}",
       "footer": "Je ontvangt dit {frequency, select, DAILY {dagelijkse} other {wekelijkse}} overzicht omdat je meldingen hebt ingeschakeld.",
       "unsubscribe": "Afmelden",
       "unsubscribeText": "Om deze e-mails niet meer te ontvangen: {url}"
@@ -230,7 +232,7 @@
   },
   "opportunities": {
     "title": "Kansen",
-    "intro": "Alleen vacatures die aan uw randvoorwaarden voldoen, met per match een toelichting.",
+    "intro": "Alleen vacatures die aan je vangrails voldoen, met per match een toelichting.",
     "empty": {
       "noMemoryTitle": "Je agent heeft je loopbaangeheugen nodig",
       "noMemoryText": "Voeg minstens één ervaring, prestatie of vaardigheid toe: dat vergelijkt je agent met de vacatures.",

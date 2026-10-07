@@ -113,6 +113,8 @@
       "companyUnknown": "Company not disclosed",
       "view": "See the explanation",
       "original": "Original offer",
+      "viewText": "See the explanation: {url}",
+      "originalText": "Original offer: {url}",
       "footer": "You receive this {frequency, select, DAILY {daily} other {weekly}} digest because you turned on alerts.",
       "unsubscribe": "Unsubscribe",
       "unsubscribeText": "To stop receiving these emails: {url}"

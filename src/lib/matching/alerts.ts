@@ -68,8 +68,8 @@ export function alertEmail(input: {
     "",
     ...items.flatMap((item) => [
       `• ${item.title} — ${line(item)} — ${t("score", { score: item.score })}`,
-      `  ${t("view")} : ${detailUrl(item)}`,
-      `  ${t("original")} : ${item.url}`,
+      `  ${t("viewText", { url: detailUrl(item) })}`,
+      `  ${t("originalText", { url: item.url })}`,
       "",
     ]),
     t("footer", { frequency: input.frequency }),

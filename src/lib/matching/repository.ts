@@ -127,6 +127,7 @@ export async function getMatch(userId: string, id: string): Promise<MatchView | 
 
 /** Première consultation : `NEW` → `SEEN`. */
 export async function markMatchSeen(userId: string, id: string) {
+  if (typeof id !== "string") return;
   await db.match.updateMany({ where: { id, userId, status: "NEW" }, data: { status: "SEEN" } });
 }
 
@@ -135,6 +136,8 @@ export async function setMatchStatus(
   id: string,
   status: Extract<MatchStatus, "SEEN" | "SAVED" | "DISMISSED">,
 ) {
+  // Un objet (`{ not: "x" }`) deviendrait un filtre Prisma sur toutes les lignes.
+  if (typeof id !== "string") throw new NotFoundError();
   const { count } = await db.match.updateMany({ where: { id, userId }, data: { status } });
   if (count === 0) throw new NotFoundError();
 }

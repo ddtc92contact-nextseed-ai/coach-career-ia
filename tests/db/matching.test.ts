@@ -9,6 +9,7 @@ vi.mock("@/lib/db", async () => {
   return { db: new PrismaClient({ adapter: new PrismaPg({ connectionString }) }) };
 });
 vi.mock("@/lib/auth/session", () => ({ getCurrentUser: vi.fn(), requireUser: vi.fn() }));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 // Géocodage simulé : « Paris » est connue, le reste introuvable.
 vi.mock("@/lib/geo/server", () => ({
   locateLabels: vi.fn(async (labels: string[]) =>
@@ -28,6 +29,7 @@ const { parseExplanation } = await import("@/lib/matching/explanation");
 const { matchingConfig } = await import("@/lib/matching/config");
 const { POST: oneClickUnsubscribe } = await import("@/app/api/alerts/unsubscribe/route");
 const { default: OpportunityPage } = await import("@/app/[locale]/app/opportunites/[id]/page");
+const { changeMatchStatus } = await import("@/app/[locale]/app/opportunites/actions");
 const { OFFERS } = await import("../fixtures/matching/cases");
 const { BAG_OF_WORDS_RANGE, bagOfWordsEmbedding } = await import("../helpers/matching");
 
@@ -280,6 +282,26 @@ describe.skipIf(!url)("matching : recalcul, stockage, isolation, alertes", () =>
     const saved = await matching.getOpportunities(alice.id, { status: "saved", minScore: 0 });
     expect(saved.items.map((m) => m.id)).toEqual([best!.id]);
     await matching.setMatchStatus(alice.id, best!.id, "SEEN");
+  });
+
+  it("changer un statut : une entrée mal formée est ignorée sans rien modifier", async () => {
+    vi.mocked(requireUser).mockResolvedValue(alice);
+    const before = (await myMatches(alice.id)).map((m) => [m.id, m.status]);
+    const call = changeMatchStatus as (id: unknown, status: unknown) => Promise<void>;
+    await expect(call({ not: "x" }, "DISMISSED")).resolves.toBeUndefined();
+    await expect(call(123, "SAVED")).resolves.toBeUndefined();
+    await expect(call(before[0]![0], "NEW")).resolves.toBeUndefined();
+    await expect(call("x".repeat(65), "SAVED")).resolves.toBeUndefined();
+    await expect(
+      matching.setMatchStatus(alice.id, { not: "x" } as never, "DISMISSED"),
+    ).rejects.toThrow(repo.NotFoundError);
+    expect((await myMatches(alice.id)).map((m) => [m.id, m.status])).toEqual(before);
+
+    // Entrée valide : appliquée (l'opportunité la mieux classée est « vue » à ce stade).
+    const bestId = before[0]![0] as string;
+    await changeMatchStatus(bestId, "SAVED");
+    expect((await db.match.findUniqueOrThrow({ where: { id: bestId } })).status).toBe("SAVED");
+    await changeMatchStatus(bestId, "SEEN");
   });
 
   it("un utilisateur ne peut jamais lire ni modifier les correspondances d'un autre (404)", async () => {

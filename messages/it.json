@@ -113,6 +113,8 @@
       "companyUnknown": "Azienda non indicata",
       "view": "Vedi la spiegazione",
       "original": "Offerta originale",
+      "viewText": "Vedi la spiegazione: {url}",
+      "originalText": "Offerta originale: {url}",
       "footer": "Ricevi questo riepilogo {frequency, select, DAILY {giornaliero} other {settimanale}} perché hai attivato gli avvisi.",
       "unsubscribe": "Annulla l’iscrizione",
       "unsubscribeText": "Per non ricevere più queste e-mail: {url}"

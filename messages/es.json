@@ -113,6 +113,8 @@
       "companyUnknown": "Empresa no indicada",
       "view": "Ver la explicación",
       "original": "Oferta original",
+      "viewText": "Ver la explicación: {url}",
+      "originalText": "Oferta original: {url}",
       "footer": "Recibes este resumen {frequency, select, DAILY {diario} other {semanal}} porque has activado las alertas.",
       "unsubscribe": "Darse de baja",
       "unsubscribeText": "Para dejar de recibir estos correos: {url}"
