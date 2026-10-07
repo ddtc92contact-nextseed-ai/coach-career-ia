@@ -73,6 +73,10 @@ model User {
   handovers      Handover[]
   handoverEvents HandoverEvent[]
 
+  /// Espace entreprise : un compte peut être candidat, membre d'une organisation, ou les deux.
+  organizationMemberships OrganizationMember[]
+  jobPostingPayments      JobPostingPayment[]
+
   @@map("users")
 }
 
@@ -581,6 +585,9 @@ enum SalaryPeriod {
 enum OfferStatus {
   OPEN
   CLOSED
+  /// Offre publiée directement par une entreprise, pas encore en ligne
+  /// (brouillon, paiement ou modération en attente). Jamais lue par le matching.
+  DRAFT
 }
 
 enum SourceRunStatus {
@@ -605,9 +612,11 @@ model Company {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  offers    JobOffer[]
-  weekStats CompanyWeekStat[]
-  signals   CompanySignal[]
+  offers       JobOffer[]
+  weekStats    CompanyWeekStat[]
+  signals      CompanySignal[]
+  /// Organisation de l'espace entreprise qui publie sous ce nom (offres directes).
+  organization Organization?
 
   @@unique([atsType, boardToken])
   @@map("companies")
@@ -688,6 +697,8 @@ model JobOffer {
   matches     Match[]
   embedding   OfferEmbedding?
   contacts    Contact[]
+  /// Offre publiée directement par une entreprise (`source = "direct"`).
+  posting     JobPosting?
 
   @@unique([source, sourceId])
   @@index([sourceKey, status])
@@ -1088,4 +1099,152 @@ model HandoverEvent {
 
   @@index([userId, contactId, createdAt])
   @@map("handover_events")
+}
+
+// ---------------------------------------------------------------------------
+// Espace entreprise (phase 2) : les entreprises publient leurs offres, payées à
+// l'unité. Règle produit : une entreprise ne voit, ne recherche et ne reçoit
+// JAMAIS de classement de candidats ; aucune donnée candidat n'est rattachée à
+// ces modèles. Les offres publiées rejoignent `job_offers` (`source = "direct"`)
+// et passent par le matching comme celles des autres sources.
+// ---------------------------------------------------------------------------
+
+enum OrganizationStatus {
+  /// En attente de vérification (domaine non concordant ou webmail) : aucune publication.
+  PENDING
+  ACTIVE
+  /// Suspendue par un administrateur : ses offres sont fermées.
+  SUSPENDED
+}
+
+enum OrganizationRole {
+  OWNER
+  MEMBER
+}
+
+/// Entreprise inscrite sur l'espace entreprise. Données de l'entreprise,
+/// pas d'une personne : seuls les membres (`OrganizationMember`) relient un compte.
+model Organization {
+  id         String             @id @default(cuid())
+  name       String
+  /// Site web déclaré (https://…), et son domaine normalisé (sans `www.`).
+  website    String
+  domain     String
+  /// Code de secteur (`src/lib/career/codes.ts`).
+  sector     String
+  size       CompanySize
+  /// Code pays ISO 3166-1 alpha-2.
+  country    String
+  /// Domaine de l'e-mail du membre fondateur vérifié contre celui du site, ou
+  /// validation par un administrateur.
+  verifiedAt DateTime?          @map("verified_at")
+  status     OrganizationStatus @default(PENDING)
+  /// Motif du dernier refus ou de la suspension (saisi par l'administrateur).
+  reviewNote String?            @map("review_note")
+  /// Fiche `companies` sous laquelle les offres sont publiées.
+  companyId  String             @unique @map("company_id")
+  createdAt  DateTime           @default(now()) @map("created_at")
+  updatedAt  DateTime           @updatedAt @map("updated_at")
+
+  company  Company              @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  members  OrganizationMember[]
+  postings JobPosting[]
+  payments JobPostingPayment[]
+
+  @@index([status])
+  @@index([domain])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id        String           @id @default(cuid())
+  orgId     String           @map("org_id")
+  userId    String           @map("user_id")
+  role      OrganizationRole @default(MEMBER)
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+/// Cycle de vie d'une offre directe (`src/lib/employer/lifecycle.ts`).
+enum JobPostingStatus {
+  DRAFT
+  AWAITING_PAYMENT
+  IN_REVIEW
+  LIVE
+  CLOSED
+  REJECTED
+}
+
+/// Publication d'une offre par une organisation. Le contenu vit dans
+/// `job_offers` (statut `DRAFT` tant que l'offre n'est pas en ligne) ; ici,
+/// l'état de publication : paiement, modération, expiration.
+/// En ligne seulement si payée ET approuvée ET organisation active.
+model JobPosting {
+  id            String           @id @default(cuid())
+  orgId         String           @map("org_id")
+  offerId       String           @unique @map("offer_id")
+  status        JobPostingStatus @default(DRAFT)
+  /// Paiement de la période en cours (ou publication gratuite d'un administrateur).
+  paidAt        DateTime?        @map("paid_at")
+  /// Modération passée (automatique si rien n'est signalé, sinon par un administrateur).
+  approvedAt    DateTime?        @map("approved_at")
+  /// Catégories de critères potentiellement discriminatoires repérées (âge, sexe…).
+  flags         String[]
+  /// Motif du dernier refus (envoyé à l'entreprise).
+  reviewNote    String?          @map("review_note")
+  publishedAt   DateTime?        @map("published_at")
+  expiresAt     DateTime?        @map("expires_at")
+  closedAt      DateTime?        @map("closed_at")
+  /// Nombre de candidats ayant ouvert l'offre parmi leurs opportunités (aucune identité).
+  viewCount     Int              @default(0) @map("view_count")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  organization Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  offer        JobOffer            @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  payments     JobPostingPayment[]
+
+  @@index([orgId, status])
+  @@index([status, expiresAt])
+  @@map("job_postings")
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELED
+}
+
+/// Achat unitaire d'une publication (ou d'un renouvellement) de 30 jours,
+/// via le fournisseur de paiement (Stripe Checkout `mode=payment`, ou son
+/// simulateur). Aucune donnée bancaire : montant, devise, identifiants.
+model JobPostingPayment {
+  id                String        @id @default(cuid())
+  postingId         String        @map("posting_id")
+  orgId             String        @map("org_id")
+  /// Membre qui a lancé le paiement.
+  userId            String?       @map("user_id")
+  /// `simulator`, `stripe` ou `admin` (publication offerte par un administrateur).
+  provider          String
+  /// Session de paiement (`cs_…` chez Stripe, `sim_cs_…` dans le simulateur).
+  checkoutSessionId String?       @unique @map("checkout_session_id")
+  amountCents       Int           @map("amount_cents")
+  currency          String
+  status            PaymentStatus @default(PENDING)
+  paidAt            DateTime?     @map("paid_at")
+  createdAt         DateTime      @default(now()) @map("created_at")
+
+  posting      JobPosting   @relation(fields: [postingId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([postingId, status])
+  @@index([userId])
+  @@map("job_posting_payments")
 }

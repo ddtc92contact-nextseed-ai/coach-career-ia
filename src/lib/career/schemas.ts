@@ -40,6 +40,7 @@ export const VALIDATION_ERRORS = [
   "confirmMismatch",
   "billingCancelFailed",
   "notFound",
+  "salaryRange",
 ] as const;
 export type ValidationError = (typeof VALIDATION_ERRORS)[number];
 

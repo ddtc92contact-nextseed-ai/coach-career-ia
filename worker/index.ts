@@ -8,13 +8,17 @@
  * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
  *   candidats en attente (regroupé), puis envoi des alertes e-mail dues ;
  * - purge des levées d'anonymat expirées toutes les heures (identité et CV
- *   révélés effacés).
+ *   révélés effacés) ;
+ * - fermeture des offres publiées directement par les entreprises arrivées à
+ *   échéance, toutes les 5 minutes (le tableau de bord entreprise l'applique
+ *   aussi à l'affichage).
  * Arrêt propre sur SIGTERM / SIGINT.
  */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { aiClientFromEnv } from "../src/lib/ai/config";
 import type { AiClient } from "../src/lib/ai/client";
+import { expireDirectPostings } from "../src/lib/employer/publication";
 import { purgeExpiredHandovers } from "../src/lib/handover/purge";
 import { createLogger } from "../src/lib/logger";
 import { smtpSender, smtpSettingsFromEnv } from "../src/lib/mail/smtp";
@@ -29,7 +33,9 @@ const log = createLogger();
 let timer: NodeJS.Timeout | undefined;
 let matchingTimer: NodeJS.Timeout | undefined;
 let purgeTimer: NodeJS.Timeout | undefined;
+let expiryTimer: NodeJS.Timeout | undefined;
 const PURGE_INTERVAL_MS = 3_600_000;
+const EXPIRY_INTERVAL_MS = 300_000;
 let stopping = false;
 
 /** Client IA du matching, ou `null` (pas de fournisseur configuré : score et explications sans IA). */
@@ -85,6 +91,21 @@ function startHandoverPurge(prisma: PrismaClient) {
   purgeTimer = setTimeout(tick, 0);
 }
 
+/** Offres directes arrivées à échéance : fermées (et retirées des opportunités). */
+function startPostingExpiry(prisma: PrismaClient) {
+  const tick = async () => {
+    try {
+      await expireDirectPostings(prisma, { logger: log });
+    } catch (error) {
+      log.error("worker.posting_expiry.failed", {
+        error: error instanceof Error ? error : String(error),
+      });
+    }
+    if (!stopping) expiryTimer = setTimeout(tick, EXPIRY_INTERVAL_MS);
+  };
+  expiryTimer = setTimeout(tick, 0);
+}
+
 function start(config: RadarConfig, matching: MatchingConfig) {
   const prisma = new PrismaClient({
     adapter: new PrismaPg({ connectionString: config.databaseUrl }),
@@ -130,6 +151,7 @@ function start(config: RadarConfig, matching: MatchingConfig) {
     });
   startMatching(prisma, matching);
   startHandoverPurge(prisma);
+  startPostingExpiry(prisma);
 
   for (const signal of ["SIGTERM", "SIGINT"] as const) {
     process.on(signal, () => {
@@ -137,6 +159,7 @@ function start(config: RadarConfig, matching: MatchingConfig) {
       clearTimeout(timer);
       clearTimeout(matchingTimer);
       clearTimeout(purgeTimer);
+      clearTimeout(expiryTimer);
       log.info("worker.stopped", { signal });
       void prisma.$disconnect().finally(() => process.exit(0));
     });

@@ -1,16 +1,16 @@
 const DEFAULT_REDIRECT = "/app";
 
-/** En-tête interne posé par `src/proxy.ts` : chemin demandé sous `/app` (sans la langue). */
+/** En-tête interne posé par `src/proxy.ts` : chemin demandé sous `/app` ou `/entreprise` (sans la langue). */
 export const PATHNAME_HEADER = "x-ccia-pathname";
 
 /**
- * N'accepte comme destination après connexion qu'un chemin interne de
- * l'espace connecté (`/app…`, sans préfixe de langue) : protège contre les
- * redirections ouvertes.
+ * N'accepte comme destination après connexion qu'un chemin interne d'un
+ * espace connecté (`/app…` candidat, `/entreprise…` employeur, sans préfixe
+ * de langue) : protège contre les redirections ouvertes.
  */
 export function safeCallbackUrl(raw: unknown): string {
   if (typeof raw !== "string") return DEFAULT_REDIRECT;
-  if (!/^\/app(?:[/?#]|$)/.test(raw)) return DEFAULT_REDIRECT;
+  if (!/^\/(?:app|entreprise)(?:[/?#]|$)/.test(raw)) return DEFAULT_REDIRECT;
   if (raw.includes("\\") || raw.includes("//")) return DEFAULT_REDIRECT;
   return raw;
 }

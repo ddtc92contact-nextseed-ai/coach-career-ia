@@ -9,6 +9,7 @@ import {
   LIVE_STATUSES,
   simId,
   simulatorEvent,
+  simulatorPaymentEvent,
   transition,
   type SimAction,
   type SimSubscription,
@@ -168,4 +169,65 @@ export async function forceSimulatedPlan(
   const session = await createSimulatedCheckout(userId);
   if (!session) return "notAllowed";
   return applySimulatorAction(userId, "pay", { checkoutSessionId: session });
+}
+
+/** Session de paiement unitaire simulée en attente, appartenant au compte. */
+export function getSimulatedJobPostingCheckout(userId: string, checkoutSessionId: string) {
+  return db.jobPostingPayment.findFirst({
+    where: { userId, checkoutSessionId, provider: "simulator", status: "PENDING" },
+    select: {
+      id: true,
+      postingId: true,
+      amountCents: true,
+      currency: true,
+      posting: { select: { offer: { select: { title: true } } } },
+    },
+  });
+}
+
+/**
+ * Paiement unitaire simulé accepté : le simulateur émet le
+ * `checkout.session.completed` (`mode=payment`) que Stripe enverrait, traité
+ * par le même code que le webhook. `notFound` si la session n'appartient pas
+ * au compte ou n'est plus en attente.
+ */
+export async function paySimulatedJobPosting(
+  userId: string,
+  checkoutSessionId: string,
+  now: Date = new Date(),
+): Promise<SimOutcome> {
+  const payment = await getSimulatedJobPostingCheckout(userId, checkoutSessionId);
+  if (!payment) return "notFound";
+  await deliverSimulatorEvents({
+    events: [
+      simulatorPaymentEvent(
+        {
+          checkoutSessionId,
+          userId,
+          kind: "job_posting",
+          paymentId: payment.id,
+          amountCents: payment.amountCents,
+          currency: payment.currency,
+        },
+        now,
+      ),
+    ],
+    lookup,
+    store: prismaBillingStore,
+    logger,
+  });
+  const after = await db.jobPostingPayment.findUnique({
+    where: { id: payment.id },
+    select: { status: true },
+  });
+  return after?.status === "PAID" ? "ok" : "notAllowed";
+}
+
+/** Abandon d'un paiement unitaire simulé (bouton « Annuler »). */
+export async function cancelSimulatedJobPosting(userId: string, checkoutSessionId: string) {
+  const { count } = await db.jobPostingPayment.updateMany({
+    where: { userId, checkoutSessionId, provider: "simulator", status: "PENDING" },
+    data: { status: "CANCELED" },
+  });
+  return count > 0;
 }
