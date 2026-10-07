@@ -946,6 +946,8 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
   const { status, reload } = useVault();
   const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [recovering, setRecovering] = useState(false);
+  // Une fois déverrouillé, le prochain verrouillage repart du formulaire de déverrouillage.
+  if (recovering && status === "unlocked") setRecovering(false);
 
   let body: ReactNode;
   if (recoveryKey) {
