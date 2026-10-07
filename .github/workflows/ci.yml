@@ -77,3 +77,11 @@ jobs:
           push: false
           tags: coach-career-ia-migrate:ci
           cache-from: type=gha
+      - name: Image du worker
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: worker
+          push: false
+          tags: coach-career-ia-worker:ci
+          cache-from: type=gha
