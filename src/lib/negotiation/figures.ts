@@ -248,7 +248,17 @@ export function contractNegations(sentence: string, code: ContractTypeCode): boo
 
 /** Mention d'une offre concurrente (ou d'une autre proposition reçue). */
 const COMPETING_OFFER =
-  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding/iu;
+  /autres? (?:offre|proposition)s?|offres? concurrente|proposition concurrente|autre entreprise (?:lui )?(?:propose|offre)|(?:another|other|competing|rival) (?:offer|proposal)|offer from another|otras? ofertas?|oferta (?:competidora|de otra)|altr[ae] offert[ae]|offerta concorrente|(?:anderes|weiteres|konkurrierendes) angebot|konkurrenzangebot|angebot (?:eines|einer) anderen|(?:ander|concurrerend) (?:aanbod|bod)|andere aanbieding|(?:another|other) (?:company|employer|firm)|(?:has|have|got|received) (?:an?|another) (?:\p{L}+ )?offer\b|autre (?:entreprise|soci[ée]t[ée]|employeur)|(?:a|ont|avons) re[çc]u une (?:\p{L}+ )?(?:offre|proposition)|dispose d['’]une (?:\p{L}+ )?offre|otra (?:empresa|compañía)|ha recibido una (?:\p{L}+ )?oferta|altra (?:azienda|società)|ha ricevuto un['’ ]\s?(?:\p{L}+ )?offerta|(?:anderes|anderen) unternehmen|andere firma|hat ein (?:\p{L}+ )?angebot (?:erhalten|bekommen)|(?:ander|een ander) bedrijf|andere werkgever|heeft een (?:\p{L}+ )?(?:aanbod|bod) (?:gekregen|ontvangen)/iu;
+/**
+ * Repère du marché présenté comme tel : « offres publiées », « published
+ * offers »… (six langues). Exigé autour d'un chiffre qui ne vient que du repère.
+ */
+export const PUBLISHED_OFFERS = /publi(?:é|e|s|cad|cat)|pubblicat|ver[öo]ffentlicht|gepubliceerd/iu;
+
+/** La phrase évoque-t-elle une offre reçue, ou faite par une autre entreprise ? */
+export function mentionsCompetingOffer(sentence: string): boolean {
+  return COMPETING_OFFER.test(sentence);
+}
 /** Mention du salaire actuel ou passé du candidat. */
 const CURRENT_SALARY =
   /(?:salaire|r[ée]mun[ée]ration|paie) (?:actuel(?:le)?|pr[ée]c[ée]dent(?:e)?)|actuellement (?:pay[ée]e?|r[ée]mun[ée]r[ée]e?)|gagne actuellement|(?:current|present|previous) (?:salary|pay|compensation)|currently (?:earns?|paid|makes?)|(?:salario|sueldo) actual|(?:stipendio|retribuzione) attuale|attualmente (?:guadagna|percepisce)|(?:aktuelles?|derzeitiges?|jetziges?) gehalt|verdient (?:derzeit|aktuell)|huidig(?:e)? salaris|verdient (?:nu|momenteel)/iu;

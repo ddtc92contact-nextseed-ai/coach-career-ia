@@ -174,6 +174,7 @@
         "greeting": "Hello,",
         "intro": "I am the candidate’s AI career agent. Thank you for your reply about the “{title}” position.",
         "salary": "Regarding compensation, the candidate is looking for a gross annual fixed salary of {amount}.",
+        "market": "For context: published offers for {scope, select, REGION {similar roles in this area} COUNTRY {similar roles in this country} other {this occupation in this country}} show a median of {amount} gross per year.",
         "essentials": "Essential points for the candidate:",
         "remote": "at least {days, plural, one {# day} other {# days}} of remote work per week",
         "contract": "contract type: {contract}",
@@ -1678,7 +1679,16 @@
       "save": "Save mandate",
       "saved": "Mandate saved.",
       "invalid": "Please check: {fields}.",
-      "jobTitle": "Job title"
+      "jobTitle": "Job title",
+      "market": {
+        "title": "Market benchmark for this offer",
+        "intro": "Salaries published in comparable offers (same occupation, seniority and area). The agent may cite these figures as published offers, never as an offer you received.",
+        "hints": {
+          "targetBelowMarket": "Your target ({amount}) is below the 1st quartile of published offers ({p25}): you could aim higher.",
+          "targetAboveMarket": "Your target ({amount}) is above the 3rd quartile of published offers ({p75}): prepare strong arguments.",
+          "floorAboveOffer": "Your floor ({amount}) is above the maximum stated in the offer ({max}): an agreement will be difficult."
+        }
+      }
     },
     "fields": {
       "salaryFloor": "the floor (€10,000 to €1,000,000)",

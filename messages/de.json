@@ -174,6 +174,7 @@
         "greeting": "Guten Tag,",
         "intro": "Ich bin der KI-Karriereagent der kandidierenden Person. Vielen Dank für Ihre Rückmeldung zur Stelle „{title}“.",
         "salary": "Beim Gehalt wünscht sie sich ein Bruttojahresfixgehalt von {amount}.",
+        "market": "Zur Einordnung: Veröffentlichte Angebote für {scope, select, REGION {vergleichbare Stellen in dieser Region} COUNTRY {vergleichbare Stellen in diesem Land} other {diesen Beruf in diesem Land}} zeigen einen Median von {amount} brutto pro Jahr.",
         "essentials": "Wesentliche Punkte für sie:",
         "remote": "mindestens {days, plural, one {# Tag} other {# Tage}} Homeoffice pro Woche",
         "contract": "Vertragsart: {contract}",
@@ -1678,7 +1679,16 @@
       "save": "Mandat speichern",
       "saved": "Mandat gespeichert.",
       "invalid": "Bitte prüfen: {fields}.",
-      "jobTitle": "Stellenbezeichnung"
+      "jobTitle": "Stellenbezeichnung",
+      "market": {
+        "title": "Marktbenchmark für dieses Angebot",
+        "intro": "In vergleichbaren Angeboten veröffentlichte Gehälter (gleicher Beruf, gleiche Seniorität und Region). Der Agent darf diese Zahlen als veröffentlichte Angebote nennen, nie als ein Angebot, das Sie erhalten hätten.",
+        "hints": {
+          "targetBelowMarket": "Ihr Zielgehalt ({amount}) liegt unter dem 1. Quartil der veröffentlichten Angebote ({p25}): Sie könnten höher ansetzen.",
+          "targetAboveMarket": "Ihr Zielgehalt ({amount}) liegt über dem 3. Quartil der veröffentlichten Angebote ({p75}): Bereiten Sie starke Argumente vor.",
+          "floorAboveOffer": "Ihre Untergrenze ({amount}) liegt über dem im Angebot genannten Maximum ({max}): Eine Einigung wird schwierig."
+        }
+      }
     },
     "fields": {
       "salaryFloor": "die Untergrenze (10.000 bis 1.000.000 €)",
