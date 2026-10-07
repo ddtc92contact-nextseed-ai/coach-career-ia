@@ -23,6 +23,7 @@
     "db:up": "docker compose -f docker-compose.dev.yml up -d --wait",
     "db:down": "docker compose -f docker-compose.dev.yml down",
     "radar:run": "tsx scripts/radar-run.ts",
+    "geo:backfill": "tsx scripts/geo-backfill.ts",
     "ai:eval": "tsx scripts/ai-eval-import.ts",
     "worker": "node --import tsx worker/index.ts",
     "postinstall": "prisma generate"

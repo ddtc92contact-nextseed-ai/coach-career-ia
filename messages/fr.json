@@ -144,6 +144,7 @@
       "label": "Espace candidat",
       "dashboard": "Tableau de bord",
       "memory": "Ma mémoire de carrière",
+      "identity": "Mon identité",
       "guardRails": "Mes garde-fous",
       "opportunities": "Opportunités",
       "settings": "Paramètres",
@@ -340,6 +341,149 @@
     "importCta": "Importer mon parcours",
     "importHint": "CV, export LinkedIn ou GitHub : l’IA prépare un brouillon que vous validez."
   },
+  "identity": {
+    "title": "Mon identité",
+    "intro": "Votre identité réelle, chiffrée dans votre navigateur. Elle reste séparée de votre profil professionnel, qui est anonymisé.",
+    "employerLabel": "Employeur (depuis votre coffre) :",
+    "lock": "Verrouiller",
+    "loading": "Ouverture du coffre…",
+    "retry": "Réessayer",
+    "badge": {
+      "unlocked": "Identité déverrouillée"
+    },
+    "explain": {
+      "title": "Personne, pas même nous, ne peut lire ces données",
+      "encrypted": "Vos nom, coordonnées, employeurs, écoles, liens et CV d’origine sont chiffrés dans votre navigateur avant tout envoi. Nos serveurs ne reçoivent et ne stockent qu’un bloc illisible.",
+      "nobody": "Ni notre équipe, ni notre hébergeur, ni quelqu’un qui volerait notre base de données ne peut les déchiffrer : la clé n’existe que chez vous.",
+      "you": "Vous seul les déverrouillez, avec votre phrase secrète. Elle n’est jamais envoyée ni enregistrée par nos services.",
+      "handover": "Votre identité n’est révélée à un recruteur que si vous le décidez, pour ce recruteur précis.",
+      "lossTitle": "Conséquence importante :",
+      "loss": "si vous perdez à la fois votre phrase secrète et votre clé de secours, ces données sont perdues définitivement. Nous ne pourrons pas les récupérer pour vous. Votre profil professionnel, lui, n’est pas concerné."
+    },
+    "setup": {
+      "title": "Créer mon coffre d’identité",
+      "intro": "Choisissez une phrase secrète propre à ce coffre, différente de vos autres mots de passe. Une suite de plusieurs mots est facile à retenir et difficile à deviner.",
+      "passphrase": "Phrase secrète",
+      "passphraseHint": "Au moins {min} caractères.",
+      "confirm": "Confirmez la phrase secrète",
+      "understand": "J’ai compris que si je perds ma phrase secrète et ma clé de secours, personne ne pourra récupérer mon identité.",
+      "submit": "Créer mon coffre",
+      "working": "Création du coffre… (quelques secondes)"
+    },
+    "recovery": {
+      "title": "Votre clé de secours",
+      "intro": "Elle permet de rouvrir votre coffre si vous oubliez votre phrase secrète. Elle ne sera plus jamais affichée.",
+      "warning": "Conservez-la hors ligne : imprimée, dans un gestionnaire de mots de passe ou dans un fichier rangé en lieu sûr. Ne la partagez avec personne.",
+      "download": "Télécharger (.txt)",
+      "print": "Imprimer",
+      "copy": "Copier",
+      "copied": "Copiée",
+      "confirm": "J’ai mis ma clé de secours en lieu sûr.",
+      "continue": "Continuer vers mon identité",
+      "fileName": "cle-de-secours-coach-career-ia.txt",
+      "fileText": "Coach Career IA — clé de secours du coffre d’identité\nCréée le {date}\n\n{key}\n\nCette clé permet de rouvrir votre coffre si vous oubliez votre phrase secrète.\nConservez-la en lieu sûr et ne la partagez avec personne : sans elle ni votre phrase secrète, vos données d’identité sont perdues définitivement."
+    },
+    "unlock": {
+      "title": "Déverrouiller mon identité",
+      "intro": "Votre coffre est verrouillé. Saisissez votre phrase secrète : le déchiffrement se fait dans ce navigateur.",
+      "passphrase": "Phrase secrète",
+      "submit": "Déverrouiller",
+      "working": "Déverrouillage…",
+      "forgot": "Phrase secrète oubliée ?"
+    },
+    "recover": {
+      "title": "Récupérer avec ma clé de secours",
+      "intro": "Saisissez la clé de secours obtenue à la création du coffre, puis choisissez une nouvelle phrase secrète.",
+      "recoveryKey": "Clé de secours",
+      "recoveryKeyHint": "Les tirets, espaces et majuscules sont facultatifs.",
+      "newPassphrase": "Nouvelle phrase secrète",
+      "newPassphraseHint": "Au moins {min} caractères.",
+      "confirm": "Confirmez la nouvelle phrase secrète",
+      "submit": "Récupérer mon coffre",
+      "working": "Récupération…",
+      "back": "Retour à la phrase secrète"
+    },
+    "unlocked": {
+      "status": "Coffre déverrouillé dans ce navigateur",
+      "idle": "Verrouillage automatique après",
+      "idleOption": "{minutes} min d’inactivité"
+    },
+    "form": {
+      "title": "Mes informations d’identité",
+      "intro": "Chiffrées dans votre navigateur à l’enregistrement. Elles ne servent jamais au matching.",
+      "identityTitle": "Identité",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "contactTitle": "Coordonnées montrées aux recruteurs",
+      "contactIntro": "Communiquées uniquement au recruteur à qui vous choisirez de révéler votre identité.",
+      "email": "E-mail de contact",
+      "phone": "Téléphone",
+      "employersTitle": "Employeurs",
+      "employersIntro": "Le nom réel de chaque employeur, relié à l’expérience correspondante de votre mémoire de carrière. Il s’y affiche quand votre coffre est déverrouillé.",
+      "employerName": "Nom de l’employeur",
+      "employerExperience": "Expérience correspondante",
+      "noExperience": "Non reliée",
+      "addEmployer": "Ajouter un employeur",
+      "schoolsTitle": "Écoles et formations",
+      "schoolName": "Nom de l’établissement",
+      "addSchool": "Ajouter une école",
+      "linksTitle": "Liens personnels",
+      "linksIntro": "Profil LinkedIn, site personnel, dépôt de code… tout lien qui permet de vous identifier.",
+      "linkLabel": "Libellé",
+      "linkUrl": "Adresse (URL)",
+      "addLink": "Ajouter un lien",
+      "remove": "Retirer",
+      "none": "Aucun élément pour l’instant.",
+      "save": "Chiffrer et enregistrer",
+      "saving": "Chiffrement…",
+      "saved": "Enregistré, chiffré.",
+      "saveHint": "Seule la version chiffrée quitte votre navigateur."
+    },
+    "cv": {
+      "title": "CV d’origine",
+      "intro": "Votre CV complet, avec votre nom et vos coordonnées. Il est chiffré dans votre navigateur avant l’envoi : nous ne voyons ni son contenu ni son nom de fichier.",
+      "none": "Aucun CV enregistré.",
+      "current": "Un CV chiffré est enregistré.",
+      "choose": "Ajouter mon CV",
+      "replace": "Remplacer le CV",
+      "uploading": "Chiffrement et envoi…",
+      "download": "Télécharger mon CV",
+      "delete": "Supprimer le CV",
+      "working": "Patientez…",
+      "confirmDelete": "Supprimer définitivement votre CV d’origine ?",
+      "hint": "PDF, Word ou OpenDocument, {max} Mo maximum."
+    },
+    "change": {
+      "title": "Changer ma phrase secrète",
+      "intro": "Vos données n’ont pas besoin d’être rechiffrées. Votre clé de secours reste valable.",
+      "current": "Phrase secrète actuelle",
+      "next": "Nouvelle phrase secrète",
+      "confirm": "Confirmez la nouvelle phrase",
+      "submit": "Changer la phrase secrète",
+      "working": "Modification…",
+      "done": "Phrase secrète modifiée."
+    },
+    "reset": {
+      "title": "Réinitialiser le coffre",
+      "intro": "Supprime définitivement votre identité chiffrée et votre CV d’origine. Utile si vous avez perdu votre phrase secrète et votre clé de secours : vous pourrez ensuite créer un nouveau coffre. Votre mémoire de carrière n’est pas touchée.",
+      "button": "Supprimer mon coffre",
+      "confirm": "Supprimer définitivement votre coffre d’identité et votre CV ? Cette action est irréversible.",
+      "working": "Suppression…"
+    },
+    "errors": {
+      "tooShort": "La phrase secrète doit contenir au moins {min} caractères.",
+      "mismatch": "Les deux phrases secrètes ne correspondent pas.",
+      "understand": "Cochez la case pour confirmer que vous avez compris.",
+      "wrongPassphrase": "Phrase secrète incorrecte.",
+      "wrongRecoveryKey": "Clé de secours incorrecte.",
+      "conflict": "Votre coffre a été modifié depuis un autre onglet ou appareil. La dernière version a été rechargée : vérifiez puis enregistrez à nouveau.",
+      "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+      "cvTooLarge": "Fichier trop volumineux.",
+      "cvType": "Format non accepté : PDF, Word ou OpenDocument uniquement.",
+      "generic": "Une erreur est survenue. Réessayez."
+    },
+    "exportNotice": "Données chiffrées dans votre navigateur : seules votre phrase secrète ou votre clé de secours permettent de les lire."
+  },
   "guardRails": {
     "title": "Mes garde-fous",
     "intro": "Les conditions non négociables qu’une offre doit respecter pour arriver jusqu’à vous. Ils sont appliqués comme des filtres stricts.",
@@ -366,7 +510,9 @@
       "cityPlaceholder": "Par exemple : Lyon",
       "radius": "Rayon (km)",
       "remove": "Retirer",
-      "add": "Ajouter un lieu"
+      "add": "Ajouter un lieu",
+      "notLocated": "Lieu non localisé pour l’instant : il est enregistré, mais le filtre de distance ne pourra pas s’y appliquer. Vérifiez l’orthographe ou précisez le pays (« Berlin, Allemagne »), puis enregistrez à nouveau.",
+      "notLocatedSummary": "{count, plural, one {# lieu n’a pas pu être localisé. Il est bien enregistré, mais les offres ne seront pas filtrées par distance autour de lui tant qu’il n’est pas reconnu.} other {# lieux n’ont pas pu être localisés. Ils sont bien enregistrés, mais les offres ne seront pas filtrées par distance autour d’eux tant qu’ils ne sont pas reconnus.}}"
     },
     "remote": {
       "title": "Télétravail",

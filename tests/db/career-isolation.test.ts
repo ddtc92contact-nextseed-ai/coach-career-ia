@@ -13,6 +13,14 @@ vi.mock("@/lib/db", async () => {
   return { db: new PrismaClient({ adapter: new PrismaPg({ connectionString }) }) };
 });
 vi.mock("@/lib/auth/session", () => ({ getCurrentUser: vi.fn(), requireUser: vi.fn() }));
+// Géocodage simulé : aucun appel réseau. « Nantes » est connue, le reste introuvable.
+const NANTES = { latitude: 47.2186, longitude: -1.5541 };
+const locateLabels = vi.hoisted(() =>
+  vi.fn(async (labels: string[]) =>
+    labels.map((l) => (l === "Nantes" ? { latitude: 47.2186, longitude: -1.5541 } : null)),
+  ),
+);
+vi.mock("@/lib/geo/server", () => ({ locateLabels }));
 
 const { db } = await import("@/lib/db");
 const { getCurrentUser } = await import("@/lib/auth/session");
@@ -225,6 +233,56 @@ describe.skipIf(!url)("mémoire de carrière : isolation, export et suppression"
     expect(row?.excluded[0]).toMatch(/^v\d+:/);
     expect(row?.excluded[0]).not.toContain("Globex");
     expect((await repo.getGuardRails(alice.id)).excludedCompanies).toEqual(["Globex Corporation"]);
+  });
+
+  it("géocode les lieux des garde-fous ; un échec n'empêche pas l'enregistrement", async () => {
+    const stored = () =>
+      db.guardRailLocation.findMany({ where: { userId: alice.id }, orderBy: { createdAt: "asc" } });
+    expect(await stored()).toMatchObject([{ label: "Nantes", ...NANTES }]);
+
+    const base = {
+      contractTypes: [],
+      excludedSectors: [],
+      excludedCompanies: ["Globex Corporation"],
+      acceptsOnCall: false,
+      culturePreferences: [],
+      minFixedSalary: 60000,
+      minRemoteDays: undefined,
+    };
+    // Géocodeur en panne : « Nantes » garde ses coordonnées (libellé inchangé, pas
+    // de nouvel appel), la nouvelle ville est enregistrée sans coordonnées.
+    locateLabels.mockClear();
+    locateLabels.mockRejectedValueOnce(new Error("panne"));
+    const result = await repo.saveGuardRails(alice.id, {
+      ...base,
+      locations: [
+        { label: "Nantes", radiusKm: 25 },
+        { label: "Villeinconnue", radiusKm: 10 },
+      ],
+    });
+    expect(result).toEqual({ unlocated: [1] });
+    expect(locateLabels).toHaveBeenCalledWith(["Villeinconnue"]);
+    expect(await stored()).toMatchObject([
+      { label: "Nantes", ...NANTES },
+      { label: "Villeinconnue", latitude: null, longitude: null },
+    ]);
+    expect((await repo.getGuardRails(alice.id)).locations.map((l) => l.located)).toEqual([
+      true,
+      false,
+    ]);
+
+    // Retour à l'état initial pour les tests suivants.
+    await repo.saveGuardRails(alice.id, {
+      ...base,
+      targetTotalPackage: 70000,
+      remotePolicy: "HYBRID",
+      minRemoteDays: 2,
+      contractTypes: ["CDI"],
+      excludedSectors: ["GAMBLING"],
+      maxWeeklyHours: 40,
+      culturePreferences: ["ASYNC_FIRST"],
+      locations: [{ label: "Nantes", radiusKm: 25 }],
+    });
   });
 
   it("aucune table de la mémoire de carrière n'a de champ nominatif ou de coordonnées", async () => {

@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [4.835, 45.758] },
+      "properties": {
+        "label": "Lyon",
+        "score": 0.9671,
+        "id": "69123",
+        "type": "municipality",
+        "name": "Lyon",
+        "postcode": "69001",
+        "citycode": "69123",
+        "x": 842390.93,
+        "y": 6519561.24,
+        "population": 522250,
+        "city": "Lyon",
+        "context": "69, Rhône, Auvergne-Rhône-Alpes",
+        "importance": 0.70955,
+        "municipality": "Lyon",
+        "_type": "address"
+      }
+    }
+  ],
+  "query": "Lyon",
+  "filters": { "type": "municipality" }
+}

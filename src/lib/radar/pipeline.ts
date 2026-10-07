@@ -1,4 +1,6 @@
 import type { PrismaClient } from "@/generated/prisma/client";
+import type { Geocoder } from "@/lib/geo/geocoder";
+import { locateOffer, type OfferGeoColumns } from "@/lib/geo/offers";
 import { logger as defaultLogger, scrubString, type Logger } from "@/lib/logger";
 import { dedupKey, normalizeUrl, tidyLocation } from "./normalize";
 import { sha256 } from "./text";
@@ -23,6 +25,11 @@ export type PipelineOptions = ConnectorContext & {
   /** Pays conservés (ISO-2). Vide = tous. Les offres sans pays connu sont gardées. */
   allowedCountries?: string[];
   logger?: Logger;
+  /**
+   * Géocode les offres nouvelles ou dont le lieu a changé (sauf si la source
+   * fournit déjà les coordonnées). Absent : coordonnées de la source seules.
+   */
+  geocoder?: Geocoder | null;
 };
 
 /** Les sources « employeur » (ATS) font foi face aux agrégateurs. */
@@ -120,7 +127,7 @@ export async function runConnector<Raw>(
     }
 
     for (const offer of offers.values()) {
-      const outcome = await upsertOffer(prisma, connector, offer, startedAt);
+      const outcome = await upsertOffer(prisma, connector, offer, startedAt, options.geocoder);
       counts[outcome.kind]++;
       if (outcome.duplicate) counts.duplicates++;
     }
@@ -191,14 +198,24 @@ async function upsertOffer<Raw>(
   connector: Connector<Raw>,
   offer: NormalizedOffer,
   seenAt: Date,
+  geocoder: Geocoder | null = null,
 ): Promise<UpsertOutcome> {
   const data = offerData(offer);
   const hash = contentHash(data);
   const where = { source_sourceId: { source: connector.source, sourceId: offer.sourceId } };
   const existing = await prisma.jobOffer.findUnique({
     where,
-    select: { id: true, contentHash: true },
+    select: {
+      id: true,
+      contentHash: true,
+      city: true,
+      country: true,
+      latitude: true,
+      longitude: true,
+      geocodedAt: true,
+    },
   });
+  const geo = await offerGeo(offer, data, existing, geocoder, seenAt);
   const seen = {
     lastSeenAt: seenAt,
     status: "OPEN" as const,
@@ -224,6 +241,7 @@ async function upsertOffer<Raw>(
         sourceId: offer.sourceId,
         firstSeenAt: seenAt,
         contentHash: hash,
+        ...geo,
       },
       select,
     });
@@ -231,16 +249,56 @@ async function upsertOffer<Raw>(
   } else if (existing.contentHash !== hash) {
     row = await prisma.jobOffer.update({
       where,
-      data: { ...data, ...seen, contentHash: hash },
+      data: { ...data, ...seen, ...geo, contentHash: hash },
       select,
     });
     kind = "updated";
   } else {
-    row = await prisma.jobOffer.update({ where, data: seen, select });
+    row = await prisma.jobOffer.update({ where, data: { ...seen, ...geo }, select });
     kind = "unchanged";
   }
 
   return { kind, duplicate: await resolveDuplicate(prisma, row) };
+}
+
+/**
+ * Colonnes de géolocalisation à écrire, ou `{}` pour conserver l'existant :
+ * on ne regéocode que si la source donne des coordonnées, si l'offre est
+ * nouvelle, si son lieu a changé ou si elle n'a jamais été géocodée.
+ */
+async function offerGeo(
+  offer: NormalizedOffer,
+  data: ReturnType<typeof offerData>,
+  existing: {
+    city: string | null;
+    country: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    geocodedAt: Date | null;
+  } | null,
+  geocoder: Geocoder | null,
+  now: Date,
+): Promise<Partial<OfferGeoColumns>> {
+  const sameCoordinates =
+    existing?.latitude === (offer.coordinates?.latitude ?? null) &&
+    existing?.longitude === (offer.coordinates?.longitude ?? null);
+  const samePlace =
+    existing !== null &&
+    existing.geocodedAt !== null &&
+    existing.city === data.city &&
+    existing.country === data.country;
+  if (samePlace && (!offer.coordinates || sameCoordinates)) return {};
+  return locateOffer(
+    {
+      city: data.city,
+      country: data.country,
+      postalCode: offer.postalCode,
+      cityCode: offer.cityCode,
+      coordinates: offer.coordinates,
+    },
+    geocoder,
+    now,
+  );
 }
 
 /**

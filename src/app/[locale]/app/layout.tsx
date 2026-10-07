@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Logo } from "@/components/logo";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { VaultProvider } from "@/components/vault/vault-provider";
+import { LogoutButton, VaultStatusBadge } from "@/components/vault/vault-widgets";
 import { isAdminEmail } from "@/lib/auth/admin";
 import { requireUser } from "@/lib/auth/session";
 import { initUserLocale } from "@/lib/career/repository";
@@ -23,30 +25,29 @@ export default async function AppLayout({ children }: Readonly<{ children: React
   await initUserLocale(user.id, locale);
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <header className="border-b border-stone-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex h-16 items-center justify-between gap-3">
-            <Logo href="/app" />
-            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-              <span className="hidden truncate text-sm text-stone-500 md:inline" title={user.email}>
-                {user.email}
-              </span>
-              <LocaleSwitcher persist />
-              <form action={logout}>
-                <button
-                  type="submit"
-                  className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium whitespace-nowrap hover:bg-stone-100"
+    <VaultProvider>
+      <div className="flex min-h-dvh flex-col">
+        <header className="border-b border-stone-200 bg-white">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="flex h-16 items-center justify-between gap-3">
+              <Logo href="/app" />
+              <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                <span
+                  className="hidden truncate text-sm text-stone-500 md:inline"
+                  title={user.email}
                 >
-                  {t("signOut")}
-                </button>
-              </form>
+                  {user.email}
+                </span>
+                <VaultStatusBadge />
+                <LocaleSwitcher persist />
+                <LogoutButton action={logout} label={t("signOut")} />
+              </div>
             </div>
+            <AppNav isAdmin={isAdminEmail(user.email)} />
           </div>
-          <AppNav isAdmin={isAdminEmail(user.email)} />
-        </div>
-      </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
-    </div>
+        </header>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+      </div>
+    </VaultProvider>
   );
 }

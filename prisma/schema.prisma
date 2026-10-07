@@ -44,6 +44,7 @@ model User {
   skills       Skill[]
   guardRails   GuardRails?
   locations    GuardRailLocation[]
+  vault        IdentityVault?
 
   coachConversations CoachConversation[]
   coachMessages      CoachMessage[]
@@ -297,8 +298,10 @@ model GuardRails {
   @@map("guard_rails")
 }
 
-/// Zone de travail acceptée : une ville et un rayon. Les coordonnées seront
-/// renseignées par géocodage (fonctionnalité future) pour le filtrage.
+/// Zone de travail acceptée : une ville et un rayon. Les coordonnées sont
+/// renseignées par géocodage à l'enregistrement (`src/lib/geo`) ; `null` si la
+/// ville n'a pas pu être localisée (le lieu est tout de même conservé).
+/// Donnée du candidat : ni le libellé ni les coordonnées ne sont journalisés.
 model GuardRailLocation {
   id        String   @id @default(cuid())
   userId    String   @map("user_id")
@@ -414,6 +417,39 @@ model CoachSuggestion {
 }
 
 // ---------------------------------------------------------------------------
+// Coffre d'identité « zéro connaissance »
+// ---------------------------------------------------------------------------
+
+/// Identité réelle du candidat (nom, coordonnées, employeurs, écoles, liens,
+/// CV d'origine), chiffrée DANS LE NAVIGATEUR (`src/lib/vault/crypto.ts`).
+/// Le serveur ne stocke que des enveloppes opaques : il ne peut rien en lire
+/// (ni phrase secrète, ni clé de secours, ni clé de données en clair).
+model IdentityVault {
+  userId               String   @id @map("user_id")
+  /// Version du format cryptographique.
+  version              Int
+  /// Paramètres de dérivation de la phrase secrète (`PBKDF2-SHA256`).
+  kdfName              String   @map("kdf_name")
+  kdfIterations        Int      @map("kdf_iterations")
+  kdfSalt              Bytes    @map("kdf_salt")
+  /// Clé de données enveloppée par la phrase secrète, puis par la clé de secours.
+  passphraseWrappedKey Bytes    @map("passphrase_wrapped_key")
+  recoveryWrappedKey   Bytes    @map("recovery_wrapped_key")
+  /// Identité chiffrée (JSON complété à 256 octets).
+  identityCiphertext   Bytes?   @map("identity_ciphertext")
+  /// CV d'origine chiffré (nom et type de fichier compris).
+  cvCiphertext         Bytes?   @map("cv_ciphertext")
+  /// Incrémenté à chaque écriture : évite d'écraser une version plus récente.
+  revision             Int      @default(0)
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("identity_vaults")
+}
+
+// ---------------------------------------------------------------------------
 // Market Radar : offres d'emploi collectées auprès de sources autorisées
 // (API France Travail, endpoints publics des job boards ATS). Données
 // publiques, non rattachées à un utilisateur : aucune donnée personnelle n'y
@@ -508,6 +544,13 @@ model JobOffer {
   region         String?
   /// Code pays ISO 3166-1 alpha-2 quand il est connu.
   country        String?
+  /// Coordonnées de la ville (fournies par la source ou géocodées), `null` si
+  /// inconnues. Servent au filtre de distance du matching.
+  latitude       Float?
+  longitude      Float?
+  /// Date du dernier géocodage abouti (trouvé ou introuvable). `null` = à
+  /// (re)tenter : nouvelle offre, lieu modifié ou géocodeur indisponible.
+  geocodedAt     DateTime?     @map("geocoded_at")
   remotePolicy   RemotePolicy  @default(UNKNOWN) @map("remote_policy")
   contractType   ContractType  @default(UNKNOWN) @map("contract_type")
   /// Libellé de contrat tel que fourni par la source.
@@ -545,7 +588,30 @@ model JobOffer {
   @@index([dedupKey])
   @@index([status, lastSeenAt])
   @@index([companyId])
+  @@index([status, geocodedAt])
   @@map("job_offers")
+}
+
+/// Cache persistant du géocodage : une même requête normalisée (ville, pays,
+/// code commune) n'est jamais géocodée deux fois. Aucune donnée personnelle :
+/// la clé ne désigne qu'un lieu, sans lien avec un utilisateur.
+model GeoCache {
+  /// Requête normalisée (`src/lib/geo/geocoder.ts`, `geoCacheKey`).
+  key       String   @id
+  /// Faux = lieu introuvable (réessayé après expiration, voir `NOT_FOUND_TTL_MS`).
+  found     Boolean
+  latitude  Float?
+  longitude Float?
+  /// Code pays ISO 3166-1 alpha-2 du résultat.
+  country   String?
+  /// Précision : address, street, locality, municipality, region.
+  precision String?
+  /// Fournisseur qui a répondu (ban, nominatim).
+  provider  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("geo_cache")
 }
 
 /// Journal d'exécution d'un connecteur (une ligne par périmètre et par passage).

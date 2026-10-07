@@ -50,7 +50,7 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
       : {}),
   };
 
-  const [runs, offers, matching, open, closed, duplicates] = await Promise.all([
+  const [runs, offers, matching, open, closed, duplicates, located] = await Promise.all([
     db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
     db.jobOffer.findMany({
       where,
@@ -63,7 +63,11 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
     db.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
     db.jobOffer.count({ where: { status: "CLOSED", duplicateOfId: null } }),
     db.jobOffer.count({ where: { duplicateOfId: { not: null } } }),
+    db.jobOffer.count({
+      where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
+    }),
   ]);
+  const locatedShare = open > 0 ? Math.round((located / open) * 100) : 0;
   const pages = Math.max(1, Math.ceil(matching / PAGE_SIZE));
   const pageHref = (p: number) => {
     const sp = new URLSearchParams();
@@ -81,16 +85,22 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
         intro="Offres collectées auprès des sources autorisées (API France Travail, job boards ATS publics), normalisées et dédoublonnées."
       />
 
-      <dl className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {[
-          ["Offres ouvertes", open],
-          ["Offres fermées", closed],
-          ["Doublons rattachés", duplicates],
-        ].map(([label, value]) => (
+      <dl className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {(
+          [
+            ["Offres ouvertes", open, null],
+            ["Offres fermées", closed, null],
+            ["Doublons rattachés", duplicates, null],
+            ["Ouvertes géolocalisées", located, `${locatedShare} % des ouvertes`],
+          ] as const
+        ).map(([label, value, detail]) => (
           <div key={label} className="rounded-xl border border-stone-200 bg-white px-4 py-3">
             <dt className="text-sm text-stone-500">{label}</dt>
             <dd className="text-2xl font-semibold tabular-nums">
-              {Number(value).toLocaleString("fr-FR")}
+              {value.toLocaleString("fr-FR")}
+              {detail ? (
+                <span className="block text-sm font-normal text-stone-500">{detail}</span>
+              ) : null}
             </dd>
           </div>
         ))}

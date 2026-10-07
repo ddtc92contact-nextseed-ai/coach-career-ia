@@ -144,6 +144,7 @@
       "label": "Kandidaatomgeving",
       "dashboard": "Dashboard",
       "memory": "Mijn carrièregeheugen",
+      "identity": "Mijn identiteit",
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
       "settings": "Instellingen",
@@ -340,6 +341,149 @@
     "importCta": "Mijn loopbaan importeren",
     "importHint": "Cv, LinkedIn-export of GitHub: de AI maakt een concept dat u goedkeurt."
   },
+  "identity": {
+    "title": "Mijn identiteit",
+    "intro": "Je echte identiteit, versleuteld in je browser. Ze blijft gescheiden van je professionele profiel, dat geanonimiseerd is.",
+    "employerLabel": "Werkgever (uit je kluis):",
+    "lock": "Vergrendelen",
+    "loading": "Kluis wordt geopend…",
+    "retry": "Opnieuw proberen",
+    "badge": {
+      "unlocked": "Identiteit ontgrendeld"
+    },
+    "explain": {
+      "title": "Niemand, zelfs wij niet, kan deze gegevens lezen",
+      "encrypted": "Je naam, contactgegevens, werkgevers, opleidingen, links en originele cv worden in je browser versleuteld voordat er iets wordt verzonden. Onze servers ontvangen en bewaren alleen een onleesbaar blok.",
+      "nobody": "Ons team, onze hostingpartij of iemand die onze database steelt: niemand kan ze ontsleutelen. De sleutel bestaat alleen bij jou.",
+      "you": "Alleen jij ontgrendelt ze, met je wachtzin. Die wordt nooit door onze diensten ontvangen of opgeslagen.",
+      "handover": "Je identiteit wordt alleen aan een recruiter onthuld als jij dat beslist, voor die specifieke recruiter.",
+      "lossTitle": "Belangrijk gevolg:",
+      "loss": "als je zowel je wachtzin als je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. Wij kunnen ze niet voor je terughalen. Je professionele profiel blijft ongemoeid."
+    },
+    "setup": {
+      "title": "Mijn identiteitskluis aanmaken",
+      "intro": "Kies een eigen wachtzin voor deze kluis, anders dan je andere wachtwoorden. Een reeks van meerdere woorden is makkelijk te onthouden en moeilijk te raden.",
+      "passphrase": "Wachtzin",
+      "passphraseHint": "Minstens {min} tekens.",
+      "confirm": "Bevestig de wachtzin",
+      "understand": "Ik begrijp dat niemand mijn identiteit kan herstellen als ik mijn wachtzin en herstelsleutel kwijtraak.",
+      "submit": "Mijn kluis aanmaken",
+      "working": "Kluis wordt aangemaakt… (enkele seconden)"
+    },
+    "recovery": {
+      "title": "Je herstelsleutel",
+      "intro": "Hiermee open je je kluis opnieuw als je je wachtzin vergeet. Hij wordt nooit meer getoond.",
+      "warning": "Bewaar hem offline: afgedrukt, in een wachtwoordbeheerder of in een veilig opgeslagen bestand. Deel hem met niemand.",
+      "download": "Downloaden (.txt)",
+      "print": "Afdrukken",
+      "copy": "Kopiëren",
+      "copied": "Gekopieerd",
+      "confirm": "Ik heb mijn herstelsleutel veilig bewaard.",
+      "continue": "Verder naar mijn identiteit",
+      "fileName": "coach-career-ia-herstelsleutel.txt",
+      "fileText": "Coach Career IA — herstelsleutel van de identiteitskluis\nAangemaakt op {date}\n\n{key}\n\nMet deze sleutel open je je kluis opnieuw als je je wachtzin vergeet.\nBewaar hem veilig en deel hem met niemand: zonder deze sleutel en zonder je wachtzin zijn je identiteitsgegevens definitief verloren."
+    },
+    "unlock": {
+      "title": "Mijn identiteit ontgrendelen",
+      "intro": "Je kluis is vergrendeld. Voer je wachtzin in: het ontsleutelen gebeurt in deze browser.",
+      "passphrase": "Wachtzin",
+      "submit": "Ontgrendelen",
+      "working": "Ontgrendelen…",
+      "forgot": "Wachtzin vergeten?"
+    },
+    "recover": {
+      "title": "Herstellen met mijn herstelsleutel",
+      "intro": "Voer de herstelsleutel in die je bij het aanmaken van de kluis kreeg en kies een nieuwe wachtzin.",
+      "recoveryKey": "Herstelsleutel",
+      "recoveryKeyHint": "Streepjes, spaties en hoofdletters zijn optioneel.",
+      "newPassphrase": "Nieuwe wachtzin",
+      "newPassphraseHint": "Minstens {min} tekens.",
+      "confirm": "Bevestig de nieuwe wachtzin",
+      "submit": "Mijn kluis herstellen",
+      "working": "Herstellen…",
+      "back": "Terug naar de wachtzin"
+    },
+    "unlocked": {
+      "status": "Kluis ontgrendeld in deze browser",
+      "idle": "Automatisch vergrendelen na",
+      "idleOption": "{minutes} min inactiviteit"
+    },
+    "form": {
+      "title": "Mijn identiteitsgegevens",
+      "intro": "Versleuteld in je browser bij het opslaan. Ze worden nooit gebruikt voor matching.",
+      "identityTitle": "Identiteit",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "contactTitle": "Contactgegevens zichtbaar voor recruiters",
+      "contactIntro": "Alleen gedeeld met de recruiter aan wie je ervoor kiest je identiteit te onthullen.",
+      "email": "Contact-e-mail",
+      "phone": "Telefoon",
+      "employersTitle": "Werkgevers",
+      "employersIntro": "De echte naam van elke werkgever, gekoppeld aan de bijbehorende ervaring in je loopbaangeheugen. Hij verschijnt daar wanneer je kluis ontgrendeld is.",
+      "employerName": "Naam van de werkgever",
+      "employerExperience": "Bijbehorende ervaring",
+      "noExperience": "Niet gekoppeld",
+      "addEmployer": "Werkgever toevoegen",
+      "schoolsTitle": "Scholen en opleidingen",
+      "schoolName": "Naam van de instelling",
+      "addSchool": "School toevoegen",
+      "linksTitle": "Persoonlijke links",
+      "linksIntro": "LinkedIn-profiel, persoonlijke website, coderepository… elke link die je identificeert.",
+      "linkLabel": "Label",
+      "linkUrl": "Adres (URL)",
+      "addLink": "Link toevoegen",
+      "remove": "Verwijderen",
+      "none": "Nog niets.",
+      "save": "Versleutelen en opslaan",
+      "saving": "Versleutelen…",
+      "saved": "Opgeslagen, versleuteld.",
+      "saveHint": "Alleen de versleutelde versie verlaat je browser."
+    },
+    "cv": {
+      "title": "Originele cv",
+      "intro": "Je volledige cv, met je naam en contactgegevens. Het wordt vóór het uploaden in je browser versleuteld: wij zien noch de inhoud noch de bestandsnaam.",
+      "none": "Geen cv opgeslagen.",
+      "current": "Er is een versleutelde cv opgeslagen.",
+      "choose": "Mijn cv toevoegen",
+      "replace": "Cv vervangen",
+      "uploading": "Versleutelen en uploaden…",
+      "download": "Mijn cv downloaden",
+      "delete": "Cv verwijderen",
+      "working": "Even geduld…",
+      "confirmDelete": "Je originele cv definitief verwijderen?",
+      "hint": "PDF, Word of OpenDocument, maximaal {max} MB."
+    },
+    "change": {
+      "title": "Mijn wachtzin wijzigen",
+      "intro": "Je gegevens hoeven niet opnieuw versleuteld te worden. Je herstelsleutel blijft geldig.",
+      "current": "Huidige wachtzin",
+      "next": "Nieuwe wachtzin",
+      "confirm": "Bevestig de nieuwe wachtzin",
+      "submit": "Wachtzin wijzigen",
+      "working": "Wijzigen…",
+      "done": "Wachtzin gewijzigd."
+    },
+    "reset": {
+      "title": "Kluis resetten",
+      "intro": "Verwijdert je versleutelde identiteit en originele cv definitief. Handig als je je wachtzin en herstelsleutel kwijt bent: daarna kun je een nieuwe kluis aanmaken. Je loopbaangeheugen blijft ongemoeid.",
+      "button": "Mijn kluis verwijderen",
+      "confirm": "Je identiteitskluis en cv definitief verwijderen? Dit kan niet ongedaan worden gemaakt.",
+      "working": "Verwijderen…"
+    },
+    "errors": {
+      "tooShort": "De wachtzin moet minstens {min} tekens bevatten.",
+      "mismatch": "De twee wachtzinnen komen niet overeen.",
+      "understand": "Vink het vakje aan om te bevestigen dat je het begrijpt.",
+      "wrongPassphrase": "Onjuiste wachtzin.",
+      "wrongRecoveryKey": "Onjuiste herstelsleutel.",
+      "conflict": "Je kluis is gewijzigd vanuit een ander tabblad of apparaat. De nieuwste versie is opnieuw geladen: controleer en sla opnieuw op.",
+      "network": "Server niet bereikbaar. Controleer je verbinding en probeer het opnieuw.",
+      "cvTooLarge": "Bestand te groot.",
+      "cvType": "Formaat niet ondersteund: alleen PDF, Word of OpenDocument.",
+      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+    },
+    "exportNotice": "Gegevens versleuteld in je browser: alleen je wachtwoordzin of je herstelsleutel kan ze lezen."
+  },
   "guardRails": {
     "title": "Mijn randvoorwaarden",
     "intro": "De niet-onderhandelbare voorwaarden waaraan een vacature moet voldoen om u te bereiken. Ze worden toegepast als strikte filters.",
@@ -366,7 +510,9 @@
       "cityPlaceholder": "Bijvoorbeeld: Utrecht",
       "radius": "Straal (km)",
       "remove": "Verwijderen",
-      "add": "Een locatie toevoegen"
+      "add": "Een locatie toevoegen",
+      "notLocated": "Locatie nog niet gevonden: ze is opgeslagen, maar het afstandsfilter kan er niet op worden toegepast. Controleer de spelling of vermeld het land (‘Berlijn, Duitsland’) en sla opnieuw op.",
+      "notLocatedSummary": "{count, plural, one {# locatie kon niet worden gevonden. Ze is opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend is.} other {# locaties konden niet worden gevonden. Ze zijn opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend zijn.}}"
     },
     "remote": {
       "title": "Thuiswerken",
