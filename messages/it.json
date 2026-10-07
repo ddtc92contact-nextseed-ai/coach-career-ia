@@ -104,6 +104,20 @@
       "htmlIntro": "Clicchi sul pulsante qui sotto per accedere. Questo link è valido 15 minuti e funziona una sola volta.",
       "button": "Accedi",
       "htmlIgnore": "Se non ha effettuato Lei questa richiesta, ignori questo messaggio: nessun account verrà aperto senza un clic su questo link."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nuova opportunità} other {# nuove opportunità}} per te",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Il tuo agente ha trovato una nuova offerta che rispetta i tuoi paletti:} other {Il tuo agente ha trovato # nuove offerte che rispettano i tuoi paletti:}}",
+      "score": "Punteggio {score}/100",
+      "companyUnknown": "Azienda non indicata",
+      "view": "Vedi la spiegazione",
+      "original": "Offerta originale",
+      "viewText": "Vedi la spiegazione: {url}",
+      "originalText": "Offerta originale: {url}",
+      "footer": "Ricevi questo riepilogo {frequency, select, DAILY {giornaliero} other {settimanale}} perché hai attivato gli avvisi.",
+      "unsubscribe": "Annulla l’iscrizione",
+      "unsubscribeText": "Per non ricevere più queste e-mail: {url}"
     }
   },
   "common": {
@@ -221,6 +235,102 @@
   "opportunities": {
     "title": "Opportunità",
     "intro": "Solo offerte che rispettano i Suoi paletti, con la spiegazione di ogni corrispondenza.",
+    "empty": {
+      "noMemoryTitle": "Il tuo agente ha bisogno della tua memoria professionale",
+      "noMemoryText": "Aggiungi almeno un’esperienza, un risultato o una competenza: è ciò che il tuo agente confronta con le offerte.",
+      "noMemoryAction": "Completare la mia memoria",
+      "noRailsTitle": "Definisci i tuoi paletti",
+      "noRailsText": "Stipendio minimo, zona, smart working, contratti: senza paletti, il tuo agente non può garantire che le offerte proposte ti vadano bene.",
+      "noRailsAction": "Definire i miei paletti",
+      "pendingTitle": "Analisi in corso",
+      "pendingText": "Il tuo agente sta confrontando le offerte del mercato con il tuo profilo. I risultati compariranno qui entro pochi minuti: non serve restare sulla pagina.",
+      "noMatchTitle": "Nessuna offerta qualificata per ora",
+      "noMatchText": "Nessuna offerta aperta rispetta oggi tutti i tuoi paletti con un punteggio sufficiente. Il tuo agente continua a monitorare il mercato; dimostrare più risultati migliora anche le tue corrispondenze.",
+      "noResultTitle": "Nessuna opportunità con questi filtri",
+      "noResultText": "Modifica i filtri per vedere le altre opportunità."
+    },
+    "pending": "Aggiornamento in corso: le tue ultime modifiche saranno considerate entro pochi minuti.",
+    "lastComputed": "Ultima analisi: {date}",
+    "alertsHint": "Ricevi le nuove opportunità via e-mail: <link>imposta i tuoi avvisi</link>.",
+    "filters": {
+      "label": "Filtra le opportunità",
+      "status": "Stato",
+      "minScore": "Punteggio minimo",
+      "anyScore": "Tutti i punteggi",
+      "scoreOption": "{score} e oltre",
+      "apply": "Filtra",
+      "statusOptions": {
+        "active": "Da valutare",
+        "saved": "Salvate",
+        "dismissed": "Scartate",
+        "all": "Tutte (tranne le scartate)"
+      }
+    },
+    "count": "{count, plural, =0 {Nessuna opportunità} one {# opportunità} other {# opportunità}}",
+    "score": "{score}/100",
+    "scoreLabel": "Punteggio di corrispondenza: {score} su 100",
+    "status": {
+      "NEW": "Nuova",
+      "SEEN": "Vista",
+      "SAVED": "Salvata",
+      "DISMISSED": "Scartata"
+    },
+    "companyUnknown": "Azienda non indicata",
+    "placeUnknown": "Luogo non indicato",
+    "remote": {
+      "ONSITE": "In sede",
+      "HYBRID": "Ibrido",
+      "FULL_REMOTE": "Completamente da remoto",
+      "UNKNOWN": "Smart working non indicato"
+    },
+    "contract": {
+      "CDI": "Tempo indeterminato",
+      "CDD": "Tempo determinato",
+      "FREELANCE": "Freelance",
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Apprendistato",
+      "TEMPORARY": "Lavoro interinale",
+      "OTHER": "Altro contratto",
+      "UNKNOWN": "Contratto non indicato"
+    },
+    "salary": {
+      "notStated": "Stipendio non indicato",
+      "range": "{min} – {max}",
+      "from": "da {min}",
+      "upTo": "fino a {max}",
+      "period": {
+        "HOUR": "/ ora",
+        "DAY": "/ giorno",
+        "MONTH": "/ mese",
+        "YEAR": "/ anno"
+      }
+    },
+    "actions": {
+      "save": "Salva",
+      "unsave": "Rimuovi dalle salvate",
+      "dismiss": "Scarta",
+      "restore": "Rimetti nell’elenco",
+      "details": "Vedi la spiegazione",
+      "original": "Vedi l’offerta originale",
+      "back": "← Tutte le opportunità"
+    },
+    "detail": {
+      "why": "Perché questa offerta",
+      "generatedBy": {
+        "llm": "Riepilogo scritto dal tuo agente a partire dagli elementi qui sotto.",
+        "rules": "Riepilogo generato automaticamente a partire dagli elementi qui sotto."
+      },
+      "proofs": "I tuoi risultati corrispondenti",
+      "proofsEmpty": "Nessuno dei tuoi risultati risponde direttamente a un requisito dell’offerta.",
+      "skills": "Le tue competenze citate nell’offerta",
+      "culture": "Le tue preferenze di cultura citate",
+      "gaps": "Punti di attenzione",
+      "unknowns": "Informazioni mancanti",
+      "components": "Dettaglio del punteggio",
+      "description": "Descrizione dell’offerta",
+      "published": "Pubblicata il {date}",
+      "guardRailsOk": "Questa offerta rispetta tutti i tuoi paletti."
+    },
     "emptyTitle": "Ancora nessuna opportunità",
     "emptyText": "Non appena avrà compilato la Sua memoria di carriera e i Suoi paletti, il Suo agente inizierà a proporLe offerte qualificate."
   },
@@ -705,6 +815,19 @@
       "confirmHint": "Si ricordi di esportare i Suoi dati prima di eliminare l’account.",
       "submit": "Elimina definitivamente il mio account",
       "deleting": "Eliminazione in corso…"
+    },
+    "alerts": {
+      "title": "Avvisi opportunità",
+      "intro": "Ricevi via e-mail un riepilogo delle nuove offerte qualificate. L’e-mail contiene solo informazioni sulle offerte.",
+      "frequency": "Frequenza",
+      "frequencyOptions": {
+        "OFF": "Disattivati",
+        "DAILY": "Riepilogo giornaliero",
+        "WEEKLY": "Riepilogo settimanale"
+      },
+      "minScore": "Punteggio minimo",
+      "minScoreHint": "Vengono inviate solo le opportunità con almeno questo punteggio.",
+      "save": "Salva"
     }
   },
   "import": {
@@ -934,6 +1057,55 @@
       "CONFIRMED": "Confermata",
       "EXPERT": "Padroneggiata"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Ottima corrispondenza ({score}/100).",
+      "good": "Buona corrispondenza ({score}/100).",
+      "fair": "Corrispondenza parziale ({score}/100).",
+      "provenSkills": "{count, plural, one {È richiesta la tua competenza dimostrata {skills}.} other {Sono richieste le tue competenze dimostrate {skills}.}}",
+      "declaredSkills": "{count, plural, one {È citata la tua competenza {skills}, ancora senza prova.} other {Sono citate le tue competenze {skills}, ancora senza prova.}}",
+      "noSkills": "L’offerta cita esplicitamente poche delle tue competenze.",
+      "proofs": "{count, plural, one {Uno dei tuoi risultati risponde direttamente a un requisito.} other {# dei tuoi risultati rispondono direttamente a dei requisiti.}}",
+      "seniorityAbove": "Il ruolo sembra più senior della tua posizione attuale.",
+      "salaryUnknown": "Lo stipendio non è indicato."
+    },
+    "match": "Il tuo risultato «{achievement}» risponde al requisito «{requirement}».",
+    "matchSemantic": "Il tuo risultato «{achievement}» è vicino alle mansioni del ruolo.",
+    "proven": "Dimostrato",
+    "declared": "Dichiarato",
+    "gaps": {
+      "seniorityAbove": "Il livello atteso sembra superiore a quello della tua posizione attuale.",
+      "seniorityBelow": "Il ruolo sembra meno senior del tuo percorso.",
+      "salaryBelowTarget": "La retribuzione indicata è inferiore al tuo pacchetto obiettivo.",
+      "unprovenSkill": "«{value}» è richiesta ma non ancora dimostrata: aggiungi una prova a un risultato che la utilizza.",
+      "fewSkills": "L’offerta non cita esplicitamente nessuna delle tue competenze."
+    },
+    "unknowns": {
+      "salaryNotStated": "Stipendio non indicato.",
+      "remoteNotStated": "Politica di smart working non indicata.",
+      "remoteDaysNotStated": "Numero di giorni di smart working non indicato.",
+      "contractNotStated": "Tipo di contratto non indicato.",
+      "hoursNotStated": "Orario settimanale non indicato.",
+      "locationNotChecked": "Distanza non verificata: non è stato possibile localizzare i tuoi luoghi.",
+      "seniorityNotStated": "Livello di esperienza atteso non indicato.",
+      "cultureNotStated": "L’offerta non cita nessuna delle tue preferenze di cultura."
+    },
+    "components": {
+      "skills": "Competenze e prove",
+      "seniority": "Seniority",
+      "salary": "Retribuzione",
+      "culture": "Cultura aziendale"
+    }
+  },
+  "unsubscribe": {
+    "title": "Avvisi opportunità",
+    "confirmText": "Non riceverai più riepiloghi di opportunità via e-mail. Potrai riattivare gli avvisi in qualsiasi momento nelle impostazioni.",
+    "button": "Conferma l’annullamento",
+    "doneTitle": "Iscrizione annullata",
+    "doneText": "Non riceverai più avvisi. Puoi riattivarli nelle impostazioni.",
+    "invalidTitle": "Link non valido",
+    "invalidText": "Questo link di annullamento non è valido. Puoi gestire i tuoi avvisi nelle impostazioni."
   },
   "billing": {
     "title": "Abbonamento",

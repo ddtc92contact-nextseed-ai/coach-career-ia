@@ -71,7 +71,14 @@ export function scriptedReplies(...replies: MockReply[]): MockResponder {
 }
 
 export function createMockProvider(
-  options: { respond?: MockResponder; dimensions?: number } = {},
+  options: {
+    respond?: MockResponder;
+    dimensions?: number;
+    /** Vecteurs sur mesure (fixtures du matching) ; défaut : hachage du texte. */
+    embedder?: (text: string) => number[];
+    /** Échec simulé des embeddings. */
+    embedError?: AiError;
+  } = {},
 ): MockProvider {
   const calls: ChatRequest[] = [];
   const embedCalls: string[][] = [];
@@ -110,8 +117,11 @@ export function createMockProvider(
     async embed(texts: string[], { signal }: CallOptions): Promise<EmbeddingResponse> {
       if (signal.aborted) throw signal.reason;
       embedCalls.push([...texts]);
+      if (options.embedError) throw options.embedError;
       return {
-        vectors: texts.map((text) => mockEmbedding(text, options.dimensions)),
+        vectors: texts.map((text) =>
+          options.embedder ? options.embedder(text) : mockEmbedding(text, options.dimensions),
+        ),
         usage: { inputTokens: approxTokens(texts.join("\n")), outputTokens: 0 },
         model: "mock-embed",
       };

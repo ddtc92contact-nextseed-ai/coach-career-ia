@@ -104,6 +104,20 @@
       "htmlIntro": "Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable 15 minutes et ne fonctionne qu’une fois.",
       "button": "Me connecter",
       "htmlIgnore": "Si vous n’êtes pas à l’origine de cette demande, ignorez ce message : aucun compte ne sera ouvert sans clic sur ce lien."
+    },
+    "alerts": {
+      "subject": "{count, plural, one {# nouvelle opportunité} other {# nouvelles opportunités}} pour vous",
+      "brand": "Coach Career IA",
+      "intro": "{count, plural, one {Votre agent a trouvé une nouvelle offre qui respecte vos garde-fous :} other {Votre agent a trouvé # nouvelles offres qui respectent vos garde-fous :}}",
+      "score": "Score {score}/100",
+      "companyUnknown": "Entreprise non communiquée",
+      "view": "Voir l’explication",
+      "original": "Offre d’origine",
+      "viewText": "Voir l’explication : {url}",
+      "originalText": "Offre d’origine : {url}",
+      "footer": "Vous recevez ce résumé {frequency, select, DAILY {quotidien} other {hebdomadaire}} parce que vous avez activé les alertes.",
+      "unsubscribe": "Se désabonner",
+      "unsubscribeText": "Pour ne plus recevoir ces e-mails : {url}"
     }
   },
   "common": {
@@ -221,6 +235,102 @@
   "opportunities": {
     "title": "Opportunités",
     "intro": "Uniquement des offres qui respectent vos garde-fous, avec l’explication de chaque correspondance.",
+    "empty": {
+      "noMemoryTitle": "Votre agent a besoin de votre mémoire de carrière",
+      "noMemoryText": "Ajoutez au moins une expérience, une réalisation ou une compétence : c’est ce que votre agent compare aux offres.",
+      "noMemoryAction": "Compléter ma mémoire",
+      "noRailsTitle": "Définissez vos garde-fous",
+      "noRailsText": "Salaire plancher, zone, télétravail, contrats : sans garde-fous, votre agent ne peut pas garantir que les offres proposées vous conviennent.",
+      "noRailsAction": "Définir mes garde-fous",
+      "pendingTitle": "Analyse en cours",
+      "pendingText": "Votre agent compare les offres du marché à votre profil. Les résultats apparaîtront ici dans quelques minutes : inutile de rester sur la page.",
+      "noMatchTitle": "Aucune offre qualifiée pour le moment",
+      "noMatchText": "Aucune offre ouverte ne respecte aujourd’hui tous vos garde-fous avec un score suffisant. Votre agent continue de surveiller le marché ; prouver davantage de réalisations améliore aussi vos correspondances.",
+      "noResultTitle": "Aucune opportunité avec ces filtres",
+      "noResultText": "Modifiez les filtres pour voir les autres opportunités."
+    },
+    "pending": "Mise à jour en cours : vos derniers changements seront pris en compte dans quelques minutes.",
+    "lastComputed": "Dernière analyse : {date}",
+    "alertsHint": "Recevez les nouvelles opportunités par e-mail : <link>réglez vos alertes</link>.",
+    "filters": {
+      "label": "Filtrer les opportunités",
+      "status": "Statut",
+      "minScore": "Score minimal",
+      "anyScore": "Tous les scores",
+      "scoreOption": "{score} et plus",
+      "apply": "Filtrer",
+      "statusOptions": {
+        "active": "À traiter",
+        "saved": "Sauvegardées",
+        "dismissed": "Écartées",
+        "all": "Toutes (hors écartées)"
+      }
+    },
+    "count": "{count, plural, =0 {Aucune opportunité} one {# opportunité} other {# opportunités}}",
+    "score": "{score}/100",
+    "scoreLabel": "Score de correspondance : {score} sur 100",
+    "status": {
+      "NEW": "Nouvelle",
+      "SEEN": "Vue",
+      "SAVED": "Sauvegardée",
+      "DISMISSED": "Écartée"
+    },
+    "companyUnknown": "Entreprise non communiquée",
+    "placeUnknown": "Lieu non précisé",
+    "remote": {
+      "ONSITE": "Sur site",
+      "HYBRID": "Hybride",
+      "FULL_REMOTE": "Télétravail complet",
+      "UNKNOWN": "Télétravail non précisé"
+    },
+    "contract": {
+      "CDI": "CDI",
+      "CDD": "CDD",
+      "FREELANCE": "Freelance",
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Alternance",
+      "TEMPORARY": "Intérim",
+      "OTHER": "Autre contrat",
+      "UNKNOWN": "Contrat non précisé"
+    },
+    "salary": {
+      "notStated": "Salaire non communiqué",
+      "range": "{min} – {max}",
+      "from": "à partir de {min}",
+      "upTo": "jusqu’à {max}",
+      "period": {
+        "HOUR": "/ heure",
+        "DAY": "/ jour",
+        "MONTH": "/ mois",
+        "YEAR": "/ an"
+      }
+    },
+    "actions": {
+      "save": "Sauvegarder",
+      "unsave": "Retirer des sauvegardes",
+      "dismiss": "Écarter",
+      "restore": "Remettre dans la liste",
+      "details": "Voir l’explication",
+      "original": "Voir l’offre d’origine",
+      "back": "← Toutes les opportunités"
+    },
+    "detail": {
+      "why": "Pourquoi cette offre",
+      "generatedBy": {
+        "llm": "Résumé rédigé par votre agent à partir des éléments ci-dessous.",
+        "rules": "Résumé établi automatiquement à partir des éléments ci-dessous."
+      },
+      "proofs": "Vos réalisations qui correspondent",
+      "proofsEmpty": "Aucune réalisation ne répond directement à une exigence de l’offre.",
+      "skills": "Vos compétences citées par l’offre",
+      "culture": "Vos préférences de culture mentionnées",
+      "gaps": "Points d’attention",
+      "unknowns": "Informations manquantes",
+      "components": "Détail du score",
+      "description": "Description de l’offre",
+      "published": "Publiée le {date}",
+      "guardRailsOk": "Cette offre respecte tous vos garde-fous."
+    },
     "emptyTitle": "Aucune opportunité pour l’instant",
     "emptyText": "Dès que votre mémoire de carrière et vos garde-fous seront renseignés, votre agent commencera à vous proposer des offres qualifiées."
   },
@@ -705,6 +815,19 @@
       "confirmHint": "Pensez à exporter vos données avant de supprimer votre compte.",
       "submit": "Supprimer définitivement mon compte",
       "deleting": "Suppression en cours…"
+    },
+    "alerts": {
+      "title": "Alertes opportunités",
+      "intro": "Recevez par e-mail un résumé des nouvelles offres qualifiées. L’e-mail ne contient que des informations sur les offres.",
+      "frequency": "Fréquence",
+      "frequencyOptions": {
+        "OFF": "Désactivées",
+        "DAILY": "Résumé quotidien",
+        "WEEKLY": "Résumé hebdomadaire"
+      },
+      "minScore": "Score minimal",
+      "minScoreHint": "Seules les opportunités avec au moins ce score sont envoyées.",
+      "save": "Enregistrer"
     }
   },
   "import": {
@@ -934,6 +1057,55 @@
       "CONFIRMED": "Confirmée",
       "EXPERT": "Maîtrisée"
     }
+  },
+  "matching": {
+    "summary": {
+      "strong": "Très bonne correspondance ({score}/100).",
+      "good": "Bonne correspondance ({score}/100).",
+      "fair": "Correspondance partielle ({score}/100).",
+      "provenSkills": "{count, plural, one {Votre compétence prouvée {skills} est demandée.} other {Vos compétences prouvées {skills} sont demandées.}}",
+      "declaredSkills": "{count, plural, one {Votre compétence {skills} est citée, sans preuve pour l’instant.} other {Vos compétences {skills} sont citées, sans preuve pour l’instant.}}",
+      "noSkills": "Peu de vos compétences sont citées explicitement par l’offre.",
+      "proofs": "{count, plural, one {Une de vos réalisations répond directement à une exigence.} other {# de vos réalisations répondent directement à des exigences.}}",
+      "seniorityAbove": "Le poste semble plus senior que votre poste actuel.",
+      "salaryUnknown": "Le salaire n’est pas indiqué."
+    },
+    "match": "Votre réalisation « {achievement} » répond à l’exigence « {requirement} ».",
+    "matchSemantic": "Votre réalisation « {achievement} » est proche des missions du poste.",
+    "proven": "Prouvée",
+    "declared": "Déclarée",
+    "gaps": {
+      "seniorityAbove": "Le niveau attendu semble supérieur à celui de votre poste actuel.",
+      "seniorityBelow": "Le poste semble moins senior que votre parcours.",
+      "salaryBelowTarget": "La rémunération annoncée est en dessous de votre package visé.",
+      "unprovenSkill": "« {value} » est demandée mais pas encore prouvée : ajoutez une preuve à une réalisation qui l’utilise.",
+      "fewSkills": "L’offre ne cite explicitement aucune de vos compétences."
+    },
+    "unknowns": {
+      "salaryNotStated": "Salaire non indiqué.",
+      "remoteNotStated": "Politique de télétravail non précisée.",
+      "remoteDaysNotStated": "Nombre de jours de télétravail non précisé.",
+      "contractNotStated": "Type de contrat non précisé.",
+      "hoursNotStated": "Durée hebdomadaire non précisée.",
+      "locationNotChecked": "Distance non vérifiée : vos lieux n’ont pas pu être localisés.",
+      "seniorityNotStated": "Niveau d’expérience attendu non précisé.",
+      "cultureNotStated": "L’offre ne mentionne aucune de vos préférences de culture."
+    },
+    "components": {
+      "skills": "Compétences et preuves",
+      "seniority": "Séniorité",
+      "salary": "Rémunération",
+      "culture": "Culture d’entreprise"
+    }
+  },
+  "unsubscribe": {
+    "title": "Alertes opportunités",
+    "confirmText": "Vous ne recevrez plus de résumé d’opportunités par e-mail. Vous pourrez réactiver les alertes à tout moment dans vos paramètres.",
+    "button": "Confirmer le désabonnement",
+    "doneTitle": "Désabonnement confirmé",
+    "doneText": "Vous ne recevrez plus d’alertes. Vous pouvez les réactiver dans vos paramètres.",
+    "invalidTitle": "Lien invalide",
+    "invalidText": "Ce lien de désabonnement n’est pas valide. Vous pouvez gérer vos alertes dans vos paramètres."
   },
   "billing": {
     "title": "Abonnement",
