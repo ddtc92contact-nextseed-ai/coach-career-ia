@@ -143,7 +143,8 @@
         "provenSkills": "Gevraagde en bewezen vaardigheden: {skills}.",
         "skills": "Gevraagde vaardigheden: {skills}.",
         "closing": "Als dit profiel u interesseert, vindt u hieronder de anonieme kaart en een link om te antwoorden. De kandidaat beslist daarna of die de anonimiteit opheft.",
-        "signoff": "Met vriendelijke groet,"
+        "signoff": "Met vriendelijke groet,",
+        "closingPortal": "Als dit profiel u interesseert: de anonieme kaart staat in dit gesprek en u kunt hier direct antwoorden. De kandidaat beslist daarna of hij of zij de anonimiteit opheft."
       }
     },
     "reply": {
@@ -214,6 +215,17 @@
       "postingRejected": {
         "subject": "Vacature afgewezen: {title}",
         "body": "Uw vacature ‘{title}’ is niet goedgekeurd. U kunt ze aanpassen en opnieuw indienen."
+      },
+      "portalContact": {
+        "subject": "U hebt een anonieme sollicitatie ontvangen voor {title}",
+        "body": "U hebt een anonieme sollicitatie ontvangen voor uw vacature ‘{title}’. Ze wacht op u in de inbox van uw bedrijfsomgeving.",
+        "open": "Inbox openen",
+        "openText": "Inbox openen: {url}",
+        "privacy": "Ter bescherming van de kandidaat bevat deze e-mail geen informatie over hem of haar: meld u aan om de sollicitatie te lezen."
+      },
+      "portalMessage": {
+        "subject": "Nieuw bericht van de kandidaat voor {title}",
+        "body": "De kandidaat die u benaderde over uw vacature ‘{title}’ heeft u een nieuw bericht gestuurd. Het wacht op u in de inbox van uw bedrijfsomgeving."
       }
     }
   },
@@ -450,7 +462,8 @@
         "APPROVED": "Bericht goedgekeurd, nog niet verstuurd.",
         "SENDING": "Bezig met versturen.",
         "SENT": "Bedrijf gecontacteerd."
-      }
+      },
+      "portal": "Vacature rechtstreeks door het bedrijf gepubliceerd: je agent schrijft een kort bericht, dat met je anonieme kaart in zijn inbox wordt afgeleverd. Je leest en keurt het goed: niets wordt zonder jou verstuurd."
     },
     "directBadge": "Rechtstreeks door het bedrijf gepubliceerd"
   },
@@ -1487,7 +1500,8 @@
     "emptyAction": "Mijn kansen bekijken",
     "channel": {
       "EMAIL": "Sollicitatie-e-mail",
-      "APPLY_URL": "‘Solliciteren’-pagina"
+      "APPLY_URL": "‘Solliciteren’-pagina",
+      "PORTAL": "Bedrijfsomgeving"
     },
     "status": {
       "DRAFT": "Concept",
@@ -1535,7 +1549,14 @@
       "noReply": "Nog geen antwoord. Je krijgt een e-mail zodra er een is.",
       "receivedOn": "Ontvangen op {date}",
       "approved": "Bericht goedgekeurd.",
-      "discardConfirm": "Dit contact laten vallen? Het concept wordt verwijderd."
+      "discardConfirm": "Dit contact laten vallen? Het concept wordt verwijderd.",
+      "recipientPortal": "Ontvanger: de inbox van de bedrijfsomgeving van de organisatie die de vacature publiceert (geen e-mail bevat je bericht).",
+      "portalCard": "Kaart zichtbaar in de bedrijfsomgeving tot {date}, {views, plural, =0 {nooit bekeken} one {# keer bekeken} other {# keer bekeken}}.",
+      "portalCardRevoked": "Kaart ingetrokken: het bedrijf ziet haar niet meer in zijn inbox.",
+      "closedOn": "Gesprek afgesloten door het bedrijf op {date}",
+      "sendPortal": "Naar de bedrijfsomgeving sturen",
+      "sendPortalHint": "Afgeleverd in de inbox van het bedrijf, dat een melding zonder de inhoud krijgt. Je identiteit wordt niet gedeeld.",
+      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd, samen met je anonieme kaart."
     },
     "errors": {
       "noChannel": "Deze vacature publiceert geen bruikbaar sollicitatiekanaal.",
@@ -1628,8 +1649,13 @@
       "notFound": "Dit contact is niet gevonden.",
       "network": "Er is een netwerkfout opgetreden. Probeer het opnieuw.",
       "wrongPassphrase": "Onjuiste wachtzin.",
-      "nothingSelected": "Vink minstens één gegeven aan om te onthullen."
-    }
+      "nothingSelected": "Vink minstens één gegeven aan om te onthullen.",
+      "closed": "Het bedrijf heeft dit gesprek afgesloten."
+    },
+    "activePortal": "Zichtbaar in de bedrijfsomgeving tot {date}, {views, plural, =0 {nooit bekeken} one {# keer bekeken} other {# keer bekeken}}.",
+    "closed": "Het bedrijf heeft dit gesprek afgesloten: het opheffen van je anonimiteit wordt niet meer aangeboden.",
+    "donePortal": "Klaar: de gekozen gegevens verschijnen in de bedrijfsomgeving van {company}, alleen voor de leden.",
+    "previewPortal": "Deze gegevens verschijnen in de inbox van de bedrijfsomgeving van de organisatie, alleen voor de leden. Ze verlopen automatisch en je kunt ze op elk moment intrekken."
   },
   "replyPage": {
     "title": "De kandidaat antwoorden",
@@ -1749,7 +1775,10 @@
       "markTransmitted": "Ik heb dit bericht doorgegeven",
       "discard": "Dit concept verwijderen",
       "discardConfirm": "Dit concept verwijderen?",
-      "blocked": "Dit bericht kan in deze vorm niet worden goedgekeurd:"
+      "blocked": "Dit bericht kan in deze vorm niet worden goedgekeurd:",
+      "sendPortal": "Naar de bedrijfsomgeving sturen",
+      "sendPortalHint": "Afgeleverd in de inbox van het bedrijf, dat een melding zonder de inhoud krijgt.",
+      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd; het antwoordt direct in zijn inbox."
     },
     "issues": {
       "belowFloor": "een bedrag ligt onder uw ondergrens ({excerpt});",
@@ -1838,7 +1867,9 @@
       "dashboard": "Mijn vacatures",
       "newPosting": "Vacature publiceren",
       "organization": "Mijn organisatie",
-      "candidate": "Kandidaatomgeving"
+      "candidate": "Kandidaatomgeving",
+      "messages": "Inbox",
+      "newThreads": "{count, plural, one {# nieuw bericht} other {# nieuwe berichten}}"
     },
     "signup": {
       "metaTitle": "Voor werkgevers",
@@ -1987,6 +2018,53 @@
       "days": "{days} dagen",
       "total": "Bedrag",
       "back": "Terug naar de vacature"
+    },
+    "inbox": {
+      "title": "Inbox",
+      "intro": "De anonieme sollicitaties op uw vacatures. Elke persoon heeft ervoor gekozen u te benaderen; alleen zij beslist of ze haar anonimiteit opheft.",
+      "emptyTitle": "Nog geen sollicitaties",
+      "emptyText": "Wanneer een kandidaat wiens voorwaarden uw vacatures respecteren besluit u te benaderen, komt de anonieme sollicitatie hier binnen.",
+      "threadTitle": "Anonieme sollicitatie — {title}",
+      "lastActivity": "Laatste activiteit op {date}",
+      "privacy": "U ziet alleen mensen die u hebben benaderd. Er bestaat nergens op het platform een zoekfunctie of ranglijst van kandidaten.",
+      "status": {
+        "NEW": "Nieuw",
+        "READ": "Gelezen",
+        "REPLIED": "Beantwoord",
+        "CLOSED": "Afgesloten"
+      },
+      "back": "← Inbox",
+      "receivedOn": "Ontvangen op {date}",
+      "revealedTitle": "Onthulde identiteit",
+      "revealedExpires": "Zichtbaar tot {date}. De kandidaat kan deze gegevens op elk moment intrekken.",
+      "cardTitle": "Anonieme kaart",
+      "cardGone": "De anonieme kaart is niet meer beschikbaar: ze is verlopen of de kandidaat heeft haar ingetrokken.",
+      "messageTitle": "Bericht",
+      "aiDisclosure": "Bericht opgesteld door de AI-assistent van de kandidaat, vóór verzending door hem of haar nagelezen en goedgekeurd.",
+      "repliesTitle": "Gesprek",
+      "noReply": "U hebt nog niet geantwoord.",
+      "repliedOn": "Uw antwoord van {date}",
+      "closedOn": "Afgesloten op {date}",
+      "closedNotice": "Dit gesprek is afgesloten: de kandidaat heeft uw afsluitend bericht ontvangen.",
+      "closeHint": "Past het profiel niet? Sluit beleefd af: er wordt een standaardbericht verstuurd.",
+      "close": "Beleefd afsluiten",
+      "closeConfirm": "Dit gesprek afsluiten? De kandidaat ontvangt een bedankbericht en u kunt niet meer antwoorden.",
+      "closing": {
+        "message": "Hallo,\n\nBedankt voor uw interesse in onze vacature ‘{title}’. Na bestudering van uw profiel gaan we niet verder met deze sollicitatie. We wensen u veel succes met uw zoektocht.\n\nMet vriendelijke groet.",
+        "pending": "Afsluiten…"
+      },
+      "replyLabel": "Uw antwoord",
+      "replyHint": "De kandidaat krijgt een e-mailmelding en leest uw antwoord in zijn of haar omgeving. Daarna beslist hij of zij over het opheffen van de anonimiteit.",
+      "replySubmit": "Antwoord versturen",
+      "replySent": "Antwoord verstuurd.",
+      "errors": {
+        "invalid": "Uw antwoord moet tussen 2 en 5.000 tekens bevatten.",
+        "closed": "Dit gesprek is afgesloten.",
+        "rateLimited": "Te veel berichten vandaag in dit gesprek. Probeer het morgen opnieuw."
+      },
+      "threadPrivacy": "Deze gegevens zijn voorbehouden aan de leden van uw organisatie, alleen voor deze sollicitatie.",
+      "revealedDisclosure": "De kandidaat heeft besloten de anonimiteit tegenover uw organisatie op te heffen. Deze gegevens worden gedeeld door zijn of haar AI-loopbaanagent (Coach Career IA), op uitdrukkelijk besluit.",
+      "candidateOn": "Bericht van de kandidaat van {date} — opgesteld door zijn of haar AI-assistent, door hem of haar goedgekeurd"
     }
   }
 }

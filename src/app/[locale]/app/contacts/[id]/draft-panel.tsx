@@ -46,7 +46,7 @@ export function DraftPanel({
   approved,
 }: {
   id: string;
-  channel: "EMAIL" | "APPLY_URL";
+  channel: "EMAIL" | "APPLY_URL" | "PORTAL";
   subject: string;
   body: string;
   approved: boolean;
@@ -108,7 +108,7 @@ export function DraftPanel({
             className={inputClass}
           />
           <p id="body-hint" className="mt-1 text-sm text-stone-500">
-            {t("appended")}
+            {t(channel === "PORTAL" ? "appendedPortal" : "appended")}
           </p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -126,15 +126,17 @@ export function DraftPanel({
           </button>
           <ActionMessage state={approveState} />
         </form>
-      ) : channel === "EMAIL" ? (
+      ) : channel === "EMAIL" || channel === "PORTAL" ? (
         <form action={send} className="space-y-2">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button type="submit" disabled={sending || dirty} className={primary}>
-              {t("send")}
+              {t(channel === "PORTAL" ? "sendPortal" : "send")}
             </button>
             <ActionMessage state={sendState} />
           </div>
-          <p className="text-xs text-stone-500">{t("sendHint")}</p>
+          <p className="text-xs text-stone-500">
+            {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
+          </p>
         </form>
       ) : null}
     </div>

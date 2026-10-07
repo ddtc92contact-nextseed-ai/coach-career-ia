@@ -129,7 +129,11 @@ export async function sendMessageAction(
   const user = await requireUser();
   const deps = contactDeps();
   const result = await guard(() =>
-    sendMessage(user.id, contactId, messageId, { send: deps.send, appUrl: deps.appUrl }),
+    sendMessage(user.id, contactId, messageId, {
+      send: deps.send,
+      notify: deps.notify,
+      appUrl: deps.appUrl,
+    }),
   );
   refresh();
   return result.ok ? { ok: "sent" } : failure(result);

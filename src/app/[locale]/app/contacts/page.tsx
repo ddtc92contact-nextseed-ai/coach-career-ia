@@ -56,7 +56,7 @@ export default async function ContactsPage() {
                       c.offer.companyName ?? t("companyUnknown"),
                       t(`channel.${c.channel}`),
                       c.sentAt
-                        ? t(c.channel === "EMAIL" ? "sentOn" : "submittedOn", {
+                        ? t(c.channel === "APPLY_URL" ? "submittedOn" : "sentOn", {
                             date: format.dateTime(c.sentAt, "short"),
                           })
                         : null,

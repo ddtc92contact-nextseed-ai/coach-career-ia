@@ -143,7 +143,8 @@
         "provenSkills": "Competencias requeridas y probadas: {skills}.",
         "skills": "Competencias requeridas: {skills}.",
         "closing": "Si este perfil le interesa, encontrará a continuación su tarjeta anónima y un enlace para responder. La persona candidata decidirá después si revela su identidad.",
-        "signoff": "Atentamente,"
+        "signoff": "Atentamente,",
+        "closingPortal": "Si este perfil le interesa, su tarjeta anónima figura en esta conversación y puede responder directamente aquí. La persona candidata decidirá después si levanta o no su anonimato."
       }
     },
     "reply": {
@@ -214,6 +215,17 @@
       "postingRejected": {
         "subject": "Oferta rechazada: {title}",
         "body": "Su oferta «{title}» no ha sido validada. Puede modificarla y volver a enviarla."
+      },
+      "portalContact": {
+        "subject": "Has recibido una candidatura anónima para {title}",
+        "body": "Has recibido una candidatura anónima para tu oferta «{title}». Te espera en la mensajería de tu espacio empresa.",
+        "open": "Abrir la mensajería",
+        "openText": "Abrir la mensajería: {url}",
+        "privacy": "Para proteger a la persona candidata, este correo no contiene ninguna información sobre ella: inicia sesión para leer la candidatura."
+      },
+      "portalMessage": {
+        "subject": "Nuevo mensaje de la persona candidata para {title}",
+        "body": "La persona candidata que te contactó sobre tu oferta «{title}» te ha enviado un nuevo mensaje. Te espera en la mensajería de tu espacio empresa."
       }
     }
   },
@@ -450,7 +462,8 @@
         "APPROVED": "Mensaje aprobado, todavía no enviado.",
         "SENDING": "Enviando.",
         "SENT": "Empresa contactada."
-      }
+      },
+      "portal": "Oferta publicada directamente por la empresa: tu agente redacta un mensaje breve, entregado con tu tarjeta anónima en su mensajería. Lo revisas y lo apruebas: nada se envía sin ti."
     },
     "directBadge": "Publicada directamente por la empresa"
   },
@@ -1487,7 +1500,8 @@
     "emptyAction": "Ver mis oportunidades",
     "channel": {
       "EMAIL": "Correo de candidatura",
-      "APPLY_URL": "Página «Postular»"
+      "APPLY_URL": "Página «Postular»",
+      "PORTAL": "Espacio empresa"
     },
     "status": {
       "DRAFT": "Borrador",
@@ -1535,7 +1549,14 @@
       "noReply": "Todavía no hay respuesta. Se te avisará por correo electrónico.",
       "receivedOn": "Recibido el {date}",
       "approved": "Mensaje aprobado.",
-      "discardConfirm": "¿Abandonar este contacto? Se eliminará el borrador."
+      "discardConfirm": "¿Abandonar este contacto? Se eliminará el borrador.",
+      "recipientPortal": "Destinatario: la mensajería del espacio empresa de la organización que publica la oferta (ningún correo contiene tu mensaje).",
+      "portalCard": "Tarjeta visible en el espacio empresa hasta el {date}, {views, plural, =0 {nunca consultada} one {consultada # vez} other {consultada # veces}}.",
+      "portalCardRevoked": "Tarjeta retirada: la empresa ya no la ve en su mensajería.",
+      "closedOn": "Conversación cerrada por la empresa el {date}",
+      "sendPortal": "Enviar al espacio empresa",
+      "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido. Tu identidad no se comunica.",
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue preparado por tu asistente de IA y aprobado por ti, junto con tu tarjeta anónima."
     },
     "errors": {
       "noChannel": "Esta oferta no publica ningún canal de candidatura utilizable.",
@@ -1628,8 +1649,13 @@
       "notFound": "No se encuentra este contacto.",
       "network": "Se ha producido un error de red. Inténtalo de nuevo.",
       "wrongPassphrase": "Frase secreta incorrecta.",
-      "nothingSelected": "Marca al menos una información que revelar."
-    }
+      "nothingSelected": "Marca al menos una información que revelar.",
+      "closed": "La empresa cerró esta conversación."
+    },
+    "activePortal": "Visible en el espacio empresa hasta el {date}, {views, plural, =0 {nunca consultado} one {consultado # vez} other {consultado # veces}}.",
+    "closed": "La empresa cerró esta conversación: ya no se ofrece levantar el anonimato.",
+    "donePortal": "Hecho: la información elegida aparece en el espacio empresa de {company}, solo para sus miembros.",
+    "previewPortal": "Esta información aparecerá en la mensajería del espacio empresa de la organización, solo para sus miembros. Caduca automáticamente y puedes retirarla en cualquier momento."
   },
   "replyPage": {
     "title": "Responder a la persona candidata",
@@ -1749,7 +1775,10 @@
       "markTransmitted": "He transmitido este mensaje",
       "discard": "Eliminar este borrador",
       "discardConfirm": "¿Eliminar este borrador?",
-      "blocked": "Este mensaje no se puede aprobar tal como está:"
+      "blocked": "Este mensaje no se puede aprobar tal como está:",
+      "sendPortal": "Enviar al espacio empresa",
+      "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido.",
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue redactado por tu asistente de IA y aprobado por ti; responde directamente en su mensajería."
     },
     "issues": {
       "belowFloor": "un importe es inferior a tu mínimo ({excerpt});",
@@ -1838,7 +1867,9 @@
       "dashboard": "Mis ofertas",
       "newPosting": "Publicar una oferta",
       "organization": "Mi organización",
-      "candidate": "Espacio candidato"
+      "candidate": "Espacio candidato",
+      "messages": "Mensajería",
+      "newThreads": "{count, plural, one {# mensaje nuevo} other {# mensajes nuevos}}"
     },
     "signup": {
       "metaTitle": "Para empresas",
@@ -1987,6 +2018,53 @@
       "days": "{days} días",
       "total": "Importe",
       "back": "Volver a la oferta"
+    },
+    "inbox": {
+      "title": "Mensajería",
+      "intro": "Las candidaturas anónimas recibidas en tus ofertas. Cada persona eligió contactarte; solo ella decide si levanta su anonimato.",
+      "emptyTitle": "Ninguna candidatura por ahora",
+      "emptyText": "Cuando una persona candidata cuyas condiciones cumplen tus ofertas decida contactarte, su candidatura anónima llegará aquí.",
+      "threadTitle": "Candidatura anónima — {title}",
+      "lastActivity": "Última actividad el {date}",
+      "privacy": "Solo ves a las personas que te han contactado. No existe ninguna búsqueda ni clasificación de candidatos en la plataforma.",
+      "status": {
+        "NEW": "Nuevo",
+        "READ": "Leído",
+        "REPLIED": "Respondido",
+        "CLOSED": "Cerrado"
+      },
+      "back": "← Mensajería",
+      "receivedOn": "Recibida el {date}",
+      "revealedTitle": "Identidad revelada",
+      "revealedExpires": "Visible hasta el {date}. La persona candidata puede retirar esta información en cualquier momento.",
+      "cardTitle": "Tarjeta anónima",
+      "cardGone": "La tarjeta anónima ya no está disponible: ha caducado o la persona candidata la ha retirado.",
+      "messageTitle": "Mensaje",
+      "aiDisclosure": "Mensaje redactado por el asistente de IA de la persona candidata, revisado y aprobado por ella antes del envío.",
+      "repliesTitle": "Conversación",
+      "noReply": "Aún no has respondido.",
+      "repliedOn": "Tu respuesta del {date}",
+      "closedOn": "Cierre del {date}",
+      "closedNotice": "Esta conversación está cerrada: la persona candidata recibió tu mensaje de cierre.",
+      "closeHint": "¿El perfil no encaja? Cierra con cortesía: se le envía un mensaje estándar.",
+      "close": "Cerrar con cortesía",
+      "closeConfirm": "¿Cerrar esta conversación? Se enviará un mensaje de agradecimiento a la persona candidata y ya no podrás responder.",
+      "closing": {
+        "message": "Hola:\n\nGracias por tu interés en nuestra oferta «{title}». Tras estudiar tu perfil, no seguiremos adelante con esta candidatura. Te deseamos mucho éxito en tu búsqueda.\n\nUn cordial saludo.",
+        "pending": "Cerrando…"
+      },
+      "replyLabel": "Tu respuesta",
+      "replyHint": "La persona candidata recibe un aviso por correo y lee tu respuesta en su espacio. Después decide si levanta su anonimato.",
+      "replySubmit": "Enviar la respuesta",
+      "replySent": "Respuesta enviada.",
+      "errors": {
+        "invalid": "Tu respuesta debe tener entre 2 y 5000 caracteres.",
+        "closed": "Esta conversación está cerrada.",
+        "rateLimited": "Demasiados mensajes hoy en esta conversación. Vuelve a intentarlo mañana."
+      },
+      "threadPrivacy": "Esta información está reservada a los miembros de tu organización, solo para esta candidatura.",
+      "revealedDisclosure": "La persona candidata ha decidido levantar su anonimato ante tu organización. Su agente de carrera IA (Coach Career IA) te comunica esta información por decisión explícita suya.",
+      "candidateOn": "Mensaje de la persona candidata del {date} — redactado por su asistente de IA, aprobado por ella"
     }
   }
 }

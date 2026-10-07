@@ -39,6 +39,7 @@ type ErrorCode =
   | "notSent"
   | "noReply"
   | "alreadyRevealed"
+  | "closed"
   | "invalid"
   | "cvInvalid"
   | "sendUnavailable"
@@ -52,6 +53,7 @@ const KNOWN_ERRORS = new Set<string>([
   "notSent",
   "noReply",
   "alreadyRevealed",
+  "closed",
   "invalid",
   "cvInvalid",
   "sendUnavailable",
@@ -98,7 +100,7 @@ export function HandoverPanel({
   contactId: string;
   /** Une levée est déjà active sur ce fil (affichée par la page). */
   active: boolean;
-  channel: "EMAIL" | "APPLY_URL";
+  channel: "EMAIL" | "APPLY_URL" | "PORTAL";
   companyName: string | null;
   /** Intitulés des postes de la mémoire (pseudonymisée), par expérience. */
   roles: Record<string, string>;
@@ -126,7 +128,9 @@ export function HandoverPanel({
     return (
       <div className="space-y-3">
         <p role="status" className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
-          {doneUrl ? t("doneManual") : t("doneEmail", { company })}
+          {doneUrl
+            ? t("doneManual")
+            : t(channel === "PORTAL" ? "donePortal" : "doneEmail", { company })}
         </p>
         {doneUrl ? <CopyText text={doneUrl} rows={3} /> : null}
       </div>
@@ -385,7 +389,11 @@ export function HandoverPanel({
       <p className="text-sm text-stone-600">{t("previewIntro")}</p>
       <RevealedIdentityView identity={preview} />
       <p className="text-sm text-stone-600">
-        {channel === "EMAIL" ? t("previewEmail") : t("previewManual")}
+        {channel === "EMAIL"
+          ? t("previewEmail")
+          : channel === "PORTAL"
+            ? t("previewPortal")
+            : t("previewManual")}
       </p>
       <Check checked={confirmed} onChange={setConfirmed}>
         {t("confirmLabel", { company })}

@@ -143,7 +143,8 @@
         "provenSkills": "Required skills, backed by proofs: {skills}.",
         "skills": "Required skills: {skills}.",
         "closing": "If this profile interests you, their anonymous card and a link to reply are below. The candidate will then decide whether to reveal their identity.",
-        "signoff": "Kind regards,"
+        "signoff": "Kind regards,",
+        "closingPortal": "If this profile interests you, the anonymous card is in this thread and you can reply directly here. The candidate will then decide whether to reveal their identity."
       }
     },
     "reply": {
@@ -214,6 +215,17 @@
       "postingRejected": {
         "subject": "Job rejected: {title}",
         "body": "Your job “{title}” was not approved. You can edit it and submit it again."
+      },
+      "portalContact": {
+        "subject": "You have received an anonymous application for {title}",
+        "body": "You have received an anonymous application for your offer “{title}”. It is waiting for you in your company portal inbox.",
+        "open": "Open the inbox",
+        "openText": "Open the inbox: {url}",
+        "privacy": "To protect the candidate, this e-mail contains no information about them: sign in to read the application."
+      },
+      "portalMessage": {
+        "subject": "New message from the candidate for {title}",
+        "body": "The candidate who contacted you about your offer “{title}” has sent you a new message. It is waiting for you in your company portal inbox."
       }
     }
   },
@@ -450,7 +462,8 @@
         "APPROVED": "Message approved, not sent yet.",
         "SENDING": "Sending.",
         "SENT": "Company contacted."
-      }
+      },
+      "portal": "Offer posted directly by the company: your agent drafts a short message, delivered with your anonymous card to its inbox. You review and approve it: nothing is sent without you."
     },
     "directBadge": "Posted directly by the company"
   },
@@ -1487,7 +1500,8 @@
     "emptyAction": "See my opportunities",
     "channel": {
       "EMAIL": "Application email",
-      "APPLY_URL": "“Apply” page"
+      "APPLY_URL": "“Apply” page",
+      "PORTAL": "Company portal"
     },
     "status": {
       "DRAFT": "Draft",
@@ -1535,7 +1549,14 @@
       "noReply": "No reply yet. You will be notified by email.",
       "receivedOn": "Received on {date}",
       "approved": "Message approved.",
-      "discardConfirm": "Discard this contact? The draft will be deleted."
+      "discardConfirm": "Discard this contact? The draft will be deleted.",
+      "recipientPortal": "Recipient: the inbox of the company portal of the organisation that posted the offer (no e-mail contains your message).",
+      "portalCard": "Card visible in the company portal until {date}, {views, plural, =0 {never viewed} one {viewed # time} other {viewed # times}}.",
+      "portalCardRevoked": "Card withdrawn: the company no longer sees it in its inbox.",
+      "closedOn": "Thread closed by the company on {date}",
+      "sendPortal": "Send to the company portal",
+      "sendPortalHint": "Delivered to the company’s inbox; the company is notified without the content. Your identity is not shared.",
+      "appendedPortal": "The company will see a note saying the message was prepared by your AI assistant and approved by you, along with your anonymous card."
     },
     "errors": {
       "noChannel": "This offer publishes no usable application channel.",
@@ -1628,8 +1649,13 @@
       "notFound": "This contact cannot be found.",
       "network": "A network error occurred. Try again.",
       "wrongPassphrase": "Wrong passphrase.",
-      "nothingSelected": "Tick at least one piece of information to reveal."
-    }
+      "nothingSelected": "Tick at least one piece of information to reveal.",
+      "closed": "The company closed this conversation."
+    },
+    "activePortal": "Visible in the company portal until {date}, {views, plural, =0 {never viewed} one {viewed # time} other {viewed # times}}.",
+    "closed": "The company closed this conversation: revealing your identity is no longer offered.",
+    "donePortal": "Done: the selected information now appears in {company}’s company portal, for its members only.",
+    "previewPortal": "This information will appear in the inbox of the organisation’s company portal, for its members only. It expires automatically and you can withdraw it at any time."
   },
   "replyPage": {
     "title": "Reply to the candidate",
@@ -1749,7 +1775,10 @@
       "markTransmitted": "I have passed this message on",
       "discard": "Delete this draft",
       "discardConfirm": "Delete this draft?",
-      "blocked": "This message cannot be approved as it stands:"
+      "blocked": "This message cannot be approved as it stands:",
+      "sendPortal": "Send to the company portal",
+      "sendPortalHint": "Delivered to the company’s inbox; the company is notified without the content.",
+      "appendedPortal": "The company will see a note saying the message was written by your AI assistant and approved by you; it replies directly in its inbox."
     },
     "issues": {
       "belowFloor": "an amount is below your floor ({excerpt});",
@@ -1838,7 +1867,9 @@
       "dashboard": "My jobs",
       "newPosting": "Post a job",
       "organization": "My organisation",
-      "candidate": "Candidate area"
+      "candidate": "Candidate area",
+      "messages": "Inbox",
+      "newThreads": "{count, plural, one {# new message} other {# new messages}}"
     },
     "signup": {
       "metaTitle": "I’m hiring",
@@ -1987,6 +2018,53 @@
       "days": "{days} days",
       "total": "Amount",
       "back": "Back to the job"
+    },
+    "inbox": {
+      "title": "Inbox",
+      "intro": "Anonymous applications received on your offers. Each person chose to contact you; they alone decide whether to reveal their identity.",
+      "emptyTitle": "No applications yet",
+      "emptyText": "When a candidate whose conditions your offers meet decides to contact you, their anonymous application arrives here.",
+      "threadTitle": "Anonymous application — {title}",
+      "lastActivity": "Last activity on {date}",
+      "privacy": "You only see people who contacted you. There is no candidate search or ranking anywhere on the platform.",
+      "status": {
+        "NEW": "New",
+        "READ": "Read",
+        "REPLIED": "Replied",
+        "CLOSED": "Closed"
+      },
+      "back": "← Inbox",
+      "receivedOn": "Received on {date}",
+      "revealedTitle": "Revealed identity",
+      "revealedExpires": "Visible until {date}. The candidate can withdraw this information at any time.",
+      "cardTitle": "Anonymous card",
+      "cardGone": "The anonymous card is no longer available: it has expired or the candidate withdrew it.",
+      "messageTitle": "Message",
+      "aiDisclosure": "Message drafted by the candidate’s AI assistant, reviewed and approved by them before sending.",
+      "repliesTitle": "Conversation",
+      "noReply": "You have not replied yet.",
+      "repliedOn": "Your reply of {date}",
+      "closedOn": "Closed on {date}",
+      "closedNotice": "This thread is closed: the candidate received your closing message.",
+      "closeHint": "Not a fit? Close politely: a standard message is sent to them.",
+      "close": "Close politely",
+      "closeConfirm": "Close this thread? A thank-you message will be sent to the candidate and you will no longer be able to reply.",
+      "closing": {
+        "message": "Hello,\n\nThank you for your interest in our offer “{title}”. After reviewing your profile, we will not be taking this application further. We wish you every success in your search.\n\nKind regards.",
+        "pending": "Closing…"
+      },
+      "replyLabel": "Your reply",
+      "replyHint": "The candidate is notified by e-mail and reads your reply in their space. They then decide whether to reveal their identity.",
+      "replySubmit": "Send reply",
+      "replySent": "Reply sent.",
+      "errors": {
+        "invalid": "Your reply must contain between 2 and 5,000 characters.",
+        "closed": "This thread is closed.",
+        "rateLimited": "Too many messages on this thread today. Try again tomorrow."
+      },
+      "threadPrivacy": "This information is reserved for members of your organisation, for this application only.",
+      "revealedDisclosure": "The candidate has decided to reveal their identity to your organisation. This information is shared by their AI career agent (Coach Career IA), on their explicit decision.",
+      "candidateOn": "Message from the candidate on {date} — written by their AI assistant, approved by them"
     }
   }
 }

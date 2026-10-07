@@ -2,7 +2,6 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { Prisma } from "@/generated/prisma/client";
-import type { ContactChannel } from "@/generated/prisma/enums";
 import { db } from "@/lib/db";
 import { DEFAULT_LOCALE, isAppLocale, type AppLocale } from "@/i18n/routing";
 import type { AiClient } from "@/lib/ai/client";
@@ -29,14 +28,18 @@ import {
   MAX_REPLY_LENGTH,
   remainingContacts,
 } from "./config";
+import { channelFor, QUOTA_CHANNELS } from "./channel";
 import { buildDraft, MAX_BODY, MAX_SUBJECT } from "./draft";
 import { contactEmail, pasteText, replyNotificationEmail } from "./email";
 import { offerLanguage } from "./language";
+import { notifyPortalContact } from "@/lib/employer/notify";
 import { encNegotiation } from "@/lib/negotiation/store";
 
 /**
  * Prises de contact de l'agent avec une entreprise, uniquement via le canal
- * de candidature publié dans l'offre.
+ * de candidature publié dans l'offre — ou, pour une offre publiée
+ * directement sur la plateforme, via la messagerie de l'espace entreprise
+ * (canal `PORTAL`, `src/lib/employer/inbox.ts`).
  *
  * Cycle : BROUILLON (rédigé par l'agent, modifiable) → APPROUVÉ (geste
  * explicite du candidat, lié au texte exact) → ENVOYÉ. Rien n'est jamais
@@ -56,7 +59,7 @@ const contentAad = (userId: string) => `user:${userId}:contact`;
 const replyAad = (userId: string) => `user:${userId}:contact-reply`;
 
 const enc = (userId: string, text: string) => encrypt(text, { aad: contentAad(userId) });
-/** Réponse d'une entreprise à un contact, en clair (pour le seul candidat). */
+/** Réponse d'une entreprise à un contact, en clair (candidat, fil de l'espace entreprise destinataire). */
 export const decryptReply = (userId: string, bodyEnc: string) =>
   decrypt(bodyEnc, { aad: replyAad(userId) });
 const dec = (userId: string, text: string) => decrypt(text, { aad: contentAad(userId) });
@@ -96,17 +99,17 @@ const offerSelect = {
   applyEmail: true,
   applyEmailPersonal: true,
   applyUrl: true,
+  posting: { select: { orgId: true } },
 } as const;
 
-/** Canal de l'offre : e-mail de candidature en priorité, sinon page « Postuler ». */
-export function channelFor(offer: {
+export { channelFor };
+
+const offerChannel = (offer: {
+  source: string;
   applyEmail: string | null;
   applyUrl: string | null;
-}): ContactChannel | null {
-  if (offer.applyEmail) return "EMAIL";
-  if (offer.applyUrl) return "APPLY_URL";
-  return null;
-}
+  posting: { orgId: string } | null;
+}) => channelFor({ ...offer, orgId: offer.posting?.orgId ?? null });
 
 /** L'offre est ouverte, canonique et respecte TOUS les garde-fous actuels du candidat. */
 async function offerPassesGuardRails(userId: string, offerId: string): Promise<boolean> {
@@ -119,8 +122,9 @@ async function offerPassesGuardRails(userId: string, offerId: string): Promise<b
 }
 
 /**
- * E-mails envoyés par l'application pour le candidat sur 24 h glissantes :
- * prises de contact ET messages de négociation (quota commun).
+ * Messages envoyés par l'application pour le candidat sur 24 h glissantes
+ * (e-mail et messagerie de l'espace entreprise) : prises de contact ET
+ * messages de négociation (quota commun).
  */
 export async function sentInWindow(userId: string, now: Date) {
   const since = new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS);
@@ -128,7 +132,7 @@ export async function sentInWindow(userId: string, now: Date) {
     db.contact.count({
       where: {
         userId,
-        channel: "EMAIL",
+        channel: { in: [...QUOTA_CHANNELS] },
         status: { in: ["SENT", "SENDING"] },
         sentAt: { gte: since },
       },
@@ -139,7 +143,7 @@ export async function sentInWindow(userId: string, now: Date) {
         direction: "OUT",
         status: { in: ["SENT", "SENDING"] },
         sentAt: { gte: since },
-        contact: { channel: "EMAIL" },
+        contact: { channel: { in: [...QUOTA_CHANNELS] } },
       },
     }),
   ]);
@@ -181,7 +185,7 @@ export async function startContact(
     where: { id: match.offer.id },
     select: offerSelect,
   });
-  const channel = channelFor(offer);
+  const channel = offerChannel(offer);
   if (!channel) return { ok: false, error: "noChannel" };
   const card = await shareableCard(userId);
   if (!card.ok) return { ok: false, error: "card", issues: card.issues };
@@ -196,6 +200,7 @@ export async function startContact(
       score: match.score,
       card: publicCard(card.card),
       matchedSkills: match.explanation?.skills ?? [],
+      portal: channel === "PORTAL",
     },
     deps.ai,
     terms,
@@ -207,6 +212,8 @@ export async function startContact(
         userId,
         offerId: offer.id,
         channel,
+        // Seuls les membres de cette organisation verront le fil, une fois envoyé.
+        orgId: channel === "PORTAL" ? offer.posting!.orgId : null,
         locale,
         subjectEnc: enc(userId, draft.subject),
         bodyEnc: enc(userId, draft.body),
@@ -316,6 +323,8 @@ async function preflight(
 export type SendDeps = {
   /** Expéditeur SMTP (adresse de la plateforme), `null` si non configuré. */
   send: MailSender | null;
+  /** Expéditeur des notifications (canal PORTAL : prévenir les membres), sinon `send`. */
+  notify?: MailSender | null;
   appUrl: string | null;
   now?: () => Date;
   logger?: Logger;
@@ -373,8 +382,10 @@ export async function approveDraft(
 }
 
 /**
- * Envoi par l'application (canal e-mail), à la demande du candidat. Refusé
- * sans brouillon APPROUVÉ et inchangé depuis l'approbation.
+ * Envoi par l'application (canal e-mail, ou remise dans la messagerie de
+ * l'espace entreprise pour le canal PORTAL), à la demande du candidat.
+ * Refusé sans brouillon APPROUVÉ et inchangé depuis l'approbation. Mêmes
+ * contrôles et même quota quotidien pour les deux canaux.
  */
 export async function sendContact(
   userId: string,
@@ -385,7 +396,8 @@ export async function sendContact(
   const now = (deps.now ?? (() => new Date()))();
   const row = await ownedContact(userId, id);
   if (row.status === "SENT" || row.status === "SENDING") return { ok: false, error: "alreadySent" };
-  if (row.channel !== "EMAIL" || row.status !== "APPROVED" || !row.approvedHash) {
+  const portal = row.channel === "PORTAL";
+  if ((row.channel !== "EMAIL" && !portal) || row.status !== "APPROVED" || !row.approvedHash) {
     return { ok: false, error: "notApproved" };
   }
   const checked = await preflight(userId, row);
@@ -393,7 +405,8 @@ export async function sendContact(
   if (draftHash(checked.subject, checked.body) !== row.approvedHash) {
     return { ok: false, error: "notApproved" };
   }
-  if (!deps.send || !deps.appUrl) return { ok: false, error: "sendUnavailable" };
+  // La remise dans l'espace entreprise ne dépend pas du SMTP (seule la notification en dépend).
+  if (!portal && (!deps.send || !deps.appUrl)) return { ok: false, error: "sendUnavailable" };
   const limit = contactDailyLimit();
   if (limit === 0) return { ok: false, error: "quota" };
 
@@ -417,9 +430,9 @@ export async function sendContact(
 
   const offer = await db.jobOffer.findUnique({
     where: { id: row.offerId },
-    select: { applyEmail: true },
+    select: { applyEmail: true, title: true, posting: { select: { orgId: true } } },
   });
-  if (!offer?.applyEmail) {
+  if (portal ? !row.orgId || offer?.posting?.orgId !== row.orgId : !offer?.applyEmail) {
     await release();
     return { ok: false, error: "noChannel" };
   }
@@ -429,13 +442,34 @@ export async function sendContact(
     return { ok: false, error: "card", issues: created.issues };
   }
   const locale = isAppLocale(row.locale) ? row.locale : DEFAULT_LOCALE;
+  if (portal) {
+    // Remis dans la messagerie de l'organisation : le lien de carte n'est jamais
+    // transmis (la carte s'affiche dans le fil, avec ses règles d'expiration).
+    await db.contact.updateMany({
+      where: { id: row.id, userId, status: "SENDING" },
+      data: {
+        status: "SENT",
+        sentAt: now,
+        sentTextEnc: enc(userId, checked.body),
+        cardLinkId: created.link.id,
+        lastError: null,
+      },
+    });
+    await dropPreparedLink(userId, row.cardLinkId, now);
+    log.info("contact.sent", { channel: "PORTAL", locale });
+    await notifyPortalContact(
+      { orgId: row.orgId!, contactId: row.id, offerTitle: offer!.title },
+      { send: deps.notify ?? deps.send, appUrl: deps.appUrl, logger: log },
+    );
+    return { ok: true };
+  }
   const message = contactEmail(
     locale,
     { subject: checked.subject, body: checked.body },
-    links(deps.appUrl, locale, created.link.token, created.link.expiresAt),
+    links(deps.appUrl!, locale, created.link.token, created.link.expiresAt),
   );
   try {
-    await deps.send({ to: offer.applyEmail, ...message });
+    await deps.send!({ to: offer!.applyEmail!, ...message });
   } catch (error) {
     await db.cardLink.update({ where: { id: created.link.id }, data: { revokedAt: now } });
     await release({ lastError: "sendFailed" });
@@ -599,8 +633,11 @@ export async function getContact(userId: string, id: unknown) {
       body: decryptReply(userId, r.bodyEnc),
       createdAt: r.createdAt,
       readAt: r.readAt,
+      closing: r.closing,
     })),
     revealedAt: row.revealedAt,
+    /** Canal PORTAL : fil clos par l'entreprise (plus de réponse ni de levée d'anonymat). */
+    closedAt: row.orgClosedAt,
   };
 }
 export type ContactView = NonNullable<Awaited<ReturnType<typeof getContact>>>;
@@ -612,7 +649,17 @@ export type ContactView = NonNullable<Awaited<ReturnType<typeof getContact>>>;
 export async function contactOptions(userId: string, matchId: string) {
   const match = await db.match.findFirst({
     where: { id: matchId, userId },
-    select: { offer: { select: { id: true, applyEmail: true, applyUrl: true } } },
+    select: {
+      offer: {
+        select: {
+          id: true,
+          source: true,
+          applyEmail: true,
+          applyUrl: true,
+          posting: { select: { orgId: true } },
+        },
+      },
+    },
   });
   if (!match) return null;
   const [contact, card] = await Promise.all([
@@ -622,7 +669,11 @@ export async function contactOptions(userId: string, matchId: string) {
     }),
     db.profileCard.findUnique({ where: { userId }, select: { approvedAt: true } }),
   ]);
-  return { channel: channelFor(match.offer), contact, cardApproved: Boolean(card?.approvedAt) };
+  return {
+    channel: offerChannel(match.offer),
+    contact,
+    cardApproved: Boolean(card?.approvedAt),
+  };
 }
 
 export async function markRepliesRead(userId: string, contactId: string, now = new Date()) {
@@ -677,41 +728,71 @@ export async function replyTarget(token: unknown, now = new Date()) {
 }
 
 /**
- * Réponse d'une entreprise : enregistrée (chiffrée) dans la boîte du
- * candidat, qui est prévenu par e-mail sans le contenu.
+ * Réponse d'une entreprise (page à jeton) : enregistrée (chiffrée) dans la
+ * boîte du candidat, qui est prévenu par e-mail sans le contenu.
  */
 export async function recordReply(
   token: unknown,
   input: unknown,
   deps: ReplyDeps,
 ): Promise<{ ok: true } | { ok: false; error: "notFound" | "invalid" | "rateLimited" }> {
-  const log = deps.logger ?? defaultLogger;
   const now = (deps.now ?? (() => new Date()))();
   const target = await replyTarget(token, now);
   if (!target) return { ok: false, error: "notFound" };
   const parsed = replyInput.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid" };
-  const since = new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS);
-  const [recent, recentInNegotiation] = await Promise.all([
-    db.contactReply.count({ where: { contactId: target.id, createdAt: { gte: since } } }),
-    db.negotiationMessage.count({
-      where: { contactId: target.id, direction: "IN", createdAt: { gte: since } },
-    }),
-  ]);
-  if (recent + recentInNegotiation >= MAX_REPLIES_PER_DAY) {
-    return { ok: false, error: "rateLimited" };
+  return storeCompanyReply(
+    {
+      contactId: target.id,
+      userId: target.userId,
+      offerTitle: target.offer.title,
+      negotiation: Boolean(target.negotiationMandate),
+    },
+    parsed.data.body,
+    { ...deps, now: () => now },
+  );
+}
+
+/**
+ * Réponse d'une entreprise à un contact ENVOYÉ, quel que soit le canal
+ * (page à jeton ou messagerie de l'espace entreprise) : une `ContactReply`
+ * chiffrée pour le candidat, lue telle quelle par `/app/contacts` — ou, si le
+ * contact est en négociation, un message entrant du fil de négociation —
+ * puis une notification au candidat, sans le contenu. Le texte est supposé
+ * validé (`replyInput`). Un message de clôture (`closing`) reste une
+ * `ContactReply` et n'est pas soumis à la limite quotidienne.
+ */
+export async function storeCompanyReply(
+  target: { contactId: string; userId: string; offerTitle: string; negotiation?: boolean },
+  body: string,
+  deps: ReplyDeps & { authorId?: string | null; closing?: boolean },
+): Promise<{ ok: true } | { ok: false; error: "rateLimited" }> {
+  const log = deps.logger ?? defaultLogger;
+  const now = (deps.now ?? (() => new Date()))();
+  if (!deps.closing) {
+    const since = new Date(now.getTime() - CONTACT_QUOTA_WINDOW_MS);
+    const [recent, recentInNegotiation] = await Promise.all([
+      db.contactReply.count({ where: { contactId: target.contactId, createdAt: { gte: since } } }),
+      db.negotiationMessage.count({
+        where: { contactId: target.contactId, direction: "IN", createdAt: { gte: since } },
+      }),
+    ]);
+    if (recent + recentInNegotiation >= MAX_REPLIES_PER_DAY) {
+      return { ok: false, error: "rateLimited" };
+    }
   }
 
-  if (target.negotiationMandate) {
+  const negotiation = Boolean(target.negotiation) && !deps.closing;
+  if (negotiation) {
     // Contact en négociation : la réponse rejoint le fil de négociation.
     await db.negotiationMessage.create({
       data: {
         userId: target.userId,
-        contactId: target.id,
+        contactId: target.contactId,
         direction: "IN",
         kind: "reply",
         status: "SENT",
-        bodyEnc: encNegotiation(target.userId, parsed.data.body),
+        bodyEnc: encNegotiation(target.userId, body),
         sentAt: now,
         createdAt: now,
       },
@@ -720,13 +801,15 @@ export async function recordReply(
     await db.contactReply.create({
       data: {
         userId: target.userId,
-        contactId: target.id,
-        bodyEnc: encrypt(parsed.data.body, { aad: replyAad(target.userId) }),
+        contactId: target.contactId,
+        bodyEnc: encrypt(body, { aad: replyAad(target.userId) }),
+        authorId: deps.authorId ?? null,
+        closing: deps.closing ?? false,
         createdAt: now,
       },
     });
   }
-  log.info("contact.reply.received", { negotiation: Boolean(target.negotiationMandate) });
+  log.info("contact.reply.received", { negotiation });
 
   const user = await db.user.findUnique({
     where: { id: target.userId },
@@ -738,8 +821,8 @@ export async function recordReply(
       await deps.send({
         to: user.email,
         ...replyNotificationEmail(locale, {
-          offerTitle: target.offer.title,
-          inboxUrl: `${deps.appUrl}/${locale}/app/contacts/${target.id}`,
+          offerTitle: target.offerTitle,
+          inboxUrl: `${deps.appUrl}/${locale}/app/contacts/${target.contactId}`,
         }),
       });
     } catch (error) {
@@ -749,4 +832,17 @@ export async function recordReply(
     }
   }
   return { ok: true };
+}
+
+/** Message approuvé d'un contact (objet et texte transmis), pour le fil de l'espace entreprise. */
+export function decryptSentMessage(row: {
+  userId: string;
+  subjectEnc: string;
+  bodyEnc: string;
+  sentTextEnc: string | null;
+}): { subject: string; body: string } {
+  return {
+    subject: dec(row.userId, row.subjectEnc),
+    body: dec(row.userId, row.sentTextEnc ?? row.bodyEnc),
+  };
 }

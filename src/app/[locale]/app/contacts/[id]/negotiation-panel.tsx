@@ -315,7 +315,7 @@ export function MessageEditor({
   id: string;
   body: string;
   approved: boolean;
-  channel: "EMAIL" | "APPLY_URL";
+  channel: "EMAIL" | "APPLY_URL" | "PORTAL";
 }) {
   const t = useTranslations("negotiation.composer");
   const [saveState, save, saving] = useActionState<NegotiationActionState, FormData>(
@@ -359,7 +359,7 @@ export function MessageEditor({
             className={inputClass}
           />
           <p id="negotiation-body-hint" className="mt-1 text-sm text-stone-500">
-            {t("appended")}
+            {t(channel === "PORTAL" ? "appendedPortal" : "appended")}
           </p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -377,15 +377,17 @@ export function MessageEditor({
           </button>
           <ActionMessage state={approveState} />
         </form>
-      ) : channel === "EMAIL" ? (
+      ) : channel === "EMAIL" || channel === "PORTAL" ? (
         <form action={send} className="space-y-2">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button type="submit" disabled={sending || dirty} className={primary}>
-              {t("send")}
+              {t(channel === "PORTAL" ? "sendPortal" : "send")}
             </button>
             <ActionMessage state={sendState} />
           </div>
-          <p className="text-xs text-stone-500">{t("sendHint")}</p>
+          <p className="text-xs text-stone-500">
+            {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
+          </p>
         </form>
       ) : null}
     </div>

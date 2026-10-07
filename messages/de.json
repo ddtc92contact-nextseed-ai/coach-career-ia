@@ -143,7 +143,8 @@
         "provenSkills": "Gefragte und belegte Kompetenzen: {skills}.",
         "skills": "Gefragte Kompetenzen: {skills}.",
         "closing": "Wenn dieses Profil Sie interessiert, finden Sie unten die anonyme Karte und einen Link zum Antworten. Die Person entscheidet anschließend, ob sie ihre Identität offenlegt.",
-        "signoff": "Mit freundlichen Grüßen"
+        "signoff": "Mit freundlichen Grüßen",
+        "closingPortal": "Wenn Sie dieses Profil interessiert: Die anonyme Karte finden Sie in diesem Austausch, und Sie können direkt hier antworten. Die Person entscheidet danach, ob sie ihre Anonymität aufhebt."
       }
     },
     "reply": {
@@ -214,6 +215,17 @@
       "postingRejected": {
         "subject": "Stelle abgelehnt: {title}",
         "body": "Ihre Stelle „{title}“ wurde nicht freigegeben. Sie können sie bearbeiten und erneut einreichen."
+      },
+      "portalContact": {
+        "subject": "Sie haben eine anonyme Bewerbung für {title} erhalten",
+        "body": "Sie haben eine anonyme Bewerbung für Ihr Angebot „{title}“ erhalten. Sie wartet im Postfach Ihres Unternehmensbereichs.",
+        "open": "Postfach öffnen",
+        "openText": "Postfach öffnen: {url}",
+        "privacy": "Zum Schutz der Person enthält diese E-Mail keine Angaben über sie: Melden Sie sich an, um die Bewerbung zu lesen."
+      },
+      "portalMessage": {
+        "subject": "Neue Nachricht der Person zu {title}",
+        "body": "Die Person, die Sie zu Ihrem Angebot „{title}“ kontaktiert hat, hat Ihnen eine neue Nachricht gesendet. Sie wartet im Postfach Ihres Unternehmensbereichs."
       }
     }
   },
@@ -450,7 +462,8 @@
         "APPROVED": "Nachricht genehmigt, noch nicht gesendet.",
         "SENDING": "Wird gesendet.",
         "SENT": "Unternehmen kontaktiert."
-      }
+      },
+      "portal": "Direkt vom Unternehmen veröffentlichtes Angebot: Ihr Agent verfasst eine kurze Nachricht, die mit Ihrer anonymen Karte in dessen Postfach zugestellt wird. Sie prüfen und genehmigen sie: Nichts wird ohne Sie gesendet."
     },
     "directBadge": "Direkt vom Unternehmen veröffentlicht"
   },
@@ -1487,7 +1500,8 @@
     "emptyAction": "Meine Chancen ansehen",
     "channel": {
       "EMAIL": "Bewerbungs-E-Mail",
-      "APPLY_URL": "„Bewerben“-Seite"
+      "APPLY_URL": "„Bewerben“-Seite",
+      "PORTAL": "Unternehmensbereich"
     },
     "status": {
       "DRAFT": "Entwurf",
@@ -1535,7 +1549,14 @@
       "noReply": "Noch keine Antwort. Sie werden per E-Mail benachrichtigt.",
       "receivedOn": "Erhalten am {date}",
       "approved": "Nachricht genehmigt.",
-      "discardConfirm": "Diesen Kontakt verwerfen? Der Entwurf wird gelöscht."
+      "discardConfirm": "Diesen Kontakt verwerfen? Der Entwurf wird gelöscht.",
+      "recipientPortal": "Empfänger: das Postfach im Unternehmensbereich der Organisation, die das Angebot veröffentlicht hat (keine E-Mail enthält Ihre Nachricht).",
+      "portalCard": "Karte im Unternehmensbereich sichtbar bis {date}, {views, plural, =0 {nie angesehen} one {# Mal angesehen} other {# Mal angesehen}}.",
+      "portalCardRevoked": "Karte zurückgezogen: Das Unternehmen sieht sie nicht mehr in seinem Postfach.",
+      "closedOn": "Vom Unternehmen am {date} abgeschlossen",
+      "sendPortal": "An den Unternehmensbereich senden",
+      "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt. Ihre Identität wird nicht weitergegeben.",
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten vorbereitet und von Ihnen freigegeben wurde, sowie Ihre anonyme Karte."
     },
     "errors": {
       "noChannel": "Diese Stelle veröffentlicht keinen nutzbaren Bewerbungskanal.",
@@ -1628,8 +1649,13 @@
       "notFound": "Dieser Kontakt wurde nicht gefunden.",
       "network": "Ein Netzwerkfehler ist aufgetreten. Versuchen Sie es erneut.",
       "wrongPassphrase": "Falsche Passphrase.",
-      "nothingSelected": "Wählen Sie mindestens eine Angabe zum Offenlegen aus."
-    }
+      "nothingSelected": "Wählen Sie mindestens eine Angabe zum Offenlegen aus.",
+      "closed": "Das Unternehmen hat diesen Austausch abgeschlossen."
+    },
+    "activePortal": "Im Unternehmensbereich sichtbar bis {date}, {views, plural, =0 {nie angesehen} one {# Mal angesehen} other {# Mal angesehen}}.",
+    "closed": "Das Unternehmen hat diesen Austausch abgeschlossen: Die Aufhebung der Anonymität wird nicht mehr angeboten.",
+    "donePortal": "Erledigt: Die gewählten Angaben erscheinen im Unternehmensbereich von {company}, nur für dessen Mitglieder.",
+    "previewPortal": "Diese Angaben erscheinen im Postfach des Unternehmensbereichs der Organisation, nur für deren Mitglieder. Sie laufen automatisch ab und Sie können sie jederzeit zurückziehen."
   },
   "replyPage": {
     "title": "Der Person antworten",
@@ -1749,7 +1775,10 @@
       "markTransmitted": "Ich habe diese Nachricht weitergegeben",
       "discard": "Diesen Entwurf löschen",
       "discardConfirm": "Diesen Entwurf löschen?",
-      "blocked": "Diese Nachricht kann so nicht genehmigt werden:"
+      "blocked": "Diese Nachricht kann so nicht genehmigt werden:",
+      "sendPortal": "An den Unternehmensbereich senden",
+      "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt.",
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen freigegeben wurde; es antwortet direkt in seinem Postfach."
     },
     "issues": {
       "belowFloor": "ein Betrag liegt unter Ihrer Untergrenze ({excerpt});",
@@ -1838,7 +1867,9 @@
       "dashboard": "Meine Stellen",
       "newPosting": "Stelle veröffentlichen",
       "organization": "Meine Organisation",
-      "candidate": "Kandidatenbereich"
+      "candidate": "Kandidatenbereich",
+      "messages": "Postfach",
+      "newThreads": "{count, plural, one {# neue Nachricht} other {# neue Nachrichten}}"
     },
     "signup": {
       "metaTitle": "Für Unternehmen",
@@ -1987,6 +2018,53 @@
       "days": "{days} Tage",
       "total": "Betrag",
       "back": "Zurück zur Stelle"
+    },
+    "inbox": {
+      "title": "Postfach",
+      "intro": "Die anonymen Bewerbungen auf Ihre Angebote. Jede Person hat sich entschieden, Sie zu kontaktieren; sie allein entscheidet, ob sie ihre Anonymität aufhebt.",
+      "emptyTitle": "Noch keine Bewerbung",
+      "emptyText": "Wenn eine Person, deren Bedingungen Ihre Angebote erfüllen, Sie kontaktiert, erscheint ihre anonyme Bewerbung hier.",
+      "threadTitle": "Anonyme Bewerbung — {title}",
+      "lastActivity": "Letzte Aktivität am {date}",
+      "privacy": "Sie sehen nur Personen, die Sie kontaktiert haben. Auf der Plattform gibt es keine Suche und kein Ranking von Kandidaten.",
+      "status": {
+        "NEW": "Neu",
+        "READ": "Gelesen",
+        "REPLIED": "Beantwortet",
+        "CLOSED": "Abgeschlossen"
+      },
+      "back": "← Postfach",
+      "receivedOn": "Erhalten am {date}",
+      "revealedTitle": "Offengelegte Identität",
+      "revealedExpires": "Sichtbar bis {date}. Die Person kann diese Angaben jederzeit zurückziehen.",
+      "cardTitle": "Anonyme Karte",
+      "cardGone": "Die anonyme Karte ist nicht mehr verfügbar: Sie ist abgelaufen oder wurde zurückgezogen.",
+      "messageTitle": "Nachricht",
+      "aiDisclosure": "Nachricht vom KI-Assistenten der Person verfasst, von ihr vor dem Versand geprüft und freigegeben.",
+      "repliesTitle": "Austausch",
+      "noReply": "Sie haben noch nicht geantwortet.",
+      "repliedOn": "Ihre Antwort vom {date}",
+      "closedOn": "Abgeschlossen am {date}",
+      "closedNotice": "Dieser Austausch ist abgeschlossen: Die Person hat Ihre Abschlussnachricht erhalten.",
+      "closeHint": "Passt das Profil nicht? Schließen Sie höflich ab: Eine Standardnachricht wird gesendet.",
+      "close": "Höflich abschließen",
+      "closeConfirm": "Diesen Austausch abschließen? Die Person erhält eine Dankesnachricht und Sie können nicht mehr antworten.",
+      "closing": {
+        "message": "Guten Tag,\n\nvielen Dank für Ihr Interesse an unserem Angebot „{title}“. Nach Prüfung Ihres Profils werden wir diese Bewerbung nicht weiterverfolgen. Wir wünschen Ihnen viel Erfolg bei Ihrer Suche.\n\nMit freundlichen Grüßen.",
+        "pending": "Wird abgeschlossen…"
+      },
+      "replyLabel": "Ihre Antwort",
+      "replyHint": "Die Person wird per E-Mail benachrichtigt und liest Ihre Antwort in ihrem Bereich. Danach entscheidet sie, ob sie ihre Anonymität aufhebt.",
+      "replySubmit": "Antwort senden",
+      "replySent": "Antwort gesendet.",
+      "errors": {
+        "invalid": "Ihre Antwort muss zwischen 2 und 5.000 Zeichen enthalten.",
+        "closed": "Dieser Austausch ist abgeschlossen.",
+        "rateLimited": "Heute zu viele Nachrichten in diesem Austausch. Versuchen Sie es morgen erneut."
+      },
+      "threadPrivacy": "Diese Angaben sind den Mitgliedern Ihrer Organisation vorbehalten, nur für diese Bewerbung.",
+      "revealedDisclosure": "Die Person hat entschieden, ihre Anonymität gegenüber Ihrer Organisation aufzuheben. Diese Angaben übermittelt ihr KI-Karriereagent (Coach Career IA) auf ihre ausdrückliche Entscheidung.",
+      "candidateOn": "Nachricht der Person vom {date} — von ihrem KI-Assistenten verfasst, von ihr freigegeben"
     }
   }
 }
