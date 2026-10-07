@@ -1,4 +1,5 @@
 import {
+  BENCHMARK_STATISTIC,
   claimsIn,
   contractNegations,
   contractsIn,
@@ -6,6 +7,7 @@ import {
   findPercentages,
   mentionsClaim,
   mentionsCompetingOffer,
+  mentionsOfferToSomeone,
   PUBLISHED_OFFERS,
   remoteDaysIn,
   salaryAmounts,
@@ -150,7 +152,13 @@ export function checkOutgoing(
         const cites = findAmounts(sentence).some((a) =>
           market.some((v) => close(a.value, v) || (a.annual !== null && close(a.annual, v))),
         );
-        if (cites && (!PUBLISHED_OFFERS.test(sentence) || mentionsCompetingOffer(sentence))) {
+        // Forme du modèle exigée (« offres publiées … médiane/quartile ») et
+        // aucune offre faite à quelqu'un, ni concurrent, recruteur, « ailleurs ».
+        const framed = PUBLISHED_OFFERS.test(sentence) && BENCHMARK_STATISTIC.test(sentence);
+        if (
+          cites &&
+          (!framed || mentionsCompetingOffer(sentence) || mentionsOfferToSomeone(sentence))
+        ) {
           push("competingOffer", sentence);
         }
       }

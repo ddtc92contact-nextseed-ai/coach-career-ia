@@ -255,6 +255,27 @@ const COMPETING_OFFER =
  */
 export const PUBLISHED_OFFERS = /publi(?:é|e|s|cad|cat)|pubblicat|ver[öo]ffentlicht|gepubliceerd/iu;
 
+/**
+ * Statistique du repère (« médiane », « quartile », « p75 »…, six langues) :
+ * un chiffre du repère n'est cité que sous cette forme, jamais comme un montant
+ * isolé que l'on pourrait prendre pour une offre.
+ */
+export const BENCHMARK_STATISTIC =
+  /m[ée]dian|mediaan|quarti[lt]|kwartiel|(?<![\p{L}\d])p(?:25|50|75)(?![\p{L}\d])|percentil|perzentil|centile/iu;
+
+/**
+ * Offre faite à quelqu'un (verbe d'offre, « offer of »…) ou tiers qui la ferait
+ * (concurrent, recruteur, « ailleurs »…), six langues. Interdit dans une phrase
+ * qui cite un chiffre du repère : le repère n'est jamais une offre reçue.
+ */
+const OFFER_TO_SOMEONE =
+  /(?<!\p{L})(?:propos(?:é|e|ait|era|i|ition|ta|to|te|ti)|propuest[oa]|offerts?(?!\p{L})|offert[oa](?!\p{L})|offered|offering|offers? (?:of|at|to|her|him|them)(?!\p{L})|ofrec|oferta (?:de|a|por)(?!\p{L})|ha offerto|offre (?:a|al|alla|le|gli)(?!\p{L})|lui offre|angeboten|anbiet|bietet|geboten|angebot (?:von|über|in höhe)|aangeboden|biedt|geboden|(?:bod|aanbod) van|concurren|competitor|competidor|concorrent|konkurren|recrut|recruit|reclut|headhunt|chasseur|cazatalent|cacciator|selezionator|personalvermittl|ailleurs|elsewhere|en otr[oa] (?:lugar|sitio|parte)|altrove|anderswo|woanders|elders|ergens anders)/iu;
+
+/** La phrase présente-t-elle un chiffre comme une offre faite au candidat ou par un tiers ? */
+export function mentionsOfferToSomeone(sentence: string): boolean {
+  return OFFER_TO_SOMEONE.test(sentence);
+}
+
 /** La phrase évoque-t-elle une offre reçue, ou faite par une autre entreprise ? */
 export function mentionsCompetingOffer(sentence: string): boolean {
   return COMPETING_OFFER.test(sentence);

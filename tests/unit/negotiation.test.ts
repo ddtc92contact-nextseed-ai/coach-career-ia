@@ -421,6 +421,20 @@ describe("négociation : repère du marché (offres publiées)", () => {
       "Ein anderes Unternehmen bietet ihr 67.000 €.",
       // Chiffre du repère sans dire qu'il vient d'offres publiées.
       "Le marché est à 61 000 €, elle souhaite donc 62 000 €.",
+      // « Offres publiées » ne blanchit pas une offre faite à la candidate (QA #41).
+      "A competitor offered her €67,000, in line with published offers.",
+      "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
+      "Un recruteur lui a proposé 67 000 €, en ligne avec les offres publiées.",
+      "She has been offered €67,000 elsewhere, which matches published offers.",
+      "Ihr wurde bereits 67.000 € angeboten, wie veröffentlichte Angebote zeigen.",
+      "Le han ofrecido 67.000 €, en línea con las ofertas publicadas.",
+      "Un concorrente le ha proposto 67.000 €, in linea con le offerte pubblicate.",
+      "Haar werd al € 67.000 aangeboden, zoals gepubliceerde vacatures tonen.",
+      // Même avec la forme statistique, aucun verbe d'offre ni tiers.
+      "Un recruteur cite la médiane des offres publiées : 61 000 €.",
+      "Published offers show a median of €61,000, and she was offered that elsewhere.",
+      // Chiffre isolé, sans statistique : pas la forme du repère.
+      "Les offres publiées vont jusqu'à 67 000 €.",
     ]) {
       expect(
         checkOutgoing(bluff, MANDATE, { allowed }).map((i) => i.code),
@@ -471,6 +485,22 @@ describe("négociation : repère du marché (offres publiées)", () => {
     );
     expect(draft).toMatchObject({ source: "rules", fallback: "check" });
     expect(draft.body).toBe(ruleCounterBody(withMarket()));
+
+    // « Offres publiées » accolé à une offre reçue : toujours le modèle.
+    for (const sentence of [
+      "Un recruteur lui a proposé 67 000 €, en ligne avec les offres publiées.",
+      "Elle a déjà une proposition à 67 000 €, comme le confirment les offres publiées.",
+    ]) {
+      const laundered = `Bonjour,\n\n${sentence} Elle souhaite donc 62 000 € brut annuel, en CDI.\n\nBien cordialement,`;
+      const d = await buildNegotiationDraft(
+        "counter",
+        withMarket(),
+        aiReplying(laundered).client,
+        CONTEXT,
+      );
+      expect(d, sentence).toMatchObject({ source: "rules", fallback: "check" });
+      expect(d.body).toBe(ruleCounterBody(withMarket()));
+    }
   });
 
   it("repère sous le seuil : non transmis au modèle, ses chiffres refusés", async () => {
