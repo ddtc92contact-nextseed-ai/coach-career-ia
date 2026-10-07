@@ -270,16 +270,18 @@ navigateur** : le serveur ne stocke que des blobs qu'il ne peut pas lire. Page :
   est déverrouillé, par jointure sur l'identifiant d'expérience dans le navigateur.
 - Modèle `IdentityVault` (table `identity_vaults`, 1-1 avec `users`, cascade) : version,
   paramètres KDF, deux clés enveloppées, identité chiffrée, CV chiffré, `revision` (verrou
-  optimiste : 409 si le coffre a changé ailleurs).
-- API (blobs opaques, toujours le coffre de l'utilisateur connecté, 404 sinon) :
+  optimiste : 409 si le coffre a changé ailleurs ; le navigateur relit alors le coffre, le
+  déchiffre avec la clé déjà en mémoire et remet le formulaire à jour).
+- API (blobs opaques, toujours le coffre de l'utilisateur connecté) : sans coffre,
+  `GET /api/vault` renvoie `200` + `null`, les autres appels un 404 :
   `GET|POST|PUT|DELETE /api/vault` (JSON exigé) et `GET|PUT|DELETE /api/vault/cv`
   (`application/octet-stream`, 5 Mo + en-tête). L'export RGPD inclut le coffre, chiffré.
 
 Tests : `tests/unit/vault-crypto.test.ts` (aller-retour, mauvaise phrase, clé de secours,
 changement de phrase, altérations) ; `tests/db/identity-vault.test.ts` exécute le client du
 coffre contre les vraies routes, vérifie qu'aucune requête, ligne en base ni ligne de journal ne
-contient de donnée d'identité, de phrase ou de clé, et que l'utilisateur B reçoit un 404 sur le
-coffre de A ; `tests/unit/vault-storage.test.ts` interdit tout autre usage du stockage
+contient de donnée d'identité, de phrase ou de clé, que l'utilisateur B ne peut ni lire ni modifier
+le coffre de A, et qu'un enregistrement réussit après un conflit 409 ; `tests/unit/vault-storage.test.ts` interdit tout autre usage du stockage
 navigateur.
 
 ## Chiffrement applicatif
