@@ -165,7 +165,8 @@
       "settings": "Ajustes",
       "radar": "Radar (admin)",
       "coach": "Coach IA",
-      "billing": "Suscripción"
+      "billing": "Suscripción",
+      "billingSimulator": "Simulador de pagos (admin)"
     }
   },
   "dashboard": {
@@ -1123,7 +1124,8 @@
       "renewsOn": "Renovación automática el {date}.",
       "endsOn": "Suscripción cancelada: Premium sigue activo hasta el {date}.",
       "free": "Coach IA: {limit, plural, =0 {reservado a Premium} one {# mensaje cada 24 horas} other {# mensajes cada 24 horas}}.",
-      "pastDue": "El último pago ha fallado. Actualice su método de pago para conservar Premium."
+      "pastDue": "El último pago ha fallado. Actualice su método de pago para conservar Premium.",
+      "unpaid": "No se ha podido cobrar la renovación de su suscripción: su cuenta ha vuelto al plan gratuito. Puede volver a Premium en cualquier momento."
     },
     "manage": "Gestionar mi suscripción",
     "manageHint": "Método de pago, facturas y cancelación, en la página segura de Stripe.",
@@ -1152,6 +1154,52 @@
     },
     "upgrade": "Pasar a Premium",
     "upgradeHint": "Pago mensual protegido por Stripe, cancelable en cualquier momento.",
-    "privacy": "Privacidad: Stripe solo recibe su dirección de correo de inicio de sesión y un identificador de cuenta. Su memoria profesional y su identidad nunca se le transmiten, y los datos de su tarjeta no pasan por nuestros servidores."
+    "privacy": "Privacidad: Stripe solo recibe su dirección de correo de inicio de sesión y un identificador de cuenta. Su memoria profesional y su identidad nunca se le transmiten, y los datos de su tarjeta no pasan por nuestros servidores.",
+    "simulator": {
+      "badge": "Modo de prueba",
+      "badgeHint": "Pagos simulados: ningún cargo real.",
+      "banner": "Pago simulado — modo de prueba, ningún cargo real.",
+      "upgradeHint": "Modo de prueba: el pago es simulado, no se cobra nada.",
+      "manageHint": "Modo de prueba: la cancelación y la reanudación de la suscripción son simuladas.",
+      "privacy": "Modo de prueba: no se envía ningún dato a un proveedor de pagos.",
+      "checkoutSuccess": "Pago simulado aceptado: Premium está activo.",
+      "back": "Volver a la suscripción",
+      "checkout": {
+        "title": "Pago",
+        "intro": "Elija el resultado del pago que desea simular.",
+        "plan": "Plan",
+        "total": "Importe",
+        "pay": "Pagar (éxito)",
+        "decline": "Tarjeta rechazada",
+        "cancel": "Cancelar",
+        "declined": "Tarjeta rechazada: el pago no se ha realizado y no se ha cobrado nada. Puede volver a intentarlo.",
+        "noCard": "No se solicita ningún dato de tarjeta: este pago es ficticio."
+      },
+      "portal": {
+        "title": "Gestionar mi suscripción",
+        "none": "Ninguna suscripción en curso.",
+        "renewsOn": "Renovación automática el {date}.",
+        "endsOn": "Cancelación solicitada: Premium sigue activo hasta el {date}.",
+        "retryUntil": "Pago pendiente: Premium se mantiene durante los reintentos, como máximo hasta el {date}.",
+        "error": "Esta acción no es posible en el estado actual de la suscripción.",
+        "status": {
+          "ACTIVE": "Premium — suscripción activa",
+          "TRIALING": "Premium — periodo de prueba",
+          "PAST_DUE": "Premium — pago fallido"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Cancelar al final del periodo",
+          "resume": "Reanudar la suscripción",
+          "cancelNow": "Volver al plan gratuito ahora",
+          "payOutstanding": "Pagar el importe pendiente"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Cancelación registrada: Premium sigue activo hasta el final del periodo.",
+          "resume": "Suscripción reanudada: se renovará con normalidad.",
+          "cancelNow": "Suscripción cancelada: su cuenta ha vuelto al plan gratuito.",
+          "payOutstanding": "Pago regularizado: su suscripción vuelve a estar activa."
+        }
+      }
+    }
   }
 }

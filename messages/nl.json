@@ -165,7 +165,8 @@
       "settings": "Instellingen",
       "radar": "Radar (beheer)",
       "coach": "AI-coach",
-      "billing": "Abonnement"
+      "billing": "Abonnement",
+      "billingSimulator": "Betalingssimulator (admin)"
     }
   },
   "dashboard": {
@@ -1123,7 +1124,8 @@
       "renewsOn": "Wordt automatisch verlengd op {date}.",
       "endsOn": "Abonnement opgezegd: Premium blijft actief tot {date}.",
       "free": "AI-coach: {limit, plural, =0 {alleen met Premium} one {# bericht per 24 uur} other {# berichten per 24 uur}}.",
-      "pastDue": "De laatste betaling is mislukt. Werk uw betaalmethode bij om Premium te behouden."
+      "pastDue": "De laatste betaling is mislukt. Werk uw betaalmethode bij om Premium te behouden.",
+      "unpaid": "De verlenging van uw abonnement kon niet worden betaald: uw account staat weer op het gratis abonnement. U kunt op elk moment opnieuw overstappen naar Premium."
     },
     "manage": "Mijn abonnement beheren",
     "manageHint": "Betaalmethode, facturen en opzegging, op de beveiligde pagina van Stripe.",
@@ -1152,6 +1154,52 @@
     },
     "upgrade": "Overstappen op Premium",
     "upgradeHint": "Maandelijkse betaling beveiligd door Stripe, op elk moment opzegbaar.",
-    "privacy": "Privacy: Stripe ontvangt alleen uw e-mailadres voor inloggen en een accountidentificatie. Uw loopbaangeheugen en identiteit worden nooit doorgegeven, en uw kaartgegevens gaan niet via onze servers."
+    "privacy": "Privacy: Stripe ontvangt alleen uw e-mailadres voor inloggen en een accountidentificatie. Uw loopbaangeheugen en identiteit worden nooit doorgegeven, en uw kaartgegevens gaan niet via onze servers.",
+    "simulator": {
+      "badge": "Testmodus",
+      "badgeHint": "Gesimuleerde betalingen: geen echte afschrijving.",
+      "banner": "Gesimuleerde betaling — testmodus, geen echte afschrijving.",
+      "upgradeHint": "Testmodus: de betaling wordt gesimuleerd, er wordt niets afgeschreven.",
+      "manageHint": "Testmodus: opzeggen en hervatten van het abonnement worden gesimuleerd.",
+      "privacy": "Testmodus: er worden geen gegevens naar een betaalprovider verstuurd.",
+      "checkoutSuccess": "Gesimuleerde betaling geaccepteerd: Premium is actief.",
+      "back": "Terug naar abonnement",
+      "checkout": {
+        "title": "Betaling",
+        "intro": "Kies de uitkomst van de betaling die u wilt simuleren.",
+        "plan": "Abonnement",
+        "total": "Bedrag",
+        "pay": "Betalen (geslaagd)",
+        "decline": "Kaart geweigerd",
+        "cancel": "Annuleren",
+        "declined": "Kaart geweigerd: de betaling is niet gelukt en er is niets afgeschreven. U kunt het opnieuw proberen.",
+        "noCard": "Er worden geen kaartgegevens gevraagd: deze betaling is fictief."
+      },
+      "portal": {
+        "title": "Mijn abonnement beheren",
+        "none": "Geen lopend abonnement.",
+        "renewsOn": "Automatische verlenging op {date}.",
+        "endsOn": "Opzegging aangevraagd: Premium blijft actief tot {date}.",
+        "retryUntil": "Betaling openstaand: Premium blijft behouden tijdens nieuwe pogingen, uiterlijk tot {date}.",
+        "error": "Deze actie is niet mogelijk in de huidige status van het abonnement.",
+        "status": {
+          "ACTIVE": "Premium — actief abonnement",
+          "TRIALING": "Premium — proefperiode",
+          "PAST_DUE": "Premium — betaling mislukt"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Opzeggen aan het einde van de periode",
+          "resume": "Abonnement hervatten",
+          "cancelNow": "Nu terug naar gratis",
+          "payOutstanding": "Openstaande betaling voldoen"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Opzegging vastgelegd: Premium blijft actief tot het einde van de periode.",
+          "resume": "Abonnement hervat: het wordt normaal verlengd.",
+          "cancelNow": "Abonnement opgezegd: uw account staat weer op het gratis abonnement.",
+          "payOutstanding": "Betaling voldaan: uw abonnement is weer actief."
+        }
+      }
+    }
   }
 }

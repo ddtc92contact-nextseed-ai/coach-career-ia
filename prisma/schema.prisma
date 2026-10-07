@@ -64,6 +64,8 @@ model User {
   coachMessages      CoachMessage[]
   coachSuggestions   CoachSuggestion[]
 
+  simulatedSubscriptions SimulatedSubscription[]
+
   @@map("users")
 }
 
@@ -499,6 +501,32 @@ model StripeEvent {
   processedAt DateTime @default(now()) @map("processed_at")
 
   @@map("stripe_events")
+}
+
+/// Abonnements du simulateur de paiement (`BILLING_PROVIDER=simulator`, phase
+/// de test) : l'état que Stripe tiendrait de son côté. Le simulateur émet les
+/// mêmes évènements que Stripe vers le même traitement que le webhook, qui
+/// relit cette table comme il relirait Stripe. Identifiants préfixés `sim_`.
+/// Aucune donnée personnelle ni bancaire.
+model SimulatedSubscription {
+  /// `sim_sub_…` (= `users.stripe_subscription_id` une fois payé).
+  id                String             @id
+  userId            String             @map("user_id")
+  /// `sim_cus_…` (= `users.stripe_customer_id`).
+  customerId        String             @map("customer_id")
+  /// `sim_cs_…` : session de paiement simulée (URL de la page de paiement).
+  checkoutSessionId String             @unique @map("checkout_session_id")
+  /// `INCOMPLETE` tant que le paiement simulé n'est pas validé.
+  status            SubscriptionStatus @default(INCOMPLETE)
+  cancelAtPeriodEnd Boolean            @default(false) @map("cancel_at_period_end")
+  currentPeriodEnd  DateTime?          @map("current_period_end")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@map("simulated_subscriptions")
 }
 
 // ---------------------------------------------------------------------------

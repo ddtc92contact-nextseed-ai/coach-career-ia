@@ -89,6 +89,7 @@ function subscription(ids: { user: string; sub: string; cus: string }, status: s
 }
 
 const ENV_KEYS = [
+  "BILLING_PROVIDER",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
   "STRIPE_PRICE_PREMIUM_MONTHLY",
@@ -102,6 +103,7 @@ describe.skipIf(!url)("abonnements : webhook Stripe et droits", () => {
 
   beforeAll(() => {
     process.env.DATA_ENCRYPTION_KEY ??= randomBytes(32).toString("base64");
+    process.env.BILLING_PROVIDER = "stripe";
     process.env.STRIPE_SECRET_KEY = "sk_test_never_used";
     process.env.STRIPE_WEBHOOK_SECRET = SECRET;
     process.env.STRIPE_PRICE_PREMIUM_MONTHLY = "price_test";
@@ -174,6 +176,24 @@ describe.skipIf(!url)("abonnements : webhook Stripe et droits", () => {
       plan: "FREE",
       subscriptionStatus: "CANCELED",
     });
+  });
+
+  it("webhook inactif hors BILLING_PROVIDER=stripe (simulateur) → 503", async () => {
+    const jeanne = await user("jeanne");
+    const ids = {
+      user: jeanne.id,
+      sub: `sub_${tag()}`,
+      cus: `cus_${tag()}`,
+      event: `evt_${tag()}`,
+    };
+    process.env.BILLING_PROVIDER = "simulator";
+    try {
+      const response = await webhook(stripeEvent("checkout.session.completed", ids));
+      expect(response.status).toBe(503);
+    } finally {
+      process.env.BILLING_PROVIDER = "stripe";
+    }
+    expect(await db.stripeEvent.count({ where: { id: ids.event } })).toBe(0);
   });
 
   it("signature invalide → 400, rien n'est enregistré", async () => {

@@ -8,7 +8,7 @@ import type { FormState } from "@/components/form";
 import { redirect } from "@/i18n/navigation";
 import { isAppLocale } from "@/i18n/routing";
 import { getCurrentUser, requireUser } from "@/lib/auth/session";
-import { closeStripeCustomer } from "@/lib/billing/server";
+import { cancelBillingForAccountDeletion } from "@/lib/billing/provider";
 import { deleteAccount, setUserLocale, setVisibility } from "@/lib/career/repository";
 import { visibilityInput } from "@/lib/career/schemas";
 import { logger } from "@/lib/logger";
@@ -47,8 +47,8 @@ export async function deleteMyAccount(_prev: FormState, formData: FormData): Pro
     return { errors: { confirmEmail: "confirmMismatch" } };
   }
   const locale = await getLocale();
-  // Abonnement résilié chez Stripe AVANT d'effacer le compte : jamais de prélèvement orphelin.
-  if (!(await closeStripeCustomer(user.id))) {
+  // Abonnement résilié chez le fournisseur AVANT d'effacer le compte : jamais de prélèvement orphelin.
+  if (!(await cancelBillingForAccountDeletion(user.id))) {
     return { errors: { _form: "billingCancelFailed" } };
   }
   await deleteAccount(user.id);
