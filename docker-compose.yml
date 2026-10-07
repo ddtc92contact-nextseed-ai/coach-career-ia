@@ -1,0 +1,103 @@
+# Déploiement production derrière le Traefik existant du VPS.
+# Aucun port publié : Traefik joint l'app via le réseau externe TRAEFIK_NETWORK.
+# Toutes les valeurs viennent de .env (voir .env.example).
+name: coach-career-ia
+
+x-app-env: &app-env
+  NODE_ENV: production
+  DATABASE_URL: postgresql://${POSTGRES_USER:-coach}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}@postgres:5432/${POSTGRES_DB:-coach_career}
+  AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET requis}
+  AUTH_URL: https://${SITE_DOMAIN:?SITE_DOMAIN requis}
+  AUTH_TRUST_HOST: "true"
+  DATA_ENCRYPTION_KEY: ${DATA_ENCRYPTION_KEY:?DATA_ENCRYPTION_KEY requis}
+  DATA_ENCRYPTION_KEY_VERSION: ${DATA_ENCRYPTION_KEY_VERSION:-1}
+  DATA_ENCRYPTION_PREVIOUS_KEYS: ${DATA_ENCRYPTION_PREVIOUS_KEYS:-}
+  EMAIL_FROM: ${EMAIL_FROM:?EMAIL_FROM requis}
+  SMTP_HOST: ${SMTP_HOST:?SMTP_HOST requis en production}
+  SMTP_PORT: ${SMTP_PORT:-587}
+  SMTP_USER: ${SMTP_USER:-}
+  SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+  SMTP_SECURE: ${SMTP_SECURE:-false}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+
+services:
+  app:
+    build:
+      context: .
+      target: runner
+    image: coach-career-ia:latest
+    restart: unless-stopped
+    environment: *app-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - internal
+      - traefik
+    mem_limit: ${APP_MEM_LIMIT:-768m}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${TRAEFIK_NETWORK:?TRAEFIK_NETWORK requis}
+      - traefik.http.routers.coach-career-ia.rule=Host(`${SITE_DOMAIN}`)
+      - traefik.http.routers.coach-career-ia.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}
+      - traefik.http.routers.coach-career-ia.tls=true
+      - traefik.http.routers.coach-career-ia.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}
+      - traefik.http.services.coach-career-ia.loadbalancer.server.port=3000
+
+  # Applique les migrations Prisma puis s'arrête (l'app attend sa réussite).
+  migrate:
+    build:
+      context: .
+      target: migrate
+    image: coach-career-ia-migrate:latest
+    restart: "no"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-coach}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-coach_career}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+    mem_limit: 512m
+
+  # Placeholder des futures tâches de fond (collecte d'offres, matching, e-mails).
+  worker:
+    image: coach-career-ia:latest
+    command: ["node", "worker/index.mjs"]
+    restart: unless-stopped
+    environment: *app-env
+    depends_on:
+      app:
+        condition: service_started
+    networks:
+      - internal
+    mem_limit: ${WORKER_MEM_LIMIT:-256m}
+
+  postgres:
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-coach}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-coach_career}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - internal
+    mem_limit: ${POSTGRES_MEM_LIMIT:-512m}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+networks:
+  internal:
+  traefik:
+    name: ${TRAEFIK_NETWORK}
+    external: true
+
+volumes:
+  pgdata:
