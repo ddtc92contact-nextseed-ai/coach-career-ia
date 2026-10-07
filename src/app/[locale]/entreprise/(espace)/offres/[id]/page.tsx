@@ -136,7 +136,7 @@ export default async function PostingPage({ params, searchParams }: Props) {
               />
             </form>
           ) : null}
-          {payable && isAdminEmail(user.email) ? (
+          {payable && status !== "LIVE" && isAdminEmail(user.email) ? (
             <form action={adminPublishAction.bind(null, posting.id)}>
               <RedirectButton label={t("actions.adminFree")} pendingLabel="…" />
             </form>
@@ -160,8 +160,12 @@ export default async function PostingPage({ params, searchParams }: Props) {
               label={t("actions.delete")}
             />
           ) : null}
-          {payable && billingMode() === "simulator" ? <TestModeBadge /> : null}
         </div>
+        {payable && billingMode() === "simulator" ? (
+          <div className="mt-4">
+            <TestModeBadge />
+          </div>
+        ) : null}
       </section>
 
       {isEditable(status) ? (

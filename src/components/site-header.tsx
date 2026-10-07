@@ -13,7 +13,7 @@ export function SiteHeader() {
           <LocaleSwitcher />
           <Link
             href="/entreprise/inscription"
-            className="rounded-lg px-2 py-2 text-sm font-medium whitespace-nowrap text-stone-700 hover:bg-stone-100 sm:px-3"
+            className="hidden rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-stone-700 hover:bg-stone-100 sm:inline-block"
           >
             {t("recruiter")}
           </Link>
