@@ -165,7 +165,8 @@
       "settings": "Settings",
       "radar": "Radar (admin)",
       "coach": "AI coach",
-      "billing": "Subscription"
+      "billing": "Subscription",
+      "billingSimulator": "Payment simulator (admin)"
     }
   },
   "dashboard": {
@@ -1123,7 +1124,8 @@
       "renewsOn": "Renews automatically on {date}.",
       "endsOn": "Subscription cancelled: Premium stays active until {date}.",
       "free": "AI coach: {limit, plural, =0 {Premium only} one {# message per 24 hours} other {# messages per 24 hours}}.",
-      "pastDue": "The last payment failed. Update your payment method to keep Premium."
+      "pastDue": "The last payment failed. Update your payment method to keep Premium.",
+      "unpaid": "Your subscription renewal could not be paid: your account is back on the free plan. You can switch to Premium again at any time."
     },
     "manage": "Manage my subscription",
     "manageHint": "Payment method, invoices and cancellation, on Stripe’s secure page.",
@@ -1152,6 +1154,52 @@
     },
     "upgrade": "Upgrade to Premium",
     "upgradeHint": "Monthly payment secured by Stripe, cancel at any time.",
-    "privacy": "Privacy: Stripe only receives your login email address and an account identifier. Your Career Memory and identity are never sent to it, and your card details never pass through our servers."
+    "privacy": "Privacy: Stripe only receives your login email address and an account identifier. Your Career Memory and identity are never sent to it, and your card details never pass through our servers.",
+    "simulator": {
+      "badge": "Test mode",
+      "badgeHint": "Simulated payments: no real charge.",
+      "banner": "Simulated payment — test mode, no real charge.",
+      "upgradeHint": "Test mode: the payment is simulated, nothing is charged.",
+      "manageHint": "Test mode: cancelling and resuming the subscription are simulated.",
+      "privacy": "Test mode: no data is sent to any payment provider.",
+      "checkoutSuccess": "Simulated payment accepted: Premium is active.",
+      "back": "Back to subscription",
+      "checkout": {
+        "title": "Payment",
+        "intro": "Choose the payment outcome to simulate.",
+        "plan": "Plan",
+        "total": "Amount",
+        "pay": "Pay (success)",
+        "decline": "Card declined",
+        "cancel": "Cancel",
+        "declined": "Card declined: the payment did not go through and nothing was charged. You can try again.",
+        "noCard": "No card details are requested: this payment is fictitious."
+      },
+      "portal": {
+        "title": "Manage my subscription",
+        "none": "No active subscription.",
+        "renewsOn": "Renews automatically on {date}.",
+        "endsOn": "Cancellation requested: Premium stays active until {date}.",
+        "retryUntil": "Payment pending: Premium is kept while payment is retried, until {date} at the latest.",
+        "error": "This action is not possible in the subscription’s current state.",
+        "status": {
+          "ACTIVE": "Premium — active subscription",
+          "TRIALING": "Premium — trial period",
+          "PAST_DUE": "Premium — payment failed"
+        },
+        "actions": {
+          "cancelAtPeriodEnd": "Cancel at the end of the period",
+          "resume": "Resume subscription",
+          "cancelNow": "Switch back to the free plan now",
+          "payOutstanding": "Pay the outstanding amount"
+        },
+        "done": {
+          "cancelAtPeriodEnd": "Cancellation recorded: Premium stays active until the end of the period.",
+          "resume": "Subscription resumed: it will renew as usual.",
+          "cancelNow": "Subscription cancelled: your account is back on the free plan.",
+          "payOutstanding": "Payment settled: your subscription is active again."
+        }
+      }
+    }
   }
 }

@@ -15,7 +15,10 @@ export const APP_NAV = [
 ] as const;
 
 /** Entrée visible des seuls administrateurs. */
-export const ADMIN_NAV = [{ href: "/app/radar", key: "radar" }] as const;
+export const ADMIN_NAV = [
+  { href: "/app/radar", key: "radar" },
+  { href: "/app/simulateur-paiement", key: "billingSimulator" },
+] as const;
 
 export function AppNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const t = useTranslations("app.nav");

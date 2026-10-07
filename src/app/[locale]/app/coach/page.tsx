@@ -5,7 +5,7 @@ import { PageTitle } from "@/components/empty-state";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { isBillingConfigured } from "@/lib/billing/config";
+import { isBillingAvailable } from "@/lib/billing/config";
 import { getEntitlements } from "@/lib/billing/server";
 import { remainingMessages } from "@/lib/coach/quota";
 import { countRecentUserMessages, listConversations } from "@/lib/coach/repository";
@@ -72,7 +72,7 @@ export default async function CoachPage() {
         </ul>
         {limit !== null && remaining === 0 ? (
           <div className="mt-4">
-            <CoachUpsell limit={limit} billing={isBillingConfigured()} />
+            <CoachUpsell limit={limit} billing={isBillingAvailable()} />
           </div>
         ) : (
           <p className="mt-3 text-sm text-stone-500">
