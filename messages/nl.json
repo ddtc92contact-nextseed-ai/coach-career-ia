@@ -1201,5 +1201,61 @@
         }
       }
     }
+  },
+  "companySignals": {
+    "title": "Bedrijfsdynamiek",
+    "intro": "Signalen uit de vacatures die het bedrijf de afgelopen weken publiceerde (openbare bronnen).",
+    "week": "Week van {date}",
+    "strength": {
+      "weak": "Zwak signaal",
+      "medium": "Gemiddeld signaal",
+      "strong": "Sterk signaal"
+    },
+    "types": {
+      "HIRING_SURGE": "Wervingspiek",
+      "HIRING_FREEZE": "Vacaturestop",
+      "NEW_TEAM": "Nieuw team",
+      "NEW_LOCATION": "Nieuwe locatie",
+      "REPOSTED_OFFER": "Opnieuw geplaatste vacature",
+      "REMOTE_SHIFT": "Verschuiving thuiswerken"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# nieuwe vacature} other {# nieuwe vacatures}} in één week, tegenover gemiddeld {baselineNew, number} ({openCount, plural, one {# openstaande vacature} other {# openstaande vacatures}}). Het bedrijf versnelt: een goed moment om te solliciteren.",
+      "HIRING_FREEZE": "Al {quietWeeks} weken geen nieuwe vacature en {closedOffers} van {openBefore} vacatures gesloten: de werving lijkt bevroren.",
+      "NEW_TEAM_FAMILIES": "Eerste vacatures van het bedrijf in {families}: er wordt een nieuw team opgebouwd.",
+      "NEW_TEAM_LEADERSHIP": "Eerste leidinggevende functie geplaatst: het team krijgt structuur.",
+      "NEW_LOCATION": "Eerste vacatures in {places}: het bedrijf vestigt zich daar.",
+      "REPOSTED_OFFER": "{count, plural, one {Eén vacature} other {# vacatures}} opnieuw geplaatst na sluiting ({titles}): moeilijk in te vullen, een troef bij onderhandelen.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {Meer thuiswerk} other {Minder thuiswerk}}: {recentShare}% van de recente vacatures is hybride of op afstand, tegenover {baselineShare}% eerder."
+    },
+    "families": {
+      "DATA_AI": "data / AI",
+      "ENGINEERING": "software-engineering",
+      "PRODUCT": "product",
+      "DESIGN": "design",
+      "SALES": "sales",
+      "MARKETING": "marketing",
+      "CUSTOMER": "klantenservice",
+      "OPERATIONS": "operations",
+      "FINANCE": "financiën",
+      "PEOPLE": "HR",
+      "LEGAL": "juridisch"
+    },
+    "admin": {
+      "title": "Bedrijfsdynamiek",
+      "intro": "Cijfers van de laatste volledige week en de nieuwste zwakke signalen, berekend uit de verzamelde vacatures (zonder dubbele). Geen signaal zonder 4 weken en 3 vacatures historie.",
+      "empty": "Nog geen gevolgd bedrijf heeft vacatures.",
+      "company": "Bedrijf",
+      "open": "Open",
+      "lastWeek": "Vorige week",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Mediane sluitingstermijn",
+      "days": "{days, number} d",
+      "salaryShare": "Met salaris",
+      "percent": "{value, number, percent}",
+      "signals": "Laatste signalen",
+      "none": "Geen signaal",
+      "notAvailable": "—"
+    }
   }
 }

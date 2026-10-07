@@ -1201,5 +1201,61 @@
         }
       }
     }
+  },
+  "companySignals": {
+    "title": "Unternehmensdynamik",
+    "intro": "Signale aus den Stellenangeboten, die das Unternehmen in den letzten Wochen veröffentlicht hat (öffentliche Quellen).",
+    "week": "Woche vom {date}",
+    "strength": {
+      "weak": "Schwaches Signal",
+      "medium": "Mittleres Signal",
+      "strong": "Starkes Signal"
+    },
+    "types": {
+      "HIRING_SURGE": "Einstellungsschub",
+      "HIRING_FREEZE": "Einstellungsstopp",
+      "NEW_TEAM": "Neues Team",
+      "NEW_LOCATION": "Neuer Standort",
+      "REPOSTED_OFFER": "Erneut ausgeschrieben",
+      "REMOTE_SHIFT": "Wandel beim Homeoffice"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# neue Stelle} other {# neue Stellen}} in einer Woche, gegenüber {baselineNew, number} im üblichen Durchschnitt ({openCount, plural, one {# offene Stelle} other {# offene Stellen}}). Das Unternehmen legt zu: ein guter Zeitpunkt für eine Bewerbung.",
+      "HIRING_FREEZE": "Seit {quietWeeks} Wochen keine neue Stelle und {closedOffers} von {openBefore} Stellen geschlossen: Die Einstellungen scheinen eingefroren.",
+      "NEW_TEAM_FAMILIES": "Erste Stellen des Unternehmens im Bereich {families}: Ein neues Team entsteht.",
+      "NEW_TEAM_LEADERSHIP": "Erste Führungsposition ausgeschrieben: Das Team wird strukturiert.",
+      "NEW_LOCATION": "Erste Stellen in {places}: Das Unternehmen siedelt sich dort an.",
+      "REPOSTED_OFFER": "{count, plural, one {Eine Stelle} other {# Stellen}} nach Schließung erneut ausgeschrieben ({titles}): schwer zu besetzen, ein Hebel für Verhandlungen.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {Mehr Homeoffice} other {Weniger Homeoffice}}: {recentShare} % der neuen Stellen sind hybrid oder remote, gegenüber {baselineShare} % zuvor."
+    },
+    "families": {
+      "DATA_AI": "Data / KI",
+      "ENGINEERING": "Softwareentwicklung",
+      "PRODUCT": "Produkt",
+      "DESIGN": "Design",
+      "SALES": "Vertrieb",
+      "MARKETING": "Marketing",
+      "CUSTOMER": "Kundenservice",
+      "OPERATIONS": "Operations",
+      "FINANCE": "Finanzen",
+      "PEOPLE": "Personalwesen",
+      "LEGAL": "Recht"
+    },
+    "admin": {
+      "title": "Unternehmensdynamik",
+      "intro": "Kennzahlen der letzten abgeschlossenen Woche und neueste schwache Signale, berechnet aus den erfassten Stellen (ohne Duplikate). Kein Signal ohne 4 Wochen und 3 Stellen Historie.",
+      "empty": "Noch kein beobachtetes Unternehmen hat Stellen.",
+      "company": "Unternehmen",
+      "open": "Offen",
+      "lastWeek": "Letzte Woche",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Mediane Dauer bis zur Schließung",
+      "days": "{days, number} T.",
+      "salaryShare": "Mit Gehalt",
+      "percent": "{value, number, percent}",
+      "signals": "Neueste Signale",
+      "none": "Kein Signal",
+      "notAvailable": "—"
+    }
   }
 }

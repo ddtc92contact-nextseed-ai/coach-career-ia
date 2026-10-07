@@ -1201,5 +1201,61 @@
         }
       }
     }
+  },
+  "companySignals": {
+    "title": "Dynamique de l’entreprise",
+    "intro": "Signaux tirés des offres publiées par l’entreprise ces dernières semaines (sources publiques).",
+    "week": "Semaine du {date}",
+    "strength": {
+      "weak": "Signal faible",
+      "medium": "Signal moyen",
+      "strong": "Signal fort"
+    },
+    "types": {
+      "HIRING_SURGE": "Pic de recrutement",
+      "HIRING_FREEZE": "Recrutement gelé",
+      "NEW_TEAM": "Nouvelle équipe",
+      "NEW_LOCATION": "Nouveau lieu",
+      "REPOSTED_OFFER": "Offre republiée",
+      "REMOTE_SHIFT": "Télétravail en évolution"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# nouvelle offre} other {# nouvelles offres}} en une semaine, contre {baselineNew, number} en moyenne d’habitude ({openCount, plural, one {# offre ouverte} other {# offres ouvertes}}). L’entreprise accélère : le moment est favorable pour postuler.",
+      "HIRING_FREEZE": "Aucune nouvelle offre depuis {quietWeeks} semaines et {closedOffers} offres fermées sur {openBefore} : le recrutement semble gelé.",
+      "NEW_TEAM_FAMILIES": "Premières offres de l’entreprise en {families} : une nouvelle équipe se monte.",
+      "NEW_TEAM_LEADERSHIP": "Premier poste d’encadrement publié : l’équipe se structure.",
+      "NEW_LOCATION": "Premières offres à {places} : l’entreprise s’implante.",
+      "REPOSTED_OFFER": "{count, plural, one {Une offre republiée} other {# offres republiées}} après fermeture ({titles}) : poste difficile à pourvoir, un levier pour négocier.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {Plus de télétravail} other {Moins de télétravail}} : {recentShare} % des offres récentes sont hybrides ou à distance, contre {baselineShare} % auparavant."
+    },
+    "families": {
+      "DATA_AI": "data / IA",
+      "ENGINEERING": "ingénierie logicielle",
+      "PRODUCT": "produit",
+      "DESIGN": "design",
+      "SALES": "vente",
+      "MARKETING": "marketing",
+      "CUSTOMER": "relation client",
+      "OPERATIONS": "opérations",
+      "FINANCE": "finance",
+      "PEOPLE": "ressources humaines",
+      "LEGAL": "juridique"
+    },
+    "admin": {
+      "title": "Dynamique des entreprises",
+      "intro": "Statistiques de la dernière semaine terminée et derniers signaux faibles, calculés à partir des offres collectées (doublons exclus). Aucun signal sans 4 semaines et 3 offres d’historique.",
+      "empty": "Aucune entreprise suivie n’a encore d’offres.",
+      "company": "Entreprise",
+      "open": "Ouvertes",
+      "lastWeek": "Dernière semaine",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Délai médian de fermeture",
+      "days": "{days, number} j",
+      "salaryShare": "Avec salaire",
+      "percent": "{value, number, percent}",
+      "signals": "Derniers signaux",
+      "none": "Aucun signal",
+      "notAvailable": "—"
+    }
   }
 }

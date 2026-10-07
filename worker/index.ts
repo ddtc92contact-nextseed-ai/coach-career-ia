@@ -3,7 +3,8 @@
  * - Market Radar toutes les `RADAR_INTERVAL_HOURS` heures (6 par défaut), un
  *   passage à la fois. Le même client HTTP est conservé entre passages : les
  *   requêtes conditionnelles (ETag / Last-Modified) évitent de retélécharger
- *   un board inchangé. Chaque passage demande le recalcul des opportunités ;
+ *   un board inchangé. Chaque passage recalcule ensuite les signaux faibles
+ *   des entreprises et demande le recalcul des opportunités ;
  * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
  *   candidats en attente (regroupé), puis envoi des alertes e-mail dues.
  * Arrêt propre sur SIGTERM / SIGINT.
@@ -19,6 +20,7 @@ import { matchingConfig, type MatchingConfig } from "../src/lib/matching/config"
 import { markAllCandidatesDirty, runMatchingCycle } from "../src/lib/matching/jobs";
 import { radarConfig, type RadarConfig } from "../src/lib/radar/config";
 import { radarHttpClient, runRadar } from "../src/lib/radar/job";
+import { runCompanySignals } from "../src/lib/radar/signals/job";
 
 const log = createLogger();
 let timer: NodeJS.Timeout | undefined;
@@ -77,6 +79,12 @@ function start(config: RadarConfig, matching: MatchingConfig) {
       await markAllCandidatesDirty(prisma);
     } catch (error) {
       log.error("worker.radar.failed", { error: error instanceof Error ? error : String(error) });
+    }
+    try {
+      // Signaux faibles (pic, gel, nouvelle équipe…) dérivés des offres collectées.
+      await runCompanySignals(prisma, { logger: log });
+    } catch (error) {
+      log.error("worker.signals.failed", { error: error instanceof Error ? error : String(error) });
     }
     if (!stopping) timer = setTimeout(tick, intervalMs);
   };

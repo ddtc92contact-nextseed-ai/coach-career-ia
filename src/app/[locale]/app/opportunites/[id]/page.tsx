@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
+import { CompanySignalList } from "@/components/company-signals";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
 import { displaySummary, factLines } from "@/lib/matching/explanation";
 import { getMatch, markMatchSeen } from "@/lib/matching/repository";
 import { WEIGHTS } from "@/lib/matching/score";
+import { SIGNAL_THRESHOLDS } from "@/lib/radar/signals/config";
+import { getCompanySignals } from "@/lib/radar/signals/server";
 import { OfferFacts, ScoreBadge, StatusActions } from "../opportunity-parts";
 
 type Props = { params: Promise<{ id: string }> };
@@ -27,12 +30,18 @@ export default async function OpportunityPage({ params }: Props) {
   if (!match) notFound();
   if (match.status === "NEW") await markMatchSeen(user.id, id);
 
-  const [t, tm, tc, format, locale] = await Promise.all([
+  const [t, tm, tc, ts, format, locale, signals] = await Promise.all([
     getTranslations("opportunities"),
     getTranslations("matching"),
     getTranslations("codes.culture"),
+    getTranslations("companySignals"),
     getFormatter(),
     getLocale() as Promise<AppLocale>,
+    match.offer.companyId
+      ? getCompanySignals(match.offer.companyId, {
+          limit: SIGNAL_THRESHOLDS.display.maxPerOffer,
+        })
+      : [],
   ]);
   const explanation = match.explanation;
   const lines = explanation ? factLines(explanation, locale) : null;
@@ -188,6 +197,16 @@ export default async function OpportunityPage({ params }: Props) {
             </dl>
           </section>
         </>
+      ) : null}
+
+      {signals.length > 0 ? (
+        <section className={sectionClass} aria-labelledby="dynamique">
+          <h2 id="dynamique" className="text-lg font-semibold">
+            {ts("title")}
+          </h2>
+          <p className="mt-1 mb-3 text-xs text-stone-500">{ts("intro")}</p>
+          <CompanySignalList signals={signals} />
+        </section>
       ) : null}
 
       <section className={sectionClass} aria-labelledby="description">

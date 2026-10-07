@@ -1201,5 +1201,61 @@
         }
       }
     }
+  },
+  "companySignals": {
+    "title": "Company momentum",
+    "intro": "Signals derived from the job offers this company published over recent weeks (public sources).",
+    "week": "Week of {date}",
+    "strength": {
+      "weak": "Weak signal",
+      "medium": "Moderate signal",
+      "strong": "Strong signal"
+    },
+    "types": {
+      "HIRING_SURGE": "Hiring surge",
+      "HIRING_FREEZE": "Hiring freeze",
+      "NEW_TEAM": "New team",
+      "NEW_LOCATION": "New location",
+      "REPOSTED_OFFER": "Reposted offer",
+      "REMOTE_SHIFT": "Remote policy shift"
+    },
+    "explanations": {
+      "HIRING_SURGE": "{newOffers, plural, one {# new offer} other {# new offers}} in one week, versus {baselineNew, number} on average ({openCount, plural, one {# open offer} other {# open offers}}). The company is speeding up: a good time to apply.",
+      "HIRING_FREEZE": "No new offers for {quietWeeks} weeks and {closedOffers} of {openBefore} offers closed: hiring looks frozen.",
+      "NEW_TEAM_FAMILIES": "The company’s first offers in {families}: a new team is being built.",
+      "NEW_TEAM_LEADERSHIP": "First leadership role posted: the team is getting structured.",
+      "NEW_LOCATION": "First offers in {places}: the company is expanding there.",
+      "REPOSTED_OFFER": "{count, plural, one {One offer reposted} other {# offers reposted}} after closing ({titles}): hard-to-fill role, which gives you negotiation leverage.",
+      "REMOTE_SHIFT": "{direction, select, MORE_REMOTE {More remote work} other {Less remote work}}: {recentShare}% of recent offers are hybrid or remote, versus {baselineShare}% before."
+    },
+    "families": {
+      "DATA_AI": "data / AI",
+      "ENGINEERING": "software engineering",
+      "PRODUCT": "product",
+      "DESIGN": "design",
+      "SALES": "sales",
+      "MARKETING": "marketing",
+      "CUSTOMER": "customer relations",
+      "OPERATIONS": "operations",
+      "FINANCE": "finance",
+      "PEOPLE": "human resources",
+      "LEGAL": "legal"
+    },
+    "admin": {
+      "title": "Company momentum",
+      "intro": "Statistics for the last completed week and the latest weak signals, computed from collected offers (duplicates excluded). No signal without 4 weeks and 3 offers of history.",
+      "empty": "No tracked company has offers yet.",
+      "company": "Company",
+      "open": "Open",
+      "lastWeek": "Last week",
+      "lastWeekValue": "+{newOffers} / −{closedOffers}",
+      "timeToClose": "Median time to close",
+      "days": "{days, number} d",
+      "salaryShare": "With salary",
+      "percent": "{value, number, percent}",
+      "signals": "Latest signals",
+      "none": "No signal",
+      "notAvailable": "—"
+    }
   }
 }
