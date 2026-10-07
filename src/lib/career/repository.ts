@@ -21,6 +21,7 @@ import type {
   ValidationError,
 } from "./schemas";
 import { deleteDocument, deleteUserDocuments, readDocument, saveDocument } from "./storage";
+import { exportVault } from "@/lib/vault/repository";
 
 /**
  * Accès aux données de la mémoire de carrière.
@@ -520,17 +521,19 @@ export async function exportUserData(userId: string) {
     where: { id: userId },
     select: { email: true, locale: true, createdAt: true },
   });
-  const [visibility, experiences, achievements, skills, guardRails, documents] = await Promise.all([
-    getVisibility(userId),
-    db.experience.findMany({ where: { userId }, orderBy: { startMonth: "asc" } }),
-    listAchievements(userId),
-    listSkills(userId),
-    getGuardRails(userId),
-    db.proof.findMany({
-      where: { userId, kind: "DOCUMENT" },
-      select: { id: true, storageKey: true },
-    }),
-  ]);
+  const [visibility, experiences, achievements, skills, guardRails, documents, identityVault] =
+    await Promise.all([
+      getVisibility(userId),
+      db.experience.findMany({ where: { userId }, orderBy: { startMonth: "asc" } }),
+      listAchievements(userId),
+      listSkills(userId),
+      getGuardRails(userId),
+      db.proof.findMany({
+        where: { userId, kind: "DOCUMENT" },
+        select: { id: true, storageKey: true },
+      }),
+      exportVault(userId),
+    ]);
   const contents = new Map<string, string>();
   for (const doc of documents) {
     if (doc.storageKey) {
@@ -554,6 +557,8 @@ export async function exportUserData(userId: string) {
       achievementIds: linked.map((a) => a.id),
     })),
     guardRails,
+    /** Coffre d'identité : exporté chiffré, le serveur ne pouvant pas le lire. */
+    identityVault,
   };
 }
 export type UserExport = Awaited<ReturnType<typeof exportUserData>>;
