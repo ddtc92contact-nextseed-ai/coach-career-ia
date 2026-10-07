@@ -22,6 +22,8 @@
     "db:seed": "prisma db seed",
     "db:up": "docker compose -f docker-compose.dev.yml up -d --wait",
     "db:down": "docker compose -f docker-compose.dev.yml down",
+    "radar:run": "tsx scripts/radar-run.ts",
+    "worker": "node --import tsx worker/index.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

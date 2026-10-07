@@ -140,7 +140,8 @@
       "memory": "La mia memoria di carriera",
       "guardRails": "I miei paletti",
       "opportunities": "Opportunità",
-      "settings": "Impostazioni"
+      "settings": "Impostazioni",
+      "radar": "Radar (admin)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Dirigente"
     },
     "contractType": {
-      "PERMANENT": "Tempo indeterminato",
-      "FIXED_TERM": "Tempo determinato",
+      "CDI": "Tempo indeterminato",
+      "CDD": "Tempo determinato",
       "FREELANCE": "Freelance",
       "TEMPORARY": "Somministrazione / interinale",
       "APPRENTICESHIP": "Apprendistato",

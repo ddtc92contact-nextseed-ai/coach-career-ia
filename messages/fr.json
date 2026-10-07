@@ -140,7 +140,8 @@
       "memory": "Ma mémoire de carrière",
       "guardRails": "Mes garde-fous",
       "opportunities": "Opportunités",
-      "settings": "Paramètres"
+      "settings": "Paramètres",
+      "radar": "Radar (admin)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Dirigeant ou dirigeante"
     },
     "contractType": {
-      "PERMANENT": "CDI",
-      "FIXED_TERM": "CDD",
+      "CDI": "CDI",
+      "CDD": "CDD",
       "FREELANCE": "Freelance",
       "TEMPORARY": "Intérim",
       "APPRENTICESHIP": "Alternance",

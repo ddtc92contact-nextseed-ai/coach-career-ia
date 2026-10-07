@@ -1,11 +1,10 @@
+-- Les enums "ContractType" et "RemotePolicy" sont créés par la migration Market Radar.
+
 -- CreateEnum
 CREATE TYPE "VisibilityStatus" AS ENUM ('ACTIVE', 'OPEN', 'INVISIBLE');
 
 -- CreateEnum
 CREATE TYPE "Seniority" AS ENUM ('INTERN', 'JUNIOR', 'MID', 'SENIOR', 'LEAD', 'MANAGER', 'DIRECTOR', 'EXECUTIVE');
-
--- CreateEnum
-CREATE TYPE "ContractType" AS ENUM ('PERMANENT', 'FIXED_TERM', 'FREELANCE', 'TEMPORARY', 'APPRENTICESHIP', 'INTERNSHIP');
 
 -- CreateEnum
 CREATE TYPE "CompanySize" AS ENUM ('S1_10', 'S11_50', 'S51_200', 'S201_500', 'S501_1000', 'S1001_5000', 'S5001_PLUS');
@@ -18,9 +17,6 @@ CREATE TYPE "EvidenceLevel" AS ENUM ('DECLARED', 'DOCUMENT', 'VERIFIED');
 
 -- CreateEnum
 CREATE TYPE "ProofKind" AS ENUM ('URL', 'DOCUMENT', 'REFERENCE');
-
--- CreateEnum
-CREATE TYPE "RemotePolicy" AS ENUM ('ONSITE', 'HYBRID', 'FULL_REMOTE');
 
 -- AlterTable
 ALTER TABLE "users" ADD COLUMN     "locale" TEXT;

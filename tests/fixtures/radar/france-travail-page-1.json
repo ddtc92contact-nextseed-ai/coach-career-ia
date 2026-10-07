@@ -1,0 +1,77 @@
+{
+  "resultats": [
+    {
+      "id": "201TSTA",
+      "intitule": "Développeur Full Stack (H/F)",
+      "description": "Au sein de l'équipe produit, vous développez nos applications web (TypeScript, React, Node.js). Télétravail partiel : 2 jours de télétravail par semaine.",
+      "dateCreation": "2026-09-28T09:12:44.000Z",
+      "dateActualisation": "2026-10-01T10:02:11.000Z",
+      "lieuTravail": {
+        "libelle": "75 - Paris 9e Arrondissement",
+        "latitude": 48.877,
+        "longitude": 2.337,
+        "codePostal": "75009",
+        "commune": "75109"
+      },
+      "romeCode": "M1805",
+      "romeLibelle": "Études et développement informatique",
+      "appellationlibelle": "Développeur / Développeuse full-stack",
+      "entreprise": { "nom": "ACME LOGICIEL SAS", "entrepriseAdaptee": false },
+      "typeContrat": "CDI",
+      "typeContratLibelle": "Contrat à durée indéterminée",
+      "natureContrat": "Contrat travail",
+      "experienceExige": "E",
+      "experienceLibelle": "3 An(s)",
+      "salaire": {
+        "libelle": "Annuel de 45000.00 Euros à 55000.00 Euros sur 12.0 mois",
+        "complement1": "Prime",
+        "complement2": "Intéressement"
+      },
+      "dureeTravailLibelle": "35H Horaires normaux",
+      "alternance": false,
+      "contact": {
+        "nom": "ACME LOGICIEL - Mme Claire Exemple",
+        "coordonnees1": "12 rue Fictive",
+        "courriel": "recrutement@acme-logiciel.example",
+        "telephone": "01 23 45 67 89"
+      },
+      "nombrePostes": 1,
+      "accessibleTH": false,
+      "secteurActivite": "62",
+      "secteurActiviteLibelle": "Programmation informatique",
+      "origineOffre": {
+        "origine": "1",
+        "urlOrigine": "https://candidat.francetravail.fr/offres/recherche/detail/201TSTA"
+      }
+    },
+    {
+      "id": "201TSTB",
+      "intitule": "Analytics Engineer (H/F)",
+      "description": "Qonto recrute un Analytics Engineer pour son équipe Tech & Data. Poste en full remote possible depuis la France.",
+      "dateCreation": "2026-09-30T14:00:00.000Z",
+      "lieuTravail": { "libelle": "75 - Paris 8e Arrondissement", "codePostal": "75008" },
+      "entreprise": { "nom": "QONTO" },
+      "typeContrat": "CDI",
+      "typeContratLibelle": "Contrat à durée indéterminée",
+      "natureContrat": "Contrat travail",
+      "experienceExige": "E",
+      "experienceLibelle": "2 An(s)",
+      "salaire": { "commentaire": "45-55 k€" },
+      "alternance": false,
+      "secteurActivite": "64",
+      "secteurActiviteLibelle": "Autres intermédiations monétaires",
+      "origineOffre": {
+        "origine": "2",
+        "urlOrigine": "https://candidat.francetravail.fr/offres/recherche/detail/201TSTB",
+        "partenaires": [
+          {
+            "nom": "QONTO",
+            "url": "https://jobs.lever.co/qonto/ebed5dab-630c-48ea-be8f-9e018797c193/apply",
+            "logo": "https://www.francetravail.fr/logo-partenaire.png"
+          }
+        ]
+      }
+    }
+  ],
+  "filtresPossibles": []
+}

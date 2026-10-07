@@ -1,0 +1,37 @@
+{
+  "resultats": [
+    {
+      "id": "201TSTC",
+      "intitule": "IT Operations Specialist (H/F)",
+      "description": "Rejoignez l'équipe Work Environment d'Alan à Paris. Organisation en mode hybride.",
+      "dateCreation": "2026-09-20T08:00:00.000Z",
+      "lieuTravail": { "libelle": "75 - Paris 10e Arrondissement", "codePostal": "75010" },
+      "entreprise": { "nom": "ALAN" },
+      "typeContrat": "CDI",
+      "typeContratLibelle": "Contrat à durée indéterminée",
+      "experienceExige": "S",
+      "experienceLibelle": "Expérience souhaitée de 2 An(s)",
+      "alternance": false,
+      "secteurActiviteLibelle": "Autres assurances",
+      "origineOffre": { "origine": "1" }
+    },
+    {
+      "id": "201TSTD",
+      "intitule": "Assistant comptable en alternance (H/F)",
+      "description": "Dans le cadre d'un contrat d'apprentissage, vous assistez le service comptable. Pas de télétravail.",
+      "dateCreation": "2026-09-25T08:00:00.000Z",
+      "lieuTravail": { "libelle": "69 - LYON 03", "codePostal": "69003" },
+      "entreprise": { "nom": "CABINET EXEMPLE" },
+      "typeContrat": "CDD",
+      "typeContratLibelle": "Contrat à durée déterminée - 24 Mois",
+      "natureContrat": "Contrat apprentissage",
+      "experienceExige": "D",
+      "experienceLibelle": "Débutant accepté",
+      "salaire": { "libelle": "Mensuel de 1200.00 Euros sur 12 mois" },
+      "alternance": true,
+      "secteurActiviteLibelle": "Activités comptables",
+      "origineOffre": { "origine": "1" }
+    }
+  ],
+  "filtresPossibles": []
+}

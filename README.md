@@ -63,6 +63,8 @@ convient.
 | `npm run db:migrate:dev` | crée une nouvelle migration après modification du schéma          |
 | `npm run db:seed`        | données de démonstration (idempotent, ignoré en production)       |
 | `npm run db:generate`    | régénère le client Prisma (`src/generated/prisma`, non versionné) |
+| `npm run radar:run`      | un passage du Market Radar sur toutes les sources                 |
+| `npm run worker`         | worker de tâches de fond (radar planifié)                         |
 
 ## Variables d'environnement
 
@@ -83,6 +85,15 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `DATA_ENCRYPTION_PREVIOUS_KEYS`                                       | rotation | anciennes clés `1:<base64>,2:<base64>`                   |
 | `UPLOAD_DIR`                                                          | non      | dossier privé des justificatifs (`./storage/uploads`)    |
 | `LOG_LEVEL`                                                           | non      | `debug`, `info`, `warn`, `error`                         |
+| `ADMIN_EMAILS`                                                        | non      | e-mails admin (virgules) : accès à `/app/radar`          |
+| `RADAR_CONTACT`                                                       | radar    | contact (URL ou `mailto:`) du User-Agent du radar        |
+| `RADAR_INTERVAL_HOURS`, `RADAR_RUN_ON_START`                          | non      | périodicité du worker (6 h) et passage au démarrage      |
+| `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                       |
+| `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)      |
+| `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)    |
+| `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)   |
+| `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                     |
+| `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)          |
 | `SITE_DOMAIN`                                                         | prod     | domaine servi par Traefik                                |
 | `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                         |
 | `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                         |
@@ -104,6 +115,42 @@ l'utilisateur renvoyé par `requireUser()` :
 const user = await requireUser();
 const items = await db.someModel.findMany({ where: { userId: user.id } });
 ```
+
+## Market Radar (collecte d'offres)
+
+Le radar collecte des offres **uniquement auprès de sources autorisées** et se comporte en
+client identifié et poli. Code : `src/lib/radar`.
+
+- **Sources** :
+  - API France Travail « Offres d'emploi v2 » (OAuth2 client credentials, critères ROME /
+    mots-clés / départements, pagination dans les limites documentées : 150 par page, index ≤
+    3149). Sans identifiants, la source est ignorée.
+  - Job boards ATS publics des entreprises de `config/radar-companies.json` : Greenhouse
+    (`boards-api.greenhouse.io`), Lever (`api.lever.co`, `region: "eu"` pour
+    `api.eu.lever.co`) et Ashby (`api.ashbyhq.com/posting-api`). Ajouter une entreprise =
+    ajouter une entrée (`slug`, `name`, `ats`, `boardToken`, `sector`, `website`).
+  - Hors périmètre : LinkedIn, Indeed, Glassdoor, Welcome to the Jungle (CGU interdisant la
+    collecte automatisée). Aucune source n'est « scrapée ».
+- **Client poli** (`http.ts`) : User-Agent `CoachCareerIA-Radar/1.0 (+RADAR_CONTACT)`, débit
+  limité par hôte, nouvelles tentatives espacées sur 429/5xx (respect de `Retry-After`),
+  requêtes conditionnelles `ETag` / `Last-Modified`, robots.txt vérifié pour toute URL hors
+  API. Pas de navigateur headless, de proxy ni d'usurpation d'agent.
+- **Pipeline** (`pipeline.ts`) : chaque connecteur fait `fetch → map` vers le schéma commun
+  (`JobOffer`), puis upsert idempotent par `(source, sourceId)` avec empreinte de contenu.
+  Une offre absente d'une collecte **complète** de son périmètre passe en `CLOSED` (et rouvre
+  si elle revient). Dédoublonnage inter-sources par URL d'origine ou entreprise + intitulé
+  normalisé + ville : l'offre de l'ATS de l'employeur est canonique, les autres pointent vers
+  elle (`duplicateOfId`).
+- **Salaire** : uniquement s'il est annoncé (`salary.ts` lit « 45-55 k€ », « 50 000 € annuel »,
+  mensuel, journalier, horaire, variable, BSPCE) ; sinon `null`, jamais estimé.
+- **Robustesse** : chaque périmètre (France Travail, `greenhouse:dataiku`…) est journalisé
+  dans `SourceRun` ; une source en échec est consignée et n'arrête pas les autres.
+- **Données personnelles** : les contacts recruteurs fournis par France Travail ne sont pas
+  stockés ; les logs ne contiennent que des compteurs et des erreurs nettoyées.
+- **Exécution** : `npm run radar:run` (un passage), ou le service `worker` (toutes les
+  `RADAR_INTERVAL_HOURS`). Suivi : `/app/radar`, réservé à `ADMIN_EMAILS`.
+- **Tests** : tous sur des fixtures enregistrées (`tests/fixtures/radar`), jamais sur le
+  réseau.
 
 ## Authentification
 
@@ -240,7 +287,8 @@ Services (`docker-compose.yml`) :
 - `app` : Next.js standalone (port interne 3000), labels Traefik, `mem_limit`, volume `uploads`
   (pièces justificatives chiffrées) ;
 - `migrate` : applique les migrations puis s'arrête ;
-- `worker` : placeholder des futures tâches de fond (collecte, matching, e-mails) ;
+- `worker` : tâches de fond (Market Radar planifié), image dédiée (cible Docker `worker`) ;
+  `RADAR_CONTACT` est requis ;
 - `postgres` : `pgvector/pgvector:pg17`, volume `pgdata`, réseau interne uniquement.
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.

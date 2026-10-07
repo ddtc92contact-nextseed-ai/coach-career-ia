@@ -11,12 +11,16 @@ export const APP_NAV = [
   { href: "/app/parametres", key: "settings" },
 ] as const;
 
-export function AppNav() {
+/** Entrée visible des seuls administrateurs. */
+export const ADMIN_NAV = [{ href: "/app/radar", key: "radar" }] as const;
+
+export function AppNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const t = useTranslations("app.nav");
   const pathname = usePathname();
+  const items = isAdmin ? [...APP_NAV, ...ADMIN_NAV] : APP_NAV;
   return (
     <nav aria-label={t("label")} className="-mb-px flex gap-1 overflow-x-auto">
-      {APP_NAV.map((item) => {
+      {items.map((item) => {
         const active = item.href === "/app" ? pathname === "/app" : pathname.startsWith(item.href);
         return (
           <Link

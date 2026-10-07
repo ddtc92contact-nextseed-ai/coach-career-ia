@@ -6,6 +6,7 @@ import { EmptyState, PageTitle } from "@/components/empty-state";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { isProven } from "@/lib/career/derive";
+import type { ContractTypeCode } from "@/lib/career/codes";
 import { asSector, listAchievements, listExperiences, listSkills } from "@/lib/career/repository";
 import { removeSkill } from "./actions";
 import { SkillForm } from "./skill-form";
@@ -85,7 +86,7 @@ export default async function CareerMemoryPage() {
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       <Badge>{tc(`seniority.${experience.seniority}`)}</Badge>
-                      <Badge>{tc(`contractType.${experience.contractType}`)}</Badge>
+                      <Badge>{tc(`contractType.${experience.contractType as ContractTypeCode}`)}</Badge>
                       <Badge>
                         {t("experiences.achievementCount", {
                           count: experience._count.achievements,

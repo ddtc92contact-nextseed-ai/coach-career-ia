@@ -18,7 +18,7 @@ export async function seed(prisma: PrismaClient): Promise<void> {
       roleTitle: "Product manager",
       startMonth: new Date("2021-03-01T00:00:00.000Z"),
       seniority: "SENIOR",
-      contractType: "PERMANENT",
+      contractType: "CDI",
       sector: "FINTECH",
       companySize: "S51_200",
       companyStage: "SCALEUP",
@@ -49,7 +49,7 @@ export async function seed(prisma: PrismaClient): Promise<void> {
       minFixedSalary: 65000,
       remotePolicy: "HYBRID",
       minRemoteDays: 2,
-      contractTypes: ["PERMANENT"],
+      contractTypes: ["CDI"],
       excludedSectors: ["GAMBLING"],
     },
   });

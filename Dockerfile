@@ -26,6 +26,21 @@ COPY prisma ./prisma
 USER node
 CMD ["npx", "prisma", "migrate", "deploy"]
 
+# ---- Worker (Market Radar, service `worker`) ------------------------------
+# Exécute le TypeScript du radar avec tsx : pas de bundle à maintenir, mêmes
+# modules que l'application et les tests.
+FROM node:22-bookworm-slim AS worker
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/src/generated ./src/generated
+COPY package.json tsconfig.json ./
+COPY src/lib ./src/lib
+COPY config ./config
+COPY worker ./worker
+USER node
+CMD ["node", "--import", "tsx", "worker/index.ts"]
+
 # ---- Image d'exécution (Next.js standalone) -------------------------------
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app
@@ -37,7 +52,6 @@ ENV NODE_ENV=production \
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-COPY --chown=node:node worker ./worker
 # Pièces justificatives (chiffrées), montées sur le volume `uploads`.
 RUN mkdir -p /app/storage/uploads && chown -R node:node /app/storage && chmod 700 /app/storage/uploads
 

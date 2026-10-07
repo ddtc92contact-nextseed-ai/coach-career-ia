@@ -140,7 +140,8 @@
       "memory": "Mein Karrieregedächtnis",
       "guardRails": "Meine Leitplanken",
       "opportunities": "Chancen",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "radar": "Radar (Admin)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Geschäftsführung"
     },
     "contractType": {
-      "PERMANENT": "Unbefristet",
-      "FIXED_TERM": "Befristet",
+      "CDI": "Unbefristet",
+      "CDD": "Befristet",
       "FREELANCE": "Freiberuflich",
       "TEMPORARY": "Zeitarbeit",
       "APPRENTICESHIP": "Duales Studium / Ausbildung",

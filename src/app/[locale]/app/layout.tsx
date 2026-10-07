@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Logo } from "@/components/logo";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { isAdminEmail } from "@/lib/auth/admin";
 import { requireUser } from "@/lib/auth/session";
 import { initUserLocale } from "@/lib/career/repository";
 import { logout } from "./actions";
@@ -42,7 +43,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
               </form>
             </div>
           </div>
-          <AppNav />
+          <AppNav isAdmin={isAdminEmail(user.email)} />
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>

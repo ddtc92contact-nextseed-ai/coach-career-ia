@@ -140,7 +140,8 @@
       "memory": "Mi memoria de carrera",
       "guardRails": "Mis salvaguardas",
       "opportunities": "Oportunidades",
-      "settings": "Ajustes"
+      "settings": "Ajustes",
+      "radar": "Radar (admin)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Alta dirección"
     },
     "contractType": {
-      "PERMANENT": "Indefinido",
-      "FIXED_TERM": "Temporal",
+      "CDI": "Indefinido",
+      "CDD": "Temporal",
       "FREELANCE": "Freelance",
       "TEMPORARY": "ETT",
       "APPRENTICESHIP": "Formación dual",

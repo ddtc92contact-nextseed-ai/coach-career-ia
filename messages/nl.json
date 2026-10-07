@@ -140,7 +140,8 @@
       "memory": "Mijn carrièregeheugen",
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
-      "settings": "Instellingen"
+      "settings": "Instellingen",
+      "radar": "Radar (beheer)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Bestuurder"
     },
     "contractType": {
-      "PERMANENT": "Vast contract",
-      "FIXED_TERM": "Tijdelijk contract",
+      "CDI": "Vast contract",
+      "CDD": "Tijdelijk contract",
       "FREELANCE": "Freelance",
       "TEMPORARY": "Uitzendwerk",
       "APPRENTICESHIP": "Leer-werktraject",

@@ -140,7 +140,8 @@
       "memory": "My career memory",
       "guardRails": "My guard-rails",
       "opportunities": "Opportunities",
-      "settings": "Settings"
+      "settings": "Settings",
+      "radar": "Radar (admin)"
     }
   },
   "dashboard": {
@@ -431,8 +432,8 @@
       "EXECUTIVE": "Executive"
     },
     "contractType": {
-      "PERMANENT": "Permanent contract",
-      "FIXED_TERM": "Fixed-term contract",
+      "CDI": "Permanent contract",
+      "CDD": "Fixed-term contract",
       "FREELANCE": "Freelance",
       "TEMPORARY": "Temporary / agency",
       "APPRENTICESHIP": "Apprenticeship",

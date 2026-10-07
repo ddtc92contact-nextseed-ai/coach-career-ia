@@ -20,8 +20,8 @@ export const SENIORITIES = [
 export type SeniorityCode = (typeof SENIORITIES)[number];
 
 export const CONTRACT_TYPES = [
-  "PERMANENT",
-  "FIXED_TERM",
+  "CDI",
+  "CDD",
   "FREELANCE",
   "TEMPORARY",
   "APPRENTICESHIP",
