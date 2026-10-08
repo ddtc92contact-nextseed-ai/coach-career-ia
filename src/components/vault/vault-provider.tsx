@@ -139,6 +139,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const accountKeyRef = useRef<AccountKey | null>(null);
   const storedRef = useRef<VaultResponse | null>(null);
   const accountRef = useRef<AccountKdf | null>(null);
+  /** Clé reçue de la page de connexion (survit au double montage du mode strict). */
+  const handedOffRef = useRef<AccountKey | null | undefined>(undefined);
 
   const apply = useCallback((next: UnlockedVault | null) => {
     vaultRef.current = next;
@@ -153,6 +155,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const lock = useCallback(() => {
     apply(null);
     keep(null);
+    handedOffRef.current = null;
     dropAccountKey();
     setStatus((current) =>
       current === "unlocked" ? closedStatus(storedRef.current, accountRef.current) : current,
@@ -196,8 +199,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIdleState((current) => readIdlePreference() ?? current);
     // Clé transmise par la page de connexion : le coffre s'ouvre sans second mot de passe.
-    const handedOff = takeAccountKey();
-    if (handedOff) keep(handedOff);
+    if (handedOffRef.current === undefined) handedOffRef.current = takeAccountKey();
+    if (handedOffRef.current) keep(handedOffRef.current);
     void reload();
   }, [reload, keep]);
 

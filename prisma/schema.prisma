@@ -103,8 +103,8 @@ model User {
   @@map("users")
 }
 
-/// Comptes de fournisseurs d'identité (Auth.js). Inutilisé tant que seule la
-/// connexion par lien magique est proposée, mais requis par l'adaptateur.
+/// Comptes de fournisseurs d'identité (Auth.js). Inutilisé (lien magique et mot
+/// de passe n'en ont pas besoin), mais requis par l'adaptateur.
 model Account {
   userId            String  @map("user_id")
   type              String

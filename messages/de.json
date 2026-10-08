@@ -747,7 +747,7 @@
     },
     "recovery": {
       "title": "Ihr Wiederherstellungsschlüssel",
-      "intro": "Damit öffnen Sie Ihren Tresor wieder, falls Sie Ihre Passphrase vergessen. Er wird nie wieder angezeigt.",
+      "intro": "Mit ihm öffnen Sie Ihren Tresor wieder, wenn Sie Ihr Passwort (oder Ihre alte Passphrase) vergessen. Er wird nie wieder angezeigt.",
       "warning": "Bewahren Sie ihn offline auf: ausgedruckt, in einem Passwort-Manager oder in einer sicher abgelegten Datei. Geben Sie ihn niemandem weiter.",
       "download": "Herunterladen (.txt)",
       "print": "Drucken",
@@ -840,7 +840,7 @@
     },
     "reset": {
       "title": "Tresor zurücksetzen",
-      "intro": "Löscht Ihre verschlüsselte Identität und Ihren Original-Lebenslauf endgültig. Nützlich, wenn Sie Passphrase und Wiederherstellungsschlüssel verloren haben: Danach können Sie einen neuen Tresor anlegen. Ihr Karrieregedächtnis bleibt unberührt.",
+      "intro": "Löscht Ihre verschlüsselte Identität und Ihren Original-Lebenslauf endgültig. Nützlich, wenn Sie den Tresor nicht mehr öffnen können (Passwort zurückgesetzt oder Passphrase vergessen, ohne Wiederherstellungsschlüssel): Sie können danach einen neuen Tresor erstellen. Ihr Karrieregedächtnis bleibt unberührt.",
       "button": "Meinen Tresor löschen",
       "confirm": "Identitätstresor und Lebenslauf endgültig löschen? Dies kann nicht rückgängig gemacht werden.",
       "working": "Wird gelöscht…"

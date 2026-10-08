@@ -747,7 +747,7 @@
     },
     "recovery": {
       "title": "Your recovery key",
-      "intro": "It lets you reopen your vault if you forget your passphrase. It will never be shown again.",
+      "intro": "It lets you reopen your vault if you forget your password (or your old passphrase). It will never be shown again.",
       "warning": "Keep it offline: printed, in a password manager or in a file stored somewhere safe. Never share it.",
       "download": "Download (.txt)",
       "print": "Print",
@@ -840,7 +840,7 @@
     },
     "reset": {
       "title": "Reset the vault",
-      "intro": "Permanently deletes your encrypted identity and original CV. Useful if you lost both your passphrase and recovery key: you can then create a new vault. Your career memory is not affected.",
+      "intro": "Permanently deletes your encrypted identity and original CV. Useful if you can no longer open the vault (password reset or passphrase forgotten, with no recovery key): you can then create a new vault. Your Career Memory is not affected.",
       "button": "Delete my vault",
       "confirm": "Permanently delete your identity vault and CV? This cannot be undone.",
       "working": "Deleting…"

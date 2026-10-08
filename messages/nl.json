@@ -747,7 +747,7 @@
     },
     "recovery": {
       "title": "Je herstelsleutel",
-      "intro": "Hiermee open je je kluis opnieuw als je je wachtzin vergeet. Hij wordt nooit meer getoond.",
+      "intro": "Hiermee open je je kluis opnieuw als je je wachtwoord (of je oude wachtzin) vergeet. Hij wordt nooit meer getoond.",
       "warning": "Bewaar hem offline: afgedrukt, in een wachtwoordbeheerder of in een veilig opgeslagen bestand. Deel hem met niemand.",
       "download": "Downloaden (.txt)",
       "print": "Afdrukken",
@@ -840,7 +840,7 @@
     },
     "reset": {
       "title": "Kluis resetten",
-      "intro": "Verwijdert je versleutelde identiteit en originele cv definitief. Handig als je je wachtzin en herstelsleutel kwijt bent: daarna kun je een nieuwe kluis aanmaken. Je loopbaangeheugen blijft ongemoeid.",
+      "intro": "Verwijdert je versleutelde identiteit en je originele cv definitief. Handig als je de kluis niet meer kunt openen (wachtwoord opnieuw ingesteld of wachtzin vergeten, zonder herstelsleutel): daarna kun je een nieuwe kluis aanmaken. Je carrièregeheugen blijft onaangetast.",
       "button": "Mijn kluis verwijderen",
       "confirm": "Je identiteitskluis en cv definitief verwijderen? Dit kan niet ongedaan worden gemaakt.",
       "working": "Verwijderen…"

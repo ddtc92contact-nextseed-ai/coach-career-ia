@@ -747,7 +747,7 @@
     },
     "recovery": {
       "title": "Tu clave de recuperación",
-      "intro": "Permite volver a abrir tu caja fuerte si olvidas tu frase secreta. No se volverá a mostrar.",
+      "intro": "Te permite volver a abrir tu caja fuerte si olvidas tu contraseña (o tu antigua frase secreta). No volverá a mostrarse nunca.",
       "warning": "Guárdala fuera de línea: impresa, en un gestor de contraseñas o en un archivo guardado en un lugar seguro. No la compartas con nadie.",
       "download": "Descargar (.txt)",
       "print": "Imprimir",
@@ -840,7 +840,7 @@
     },
     "reset": {
       "title": "Restablecer la caja fuerte",
-      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si has perdido tu frase secreta y tu clave de recuperación: después podrás crear una nueva caja fuerte. Tu memoria profesional no se modifica.",
+      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si ya no puedes abrir la caja fuerte (contraseña restablecida o frase secreta olvidada, sin clave de recuperación): después podrás crear una nueva caja fuerte. Tu memoria de carrera no se ve afectada.",
       "button": "Eliminar mi caja fuerte",
       "confirm": "¿Eliminar definitivamente tu caja fuerte de identidad y tu CV? Esta acción es irreversible.",
       "working": "Eliminando…"

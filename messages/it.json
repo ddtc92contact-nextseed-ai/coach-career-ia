@@ -747,7 +747,7 @@
     },
     "recovery": {
       "title": "La tua chiave di recupero",
-      "intro": "Ti permette di riaprire la cassaforte se dimentichi la passphrase. Non verrà più mostrata.",
+      "intro": "Ti permette di riaprire la cassaforte se dimentichi la password (o la vecchia passphrase). Non verrà mai più mostrata.",
       "warning": "Conservala offline: stampata, in un gestore di password o in un file custodito in un luogo sicuro. Non condividerla con nessuno.",
       "download": "Scarica (.txt)",
       "print": "Stampa",
@@ -840,7 +840,7 @@
     },
     "reset": {
       "title": "Reimposta la cassaforte",
-      "intro": "Elimina definitivamente la tua identità cifrata e il CV originale. Utile se hai perso passphrase e chiave di recupero: potrai poi creare una nuova cassaforte. La tua memoria professionale non viene toccata.",
+      "intro": "Elimina definitivamente la tua identità cifrata e il CV originale. Utile se non riesci più ad aprire la cassaforte (password reimpostata o passphrase dimenticata, senza chiave di recupero): potrai poi crearne una nuova. La tua memoria di carriera non viene toccata.",
       "button": "Elimina la mia cassaforte",
       "confirm": "Eliminare definitivamente la cassaforte d’identità e il CV? L’azione è irreversibile.",
       "working": "Eliminazione…"
