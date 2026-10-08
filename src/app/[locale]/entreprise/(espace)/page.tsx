@@ -58,13 +58,13 @@ export default async function EmployerDashboardPage() {
             {stats.map((stat) => (
               <div
                 key={stat.key}
-                className="border-brand-line bg-surface flex items-center gap-3 rounded-2xl border px-4 py-3 shadow-xs"
+                className="border-brand-line bg-surface flex min-w-0 items-center gap-3 rounded-2xl border px-4 py-3 shadow-xs"
               >
-                <span className="bg-night text-signal grid size-10 shrink-0 place-items-center rounded-xl">
+                <span className="bg-night text-signal grid size-10 shrink-0 place-items-center rounded-xl max-sm:hidden">
                   <Icon name={stat.icon} className="size-5" />
                 </span>
                 <div className="min-w-0">
-                  <dt className="text-ink-muted text-sm leading-snug text-pretty">
+                  <dt className="text-ink-muted text-sm leading-snug break-words hyphens-auto">
                     {t(`stats.${stat.key}`)}
                   </dt>
                   <dd className="font-display text-2xl font-bold tabular-nums">

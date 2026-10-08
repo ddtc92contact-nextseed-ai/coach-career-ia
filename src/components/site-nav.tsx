@@ -108,12 +108,12 @@ export function SiteMenu({ sections }: { sections?: SectionLink[] }) {
 
   useEffect(() => {
     if (!open) {
-      if (restoreFocus.current) burgerRef.current?.focus();
+      if (restoreFocus.current) burgerRef.current?.focus({ preventScroll: true });
       restoreFocus.current = false;
       return;
     }
     const panel = panelRef.current;
-    closeRef.current?.focus();
+    closeRef.current?.focus({ preventScroll: true });
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     // Le panneau est rendu directement dans <body> : tout le reste devient inerte.

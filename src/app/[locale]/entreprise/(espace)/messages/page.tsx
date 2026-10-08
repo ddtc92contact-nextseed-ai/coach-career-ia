@@ -39,12 +39,12 @@ export default async function EmployerInboxPage() {
               <li key={thread.id}>
                 <Link
                   href={`/entreprise/messages/${thread.id}`}
-                  className={`group bg-surface hover:border-line-strong flex items-center gap-4 rounded-2xl border p-4 shadow-sm hover:shadow-md motion-safe:transition-[box-shadow,border-color] sm:p-5 ${
+                  className={`group bg-surface hover:border-line-strong flex flex-col gap-3 rounded-2xl border p-4 shadow-sm hover:shadow-md motion-safe:transition-[box-shadow,border-color] sm:flex-row sm:items-center sm:gap-4 sm:p-5 ${
                     unread ? "border-brand-line ring-brand-line ring-1" : "border-line"
                   }`}
                 >
                   <span
-                    className={`relative grid size-12 shrink-0 place-items-center rounded-xl ${
+                    className={`relative grid size-12 shrink-0 place-items-center rounded-xl max-sm:hidden ${
                       unread ? "bg-night text-signal" : "bg-muted text-ink-muted"
                     }`}
                   >
@@ -72,7 +72,7 @@ export default async function EmployerInboxPage() {
                       </span>
                     ) : null}
                   </span>
-                  <span className="flex shrink-0 items-center gap-3 max-sm:self-start">
+                  <span className="flex shrink-0 items-center gap-3 max-sm:order-first">
                     <ThreadStatusBadge status={thread.status} />
                     <Icon
                       name="chevron"

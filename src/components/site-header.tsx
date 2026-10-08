@@ -15,7 +15,9 @@ export function SiteHeader({ sections }: { sections?: SectionLink[] }) {
   const t = useTranslations("header");
   const withSections = Boolean(sections?.length);
   return (
-    <header className="bg-surface/90 border-line sticky top-0 z-40 border-b shadow-xs backdrop-blur-md">
+    // Marge négative : le focus clavier dans l'en-tête collant ne fait pas
+    // défiler la page (scroll-padding-top de <html>).
+    <header className="bg-surface/90 border-line sticky top-0 z-40 border-b shadow-xs backdrop-blur-md [&_*]:-scroll-mt-20">
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 xl:gap-4 xl:px-8">
         <Logo compactUntil={withSections ? "xl" : "sm"} />
         {sections?.length ? <SectionNav sections={sections} label={t("sections")} /> : null}
