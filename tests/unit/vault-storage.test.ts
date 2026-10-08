@@ -5,7 +5,8 @@ import { describe, expect, it } from "vitest";
 /**
  * Garde-fou statique : aucune donnée d'identité ne doit être persistée côté
  * navigateur. Le seul usage autorisé du stockage local est la préférence de
- * verrouillage automatique du coffre (un nombre de minutes, non identifiant).
+ * verrouillage automatique du coffre (un nombre de minutes, non identifiant) ;
+ * le seul cookie écrit par le navigateur mémorise le menu latéral réduit.
  */
 
 const ROOT = path.resolve(import.meta.dirname, "../../src");
@@ -29,6 +30,7 @@ describe("coffre d'identité : rien n'est persisté dans le navigateur", () => {
         .filter(({ text }) => STORAGE.test(text) && !/^\s*(\*|\/\/)/.test(text)),
     );
     expect(usages.map((u) => `${u.file}: ${u.text.trim()}`)).toEqual([
+      'components/shell/app-shell.tsx: document.cookie = sidebarCookie(next, window.location.protocol === "https:");',
       "components/vault/vault-provider.tsx: const value = Number(window.localStorage.getItem(IDLE_STORAGE_KEY));",
       "components/vault/vault-provider.tsx: window.localStorage.setItem(IDLE_STORAGE_KEY, String(minutes));",
     ]);

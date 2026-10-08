@@ -521,6 +521,14 @@
     "delete": "Verwijderen",
     "deleting": "Verwijderen…"
   },
+  "shell": {
+    "menu": "Menu",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten",
+    "collapse": "Menu inklappen",
+    "expand": "Menu uitklappen",
+    "skipToContent": "Naar de inhoud"
+  },
   "errors": {
     "summary": "{count, plural, one {Eén veld moet worden gecorrigeerd.} other {# velden moeten worden gecorrigeerd.}}",
     "required": "Dit veld is verplicht.",
@@ -558,14 +566,21 @@
       "guardRails": "Mijn randvoorwaarden",
       "opportunities": "Kansen",
       "settings": "Instellingen",
-      "radar": "Radar (beheer)",
+      "radar": "Radar",
       "coach": "AI-coach",
       "billing": "Abonnement",
-      "billingSimulator": "Betalingssimulator (admin)",
+      "billingSimulator": "Betalingssimulator",
       "card": "Mijn anonieme kaart",
       "contacts": "Contacten",
       "employer": "Werkgeversomgeving",
-      "moderation": "Moderatie (admin)"
+      "moderation": "Moderatie",
+      "groups": {
+        "profile": "Mijn profiel",
+        "agent": "Mijn agent",
+        "account": "Account",
+        "admin": "Beheer"
+      },
+      "unread": "{count, plural, one {# nieuw antwoord} other {# nieuwe antwoorden}}"
     }
   },
   "dashboard": {
@@ -2217,7 +2232,11 @@
       "organization": "Mijn organisatie",
       "candidate": "Kandidaatomgeving",
       "messages": "Inbox",
-      "newThreads": "{count, plural, one {# nieuw bericht} other {# nieuwe berichten}}"
+      "newThreads": "{count, plural, one {# nieuw bericht} other {# nieuwe berichten}}",
+      "groups": {
+        "hiring": "Werving",
+        "account": "Account"
+      }
     },
     "signup": {
       "metaTitle": "Voor werkgevers",
@@ -2581,7 +2600,8 @@
                 "session": "<strong>authjs.session-token</strong>: houdt u aangemeld (30 dagen, verwijderd bij het afmelden).",
                 "csrf": "<strong>authjs.csrf-token</strong>: beschermt de aanmeldformulieren tegen vervalsing van verzoeken (browsersessie).",
                 "callback": "<strong>authjs.callback-url</strong>: pagina waarnaar na het aanmelden wordt teruggekeerd (browsersessie).",
-                "locale": "<strong>NEXT_LOCALE</strong>: gekozen weergavetaal (browsersessie)."
+                "locale": "<strong>NEXT_LOCALE</strong>: gekozen weergavetaal (browsersessie).",
+                "sidebar": "<strong>cc-sidebar</strong>: onthoudt of u het zijmenu van uw omgeving hebt ingeklapt (1 jaar)."
               },
               "p2": "Uw browser bewaart ook, in lokale opslag, de door u gekozen duur van de automatische vergrendeling van de identiteitskluis: dit zijn geen persoonsgegevens."
             }

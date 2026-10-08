@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Icon } from "@/components/icons";
+import { useShell } from "@/components/shell/app-shell";
 import { Link } from "@/i18n/navigation";
 import { employerForExperience } from "@/lib/vault/identity";
 import { useVault } from "./vault-provider";
@@ -25,49 +27,43 @@ export function VaultEmployerName({ experienceId }: { experienceId: string }) {
 }
 
 /**
- * Indicateur d'en-tête : coffre déverrouillé, avec verrouillage en un clic.
- * Sur téléphone, seul le bouton (cadenas) est montré pour tenir à côté du
- * sélecteur de langue et de la déconnexion.
+ * État du coffre dans le menu latéral : coffre déverrouillé, avec verrouillage
+ * en un clic. En mode rail, seul le bouton (cadenas) reste visible.
  */
 export function VaultStatusBadge() {
   const t = useTranslations("identity");
   const { status, lock } = useVault();
+  const { collapsed } = useShell();
   if (status !== "unlocked") return null;
   return (
-    <span className="sm:bg-brand-soft text-brand-ink sm:ring-brand-line inline-flex shrink-0 items-center gap-1 rounded-full text-xs font-medium sm:py-0.5 sm:pr-1 sm:pl-2 sm:ring-1 sm:ring-inset">
-      <span className="hidden sm:contents">
-        <LockIcon open />
-      </span>
-      <Link href="/app/identite" className="hidden whitespace-nowrap sm:inline">
-        {t("badge.unlocked")}
+    <div
+      className={`bg-signal/10 ring-signal/30 flex items-center gap-2 rounded-xl py-1 pr-1 pl-3 ring-1 ring-inset ${
+        collapsed ? "lg:justify-center lg:p-0 lg:ring-0" : ""
+      }`}
+    >
+      <Link
+        href="/app/identite"
+        className={`text-signal flex min-h-9 min-w-0 flex-1 items-center gap-2 text-sm font-medium ${
+          collapsed ? "lg:hidden" : ""
+        }`}
+      >
+        <Icon name="unlock" className="size-4 shrink-0" />
+        <span className="min-w-0 py-1 leading-snug break-words hyphens-auto">
+          {t("badge.unlocked")}
+        </span>
       </Link>
       <button
         type="button"
         onClick={lock}
         title={t("lock")}
-        className="bg-brand-soft ring-brand-line hover:bg-subtle sm:bg-surface sm:ring-line inline-flex items-center rounded-full p-2 ring-1 sm:px-2 sm:py-0.5"
+        className={`text-on-night hover:bg-night-raised inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium ${
+          collapsed ? "lg:size-11 lg:justify-center lg:px-0" : ""
+        }`}
       >
-        <span className="sm:hidden">
-          <LockIcon />
-        </span>
-        <span className="sr-only whitespace-nowrap sm:not-sr-only">{t("lock")}</span>
+        <Icon name="lock" className={`hidden size-5 ${collapsed ? "lg:block" : ""}`} />
+        <span className={collapsed ? "lg:sr-only" : ""}>{t("lock")}</span>
       </button>
-    </span>
-  );
-}
-
-/** Déconnexion : la clé du coffre est effacée avant l'envoi du formulaire. */
-export function LogoutButton({ action, label }: { action: () => Promise<void>; label: string }) {
-  const { lock } = useVault();
-  return (
-    <form action={action} onSubmit={lock} className="shrink-0">
-      <button
-        type="submit"
-        className="border-line-strong hover:bg-muted rounded-lg border px-3 py-1.5 text-sm font-medium whitespace-nowrap"
-      >
-        {label}
-      </button>
-    </form>
+    </div>
   );
 }
 

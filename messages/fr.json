@@ -521,6 +521,14 @@
     "delete": "Supprimer",
     "deleting": "Suppression…"
   },
+  "shell": {
+    "menu": "Menu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "collapse": "Réduire le menu",
+    "expand": "Déplier le menu",
+    "skipToContent": "Aller au contenu"
+  },
   "errors": {
     "summary": "{count, plural, one {Un champ est à corriger.} other {# champs sont à corriger.}}",
     "required": "Ce champ est obligatoire.",
@@ -558,14 +566,21 @@
       "guardRails": "Mes garde-fous",
       "opportunities": "Opportunités",
       "settings": "Paramètres",
-      "radar": "Radar (admin)",
+      "radar": "Radar",
       "coach": "Coach IA",
       "billing": "Abonnement",
-      "billingSimulator": "Simulateur de paiement (admin)",
+      "billingSimulator": "Simulateur de paiement",
       "card": "Ma carte anonyme",
       "contacts": "Contacts",
       "employer": "Espace entreprise",
-      "moderation": "Modération (admin)"
+      "moderation": "Modération",
+      "groups": {
+        "profile": "Mon profil",
+        "agent": "Mon agent",
+        "account": "Compte",
+        "admin": "Administration"
+      },
+      "unread": "{count, plural, one {# nouvelle réponse} other {# nouvelles réponses}}"
     }
   },
   "dashboard": {
@@ -2217,7 +2232,11 @@
       "organization": "Mon organisation",
       "candidate": "Espace candidat",
       "messages": "Messagerie",
-      "newThreads": "{count, plural, one {# nouveau message} other {# nouveaux messages}}"
+      "newThreads": "{count, plural, one {# nouveau message} other {# nouveaux messages}}",
+      "groups": {
+        "hiring": "Recrutement",
+        "account": "Compte"
+      }
     },
     "signup": {
       "metaTitle": "Je recrute",
@@ -2581,7 +2600,8 @@
                 "session": "<strong>authjs.session-token</strong> : maintient votre connexion (30 jours, supprimé à la déconnexion).",
                 "csrf": "<strong>authjs.csrf-token</strong> : protège les formulaires de connexion contre la falsification de requêtes (session du navigateur).",
                 "callback": "<strong>authjs.callback-url</strong> : page où revenir après la connexion (session du navigateur).",
-                "locale": "<strong>NEXT_LOCALE</strong> : langue d’affichage choisie (session du navigateur)."
+                "locale": "<strong>NEXT_LOCALE</strong> : langue d’affichage choisie (session du navigateur).",
+                "sidebar": "<strong>cc-sidebar</strong> : mémorise si vous avez réduit le menu latéral de votre espace (1 an)."
               },
               "p2": "Votre navigateur conserve aussi, en stockage local, la durée de verrouillage automatique du coffre d’identité que vous avez choisie : aucune donnée personnelle."
             }

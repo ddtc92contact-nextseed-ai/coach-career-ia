@@ -10,13 +10,14 @@
 :root {
   color-scheme: light dark;
 
-  /* Neutres : papier chaud (clair) / nuit (sombre). */
-  --cc-canvas: oklch(0.985 0.005 85);
+  /* Neutres : fond « brume » teinté nuit, cartes blanches qui s'en détachent
+     (clair) / nuit (sombre). */
+  --cc-canvas: oklch(0.952 0.014 275);
   --cc-surface: oklch(1 0 0);
-  --cc-subtle: oklch(0.972 0.006 85);
-  --cc-muted: oklch(0.948 0.008 85);
-  --cc-line: oklch(0.912 0.009 85);
-  --cc-line-strong: oklch(0.83 0.012 85);
+  --cc-subtle: oklch(0.975 0.007 275);
+  --cc-muted: oklch(0.94 0.012 275);
+  --cc-line: oklch(0.9 0.013 275);
+  --cc-line-strong: oklch(0.8 0.018 275);
   --cc-ink: oklch(0.22 0.035 275);
   --cc-ink-muted: oklch(0.42 0.03 275);
   --cc-ink-subtle: oklch(0.52 0.025 275);
@@ -62,7 +63,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --cc-canvas: oklch(0.165 0.022 275);
-    --cc-surface: oklch(0.205 0.026 275);
+    --cc-surface: oklch(0.21 0.027 275);
     --cc-subtle: oklch(0.23 0.028 275);
     --cc-muted: oklch(0.265 0.03 275);
     --cc-line: oklch(0.31 0.03 275);
@@ -190,9 +191,62 @@
   :focus-visible {
     @apply outline-focus outline-2 outline-offset-2;
   }
+  /* Sur fond nuit (menu latéral, bandeaux nuit), l'anneau passe au vert signal. */
+  .on-night :focus-visible {
+    @apply outline-signal;
+  }
   ::selection {
     @apply bg-brand-soft text-ink;
   }
+}
+
+/* Bandeaux de couleur des en-têtes de page (`PageHeader band`) et du menu
+   latéral : les pages de l'application ne sont pas du blanc sur blanc. */
+@utility band-brand {
+  background-color: var(--cc-brand-soft);
+  background-image:
+    radial-gradient(
+      90% 140% at 100% 0%,
+      color-mix(in oklch, var(--cc-brand) 16%, transparent),
+      transparent 65%
+    ),
+    linear-gradient(120deg, var(--cc-brand-soft), var(--cc-surface));
+}
+
+@utility band-night {
+  background-color: var(--cc-night);
+  background-image:
+    radial-gradient(
+      80% 130% at 100% 0%,
+      color-mix(in oklch, var(--cc-signal) 16%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(160deg, var(--cc-night-raised), var(--cc-night) 70%);
+}
+
+@utility sidebar-night {
+  background-color: var(--cc-night);
+  background-image:
+    radial-gradient(
+      120% 40% at 0% 0%,
+      color-mix(in oklch, var(--cc-signal) 11%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      100% 30% at 100% 100%,
+      color-mix(in oklch, var(--cc-brand) 14%, transparent),
+      transparent 70%
+    );
+}
+
+/* Échelle de texte de l'application (coque `AppShell`) : le corps reste à
+   16 px, `text-sm` (texte secondaire) passe à 15 px et `text-xs` à 13 px.
+   Les utilitaires Tailwind lisent ces variables : les écrans existants
+   grossissent sans changer leurs classes. */
+@utility type-app {
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
 }
 
 @layer utilities {
