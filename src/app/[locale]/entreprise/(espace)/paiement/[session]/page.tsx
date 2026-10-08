@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { buttonClass } from "@/components/button";
+import { Card } from "@/components/card";
+import { PageHeader } from "@/components/page-header";
 import { billingMode } from "@/lib/billing/config";
 import { getSimulatedJobPostingCheckout } from "@/lib/billing/simulator-server";
 import { postingDurationDays } from "@/lib/employer/config";
 import { requireEmployer } from "@/lib/employer/session";
 import { SimulatedBanner } from "../../../../app/billing/simulation/test-mode";
+import { BackLink } from "../../parts";
 import { completeSimulatedPostingCheckout } from "./actions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("employer.checkout");
   return { title: t("title"), robots: { index: false } };
 }
-
-const button = "w-full rounded-lg px-5 py-2.5 text-sm font-medium sm:w-auto";
 
 /**
  * Page de paiement simulée d'une publication (remplace Stripe Checkout en
@@ -44,45 +45,49 @@ export default async function SimulatedPostingCheckoutPage({
   });
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-2xl">
+      <BackLink href={`/entreprise/offres/${checkout.postingId}`}>{t("back")}</BackLink>
       <SimulatedBanner />
-      <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="text-ink-muted mt-2">{ts("checkout.intro")}</p>
+      <PageHeader title={t("title")} lead={ts("checkout.intro")} />
 
       {query.refus ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink mb-6 rounded-2xl border px-5 py-4 font-medium"
         >
           {ts("checkout.declined")}
         </p>
       ) : null}
 
-      <dl className="divide-line border-line bg-surface mt-6 divide-y rounded-2xl border text-sm">
-        <div className="flex justify-between gap-4 p-4">
-          <dt className="text-ink-subtle">{t("offer")}</dt>
-          <dd className="text-right font-medium break-words">{checkout.posting.offer.title}</dd>
-        </div>
-        <div className="flex justify-between gap-4 p-4">
-          <dt className="text-ink-subtle">{t("duration")}</dt>
-          <dd className="font-medium">{t("days", { days: postingDurationDays() })}</dd>
-        </div>
-        <div className="flex justify-between gap-4 p-4">
-          <dt className="text-ink-subtle">{t("total")}</dt>
-          <dd className="font-medium">{amount}</dd>
-        </div>
-      </dl>
+      <Card>
+        <dl className="divide-line divide-y">
+          <div className="flex justify-between gap-4 pb-4">
+            <dt className="text-ink-muted">{t("offer")}</dt>
+            <dd className="min-w-0 text-right font-semibold break-words">
+              {checkout.posting.offer.title}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4 py-4">
+            <dt className="text-ink-muted">{t("duration")}</dt>
+            <dd className="font-semibold">{t("days", { days: postingDurationDays() })}</dd>
+          </div>
+          <div className="flex items-baseline justify-between gap-4 pt-4">
+            <dt className="text-ink-muted">{t("total")}</dt>
+            <dd className="font-display text-3xl font-bold tabular-nums">{amount}</dd>
+          </div>
+        </dl>
+      </Card>
 
       <form
         action={completeSimulatedPostingCheckout}
-        className="mt-6 flex flex-col gap-3 sm:flex-row"
+        className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
       >
         <input type="hidden" name="session" value={session} />
         <button
           type="submit"
           name="outcome"
           value="success"
-          className={`${button} bg-primary text-on-primary hover:bg-primary-hover`}
+          className={`${buttonClass("primary", "lg")} w-full sm:w-auto`}
         >
           {ts("checkout.pay")}
         </button>
@@ -90,7 +95,7 @@ export default async function SimulatedPostingCheckoutPage({
           type="submit"
           name="outcome"
           value="declined"
-          className={`${button} border-line-strong bg-surface hover:bg-muted border`}
+          className={`${buttonClass("secondary", "lg")} w-full sm:w-auto`}
         >
           {ts("checkout.decline")}
         </button>
@@ -98,20 +103,12 @@ export default async function SimulatedPostingCheckoutPage({
           type="submit"
           name="outcome"
           value="cancel"
-          className={`${button} text-ink-muted hover:bg-muted`}
+          className={`${buttonClass("ghost", "lg")} w-full sm:w-auto`}
         >
           {ts("checkout.cancel")}
         </button>
       </form>
-      <p className="text-ink-subtle mt-6 text-xs">{ts("checkout.noCard")}</p>
-      <p className="mt-4 text-sm">
-        <Link
-          href={`/entreprise/offres/${checkout.postingId}`}
-          className="text-ink-muted hover:text-ink underline"
-        >
-          {t("back")}
-        </Link>
-      </p>
+      <p className="text-ink-muted mt-6 text-sm">{ts("checkout.noCard")}</p>
     </div>
   );
 }

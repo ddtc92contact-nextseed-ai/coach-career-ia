@@ -2297,7 +2297,13 @@
         "views": "Views"
       },
       "noDate": "—",
-      "privacy": "No candidate data appears here: you only see how many candidates opened your job among their opportunities."
+      "privacy": "No candidate data appears here: you only see how many candidates opened your job among their opportunities.",
+      "stats": {
+        "live": "Live",
+        "pending": "Being published",
+        "drafts": "Drafts",
+        "views": "Views"
+      }
     },
     "status": {
       "DRAFT": "Draft",
@@ -2305,6 +2311,7 @@
       "IN_REVIEW": "In review",
       "LIVE": "Live",
       "CLOSED": "Closed",
+      "EXPIRED": "Expired",
       "REJECTED": "Rejected"
     },
     "posting": {
@@ -2376,7 +2383,8 @@
         "notAllowed": "This action is not possible in the job’s current state.",
         "unavailable": "Payment is temporarily unavailable. Please try again later.",
         "suspended": "Your organisation is suspended: nothing can be published."
-      }
+      },
+      "progress": "Publication steps"
     },
     "checkout": {
       "title": "Job posting payment",

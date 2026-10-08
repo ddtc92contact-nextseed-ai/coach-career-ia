@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
-import { PageTitle } from "@/components/empty-state";
-import { Link } from "@/i18n/navigation";
+import { PageHeader } from "@/components/page-header";
 import { countryNames } from "@/lib/employer/countries";
 import { requireEmployer } from "@/lib/employer/session";
-import { OrganizationNotice } from "../../parts";
+import { BackLink, OrganizationNotice } from "../../parts";
 import { createPostingAction } from "../actions";
 import { EMPTY_POSTING, PostingForm } from "../posting-form";
 
@@ -17,13 +16,11 @@ export default async function NewPostingPage() {
   const { org } = await requireEmployer();
   const [t, locale] = await Promise.all([getTranslations("employer.posting"), getLocale()]);
   return (
-    <div className="max-w-3xl">
-      <Link href="/entreprise" className="text-ink-muted text-sm hover:underline">
-        {t("back")}
-      </Link>
-      <div className="mt-4">
+    <div className="max-w-4xl">
+      <BackLink href="/entreprise">{t("back")}</BackLink>
+      <div>
         <OrganizationNotice org={org} />
-        <PageTitle title={t("newTitle")} intro={t("newIntro")} />
+        <PageHeader title={t("newTitle")} lead={t("newIntro")} />
         <PostingForm
           action={createPostingAction}
           initial={EMPTY_POSTING}

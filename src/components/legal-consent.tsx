@@ -14,7 +14,7 @@ const linkClass = "underline underline-offset-2 hover:text-ink";
 export function LegalConsent({ audience }: { audience: "candidate" | "company" }) {
   const t = useTranslations("legal.consent");
   return (
-    <p className="text-ink-subtle text-xs leading-relaxed">
+    <p className="text-ink-muted text-sm leading-relaxed">
       {t.rich(audience, {
         terms: (chunks) => (
           <Link

@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { EmptyState, PageTitle } from "@/components/empty-state";
+import { buttonClass } from "@/components/button";
+import { EmptyState } from "@/components/empty-state";
+import { Icon, type IconName } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { postingDurationDays } from "@/lib/employer/config";
+import { displayStatus } from "@/lib/employer/lifecycle";
 import { listPostings } from "@/lib/employer/repository";
 import { requireEmployer } from "@/lib/employer/session";
 import { OrganizationNotice, PostingStatusBadge } from "./parts";
@@ -11,9 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("employer.dashboard");
   return { title: t("title") };
 }
-
-const primaryButton =
-  "inline-block rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-medium text-on-primary hover:bg-primary-hover";
 
 /**
  * Tableau de bord entreprise : les offres de l'organisation, leur statut,
@@ -27,8 +28,17 @@ export default async function EmployerDashboardPage() {
     getFormatter(),
     listPostings(org.id),
   ]);
+  const rows = postings.map((posting) => ({ ...posting, shown: displayStatus(posting) }));
+  const count = (...statuses: string[]) => rows.filter((r) => statuses.includes(r.shown)).length;
+  const stats = [
+    { key: "live", icon: "radar", value: count("LIVE") },
+    { key: "pending", icon: "wallet", value: count("AWAITING_PAYMENT", "IN_REVIEW") },
+    { key: "drafts", icon: "briefcase", value: count("DRAFT", "REJECTED") },
+    { key: "views", icon: "target", value: rows.reduce((sum, r) => sum + r.viewCount, 0) },
+  ] as const satisfies readonly { key: string; icon: IconName; value: number }[];
   const newLink = (
-    <Link href="/entreprise/offres/nouvelle" className={primaryButton}>
+    <Link href="/entreprise/offres/nouvelle" className={buttonClass("primary", "lg")}>
+      <Icon name="plus" className="size-5" />
       {t("newPosting")}
     </Link>
   );
@@ -36,77 +46,86 @@ export default async function EmployerDashboardPage() {
   return (
     <div>
       <OrganizationNotice org={org} />
-      <PageTitle
+      <PageHeader
+        band="brand"
+        eyebrow={org.name}
         title={t("title")}
-        intro={t("intro", { days: postingDurationDays() })}
-        action={postings.length > 0 ? newLink : undefined}
-      />
-      {postings.length === 0 ? (
+        lead={t("intro", { days: postingDurationDays() })}
+        actions={rows.length > 0 ? newLink : undefined}
+      >
+        {rows.length > 0 ? (
+          <dl className="mt-7 grid grid-cols-2 gap-3 xl:grid-cols-4">
+            {stats.map((stat) => (
+              <div
+                key={stat.key}
+                className="border-brand-line bg-surface flex items-center gap-3 rounded-2xl border px-4 py-3 shadow-xs"
+              >
+                <span className="bg-night text-signal grid size-10 shrink-0 place-items-center rounded-xl">
+                  <Icon name={stat.icon} className="size-5" />
+                </span>
+                <div className="min-w-0">
+                  <dt className="text-ink-muted text-sm leading-snug text-pretty">
+                    {t(`stats.${stat.key}`)}
+                  </dt>
+                  <dd className="font-display text-2xl font-bold tabular-nums">
+                    {format.number(stat.value)}
+                  </dd>
+                </div>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+      </PageHeader>
+
+      {rows.length === 0 ? (
         <EmptyState title={t("emptyTitle")} text={t("emptyText")} action={newLink} />
       ) : (
-        <div className="border-line bg-surface overflow-hidden rounded-2xl border">
-          <table className="w-full text-left text-sm">
-            <thead className="border-line bg-subtle text-ink-subtle border-b text-xs max-sm:sr-only">
-              <tr>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  {t("columns.title")}
-                </th>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  {t("columns.status")}
-                </th>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  {t("columns.expires")}
-                </th>
-                <th scope="col" className="px-4 py-3 text-right font-medium">
-                  {t("columns.views")}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-line divide-y">
-              {postings.map((posting) => (
-                <tr
-                  key={posting.id}
-                  className="max-sm:flex max-sm:flex-wrap max-sm:gap-x-3 max-sm:py-3"
+        <ul aria-label={t("title")} className="space-y-3">
+          {rows.map((posting) => (
+            <li key={posting.id}>
+              <Link
+                href={`/entreprise/offres/${posting.id}`}
+                className="group border-line bg-surface hover:border-line-strong flex flex-col gap-4 rounded-2xl border p-5 shadow-sm hover:shadow-md motion-safe:transition-[box-shadow,border-color] sm:flex-row sm:items-center sm:p-6"
+              >
+                <span
+                  className={`grid size-12 shrink-0 place-items-center rounded-xl max-sm:hidden ${
+                    posting.shown === "LIVE" ? "bg-night text-signal" : "bg-muted text-ink-muted"
+                  }`}
                 >
-                  <td className="px-4 py-3 max-sm:w-full max-sm:py-0">
-                    <Link
-                      href={`/entreprise/offres/${posting.id}`}
-                      className="text-ink font-medium break-words hover:underline"
-                    >
-                      {posting.offer.title}
-                    </Link>
-                    {posting.offer.city ? (
-                      <span className="text-ink-subtle block text-xs">{posting.offer.city}</span>
-                    ) : null}
-                  </td>
-                  <td className="px-4 py-3 max-sm:py-1">
-                    <PostingStatusBadge status={posting.status} />
-                  </td>
-                  <td className="text-ink-muted px-4 py-3 tabular-nums max-sm:py-1">
-                    {posting.status === "LIVE" && posting.expiresAt ? (
-                      <>
-                        <span className="max-sm:hidden">
-                          {format.dateTime(posting.expiresAt, "short")}
-                        </span>
-                        <span className="sm:hidden">
-                          {tp("liveUntil", { date: format.dateTime(posting.expiresAt, "short") })}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="max-sm:hidden">{t("noDate")}</span>
-                    )}
-                  </td>
-                  <td className="text-ink-muted px-4 py-3 text-right tabular-nums max-sm:w-full max-sm:py-0 max-sm:text-left max-sm:text-xs">
-                    <span className="max-sm:hidden">{posting.viewCount}</span>
-                    <span className="sm:hidden">{tp("views", { count: posting.viewCount })}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  <Icon name="briefcase" className="size-6" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="text-ink block text-lg font-semibold break-words group-hover:underline group-hover:underline-offset-4">
+                    {posting.offer.title}
+                  </span>
+                  <span className="text-ink-muted mt-1 block">
+                    {[
+                      posting.offer.city,
+                      posting.shown === "LIVE" && posting.expiresAt
+                        ? tp("liveUntil", { date: format.dateTime(posting.expiresAt, "short") })
+                        : null,
+                      tp("views", { count: posting.viewCount }),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </span>
+                <span className="flex shrink-0 items-center gap-3">
+                  <PostingStatusBadge status={posting.shown} />
+                  <Icon
+                    name="chevron"
+                    className="text-ink-subtle size-5 -rotate-90 max-sm:hidden"
+                  />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       )}
-      <p className="text-ink-subtle mt-6 text-xs">{t("privacy")}</p>
+      <p className="text-ink-muted mt-8 flex max-w-3xl items-start gap-2 text-sm">
+        <Icon name="lock" className="mt-0.5 size-4 shrink-0" />
+        {t("privacy")}
+      </p>
     </div>
   );
 }

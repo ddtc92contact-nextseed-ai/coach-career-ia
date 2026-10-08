@@ -2297,7 +2297,13 @@
         "views": "Consultations"
       },
       "noDate": "—",
-      "privacy": "Aucune donnée candidat n’apparaît ici : vous voyez seulement combien de candidats ont ouvert votre offre parmi leurs opportunités."
+      "privacy": "Aucune donnée candidat n’apparaît ici : vous voyez seulement combien de candidats ont ouvert votre offre parmi leurs opportunités.",
+      "stats": {
+        "live": "En ligne",
+        "pending": "En cours de publication",
+        "drafts": "Brouillons",
+        "views": "Consultations"
+      }
     },
     "status": {
       "DRAFT": "Brouillon",
@@ -2305,6 +2311,7 @@
       "IN_REVIEW": "En vérification",
       "LIVE": "En ligne",
       "CLOSED": "Fermée",
+      "EXPIRED": "Expirée",
       "REJECTED": "Refusée"
     },
     "posting": {
@@ -2376,7 +2383,8 @@
         "notAllowed": "Cette action n’est pas possible dans l’état actuel de l’offre.",
         "unavailable": "Le paiement est momentanément indisponible. Réessayez plus tard.",
         "suspended": "Votre organisation est suspendue : aucune publication n’est possible."
-      }
+      },
+      "progress": "Étapes de publication"
     },
     "checkout": {
       "title": "Paiement de la publication",

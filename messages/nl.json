@@ -2297,7 +2297,13 @@
         "views": "Weergaven"
       },
       "noDate": "—",
-      "privacy": "Hier verschijnen geen kandidaatgegevens: u ziet alleen hoeveel kandidaten uw vacature tussen hun kansen hebben geopend."
+      "privacy": "Hier verschijnen geen kandidaatgegevens: u ziet alleen hoeveel kandidaten uw vacature tussen hun kansen hebben geopend.",
+      "stats": {
+        "live": "Online",
+        "pending": "In publicatie",
+        "drafts": "Concepten",
+        "views": "Weergaven"
+      }
     },
     "status": {
       "DRAFT": "Concept",
@@ -2305,6 +2311,7 @@
       "IN_REVIEW": "In controle",
       "LIVE": "Online",
       "CLOSED": "Gesloten",
+      "EXPIRED": "Verlopen",
       "REJECTED": "Afgewezen"
     },
     "posting": {
@@ -2376,7 +2383,8 @@
         "notAllowed": "Deze actie is niet mogelijk in de huidige status van de vacature.",
         "unavailable": "Betalen is tijdelijk niet mogelijk. Probeer het later opnieuw.",
         "suspended": "Uw organisatie is opgeschort: publiceren is niet mogelijk."
-      }
+      },
+      "progress": "Stappen naar publicatie"
     },
     "checkout": {
       "title": "Betaling van de publicatie",

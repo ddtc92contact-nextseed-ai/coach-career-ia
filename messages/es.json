@@ -2297,7 +2297,13 @@
         "views": "Consultas"
       },
       "noDate": "—",
-      "privacy": "Aquí no aparece ningún dato de candidatos: solo ve cuántos candidatos abrieron su oferta entre sus oportunidades."
+      "privacy": "Aquí no aparece ningún dato de candidatos: solo ve cuántos candidatos abrieron su oferta entre sus oportunidades.",
+      "stats": {
+        "live": "Publicadas",
+        "pending": "En proceso de publicación",
+        "drafts": "Borradores",
+        "views": "Consultas"
+      }
     },
     "status": {
       "DRAFT": "Borrador",
@@ -2305,6 +2311,7 @@
       "IN_REVIEW": "En verificación",
       "LIVE": "Publicada",
       "CLOSED": "Cerrada",
+      "EXPIRED": "Caducada",
       "REJECTED": "Rechazada"
     },
     "posting": {
@@ -2376,7 +2383,8 @@
         "notAllowed": "Esta acción no es posible en el estado actual de la oferta.",
         "unavailable": "El pago no está disponible por el momento. Inténtelo más tarde.",
         "suspended": "Su organización está suspendida: no es posible publicar."
-      }
+      },
+      "progress": "Pasos de la publicación"
     },
     "checkout": {
       "title": "Pago de la publicación",

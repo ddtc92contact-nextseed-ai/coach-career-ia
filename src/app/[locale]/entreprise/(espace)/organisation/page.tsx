@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
-import { PageTitle } from "@/components/empty-state";
+import { Card } from "@/components/card";
+import { PageHeader } from "@/components/page-header";
 import type { SectorCode } from "@/lib/career/codes";
 import { countryNames } from "@/lib/employer/countries";
 import { requireEmployer } from "@/lib/employer/session";
@@ -39,27 +40,28 @@ export default async function OrganizationPage() {
     ],
   ];
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-4xl">
       <OrganizationNotice org={org} />
-      <PageTitle
+      <PageHeader
+        band="brand"
+        eyebrow={t("title")}
         title={org.name}
-        action={
-          <Badge tone={org.status === "ACTIVE" ? "proven" : "warning"}>
+        actions={
+          <Badge tone={org.status === "ACTIVE" ? "proven" : "warning"} size="md" dot>
             {t(`status.${org.status}`)}
           </Badge>
         }
       />
-      <dl className="divide-line border-line bg-surface divide-y rounded-2xl border text-sm">
-        {rows.map(([label, value]) => (
-          <div
-            key={label}
-            className="flex flex-col gap-1 p-4 sm:flex-row sm:justify-between sm:gap-4"
-          >
-            <dt className="text-ink-subtle">{label}</dt>
-            <dd className="font-medium sm:text-right">{value}</dd>
-          </div>
-        ))}
-      </dl>
+      <Card>
+        <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          {rows.map(([label, value]) => (
+            <div key={label} className="border-brand-line min-w-0 border-l-2 pl-4">
+              <dt className="text-ink-muted text-sm font-medium">{label}</dt>
+              <dd className="mt-1 text-lg font-semibold break-words">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </Card>
     </div>
   );
 }
