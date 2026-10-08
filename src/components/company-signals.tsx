@@ -75,17 +75,28 @@ export async function CompanySignalList({
     getLocale(),
   ]);
   return (
-    <ul className={compact ? "space-y-2" : "space-y-4"}>
+    <ul className={compact ? "space-y-2" : "space-y-3"}>
       {signals.map((signal) => (
-        <li key={signal.id}>
+        <li
+          key={signal.id}
+          className={
+            compact
+              ? undefined
+              : `rounded-xl border-l-4 px-4 py-3 ${
+                  signal.strength >= 3
+                    ? "border-brand bg-brand-soft/50"
+                    : "border-line-strong bg-subtle"
+                }`
+          }
+        >
           <div className="flex flex-wrap items-center gap-2">
-            <span className={compact ? "text-xs font-semibold" : "text-sm font-semibold"}>
+            <span className={compact ? "text-xs font-semibold" : "font-semibold"}>
               {t(`types.${signal.type}`)}
             </span>
             <Badge tone={signal.strength >= 3 ? "proven" : "neutral"}>
               {t(`strength.${STRENGTH[signal.strength as 1 | 2 | 3] ?? "weak"}`)}
             </Badge>
-            <span className="text-ink-subtle text-xs">
+            <span className={`text-ink-subtle ${compact ? "text-xs" : "text-sm"}`}>
               {t("week", { date: format.dateTime(signal.periodStart, "short") })}
             </span>
           </div>

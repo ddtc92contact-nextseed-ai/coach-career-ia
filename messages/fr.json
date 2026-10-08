@@ -519,7 +519,8 @@
     "saving": "Enregistrement…",
     "saved": "Enregistré.",
     "delete": "Supprimer",
-    "deleting": "Suppression…"
+    "deleting": "Suppression…",
+    "loading": "Chargement…"
   },
   "shell": {
     "menu": "Menu",
@@ -679,7 +680,8 @@
         "saved": "Sauvegardées",
         "dismissed": "Écartées",
         "all": "Toutes (hors écartées)"
-      }
+      },
+      "reset": "Réinitialiser les filtres"
     },
     "count": "{count, plural, =0 {Aucune opportunité} one {# opportunité} other {# opportunités}}",
     "score": "{score}/100",
@@ -765,7 +767,25 @@
       },
       "portal": "Offre publiée directement par l’entreprise : votre agent rédige un court message, remis avec votre carte anonyme dans sa messagerie. Vous le relisez et l’approuvez : rien n’est envoyé sans vous."
     },
-    "directBadge": "Publiée directement par l’entreprise"
+    "directBadge": "Publiée directement par l’entreprise",
+    "band": {
+      "strong": "Excellente correspondance",
+      "good": "Bonne correspondance",
+      "fair": "Correspondance partielle"
+    },
+    "rails": {
+      "title": "Vos garde-fous",
+      "summary": "Garde-fous respectés",
+      "toCheck": "{count, plural, one {# point à vérifier} other {# points à vérifier}}",
+      "ok": "Compatible",
+      "unknown": "Non précisé dans l’offre : à vérifier",
+      "items": {
+        "salary": "Salaire plancher",
+        "remote": "Télétravail",
+        "contract": "Type de contrat",
+        "location": "Zone géographique"
+      }
+    }
   },
   "memory": {
     "title": "Ma mémoire de carrière",
@@ -1161,7 +1181,8 @@
       "pending": "{count, plural, one {# suggestion à valider} other {# suggestions à valider}}",
       "updated": "Mise à jour le {date}",
       "open": "Ouvrir",
-      "confirmDelete": "Supprimer définitivement cette conversation ? Les suggestions non validées seront perdues ; ce qui a été ajouté à votre mémoire de carrière est conservé."
+      "confirmDelete": "Supprimer définitivement cette conversation ? Les suggestions non validées seront perdues ; ce qui a été ajouté à votre mémoire de carrière est conservé.",
+      "emptyText": "Choisissez un mode ci-dessus : vos échanges avec le coach apparaîtront ici."
     },
     "chat": {
       "back": "Toutes les conversations",
@@ -1178,6 +1199,25 @@
         "thinking": "Le coach réfléchit…",
         "reading": "Le coach consulte votre mémoire de carrière…",
         "suggesting": "Le coach prépare une suggestion…"
+      },
+      "chipsLabel": "Pour démarrer, vous pouvez écrire :",
+      "replyAnnounce": "Réponse du coach : {text}",
+      "chips": {
+        "DISCOVER": {
+          "first": "J’ai mené un projet dont je suis fier ou fière",
+          "second": "J’ai fait gagner du temps ou de l’argent à mon équipe",
+          "third": "Aidez-moi à chiffrer un résultat"
+        },
+        "CLARIFY": {
+          "first": "Je veux fixer mon salaire plancher",
+          "second": "Je cherche plus de télétravail",
+          "third": "Je veux éviter certains secteurs"
+        },
+        "INTERVIEW": {
+          "first": "Je vise un poste de chef de projet senior",
+          "second": "Posez-moi une question sur une situation difficile",
+          "third": "Entraînons-nous à négocier le salaire"
+        }
       }
     },
     "errors": {
@@ -1315,6 +1355,11 @@
         "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
         "generic": "Une erreur est survenue. Réessayez."
       }
+    },
+    "groups": {
+      "account": "Compte et sécurité",
+      "preferences": "Préférences",
+      "data": "Mes données"
     }
   },
   "import": {
@@ -1617,7 +1662,8 @@
     "manageHint": "Moyen de paiement, factures et résiliation, sur la page sécurisée de Stripe.",
     "redirecting": "Redirection…",
     "compare": {
-      "title": "Les offres"
+      "title": "Les offres",
+      "current": "Votre offre"
     },
     "plans": {
       "FREE": {
@@ -1910,7 +1956,10 @@
       "closedOn": "Fil clos par l’entreprise le {date}",
       "sendPortal": "Envoyer dans l’espace entreprise",
       "sendPortalHint": "Remis dans la messagerie de l’entreprise, qui est prévenue sans le contenu. Votre identité n’est pas communiquée.",
-      "appendedPortal": "L’entreprise verra la mention indiquant que le message a été préparé par votre assistant IA et approuvé par vous, ainsi que votre carte anonyme."
+      "appendedPortal": "L’entreprise verra la mention indiquant que le message a été préparé par votre assistant IA et approuvé par vous, ainsi que votre carte anonyme.",
+      "draftTitle": "Votre message, à relire puis approuver",
+      "approvalHint": "Rien ne part sans votre accord : relisez le message, puis approuvez-le.",
+      "saveFirst": "Enregistrez d’abord vos modifications."
     },
     "errors": {
       "noChannel": "Cette offre ne publie aucun canal de candidature exploitable.",
@@ -1923,6 +1972,21 @@
       "sendUnavailable": "L’envoi d’e-mails n’est pas configuré sur ce serveur.",
       "sendFailed": "L’envoi a échoué. Réessayez plus tard.",
       "invalid": "L’objet (160 caractères maximum) et le message (20 à 3 000 caractères) sont obligatoires."
+    },
+    "inbox": {
+      "title": "{count, plural, one {# échange} other {# échanges}}",
+      "toApprove": "{count, plural, one {# message à approuver} other {# messages à approuver}}",
+      "awaitingApproval": "À approuver"
+    },
+    "steps": {
+      "label": "Avancement de la prise de contact",
+      "drafted": "Rédigé par l’agent",
+      "approved": "Approuvé par vous",
+      "sent": "Envoyé",
+      "replied": "Réponse reçue",
+      "done": "fait",
+      "current": "en cours",
+      "upcoming": "à venir"
     }
   },
   "handover": {
@@ -2141,7 +2205,9 @@
       "blocked": "Ce message ne peut pas être approuvé en l’état :",
       "sendPortal": "Envoyer dans l’espace entreprise",
       "sendPortalHint": "Remis dans la messagerie de l’entreprise, qui est prévenue sans le contenu.",
-      "appendedPortal": "L’entreprise verra la mention indiquant que le message a été rédigé par votre assistant IA et approuvé par vous ; elle répond directement dans sa messagerie."
+      "appendedPortal": "L’entreprise verra la mention indiquant que le message a été rédigé par votre assistant IA et approuvé par vous ; elle répond directement dans sa messagerie.",
+      "approvalHint": "Rien ne part sans votre accord : relisez le message, puis approuvez-le.",
+      "saveFirst": "Enregistrez d’abord vos modifications."
     },
     "issues": {
       "belowFloor": "un montant est inférieur à votre plancher ({excerpt}) ;",

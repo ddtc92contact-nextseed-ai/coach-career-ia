@@ -519,7 +519,8 @@
     "saving": "Guardando…",
     "saved": "Guardado.",
     "delete": "Eliminar",
-    "deleting": "Eliminando…"
+    "deleting": "Eliminando…",
+    "loading": "Cargando…"
   },
   "shell": {
     "menu": "Menú",
@@ -679,7 +680,8 @@
         "saved": "Guardadas",
         "dismissed": "Descartadas",
         "all": "Todas (salvo descartadas)"
-      }
+      },
+      "reset": "Restablecer los filtros"
     },
     "count": "{count, plural, =0 {Ninguna oportunidad} one {# oportunidad} other {# oportunidades}}",
     "score": "{score}/100",
@@ -765,7 +767,25 @@
       },
       "portal": "Oferta publicada directamente por la empresa: tu agente redacta un mensaje breve, entregado con tu tarjeta anónima en su mensajería. Lo revisas y lo apruebas: nada se envía sin ti."
     },
-    "directBadge": "Publicada directamente por la empresa"
+    "directBadge": "Publicada directamente por la empresa",
+    "band": {
+      "strong": "Coincidencia excelente",
+      "good": "Buena coincidencia",
+      "fair": "Coincidencia parcial"
+    },
+    "rails": {
+      "title": "Sus límites",
+      "summary": "Límites respetados",
+      "toCheck": "{count, plural, one {# punto por comprobar} other {# puntos por comprobar}}",
+      "ok": "Compatible",
+      "unknown": "No indicado en la oferta: compruébelo",
+      "items": {
+        "salary": "Salario mínimo",
+        "remote": "Teletrabajo",
+        "contract": "Tipo de contrato",
+        "location": "Zona geográfica"
+      }
+    }
   },
   "memory": {
     "title": "Mi memoria de carrera",
@@ -1161,7 +1181,8 @@
       "pending": "{count, plural, one {# sugerencia por validar} other {# sugerencias por validar}}",
       "updated": "Actualizada el {date}",
       "open": "Abrir",
-      "confirmDelete": "¿Eliminar definitivamente esta conversación? Las sugerencias no validadas se perderán; lo que se añadió a su memoria de carrera se conserva."
+      "confirmDelete": "¿Eliminar definitivamente esta conversación? Las sugerencias no validadas se perderán; lo que se añadió a su memoria de carrera se conserva.",
+      "emptyText": "Elija un modo más arriba: sus conversaciones con el coach aparecerán aquí."
     },
     "chat": {
       "back": "Todas las conversaciones",
@@ -1178,6 +1199,25 @@
         "thinking": "El coach está pensando…",
         "reading": "El coach está consultando su memoria de carrera…",
         "suggesting": "El coach está preparando una sugerencia…"
+      },
+      "chipsLabel": "Para empezar, puede escribir:",
+      "replyAnnounce": "Respuesta del coach: {text}",
+      "chips": {
+        "DISCOVER": {
+          "first": "Dirigí un proyecto del que estoy orgulloso u orgullosa",
+          "second": "Hice ahorrar tiempo o dinero a mi equipo",
+          "third": "Ayúdeme a cuantificar un resultado"
+        },
+        "CLARIFY": {
+          "first": "Quiero fijar mi salario mínimo",
+          "second": "Busco más teletrabajo",
+          "third": "Quiero evitar algunos sectores"
+        },
+        "INTERVIEW": {
+          "first": "Aspiro a un puesto de jefe de proyecto sénior",
+          "second": "Hágame una pregunta sobre una situación difícil",
+          "third": "Practiquemos la negociación salarial"
+        }
       }
     },
     "errors": {
@@ -1315,6 +1355,11 @@
         "network": "No se puede conectar con el servidor. Comprueba tu red y vuelve a intentarlo.",
         "generic": "Se ha producido un error. Vuelve a intentarlo."
       }
+    },
+    "groups": {
+      "account": "Cuenta y seguridad",
+      "preferences": "Preferencias",
+      "data": "Mis datos"
     }
   },
   "import": {
@@ -1617,7 +1662,8 @@
     "manageHint": "Método de pago, facturas y cancelación, en la página segura de Stripe.",
     "redirecting": "Redirigiendo…",
     "compare": {
-      "title": "Los planes"
+      "title": "Los planes",
+      "current": "Su plan"
     },
     "plans": {
       "FREE": {
@@ -1910,7 +1956,10 @@
       "closedOn": "Conversación cerrada por la empresa el {date}",
       "sendPortal": "Enviar al espacio empresa",
       "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido. Tu identidad no se comunica.",
-      "appendedPortal": "La empresa verá la mención de que el mensaje fue preparado por tu asistente de IA y aprobado por ti, junto con tu tarjeta anónima."
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue preparado por tu asistente de IA y aprobado por ti, junto con tu tarjeta anónima.",
+      "draftTitle": "Su mensaje, para revisar y aprobar",
+      "approvalHint": "Nada se envía sin su acuerdo: revise el mensaje y luego apruébelo.",
+      "saveFirst": "Guarde primero sus cambios."
     },
     "errors": {
       "noChannel": "Esta oferta no publica ningún canal de candidatura utilizable.",
@@ -1923,6 +1972,21 @@
       "sendUnavailable": "El envío de correos no está configurado en este servidor.",
       "sendFailed": "El envío ha fallado. Inténtalo más tarde.",
       "invalid": "El asunto (160 caracteres como máximo) y el mensaje (de 20 a 3.000 caracteres) son obligatorios."
+    },
+    "inbox": {
+      "title": "{count, plural, one {# intercambio} other {# intercambios}}",
+      "toApprove": "{count, plural, one {# mensaje por aprobar} other {# mensajes por aprobar}}",
+      "awaitingApproval": "Por aprobar"
+    },
+    "steps": {
+      "label": "Avance del contacto",
+      "drafted": "Redactado por el agente",
+      "approved": "Aprobado por usted",
+      "sent": "Enviado",
+      "replied": "Respuesta recibida",
+      "done": "hecho",
+      "current": "en curso",
+      "upcoming": "pendiente"
     }
   },
   "handover": {
@@ -2141,7 +2205,9 @@
       "blocked": "Este mensaje no se puede aprobar tal como está:",
       "sendPortal": "Enviar al espacio empresa",
       "sendPortalHint": "Se entrega en la mensajería de la empresa, que recibe un aviso sin el contenido.",
-      "appendedPortal": "La empresa verá la mención de que el mensaje fue redactado por tu asistente de IA y aprobado por ti; responde directamente en su mensajería."
+      "appendedPortal": "La empresa verá la mención de que el mensaje fue redactado por tu asistente de IA y aprobado por ti; responde directamente en su mensajería.",
+      "approvalHint": "Nada se envía sin su acuerdo: revise el mensaje y luego apruébelo.",
+      "saveFirst": "Guarde primero sus cambios."
     },
     "issues": {
       "belowFloor": "un importe es inferior a tu mínimo ({excerpt});",

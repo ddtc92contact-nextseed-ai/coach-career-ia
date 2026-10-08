@@ -2,13 +2,15 @@
  * Styles de bouton de la charte (docs/brand.md), pour un `<button>` comme
  * pour un lien. Rôles : `primary` (une action principale par écran),
  * `secondary` (alternative), `ghost` (navigation), `signal` (appel à l'action
- * sur fond de nuit).
+ * sur fond de nuit), `approve` (le « feu vert » de la personne : accepter une
+ * suggestion, approuver un message).
  */
 const VARIANTS = {
   primary: "bg-primary text-on-primary shadow-sm hover:bg-primary-hover",
   secondary: "border border-line-strong bg-surface text-ink shadow-xs hover:bg-muted",
   ghost: "text-ink-muted hover:bg-muted hover:text-ink",
   signal: "bg-signal text-night shadow-md hover:brightness-110",
+  approve: "bg-brand text-on-brand shadow-sm hover:bg-brand-hover",
 } as const;
 
 const SIZES = {
