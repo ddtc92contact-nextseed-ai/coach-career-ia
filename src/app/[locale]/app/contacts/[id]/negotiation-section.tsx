@@ -1,5 +1,8 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
+import { buttonClass } from "@/components/button";
+import { Card, CardHeader } from "@/components/card";
+import { Icon, type IconName } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import { LOCALE_NAMES } from "@/i18n/routing";
 import type { NegotiationView } from "@/lib/negotiation/repository";
@@ -18,7 +21,38 @@ import {
   PasteBlock,
 } from "./negotiation-panel";
 
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
+type Check = "ok" | "partial" | "bad" | "unknown";
+
+const CHECK_STYLE: Record<Check, { icon: IconName; className: string }> = {
+  ok: { icon: "check", className: "bg-brand text-on-brand" },
+  partial: { icon: "check", className: "bg-brand-soft text-brand-ink ring-1 ring-brand-line" },
+  bad: { icon: "close", className: "bg-danger text-on-danger" },
+  unknown: { icon: "help", className: "bg-muted text-ink-muted" },
+};
+
+/** Ligne d'analyse cochée (conforme), barrée (non conforme) ou « ? » (non précisé). */
+function CheckLine({ check, children }: { check: Check; children: React.ReactNode }) {
+  const style = CHECK_STYLE[check];
+  return (
+    <li className="flex items-start gap-3">
+      <span
+        aria-hidden="true"
+        className={`mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full ${style.className}`}
+      >
+        <Icon name={style.icon} className="size-3.5" strokeWidth={2.5} />
+      </span>
+      <span className="min-w-0">{children}</span>
+    </li>
+  );
+}
+
+const SALARY_CHECK: Record<string, Check> = {
+  aboveTarget: "ok",
+  aboveFloor: "partial",
+  belowFloor: "bad",
+  unknown: "unknown",
+};
+const TERM_CHECK: Record<string, Check> = { met: "ok", notMet: "bad", unknown: "unknown" };
 
 /**
  * Onglet « Négocier » d'un contact : mandat, analyse (estimation) de la
@@ -38,9 +72,12 @@ export async function NegotiationSection({
   ]);
   if (!view.sent) {
     return (
-      <section className={sectionClass}>
-        <p className="text-ink-muted text-sm">{t("notSent")}</p>
-      </section>
+      <Card>
+        <p className="text-ink-muted flex items-center gap-3">
+          <Icon name="clock" className="text-ink-subtle size-5 shrink-0" />
+          {t("notSent")}
+        </p>
+      </Card>
     );
   }
   const { mandate, analysis, pending, market } = view;
@@ -51,25 +88,45 @@ export async function NegotiationSection({
 
   return (
     <div className="space-y-6">
-      <p className="text-ink-muted text-sm">{t("intro")}</p>
+      <p className="border-line bg-surface text-ink-muted flex items-start gap-3 rounded-2xl border px-4 py-3 shadow-xs">
+        <span
+          aria-hidden="true"
+          className="bg-night text-signal inline-flex size-8 shrink-0 items-center justify-center rounded-full"
+        >
+          <Icon name="spark" className="size-4" />
+        </span>
+        <span className="text-pretty">{t("intro")}</span>
+      </p>
 
-      <section className={`${sectionClass} space-y-4`} aria-labelledby="mandat">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 id="mandat" className="text-lg font-semibold">
-            {t("mandate.title")}
-          </h2>
-          {status ? (
-            <Badge tone={status === "ACTIVE" ? "proven" : "neutral"}>
-              {t(`outcome.status.${status}`)}
-            </Badge>
-          ) : null}
-        </div>
-        <p className="text-ink-muted text-sm">{t("mandate.intro")}</p>
-        {!view.hasReplies ? <p className="text-ink-muted text-sm">{t("waitReply")}</p> : null}
+      <Card aria-labelledby="mandat" className="space-y-5">
+        <CardHeader
+          id="mandat"
+          title={t("mandate.title")}
+          description={t("mandate.intro")}
+          actions={
+            status ? (
+              <Badge tone={status === "ACTIVE" ? "proven" : "neutral"}>
+                {t(`outcome.status.${status}`)}
+              </Badge>
+            ) : null
+          }
+        />
+        {!view.hasReplies ? (
+          <p className="text-ink-muted flex items-center gap-2">
+            <Icon name="clock" className="text-ink-subtle size-5 shrink-0" />
+            {t("waitReply")}
+          </p>
+        ) : null}
         {market ? (
-          <div className="border-line rounded-xl border px-4 py-3" data-testid="negotiation-market">
-            <h3 className="text-sm font-medium">{t("mandate.market.title")}</h3>
-            <p className="text-ink-subtle mt-1 mb-3 text-xs">{t("mandate.market.intro")}</p>
+          <div
+            className="border-line bg-subtle rounded-xl border px-4 py-4 sm:px-5"
+            data-testid="negotiation-market"
+          >
+            <h3 className="flex items-center gap-2 text-lg font-semibold">
+              <Icon name="coins" className="text-brand-ink size-5" />
+              {t("mandate.market.title")}
+            </h3>
+            <p className="text-ink-subtle mt-1 mb-3 text-sm">{t("mandate.market.intro")}</p>
             <SalaryBenchmarkBlock
               benchmark={market.benchmark}
               minSample={BENCHMARK_CONFIG.minSample}
@@ -80,9 +137,10 @@ export async function NegotiationSection({
               positionKey="floorPosition"
             />
             {market.hints.length > 0 ? (
-              <ul className="text-warning-ink mt-3 space-y-1 text-sm" data-testid="mandate-hints">
+              <ul className="text-warning-ink mt-3 space-y-1.5 text-sm" data-testid="mandate-hints">
                 {market.hints.map((hint) => (
-                  <li key={hint}>
+                  <li key={hint} className="flex items-start gap-2">
+                    <Icon name="alert" className="mt-0.5 size-4 shrink-0" />
                     {t(`mandate.market.hints.${hint}`, {
                       amount: money(hint === "floorAboveOffer" ? (floor ?? 0) : (target ?? 0)),
                       p25: market.benchmark ? money(market.benchmark.p25) : "",
@@ -96,94 +154,112 @@ export async function NegotiationSection({
           </div>
         ) : null}
         <MandateForm contactId={view.contactId} mandate={mandate} defaults={view.defaults} />
-      </section>
+      </Card>
 
-      <section className={`${sectionClass} space-y-2`} aria-labelledby="analyse">
-        <h2 id="analyse" className="text-lg font-semibold">
-          {t("analysis.title")}
-        </h2>
+      <Card aria-labelledby="analyse" className="space-y-4">
+        <CardHeader id="analyse" title={t("analysis.title")} />
         {!mandate ? (
-          <p className="text-ink-muted text-sm">{t("analysis.noMandate")}</p>
+          <p className="text-ink-muted">{t("analysis.noMandate")}</p>
         ) : !analysis || !view.analysedAt ? (
-          <p className="text-ink-muted text-sm">{t("analysis.none")}</p>
+          <p className="text-ink-muted">{t("analysis.none")}</p>
         ) : (
           <>
-            <p className="bg-warning-soft text-warning-ink rounded-lg px-3 py-2 text-xs">
+            <p className="bg-warning-soft text-warning-ink flex items-start gap-2 rounded-xl px-3 py-2.5 text-sm">
+              <Icon name="info" className="mt-0.5 size-4 shrink-0" />
               {t("analysis.estimate", { date: format.dateTime(view.analysedAt, "short") })}
             </p>
-            <ul className="text-ink space-y-1 text-sm">
-              <li>
+            <ul className="text-ink space-y-3">
+              <CheckLine check={SALARY_CHECK[analysis.salary.status] ?? "unknown"}>
                 {t(`analysis.salary.${analysis.salary.status}`, {
                   amount:
                     analysis.salary.offered !== null
                       ? formatSalary(view.locale, analysis.salary.offered)
                       : "",
                 })}
-              </li>
+              </CheckLine>
               {analysis.remote ? (
-                <li>
+                <CheckLine check={TERM_CHECK[analysis.remote.status] ?? "unknown"}>
                   {t(`analysis.remote.${analysis.remote.status}`, {
                     days: analysis.remote.offered ?? 0,
                   })}
-                </li>
+                </CheckLine>
               ) : null}
               {analysis.contract ? (
-                <li>
+                <CheckLine check={TERM_CHECK[analysis.contract.status] ?? "unknown"}>
                   {t(`analysis.contract.${analysis.contract.status}`, {
                     contract: analysis.contract.offered ? tc(analysis.contract.offered) : "",
                   })}
-                </li>
+                </CheckLine>
               ) : null}
               {analysis.unchecked > 0 ? (
-                <li className="text-ink-muted">
-                  {t("analysis.unchecked", { count: analysis.unchecked })}
-                </li>
+                <CheckLine check="unknown">
+                  <span className="text-ink-muted">
+                    {t("analysis.unchecked", { count: analysis.unchecked })}
+                  </span>
+                </CheckLine>
               ) : null}
             </ul>
           </>
         )}
-      </section>
+      </Card>
 
-      <section className={`${sectionClass} space-y-3`} aria-labelledby="fil">
-        <h2 id="fil" className="text-lg font-semibold">
-          {t("thread.title")}
-        </h2>
+      <Card aria-labelledby="fil" className="space-y-4">
+        <CardHeader id="fil" title={t("thread.title")} />
         {view.messages.length === 0 ? (
-          <p className="text-ink-muted text-sm">{t("thread.empty")}</p>
+          <p className="text-ink-muted">{t("thread.empty")}</p>
         ) : (
-          <ul className="space-y-3">
-            {view.messages.map((m) => (
-              <li
-                key={m.id}
-                className={`rounded-lg border p-3 ${
-                  m.direction === "OUT" ? "border-brand-line bg-brand-soft/40" : "border-line"
-                }`}
-              >
-                <p className="text-ink-subtle text-xs">
-                  {m.direction === "OUT" ? t("thread.out") : t("thread.in")} ·{" "}
-                  {m.direction === "IN"
-                    ? t("thread.receivedOn", { date: format.dateTime(m.createdAt, "short") })
-                    : t(view.channel === "APPLY_URL" ? "thread.submittedOn" : "thread.sentOn", {
-                        date: format.dateTime(m.sentAt ?? m.createdAt, "short"),
-                      })}
-                </p>
-                <p className="text-ink mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
-                  {m.direction === "OUT" ? (m.sentText ?? m.body) : m.body}
-                </p>
-              </li>
-            ))}
+          <ul className="space-y-4">
+            {view.messages.map((m) => {
+              const out = m.direction === "OUT";
+              return (
+                <li
+                  key={m.id}
+                  className={`flex items-start gap-3 ${out ? "flex-row-reverse" : ""}`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full ${
+                      out ? "bg-night text-signal" : "bg-muted text-ink-muted"
+                    }`}
+                  >
+                    <Icon name={out ? "spark" : "building"} className="size-4.5" />
+                  </span>
+                  <div
+                    className={`max-w-[85%] min-w-0 rounded-2xl border px-4 py-3 ${
+                      out
+                        ? "border-brand-line bg-brand-soft rounded-tr-md"
+                        : "border-line bg-subtle rounded-tl-md"
+                    }`}
+                  >
+                    <p className="text-ink-muted text-sm">
+                      <span className="text-ink font-semibold">
+                        {out ? t("thread.out") : t("thread.in")}
+                      </span>{" "}
+                      ·{" "}
+                      {m.direction === "IN"
+                        ? t("thread.receivedOn", { date: format.dateTime(m.createdAt, "short") })
+                        : t(view.channel === "APPLY_URL" ? "thread.submittedOn" : "thread.sentOn", {
+                            date: format.dateTime(m.sentAt ?? m.createdAt, "short"),
+                          })}
+                    </p>
+                    <p className="text-ink mt-1 [overflow-wrap:anywhere] break-words whitespace-pre-line">
+                      {out ? (m.sentText ?? m.body) : m.body}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
-      </section>
+      </Card>
 
       {mandate && status ? (
-        <section className={`${sectionClass} space-y-4`} aria-labelledby="message">
-          <h2 id="message" className="text-lg font-semibold">
-            {t("composer.title")}
-          </h2>
-          <p className="text-ink-muted text-sm">
-            {t("composer.language", { language: LOCALE_NAMES[view.locale] })}
-          </p>
+        <Card aria-labelledby="message" className="space-y-4">
+          <CardHeader
+            id="message"
+            title={t("composer.title")}
+            description={t("composer.language", { language: LOCALE_NAMES[view.locale] })}
+          />
           {canGenerate ? (
             <GenerateButton
               key={`${status}:${pending?.id ?? ""}`}
@@ -193,28 +269,36 @@ export async function NegotiationSection({
           ) : (
             <div
               role="status"
-              className="border-brand-line bg-brand-soft text-brand-ink rounded-xl border px-4 py-4 text-sm"
+              data-tone="night"
+              className="band-night on-night border-night-line text-on-night flex flex-col gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center"
             >
-              <p className="font-medium">{t("upsell.title")}</p>
-              <p className="mt-1">{t("upsell.text")}</p>
-              <Link
-                href="/app/billing"
-                className="bg-primary text-on-primary hover:bg-primary-hover mt-3 inline-block rounded-lg px-4 py-2 text-sm font-medium"
+              <span
+                aria-hidden="true"
+                className="bg-night-raised text-signal ring-night-line inline-flex size-11 shrink-0 items-center justify-center rounded-xl ring-1"
               >
+                <Icon name="star" className="size-6" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-display text-lg font-bold">{t("upsell.title")}</p>
+                <p className="text-on-night-muted mt-1">{t("upsell.text")}</p>
+              </div>
+              <Link href="/app/billing" className={`${buttonClass("signal")} shrink-0`}>
                 {t("upsell.cta")}
+                <Icon name="arrow" className="size-4" />
               </Link>
             </div>
           )}
           {pending ? (
-            <div className="border-line space-y-4 border-t pt-4">
-              <p className="text-ink-muted text-sm">
+            <div className="border-line space-y-4 border-t pt-5">
+              <p className="text-ink-muted">
                 {pending.draftSource === "llm" ? t("composer.draftLlm") : t("composer.draftRules")}
               </p>
               {pending.approved && pending.approvedAt ? (
                 <p
                   role="status"
-                  className="bg-brand-soft text-brand-ink rounded-lg px-3 py-2 text-sm"
+                  className="bg-brand-soft text-brand-ink flex items-start gap-2 rounded-xl px-3 py-2.5"
                 >
+                  <Icon name="approve" className="mt-0.5 size-5 shrink-0" />
                   {t("composer.approvedOn", {
                     date: format.dateTime(pending.approvedAt, "short"),
                   })}
@@ -242,17 +326,14 @@ export async function NegotiationSection({
               ) : null}
             </div>
           ) : null}
-        </section>
+        </Card>
       ) : null}
 
       {mandate && status ? (
-        <section className={`${sectionClass} space-y-3`} aria-labelledby="decision">
-          <h2 id="decision" className="text-lg font-semibold">
-            {t("outcome.title")}
-          </h2>
-          <p className="text-ink-muted text-sm">{t("outcome.intro")}</p>
+        <Card aria-labelledby="decision" className="space-y-4">
+          <CardHeader id="decision" title={t("outcome.title")} description={t("outcome.intro")} />
           <OutcomeButtons contactId={view.contactId} status={status} />
-        </section>
+        </Card>
       ) : null}
     </div>
   );

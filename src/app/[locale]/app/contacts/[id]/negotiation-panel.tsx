@@ -2,7 +2,9 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import { useActionState, useState, useTransition } from "react";
+import { buttonClass } from "@/components/button";
 import { ActionForm, inputClass } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { CONTRACT_TYPES } from "@/lib/career/codes";
 import type { NegotiationIssue } from "@/lib/negotiation/check";
 import {
@@ -21,14 +23,8 @@ import {
   updateMessageAction,
   type NegotiationActionState,
 } from "../negotiation-actions";
-import { CopyText } from "./draft-panel";
+import { approveClass, CopyText, DecisionZone, primary, secondary } from "./draft-panel";
 
-const primary =
-  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
-const approveClass =
-  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
-const secondary =
-  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
 const labelClass = "block text-sm font-medium text-ink";
 
 /** Liste des problèmes bloquants d'un message au regard du mandat. */
@@ -38,9 +34,12 @@ export function IssueList({ issues }: { issues: NegotiationIssue[] }) {
   return (
     <div
       role="alert"
-      className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-3 py-2 text-sm"
+      className="border-danger-line bg-danger-soft text-danger-ink rounded-xl border px-4 py-3"
     >
-      <p className="font-medium">{t("composer.blocked")}</p>
+      <p className="flex items-center gap-2 font-semibold">
+        <Icon name="alert" className="size-5 shrink-0" />
+        {t("composer.blocked")}
+      </p>
       <ul className="mt-1 list-disc pl-5">
         {issues.map((issue) => (
           <li key={issue.code}>{t(`issues.${issue.code}`, { excerpt: issue.excerpt ?? "" })}</li>
@@ -55,7 +54,8 @@ function ActionMessage({ state }: { state: NegotiationActionState }) {
   const format = useFormatter();
   if (state.error === "invalid" && state.fields) {
     return (
-      <p role="alert" className="text-danger-ink text-sm">
+      <p role="alert" className="text-danger-ink flex items-start gap-2 text-sm font-medium">
+        <Icon name="alert" className="mt-0.5 size-4 shrink-0" />
         {t("mandate.invalid", {
           fields: format.list(state.fields.map((f) => t(`fields.${f}`))),
         })}
@@ -65,7 +65,8 @@ function ActionMessage({ state }: { state: NegotiationActionState }) {
   if (state.error === "blocked" && state.issues) return <IssueList issues={state.issues} />;
   if (state.error) {
     return (
-      <p role="alert" className="text-danger-ink text-sm">
+      <p role="alert" className="text-danger-ink flex items-start gap-2 text-sm font-medium">
+        <Icon name="alert" className="mt-0.5 size-4 shrink-0" />
         {t(`errors.${state.error}`, { excerpt: state.excerpt ?? "", limit: state.limit ?? 0 })}
       </p>
     );
@@ -123,7 +124,7 @@ export function MandateForm({
             aria-describedby="salaryFloor-hint"
             className={inputClass}
           />
-          <p id="salaryFloor-hint" className="text-ink-subtle mt-1 text-xs">
+          <p id="salaryFloor-hint" className="text-ink-subtle mt-1 text-sm">
             {t("salaryFloorHint")}
           </p>
         </div>
@@ -142,8 +143,11 @@ export function MandateForm({
         </div>
       </div>
 
-      <fieldset className="border-line space-y-4 rounded-xl border p-4">
-        <legend className="px-1 text-sm font-semibold">{t("nonNegotiable")}</legend>
+      <fieldset className="border-line bg-subtle space-y-4 rounded-xl border p-4 sm:p-5">
+        <legend className="flex items-center gap-2 px-1 font-semibold">
+          <Icon name="shield" className="text-brand-ink size-5" />
+          {t("nonNegotiable")}
+        </legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="remoteDaysMin" className={labelClass}>
@@ -260,12 +264,13 @@ export function MandateForm({
           aria-describedby="facts-hint"
           className={inputClass}
         />
-        <p id="facts-hint" className="text-ink-subtle mt-1 text-xs">
+        <p id="facts-hint" className="text-ink-subtle mt-1 text-sm">
           {t("factsHint")}
         </p>
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <button type="submit" disabled={pending} className={primary}>
+        <button type="submit" disabled={pending} className={secondary}>
+          <Icon name="check" className="size-4" />
           {t("save")}
         </button>
         {state.ok === "saved" ? (
@@ -295,7 +300,13 @@ export function GenerateButton({
   );
   return (
     <form action={action} className="space-y-2">
-      <button type="submit" disabled={pending} className={approveClass} aria-busy={pending}>
+      <button
+        type="submit"
+        disabled={pending}
+        className={`${buttonClass("primary", "lg")} w-full sm:w-auto`}
+        aria-busy={pending}
+      >
+        <Icon name="spark" className={`size-5 ${pending ? "motion-safe:animate-pulse" : ""}`} />
         {pending ? t("generating") : t(kind === "counter" ? "generateCounter" : "generateClosing")}
       </button>
       <ActionMessage state={state} />
@@ -364,6 +375,7 @@ export function MessageEditor({
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button type="submit" disabled={saving} className={secondary}>
+            <Icon name="edit" className="size-4" />
             {t("save")}
           </button>
           <ActionMessage state={saveState} />
@@ -371,24 +383,29 @@ export function MessageEditor({
       </ActionForm>
 
       {!approved ? (
-        <form action={approve} className="space-y-2">
-          <button type="submit" disabled={approving || dirty} className={approveClass}>
-            {t("approve")}
-          </button>
-          <ActionMessage state={approveState} />
-        </form>
+        <DecisionZone hint={t("approvalHint")}>
+          <form action={approve} className="space-y-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <button type="submit" disabled={approving || dirty} className={approveClass}>
+                <Icon name="approve" className="size-5" />
+                {t("approve")}
+              </button>
+              {dirty ? <p className="text-ink-muted text-sm">{t("saveFirst")}</p> : null}
+            </div>
+            <ActionMessage state={approveState} />
+          </form>
+        </DecisionZone>
       ) : channel === "EMAIL" || channel === "PORTAL" ? (
-        <form action={send} className="space-y-2">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <DecisionZone hint={t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}>
+          <form action={send} className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button type="submit" disabled={sending || dirty} className={primary}>
+              <Icon name="send" className="size-5" />
               {t(channel === "PORTAL" ? "sendPortal" : "send")}
             </button>
+            {dirty ? <p className="text-ink-muted text-sm">{t("saveFirst")}</p> : null}
             <ActionMessage state={sendState} />
-          </div>
-          <p className="text-ink-subtle text-xs">
-            {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
-          </p>
-        </form>
+          </form>
+        </DecisionZone>
       ) : null}
     </div>
   );
@@ -406,12 +423,13 @@ export function PasteBlock({
 }) {
   const t = useTranslations("negotiation.composer");
   return (
-    <div className="border-line space-y-3 border-t pt-4">
-      <h4 className="font-semibold">{t("paste")}</h4>
-      <p className="text-ink-muted text-sm">{t("pasteHint")}</p>
+    <div className="band-brand border-brand-line space-y-3 rounded-xl border p-4 sm:p-5">
+      <h3 className="text-lg font-semibold">{t("paste")}</h3>
+      <p className="text-ink-muted">{t("pasteHint")}</p>
       <CopyText text={text} />
       <form action={markTransmittedAction.bind(null, contactId, id)}>
         <button type="submit" className={primary}>
+          <Icon name="check" className="size-5" />
           {t("markTransmitted")}
         </button>
       </form>
