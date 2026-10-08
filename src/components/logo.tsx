@@ -23,8 +23,17 @@ export function BrandMark({ className = "size-8" }: { className?: string }) {
   );
 }
 
+/** Le nom passe en texte masqué sous ce point de rupture (le symbole reste). */
+const COMPACT = { sm: "max-sm:sr-only", xl: "max-sm:sr-only lg:max-xl:sr-only" } as const;
+
 /** Logo : symbole + nom du produit (le nom passe en texte masqué sur mobile). */
-export function Logo({ href = "/" }: { href?: string }) {
+export function Logo({
+  href = "/",
+  compactUntil = "sm",
+}: {
+  href?: string;
+  compactUntil?: keyof typeof COMPACT;
+}) {
   const t = useTranslations("metadata");
   return (
     <Link
@@ -32,7 +41,7 @@ export function Logo({ href = "/" }: { href?: string }) {
       className="font-display text-ink flex shrink-0 items-center gap-2.5 rounded-lg text-[1.0625rem] font-bold tracking-tight"
     >
       <BrandMark />
-      <span className="truncate max-sm:sr-only">{t("siteName")}</span>
+      <span className={`truncate ${COMPACT[compactUntil]}`}>{t("siteName")}</span>
     </Link>
   );
 }
