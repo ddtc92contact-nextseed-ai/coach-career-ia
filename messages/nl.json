@@ -586,9 +586,7 @@
   "dashboard": {
     "title": "Welkom in uw omgeving",
     "intro": "Uw carrièreagent wordt ingericht. Begin met uw carrièregeheugen en uw randvoorwaarden: die bepalen welke kansen worden geselecteerd.",
-    "open": "Openen →",
     "completeness": {
-      "title": "Volledigheid van het profiel",
       "summary": "{achievements, plural, =0 {Nog geen prestaties.} one {Eén prestatie} other {# prestaties}}{achievements, plural, =0 {} other {, waarvan {proven, plural, =0 {geen enkele bewezen} one {één bewezen} other {# bewezen}}.}} Prestaties die met een bewijs zijn onderbouwd, wegen het zwaarst.",
       "nextSteps": "Volgende stappen",
       "complete": "Uw profiel is compleet. Vergeet het niet up-to-date te houden.",
@@ -632,19 +630,33 @@
       "intro": "Bepaal of uw geanonimiseerde profiel aan recruiters mag worden voorgesteld.",
       "save": "Bijwerken"
     },
-    "sections": {
-      "memory": {
-        "title": "Mijn carrièregeheugen",
-        "text": "Bundel uw prestaties en de bewijzen die ze onderbouwen."
-      },
-      "guardRails": {
-        "title": "Mijn randvoorwaarden",
-        "text": "Leg de voorwaarden vast waaraan elke vacature moet voldoen."
-      },
-      "opportunities": {
-        "title": "Kansen",
-        "text": "Hier vindt u de vacatures die uw agent heeft geselecteerd."
-      }
+    "eyebrow": "Dashboard",
+    "stats": {
+      "completeness": "van uw carrièregeheugen ingevuld",
+      "achievements": "{count, plural, one {prestatie} other {prestaties}}",
+      "proven": "{count, plural, one {bewezen prestatie} other {bewezen prestaties}}",
+      "experiences": "{count, plural, one {functie} other {functies}}"
+    },
+    "cta": {
+      "opportunities": "Mijn kansen bekijken"
+    },
+    "approvals": {
+      "title": "Wacht op uw akkoord",
+      "intro": "Niets gaat de deur uit zonder uw groen licht.",
+      "empty": "Op dit moment wacht er niets. Uw agent laat het u weten.",
+      "draft": "Concept om na te lezen",
+      "open": "Mijn contacten openen"
+    },
+    "opportunities": {
+      "title": "Actuele kansen",
+      "intro": "De best scorende vacatures, al gefilterd op uw randvoorwaarden.",
+      "all": "Alle kansen",
+      "empty": "Nog geen geschikte kans: uw agent blijft de markt volgen."
+    },
+    "rails": {
+      "title": "Mijn randvoorwaarden",
+      "intro": "Vacatures die ze schenden, krijgt u nooit te zien.",
+      "edit": "Wijzigen"
     }
   },
   "opportunities": {
@@ -809,7 +821,11 @@
         "companyStage": "Type organisatie",
         "responsibilities": "Verantwoordelijkheden",
         "responsibilitiesHint": "Uw werkterrein en belangrijkste taken. Vermeld geen bedrijfs- of persoonsnamen.",
-        "save": "Werkervaring opslaan"
+        "save": "Werkervaring opslaan",
+        "groups": {
+          "role": "De functie",
+          "missions": "Uw taken"
+        }
       }
     },
     "achievements": {
@@ -823,7 +839,6 @@
       "newTitle": "Nieuwe prestatie",
       "editTitle": "Prestatie",
       "formIntro": "Wees concreet: cijfers, doorlooptijden, impact. Vermijd namen van personen, klanten en werkgevers.",
-      "detailsTitle": "Beschrijving",
       "deleteTitle": "Deze prestatie verwijderen",
       "deleteText": "De bijbehorende bewijzen, inclusief geüploade documenten, worden verwijderd.",
       "confirmDelete": "Deze prestatie en al haar bewijzen definitief verwijderen?",
@@ -842,7 +857,18 @@
         "skillsHint": "Gescheiden door komma’s. Ze worden automatisch aan uw lijst met vaardigheden toegevoegd.",
         "skillsPlaceholder": "PostgreSQL, projectmanagement, onderhandelen",
         "save": "Opslaan",
-        "create": "Aanmaken en een bewijs toevoegen"
+        "create": "Aanmaken en een bewijs toevoegen",
+        "groups": {
+          "essentials": "De kern",
+          "story": "Het verhaal",
+          "storyIntro": "Drie stappen: de beginsituatie, uw aanpak, het meetbare resultaat."
+        }
+      },
+      "story": {
+        "context": "Context",
+        "action": "Aanpak",
+        "result": "Resultaat",
+        "missing": "Nog in te vullen"
       }
     },
     "proofs": {
@@ -884,7 +910,12 @@
       "confirmDelete": "De vaardigheid “{name}” verwijderen? Ze wordt weggehaald bij de prestaties waarin ze vermeld staat."
     },
     "importCta": "Mijn loopbaan importeren",
-    "importHint": "Cv, LinkedIn-export of GitHub: de AI maakt een concept dat u goedkeurt."
+    "importHint": "Cv, LinkedIn-export of GitHub: de AI maakt een concept dat u goedkeurt.",
+    "eyebrow": "Bewijs, geen beloftes",
+    "back": "Terug naar mijn carrièregeheugen",
+    "stats": {
+      "provenSkills": "{count, plural, one {bewezen vaardigheid} other {bewezen vaardigheden}}"
+    }
   },
   "identity": {
     "title": "Mijn identiteit",
@@ -903,7 +934,13 @@
       "you": "Alleen jij ontgrendelt ze, met het wachtwoord van je account. Dat wordt nooit door onze diensten ontvangen of opgeslagen: voor het inloggen dient alleen een vingerafdruk die de kluis niet kan openen.",
       "handover": "Je identiteit wordt alleen aan een recruiter onthuld als jij dat beslist, voor die specifieke recruiter.",
       "lossTitle": "Belangrijk gevolg:",
-      "loss": "als je je wachtwoord vergeet en je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. We kunnen ze niet voor je terughalen. Je professionele profiel blijft daarbuiten."
+      "loss": "als je je wachtwoord vergeet en je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. We kunnen ze niet voor je terughalen. Je professionele profiel blijft daarbuiten.",
+      "steps": {
+        "encrypted": "Versleuteld bij u",
+        "nobody": "Onleesbaar voor ons",
+        "you": "Alleen u hebt de sleutel",
+        "handover": "Alleen onthuld als u dat beslist"
+      }
     },
     "recovery": {
       "title": "Je herstelsleutel",
@@ -1062,6 +1099,12 @@
       "working": "Bezig met openen… (enkele seconden)",
       "noKeyTitle": "Geen herstelsleutel?",
       "noKey": "Je versleutelde identiteit (naam, contactgegevens, werkgevers, opleidingen, links, originele cv) kan door niemand meer worden gelezen, ook niet door ons. Zet de kluis hieronder terug en vul je identiteit opnieuw in. Je carrièregeheugen, contacten, randvoorwaarden en al het andere blijven bewaard."
+    },
+    "eyebrow": "Zero-knowledge-kluis",
+    "state": {
+      "unlocked": "Kluis ontgrendeld",
+      "locked": "Kluis vergrendeld",
+      "none": "Kluis nog niet aangemaakt"
     }
   },
   "guardRails": {
@@ -1069,11 +1112,6 @@
     "intro": "De niet-onderhandelbare voorwaarden waaraan een vacature moet voldoen om u te bereiken. Ze worden toegepast als strikte filters.",
     "emptyHint": "Nog geen randvoorwaarden ingesteld. Begin met uw minimumsalaris en uw contractvormen.",
     "save": "Mijn randvoorwaarden opslaan",
-    "summary": {
-      "title": "Samengevat",
-      "minFixed": "Minimaal vast salaris: {amount} bruto per jaar",
-      "targetPackage": "Beoogd totaal beloningspakket: {amount}"
-    },
     "salary": {
       "title": "Beloning",
       "intro": "Brutobedragen per jaar, in euro.",
@@ -1122,6 +1160,18 @@
     "culture": {
       "title": "Bedrijfscultuur",
       "intro": "Optioneel: wat voor u belangrijk is. Deze voorkeuren verfijnen de rangschikking van vacatures."
+    },
+    "eyebrow": "Strikte filters",
+    "overview": {
+      "salary": "Minimumsalaris",
+      "salaryValue": "{amount} bruto/jaar",
+      "hybridDays": "{policy}, {count, plural, one {minimaal # dag} other {minimaal # dagen}}",
+      "locations": "Locaties",
+      "location": "{label} ({km} km)",
+      "contracts": "Geaccepteerde contracten",
+      "contractsAll": "Alle",
+      "exclusionsValue": "{sectors, plural, =0 {Geen sector} one {# sector} other {# sectoren}}, {companies, plural, =0 {geen bedrijf} one {# bedrijf} other {# bedrijven}}",
+      "unset": "Niet ingesteld"
     }
   },
   "coach": {
@@ -1319,7 +1369,6 @@
   },
   "import": {
     "title": "Mijn loopbaan importeren",
-    "back": "← Terug naar mijn carrièregeheugen",
     "intro": "Begin met uw cv, uw LinkedIn-export of uw GitHub: de AI maakt een concept van uw carrièregeheugen dat u onderdeel voor onderdeel goedkeurt.",
     "privacy": {
       "title": "Wat er met uw gegevens gebeurt",
@@ -1823,6 +1872,14 @@
       "revoked": "Ingetrokken",
       "revoke": "Intrekken",
       "notShareable": "Keur eerst je kaart goed (zonder heridentificatieprobleem)."
+    },
+    "eyebrow": "Wat het bedrijf ziet",
+    "editTitle": "Kaart bewerken",
+    "approveTitle": "Goedkeuring",
+    "stats": {
+      "issues": "{count, plural, one {punt om te verbeteren} other {punten om te verbeteren}}",
+      "activeLinks": "{count, plural, one {actieve link} other {actieve links}}",
+      "views": "{count, plural, one {weergave} other {weergaven}}"
     }
   },
   "publicCard": {
@@ -1843,7 +1900,8 @@
     "notice": "Profiel gepresenteerd door Coach Career IA. De identiteit van de kandidaat wordt alleen met diens toestemming gedeeld.",
     "reply": "De kandidaat antwoorden",
     "unavailableTitle": "Link niet beschikbaar",
-    "unavailableText": "Deze link is verlopen of door de kandidaat ingetrokken."
+    "unavailableText": "Deze link is verlopen of door de kandidaat ingetrokken.",
+    "provenCount": "{count, plural, =0 {Nog geen bewezen prestatie} one {# bewezen prestatie} other {# bewezen prestaties}}"
   },
   "contacts": {
     "title": "Contacten",

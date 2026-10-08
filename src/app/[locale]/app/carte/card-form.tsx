@@ -2,21 +2,21 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import { useActionState, useMemo } from "react";
+import { Card, CardHeader } from "@/components/card";
 import { CardIssues } from "@/components/card-issues";
+import { buttonClass } from "@/components/button";
+import { EvidenceBadge } from "@/components/evidence-badge";
 import { ActionForm, Field, inputClass, SubmitButton } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { useVault } from "@/components/vault/vault-provider";
 import { checkCard, vaultTerms } from "@/lib/card/reidentify";
 import { CARD_LIMITS, type CardContent } from "@/lib/card/schema";
 import { approveCardAction, createLinkAction, saveCardAction, type CardFormState } from "./actions";
 
-const secondaryButton =
-  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
-
 /** Modification de la carte : textes, éléments affichés, garde-fous montrés. */
 export function CardForm({ card }: { card: CardContent }) {
   const t = useTranslations("card.form");
   const tm = useTranslations("matching");
-  const tc = useTranslations("codes.evidence");
   const format = useFormatter();
   const [state, action, pending] = useActionState<CardFormState, FormData>(saveCardAction, {});
   const salary =
@@ -51,18 +51,18 @@ export function CardForm({ card }: { card: CardContent }) {
           <legend className="text-ink text-sm font-medium">{t("achievements")}</legend>
           <p className="text-ink-subtle text-sm">{t("achievementsHint")}</p>
           {card.achievements.map((a, i) => (
-            <div key={i} className="border-line space-y-3 rounded-lg border p-3">
+            <div key={i} className="border-line bg-subtle space-y-3 rounded-xl border p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex min-h-11 cursor-pointer items-center gap-2 font-medium">
                   <input
                     type="checkbox"
                     name={`achievement-${i}-include`}
                     defaultChecked
-                    className="accent-brand"
+                    className="accent-brand size-4"
                   />
                   {t("include")}
                 </label>
-                <span className="text-ink-subtle text-xs">{tc(a.evidenceLevel)}</span>
+                <EvidenceBadge level={a.evidenceLevel} />
               </div>
               <Field id={`achievement-${i}-title`} label={t("achievementTitle")}>
                 <input
@@ -96,7 +96,7 @@ export function CardForm({ card }: { card: CardContent }) {
             {card.skills.map((s, i) => (
               <label
                 key={s.name}
-                className="border-line flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
+                className="border-line-strong bg-surface has-[:checked]:border-brand-line has-[:checked]:bg-brand-soft flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm"
               >
                 <input
                   type="checkbox"
@@ -111,10 +111,10 @@ export function CardForm({ card }: { card: CardContent }) {
         </fieldset>
       ) : null}
 
-      <fieldset className="space-y-2">
+      <fieldset className="border-line space-y-2 border-t pt-5">
         <legend className="text-ink text-sm font-medium">{t("conditions")}</legend>
         {salary ? (
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex min-h-11 cursor-pointer items-center gap-2">
             <input
               type="checkbox"
               name="showSalary"
@@ -125,7 +125,7 @@ export function CardForm({ card }: { card: CardContent }) {
           </label>
         ) : null}
         {card.rails.locations.length > 0 ? (
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex min-h-11 cursor-pointer items-center gap-2">
             <input
               type="checkbox"
               name="showLocations"
@@ -135,7 +135,7 @@ export function CardForm({ card }: { card: CardContent }) {
             {t("showLocations")}
           </label>
         ) : null}
-        <label className="flex items-start gap-2 text-sm">
+        <label className="flex cursor-pointer items-start gap-2 py-2">
           <input
             type="checkbox"
             name="allowProofUrls"
@@ -145,7 +145,7 @@ export function CardForm({ card }: { card: CardContent }) {
           />
           <span>
             {t("allowProofUrls")}
-            <span id="allowProofUrls-hint" className="text-ink-subtle block">
+            <span id="allowProofUrls-hint" className="text-ink-muted block text-sm">
               {t("allowProofUrlsHint")}
             </span>
           </span>
@@ -192,8 +192,9 @@ export function ApproveCard({ card, disabled }: { card: CardContent; disabled: b
         <button
           type="submit"
           disabled={pending || disabled || (vaultIssues?.length ?? 0) > 0}
-          className="bg-brand hover:bg-brand-hover text-on-brand w-full rounded-lg px-5 py-2.5 font-medium disabled:opacity-60 sm:w-auto"
+          className="bg-brand hover:bg-brand-hover text-on-brand inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 font-semibold shadow-sm disabled:opacity-60 sm:w-auto"
         >
+          <Icon name="approve" className="size-5" />
           {t("approve")}
         </button>
         {state.ok && !pending ? (
@@ -211,20 +212,25 @@ export function VaultCheck({ card }: { card: CardContent }) {
   const t = useTranslations("card");
   const issues = useVaultIssues(card);
   return (
-    <section className="border-line bg-surface rounded-2xl border p-4 sm:p-6">
-      <h2 className="text-lg font-semibold">{t("vault.title")}</h2>
+    <Card aria-labelledby="verification-coffre">
+      <CardHeader
+        id="verification-coffre"
+        icon={issues === null ? "lock" : "unlock"}
+        title={t("vault.title")}
+      />
       {issues === null ? (
-        <p className="text-ink-muted mt-2 text-sm">{t("vault.locked")}</p>
+        <p className="text-ink-muted mt-4">{t("vault.locked")}</p>
       ) : issues.length === 0 ? (
-        <p role="status" className="text-brand-ink mt-2 text-sm">
+        <p role="status" className="text-brand-ink mt-4 flex items-center gap-2 font-medium">
+          <Icon name="shield" className="size-5 shrink-0" />
           {t("vault.clean")}
         </p>
       ) : (
-        <div className="mt-3">
+        <div className="mt-4">
           <CardIssues issues={issues} title={t("vault.found")} />
         </div>
       )}
-    </section>
+    </Card>
   );
 }
 
@@ -238,7 +244,12 @@ export function CreateLink() {
       : null;
   return (
     <form action={action} className="space-y-3">
-      <button type="submit" disabled={pending} className={secondaryButton}>
+      <button
+        type="submit"
+        disabled={pending}
+        className={`${buttonClass("secondary")} w-full sm:w-auto`}
+      >
+        <Icon name="link" className="size-4" />
         {t("create")}
       </button>
       {state.message === "notShareable" ? (

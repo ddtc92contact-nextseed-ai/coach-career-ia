@@ -586,9 +586,7 @@
   "dashboard": {
     "title": "Benvenuto/a nel Suo spazio",
     "intro": "Il Suo agente di carriera si sta configurando. Inizi dalla Sua memoria di carriera e dai Suoi paletti: saranno loro a guidare la selezione delle opportunità.",
-    "open": "Apri →",
     "completeness": {
-      "title": "Completezza del profilo",
       "summary": "{achievements, plural, =0 {Ancora nessun risultato.} one {Un risultato} other {# risultati}}{achievements, plural, =0 {} other {, di cui {proven, plural, =0 {nessuno comprovato} one {uno comprovato} other {# comprovati}}.}} I risultati supportati da una prova contano di più.",
       "nextSteps": "Prossimi passi",
       "complete": "Il Suo profilo è completo. Si ricordi di tenerlo aggiornato.",
@@ -632,19 +630,33 @@
       "intro": "Decida se il Suo profilo anonimizzato può essere presentato ai recruiter.",
       "save": "Aggiorna"
     },
-    "sections": {
-      "memory": {
-        "title": "La mia memoria di carriera",
-        "text": "Raccolga i Suoi risultati e le prove che li supportano."
-      },
-      "guardRails": {
-        "title": "I miei paletti",
-        "text": "Stabilisca le condizioni che nessuna offerta deve violare."
-      },
-      "opportunities": {
-        "title": "Opportunità",
-        "text": "Qui trova le offerte qualificate dal Suo agente."
-      }
+    "eyebrow": "Dashboard",
+    "stats": {
+      "completeness": "della sua memoria di carriera completata",
+      "achievements": "{count, plural, one {risultato} other {risultati}}",
+      "proven": "{count, plural, one {risultato dimostrato} other {risultati dimostrati}}",
+      "experiences": "{count, plural, one {esperienza} other {esperienze}}"
+    },
+    "cta": {
+      "opportunities": "Vedi le mie opportunità"
+    },
+    "approvals": {
+      "title": "In attesa della sua approvazione",
+      "intro": "Nulla parte senza il suo via libera.",
+      "empty": "Nulla in attesa per ora. Il suo agente la avviserà.",
+      "draft": "Bozza da rileggere",
+      "open": "Apri i miei contatti"
+    },
+    "opportunities": {
+      "title": "Opportunità del momento",
+      "intro": "Le offerte con il punteggio migliore, già filtrate dai suoi paletti.",
+      "all": "Tutte le opportunità",
+      "empty": "Nessuna opportunità qualificata per ora: il suo agente continua a monitorare il mercato."
+    },
+    "rails": {
+      "title": "I miei paletti",
+      "intro": "Nessuna offerta che li viola le viene mai proposta.",
+      "edit": "Modifica"
     }
   },
   "opportunities": {
@@ -809,7 +821,11 @@
         "companyStage": "Tipo di organizzazione",
         "responsibilities": "Responsabilità",
         "responsibilitiesHint": "Il Suo perimetro, le Sue mansioni principali. Non indichi nomi di aziende né di persone.",
-        "save": "Salva l’esperienza"
+        "save": "Salva l’esperienza",
+        "groups": {
+          "role": "Il ruolo",
+          "missions": "Le sue mansioni"
+        }
       }
     },
     "achievements": {
@@ -823,7 +839,6 @@
       "newTitle": "Nuovo risultato",
       "editTitle": "Risultato",
       "formIntro": "Sia concreto: cifre, tempi, impatto. Eviti nomi di persone, clienti e datori di lavoro.",
-      "detailsTitle": "Descrizione",
       "deleteTitle": "Elimina questo risultato",
       "deleteText": "Le sue prove, compresi i documenti caricati, verranno eliminate.",
       "confirmDelete": "Eliminare definitivamente questo risultato e tutte le sue prove?",
@@ -842,7 +857,18 @@
         "skillsHint": "Separate da virgole. Alimentano automaticamente il Suo elenco di competenze.",
         "skillsPlaceholder": "PostgreSQL, gestione di progetto, negoziazione",
         "save": "Salva",
-        "create": "Crea e aggiungi una prova"
+        "create": "Crea e aggiungi una prova",
+        "groups": {
+          "essentials": "L’essenziale",
+          "story": "Il racconto",
+          "storyIntro": "Tre tempi: la situazione di partenza, le sue azioni, il risultato misurato."
+        }
+      },
+      "story": {
+        "context": "Contesto",
+        "action": "Azione",
+        "result": "Risultato",
+        "missing": "Da completare"
       }
     },
     "proofs": {
@@ -884,7 +910,12 @@
       "confirmDelete": "Eliminare la competenza «{name}»? Verrà rimossa dai risultati che la citano."
     },
     "importCta": "Importa il mio percorso",
-    "importHint": "CV, esportazione LinkedIn o GitHub: l’IA prepara una bozza che convalidi tu."
+    "importHint": "CV, esportazione LinkedIn o GitHub: l’IA prepara una bozza che convalidi tu.",
+    "eyebrow": "Prove, non promesse",
+    "back": "Torna alla mia memoria di carriera",
+    "stats": {
+      "provenSkills": "{count, plural, one {competenza dimostrata} other {competenze dimostrate}}"
+    }
   },
   "identity": {
     "title": "La mia identità",
@@ -903,7 +934,13 @@
       "you": "Solo tu li sblocchi, con la password del tuo account. Non viene mai inviata né salvata dai nostri servizi: per l’accesso si usa solo un’impronta che non apre la cassaforte.",
       "handover": "La tua identità viene rivelata a un recruiter solo se lo decidi tu, per quel recruiter specifico.",
       "lossTitle": "Conseguenza importante:",
-      "loss": "se dimentichi la password e perdi la chiave di recupero, questi dati sono persi per sempre. Non potremo recuperarli per te. Il tuo profilo professionale non è interessato."
+      "loss": "se dimentichi la password e perdi la chiave di recupero, questi dati sono persi per sempre. Non potremo recuperarli per te. Il tuo profilo professionale non è interessato.",
+      "steps": {
+        "encrypted": "Cifrato sul suo dispositivo",
+        "nobody": "Illeggibile per noi",
+        "you": "Solo lei ha la chiave",
+        "handover": "Rivelata solo se lo decide lei"
+      }
     },
     "recovery": {
       "title": "La tua chiave di recupero",
@@ -1062,6 +1099,12 @@
       "working": "Apertura… (qualche secondo)",
       "noKeyTitle": "Nessuna chiave di recupero?",
       "noKey": "La tua identità cifrata (nome, recapiti, datori di lavoro, scuole, link, CV originale) non può più essere letta da nessuno, nemmeno da noi. Reimposta la cassaforte qui sotto, poi inseriscila di nuovo. La tua memoria di carriera, i contatti, i paletti e tutto il resto vengono conservati."
+    },
+    "eyebrow": "Cassaforte a conoscenza zero",
+    "state": {
+      "unlocked": "Cassaforte sbloccata",
+      "locked": "Cassaforte bloccata",
+      "none": "Cassaforte non ancora creata"
     }
   },
   "guardRails": {
@@ -1069,11 +1112,6 @@
     "intro": "Le condizioni non negoziabili che un’offerta deve rispettare per arrivare fino a Lei. Vengono applicate come filtri rigorosi.",
     "emptyHint": "Ancora nessun paletto definito. Inizi dallo stipendio minimo e dai tipi di contratto.",
     "save": "Salva i miei paletti",
-    "summary": {
-      "title": "In sintesi",
-      "minFixed": "Fisso minimo: {amount} lordi annui",
-      "targetPackage": "Retribuzione complessiva desiderata: {amount}"
-    },
     "salary": {
       "title": "Retribuzione",
       "intro": "Importi lordi annui (RAL), in euro.",
@@ -1122,6 +1160,18 @@
     "culture": {
       "title": "Cultura aziendale",
       "intro": "Facoltativo: ciò che conta per Lei. Queste preferenze affinano la classificazione delle offerte."
+    },
+    "eyebrow": "Filtri rigorosi",
+    "overview": {
+      "salary": "Stipendio minimo",
+      "salaryValue": "{amount} lordi/anno",
+      "hybridDays": "{policy}, {count, plural, one {# giorno minimo} other {# giorni minimo}}",
+      "locations": "Luoghi",
+      "location": "{label} ({km} km)",
+      "contracts": "Contratti accettati",
+      "contractsAll": "Tutti",
+      "exclusionsValue": "{sectors, plural, =0 {Nessun settore} one {# settore} other {# settori}}, {companies, plural, =0 {nessuna azienda} one {# azienda} other {# aziende}}",
+      "unset": "Non definito"
     }
   },
   "coach": {
@@ -1319,7 +1369,6 @@
   },
   "import": {
     "title": "Importa il mio percorso",
-    "back": "← Torna alla mia memoria di carriera",
     "intro": "Parti dal tuo CV, dalla tua esportazione LinkedIn o dal tuo GitHub: l’IA prepara una bozza di memoria di carriera che convalidi elemento per elemento.",
     "privacy": {
       "title": "Che fine fanno i tuoi dati",
@@ -1823,6 +1872,14 @@
       "revoked": "Revocato",
       "revoke": "Revoca",
       "notShareable": "Prima convalida la tua scheda (senza problemi di reidentificazione)."
+    },
+    "eyebrow": "Ciò che vede l’azienda",
+    "editTitle": "Modifica la scheda",
+    "approveTitle": "Convalida",
+    "stats": {
+      "issues": "{count, plural, one {punto da correggere} other {punti da correggere}}",
+      "activeLinks": "{count, plural, one {link attivo} other {link attivi}}",
+      "views": "{count, plural, one {visualizzazione} other {visualizzazioni}}"
     }
   },
   "publicCard": {
@@ -1843,7 +1900,8 @@
     "notice": "Profilo presentato da Coach Career IA. L’identità della persona candidata viene comunicata solo con il suo consenso.",
     "reply": "Rispondi alla persona candidata",
     "unavailableTitle": "Link non disponibile",
-    "unavailableText": "Questo link è scaduto o è stato revocato dalla persona candidata."
+    "unavailableText": "Questo link è scaduto o è stato revocato dalla persona candidata.",
+    "provenCount": "{count, plural, =0 {Ancora nessun risultato dimostrato} one {# risultato dimostrato} other {# risultati dimostrati}}"
   },
   "contacts": {
     "title": "Contatti",

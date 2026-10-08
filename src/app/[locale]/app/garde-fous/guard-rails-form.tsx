@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState, useId, useState } from "react";
+import { Card, CardHeader } from "@/components/card";
 import {
   ActionForm,
   Field,
@@ -12,6 +13,7 @@ import {
   SavedNotice,
   SubmitButton,
 } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { CONTRACT_TYPES, CULTURE_PREFERENCES, REMOTE_POLICIES, SECTORS } from "@/lib/career/codes";
 import type { GuardRailsView } from "@/lib/career/repository";
 import { LIMITS } from "@/lib/career/schemas";
@@ -20,9 +22,12 @@ import { updateGuardRails, type GuardRailsFormState } from "./actions";
 /** `located` : `false` = enregistré mais introuvable ; `undefined` = pas encore enregistré. */
 type Location = { key: string; label: string; radiusKm: number; located?: boolean };
 
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
-const chipClass =
-  "has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-on-primary flex cursor-pointer items-center gap-2 rounded-lg border border-line-strong bg-surface px-3 py-2 text-sm";
+const chipBase =
+  "flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border border-line-strong bg-surface px-3.5 py-2 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus hover:bg-subtle";
+/** Choix retenu : plein « nuit ». */
+const chipClass = `${chipBase} has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-on-primary`;
+/** Exclusion cochée : rouge doux, l'offre sera écartée. */
+const excludeChipClass = `${chipBase} has-[:checked]:border-danger-line has-[:checked]:bg-danger-soft has-[:checked]:text-danger-ink`;
 
 export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
   const t = useTranslations("guardRails");
@@ -55,16 +60,22 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
   const unlocatedCount = locations.filter((l) => l.located === false).length;
 
   return (
-    <ActionForm action={action} className="space-y-6">
-      <FormError errors={state.errors} />
+    <ActionForm action={action} className="grid gap-6 lg:grid-cols-2">
+      <div className="empty:hidden lg:col-span-2">
+        <FormError errors={state.errors} />
+      </div>
 
       {/* Rémunération */}
-      <section className={sectionClass} aria-labelledby="gf-salary">
-        <h2 id="gf-salary" className="text-lg font-semibold">
-          {t("salary.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("salary.intro")}</p>
-        <div className="grid gap-6 sm:grid-cols-2">
+      <Card aria-labelledby="gf-salary">
+        <div className="mb-5">
+          <CardHeader
+            id="gf-salary"
+            icon="euro"
+            title={t("salary.title")}
+            description={t("salary.intro")}
+          />
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
           <Field
             id="minFixedSalary"
             label={t("salary.minFixed")}
@@ -95,14 +106,47 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             />
           </Field>
         </div>
-      </section>
+      </Card>
+
+      {/* Contrats */}
+      <Card>
+        <div role="group" aria-labelledby="gf-contracts">
+          <div className="mb-5">
+            <CardHeader
+              id="gf-contracts"
+              icon="briefcase"
+              title={t("contracts.title")}
+              description={t("contracts.intro")}
+            />
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {CONTRACT_TYPES.map((code) => (
+              <label key={code} className={chipClass}>
+                <input
+                  type="checkbox"
+                  name="contractTypes"
+                  value={code}
+                  defaultChecked={initial.contractTypes.includes(code)}
+                  className="accent-brand size-4"
+                />
+                {tc(`contractType.${code}`)}
+              </label>
+            ))}
+          </div>
+          <FieldError id="contractTypes" error={e.contractTypes} />
+        </div>
+      </Card>
 
       {/* Lieux et télétravail */}
-      <section className={sectionClass} aria-labelledby="gf-location">
-        <h2 id="gf-location" className="text-lg font-semibold">
-          {t("location.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("location.intro")}</p>
+      <Card aria-labelledby="gf-location" className="lg:col-span-2">
+        <div className="mb-5">
+          <CardHeader
+            id="gf-location"
+            icon="pin"
+            title={t("location.title")}
+            description={t("location.intro")}
+          />
+        </div>
 
         {locations.length === 0 ? (
           <p className="text-ink-subtle mb-3 text-sm">{t("location.empty")}</p>
@@ -115,7 +159,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
               return (
                 <li
                   key={location.key}
-                  className="border-line grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_10rem_auto] sm:items-start"
+                  className="border-line bg-subtle grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_10rem_auto] sm:items-start sm:p-4"
                 >
                   <div>
                     <label htmlFor={labelId} className="block text-sm font-medium">
@@ -167,7 +211,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                     onClick={() =>
                       setLocations((list) => list.filter((l) => l.key !== location.key))
                     }
-                    className="border-line-strong hover:bg-muted rounded-lg border px-3 py-2 text-sm sm:mt-6"
+                    className="border-line-strong bg-surface hover:bg-muted min-h-11 rounded-lg border px-3 py-2 text-sm font-medium sm:mt-6"
                   >
                     {t("location.remove")}
                   </button>
@@ -194,93 +238,78 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                 { key: crypto.randomUUID(), label: "", radiusKm: 30 },
               ])
             }
-            className="border-line-strong hover:bg-subtle rounded-lg border border-dashed px-3 py-2 text-sm font-medium"
+            className="border-line-strong hover:bg-subtle inline-flex min-h-11 items-center gap-2 rounded-lg border border-dashed px-4 py-2 text-sm font-medium"
           >
+            <Icon name="plus" className="size-5" />
             {t("location.add")}
           </button>
         ) : null}
 
-        <fieldset className="mt-6">
-          <legend className="text-sm font-semibold">{t("remote.title")}</legend>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {(["", ...REMOTE_POLICIES] as const).map((policy) => (
-              <label key={policy || "none"} className={chipClass}>
-                <input
-                  type="radio"
-                  name="remotePolicy"
-                  value={policy}
-                  checked={remotePolicy === policy}
-                  onChange={() => setRemotePolicy(policy)}
-                  className="sr-only"
-                />
-                {policy ? tc(`remotePolicy.${policy}`) : t("remote.none")}
-              </label>
-            ))}
-          </div>
-          <FieldError id="remotePolicy" error={e.remotePolicy} />
-        </fieldset>
-        {remotePolicy === "HYBRID" ? (
-          <div className="mt-4 max-w-xs">
-            <Field id="minRemoteDays" label={t("remote.minDays")} error={e.minRemoteDays}>
-              <select
-                {...fieldProps("minRemoteDays", e.minRemoteDays)}
-                defaultValue={initial.minRemoteDays ?? ""}
-                className={inputClass}
-              >
-                <option value="">{t("remote.chooseDays")}</option>
-                {[1, 2, 3, 4, 5].map((days) => (
-                  <option key={days} value={days}>
-                    {t("remote.days", { count: days })}
-                  </option>
-                ))}
-              </select>
-            </Field>
-          </div>
-        ) : null}
-      </section>
-
-      {/* Contrats */}
-      <section className={sectionClass} aria-labelledby="gf-contracts">
-        <fieldset>
-          <legend id="gf-contracts" className="text-lg font-semibold">
-            {t("contracts.title")}
-          </legend>
-          <p className="text-ink-muted mt-1 mb-4 text-sm">{t("contracts.intro")}</p>
-          <div className="grid gap-2 sm:grid-cols-3">
-            {CONTRACT_TYPES.map((code) => (
-              <label key={code} className={chipClass}>
-                <input
-                  type="checkbox"
-                  name="contractTypes"
-                  value={code}
-                  defaultChecked={initial.contractTypes.includes(code)}
-                  className="accent-brand size-4"
-                />
-                {tc(`contractType.${code}`)}
-              </label>
-            ))}
-          </div>
-          <FieldError id="contractTypes" error={e.contractTypes} />
-        </fieldset>
-      </section>
+        <div className="border-line mt-6 border-t pt-6">
+          <fieldset>
+            <legend className="flex items-center gap-2 text-lg font-semibold">
+              <Icon name="home" className="text-brand-ink size-5" />
+              {t("remote.title")}
+            </legend>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {(["", ...REMOTE_POLICIES] as const).map((policy) => (
+                <label key={policy || "none"} className={chipClass}>
+                  <input
+                    type="radio"
+                    name="remotePolicy"
+                    value={policy}
+                    checked={remotePolicy === policy}
+                    onChange={() => setRemotePolicy(policy)}
+                    className="sr-only"
+                  />
+                  {policy ? tc(`remotePolicy.${policy}`) : t("remote.none")}
+                </label>
+              ))}
+            </div>
+            <FieldError id="remotePolicy" error={e.remotePolicy} />
+          </fieldset>
+          {remotePolicy === "HYBRID" ? (
+            <div className="mt-4 max-w-xs">
+              <Field id="minRemoteDays" label={t("remote.minDays")} error={e.minRemoteDays}>
+                <select
+                  {...fieldProps("minRemoteDays", e.minRemoteDays)}
+                  defaultValue={initial.minRemoteDays ?? ""}
+                  className={inputClass}
+                >
+                  <option value="">{t("remote.chooseDays")}</option>
+                  {[1, 2, 3, 4, 5].map((days) => (
+                    <option key={days} value={days}>
+                      {t("remote.days", { count: days })}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+          ) : null}
+        </div>
+      </Card>
 
       {/* Exclusions */}
-      <section className={sectionClass} aria-labelledby="gf-exclusions">
-        <h2 id="gf-exclusions" className="text-lg font-semibold">
-          {t("exclusions.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("exclusions.intro")}</p>
+      <Card aria-labelledby="gf-exclusions" className="lg:col-span-2">
+        <div className="mb-5">
+          <CardHeader
+            id="gf-exclusions"
+            icon="ban"
+            title={t("exclusions.title")}
+            description={t("exclusions.intro")}
+          />
+        </div>
         <fieldset>
-          <legend className="text-sm font-semibold">{t("exclusions.sectors")}</legend>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <legend className="text-lg font-semibold">{t("exclusions.sectors")}</legend>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
             {SECTORS.map((code) => (
-              <label key={code} className="flex items-center gap-2 text-sm">
+              <label key={code} className={`${excludeChipClass} text-sm`}>
                 <input
                   type="checkbox"
                   name="excludedSectors"
                   value={code}
                   defaultChecked={initial.excludedSectors.includes(code)}
-                  className="accent-brand size-4 shrink-0"
+                  className="accent-danger size-4 shrink-0"
                 />
                 {tc(`sector.${code}`)}
               </label>
@@ -307,14 +336,14 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             />
           </Field>
         </div>
-      </section>
+      </Card>
 
       {/* Rythme */}
-      <section className={sectionClass} aria-labelledby="gf-workload">
-        <h2 id="gf-workload" className="text-lg font-semibold">
-          {t("workload.title")}
-        </h2>
-        <div className="mt-4 grid gap-6 sm:grid-cols-2">
+      <Card aria-labelledby="gf-workload">
+        <div className="mb-5">
+          <CardHeader id="gf-workload" icon="clock" title={t("workload.title")} />
+        </div>
+        <div className="grid gap-6">
           <Field
             id="maxWeeklyHours"
             label={t("workload.maxHours")}
@@ -332,7 +361,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
               className={inputClass}
             />
           </Field>
-          <label className="flex items-start gap-3 text-sm sm:mt-7">
+          <label className="border-line bg-subtle flex cursor-pointer items-start gap-3 rounded-xl border p-4">
             <input
               type="checkbox"
               name="acceptsOnCall"
@@ -345,16 +374,20 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             </span>
           </label>
         </div>
-      </section>
+      </Card>
 
       {/* Culture */}
-      <section className={sectionClass} aria-labelledby="gf-culture">
-        <fieldset>
-          <legend id="gf-culture" className="text-lg font-semibold">
-            {t("culture.title")}
-          </legend>
-          <p className="text-ink-muted mt-1 mb-4 text-sm">{t("culture.intro")}</p>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <Card>
+        <div role="group" aria-labelledby="gf-culture">
+          <div className="mb-5">
+            <CardHeader
+              id="gf-culture"
+              icon="spark"
+              title={t("culture.title")}
+              description={t("culture.intro")}
+            />
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
             {CULTURE_PREFERENCES.map((code) => (
               <label key={code} className={chipClass}>
                 <input
@@ -369,10 +402,10 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             ))}
           </div>
           <FieldError id="culturePreferences" error={e.culturePreferences} />
-        </fieldset>
-      </section>
+        </div>
+      </Card>
 
-      <div className="border-line bg-subtle/95 sticky bottom-0 -mx-4 flex flex-col gap-3 border-t px-4 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:items-center sm:rounded-xl sm:border">
+      <div className="border-line bg-surface/95 sticky bottom-0 -mx-4 flex flex-col gap-3 border-t px-4 py-4 shadow-md backdrop-blur sm:mx-0 sm:flex-row sm:items-center sm:rounded-2xl sm:border lg:col-span-2">
         <SubmitButton pending={pending}>{t("save")}</SubmitButton>
         <SavedNotice show={state.ok && !pending} />
       </div>

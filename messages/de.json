@@ -586,9 +586,7 @@
   "dashboard": {
     "title": "Willkommen in Ihrem Bereich",
     "intro": "Ihr Karriereagent wird eingerichtet. Beginnen Sie mit Ihrem Karrieregedächtnis und Ihren Leitplanken: Sie bestimmen die Auswahl der Chancen.",
-    "open": "Öffnen →",
     "completeness": {
-      "title": "Vollständigkeit des Profils",
       "summary": "{achievements, plural, =0 {Noch keine Erfolge.} one {Ein Erfolg} other {# Erfolge}}{achievements, plural, =0 {} other {, davon {proven, plural, =0 {keiner belegt} one {einer belegt} other {# belegt}}.}} Belegte Erfolge zählen am meisten.",
       "nextSteps": "Nächste Schritte",
       "complete": "Ihr Profil ist vollständig. Denken Sie daran, es aktuell zu halten.",
@@ -632,19 +630,33 @@
       "intro": "Entscheiden Sie, ob Ihr anonymisiertes Profil Recruitern vorgestellt werden darf.",
       "save": "Aktualisieren"
     },
-    "sections": {
-      "memory": {
-        "title": "Mein Karrieregedächtnis",
-        "text": "Sammeln Sie Ihre Erfolge und die Nachweise, die sie belegen."
-      },
-      "guardRails": {
-        "title": "Meine Leitplanken",
-        "text": "Legen Sie die Bedingungen fest, gegen die kein Angebot verstoßen darf."
-      },
-      "opportunities": {
-        "title": "Chancen",
-        "text": "Hier finden Sie die von Ihrem Agenten qualifizierten Angebote."
-      }
+    "eyebrow": "Übersicht",
+    "stats": {
+      "completeness": "Ihres Karrieregedächtnisses ausgefüllt",
+      "achievements": "{count, plural, one {Erfolg} other {Erfolge}}",
+      "proven": "{count, plural, one {belegter Erfolg} other {belegte Erfolge}}",
+      "experiences": "{count, plural, one {Position} other {Positionen}}"
+    },
+    "cta": {
+      "opportunities": "Meine Chancen ansehen"
+    },
+    "approvals": {
+      "title": "Wartet auf Ihre Freigabe",
+      "intro": "Nichts geht ohne Ihr grünes Licht hinaus.",
+      "empty": "Derzeit wartet nichts. Ihr Agent meldet sich bei Ihnen.",
+      "draft": "Entwurf zu prüfen",
+      "open": "Meine Kontakte öffnen"
+    },
+    "opportunities": {
+      "title": "Aktuelle Chancen",
+      "intro": "Die am besten bewerteten Angebote, bereits nach Ihren Leitplanken gefiltert.",
+      "all": "Alle Chancen",
+      "empty": "Noch keine passende Chance: Ihr Agent beobachtet den Markt weiter."
+    },
+    "rails": {
+      "title": "Meine Leitplanken",
+      "intro": "Angebote, die sie verletzen, werden Ihnen nie angezeigt.",
+      "edit": "Bearbeiten"
     }
   },
   "opportunities": {
@@ -809,7 +821,11 @@
         "companyStage": "Organisationsform",
         "responsibilities": "Verantwortungsbereiche",
         "responsibilitiesHint": "Ihr Zuständigkeitsbereich, Ihre Hauptaufgaben. Nennen Sie weder Firmen- noch Personennamen.",
-        "save": "Berufserfahrung speichern"
+        "save": "Berufserfahrung speichern",
+        "groups": {
+          "role": "Die Position",
+          "missions": "Ihre Aufgaben"
+        }
       }
     },
     "achievements": {
@@ -823,7 +839,6 @@
       "newTitle": "Neuer Erfolg",
       "editTitle": "Erfolg",
       "formIntro": "Bleiben Sie konkret: Zahlen, Zeiträume, Wirkung. Vermeiden Sie Namen von Personen, Kunden und Arbeitgebern.",
-      "detailsTitle": "Beschreibung",
       "deleteTitle": "Diesen Erfolg löschen",
       "deleteText": "Die zugehörigen Nachweise, einschließlich hochgeladener Dokumente, werden gelöscht.",
       "confirmDelete": "Diesen Erfolg und alle zugehörigen Nachweise endgültig löschen?",
@@ -842,7 +857,18 @@
         "skillsHint": "Durch Kommas getrennt. Sie werden automatisch in Ihre Kompetenzliste übernommen.",
         "skillsPlaceholder": "PostgreSQL, Projektmanagement, Verhandlungsführung",
         "save": "Speichern",
-        "create": "Erstellen und Nachweis hinzufügen"
+        "create": "Erstellen und Nachweis hinzufügen",
+        "groups": {
+          "essentials": "Das Wichtigste",
+          "story": "Die Geschichte",
+          "storyIntro": "Drei Schritte: die Ausgangslage, Ihr Vorgehen, das messbare Ergebnis."
+        }
+      },
+      "story": {
+        "context": "Kontext",
+        "action": "Vorgehen",
+        "result": "Ergebnis",
+        "missing": "Noch zu ergänzen"
       }
     },
     "proofs": {
@@ -884,7 +910,12 @@
       "confirmDelete": "Die Kompetenz „{name}“ löschen? Sie wird aus allen Erfolgen entfernt, in denen sie genannt wird."
     },
     "importCta": "Meinen Werdegang importieren",
-    "importHint": "Lebenslauf, LinkedIn-Export oder GitHub: Die KI erstellt einen Entwurf, den Sie freigeben."
+    "importHint": "Lebenslauf, LinkedIn-Export oder GitHub: Die KI erstellt einen Entwurf, den Sie freigeben.",
+    "eyebrow": "Belege statt Versprechen",
+    "back": "Zurück zu meinem Karrieregedächtnis",
+    "stats": {
+      "provenSkills": "{count, plural, one {belegte Kompetenz} other {belegte Kompetenzen}}"
+    }
   },
   "identity": {
     "title": "Meine Identität",
@@ -903,7 +934,13 @@
       "you": "Nur Sie entsperren sie, mit dem Passwort Ihres Kontos. Es wird von unseren Diensten nie übertragen oder gespeichert: Für die Anmeldung dient nur ein Fingerabdruck, der den Tresor nicht öffnen kann.",
       "handover": "Ihre Identität wird einem Recruiter nur offengelegt, wenn Sie es für genau diesen Recruiter entscheiden.",
       "lossTitle": "Wichtige Folge:",
-      "loss": "Wenn Sie Ihr Passwort vergessen und Ihren Wiederherstellungsschlüssel verlieren, sind diese Daten endgültig verloren. Wir können sie nicht für Sie wiederherstellen. Ihr berufliches Profil ist davon nicht betroffen."
+      "loss": "Wenn Sie Ihr Passwort vergessen und Ihren Wiederherstellungsschlüssel verlieren, sind diese Daten endgültig verloren. Wir können sie nicht für Sie wiederherstellen. Ihr berufliches Profil ist davon nicht betroffen.",
+      "steps": {
+        "encrypted": "Bei Ihnen verschlüsselt",
+        "nobody": "Für uns unlesbar",
+        "you": "Nur Sie haben den Schlüssel",
+        "handover": "Offengelegt nur auf Ihre Entscheidung"
+      }
     },
     "recovery": {
       "title": "Ihr Wiederherstellungsschlüssel",
@@ -1062,6 +1099,12 @@
       "working": "Wird geöffnet… (einige Sekunden)",
       "noKeyTitle": "Kein Wiederherstellungsschlüssel?",
       "noKey": "Ihre verschlüsselte Identität (Name, Kontaktdaten, Arbeitgeber, Schulen, Links, Original-Lebenslauf) kann von niemandem mehr gelesen werden, auch nicht von uns. Setzen Sie den Tresor unten zurück und geben Sie sie erneut ein. Ihr Karrieregedächtnis, Ihre Kontakte, Ihre Leitplanken und alles andere bleiben erhalten."
+    },
+    "eyebrow": "Zero-Knowledge-Tresor",
+    "state": {
+      "unlocked": "Tresor entsperrt",
+      "locked": "Tresor gesperrt",
+      "none": "Tresor noch nicht angelegt"
     }
   },
   "guardRails": {
@@ -1069,11 +1112,6 @@
     "intro": "Die nicht verhandelbaren Bedingungen, die ein Angebot erfüllen muss, um Sie zu erreichen. Sie werden als strikte Filter angewendet.",
     "emptyHint": "Noch keine Leitplanken festgelegt. Beginnen Sie mit Ihrem Mindestgehalt und Ihren Vertragsarten.",
     "save": "Leitplanken speichern",
-    "summary": {
-      "title": "Zusammenfassung",
-      "minFixed": "Mindestfixgehalt: {amount} brutto pro Jahr",
-      "targetPackage": "Angestrebte Gesamtvergütung: {amount}"
-    },
     "salary": {
       "title": "Vergütung",
       "intro": "Jährliche Bruttobeträge in Euro.",
@@ -1122,6 +1160,18 @@
     "culture": {
       "title": "Unternehmenskultur",
       "intro": "Optional: was Ihnen wichtig ist. Diese Präferenzen verfeinern die Reihenfolge der Angebote."
+    },
+    "eyebrow": "Strenge Filter",
+    "overview": {
+      "salary": "Gehaltsuntergrenze",
+      "salaryValue": "{amount} brutto/Jahr",
+      "hybridDays": "{policy}, {count, plural, one {mindestens # Tag} other {mindestens # Tage}}",
+      "locations": "Orte",
+      "location": "{label} ({km} km)",
+      "contracts": "Akzeptierte Verträge",
+      "contractsAll": "Alle",
+      "exclusionsValue": "{sectors, plural, =0 {Keine Branche} one {# Branche} other {# Branchen}}, {companies, plural, =0 {kein Unternehmen} one {# Unternehmen} other {# Unternehmen}}",
+      "unset": "Nicht festgelegt"
     }
   },
   "coach": {
@@ -1319,7 +1369,6 @@
   },
   "import": {
     "title": "Meinen Werdegang importieren",
-    "back": "← Zurück zu meinem Karrieregedächtnis",
     "intro": "Starten Sie mit Ihrem Lebenslauf, Ihrem LinkedIn-Export oder Ihrem GitHub: Die KI erstellt einen Entwurf Ihres Karrieregedächtnisses, den Sie Punkt für Punkt freigeben.",
     "privacy": {
       "title": "Was mit Ihren Daten geschieht",
@@ -1823,6 +1872,14 @@
       "revoked": "Widerrufen",
       "revoke": "Widerrufen",
       "notShareable": "Geben Sie zuerst Ihre Karte frei (ohne Re-Identifizierungsproblem)."
+    },
+    "eyebrow": "Was das Unternehmen sieht",
+    "editTitle": "Karte bearbeiten",
+    "approveTitle": "Freigabe",
+    "stats": {
+      "issues": "{count, plural, one {Punkt zu korrigieren} other {Punkte zu korrigieren}}",
+      "activeLinks": "{count, plural, one {aktiver Link} other {aktive Links}}",
+      "views": "{count, plural, one {Aufruf} other {Aufrufe}}"
     }
   },
   "publicCard": {
@@ -1843,7 +1900,8 @@
     "notice": "Profil vorgestellt von Coach Career IA. Die Identität der Person wird nur mit ihrer Zustimmung mitgeteilt.",
     "reply": "Der Person antworten",
     "unavailableTitle": "Link nicht verfügbar",
-    "unavailableText": "Dieser Link ist abgelaufen oder wurde von der Person widerrufen."
+    "unavailableText": "Dieser Link ist abgelaufen oder wurde von der Person widerrufen.",
+    "provenCount": "{count, plural, =0 {Noch kein belegter Erfolg} one {# belegter Erfolg} other {# belegte Erfolge}}"
   },
   "contacts": {
     "title": "Kontakte",

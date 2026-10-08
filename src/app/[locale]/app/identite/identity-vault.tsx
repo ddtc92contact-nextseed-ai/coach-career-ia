@@ -3,9 +3,9 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { inputClass } from "@/components/form";
+import { Icon, type IconName } from "@/components/icons";
 import { PasswordField } from "@/components/password-field";
 import { IDLE_CHOICES, useVault } from "@/components/vault/vault-provider";
-import { LockIcon } from "@/components/vault/vault-widgets";
 import { Link } from "@/i18n/navigation";
 import { AccountError } from "@/lib/auth/account-client";
 import { VaultConflictError, VaultHttpError } from "@/lib/vault/client";
@@ -31,7 +31,17 @@ type ErrorKey =
   | "cvType"
   | "generic";
 
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-7";
+/** Titre H2 de la charte (comme `CardHeader`). */
+const h2Class = "font-display text-xl font-bold tracking-tight text-balance sm:text-2xl";
+/** Pastille d'icône à gauche d'un titre de carte. */
+function TitleIcon({ name }: { name: IconName }) {
+  return (
+    <span className="bg-brand-soft text-brand-ink inline-flex size-11 shrink-0 items-center justify-center rounded-xl">
+      <Icon name={name} className="size-6" />
+    </span>
+  );
+}
 const primaryButton =
   "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
 const secondaryButton =
@@ -136,29 +146,6 @@ function TextInput({
   );
 }
 
-// --- Explications ---------------------------------------------------------------------
-
-function Explainer() {
-  const t = useTranslations("identity.explain");
-  return (
-    <section className={`${sectionClass} bg-subtle`} aria-labelledby="zero-connaissance">
-      <h2 id="zero-connaissance" className="flex items-center gap-2 text-lg font-semibold">
-        <LockIcon />
-        {t("title")}
-      </h2>
-      <ul className="text-ink-muted mt-3 list-disc space-y-2 pl-5 text-sm">
-        <li>{t("encrypted")}</li>
-        <li>{t("nobody")}</li>
-        <li>{t("you")}</li>
-        <li>{t("handover")}</li>
-      </ul>
-      <p className="border-warning-line bg-warning-soft text-warning-ink mt-4 rounded-lg border px-4 py-3 text-sm">
-        <strong className="font-semibold">{t("lossTitle")}</strong> {t("loss")}
-      </p>
-    </section>
-  );
-}
-
 // --- Clé de secours ------------------------------------------------------------------
 
 function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone: () => void }) {
@@ -205,7 +192,8 @@ function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone:
       aria-labelledby="cle-secours"
       role="region"
     >
-      <h2 id="cle-secours" className="text-lg font-semibold">
+      <h2 id="cle-secours" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="key" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 text-sm">{t("intro")}</p>
@@ -264,8 +252,8 @@ function UnlockForm({ onForgot }: { onForgot: () => void }) {
   const [pending, setPending] = useState(false);
   return (
     <section className={sectionClass} aria-labelledby="deverrouiller">
-      <h2 id="deverrouiller" className="flex items-center gap-2 text-lg font-semibold">
-        <LockIcon />
+      <h2 id="deverrouiller" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="lock" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -318,7 +306,8 @@ function RecoverForm({ onBack }: { onBack: () => void }) {
   const [pending, setPending] = useState(false);
   return (
     <section className={sectionClass} aria-labelledby="recuperer">
-      <h2 id="recuperer" className="text-lg font-semibold">
+      <h2 id="recuperer" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="key" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -390,7 +379,8 @@ function AccountSetupForm({ onCreated }: { onCreated: (recoveryKey: string) => v
 
   return (
     <section className={sectionClass} aria-labelledby="creer-coffre">
-      <h2 id="creer-coffre" className="text-lg font-semibold">
+      <h2 id="creer-coffre" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="key" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -447,7 +437,8 @@ function NoPasswordNotice() {
   const t = useTranslations("identity.noPassword");
   return (
     <section className={sectionClass} aria-labelledby="sans-mot-de-passe">
-      <h2 id="sans-mot-de-passe" className="text-lg font-semibold">
+      <h2 id="sans-mot-de-passe" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="lock" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("text")}</p>
@@ -484,8 +475,8 @@ function AccountUnlockForm() {
   const [pending, setPending] = useState(false);
   return (
     <section className={sectionClass} aria-labelledby="deverrouiller">
-      <h2 id="deverrouiller" className="flex items-center gap-2 text-lg font-semibold">
-        <LockIcon />
+      <h2 id="deverrouiller" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="lock" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -542,8 +533,8 @@ function BindForm({ kind }: { kind: "legacy" | "stale" }) {
 
   return (
     <section className={sectionClass} aria-labelledby="relier-coffre">
-      <h2 id="relier-coffre" className="flex items-center gap-2 text-lg font-semibold">
-        <LockIcon />
+      <h2 id="relier-coffre" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="lock" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -724,7 +715,8 @@ function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
 
   return (
     <section className={sectionClass} aria-labelledby="mon-identite">
-      <h2 id="mon-identite" className="text-lg font-semibold">
+      <h2 id="mon-identite" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="user" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-5 text-sm">{t("intro")}</p>
@@ -908,7 +900,8 @@ function CvSection() {
 
   return (
     <section className={sectionClass} aria-labelledby="cv-origine">
-      <h2 id="cv-origine" className="text-lg font-semibold">
+      <h2 id="cv-origine" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="proof" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -985,7 +978,8 @@ function ChangePassphraseForm() {
   const [done, setDone] = useState(false);
   return (
     <section className={sectionClass} aria-labelledby="changer-phrase">
-      <h2 id="changer-phrase" className="text-lg font-semibold">
+      <h2 id="changer-phrase" className={`flex items-center gap-3 ${h2Class}`}>
+        <TitleIcon name="key" />
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -1056,13 +1050,15 @@ function LockBar() {
     ? IDLE_CHOICES
     : [...IDLE_CHOICES, idleMinutes].sort((a, b) => a - b);
   return (
-    <div className="border-brand-line bg-brand-soft flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-brand-ink flex items-center gap-2 text-sm font-medium" role="status">
-        <LockIcon open />
+    <div className="border-brand-line bg-brand-soft flex flex-col gap-4 rounded-2xl border p-5 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+      <p className="text-brand-ink flex items-center gap-3 text-lg font-semibold" role="status">
+        <span className="bg-brand text-on-brand inline-flex size-11 shrink-0 items-center justify-center rounded-full">
+          <Icon name="unlock" className="size-6" />
+        </span>
         {t("unlocked.status")}
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <label htmlFor={id} className="text-ink-muted text-sm">
+        <label htmlFor={id} className="text-ink-muted">
           {t("unlocked.idle")}
         </label>
         <select
@@ -1092,7 +1088,7 @@ function ResetSection() {
   const [error, setError] = useState<ErrorKey | null>(null);
   return (
     <section className={`${sectionClass} border-danger-line`} aria-labelledby="reinitialiser">
-      <h2 id="reinitialiser" className="text-danger-ink text-lg font-semibold">
+      <h2 id="reinitialiser" className={`text-danger-ink ${h2Class}`}>
         {t("title")}
       </h2>
       <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
@@ -1195,10 +1191,5 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <Explainer />
-      {body}
-    </div>
-  );
+  return <div className="space-y-6">{body}</div>;
 }
