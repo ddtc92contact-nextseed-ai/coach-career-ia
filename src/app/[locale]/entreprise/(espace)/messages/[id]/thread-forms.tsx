@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState, useRef, useTransition } from "react";
+import { buttonClass } from "@/components/button";
 import { inputClass } from "@/components/form";
 import { MAX_REPLY_LENGTH } from "@/lib/contact/config";
 import { closeThreadAction, replyThreadAction, type ThreadActionState } from "../actions";
@@ -18,9 +19,9 @@ export function ThreadReplyForm({ id }: { id: string }) {
     {},
   );
   return (
-    <form ref={formRef} action={action} className="space-y-3">
+    <form ref={formRef} action={action} className="space-y-4">
       <div>
-        <label htmlFor="reply-body" className="text-ink block text-sm font-medium">
+        <label htmlFor="reply-body" className="text-ink block font-semibold">
           {t("replyLabel")}
         </label>
         <textarea
@@ -40,16 +41,16 @@ export function ThreadReplyForm({ id }: { id: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-5 py-2.5 font-medium disabled:opacity-60 sm:w-auto"
+          className={`${buttonClass("primary", "lg")} w-full sm:w-auto`}
         >
           {t("replySubmit")}
         </button>
         {state.error ? (
-          <p role="alert" className="text-danger-ink text-sm">
+          <p role="alert" className="text-danger-ink">
             {t(`errors.${state.error}`)}
           </p>
         ) : state.ok ? (
-          <p role="status" className="text-brand-ink text-sm font-medium">
+          <p role="status" className="text-brand-ink font-medium">
             {t("replySent")}
           </p>
         ) : null}
@@ -72,7 +73,7 @@ export function CloseThreadButton({ id }: { id: string }) {
           await closeThreadAction(id);
         });
       }}
-      className="border-line-strong hover:bg-muted w-full rounded-lg border px-4 py-2 text-sm font-medium disabled:opacity-60 sm:w-auto"
+      className={`${buttonClass("secondary")} w-full sm:w-auto`}
     >
       {pending ? t("closing.pending") : t("close")}
     </button>

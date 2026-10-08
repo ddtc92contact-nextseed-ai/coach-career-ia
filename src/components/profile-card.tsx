@@ -38,10 +38,14 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
   ].filter((line): line is string => Boolean(line));
 
   return (
-    <article className="border-line bg-surface rounded-2xl border p-5 sm:p-7">
-      <Badge>{t("badge")}</Badge>
-      <h2 className="mt-3 text-xl font-semibold tracking-tight break-words">{shown.headline}</h2>
-      <p className="text-ink-muted mt-1 text-sm">
+    <article className="border-line bg-surface rounded-2xl border p-5 shadow-sm sm:p-8">
+      <Badge size="md" dot>
+        {t("badge")}
+      </Badge>
+      <h2 className="font-display mt-4 text-2xl font-bold tracking-tight text-balance break-words sm:text-3xl">
+        {shown.headline}
+      </h2>
+      <p className="text-ink-muted mt-2">
         {[
           shown.seniority ? codes(`seniority.${shown.seniority}`) : null,
           shown.yearsOfExperience ? t("years", { years: shown.yearsOfExperience }) : null,
@@ -51,8 +55,8 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
       </p>
 
       {shown.achievements.length > 0 ? (
-        <section className="mt-6">
-          <h3 className="text-sm font-semibold">{t("achievements")}</h3>
+        <section className="border-line mt-7 border-t pt-6">
+          <h3 className="text-lg font-semibold">{t("achievements")}</h3>
           <ul className="mt-3 space-y-4">
             {shown.achievements.map((a, i) => (
               <li key={i}>
@@ -62,11 +66,9 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
                     {codes(`evidence.${a.evidenceLevel}`)}
                   </Badge>
                 </div>
-                {a.result ? (
-                  <p className="text-ink-muted mt-1 text-sm break-words">{a.result}</p>
-                ) : null}
+                {a.result ? <p className="text-ink-muted mt-1 break-words">{a.result}</p> : null}
                 {a.skills.length > 0 ? (
-                  <p className="text-ink-subtle mt-1 text-xs">{a.skills.join(" · ")}</p>
+                  <p className="text-ink-muted mt-1 text-sm">{a.skills.join(" · ")}</p>
                 ) : null}
                 {a.proofUrls.map((url) => (
                   <a
@@ -74,7 +76,7 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="text-ink-muted mt-1 mr-3 inline-block text-xs underline"
+                    className="text-brand-ink mt-1 mr-3 inline-block text-sm font-medium underline underline-offset-2"
                   >
                     {t("proof")}
                   </a>
@@ -87,7 +89,7 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
 
       {shown.skills.length > 0 ? (
         <section className="mt-6">
-          <h3 className="text-sm font-semibold">{t("skills")}</h3>
+          <h3 className="text-lg font-semibold">{t("skills")}</h3>
           <ul className="mt-2 flex flex-wrap gap-2">
             {shown.skills.map((s) => (
               <li key={s.name}>
@@ -102,8 +104,8 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
 
       {conditions.length > 0 ? (
         <section className="mt-6">
-          <h3 className="text-sm font-semibold">{t("conditions")}</h3>
-          <ul className="text-ink-muted mt-2 list-disc space-y-1 pl-5 text-sm">
+          <h3 className="text-lg font-semibold">{t("conditions")}</h3>
+          <ul className="text-ink-muted marker:text-ink-subtle mt-2 list-disc space-y-1.5 pl-5">
             {conditions.map((line) => (
               <li key={line}>{line}</li>
             ))}

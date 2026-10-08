@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { EmptyState, PageTitle } from "@/components/empty-state";
+import { EmptyState } from "@/components/empty-state";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { listThreads } from "@/lib/employer/inbox";
 import { requireEmployer } from "@/lib/employer/session";
@@ -25,41 +27,68 @@ export default async function EmployerInboxPage() {
   ]);
 
   return (
-    <div>
-      <PageTitle title={t("title")} intro={t("intro")} />
+    <div className="max-w-4xl">
+      <PageHeader title={t("title")} lead={t("intro")} />
       {threads.length === 0 ? (
         <EmptyState title={t("emptyTitle")} text={t("emptyText")} />
       ) : (
-        <ul className="divide-line border-line bg-surface divide-y overflow-hidden rounded-2xl border">
-          {threads.map((thread) => (
-            <li key={thread.id}>
-              <Link
-                href={`/entreprise/messages/${thread.id}`}
-                className="hover:bg-subtle flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-              >
-                <span className="min-w-0">
+        <ul aria-label={t("title")} className="space-y-3">
+          {threads.map((thread) => {
+            const unread = thread.status === "NEW";
+            return (
+              <li key={thread.id}>
+                <Link
+                  href={`/entreprise/messages/${thread.id}`}
+                  className={`group bg-surface hover:border-line-strong flex flex-col gap-3 rounded-2xl border p-4 shadow-sm hover:shadow-md motion-safe:transition-[box-shadow,border-color] sm:flex-row sm:items-center sm:gap-4 sm:p-5 ${
+                    unread ? "border-brand-line ring-brand-line ring-1" : "border-line"
+                  }`}
+                >
                   <span
-                    className={`text-ink block break-words ${
-                      thread.status === "NEW" ? "font-semibold" : "font-medium"
+                    className={`relative grid size-12 shrink-0 place-items-center rounded-xl max-sm:hidden ${
+                      unread ? "bg-night text-signal" : "bg-muted text-ink-muted"
                     }`}
                   >
-                    {t("threadTitle", { title: thread.offerTitle })}
+                    <Icon name="chat" className="size-6" />
+                    {unread ? (
+                      <span
+                        aria-hidden="true"
+                        className="bg-signal ring-surface absolute -top-1 -right-1 size-3 rounded-full ring-2"
+                      />
+                    ) : null}
                   </span>
-                  {thread.lastActivityAt ? (
-                    <span className="text-ink-subtle block text-xs">
-                      {t("lastActivity", {
-                        date: format.dateTime(thread.lastActivityAt, "short"),
-                      })}
+                  <span className="min-w-0 flex-1">
+                    <span
+                      className={`text-ink block text-lg break-words group-hover:underline group-hover:underline-offset-4 ${
+                        unread ? "font-bold" : "font-semibold"
+                      }`}
+                    >
+                      {t("threadTitle", { title: thread.offerTitle })}
                     </span>
-                  ) : null}
-                </span>
-                <ThreadStatusBadge status={thread.status} />
-              </Link>
-            </li>
-          ))}
+                    {thread.lastActivityAt ? (
+                      <span className="text-ink-muted mt-0.5 block">
+                        {t("lastActivity", {
+                          date: format.dateTime(thread.lastActivityAt, "short"),
+                        })}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="flex shrink-0 items-center gap-3 max-sm:order-first">
+                    <ThreadStatusBadge status={thread.status} />
+                    <Icon
+                      name="chevron"
+                      className="text-ink-subtle size-5 -rotate-90 max-sm:hidden"
+                    />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
-      <p className="text-ink-subtle mt-6 text-xs">{t("privacy")}</p>
+      <p className="text-ink-muted mt-8 flex items-start gap-2 text-sm">
+        <Icon name="lock" className="mt-0.5 size-4 shrink-0" />
+        {t("privacy")}
+      </p>
     </div>
   );
 }

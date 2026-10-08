@@ -24,7 +24,7 @@ type RichValues = Record<string, string | number | ((chunks: ReactNode) => React
 type RichTranslator = (key: string, values: RichValues) => ReactNode;
 
 const CNIL_COMPLAINT_URL = "https://www.cnil.fr/fr/adresser-une-plainte";
-const linkClass = "text-brand-ink underline underline-offset-2 hover:text-brand-ink";
+const linkClass = "text-brand-ink font-medium underline underline-offset-2 hover:decoration-2";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, page } = await params;
@@ -81,60 +81,88 @@ export default async function LegalPage({ params }: Props) {
   };
   const rich = t.rich as unknown as RichTranslator;
 
+  const entries = Object.entries(sections);
+
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-        <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="text-ink-subtle mt-3 text-sm">
-          {tl("updated", {
-            date: format.dateTime(legalUpdatedAt(), { dateStyle: "long", timeZone: "UTC" }),
-          })}
-        </p>
-        <p className="text-ink-muted mt-6 text-lg text-pretty">{rich("intro", values)}</p>
-
-        <nav
-          aria-labelledby="legal-contents"
-          className="border-line bg-surface mt-8 rounded-xl border p-5"
-        >
-          <h2 id="legal-contents" className="text-ink text-sm font-semibold">
-            {tl("contents")}
-          </h2>
-          <ol className="mt-3 space-y-1.5 text-sm">
-            {Object.entries(sections).map(([id, section]) => (
-              <li key={id}>
-                <a href={`#${id}`} className="text-ink-muted hover:text-ink hover:underline">
-                  {section.title}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        {Object.entries(sections).map(([id, section]) => (
-          <section key={id} id={id} aria-labelledby={`${id}-title`} className="mt-10 scroll-mt-6">
-            <h2 id={`${id}-title`} className="text-xl font-semibold tracking-tight">
-              {section.title}
-            </h2>
-            <div className="text-ink-muted mt-3 space-y-3 leading-relaxed">
-              {Object.entries(section.content).map(([block, value]) => {
-                const path = `sections.${id}.content.${block}`;
-                if (typeof value === "string") {
-                  return <p key={block}>{rich(path, values)}</p>;
-                }
-                return (
-                  <ul key={block} className="marker:text-ink-subtle list-disc space-y-2 pl-5">
-                    {Object.keys(value).map((item) => (
-                      <li key={item}>{rich(`${path}.${item}`, values)}</li>
-                    ))}
-                  </ul>
-                );
+      <main>
+        <header className="border-brand-line bg-brand-soft border-b">
+          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+            <h1 className="max-w-4xl text-4xl leading-[1.1] font-bold tracking-tight text-balance hyphens-auto sm:text-5xl">
+              {t("title")}
+            </h1>
+            <p className="text-ink-muted mt-4 text-base">
+              {tl("updated", {
+                date: format.dateTime(legalUpdatedAt(), { dateStyle: "long", timeZone: "UTC" }),
               })}
+            </p>
+            <p className="text-ink mt-5 max-w-[70ch] text-lg text-pretty sm:text-xl">
+              {rich("intro", values)}
+            </p>
+          </div>
+        </header>
+
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14">
+          <nav aria-labelledby="legal-contents" className="lg:sticky lg:top-24 lg:self-start">
+            <div className="border-line bg-surface rounded-2xl border p-5 shadow-xs">
+              <h2 id="legal-contents" className="text-ink text-base font-semibold">
+                {tl("contents")}
+              </h2>
+              <ol className="mt-3 space-y-1 text-[0.9375rem]">
+                {entries.map(([id, section]) => (
+                  <li key={id}>
+                    <a
+                      href={`#${id}`}
+                      className="text-ink-muted hover:bg-muted hover:text-ink -mx-2 block rounded-lg px-2 py-1.5"
+                    >
+                      {section.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </div>
-          </section>
-        ))}
+          </nav>
+
+          <article className="text-ink max-w-[70ch] text-[1.0625rem] leading-[1.7] sm:text-lg">
+            {entries.map(([id, section]) => (
+              <section
+                key={id}
+                id={id}
+                aria-labelledby={`${id}-title`}
+                className="border-line mb-12 scroll-mt-24 border-b pb-12 last:mb-0 last:border-b-0 last:pb-0"
+              >
+                <h2
+                  id={`${id}-title`}
+                  className="text-2xl leading-tight font-bold tracking-tight text-balance hyphens-auto sm:text-3xl"
+                >
+                  {section.title}
+                </h2>
+                <div className="mt-5 space-y-4">
+                  {Object.entries(section.content).map(([block, value]) => {
+                    const path = `sections.${id}.content.${block}`;
+                    if (typeof value === "string") {
+                      return (
+                        <p key={block} className="text-pretty">
+                          {rich(path, values)}
+                        </p>
+                      );
+                    }
+                    return (
+                      <ul key={block} className="marker:text-brand list-disc space-y-2.5 pl-6">
+                        {Object.keys(value).map((item) => (
+                          <li key={item} className="pl-1 text-pretty">
+                            {rich(`${path}.${item}`, values)}
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </article>
+        </div>
       </main>
       <SiteFooter />
     </>

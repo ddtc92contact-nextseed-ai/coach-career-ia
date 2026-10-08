@@ -2297,7 +2297,13 @@
         "views": "Visualizzazioni"
       },
       "noDate": "—",
-      "privacy": "Qui non compare alcun dato dei candidati: vedete solo quanti candidati hanno aperto la vostra offerta tra le loro opportunità."
+      "privacy": "Qui non compare alcun dato dei candidati: vedete solo quanti candidati hanno aperto la vostra offerta tra le loro opportunità.",
+      "stats": {
+        "live": "Online",
+        "pending": "In pubblicazione",
+        "drafts": "Bozze",
+        "views": "Visualizzazioni"
+      }
     },
     "status": {
       "DRAFT": "Bozza",
@@ -2305,6 +2311,7 @@
       "IN_REVIEW": "In verifica",
       "LIVE": "Online",
       "CLOSED": "Chiusa",
+      "EXPIRED": "Scaduta",
       "REJECTED": "Rifiutata"
     },
     "posting": {
@@ -2376,7 +2383,8 @@
         "notAllowed": "Questa azione non è possibile nello stato attuale dell’offerta.",
         "unavailable": "Il pagamento non è al momento disponibile. Riprovate più tardi.",
         "suspended": "La vostra organizzazione è sospesa: nessuna pubblicazione è possibile."
-      }
+      },
+      "progress": "Fasi della pubblicazione"
     },
     "checkout": {
       "title": "Pagamento della pubblicazione",

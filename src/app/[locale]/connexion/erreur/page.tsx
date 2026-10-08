@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AuthCard } from "@/components/auth-card";
+import { buttonClass } from "@/components/button";
 import { Link } from "@/i18n/navigation";
 
 const KNOWN_ERRORS = ["Verification", "Configuration", "AccessDenied"] as const;
@@ -23,10 +24,7 @@ export default async function AuthErrorPage({
   return (
     <AuthCard title={t("title")}>
       <p className="text-ink-muted">{known ? t(`messages.${known}`) : t("messages.Default")}</p>
-      <Link
-        href="/connexion"
-        className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 font-medium"
-      >
+      <Link href="/connexion" className={`${buttonClass("primary", "lg")} mt-7 w-full sm:w-auto`}>
         {t("retry")}
       </Link>
     </AuthCard>

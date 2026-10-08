@@ -66,21 +66,22 @@ export default async function HomePage() {
       <SiteHeader
         sections={NAV.map((key) => ({ href: `#${SECTION_IDS[key]}`, label: t(`nav.${key}`) }))}
       />
-      <main id="contenu" className="overflow-x-clip">
-        <section aria-labelledby="accueil-titre" className="relative isolate">
+      {/* Accueil : corps de texte à 18 px (docs/brand.md §4). */}
+      <main id="contenu" className="overflow-x-clip text-lg">
+        <section aria-labelledby="accueil-titre" className="bg-canvas relative isolate">
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_80%_-10%,var(--cc-brand-soft),transparent_70%)]"
           />
           <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 pt-12 pb-20 sm:px-6 sm:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16 lg:pb-28">
             <div>
-              <p className="border-line bg-surface text-ink-muted inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium shadow-xs">
+              <p className="border-line bg-surface text-ink-muted inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[0.9375rem] font-medium shadow-xs">
                 <span aria-hidden="true" className="bg-brand size-2 rounded-full" />
                 {t("hero.eyebrow")}
               </p>
               <h1
                 id="accueil-titre"
-                className="mt-6 text-4xl leading-[1.05] font-bold tracking-tight text-balance hyphens-auto sm:text-5xl lg:text-[3.5rem]"
+                className="mt-6 text-[2.625rem] leading-[1.04] font-bold tracking-tight text-balance hyphens-auto sm:text-6xl lg:text-[4rem]"
               >
                 {t.rich("hero.title", {
                   signal: (chunks) => (
@@ -94,7 +95,9 @@ export default async function HomePage() {
                   ),
                 })}
               </h1>
-              <p className="text-ink-muted mt-6 max-w-xl text-lg text-pretty">{t("hero.intro")}</p>
+              <p className="text-ink-muted mt-6 max-w-xl text-lg text-pretty sm:text-xl">
+                {t("hero.intro")}
+              </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link href={SIGN_UP_PATH} className={buttonClass("primary", "lg")}>
                   {t("hero.ctaPrimary")}
@@ -104,8 +107,8 @@ export default async function HomePage() {
                   {t("hero.ctaSecondary")}
                 </a>
               </div>
-              <p className="text-ink-subtle mt-5 flex items-start gap-2 text-sm">
-                <Icon name="lock" className="mt-px size-4 shrink-0" />
+              <p className="text-ink-muted mt-5 flex items-start gap-2 text-base">
+                <Icon name="lock" className="mt-1 size-4 shrink-0" />
                 {t("hero.reassurance")}
               </p>
             </div>
@@ -117,9 +120,7 @@ export default async function HomePage() {
         <PrivacyProof />
         <CoachSample />
         <Pricing />
-        <div className="py-20 sm:py-28">
-          <ForCompanies priceLine={postingPrice} />
-        </div>
+        <ForCompanies priceLine={postingPrice} />
         <Faq />
         <ClosingCta />
       </main>

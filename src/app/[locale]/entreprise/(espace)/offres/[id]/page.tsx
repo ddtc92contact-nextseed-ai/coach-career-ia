@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
+import { buttonClass } from "@/components/button";
+import { Card } from "@/components/card";
 import { DeleteButton } from "@/components/delete-button";
-import { Link } from "@/i18n/navigation";
+import { PageHeader } from "@/components/page-header";
 import { isAdminEmail } from "@/lib/auth/admin-emails";
 import { billingMode } from "@/lib/billing/config";
 import { jobPostingPriceFromEnv, postingDurationDays } from "@/lib/employer/config";
 import { countryNames } from "@/lib/employer/countries";
-import { canPay, isEditable } from "@/lib/employer/lifecycle";
+import { canPay, displayStatus, isEditable } from "@/lib/employer/lifecycle";
 import { getPosting } from "@/lib/employer/repository";
 import { requireEmployer } from "@/lib/employer/session";
-import { RedirectButton } from "../../../../app/billing/redirect-button";
 import { TestModeBadge } from "../../../../app/billing/simulation/test-mode";
-import { Notice, OrganizationNotice, PostingStatusBadge } from "../../parts";
+import {
+  BackLink,
+  Notice,
+  OrganizationNotice,
+  PostingProgress,
+  PostingStatusBadge,
+} from "../../parts";
+import { PendingButton } from "../../pending-button";
 import {
   adminPublishAction,
   closePostingAction,
@@ -36,9 +44,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const DONE = ["submitted", "closed", "renewed", "published"] as const;
 const ERRORS = ["notAllowed", "unavailable", "suspended"] as const;
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
-const secondary =
-  "w-full rounded-lg border border-line-strong bg-surface px-5 py-2.5 text-sm font-medium hover:bg-muted sm:w-auto";
 
 const pick = <T extends string>(values: readonly T[], value: string | undefined) =>
   values.find((v) => v === value) ?? null;
@@ -62,6 +67,7 @@ export default async function PostingPage({ params, searchParams }: Props) {
     currency: price.currency,
   });
   const { status, offer } = posting;
+  const shown = displayStatus(posting);
   const done = pick(DONE, query.fait);
   const error = pick(ERRORS, query.erreur);
   const payable = canPay(status) && org.status !== "SUSPENDED";
@@ -81,74 +87,77 @@ export default async function PostingPage({ params, searchParams }: Props) {
   };
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <Link href="/entreprise" className="text-ink-muted text-sm hover:underline">
-        {t("back")}
-      </Link>
+    <div className="max-w-4xl">
+      <BackLink href="/entreprise">{t("back")}</BackLink>
       <OrganizationNotice org={org} />
       {query.paiement === "ok" ? <Notice tone="info">{t("notice.paid")}</Notice> : null}
       {query.paiement === "annule" ? <Notice tone="info">{t("notice.canceled")}</Notice> : null}
       {done ? <Notice tone="info">{t(`notice.${done}`)}</Notice> : null}
       {error ? <Notice tone="error">{t(`errors.${error}`)}</Notice> : null}
 
-      <header>
-        <div className="flex flex-wrap items-center gap-2">
-          <PostingStatusBadge status={status} />
+      <PageHeader title={offer.title} lead={t("views", { count: posting.viewCount })}>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <PostingStatusBadge status={shown} />
           {status === "LIVE" && posting.expiresAt ? (
-            <span className="text-ink-muted text-sm">
+            <span className="text-ink-muted">
               {t("liveUntil", { date: format.dateTime(posting.expiresAt, "short") })}
             </span>
           ) : null}
         </div>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight break-words">{offer.title}</h1>
-        <p className="text-ink-subtle mt-1 text-sm">{t("views", { count: posting.viewCount })}</p>
-      </header>
+        <PostingProgress status={shown} />
+      </PageHeader>
 
-      <section className={sectionClass} aria-label={t(`help.${status}`)}>
-        <p className="text-ink-muted">{t(`help.${status}`)}</p>
+      <Card
+        tone={status === "LIVE" ? "brand" : "default"}
+        aria-label={t(`help.${status}`)}
+        className="mb-8"
+      >
+        <p className="text-lg text-pretty">{t(`help.${status}`)}</p>
         {status === "IN_REVIEW" && org.status === "PENDING" ? (
-          <p className="text-warning-ink mt-2 text-sm">{t("reviewPendingOrg")}</p>
+          <p className="text-warning-ink mt-2">{t("reviewPendingOrg")}</p>
         ) : null}
         {posting.flags.length > 0 && (status === "IN_REVIEW" || status === "AWAITING_PAYMENT") ? (
-          <p className="text-warning-ink mt-2 text-sm">{t("flagged")}</p>
+          <p className="text-warning-ink mt-2">{t("flagged")}</p>
         ) : null}
         {status === "REJECTED" && posting.reviewNote ? (
-          <p className="bg-muted text-ink-muted mt-2 rounded-lg px-3 py-2 text-sm">
+          <p className="border-danger-line bg-danger-soft text-danger-ink mt-3 rounded-xl border px-4 py-3">
             {t("rejectedReason", { reason: posting.reviewNote })}
           </p>
         ) : null}
         {payable ? (
-          <p className="text-ink-muted mt-3 text-sm">{t("price", { days, price: priceLabel })}</p>
+          <p className="text-ink-muted mt-3">{t("price", { days, price: priceLabel })}</p>
         ) : null}
 
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           {status === "DRAFT" ? (
             <form action={submitPostingAction.bind(null, posting.id)}>
-              <RedirectButton label={t("actions.submit")} pendingLabel="…" primary />
+              <PendingButton label={t("actions.submit")} variant="primary" />
             </form>
           ) : null}
           {payable ? (
             <form action={payPostingAction.bind(null, posting.id)}>
-              <RedirectButton
+              <PendingButton
                 label={status === "LIVE" ? t("actions.extend", { days }) : t("actions.pay")}
-                pendingLabel="…"
-                primary={status !== "LIVE"}
+                variant={status === "LIVE" ? "secondary" : "primary"}
               />
             </form>
           ) : null}
           {payable && status !== "LIVE" && isAdminEmail(user.email) ? (
             <form action={adminPublishAction.bind(null, posting.id)}>
-              <RedirectButton label={t("actions.adminFree")} pendingLabel="…" />
+              <PendingButton label={t("actions.adminFree")} />
             </form>
           ) : null}
           {status === "CLOSED" && org.status !== "SUSPENDED" ? (
             <form action={renewPostingAction.bind(null, posting.id)}>
-              <RedirectButton label={t("actions.renew")} pendingLabel="…" primary />
+              <PendingButton label={t("actions.renew")} variant="primary" />
             </form>
           ) : null}
           {status === "LIVE" ? (
             <form action={closePostingAction.bind(null, posting.id)}>
-              <button type="submit" className={secondary}>
+              <button
+                type="submit"
+                className={`${buttonClass("secondary", "lg")} w-full sm:w-auto`}
+              >
                 {t("actions.close")}
               </button>
             </form>
@@ -162,11 +171,11 @@ export default async function PostingPage({ params, searchParams }: Props) {
           ) : null}
         </div>
         {payable && billingMode() === "simulator" ? (
-          <div className="mt-4">
+          <div className="mt-5">
             <TestModeBadge />
           </div>
         ) : null}
-      </section>
+      </Card>
 
       {isEditable(status) ? (
         <PostingForm
@@ -176,9 +185,9 @@ export default async function PostingPage({ params, searchParams }: Props) {
           countryNames={countryNames(locale)}
         />
       ) : (
-        <section className={sectionClass}>
-          <p className="text-ink-muted text-sm whitespace-pre-line">{offer.description}</p>
-        </section>
+        <Card>
+          <p className="text-ink-muted max-w-[70ch] whitespace-pre-line">{offer.description}</p>
+        </Card>
       )}
     </div>
   );

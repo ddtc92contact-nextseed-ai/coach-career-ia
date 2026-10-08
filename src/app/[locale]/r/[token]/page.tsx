@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { Logo } from "@/components/logo";
+import { Icon } from "@/components/icons";
 import { ProfileCardView } from "@/components/profile-card";
+import { PublicFrame } from "@/components/public-frame";
 import { RevealedIdentityView } from "@/components/revealed-identity";
 import { revealedCvPath } from "@/lib/handover/config";
 import { resolveHandover } from "@/lib/handover/repository";
@@ -32,35 +32,32 @@ export default async function RevealedProfilePage({ params }: Props) {
   const [t, format] = await Promise.all([getTranslations("revealedPage"), getFormatter()]);
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 py-8 sm:py-12">
-      <div className="mb-8 flex items-center justify-between gap-3">
-        <Logo />
-        <LocaleSwitcher />
-      </div>
-      <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="text-ink-muted mt-1 text-sm break-words">
-        {t("context", { title: profile.offerTitle })}
+    <PublicFrame
+      title={t("title")}
+      lead={<span className="break-words">{t("context", { title: profile.offerTitle })}</span>}
+      notice={`${t("expires", { date: format.dateTime(profile.expiresAt, "short") })} ${t("notice")}`}
+    >
+      <p className="border-brand-line bg-brand-soft text-brand-ink flex items-start gap-3 rounded-2xl border px-5 py-4">
+        <Icon name="unlock" className="mt-0.5 size-5 shrink-0" />
+        <span>{t("disclosure")}</span>
       </p>
-      <p className="bg-brand-soft text-brand-ink mt-4 rounded-lg px-3 py-2 text-sm">
-        {t("disclosure")}
-      </p>
-      <section className="mt-6" aria-labelledby="identite">
-        <h2 id="identite" className="mb-3 text-lg font-semibold">
+      <section className="mt-8" aria-labelledby="identite">
+        <h2
+          id="identite"
+          className="font-display mb-4 text-xl font-bold tracking-tight sm:text-2xl"
+        >
           {t("identity")}
         </h2>
         <RevealedIdentityView identity={profile.identity} cvHref={revealedCvPath(token)} />
       </section>
       {profile.card ? (
-        <section className="mt-8" aria-labelledby="carte">
-          <h2 id="carte" className="mb-3 text-lg font-semibold">
+        <section className="mt-10" aria-labelledby="carte">
+          <h2 id="carte" className="font-display mb-4 text-xl font-bold tracking-tight sm:text-2xl">
             {t("card")}
           </h2>
           <ProfileCardView card={profile.card} />
         </section>
       ) : null}
-      <p className="text-ink-subtle mt-6 text-xs">
-        {t("expires", { date: format.dateTime(profile.expiresAt, "short") })} {t("notice")}
-      </p>
-    </main>
+    </PublicFrame>
   );
 }
