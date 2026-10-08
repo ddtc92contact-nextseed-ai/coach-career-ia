@@ -35,7 +35,7 @@ export default function HomePage() {
           <p className="mt-6 max-w-2xl text-lg text-pretty text-stone-600">{t("intro")}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/connexion"
+              href="/inscription"
               className="rounded-lg bg-stone-900 px-5 py-3 text-center font-medium text-white hover:bg-stone-700"
             >
               {t("ctaPrimary")}
@@ -106,7 +106,7 @@ export default function HomePage() {
             <h2 className="text-2xl font-semibold tracking-tight">{t("closingTitle")}</h2>
             <p className="mt-3 max-w-2xl text-stone-300">{t("closingText")}</p>
             <Link
-              href="/connexion"
+              href="/inscription"
               className="mt-6 inline-block rounded-lg bg-white px-5 py-3 font-medium text-stone-900 hover:bg-stone-200"
             >
               {t("closingCta")}

@@ -73,7 +73,7 @@
     "login": {
       "metaTitle": "Inloggen",
       "title": "Inloggen op uw omgeving",
-      "intro": "Geen wachtwoord: vul uw e-mailadres in en wij sturen u een eenmalige inloglink. Heeft u nog geen omgeving, dan wordt die bij de eerste keer inloggen aangemaakt.",
+      "intro": "Log in met uw e-mailadres en wachtwoord.",
       "emailLabel": "E-mailadres",
       "emailPlaceholder": "u@voorbeeld.nl",
       "submit": "Stuur mij een inloglink",
@@ -82,7 +82,9 @@
       "errors": {
         "invalidEmail": "Vul een geldig e-mailadres in.",
         "sendFailed": "De link kan op dit moment niet worden verzonden. Probeer het over enkele ogenblikken opnieuw."
-      }
+      },
+      "magicToggle": "Liever een inloglink per e-mail ontvangen",
+      "magicIntro": "Zonder wachtwoord: wij sturen u een eenmalige inloglink, 15 minuten geldig. Heeft u nog geen omgeving, dan wordt die bij de eerste keer inloggen aangemaakt."
     },
     "verify": {
       "title": "Controleer uw mailbox",
@@ -97,6 +99,120 @@
         "Configuration": "De inlogdienst is tijdelijk niet beschikbaar. Probeer het over enkele ogenblikken opnieuw.",
         "AccessDenied": "De toegang is geweigerd.",
         "Default": "Er is een fout opgetreden tijdens het inloggen. Probeer het opnieuw."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Wachtwoord",
+      "remember": "Ingelogd blijven (30 dagen)",
+      "submit": "Inloggen",
+      "submitting": "Bezig met inloggen… (enkele seconden)",
+      "forgot": "Wachtwoord vergeten?",
+      "noAccount": "Nog geen account?",
+      "signup": "Account aanmaken",
+      "verified": "E-mailadres bevestigd. U kunt nu inloggen.",
+      "passwordReset": "Wachtwoord gewijzigd. Log in met uw nieuwe wachtwoord.",
+      "errors": {
+        "invalidEmail": "Vul een geldig e-mailadres in.",
+        "passwordRequired": "Vul uw wachtwoord in.",
+        "invalidCredentials": "Onjuist e-mailadres of wachtwoord. Logde u tot nu toe in met een e-maillink? Stel een wachtwoord in via ‘Wachtwoord vergeten?’, of ontvang hieronder een inloglink.",
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "network": "Geen verbinding met de server. Controleer uw netwerk en probeer het opnieuw.",
+        "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+      }
+    },
+    "passwordField": {
+      "show": "Tonen",
+      "hide": "Verbergen",
+      "showLabel": "Wachtwoord tonen",
+      "hideLabel": "Wachtwoord verbergen",
+      "hint": "Minstens {min} tekens. Een zin van meerdere woorden is makkelijk te onthouden en moeilijk te raden.",
+      "strength": "Sterkte: {level}",
+      "levels": {
+        "tooShort": "te kort",
+        "weak": "zwak",
+        "fair": "redelijk",
+        "good": "goed",
+        "strong": "uitstekend"
+      },
+      "tooShort": "Het wachtwoord moet minstens {min} tekens bevatten."
+    },
+    "signup": {
+      "metaTitle": "Account aanmaken",
+      "title": "Maak uw account aan",
+      "intro": "Een e-mailadres en een wachtwoord volstaan. We sturen u een link om uw adres te bevestigen.",
+      "emailLabel": "E-mailadres",
+      "passwordLabel": "Wachtwoord",
+      "vaultNote": "Dit wachtwoord beschermt ook uw identiteitskluis, versleuteld in uw browser: wij ontvangen het nooit en kunnen het niet voor u terughalen.",
+      "acceptTerms": "Ik ga akkoord met de <terms>gebruiksvoorwaarden</terms> en het <privacy>privacybeleid</privacy>.",
+      "submit": "Mijn account aanmaken",
+      "submitting": "Account wordt aangemaakt… (enkele seconden)",
+      "haveAccount": "Al een account?",
+      "login": "Inloggen",
+      "errors": {
+        "invalidEmail": "Vul een geldig e-mailadres in.",
+        "terms": "Ga akkoord met de gebruiksvoorwaarden en het privacybeleid om verder te gaan.",
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "network": "Geen verbinding met de server. Controleer uw netwerk en probeer het opnieuw.",
+        "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+      }
+    },
+    "checkInbox": {
+      "title": "Bevestig uw e-mailadres",
+      "text": "We hebben een e-mail gestuurd naar {email}. Klik op de link erin om uw adres te bevestigen (24 uur geldig) en log daarna in. Had dit adres al een account, dan legt de e-mail uit hoe u inlogt.",
+      "unverified": "Uw e-mailadres is nog niet bevestigd. Klik op de link die naar {email} is gestuurd en log daarna opnieuw in.",
+      "help": "Niets ontvangen? Controleer uw spammap of stuur de link opnieuw.",
+      "resend": "Link opnieuw sturen",
+      "resending": "Bezig met verzenden…",
+      "resent": "Als er voor dit adres een onbevestigd account bestaat, is er zojuist een nieuwe link verstuurd.",
+      "back": "Terug naar inloggen",
+      "errors": {
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "generic": "De link kan nu niet worden verstuurd. Probeer het over enkele ogenblikken opnieuw."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Bevestiging van het e-mailadres",
+      "successTitle": "E-mailadres bevestigd",
+      "successText": "Uw account is geactiveerd. Log in met uw e-mailadres en wachtwoord.",
+      "login": "Inloggen",
+      "failedTitle": "Ongeldige of verlopen link",
+      "failedText": "Deze bevestigingslink is verlopen of al gebruikt. Log in: is uw adres nog niet bevestigd, dan kunt u een nieuwe link aanvragen."
+    },
+    "vaultAfterReset": {
+      "title": "Goed om te weten voordat u uw wachtwoord opnieuw instelt:",
+      "text": "uw identiteitskluis is versleuteld met uw huidige wachtwoord, dat wij niet kennen. Na het opnieuw instellen kan de kluis alleen nog met uw herstelsleutel worden geopend. Zonder die sleutel moet u uw identiteit opnieuw invoeren (naam, contactgegevens, werkgevers, opleidingen, links, originele cv). Uw carrièregeheugen, uw contacten en al het andere blijven bewaard."
+    },
+    "forgot": {
+      "metaTitle": "Wachtwoord vergeten",
+      "title": "Wachtwoord vergeten",
+      "intro": "Vul het e-mailadres van uw account in: we sturen u een link om een nieuw wachtwoord te kiezen (30 minuten geldig). Daarmee kunt u ook een wachtwoord instellen als u tot nu toe inlogde met een e-maillink.",
+      "emailLabel": "E-mailadres",
+      "submit": "Link ontvangen",
+      "submitting": "Bezig met verzenden…",
+      "sent": "Als er voor dit adres een account bestaat, is er zojuist een link verstuurd. Die is 30 minuten geldig en werkt maar één keer.",
+      "back": "Terug naar inloggen",
+      "errors": {
+        "invalidEmail": "Vul een geldig e-mailadres in.",
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "network": "Geen verbinding met de server. Controleer uw netwerk en probeer het opnieuw.",
+        "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+      }
+    },
+    "reset": {
+      "metaTitle": "Nieuw wachtwoord",
+      "title": "Een nieuw wachtwoord kiezen",
+      "intro": "Met dit wachtwoord logt u in en opent u uw identiteitskluis.",
+      "passwordLabel": "Nieuw wachtwoord",
+      "submit": "Wachtwoord opslaan",
+      "submitting": "Bezig met opslaan… (enkele seconden)",
+      "invalidTitle": "Ongeldige of verlopen link",
+      "invalidText": "Deze herstellink is verlopen (hij is 30 minuten geldig) of al gebruikt.",
+      "requestNew": "Een nieuwe link aanvragen",
+      "errors": {
+        "invalidToken": "Deze link is verlopen of al gebruikt. Vraag een nieuwe aan.",
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "network": "Geen verbinding met de server. Controleer uw netwerk en probeer het opnieuw.",
+        "generic": "Er is een fout opgetreden. Probeer het opnieuw."
       }
     }
   },
@@ -227,6 +343,29 @@
       "portalMessage": {
         "subject": "Nieuw bericht van de kandidaat voor {title}",
         "body": "De kandidaat die u benaderde over uw vacature ‘{title}’ heeft u een nieuw bericht gestuurd. Het wacht op u in de inbox van uw bedrijfsomgeving."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Goedendag,",
+      "verifyEmail": {
+        "subject": "Bevestig uw e-mailadres",
+        "intro": "Bevestig uw e-mailadres met deze link om uw account op {host} te activeren (24 uur geldig):",
+        "button": "Mijn adres bevestigen",
+        "ignore": "Heeft u geen account aangemaakt, negeer dit bericht dan: er wordt geen account geactiveerd."
+      },
+      "resetPassword": {
+        "subject": "Uw wachtwoord opnieuw instellen",
+        "intro": "Gebruik deze link om een nieuw wachtwoord te kiezen op {host} (30 minuten geldig, eenmalig):",
+        "button": "Een nieuw wachtwoord kiezen",
+        "ignore": "Heeft u dit niet aangevraagd, negeer dit bericht dan: uw wachtwoord blijft ongewijzigd."
+      },
+      "accountExists": {
+        "subject": "Er bestaat al een account met dit adres",
+        "intro": "Iemand (waarschijnlijk u) probeerde op {host} een account aan te maken met dit adres, dat er al een heeft. Om in te loggen:",
+        "button": "Inloggen",
+        "extraText": "Wachtwoord vergeten, of logde u in met een e-maillink? Kies hier een wachtwoord: {url}",
+        "ignore": "Heeft u dit niet aangevraagd, negeer dit bericht dan: er is niets gewijzigd."
       }
     }
   },
@@ -601,20 +740,10 @@
       "title": "Niemand, zelfs wij niet, kan deze gegevens lezen",
       "encrypted": "Je naam, contactgegevens, werkgevers, opleidingen, links en originele cv worden in je browser versleuteld voordat er iets wordt verzonden. Onze servers ontvangen en bewaren alleen een onleesbaar blok.",
       "nobody": "Ons team, onze hostingpartij of iemand die onze database steelt: niemand kan ze ontsleutelen. De sleutel bestaat alleen bij jou.",
-      "you": "Alleen jij ontgrendelt ze, met je wachtzin. Die wordt nooit door onze diensten ontvangen of opgeslagen.",
+      "you": "Alleen jij ontgrendelt ze, met het wachtwoord van je account. Dat wordt nooit door onze diensten ontvangen of opgeslagen: voor het inloggen dient alleen een vingerafdruk die de kluis niet kan openen.",
       "handover": "Je identiteit wordt alleen aan een recruiter onthuld als jij dat beslist, voor die specifieke recruiter.",
       "lossTitle": "Belangrijk gevolg:",
-      "loss": "als je zowel je wachtzin als je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. Wij kunnen ze niet voor je terughalen. Je professionele profiel blijft ongemoeid."
-    },
-    "setup": {
-      "title": "Mijn identiteitskluis aanmaken",
-      "intro": "Kies een eigen wachtzin voor deze kluis, anders dan je andere wachtwoorden. Een reeks van meerdere woorden is makkelijk te onthouden en moeilijk te raden.",
-      "passphrase": "Wachtzin",
-      "passphraseHint": "Minstens {min} tekens.",
-      "confirm": "Bevestig de wachtzin",
-      "understand": "Ik begrijp dat niemand mijn identiteit kan herstellen als ik mijn wachtzin en herstelsleutel kwijtraak.",
-      "submit": "Mijn kluis aanmaken",
-      "working": "Kluis wordt aangemaakt… (enkele seconden)"
+      "loss": "als je je wachtwoord vergeet en je herstelsleutel kwijtraakt, zijn deze gegevens definitief verloren. We kunnen ze niet voor je terughalen. Je professionele profiel blijft daarbuiten."
     },
     "recovery": {
       "title": "Je herstelsleutel",
@@ -726,9 +855,54 @@
       "network": "Server niet bereikbaar. Controleer je verbinding en probeer het opnieuw.",
       "cvTooLarge": "Bestand te groot.",
       "cvType": "Formaat niet ondersteund: alleen PDF, Word of OpenDocument.",
-      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+      "generic": "Er is iets misgegaan. Probeer het opnieuw.",
+      "wrongPassword": "Onjuist wachtwoord."
     },
-    "exportNotice": "Gegevens versleuteld in je browser: alleen je wachtwoordzin of je herstelsleutel kan ze lezen."
+    "exportNotice": "Gegevens versleuteld in je browser: alleen je wachtwoordzin of je herstelsleutel kan ze lezen.",
+    "accountSetup": {
+      "title": "Mijn identiteitskluis aanmaken",
+      "intro": "Je kluis is beschermd met het wachtwoord van je account: geen extra wachtzin. Je krijgt een herstelsleutel: alleen daarmee kun je de kluis weer openen als je je wachtwoord per e-mail opnieuw instelt.",
+      "password": "Wachtwoord van je account",
+      "understand": "Ik begrijp dat niemand mijn identiteit kan terughalen als ik mijn wachtwoord vergeet en mijn herstelsleutel kwijtraak.",
+      "submit": "Mijn kluis aanmaken",
+      "working": "Kluis wordt aangemaakt… (enkele seconden)"
+    },
+    "noPassword": {
+      "title": "Stel eerst een wachtwoord in",
+      "text": "Je identiteitskluis is beschermd met het wachtwoord van je account. Je logt nu in met een e-maillink: stel een wachtwoord in bij de instellingen en kom daarna hier terug.",
+      "link": "Een wachtwoord instellen"
+    },
+    "passwordTip": "Stel bij de instellingen een accountwachtwoord in: het vervangt de wachtzin van deze kluis en je hebt nog maar één wachtwoord nodig.",
+    "passwordTipLink": "Een wachtwoord instellen",
+    "accountUnlock": {
+      "title": "Mijn identiteit ontgrendelen",
+      "intro": "Je kluis is vergrendeld. Vul het wachtwoord van je account in: het ontsleutelen gebeurt in deze browser.",
+      "password": "Wachtwoord",
+      "submit": "Ontgrendelen",
+      "working": "Bezig met ontgrendelen… (enkele seconden)",
+      "forgot": "Wachtwoord vergeten?"
+    },
+    "legacy": {
+      "title": "Eén wachtwoord voor je kluis",
+      "intro": "Je kluis is nog beschermd met de oude wachtzin. Vul die nog één keer in: daarna opent de kluis met het wachtwoord van je account, zonder iets anders te onthouden. Je herstelsleutel blijft geldig.",
+      "passphrase": "Oude wachtzin van de kluis",
+      "recoveryKey": "Herstelsleutel",
+      "useRecovery": "Wachtzin vergeten? Mijn herstelsleutel gebruiken",
+      "usePassphrase": "De oude wachtzin gebruiken",
+      "password": "Wachtwoord van je account",
+      "submit": "Mijn kluis aan mijn wachtwoord koppelen",
+      "working": "Kluis wordt bijgewerkt… (enkele seconden)"
+    },
+    "stale": {
+      "title": "Je wachtwoord is opnieuw ingesteld",
+      "intro": "Je identiteitskluis was versleuteld met je oude wachtwoord, dat wij niet kennen. Vul je herstelsleutel in om de kluis weer te openen: daarna is hij beschermd met je nieuwe wachtwoord.",
+      "recoveryKey": "Herstelsleutel",
+      "password": "Wachtwoord van je account",
+      "submit": "Mijn kluis weer openen",
+      "working": "Bezig met openen… (enkele seconden)",
+      "noKeyTitle": "Geen herstelsleutel?",
+      "noKey": "Je versleutelde identiteit (naam, contactgegevens, werkgevers, opleidingen, links, originele cv) kan door niemand meer worden gelezen, ook niet door ons. Zet de kluis hieronder terug en vul je identiteit opnieuw in. Je carrièregeheugen, contacten, randvoorwaarden en al het andere blijven bewaard."
+    }
   },
   "guardRails": {
     "title": "Mijn randvoorwaarden",
@@ -962,6 +1136,25 @@
       "minScore": "Minimale score",
       "minScoreHint": "Alleen kansen met minstens deze score worden verstuurd.",
       "save": "Opslaan"
+    },
+    "password": {
+      "title": "Wachtwoord",
+      "introSet": "Je account heeft nog geen wachtwoord: je logt in met een e-maillink. Stel er een in om in te loggen met je adres en dit wachtwoord; het opent ook je identiteitskluis.",
+      "introChange": "Met dit wachtwoord log je in en open je je identiteitskluis. Als je het wijzigt, wordt de sleutel van de kluis in je browser opnieuw verpakt: je gegevens blijven leesbaar en je herstelsleutel blijft geldig. Je andere sessies worden uitgelogd.",
+      "current": "Huidig wachtwoord",
+      "next": "Nieuw wachtwoord",
+      "submitSet": "Mijn wachtwoord instellen",
+      "submitChange": "Mijn wachtwoord wijzigen",
+      "working": "Bezig met opslaan… (enkele seconden)",
+      "doneSet": "Wachtwoord ingesteld. Je kunt nu inloggen met je e-mailadres en dit wachtwoord.",
+      "doneChange": "Wachtwoord gewijzigd.",
+      "errors": {
+        "invalidCurrent": "Huidig wachtwoord onjuist.",
+        "vaultConflict": "Je identiteitskluis is intussen gewijzigd. Laad de pagina opnieuw en probeer het nog eens.",
+        "rateLimited": "Te veel pogingen. Probeer het over {minutes, plural, one {# minuut} other {# minuten}} opnieuw.",
+        "network": "Geen verbinding met de server. Controleer je netwerk en probeer het opnieuw.",
+        "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+      }
     }
   },
   "import": {
