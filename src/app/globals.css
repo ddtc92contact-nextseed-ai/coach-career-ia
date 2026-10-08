@@ -49,6 +49,7 @@
   --cc-danger-ink: oklch(0.46 0.16 25);
   --cc-danger-soft: oklch(0.965 0.018 25);
   --cc-danger-line: oklch(0.88 0.055 25);
+  --cc-warning: oklch(0.76 0.15 75);
   --cc-warning-ink: oklch(0.45 0.1 60);
   --cc-warning-soft: oklch(0.972 0.035 85);
   --cc-warning-line: oklch(0.87 0.09 80);
@@ -91,6 +92,7 @@
     --cc-danger-ink: oklch(0.82 0.11 25);
     --cc-danger-soft: oklch(0.27 0.06 25);
     --cc-danger-line: oklch(0.43 0.1 25);
+    --cc-warning: oklch(0.8 0.14 80);
     --cc-warning-ink: oklch(0.87 0.11 85);
     --cc-warning-soft: oklch(0.27 0.045 75);
     --cc-warning-line: oklch(0.46 0.08 75);
@@ -135,6 +137,7 @@
   --color-danger-ink: var(--cc-danger-ink);
   --color-danger-soft: var(--cc-danger-soft);
   --color-danger-line: var(--cc-danger-line);
+  --color-warning: var(--cc-warning);
   --color-warning-ink: var(--cc-warning-ink);
   --color-warning-soft: var(--cc-warning-soft);
   --color-warning-line: var(--cc-warning-line);

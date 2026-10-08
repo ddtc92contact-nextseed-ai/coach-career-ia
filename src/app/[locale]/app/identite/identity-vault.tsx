@@ -3,8 +3,11 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { inputClass } from "@/components/form";
+import { PasswordField } from "@/components/password-field";
 import { IDLE_CHOICES, useVault } from "@/components/vault/vault-provider";
 import { LockIcon } from "@/components/vault/vault-widgets";
+import { Link } from "@/i18n/navigation";
+import { AccountError } from "@/lib/auth/account-client";
 import { VaultConflictError, VaultHttpError } from "@/lib/vault/client";
 import { MIN_PASSPHRASE_LENGTH, VaultDecryptError, VaultParamsError } from "@/lib/vault/crypto";
 import {
@@ -21,6 +24,7 @@ type ErrorKey =
   | "understand"
   | "wrongPassphrase"
   | "wrongRecoveryKey"
+  | "wrongPassword"
   | "conflict"
   | "network"
   | "cvTooLarge"
@@ -37,6 +41,10 @@ const dangerButton =
 
 function errorKey(error: unknown, fallback: ErrorKey = "generic"): ErrorKey {
   if (error instanceof VaultDecryptError) return fallback;
+  // Mot de passe du compte refusé par le serveur avant d'envelopper le coffre.
+  if (error instanceof AccountError) {
+    return error.code === "invalidCurrent" ? "wrongPassword" : "generic";
+  }
   if (error instanceof VaultParamsError) return "generic";
   if (error instanceof VaultHttpError) return error.status === 409 ? "conflict" : "generic";
   if (error instanceof TypeError) return "network";
@@ -151,78 +159,7 @@ function Explainer() {
   );
 }
 
-// --- Création ---------------------------------------------------------------------------
-
-function SetupForm({ onCreated }: { onCreated: (recoveryKey: string) => void }) {
-  const t = useTranslations("identity.setup");
-  const { setup } = useVault();
-  const [passphrase, setPassphrase] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [understood, setUnderstood] = useState(false);
-  const [error, setError] = useState<ErrorKey | null>(null);
-  const [pending, setPending] = useState(false);
-  const checkboxId = useId();
-
-  return (
-    <section className={sectionClass} aria-labelledby="creer-coffre">
-      <h2 id="creer-coffre" className="text-lg font-semibold">
-        {t("title")}
-      </h2>
-      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
-      <LocalForm
-        onSubmit={async () => {
-          if (passphrase.length < MIN_PASSPHRASE_LENGTH) return setError("tooShort");
-          if (passphrase !== confirm) return setError("mismatch");
-          if (!understood) return setError("understand");
-          setError(null);
-          setPending(true);
-          try {
-            const recoveryKey = await setup(passphrase);
-            setPassphrase("");
-            setConfirm("");
-            onCreated(recoveryKey);
-          } catch (e) {
-            setError(errorKey(e));
-          } finally {
-            setPending(false);
-          }
-        }}
-      >
-        <Alert error={error} />
-        <TextInput
-          label={t("passphrase")}
-          hint={t("passphraseHint", { min: MIN_PASSPHRASE_LENGTH })}
-          type="password"
-          autoComplete="new-password"
-          value={passphrase}
-          onChange={setPassphrase}
-        />
-        <TextInput
-          label={t("confirm")}
-          type="password"
-          autoComplete="new-password"
-          value={confirm}
-          onChange={setConfirm}
-        />
-        <div className="flex items-start gap-2">
-          <input
-            id={checkboxId}
-            type="checkbox"
-            checked={understood}
-            onChange={(e) => setUnderstood(e.target.checked)}
-            className="mt-1 size-4 shrink-0"
-          />
-          <label htmlFor={checkboxId} className="text-ink-muted text-sm">
-            {t("understand")}
-          </label>
-        </div>
-        <button type="submit" disabled={pending} className={primaryButton}>
-          {pending ? t("working") : t("submit")}
-        </button>
-      </LocalForm>
-    </section>
-  );
-}
+// --- Clé de secours ------------------------------------------------------------------
 
 function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone: () => void }) {
   const t = useTranslations("identity.recovery");
@@ -437,6 +374,250 @@ function RecoverForm({ onBack }: { onBack: () => void }) {
         </div>
       </LocalForm>
     </section>
+  );
+}
+
+// --- Coffre lié au mot de passe du compte ------------------------------------------
+
+function AccountSetupForm({ onCreated }: { onCreated: (recoveryKey: string) => void }) {
+  const t = useTranslations("identity.accountSetup");
+  const { setup, hasAccountKey } = useVault();
+  const [password, setPassword] = useState("");
+  const [understood, setUnderstood] = useState(false);
+  const [error, setError] = useState<ErrorKey | null>(null);
+  const [pending, setPending] = useState(false);
+  const checkboxId = useId();
+
+  return (
+    <section className={sectionClass} aria-labelledby="creer-coffre">
+      <h2 id="creer-coffre" className="text-lg font-semibold">
+        {t("title")}
+      </h2>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
+      <LocalForm
+        onSubmit={async () => {
+          if (!understood) return setError("understand");
+          setError(null);
+          setPending(true);
+          try {
+            const recoveryKey = await setup(hasAccountKey ? undefined : password);
+            setPassword("");
+            onCreated(recoveryKey);
+          } catch (e) {
+            setError(errorKey(e, "wrongPassword"));
+          } finally {
+            setPending(false);
+          }
+        }}
+      >
+        <Alert error={error} />
+        {hasAccountKey ? null : (
+          <PasswordField
+            label={t("password")}
+            value={password}
+            onChange={setPassword}
+            autoComplete="current-password"
+          />
+        )}
+        <div className="flex items-start gap-2">
+          <input
+            id={checkboxId}
+            type="checkbox"
+            checked={understood}
+            onChange={(e) => setUnderstood(e.target.checked)}
+            className="mt-1 size-4 shrink-0"
+          />
+          <label htmlFor={checkboxId} className="text-ink-muted text-sm">
+            {t("understand")}
+          </label>
+        </div>
+        <button
+          type="submit"
+          disabled={pending || (!hasAccountKey && !password)}
+          className={primaryButton}
+        >
+          {pending ? t("working") : t("submit")}
+        </button>
+      </LocalForm>
+    </section>
+  );
+}
+
+function NoPasswordNotice() {
+  const t = useTranslations("identity.noPassword");
+  return (
+    <section className={sectionClass} aria-labelledby="sans-mot-de-passe">
+      <h2 id="sans-mot-de-passe" className="text-lg font-semibold">
+        {t("title")}
+      </h2>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("text")}</p>
+      <Link
+        href="/app/parametres#mot-de-passe"
+        className={`${primaryButton} inline-block text-center`}
+      >
+        {t("link")}
+      </Link>
+    </section>
+  );
+}
+
+function PasswordTip() {
+  const t = useTranslations("identity");
+  return (
+    <p className="border-brand-line bg-brand-soft text-brand-ink rounded-2xl border px-4 py-3 text-sm">
+      {t("passwordTip")}{" "}
+      <Link
+        href="/app/parametres#mot-de-passe"
+        className="font-medium underline underline-offset-4"
+      >
+        {t("passwordTipLink")}
+      </Link>
+    </p>
+  );
+}
+
+function AccountUnlockForm() {
+  const t = useTranslations("identity.accountUnlock");
+  const { unlockWithPassword } = useVault();
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<ErrorKey | null>(null);
+  const [pending, setPending] = useState(false);
+  return (
+    <section className={sectionClass} aria-labelledby="deverrouiller">
+      <h2 id="deverrouiller" className="flex items-center gap-2 text-lg font-semibold">
+        <LockIcon />
+        {t("title")}
+      </h2>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
+      <LocalForm
+        onSubmit={async () => {
+          setError(null);
+          setPending(true);
+          try {
+            await unlockWithPassword(password);
+            setPassword("");
+          } catch (e) {
+            setError(errorKey(e, "wrongPassword"));
+          } finally {
+            setPending(false);
+          }
+        }}
+      >
+        <Alert error={error} />
+        <PasswordField
+          label={t("password")}
+          value={password}
+          onChange={setPassword}
+          autoComplete="current-password"
+        />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <button type="submit" disabled={pending || !password} className={primaryButton}>
+            {pending ? t("working") : t("submit")}
+          </button>
+          <Link
+            href="/connexion/mot-de-passe-oublie"
+            className="text-ink-muted text-sm font-medium underline underline-offset-4"
+          >
+            {t("forgot")}
+          </Link>
+        </div>
+      </LocalForm>
+    </section>
+  );
+}
+
+/**
+ * Lie le coffre au mot de passe du compte : ancien coffre à phrase secrète
+ * (`legacy`, phrase ou clé de secours) ou mot de passe réinitialisé par
+ * e-mail (`stale`, clé de secours uniquement).
+ */
+function BindForm({ kind }: { kind: "legacy" | "stale" }) {
+  const t = useTranslations(`identity.${kind}`);
+  const { bindToAccount, hasAccountKey } = useVault();
+  const [useRecovery, setUseRecovery] = useState(kind === "stale");
+  const [secret, setSecret] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<ErrorKey | null>(null);
+  const [pending, setPending] = useState(false);
+
+  return (
+    <section className={sectionClass} aria-labelledby="relier-coffre">
+      <h2 id="relier-coffre" className="flex items-center gap-2 text-lg font-semibold">
+        <LockIcon />
+        {t("title")}
+      </h2>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
+      <LocalForm
+        onSubmit={async () => {
+          setError(null);
+          setPending(true);
+          try {
+            await bindToAccount(
+              useRecovery ? { recoveryKey: secret } : { passphrase: secret },
+              hasAccountKey ? undefined : password,
+            );
+            setSecret("");
+            setPassword("");
+          } catch (e) {
+            setError(errorKey(e, useRecovery ? "wrongRecoveryKey" : "wrongPassphrase"));
+          } finally {
+            setPending(false);
+          }
+        }}
+      >
+        <Alert error={error} />
+        {useRecovery ? (
+          <TextInput label={t("recoveryKey")} value={secret} onChange={setSecret} maxLength={80} />
+        ) : (
+          <TextInput
+            label={t("passphrase")}
+            type="password"
+            autoComplete="off"
+            value={secret}
+            onChange={setSecret}
+          />
+        )}
+        {hasAccountKey ? null : (
+          <PasswordField
+            label={t("password")}
+            value={password}
+            onChange={setPassword}
+            autoComplete="current-password"
+          />
+        )}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <button
+            type="submit"
+            disabled={pending || !secret || (!hasAccountKey && !password)}
+            className={primaryButton}
+          >
+            {pending ? t("working") : t("submit")}
+          </button>
+          {kind === "legacy" ? (
+            <button
+              type="button"
+              onClick={() => {
+                setUseRecovery((v) => !v);
+                setSecret("");
+                setError(null);
+              }}
+              className="text-ink-muted text-sm font-medium underline underline-offset-4"
+            >
+              {useRecovery ? t("usePassphrase") : t("useRecovery")}
+            </button>
+          ) : null}
+        </div>
+      </LocalForm>
+    </section>
+  );
+}
+
+function StaleNoKey() {
+  const t = useTranslations("identity.stale");
+  return (
+    <p className="border-warning-line bg-warning-soft text-warning-ink rounded-2xl border px-4 py-3 text-sm">
+      <strong className="font-semibold">{t("noKeyTitle")}</strong> {t("noKey")}
+    </p>
   );
 }
 
@@ -943,7 +1124,7 @@ function ResetSection() {
 
 export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOption[] }) {
   const t = useTranslations("identity");
-  const { status, reload } = useVault();
+  const { status, reload, hasPassword } = useVault();
   const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [recovering, setRecovering] = useState(false);
 
@@ -966,10 +1147,34 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
       </div>
     );
   } else if (status === "none") {
-    body = <SetupForm onCreated={setRecoveryKey} />;
-  } else if (status === "locked") {
+    body = hasPassword ? <AccountSetupForm onCreated={setRecoveryKey} /> : <NoPasswordNotice />;
+  } else if (status === "locked" && hasPassword) {
     body = (
       <>
+        <AccountUnlockForm />
+        <ResetSection />
+      </>
+    );
+  } else if (status === "legacy") {
+    body = (
+      <>
+        <BindForm kind="legacy" />
+        <ResetSection />
+      </>
+    );
+  } else if (status === "stale") {
+    body = (
+      <>
+        <BindForm kind="stale" />
+        <StaleNoKey />
+        <ResetSection />
+      </>
+    );
+  } else if (status === "locked") {
+    // Compte sans mot de passe (lien magique) : ancienne phrase secrète du coffre.
+    body = (
+      <>
+        <PasswordTip />
         {recovering ? (
           <RecoverForm onBack={() => setRecovering(false)} />
         ) : (
@@ -984,7 +1189,7 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
         <LockBar />
         <IdentityEditor experiences={experiences} />
         <CvSection />
-        <ChangePassphraseForm />
+        {hasPassword ? null : <ChangePassphraseForm />}
         <ResetSection />
       </>
     );

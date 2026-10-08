@@ -11,8 +11,8 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    // next-intl importe `next/server` sans extension (résolu par Next, pas par Node).
-    server: { deps: { inline: ["next-intl"] } },
+    // next-intl et next-auth importent `next/server` sans extension (résolu par Next, pas par Node).
+    server: { deps: { inline: ["next-intl", "next-auth"] } },
     include: ["tests/**/*.test.ts"],
     globalSetup: ["tests/global-setup.ts"],
     setupFiles: ["tests/setup/no-network.ts"],

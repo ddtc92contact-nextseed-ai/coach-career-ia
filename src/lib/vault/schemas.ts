@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { KDF_NAME, MAX_KDF_ITERATIONS, MIN_KDF_ITERATIONS, VAULT_VERSION } from "./crypto";
+import {
+  ACCOUNT_KDF_NAME,
+  KDF_NAME,
+  MAX_KDF_ITERATIONS,
+  MIN_KDF_ITERATIONS,
+  VAULT_VERSION,
+} from "./crypto";
 
 /**
  * Contrat de l'API du coffre (`/api/vault`) : uniquement des blobs opaques
@@ -28,17 +34,34 @@ export const MAX_IDENTITY_BYTES = 256 * 1024;
 /** CV de 5 Mo + en-tête (nom, type) + enveloppe. */
 export const MAX_CV_CIPHERTEXT_BYTES = 5 * 1024 * 1024 + 4 * 1024;
 
+const kdfIterations = z.number().int().min(MIN_KDF_ITERATIONS).max(MAX_KDF_ITERATIONS);
+const kdfSalt = z
+  .string()
+  .max(64)
+  .refine((v) => v.length % 4 === 0 && BASE64.test(v) && decodedLength(v) >= 16, "salt");
+
+/** `PBKDF2-SHA256` : ancienne phrase secrète ; `ACCOUNT-…` : mot de passe du compte. */
 export const kdfParams = z.object({
-  name: z.literal(KDF_NAME),
-  iterations: z.number().int().min(MIN_KDF_ITERATIONS).max(MAX_KDF_ITERATIONS),
-  salt: z
-    .string()
-    .max(64)
-    .refine((v) => v.length % 4 === 0 && BASE64.test(v) && decodedLength(v) >= 16, "salt"),
+  name: z.enum([KDF_NAME, ACCOUNT_KDF_NAME]),
+  iterations: kdfIterations,
+  salt: kdfSalt,
 });
 
+/** Paramètres de dérivation du mot de passe du compte (`users.kdf_*`). */
+export const accountKdfParams = z.object({
+  name: z.literal(KDF_NAME),
+  iterations: kdfIterations,
+  salt: kdfSalt,
+});
+
+/** Hash d'authentification dérivé du mot de passe dans le navigateur : 32 octets. */
+export const authHash = z
+  .string()
+  .length(44)
+  .refine((v) => BASE64.test(v) && decodedLength(v) === 32, "authHash");
+
 /** Clé AES-256 enveloppée : 1 + 12 + 32 + 16 octets. */
-const wrappedKey = envelope(61).refine((v) => decodedLength(v) === 61, "length");
+export const wrappedKey = envelope(61).refine((v) => decodedLength(v) === 61, "length");
 
 export const identityCiphertext = envelope(MAX_IDENTITY_BYTES);
 

@@ -17,11 +17,22 @@
  * Les données associées (AAD) lient chaque chiffré à son usage : une
  * enveloppe ne peut pas être substituée à une autre (identité ↔ CV ↔ clés).
  *
+ * Depuis la connexion par mot de passe (style Bitwarden), la clé de données
+ * peut aussi être enveloppée par une clé dérivée du mot de passe du compte
+ * (`ACCOUNT_KDF_NAME`) : la connexion ouvre alors le coffre directement. Voir
+ * « Compte » plus bas. L'ancienne phrase secrète propre au coffre reste lisible
+ * le temps de la migration.
+ *
  * Ce module est isomorphe (navigateur et Node ≥ 20) pour être testé tel quel.
  */
 
 export const VAULT_VERSION = 1;
 export const KDF_NAME = "PBKDF2-SHA256";
+/**
+ * Coffre enveloppé par la clé du compte : mêmes paramètres PBKDF2 que le mot
+ * de passe du compte (itérations, sel), puis HKDF (voir `deriveAccountKeys`).
+ */
+export const ACCOUNT_KDF_NAME = "ACCOUNT-PBKDF2-SHA256";
 /** Recommandation OWASP 2023 pour PBKDF2-HMAC-SHA256. */
 export const MIN_KDF_ITERATIONS = 600_000;
 export const DEFAULT_KDF_ITERATIONS = 600_000;
@@ -37,15 +48,22 @@ const HEADER_BYTES = 1 + IV_BYTES;
 /** Les tailles des chiffrés d'identité sont arrondies à ce multiple. */
 const PADDING_BLOCK = 256;
 
-export type Purpose = "identity" | "cv" | "wrap:passphrase" | "wrap:recovery";
+export type Purpose = "identity" | "cv" | "wrap:passphrase" | "wrap:recovery" | "wrap:account";
 
-export type KdfParams = { name: typeof KDF_NAME; iterations: number; salt: string };
+export type KdfParams = {
+  name: typeof KDF_NAME | typeof ACCOUNT_KDF_NAME;
+  iterations: number;
+  salt: string;
+};
 
 /** Ce que le serveur stocke : rien de lisible sans phrase secrète ni clé de secours. */
 export type VaultMaterial = {
   version: number;
   kdf: KdfParams;
-  /** Clé de données enveloppée par la clé dérivée de la phrase secrète (base64). */
+  /**
+   * Clé de données enveloppée par la clé dérivée de la phrase secrète, ou du
+   * mot de passe du compte si `kdf.name` vaut `ACCOUNT_KDF_NAME` (base64).
+   */
   passphraseWrappedKey: string;
   /** Clé de données enveloppée par la clé de secours (base64). */
   recoveryWrappedKey: string;
@@ -143,7 +161,7 @@ export function parseRecoveryKey(input: string): Uint8Array<ArrayBuffer> {
 
 function checkKdf(kdf: KdfParams): void {
   if (
-    kdf.name !== KDF_NAME ||
+    (kdf.name !== KDF_NAME && kdf.name !== ACCOUNT_KDF_NAME) ||
     !Number.isInteger(kdf.iterations) ||
     kdf.iterations < MIN_KDF_ITERATIONS ||
     kdf.iterations > MAX_KDF_ITERATIONS ||
@@ -273,12 +291,22 @@ function checkMaterial(material: VaultMaterial): void {
   checkKdf(material.kdf);
 }
 
+/** Coffre enveloppé par la clé du compte (et non par une phrase secrète propre). */
+export function isAccountVault(material: Pick<VaultMaterial, "kdf">): boolean {
+  return material.kdf.name === ACCOUNT_KDF_NAME;
+}
+
+function checkPassphraseMaterial(material: VaultMaterial): void {
+  checkMaterial(material);
+  if (isAccountVault(material)) throw new VaultParamsError("Coffre lié au compte");
+}
+
 /** Déverrouille avec la phrase secrète. Lève `VaultDecryptError` si elle est fausse. */
 export async function unlockWithPassphrase(
   material: VaultMaterial,
   passphrase: string,
 ): Promise<CryptoKey> {
-  checkMaterial(material);
+  checkPassphraseMaterial(material);
   const kek = await passphraseKey(passphrase, material.kdf);
   return unwrap(material.passphraseWrappedKey, kek, "wrap:passphrase", false);
 }
@@ -325,7 +353,7 @@ export async function changePassphrase(
   currentPassphrase: string,
   newPassphrase: string,
 ): Promise<VaultMaterial> {
-  checkMaterial(material);
+  checkPassphraseMaterial(material);
   const kek = await passphraseKey(currentPassphrase, material.kdf);
   const exportable = await unwrap(material.passphraseWrappedKey, kek, "wrap:passphrase", true);
   return rewrapWithPassphrase(
@@ -342,7 +370,7 @@ export async function resetPassphraseWithRecoveryKey(
   recoveryKey: string,
   newPassphrase: string,
 ): Promise<VaultMaterial> {
-  checkMaterial(material);
+  checkPassphraseMaterial(material);
   const bytes = parseRecoveryKey(recoveryKey);
   const kek = await recoveryWrappingKey(bytes);
   bytes.fill(0);
@@ -353,6 +381,168 @@ export async function resetPassphraseWithRecoveryKey(
     newPassphrase,
     Math.max(material.kdf.iterations, DEFAULT_KDF_ITERATIONS),
   );
+}
+
+// --- Compte : un seul mot de passe pour la connexion et le coffre ------------------
+
+/**
+ * Paramètres de dérivation du mot de passe du compte (ceux de l'utilisateur,
+ * stockés côté serveur et renvoyés avant la connexion).
+ */
+export type AccountKdf = { name: typeof KDF_NAME; iterations: number; salt: string };
+
+export type AccountKeys = {
+  /**
+   * Hash d'authentification (32 octets, base64) : seule valeur dérivée du mot
+   * de passe envoyée au serveur, qui n'en stocke qu'un hachage lent. Il ne
+   * permet pas de retrouver la clé du coffre (dérivation HKDF séparée).
+   */
+  authHash: string;
+  /** Clé AES-256-GCM non exportable qui enveloppe la clé de données du coffre. */
+  vaultKey: CryptoKey;
+};
+
+const ACCOUNT_HKDF_SALT = encoder.encode("ccia-account:v1");
+const AUTH_INFO = encoder.encode("ccia-account:v1:auth");
+const VAULT_INFO = encoder.encode("ccia-account:v1:vault-wrap");
+
+export function newAccountKdf(iterations = DEFAULT_KDF_ITERATIONS): AccountKdf {
+  return { name: KDF_NAME, iterations, salt: toBase64(randomBytes(SALT_BYTES)) };
+}
+
+/**
+ * Mot de passe → clé maîtresse (PBKDF2-SHA256) → deux sous-clés HKDF-SHA256
+ * indépendantes : le hash d'authentification et la clé d'enveloppe du coffre.
+ * Le mot de passe et la clé maîtresse ne sortent pas de cette fonction.
+ */
+export async function deriveAccountKeys(password: string, kdf: AccountKdf): Promise<AccountKeys> {
+  if (kdf.name !== KDF_NAME) throw new VaultParamsError();
+  checkKdf(kdf);
+  const base = await subtle().importKey(
+    "raw",
+    encoder.encode(password.normalize("NFC")),
+    "PBKDF2",
+    false,
+    ["deriveBits"],
+  );
+  const master = await subtle().deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: fromBase64(kdf.salt), iterations: kdf.iterations },
+    base,
+    KEY_BYTES * 8,
+  );
+  const hkdf = await subtle().importKey("raw", master, "HKDF", false, ["deriveBits", "deriveKey"]);
+  new Uint8Array(master).fill(0);
+  const auth = await subtle().deriveBits(
+    { name: "HKDF", hash: "SHA-256", salt: ACCOUNT_HKDF_SALT, info: AUTH_INFO },
+    hkdf,
+    KEY_BYTES * 8,
+  );
+  const vaultKey = await subtle().deriveKey(
+    { name: "HKDF", hash: "SHA-256", salt: ACCOUNT_HKDF_SALT, info: VAULT_INFO },
+    hkdf,
+    { name: "AES-GCM", length: 256 },
+    false,
+    ["wrapKey", "unwrapKey"],
+  );
+  return { authHash: toBase64(new Uint8Array(auth)), vaultKey };
+}
+
+/** Paramètres d'un coffre lié au compte : ceux du mot de passe. */
+function accountVaultKdf(kdf: AccountKdf): KdfParams {
+  return { name: ACCOUNT_KDF_NAME, iterations: kdf.iterations, salt: kdf.salt };
+}
+
+/**
+ * Le coffre est-il enveloppé par le mot de passe ACTUEL du compte ? Après une
+ * réinitialisation par e-mail, le sel du compte change : l'ancienne enveloppe
+ * ne s'ouvre plus qu'avec la clé de secours.
+ */
+export function matchesAccount(material: Pick<VaultMaterial, "kdf">, kdf: AccountKdf): boolean {
+  return (
+    isAccountVault(material) &&
+    material.kdf.salt === kdf.salt &&
+    material.kdf.iterations === kdf.iterations
+  );
+}
+
+/** Crée un coffre dont la clé est enveloppée par la clé du compte (et une clé de secours). */
+export async function createAccountVault(
+  accountVaultKey: CryptoKey,
+  kdf: AccountKdf,
+): Promise<VaultSetup> {
+  checkKdf(kdf);
+  const recoveryBytes = randomBytes(KEY_BYTES);
+  const exportable = await subtle().generateKey({ name: "AES-GCM", length: 256 }, true, [
+    "encrypt",
+    "decrypt",
+  ]);
+  const passphraseWrappedKey = await wrap(exportable, accountVaultKey, "wrap:account");
+  const recoveryKeyCrypto = await recoveryWrappingKey(recoveryBytes);
+  const recoveryWrappedKey = await wrap(exportable, recoveryKeyCrypto, "wrap:recovery");
+  const key = await unwrap(recoveryWrappedKey, recoveryKeyCrypto, "wrap:recovery", false);
+  const recoveryKey = formatRecoveryKey(recoveryBytes);
+  recoveryBytes.fill(0);
+  return {
+    material: {
+      version: VAULT_VERSION,
+      kdf: accountVaultKdf(kdf),
+      passphraseWrappedKey,
+      recoveryWrappedKey,
+    },
+    key,
+    recoveryKey,
+  };
+}
+
+/** Déverrouille un coffre lié au compte avec la clé dérivée du mot de passe. */
+export async function unlockWithAccountKey(
+  material: VaultMaterial,
+  accountVaultKey: CryptoKey,
+): Promise<CryptoKey> {
+  checkMaterial(material);
+  if (!isAccountVault(material)) throw new VaultParamsError("Coffre à phrase secrète");
+  return unwrap(material.passphraseWrappedKey, accountVaultKey, "wrap:account", false);
+}
+
+/** Ce qui permet d'ouvrir l'enveloppe actuelle avant de la remplacer. */
+export type VaultSecret =
+  { passphrase: string } | { recoveryKey: string } | { accountKey: CryptoKey };
+
+async function exportableDataKey(material: VaultMaterial, secret: VaultSecret) {
+  checkMaterial(material);
+  if ("recoveryKey" in secret) {
+    const bytes = parseRecoveryKey(secret.recoveryKey);
+    const kek = await recoveryWrappingKey(bytes);
+    bytes.fill(0);
+    return unwrap(material.recoveryWrappedKey, kek, "wrap:recovery", true);
+  }
+  if ("passphrase" in secret) {
+    if (isAccountVault(material)) throw new VaultParamsError("Coffre lié au compte");
+    const kek = await passphraseKey(secret.passphrase, material.kdf);
+    return unwrap(material.passphraseWrappedKey, kek, "wrap:passphrase", true);
+  }
+  if (!isAccountVault(material)) throw new VaultParamsError("Coffre à phrase secrète");
+  return unwrap(material.passphraseWrappedKey, secret.accountKey, "wrap:account", true);
+}
+
+/**
+ * Ré-enveloppe la clé de données avec la clé d'un mot de passe de compte :
+ * migration d'un ancien coffre (ancienne phrase ou clé de secours), changement
+ * de mot de passe (ancienne clé du compte) ou reprise après réinitialisation
+ * (clé de secours). La clé de données et les chiffrés ne changent pas ; la clé
+ * de secours reste valable.
+ */
+export async function rewrapForAccount(
+  material: VaultMaterial,
+  secret: VaultSecret,
+  accountVaultKey: CryptoKey,
+  kdf: AccountKdf,
+): Promise<{ material: VaultMaterial; key: CryptoKey }> {
+  checkKdf(kdf);
+  const exportable = await exportableDataKey(material, secret);
+  const passphraseWrappedKey = await wrap(exportable, accountVaultKey, "wrap:account");
+  const next: VaultMaterial = { ...material, kdf: accountVaultKdf(kdf), passphraseWrappedKey };
+  return { material: next, key: await unlockWithAccountKey(next, accountVaultKey) };
 }
 
 // --- Chiffrement des données -----------------------------------------------------

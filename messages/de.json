@@ -90,7 +90,7 @@
       "items": {
         "vault": {
           "title": "Zero-Knowledge-Tresor",
-          "text": "Name, Kontaktdaten und Arbeitgeber werden in Ihrem Browser verschlüsselt, mit einem Schlüssel aus Ihrer Passphrase. Unsere Server speichern nur unlesbare Daten."
+          "text": "Name, Kontaktdaten und Arbeitgeber werden in Ihrem Browser verschlüsselt, mit einem Schlüssel aus Ihrem Passwort. Unsere Server speichern nur unlesbare Daten."
         },
         "cards": {
           "title": "Anonyme Karten",
@@ -218,7 +218,7 @@
     "login": {
       "metaTitle": "Anmeldung",
       "title": "Anmeldung in Ihrem Bereich",
-      "intro": "Kein Passwort nötig: Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen einmalig gültigen Anmeldelink. Falls Sie noch keinen Bereich haben, wird er bei der ersten Anmeldung erstellt.",
+      "intro": "Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
       "emailLabel": "E-Mail-Adresse",
       "emailPlaceholder": "sie@beispiel.de",
       "submit": "Anmeldelink anfordern",
@@ -227,7 +227,9 @@
       "errors": {
         "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
         "sendFailed": "Der Link kann derzeit nicht gesendet werden. Bitte versuchen Sie es in Kürze erneut."
-      }
+      },
+      "magicToggle": "Stattdessen einen Anmeldelink per E-Mail erhalten",
+      "magicIntro": "Ohne Passwort: Wir senden Ihnen einen einmalig gültigen Anmeldelink, 15 Minuten gültig. Falls Sie noch keinen Bereich haben, wird er bei der ersten Anmeldung erstellt."
     },
     "verify": {
       "title": "Prüfen Sie Ihr Postfach",
@@ -242,6 +244,120 @@
         "Configuration": "Der Anmeldedienst ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
         "AccessDenied": "Der Zugriff wurde verweigert.",
         "Default": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Passwort",
+      "remember": "Angemeldet bleiben (30 Tage)",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung… (einige Sekunden)",
+      "forgot": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "signup": "Konto erstellen",
+      "verified": "E-Mail-Adresse bestätigt. Sie können sich jetzt anmelden.",
+      "passwordReset": "Passwort geändert. Melden Sie sich mit Ihrem neuen Passwort an.",
+      "errors": {
+        "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+        "passwordRequired": "Geben Sie Ihr Passwort ein.",
+        "invalidCredentials": "E-Mail-Adresse oder Passwort falsch. Haben Sie sich bisher per E-Mail-Link angemeldet? Legen Sie über „Passwort vergessen?“ ein Passwort fest oder fordern Sie unten einen Anmeldelink an.",
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+        "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      }
+    },
+    "passwordField": {
+      "show": "Anzeigen",
+      "hide": "Verbergen",
+      "showLabel": "Passwort anzeigen",
+      "hideLabel": "Passwort verbergen",
+      "hint": "Mindestens {min} Zeichen. Ein Satz aus mehreren Wörtern ist leicht zu merken und schwer zu erraten.",
+      "strength": "Stärke: {level}",
+      "levels": {
+        "tooShort": "zu kurz",
+        "weak": "schwach",
+        "fair": "mittel",
+        "good": "gut",
+        "strong": "sehr gut"
+      },
+      "tooShort": "Das Passwort muss mindestens {min} Zeichen lang sein."
+    },
+    "signup": {
+      "metaTitle": "Konto erstellen",
+      "title": "Ihr Konto erstellen",
+      "intro": "Eine E-Mail-Adresse und ein Passwort genügen. Wir senden Ihnen einen Link zur Bestätigung Ihrer Adresse.",
+      "emailLabel": "E-Mail-Adresse",
+      "passwordLabel": "Passwort",
+      "vaultNote": "Dieses Passwort schützt auch Ihren Identitätstresor, der in Ihrem Browser verschlüsselt wird: Wir erhalten es nie und können es nicht für Sie wiederherstellen.",
+      "acceptTerms": "Ich akzeptiere die <terms>Nutzungsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy>.",
+      "submit": "Mein Konto erstellen",
+      "submitting": "Konto wird erstellt… (einige Sekunden)",
+      "haveAccount": "Bereits ein Konto?",
+      "login": "Anmelden",
+      "errors": {
+        "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+        "terms": "Akzeptieren Sie die Nutzungsbedingungen und die Datenschutzerklärung, um fortzufahren.",
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+        "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      }
+    },
+    "checkInbox": {
+      "title": "Bestätigen Sie Ihre E-Mail-Adresse",
+      "text": "Wir haben eine E-Mail an {email} gesendet. Klicken Sie auf den darin enthaltenen Link, um Ihre Adresse zu bestätigen (24 Stunden gültig), und melden Sie sich dann an. Falls diese Adresse bereits ein Konto hatte, erklärt Ihnen die E-Mail, wie Sie sich anmelden.",
+      "unverified": "Ihre E-Mail-Adresse ist noch nicht bestätigt. Klicken Sie auf den an {email} gesendeten Link und melden Sie sich dann erneut an.",
+      "help": "Nichts erhalten? Prüfen Sie Ihren Spam-Ordner oder senden Sie den Link erneut.",
+      "resend": "Link erneut senden",
+      "resending": "Wird gesendet…",
+      "resent": "Falls für diese Adresse ein unbestätigtes Konto existiert, wurde soeben ein neuer Link gesendet.",
+      "back": "Zurück zur Anmeldung",
+      "errors": {
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "generic": "Der Link kann derzeit nicht gesendet werden. Bitte versuchen Sie es in Kürze erneut."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Bestätigung der E-Mail-Adresse",
+      "successTitle": "E-Mail-Adresse bestätigt",
+      "successText": "Ihr Konto ist aktiviert. Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
+      "login": "Anmelden",
+      "failedTitle": "Ungültiger oder abgelaufener Link",
+      "failedText": "Dieser Bestätigungslink ist abgelaufen oder wurde bereits verwendet. Melden Sie sich an: Ist Ihre Adresse noch nicht bestätigt, können Sie einen neuen Link anfordern."
+    },
+    "vaultAfterReset": {
+      "title": "Gut zu wissen, bevor Sie Ihr Passwort zurücksetzen:",
+      "text": "Ihr Identitätstresor ist mit Ihrem aktuellen Passwort verschlüsselt, das wir nicht kennen. Nach dem Zurücksetzen lässt er sich nur noch mit Ihrem Wiederherstellungsschlüssel öffnen. Ohne ihn müssen Sie Ihre Identität erneut eingeben (Name, Kontaktdaten, Arbeitgeber, Schulen, Links, Original-Lebenslauf). Ihr Karrieregedächtnis, Ihre Kontakte und alles andere bleiben erhalten."
+    },
+    "forgot": {
+      "metaTitle": "Passwort vergessen",
+      "title": "Passwort vergessen",
+      "intro": "Geben Sie die E-Mail-Adresse Ihres Kontos ein: Wir senden Ihnen einen Link, um ein neues Passwort festzulegen (30 Minuten gültig). Damit können Sie auch ein Passwort festlegen, wenn Sie sich bisher per E-Mail-Link angemeldet haben.",
+      "emailLabel": "E-Mail-Adresse",
+      "submit": "Link anfordern",
+      "submitting": "Wird gesendet…",
+      "sent": "Falls für diese Adresse ein Konto existiert, wurde soeben ein Link gesendet. Er ist 30 Minuten gültig und funktioniert nur ein einziges Mal.",
+      "back": "Zurück zur Anmeldung",
+      "errors": {
+        "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+        "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      }
+    },
+    "reset": {
+      "metaTitle": "Neues Passwort",
+      "title": "Neues Passwort festlegen",
+      "intro": "Mit diesem Passwort melden Sie sich an und öffnen Ihren Identitätstresor.",
+      "passwordLabel": "Neues Passwort",
+      "submit": "Passwort speichern",
+      "submitting": "Wird gespeichert… (einige Sekunden)",
+      "invalidTitle": "Ungültiger oder abgelaufener Link",
+      "invalidText": "Dieser Link zum Zurücksetzen ist abgelaufen (er ist 30 Minuten gültig) oder wurde bereits verwendet.",
+      "requestNew": "Neuen Link anfordern",
+      "errors": {
+        "invalidToken": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Fordern Sie einen neuen an.",
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+        "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
       }
     }
   },
@@ -372,6 +488,29 @@
       "portalMessage": {
         "subject": "Neue Nachricht der Person zu {title}",
         "body": "Die Person, die Sie zu Ihrem Angebot „{title}“ kontaktiert hat, hat Ihnen eine neue Nachricht gesendet. Sie wartet im Postfach Ihres Unternehmensbereichs."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Guten Tag,",
+      "verifyEmail": {
+        "subject": "Bestätigen Sie Ihre E-Mail-Adresse",
+        "intro": "Um Ihr Konto auf {host} zu aktivieren, bestätigen Sie Ihre E-Mail-Adresse mit diesem Link (24 Stunden gültig):",
+        "button": "Adresse bestätigen",
+        "ignore": "Falls Sie kein Konto erstellt haben, ignorieren Sie diese Nachricht: Es wird kein Konto aktiviert."
+      },
+      "resetPassword": {
+        "subject": "Zurücksetzen Ihres Passworts",
+        "intro": "Um auf {host} ein neues Passwort festzulegen, verwenden Sie diesen Link (30 Minuten gültig, nur einmal verwendbar):",
+        "button": "Neues Passwort festlegen",
+        "ignore": "Falls Sie dies nicht angefordert haben, ignorieren Sie diese Nachricht: Ihr Passwort bleibt unverändert."
+      },
+      "accountExists": {
+        "subject": "Mit dieser Adresse existiert bereits ein Konto",
+        "intro": "Jemand (wahrscheinlich Sie) wollte auf {host} ein Konto mit dieser Adresse erstellen, die bereits eines hat. So melden Sie sich an:",
+        "button": "Anmelden",
+        "extraText": "Passwort vergessen oder bisher per E-Mail-Link angemeldet? Legen Sie hier ein Passwort fest: {url}",
+        "ignore": "Falls Sie dies nicht angefordert haben, ignorieren Sie diese Nachricht: Es wurde nichts geändert."
       }
     }
   },
@@ -746,24 +885,14 @@
       "title": "Niemand, nicht einmal wir, kann diese Daten lesen",
       "encrypted": "Name, Kontaktdaten, Arbeitgeber, Schulen, Links und Original-Lebenslauf werden in Ihrem Browser verschlüsselt, bevor etwas gesendet wird. Unsere Server erhalten und speichern nur einen unlesbaren Block.",
       "nobody": "Weder unser Team noch unser Hoster noch jemand, der unsere Datenbank stiehlt, kann sie entschlüsseln: Der Schlüssel existiert nur bei Ihnen.",
-      "you": "Nur Sie entsperren sie, mit Ihrer Passphrase. Sie wird von unseren Diensten nie übertragen oder gespeichert.",
+      "you": "Nur Sie entsperren sie, mit dem Passwort Ihres Kontos. Es wird von unseren Diensten nie übertragen oder gespeichert: Für die Anmeldung dient nur ein Fingerabdruck, der den Tresor nicht öffnen kann.",
       "handover": "Ihre Identität wird einem Recruiter nur offengelegt, wenn Sie es für genau diesen Recruiter entscheiden.",
       "lossTitle": "Wichtige Folge:",
-      "loss": "Wenn Sie sowohl Ihre Passphrase als auch Ihren Wiederherstellungsschlüssel verlieren, sind diese Daten endgültig verloren. Wir können sie nicht für Sie wiederherstellen. Ihr Berufsprofil ist davon nicht betroffen."
-    },
-    "setup": {
-      "title": "Meinen Identitätstresor anlegen",
-      "intro": "Wählen Sie eine eigene Passphrase für diesen Tresor, die sich von Ihren anderen Passwörtern unterscheidet. Mehrere Wörter hintereinander sind leicht zu merken und schwer zu erraten.",
-      "passphrase": "Passphrase",
-      "passphraseHint": "Mindestens {min} Zeichen.",
-      "confirm": "Passphrase bestätigen",
-      "understand": "Mir ist klar: Wenn ich Passphrase und Wiederherstellungsschlüssel verliere, kann niemand meine Identität wiederherstellen.",
-      "submit": "Tresor anlegen",
-      "working": "Tresor wird angelegt… (einige Sekunden)"
+      "loss": "Wenn Sie Ihr Passwort vergessen und Ihren Wiederherstellungsschlüssel verlieren, sind diese Daten endgültig verloren. Wir können sie nicht für Sie wiederherstellen. Ihr berufliches Profil ist davon nicht betroffen."
     },
     "recovery": {
       "title": "Ihr Wiederherstellungsschlüssel",
-      "intro": "Damit öffnen Sie Ihren Tresor wieder, falls Sie Ihre Passphrase vergessen. Er wird nie wieder angezeigt.",
+      "intro": "Mit ihm öffnen Sie Ihren Tresor wieder, wenn Sie Ihr Passwort (oder Ihre alte Passphrase) vergessen. Er wird nie wieder angezeigt.",
       "warning": "Bewahren Sie ihn offline auf: ausgedruckt, in einem Passwort-Manager oder in einer sicher abgelegten Datei. Geben Sie ihn niemandem weiter.",
       "download": "Herunterladen (.txt)",
       "print": "Drucken",
@@ -856,7 +985,7 @@
     },
     "reset": {
       "title": "Tresor zurücksetzen",
-      "intro": "Löscht Ihre verschlüsselte Identität und Ihren Original-Lebenslauf endgültig. Nützlich, wenn Sie Passphrase und Wiederherstellungsschlüssel verloren haben: Danach können Sie einen neuen Tresor anlegen. Ihr Karrieregedächtnis bleibt unberührt.",
+      "intro": "Löscht Ihre verschlüsselte Identität und Ihren Original-Lebenslauf endgültig. Nützlich, wenn Sie den Tresor nicht mehr öffnen können (Passwort zurückgesetzt oder Passphrase vergessen, ohne Wiederherstellungsschlüssel): Sie können danach einen neuen Tresor erstellen. Ihr Karrieregedächtnis bleibt unberührt.",
       "button": "Meinen Tresor löschen",
       "confirm": "Identitätstresor und Lebenslauf endgültig löschen? Dies kann nicht rückgängig gemacht werden.",
       "working": "Wird gelöscht…"
@@ -871,9 +1000,54 @@
       "network": "Server nicht erreichbar. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
       "cvTooLarge": "Datei zu groß.",
       "cvType": "Format nicht unterstützt: nur PDF, Word oder OpenDocument.",
-      "generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen."
+      "generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen.",
+      "wrongPassword": "Falsches Passwort."
     },
-    "exportNotice": "In Ihrem Browser verschlüsselte Daten: Nur Ihre Passphrase oder Ihr Wiederherstellungsschlüssel können sie lesen."
+    "exportNotice": "In Ihrem Browser verschlüsselte Daten: Nur Ihre Passphrase oder Ihr Wiederherstellungsschlüssel können sie lesen.",
+    "accountSetup": {
+      "title": "Meinen Identitätstresor erstellen",
+      "intro": "Ihr Tresor ist durch das Passwort Ihres Kontos geschützt: keine zusätzliche Passphrase. Sie erhalten einen Wiederherstellungsschlüssel: Nur mit ihm lässt sich der Tresor wieder öffnen, wenn Sie Ihr Passwort per E-Mail zurücksetzen.",
+      "password": "Passwort des Kontos",
+      "understand": "Mir ist klar, dass niemand meine Identität wiederherstellen kann, wenn ich mein Passwort vergesse und meinen Wiederherstellungsschlüssel verliere.",
+      "submit": "Tresor erstellen",
+      "working": "Tresor wird erstellt… (einige Sekunden)"
+    },
+    "noPassword": {
+      "title": "Legen Sie zuerst ein Passwort fest",
+      "text": "Ihr Identitätstresor ist durch das Passwort Ihres Kontos geschützt. Sie melden sich derzeit per E-Mail-Link an: Legen Sie in den Einstellungen ein Passwort fest und kehren Sie dann hierher zurück.",
+      "link": "Passwort festlegen"
+    },
+    "passwordTip": "Legen Sie in den Einstellungen ein Kontopasswort fest: Es ersetzt die Passphrase dieses Tresors, und ein einziges Passwort genügt.",
+    "passwordTipLink": "Passwort festlegen",
+    "accountUnlock": {
+      "title": "Meine Identität entsperren",
+      "intro": "Ihr Tresor ist gesperrt. Geben Sie das Passwort Ihres Kontos ein: Die Entschlüsselung erfolgt in diesem Browser.",
+      "password": "Passwort",
+      "submit": "Entsperren",
+      "working": "Wird entsperrt… (einige Sekunden)",
+      "forgot": "Passwort vergessen?"
+    },
+    "legacy": {
+      "title": "Ein einziges Passwort für Ihren Tresor",
+      "intro": "Ihr Tresor ist noch durch seine alte Passphrase geschützt. Geben Sie sie ein letztes Mal ein: Danach öffnet er sich mit dem Passwort Ihres Kontos, ohne dass Sie sich etwas anderes merken müssen. Ihr Wiederherstellungsschlüssel bleibt gültig.",
+      "passphrase": "Alte Passphrase des Tresors",
+      "recoveryKey": "Wiederherstellungsschlüssel",
+      "useRecovery": "Passphrase vergessen? Wiederherstellungsschlüssel verwenden",
+      "usePassphrase": "Alte Passphrase verwenden",
+      "password": "Passwort des Kontos",
+      "submit": "Tresor mit meinem Passwort verknüpfen",
+      "working": "Tresor wird aktualisiert… (einige Sekunden)"
+    },
+    "stale": {
+      "title": "Ihr Passwort wurde zurückgesetzt",
+      "intro": "Ihr Identitätstresor war mit Ihrem alten Passwort verschlüsselt, das wir nicht kennen. Geben Sie Ihren Wiederherstellungsschlüssel ein, um ihn wieder zu öffnen: Danach ist er durch Ihr neues Passwort geschützt.",
+      "recoveryKey": "Wiederherstellungsschlüssel",
+      "password": "Passwort des Kontos",
+      "submit": "Tresor wieder öffnen",
+      "working": "Wird geöffnet… (einige Sekunden)",
+      "noKeyTitle": "Kein Wiederherstellungsschlüssel?",
+      "noKey": "Ihre verschlüsselte Identität (Name, Kontaktdaten, Arbeitgeber, Schulen, Links, Original-Lebenslauf) kann von niemandem mehr gelesen werden, auch nicht von uns. Setzen Sie den Tresor unten zurück und geben Sie sie erneut ein. Ihr Karrieregedächtnis, Ihre Kontakte, Ihre Leitplanken und alles andere bleiben erhalten."
+    }
   },
   "guardRails": {
     "title": "Meine Leitplanken",
@@ -1107,6 +1281,25 @@
       "minScore": "Mindestpunktzahl",
       "minScoreHint": "Nur Gelegenheiten mit mindestens dieser Punktzahl werden gesendet.",
       "save": "Speichern"
+    },
+    "password": {
+      "title": "Passwort",
+      "introSet": "Ihr Konto hat noch kein Passwort: Sie melden sich per E-Mail-Link an. Legen Sie eines fest, um sich mit Ihrer Adresse und diesem Passwort anzumelden; es öffnet auch Ihren Identitätstresor.",
+      "introChange": "Mit diesem Passwort melden Sie sich an und öffnen Ihren Identitätstresor. Bei einer Änderung wird der Tresorschlüssel in Ihrem Browser neu verpackt: Ihre Daten bleiben lesbar und Ihr Wiederherstellungsschlüssel bleibt gültig. Ihre anderen Sitzungen werden abgemeldet.",
+      "current": "Aktuelles Passwort",
+      "next": "Neues Passwort",
+      "submitSet": "Passwort festlegen",
+      "submitChange": "Passwort ändern",
+      "working": "Wird gespeichert… (einige Sekunden)",
+      "doneSet": "Passwort festgelegt. Sie können sich jetzt mit Ihrer E-Mail-Adresse und diesem Passwort anmelden.",
+      "doneChange": "Passwort geändert.",
+      "errors": {
+        "invalidCurrent": "Aktuelles Passwort falsch.",
+        "vaultConflict": "Ihr Identitätstresor wurde zwischenzeitlich geändert. Laden Sie die Seite neu und versuchen Sie es erneut.",
+        "rateLimited": "Zu viele Versuche. Versuchen Sie es in {minutes, plural, one {# Minute} other {# Minuten}} erneut.",
+        "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
+        "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      }
     }
   },
   "import": {

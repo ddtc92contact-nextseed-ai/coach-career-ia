@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
-import { LegalConsent } from "@/components/legal-consent";
 import { requestMagicLink, type LoginState } from "./actions";
 
 export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
@@ -13,11 +12,11 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
     <form action={action} className="space-y-4" noValidate>
       {callbackUrl ? <input type="hidden" name="callbackUrl" value={callbackUrl} /> : null}
       <div>
-        <label htmlFor="email" className="text-ink-muted block text-sm font-medium">
+        <label htmlFor="magic-email" className="text-ink-muted block text-sm font-medium">
           {t("emailLabel")}
         </label>
         <input
-          id="email"
+          id="magic-email"
           name="email"
           type="email"
           autoComplete="email"
@@ -38,11 +37,10 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
+        className="border-line-strong bg-surface hover:bg-muted w-full rounded-lg border px-4 py-2.5 font-medium disabled:opacity-60"
       >
         {pending ? t("submitting") : t("submit")}
       </button>
-      <LegalConsent audience="candidate" />
     </form>
   );
 }

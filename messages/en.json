@@ -90,7 +90,7 @@
       "items": {
         "vault": {
           "title": "Zero-knowledge vault",
-          "text": "Your name, contact details and employers are encrypted in your browser, with a key derived from your passphrase. Our servers only store unreadable data."
+          "text": "Your name, contact details and employers are encrypted in your browser, with a key derived from your password. Our servers only store unreadable data."
         },
         "cards": {
           "title": "Anonymous cards",
@@ -218,7 +218,7 @@
     "login": {
       "metaTitle": "Sign in",
       "title": "Sign in to your space",
-      "intro": "No password: enter your email address and we’ll send you a one-time sign-in link. If you don’t have a space yet, it will be created the first time you sign in.",
+      "intro": "Sign in with your email address and password.",
       "emailLabel": "Email address",
       "emailPlaceholder": "you@example.com",
       "submit": "Send me a sign-in link",
@@ -227,7 +227,9 @@
       "errors": {
         "invalidEmail": "Enter a valid email address.",
         "sendFailed": "We couldn’t send the link right now. Please try again in a few moments."
-      }
+      },
+      "magicToggle": "Get a sign-in link by email instead",
+      "magicIntro": "No password: we send you a one-time sign-in link, valid for 15 minutes. If you don’t have a space yet, it will be created the first time you sign in."
     },
     "verify": {
       "title": "Check your inbox",
@@ -242,6 +244,120 @@
         "Configuration": "The sign-in service is temporarily unavailable. Please try again in a few moments.",
         "AccessDenied": "Access was denied.",
         "Default": "Something went wrong while signing in. Please try again."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Password",
+      "remember": "Stay signed in (30 days)",
+      "submit": "Sign in",
+      "submitting": "Signing in… (a few seconds)",
+      "forgot": "Forgot your password?",
+      "noAccount": "No account yet?",
+      "signup": "Create an account",
+      "verified": "Email address confirmed. You can now sign in.",
+      "passwordReset": "Password changed. Sign in with your new password.",
+      "errors": {
+        "invalidEmail": "Enter a valid email address.",
+        "passwordRequired": "Enter your password.",
+        "invalidCredentials": "Incorrect email address or password. Used to sign in with an email link? Set a password with “Forgot your password?”, or get a sign-in link below.",
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Can’t reach the server. Check your connection and try again.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "passwordField": {
+      "show": "Show",
+      "hide": "Hide",
+      "showLabel": "Show password",
+      "hideLabel": "Hide password",
+      "hint": "At least {min} characters. A phrase of several words is easy to remember and hard to guess.",
+      "strength": "Strength: {level}",
+      "levels": {
+        "tooShort": "too short",
+        "weak": "weak",
+        "fair": "fair",
+        "good": "good",
+        "strong": "excellent"
+      },
+      "tooShort": "Your password must be at least {min} characters long."
+    },
+    "signup": {
+      "metaTitle": "Create an account",
+      "title": "Create your account",
+      "intro": "An email address and a password are all you need. We’ll send you a link to confirm your address.",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "vaultNote": "This password also protects your identity vault, encrypted in your browser: we never receive it and cannot recover it for you.",
+      "acceptTerms": "I accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>.",
+      "submit": "Create my account",
+      "submitting": "Creating your account… (a few seconds)",
+      "haveAccount": "Already have an account?",
+      "login": "Sign in",
+      "errors": {
+        "invalidEmail": "Enter a valid email address.",
+        "terms": "Accept the terms of use and the privacy policy to continue.",
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Can’t reach the server. Check your connection and try again.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "checkInbox": {
+      "title": "Confirm your email address",
+      "text": "We sent an email to {email}. Click the link inside to confirm your address (valid for 24 hours), then sign in. If this address already had an account, the email explains how to sign in.",
+      "unverified": "Your email address isn’t confirmed yet. Click the link sent to {email}, then sign in again.",
+      "help": "Nothing arrived? Check your spam folder, or resend the link.",
+      "resend": "Resend the link",
+      "resending": "Sending…",
+      "resent": "If an unconfirmed account exists for this address, a new link has just been sent.",
+      "back": "Back to sign in",
+      "errors": {
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "generic": "We couldn’t send the link right now. Please try again in a few moments."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Email confirmation",
+      "successTitle": "Email address confirmed",
+      "successText": "Your account is active. Sign in with your email address and password.",
+      "login": "Sign in",
+      "failedTitle": "Invalid or expired link",
+      "failedText": "This confirmation link has expired or has already been used. Sign in: if your address isn’t confirmed yet, you can request a new link."
+    },
+    "vaultAfterReset": {
+      "title": "Good to know before resetting your password:",
+      "text": "your identity vault is encrypted with your current password, which we don’t know. After a reset, it can only be reopened with your recovery key. Without it, you will have to enter your identity again (name, contact details, employers, schools, links, original CV). Your Career Memory, your contacts and everything else are kept."
+    },
+    "forgot": {
+      "metaTitle": "Forgot password",
+      "title": "Forgot your password",
+      "intro": "Enter your account’s email address: we’ll send you a link to choose a new password (valid for 30 minutes). It also lets you set a password if you used to sign in with an email link.",
+      "emailLabel": "Email address",
+      "submit": "Send me the link",
+      "submitting": "Sending…",
+      "sent": "If an account exists for this address, a link has just been sent. It is valid for 30 minutes and works only once.",
+      "back": "Back to sign in",
+      "errors": {
+        "invalidEmail": "Enter a valid email address.",
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Can’t reach the server. Check your connection and try again.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "reset": {
+      "metaTitle": "New password",
+      "title": "Choose a new password",
+      "intro": "You will use this password to sign in and to open your identity vault.",
+      "passwordLabel": "New password",
+      "submit": "Save password",
+      "submitting": "Saving… (a few seconds)",
+      "invalidTitle": "Invalid or expired link",
+      "invalidText": "This reset link has expired (it is valid for 30 minutes) or has already been used.",
+      "requestNew": "Request a new link",
+      "errors": {
+        "invalidToken": "This link has expired or has already been used. Request a new one.",
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Can’t reach the server. Check your connection and try again.",
+        "generic": "Something went wrong. Please try again."
       }
     }
   },
@@ -372,6 +488,29 @@
       "portalMessage": {
         "subject": "New message from the candidate for {title}",
         "body": "The candidate who contacted you about your offer “{title}” has sent you a new message. It is waiting for you in your company portal inbox."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Hello,",
+      "verifyEmail": {
+        "subject": "Confirm your email address",
+        "intro": "To activate your account on {host}, confirm your email address with this link (valid for 24 hours):",
+        "button": "Confirm my address",
+        "ignore": "If you didn’t create an account, ignore this message: no account will be activated."
+      },
+      "resetPassword": {
+        "subject": "Reset your password",
+        "intro": "To choose a new password on {host}, use this link (valid for 30 minutes, once only):",
+        "button": "Choose a new password",
+        "ignore": "If you didn’t request this, ignore this message: your password stays the same."
+      },
+      "accountExists": {
+        "subject": "An account already exists with this address",
+        "intro": "Someone (probably you) tried to create an account on {host} with this address, which already has one. To sign in:",
+        "button": "Sign in",
+        "extraText": "Forgot your password, or used to sign in with an email link? Choose a password here: {url}",
+        "ignore": "If you didn’t request this, ignore this message: nothing has been changed."
       }
     }
   },
@@ -746,24 +885,14 @@
       "title": "No one, not even us, can read this data",
       "encrypted": "Your name, contact details, employers, schools, links and original CV are encrypted in your browser before anything is sent. Our servers only receive and store an unreadable blob.",
       "nobody": "Neither our team, nor our host, nor someone who stole our database can decrypt them: the key only exists on your side.",
-      "you": "Only you unlock them, with your passphrase. It is never sent to or stored by our services.",
+      "you": "Only you can unlock it, with your account password. It is never sent to or stored by our services: only a fingerprint that cannot open the vault is used to sign in.",
       "handover": "Your identity is only revealed to a recruiter if you decide so, for that specific recruiter.",
       "lossTitle": "Important consequence:",
-      "loss": "if you lose both your passphrase and your recovery key, this data is lost for good. We will not be able to recover it for you. Your professional profile is not affected."
-    },
-    "setup": {
-      "title": "Create my identity vault",
-      "intro": "Choose a passphrase dedicated to this vault, different from your other passwords. A sequence of several words is easy to remember and hard to guess.",
-      "passphrase": "Passphrase",
-      "passphraseHint": "At least {min} characters.",
-      "confirm": "Confirm the passphrase",
-      "understand": "I understand that if I lose my passphrase and my recovery key, no one will be able to recover my identity.",
-      "submit": "Create my vault",
-      "working": "Creating the vault… (a few seconds)"
+      "loss": "if you forget your password and lose your recovery key, this data is lost for good. We will not be able to recover it for you. Your professional profile is not affected."
     },
     "recovery": {
       "title": "Your recovery key",
-      "intro": "It lets you reopen your vault if you forget your passphrase. It will never be shown again.",
+      "intro": "It lets you reopen your vault if you forget your password (or your old passphrase). It will never be shown again.",
       "warning": "Keep it offline: printed, in a password manager or in a file stored somewhere safe. Never share it.",
       "download": "Download (.txt)",
       "print": "Print",
@@ -856,7 +985,7 @@
     },
     "reset": {
       "title": "Reset the vault",
-      "intro": "Permanently deletes your encrypted identity and original CV. Useful if you lost both your passphrase and recovery key: you can then create a new vault. Your career memory is not affected.",
+      "intro": "Permanently deletes your encrypted identity and original CV. Useful if you can no longer open the vault (password reset or passphrase forgotten, with no recovery key): you can then create a new vault. Your Career Memory is not affected.",
       "button": "Delete my vault",
       "confirm": "Permanently delete your identity vault and CV? This cannot be undone.",
       "working": "Deleting…"
@@ -871,9 +1000,54 @@
       "network": "Cannot reach the server. Check your connection and try again.",
       "cvTooLarge": "File too large.",
       "cvType": "Unsupported format: PDF, Word or OpenDocument only.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "wrongPassword": "Incorrect password."
     },
-    "exportNotice": "Data encrypted in your browser: only your passphrase or your recovery key can read it."
+    "exportNotice": "Data encrypted in your browser: only your passphrase or your recovery key can read it.",
+    "accountSetup": {
+      "title": "Create my identity vault",
+      "intro": "Your vault is protected by your account password: no extra passphrase. You will get a recovery key: it is the only way to reopen the vault if you reset your password by email.",
+      "password": "Account password",
+      "understand": "I understand that if I forget my password and lose my recovery key, nobody can recover my identity.",
+      "submit": "Create my vault",
+      "working": "Creating the vault… (a few seconds)"
+    },
+    "noPassword": {
+      "title": "Set a password first",
+      "text": "Your identity vault is protected by your account password. You currently sign in with an email link: set a password in Settings, then come back here.",
+      "link": "Set a password"
+    },
+    "passwordTip": "Set an account password in Settings: it will replace this vault’s passphrase, and one password will be all you need.",
+    "passwordTipLink": "Set a password",
+    "accountUnlock": {
+      "title": "Unlock my identity",
+      "intro": "Your vault is locked. Enter your account password: decryption happens in this browser.",
+      "password": "Password",
+      "submit": "Unlock",
+      "working": "Unlocking… (a few seconds)",
+      "forgot": "Forgot your password?"
+    },
+    "legacy": {
+      "title": "One password for your vault",
+      "intro": "Your vault is still protected by its old passphrase. Enter it one last time: from then on it will open with your account password, with nothing else to remember. Your recovery key remains valid.",
+      "passphrase": "Old vault passphrase",
+      "recoveryKey": "Recovery key",
+      "useRecovery": "Forgot the passphrase? Use my recovery key",
+      "usePassphrase": "Use the old passphrase",
+      "password": "Account password",
+      "submit": "Link my vault to my password",
+      "working": "Updating the vault… (a few seconds)"
+    },
+    "stale": {
+      "title": "Your password was reset",
+      "intro": "Your identity vault was encrypted with your old password, which we don’t know. Enter your recovery key to reopen it: it will then be protected by your new password.",
+      "recoveryKey": "Recovery key",
+      "password": "Account password",
+      "submit": "Reopen my vault",
+      "working": "Opening… (a few seconds)",
+      "noKeyTitle": "No recovery key?",
+      "noKey": "Your encrypted identity (name, contact details, employers, schools, links, original CV) can no longer be read by anyone, including us. Reset the vault below, then enter it again. Your Career Memory, contacts, guard rails and everything else are kept."
+    }
   },
   "guardRails": {
     "title": "My guard-rails",
@@ -1107,6 +1281,25 @@
       "minScore": "Minimum score",
       "minScoreHint": "Only opportunities with at least this score are sent.",
       "save": "Save"
+    },
+    "password": {
+      "title": "Password",
+      "introSet": "Your account doesn’t have a password yet: you sign in with an email link. Set one to sign in with your address and this password; it will also open your identity vault.",
+      "introChange": "This password is used to sign in and opens your identity vault. When you change it, the vault key is re-wrapped in your browser: your data stays readable and your recovery key remains valid. Your other sessions are signed out.",
+      "current": "Current password",
+      "next": "New password",
+      "submitSet": "Set my password",
+      "submitChange": "Change my password",
+      "working": "Saving… (a few seconds)",
+      "doneSet": "Password set. You can now sign in with your email address and this password.",
+      "doneChange": "Password changed.",
+      "errors": {
+        "invalidCurrent": "Incorrect current password.",
+        "vaultConflict": "Your identity vault was changed in the meantime. Reload the page and try again.",
+        "rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Can’t reach the server. Check your connection and try again.",
+        "generic": "Something went wrong. Please try again."
+      }
     }
   },
   "import": {

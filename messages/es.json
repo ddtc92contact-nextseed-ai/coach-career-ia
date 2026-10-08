@@ -90,7 +90,7 @@
       "items": {
         "vault": {
           "title": "Caja fuerte de conocimiento cero",
-          "text": "Su nombre, sus datos de contacto y sus empleadores se cifran en su navegador con una clave derivada de su frase secreta. Nuestros servidores solo guardan datos ilegibles."
+          "text": "Su nombre, sus datos de contacto y sus empleadores se cifran en su navegador con una clave derivada de su contraseña. Nuestros servidores solo guardan datos ilegibles."
         },
         "cards": {
           "title": "Tarjetas anónimas",
@@ -218,7 +218,7 @@
     "login": {
       "metaTitle": "Iniciar sesión",
       "title": "Acceda a su espacio",
-      "intro": "Sin contraseña: introduzca su correo electrónico y le enviaremos un enlace de acceso de un solo uso. Si aún no tiene un espacio, se creará en el primer acceso.",
+      "intro": "Inicie sesión con su correo electrónico y su contraseña.",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "usted@ejemplo.es",
       "submit": "Recibir mi enlace de acceso",
@@ -227,7 +227,9 @@
       "errors": {
         "invalidEmail": "Introduzca un correo electrónico válido.",
         "sendFailed": "No ha sido posible enviar el enlace en este momento. Inténtelo de nuevo en unos instantes."
-      }
+      },
+      "magicToggle": "Recibir en su lugar un enlace de acceso por correo",
+      "magicIntro": "Sin contraseña: le enviamos un enlace de acceso de un solo uso, válido durante 15 minutos. Si aún no tiene un espacio, se creará en el primer acceso."
     },
     "verify": {
       "title": "Revise su bandeja de entrada",
@@ -242,6 +244,120 @@
         "Configuration": "El servicio de acceso no está disponible en este momento. Inténtelo de nuevo en unos instantes.",
         "AccessDenied": "Se ha denegado el acceso.",
         "Default": "Se ha producido un error al iniciar sesión. Inténtelo de nuevo."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Contraseña",
+      "remember": "Mantener la sesión iniciada (30 días)",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión… (unos segundos)",
+      "forgot": "¿Ha olvidado su contraseña?",
+      "noAccount": "¿Aún no tiene cuenta?",
+      "signup": "Crear una cuenta",
+      "verified": "Correo electrónico confirmado. Ya puede iniciar sesión.",
+      "passwordReset": "Contraseña cambiada. Inicie sesión con su nueva contraseña.",
+      "errors": {
+        "invalidEmail": "Introduzca un correo electrónico válido.",
+        "passwordRequired": "Introduzca su contraseña.",
+        "invalidCredentials": "Correo electrónico o contraseña incorrectos. ¿Hasta ahora accedía con un enlace por correo? Defina una contraseña con «¿Ha olvidado su contraseña?» o reciba un enlace de acceso más abajo.",
+        "rateLimited": "Demasiados intentos. Vuelva a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "network": "No se puede conectar con el servidor. Compruebe su red y vuelva a intentarlo.",
+        "generic": "Se ha producido un error. Vuelva a intentarlo."
+      }
+    },
+    "passwordField": {
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "showLabel": "Mostrar la contraseña",
+      "hideLabel": "Ocultar la contraseña",
+      "hint": "Al menos {min} caracteres. Una frase de varias palabras es fácil de recordar y difícil de adivinar.",
+      "strength": "Solidez: {level}",
+      "levels": {
+        "tooShort": "demasiado corta",
+        "weak": "débil",
+        "fair": "media",
+        "good": "buena",
+        "strong": "excelente"
+      },
+      "tooShort": "La contraseña debe tener al menos {min} caracteres."
+    },
+    "signup": {
+      "metaTitle": "Crear una cuenta",
+      "title": "Cree su cuenta",
+      "intro": "Basta con un correo electrónico y una contraseña. Le enviaremos un enlace para confirmar su dirección.",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "vaultNote": "Esta contraseña protege también su caja fuerte de identidad, cifrada en su navegador: nunca la recibimos y no podemos recuperarla por usted.",
+      "acceptTerms": "Acepto las <terms>condiciones de uso</terms> y la <privacy>política de privacidad</privacy>.",
+      "submit": "Crear mi cuenta",
+      "submitting": "Creando la cuenta… (unos segundos)",
+      "haveAccount": "¿Ya tiene una cuenta?",
+      "login": "Iniciar sesión",
+      "errors": {
+        "invalidEmail": "Introduzca un correo electrónico válido.",
+        "terms": "Acepte las condiciones de uso y la política de privacidad para continuar.",
+        "rateLimited": "Demasiados intentos. Vuelva a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "network": "No se puede conectar con el servidor. Compruebe su red y vuelva a intentarlo.",
+        "generic": "Se ha producido un error. Vuelva a intentarlo."
+      }
+    },
+    "checkInbox": {
+      "title": "Confirme su correo electrónico",
+      "text": "Hemos enviado un correo a {email}. Haga clic en el enlace que contiene para confirmar su dirección (válido 24 horas) y después inicie sesión. Si esta dirección ya tenía una cuenta, el correo le explica cómo iniciar sesión.",
+      "unverified": "Su correo electrónico aún no está confirmado. Haga clic en el enlace enviado a {email} y vuelva a iniciar sesión.",
+      "help": "¿No ha recibido nada? Revise su carpeta de correo no deseado o reenvíe el enlace.",
+      "resend": "Reenviar el enlace",
+      "resending": "Enviando…",
+      "resent": "Si existe una cuenta sin confirmar para esta dirección, se acaba de enviar un nuevo enlace.",
+      "back": "Volver al inicio de sesión",
+      "errors": {
+        "rateLimited": "Demasiados intentos. Vuelva a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "generic": "No se puede enviar el enlace en este momento. Vuelva a intentarlo en unos instantes."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Confirmación del correo electrónico",
+      "successTitle": "Correo electrónico confirmado",
+      "successText": "Su cuenta está activada. Inicie sesión con su correo electrónico y su contraseña.",
+      "login": "Iniciar sesión",
+      "failedTitle": "Enlace no válido o caducado",
+      "failedText": "Este enlace de confirmación ha caducado o ya se ha utilizado. Inicie sesión: si su dirección aún no está confirmada, podrá solicitar un nuevo enlace."
+    },
+    "vaultAfterReset": {
+      "title": "Antes de restablecer su contraseña, tenga en cuenta que:",
+      "text": "su caja fuerte de identidad está cifrada con su contraseña actual, que no conocemos. Tras un restablecimiento, solo podrá volver a abrirse con su clave de recuperación. Sin ella, tendrá que volver a introducir su identidad (nombre, datos de contacto, empleadores, centros de estudios, enlaces, CV original). Su memoria de carrera, sus contactos y todo lo demás se conservan."
+    },
+    "forgot": {
+      "metaTitle": "Contraseña olvidada",
+      "title": "Contraseña olvidada",
+      "intro": "Introduzca el correo electrónico de su cuenta: le enviaremos un enlace para elegir una nueva contraseña (válido 30 minutos). También le permite definir una contraseña si hasta ahora accedía con un enlace por correo.",
+      "emailLabel": "Correo electrónico",
+      "submit": "Recibir el enlace",
+      "submitting": "Enviando…",
+      "sent": "Si existe una cuenta para esta dirección, se acaba de enviar un enlace. Es válido durante 30 minutos y solo funciona una vez.",
+      "back": "Volver al inicio de sesión",
+      "errors": {
+        "invalidEmail": "Introduzca un correo electrónico válido.",
+        "rateLimited": "Demasiados intentos. Vuelva a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "network": "No se puede conectar con el servidor. Compruebe su red y vuelva a intentarlo.",
+        "generic": "Se ha producido un error. Vuelva a intentarlo."
+      }
+    },
+    "reset": {
+      "metaTitle": "Nueva contraseña",
+      "title": "Elegir una nueva contraseña",
+      "intro": "Esta contraseña le servirá para iniciar sesión y abrir su caja fuerte de identidad.",
+      "passwordLabel": "Nueva contraseña",
+      "submit": "Guardar la contraseña",
+      "submitting": "Guardando… (unos segundos)",
+      "invalidTitle": "Enlace no válido o caducado",
+      "invalidText": "Este enlace de restablecimiento ha caducado (es válido durante 30 minutos) o ya se ha utilizado.",
+      "requestNew": "Solicitar un nuevo enlace",
+      "errors": {
+        "invalidToken": "Este enlace ha caducado o ya se ha utilizado. Solicite uno nuevo.",
+        "rateLimited": "Demasiados intentos. Vuelva a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "network": "No se puede conectar con el servidor. Compruebe su red y vuelva a intentarlo.",
+        "generic": "Se ha producido un error. Vuelva a intentarlo."
       }
     }
   },
@@ -372,6 +488,29 @@
       "portalMessage": {
         "subject": "Nuevo mensaje de la persona candidata para {title}",
         "body": "La persona candidata que te contactó sobre tu oferta «{title}» te ha enviado un nuevo mensaje. Te espera en la mensajería de tu espacio empresa."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Hola:",
+      "verifyEmail": {
+        "subject": "Confirme su correo electrónico",
+        "intro": "Para activar su cuenta en {host}, confirme su correo electrónico con este enlace (válido 24 horas):",
+        "button": "Confirmar mi dirección",
+        "ignore": "Si no ha creado ninguna cuenta, ignore este mensaje: no se activará ninguna cuenta."
+      },
+      "resetPassword": {
+        "subject": "Restablecimiento de su contraseña",
+        "intro": "Para elegir una nueva contraseña en {host}, utilice este enlace (válido 30 minutos, un solo uso):",
+        "button": "Elegir una nueva contraseña",
+        "ignore": "Si no ha solicitado esto, ignore este mensaje: su contraseña no cambia."
+      },
+      "accountExists": {
+        "subject": "Ya existe una cuenta con esta dirección",
+        "intro": "Alguien (seguramente usted) ha intentado crear una cuenta en {host} con esta dirección, que ya tiene una. Para iniciar sesión:",
+        "button": "Iniciar sesión",
+        "extraText": "¿Ha olvidado su contraseña o accedía con un enlace por correo? Elija una contraseña aquí: {url}",
+        "ignore": "Si no ha solicitado esto, ignore este mensaje: no se ha modificado nada."
       }
     }
   },
@@ -746,24 +885,14 @@
       "title": "Nadie, ni siquiera nosotros, puede leer estos datos",
       "encrypted": "Tu nombre, datos de contacto, empleadores, centros de estudio, enlaces y CV original se cifran en tu navegador antes de cualquier envío. Nuestros servidores solo reciben y almacenan un bloque ilegible.",
       "nobody": "Ni nuestro equipo, ni nuestro proveedor de alojamiento, ni quien robara nuestra base de datos puede descifrarlos: la clave solo existe en tu lado.",
-      "you": "Solo tú los desbloqueas, con tu frase secreta. Nuestros servicios nunca la reciben ni la guardan.",
+      "you": "Solo tú los desbloqueas, con la contraseña de tu cuenta. Nuestros servicios nunca la reciben ni la guardan: para iniciar sesión solo se usa una huella que no abre la caja fuerte.",
       "handover": "Tu identidad solo se revela a un reclutador si tú lo decides, para ese reclutador concreto.",
       "lossTitle": "Consecuencia importante:",
-      "loss": "si pierdes a la vez tu frase secreta y tu clave de recuperación, estos datos se pierden para siempre. No podremos recuperarlos por ti. Tu perfil profesional no se ve afectado."
-    },
-    "setup": {
-      "title": "Crear mi caja fuerte de identidad",
-      "intro": "Elige una frase secreta propia de esta caja fuerte, distinta de tus otras contraseñas. Una serie de varias palabras es fácil de recordar y difícil de adivinar.",
-      "passphrase": "Frase secreta",
-      "passphraseHint": "Al menos {min} caracteres.",
-      "confirm": "Confirma la frase secreta",
-      "understand": "Entiendo que si pierdo mi frase secreta y mi clave de recuperación, nadie podrá recuperar mi identidad.",
-      "submit": "Crear mi caja fuerte",
-      "working": "Creando la caja fuerte… (unos segundos)"
+      "loss": "si olvidas tu contraseña y pierdes tu clave de recuperación, estos datos se pierden definitivamente. No podremos recuperarlos por ti. Tu perfil profesional no se ve afectado."
     },
     "recovery": {
       "title": "Tu clave de recuperación",
-      "intro": "Permite volver a abrir tu caja fuerte si olvidas tu frase secreta. No se volverá a mostrar.",
+      "intro": "Te permite volver a abrir tu caja fuerte si olvidas tu contraseña (o tu antigua frase secreta). No volverá a mostrarse nunca.",
       "warning": "Guárdala fuera de línea: impresa, en un gestor de contraseñas o en un archivo guardado en un lugar seguro. No la compartas con nadie.",
       "download": "Descargar (.txt)",
       "print": "Imprimir",
@@ -856,7 +985,7 @@
     },
     "reset": {
       "title": "Restablecer la caja fuerte",
-      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si has perdido tu frase secreta y tu clave de recuperación: después podrás crear una nueva caja fuerte. Tu memoria profesional no se modifica.",
+      "intro": "Elimina definitivamente tu identidad cifrada y tu CV original. Útil si ya no puedes abrir la caja fuerte (contraseña restablecida o frase secreta olvidada, sin clave de recuperación): después podrás crear una nueva caja fuerte. Tu memoria de carrera no se ve afectada.",
       "button": "Eliminar mi caja fuerte",
       "confirm": "¿Eliminar definitivamente tu caja fuerte de identidad y tu CV? Esta acción es irreversible.",
       "working": "Eliminando…"
@@ -871,9 +1000,54 @@
       "network": "No se puede conectar con el servidor. Comprueba tu red e inténtalo de nuevo.",
       "cvTooLarge": "Archivo demasiado grande.",
       "cvType": "Formato no admitido: solo PDF, Word u OpenDocument.",
-      "generic": "Se ha producido un error. Inténtalo de nuevo."
+      "generic": "Se ha producido un error. Inténtalo de nuevo.",
+      "wrongPassword": "Contraseña incorrecta."
     },
-    "exportNotice": "Datos cifrados en su navegador: solo su frase secreta o su clave de recuperación permiten leerlos."
+    "exportNotice": "Datos cifrados en su navegador: solo su frase secreta o su clave de recuperación permiten leerlos.",
+    "accountSetup": {
+      "title": "Crear mi caja fuerte de identidad",
+      "intro": "Tu caja fuerte está protegida por la contraseña de tu cuenta: ninguna frase secreta adicional. Recibirás una clave de recuperación: es lo único que permite volver a abrirla si restableces tu contraseña por correo.",
+      "password": "Contraseña de la cuenta",
+      "understand": "Entiendo que si olvido mi contraseña y pierdo mi clave de recuperación, nadie podrá recuperar mi identidad.",
+      "submit": "Crear mi caja fuerte",
+      "working": "Creando la caja fuerte… (unos segundos)"
+    },
+    "noPassword": {
+      "title": "Define primero una contraseña",
+      "text": "Tu caja fuerte de identidad está protegida por la contraseña de tu cuenta. Ahora accedes con un enlace por correo: define una contraseña en los ajustes y vuelve aquí.",
+      "link": "Definir una contraseña"
+    },
+    "passwordTip": "Define una contraseña de cuenta en los ajustes: sustituirá la frase secreta de esta caja fuerte y te bastará con una sola contraseña.",
+    "passwordTipLink": "Definir una contraseña",
+    "accountUnlock": {
+      "title": "Desbloquear mi identidad",
+      "intro": "Tu caja fuerte está bloqueada. Introduce la contraseña de tu cuenta: el descifrado se realiza en este navegador.",
+      "password": "Contraseña",
+      "submit": "Desbloquear",
+      "working": "Desbloqueando… (unos segundos)",
+      "forgot": "¿Has olvidado tu contraseña?"
+    },
+    "legacy": {
+      "title": "Una sola contraseña para tu caja fuerte",
+      "intro": "Tu caja fuerte sigue protegida por su antigua frase secreta. Introdúcela una última vez: a partir de entonces se abrirá con la contraseña de tu cuenta, sin nada más que recordar. Tu clave de recuperación sigue siendo válida.",
+      "passphrase": "Antigua frase secreta de la caja fuerte",
+      "recoveryKey": "Clave de recuperación",
+      "useRecovery": "¿Has olvidado la frase? Usar mi clave de recuperación",
+      "usePassphrase": "Usar la antigua frase secreta",
+      "password": "Contraseña de la cuenta",
+      "submit": "Vincular mi caja fuerte a mi contraseña",
+      "working": "Actualizando la caja fuerte… (unos segundos)"
+    },
+    "stale": {
+      "title": "Tu contraseña se ha restablecido",
+      "intro": "Tu caja fuerte de identidad estaba cifrada con tu antigua contraseña, que no conocemos. Introduce tu clave de recuperación para volver a abrirla: después quedará protegida por tu nueva contraseña.",
+      "recoveryKey": "Clave de recuperación",
+      "password": "Contraseña de la cuenta",
+      "submit": "Volver a abrir mi caja fuerte",
+      "working": "Abriendo… (unos segundos)",
+      "noKeyTitle": "¿No tienes clave de recuperación?",
+      "noKey": "Tu identidad cifrada (nombre, datos de contacto, empleadores, centros de estudios, enlaces, CV original) ya no puede leerla nadie, ni siquiera nosotros. Restablece la caja fuerte más abajo y vuelve a introducirla. Tu memoria de carrera, tus contactos, tus salvaguardas y todo lo demás se conservan."
+    }
   },
   "guardRails": {
     "title": "Mis salvaguardas",
@@ -1107,6 +1281,25 @@
       "minScore": "Puntuación mínima",
       "minScoreHint": "Solo se envían las oportunidades con al menos esta puntuación.",
       "save": "Guardar"
+    },
+    "password": {
+      "title": "Contraseña",
+      "introSet": "Tu cuenta aún no tiene contraseña: accedes con un enlace por correo. Define una para iniciar sesión con tu dirección y esta contraseña; también abrirá tu caja fuerte de identidad.",
+      "introChange": "Esta contraseña sirve para iniciar sesión y abre tu caja fuerte de identidad. Al cambiarla, la clave de la caja fuerte se vuelve a envolver en tu navegador: tus datos siguen siendo legibles y tu clave de recuperación sigue siendo válida. Se cierran tus demás sesiones.",
+      "current": "Contraseña actual",
+      "next": "Nueva contraseña",
+      "submitSet": "Definir mi contraseña",
+      "submitChange": "Cambiar mi contraseña",
+      "working": "Guardando… (unos segundos)",
+      "doneSet": "Contraseña definida. Ya puedes iniciar sesión con tu correo electrónico y esta contraseña.",
+      "doneChange": "Contraseña cambiada.",
+      "errors": {
+        "invalidCurrent": "Contraseña actual incorrecta.",
+        "vaultConflict": "Tu caja fuerte de identidad se ha modificado mientras tanto. Recarga la página y vuelve a intentarlo.",
+        "rateLimited": "Demasiados intentos. Vuelve a intentarlo dentro de {minutes, plural, one {# minuto} other {# minutos}}.",
+        "network": "No se puede conectar con el servidor. Comprueba tu red y vuelve a intentarlo.",
+        "generic": "Se ha producido un error. Vuelve a intentarlo."
+      }
     }
   },
   "import": {

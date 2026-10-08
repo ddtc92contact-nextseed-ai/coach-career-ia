@@ -52,8 +52,20 @@ model User {
   termsVersion    String?   @map("terms_version")
   termsAcceptedAt DateTime? @map("terms_accepted_at")
 
+  /// Connexion par mot de passe (zéro connaissance). Le navigateur dérive du
+  /// mot de passe (PBKDF2-SHA256, `kdfIterations`, `kdfSalt`) une clé maîtresse,
+  /// puis un « hash d'authentification » : c'est lui seul que le serveur reçoit,
+  /// et il n'en stocke qu'un hachage lent (`passwordHash`, scrypt). Le mot de
+  /// passe lui-même n'arrive jamais au serveur. `null` : compte sans mot de
+  /// passe (lien magique uniquement).
+  passwordHash      String?   @map("password_hash")
+  kdfIterations     Int?      @map("kdf_iterations")
+  kdfSalt           Bytes?    @map("kdf_salt")
+  passwordUpdatedAt DateTime? @map("password_updated_at")
+
   accounts     Account[]
   sessions     Session[]
+  authTokens   AuthToken[]
   profile      CareerProfile?
   experiences  Experience[]
   achievements Achievement[]
@@ -91,8 +103,8 @@ model User {
   @@map("users")
 }
 
-/// Comptes de fournisseurs d'identité (Auth.js). Inutilisé tant que seule la
-/// connexion par lien magique est proposée, mais requis par l'adaptateur.
+/// Comptes de fournisseurs d'identité (Auth.js). Inutilisé (lien magique et mot
+/// de passe n'en ont pas besoin), mais requis par l'adaptateur.
 model Account {
   userId            String  @map("user_id")
   type              String
@@ -133,6 +145,38 @@ model VerificationToken {
 
   @@id([identifier, token])
   @@map("verification_tokens")
+}
+
+enum AuthTokenKind {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+}
+
+/// Jetons à usage unique envoyés par e-mail (vérification d'adresse,
+/// réinitialisation du mot de passe). Seul le SHA-256 du jeton est stocké.
+model AuthToken {
+  id        String        @id @default(cuid())
+  userId    String        @map("user_id")
+  kind      AuthTokenKind
+  tokenHash String        @unique @map("token_hash")
+  expiresAt DateTime      @map("expires_at")
+  usedAt    DateTime?     @map("used_at")
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, kind])
+  @@map("auth_tokens")
+}
+
+/// Compteurs de limitation de débit (fenêtre fixe). `key` est un HMAC de
+/// l'action et de l'IP ou de l'e-mail : aucune donnée personnelle en clair.
+model RateLimit {
+  key         String   @id
+  windowStart DateTime @map("window_start")
+  count       Int
+
+  @@map("rate_limits")
 }
 
 // ---------------------------------------------------------------------------
@@ -471,11 +515,14 @@ model IdentityVault {
   userId               String   @id @map("user_id")
   /// Version du format cryptographique.
   version              Int
-  /// Paramètres de dérivation de la phrase secrète (`PBKDF2-SHA256`).
+  /// Paramètres de dérivation : `PBKDF2-SHA256` (ancienne phrase secrète
+  /// propre au coffre) ou `ACCOUNT-PBKDF2-SHA256` (clé dérivée du mot de passe
+  /// du compte, mêmes itérations et sel que `users.kdf_*`).
   kdfName              String   @map("kdf_name")
   kdfIterations        Int      @map("kdf_iterations")
   kdfSalt              Bytes    @map("kdf_salt")
-  /// Clé de données enveloppée par la phrase secrète, puis par la clé de secours.
+  /// Clé de données enveloppée par la phrase secrète ou le mot de passe du
+  /// compte (selon `kdfName`), puis par la clé de secours.
   passphraseWrappedKey Bytes    @map("passphrase_wrapped_key")
   recoveryWrappedKey   Bytes    @map("recovery_wrapped_key")
   /// Identité chiffrée (JSON complété à 256 octets).
