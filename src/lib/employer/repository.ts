@@ -119,6 +119,7 @@ const postingListSelect = {
   status: true,
   expiresAt: true,
   publishedAt: true,
+  closedAt: true,
   viewCount: true,
   updatedAt: true,
   offer: { select: { title: true, city: true } },
