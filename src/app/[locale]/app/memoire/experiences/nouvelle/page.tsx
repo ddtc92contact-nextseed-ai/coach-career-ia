@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { PageTitle } from "@/components/empty-state";
+import { PageHeader } from "@/components/page-header";
 import { requireUser } from "@/lib/auth/session";
+import { BackToMemory } from "../../back-link";
 import { ExperienceForm } from "../../experience-form";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -11,10 +12,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function NewExperiencePage() {
   await requireUser();
-  const t = await getTranslations("memory.experiences");
+  const t = await getTranslations("memory");
   return (
-    <div className="max-w-3xl">
-      <PageTitle title={t("newTitle")} intro={t("formIntro")} />
+    <div className="max-w-4xl">
+      <BackToMemory anchor="experiences" />
+      <PageHeader
+        eyebrow={t("title")}
+        title={t("experiences.newTitle")}
+        lead={t("experiences.formIntro")}
+      />
       <ExperienceForm id={null} />
     </div>
   );
