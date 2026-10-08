@@ -521,6 +521,14 @@
     "delete": "Eliminar",
     "deleting": "Eliminando…"
   },
+  "shell": {
+    "menu": "Menú",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú",
+    "collapse": "Contraer el menú",
+    "expand": "Desplegar el menú",
+    "skipToContent": "Ir al contenido"
+  },
   "errors": {
     "summary": "{count, plural, one {Hay un campo que corregir.} other {Hay # campos que corregir.}}",
     "required": "Este campo es obligatorio.",
@@ -558,14 +566,21 @@
       "guardRails": "Mis salvaguardas",
       "opportunities": "Oportunidades",
       "settings": "Ajustes",
-      "radar": "Radar (admin)",
+      "radar": "Radar",
       "coach": "Coach IA",
       "billing": "Suscripción",
-      "billingSimulator": "Simulador de pagos (admin)",
+      "billingSimulator": "Simulador de pagos",
       "card": "Mi tarjeta anónima",
       "contacts": "Contactos",
       "employer": "Espacio empresa",
-      "moderation": "Moderación (admin)"
+      "moderation": "Moderación",
+      "groups": {
+        "profile": "Mi perfil",
+        "agent": "Mi agente",
+        "account": "Cuenta",
+        "admin": "Administración"
+      },
+      "unread": "{count, plural, one {# respuesta nueva} other {# respuestas nuevas}}"
     }
   },
   "dashboard": {
@@ -2217,7 +2232,11 @@
       "organization": "Mi organización",
       "candidate": "Espacio candidato",
       "messages": "Mensajería",
-      "newThreads": "{count, plural, one {# mensaje nuevo} other {# mensajes nuevos}}"
+      "newThreads": "{count, plural, one {# mensaje nuevo} other {# mensajes nuevos}}",
+      "groups": {
+        "hiring": "Contratación",
+        "account": "Cuenta"
+      }
     },
     "signup": {
       "metaTitle": "Para empresas",
@@ -2581,7 +2600,8 @@
                 "session": "<strong>authjs.session-token</strong>: mantiene su sesión iniciada (30 días, se elimina al cerrar sesión).",
                 "csrf": "<strong>authjs.csrf-token</strong>: protege los formularios de acceso contra la falsificación de solicitudes (sesión del navegador).",
                 "callback": "<strong>authjs.callback-url</strong>: página a la que volver tras iniciar sesión (sesión del navegador).",
-                "locale": "<strong>NEXT_LOCALE</strong>: idioma de visualización elegido (sesión del navegador)."
+                "locale": "<strong>NEXT_LOCALE</strong>: idioma de visualización elegido (sesión del navegador).",
+                "sidebar": "<strong>cc-sidebar</strong>: recuerda si ha contraído el menú lateral de su espacio (1 año)."
               },
               "p2": "Su navegador también conserva, en el almacenamiento local, el tiempo de bloqueo automático de la caja fuerte de identidad que usted ha elegido: no es un dato personal."
             }

@@ -521,6 +521,14 @@
     "delete": "Delete",
     "deleting": "Deleting…"
   },
+  "shell": {
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "collapse": "Collapse menu",
+    "expand": "Expand menu",
+    "skipToContent": "Skip to content"
+  },
   "errors": {
     "summary": "{count, plural, one {One field needs correcting.} other {# fields need correcting.}}",
     "required": "This field is required.",
@@ -558,14 +566,21 @@
       "guardRails": "My guard-rails",
       "opportunities": "Opportunities",
       "settings": "Settings",
-      "radar": "Radar (admin)",
+      "radar": "Radar",
       "coach": "AI coach",
       "billing": "Subscription",
-      "billingSimulator": "Payment simulator (admin)",
+      "billingSimulator": "Payment simulator",
       "card": "My anonymous card",
       "contacts": "Contacts",
       "employer": "Employer area",
-      "moderation": "Moderation (admin)"
+      "moderation": "Moderation",
+      "groups": {
+        "profile": "My profile",
+        "agent": "My agent",
+        "account": "Account",
+        "admin": "Administration"
+      },
+      "unread": "{count, plural, one {# new reply} other {# new replies}}"
     }
   },
   "dashboard": {
@@ -2217,7 +2232,11 @@
       "organization": "My organisation",
       "candidate": "Candidate area",
       "messages": "Inbox",
-      "newThreads": "{count, plural, one {# new message} other {# new messages}}"
+      "newThreads": "{count, plural, one {# new message} other {# new messages}}",
+      "groups": {
+        "hiring": "Hiring",
+        "account": "Account"
+      }
     },
     "signup": {
       "metaTitle": "I’m hiring",
@@ -2581,7 +2600,8 @@
                 "session": "<strong>authjs.session-token</strong>: keeps you signed in (30 days, deleted when you sign out).",
                 "csrf": "<strong>authjs.csrf-token</strong>: protects the login forms against request forgery (browser session).",
                 "callback": "<strong>authjs.callback-url</strong>: page to return to after login (browser session).",
-                "locale": "<strong>NEXT_LOCALE</strong>: display language you have chosen (browser session)."
+                "locale": "<strong>NEXT_LOCALE</strong>: display language you have chosen (browser session).",
+                "sidebar": "<strong>cc-sidebar</strong>: remembers whether you collapsed the side menu of your space (1 year)."
               },
               "p2": "Your browser also keeps, in local storage, the automatic lock delay of the identity vault that you have chosen: this is not personal data."
             }

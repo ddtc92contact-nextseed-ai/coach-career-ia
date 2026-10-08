@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
-import { LocaleSwitcher } from "@/components/locale-switcher";
-import { Logo } from "@/components/logo";
+import { Icon } from "@/components/icons";
+import { AppShell } from "@/components/shell/app-shell";
+import { SIDEBAR_COLLAPSED, SIDEBAR_COOKIE } from "@/components/shell/nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Link } from "@/i18n/navigation";
 import { initUserLocale } from "@/lib/career/repository";
 import { countNewThreads } from "@/lib/employer/inbox";
 import { requireEmployer } from "@/lib/employer/session";
-import { logout } from "../../app/actions";
-import { EmployerNav } from "./nav";
+import { EmployerNav, EmployerSidebarFooter } from "./nav";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("employer");
@@ -28,50 +28,39 @@ export default async function EmployerLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { user, org } = await requireEmployer();
-  const [t, locale, newThreads] = await Promise.all([
+  const [t, locale, newThreads, cookieStore] = await Promise.all([
     getTranslations("employer"),
     getLocale(),
     countNewThreads(org.id),
+    cookies(),
   ]);
   await initUserLocale(user.id, locale);
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <header className="border-line bg-surface border-b">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex h-16 items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
-              <Logo href="/entreprise" />
-              <span className="text-ink-muted hidden truncate text-sm font-medium sm:inline">
-                {org.name}
-              </span>
-              {org.status !== "ACTIVE" ? (
+    <AppShell
+      homeHref="/entreprise"
+      initialCollapsed={cookieStore.get(SIDEBAR_COOKIE)?.value === SIDEBAR_COLLAPSED}
+      context={
+        <div className="bg-night-raised/70 ring-night-line flex items-start gap-3 rounded-xl px-3 py-3 ring-1 ring-inset">
+          <Icon name="building" className="text-signal mt-0.5 size-5 shrink-0" />
+          <div className="min-w-0">
+            <p className="text-on-night-muted text-xs font-semibold tracking-widest uppercase">
+              {t("nav.label")}
+            </p>
+            <p className="text-on-night mt-0.5 font-semibold break-words">{org.name}</p>
+            {org.status !== "ACTIVE" ? (
+              <p className="mt-2">
                 <Badge tone="warning">{t(`org.status.${org.status}`)}</Badge>
-              ) : null}
-            </div>
-            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-              <Link
-                href="/app"
-                className="text-ink-muted hover:text-ink hidden text-sm hover:underline md:inline"
-              >
-                {t("nav.candidate")}
-              </Link>
-              <LocaleSwitcher persist />
-              <form action={logout}>
-                <button
-                  type="submit"
-                  className="border-line-strong hover:bg-muted rounded-lg border px-3 py-1.5 text-sm font-medium whitespace-nowrap"
-                >
-                  {t("signOut")}
-                </button>
-              </form>
-            </div>
+              </p>
+            ) : null}
           </div>
-          <EmployerNav newThreads={newThreads} />
         </div>
-      </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
-      <SiteFooter />
-    </div>
+      }
+      nav={<EmployerNav newThreads={newThreads} />}
+      footer={<EmployerSidebarFooter email={user.email} />}
+      pageFooter={<SiteFooter />}
+    >
+      {children}
+    </AppShell>
   );
 }

@@ -521,6 +521,14 @@
     "delete": "Löschen",
     "deleting": "Wird gelöscht…"
   },
+  "shell": {
+    "menu": "Menü",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "collapse": "Menü einklappen",
+    "expand": "Menü ausklappen",
+    "skipToContent": "Zum Inhalt springen"
+  },
   "errors": {
     "summary": "{count, plural, one {Ein Feld muss korrigiert werden.} other {# Felder müssen korrigiert werden.}}",
     "required": "Dieses Feld ist erforderlich.",
@@ -558,14 +566,21 @@
       "guardRails": "Meine Leitplanken",
       "opportunities": "Chancen",
       "settings": "Einstellungen",
-      "radar": "Radar (Admin)",
+      "radar": "Radar",
       "coach": "KI-Coach",
       "billing": "Abonnement",
-      "billingSimulator": "Zahlungssimulator (Admin)",
+      "billingSimulator": "Zahlungssimulator",
       "card": "Meine anonyme Karte",
       "contacts": "Kontakte",
       "employer": "Unternehmensbereich",
-      "moderation": "Moderation (Admin)"
+      "moderation": "Moderation",
+      "groups": {
+        "profile": "Mein Profil",
+        "agent": "Mein Agent",
+        "account": "Konto",
+        "admin": "Verwaltung"
+      },
+      "unread": "{count, plural, one {# neue Antwort} other {# neue Antworten}}"
     }
   },
   "dashboard": {
@@ -2217,7 +2232,11 @@
       "organization": "Meine Organisation",
       "candidate": "Kandidatenbereich",
       "messages": "Postfach",
-      "newThreads": "{count, plural, one {# neue Nachricht} other {# neue Nachrichten}}"
+      "newThreads": "{count, plural, one {# neue Nachricht} other {# neue Nachrichten}}",
+      "groups": {
+        "hiring": "Recruiting",
+        "account": "Konto"
+      }
     },
     "signup": {
       "metaTitle": "Für Unternehmen",
@@ -2581,7 +2600,8 @@
                 "session": "<strong>authjs.session-token</strong>: hält Ihre Anmeldung aufrecht (30 Tage, bei Abmeldung gelöscht).",
                 "csrf": "<strong>authjs.csrf-token</strong>: schützt die Anmeldeformulare vor Cross-Site-Request-Forgery (Browsersitzung).",
                 "callback": "<strong>authjs.callback-url</strong>: Seite, auf die Sie nach der Anmeldung zurückkehren (Browsersitzung).",
-                "locale": "<strong>NEXT_LOCALE</strong>: gewählte Anzeigesprache (Browsersitzung)."
+                "locale": "<strong>NEXT_LOCALE</strong>: gewählte Anzeigesprache (Browsersitzung).",
+                "sidebar": "<strong>cc-sidebar</strong>: speichert, ob Sie das Seitenmenü Ihres Bereichs eingeklappt haben (1 Jahr)."
               },
               "p2": "Ihr Browser speichert außerdem im lokalen Speicher die von Ihnen gewählte Dauer der automatischen Sperre des Identitätstresors: keine personenbezogenen Daten."
             }
