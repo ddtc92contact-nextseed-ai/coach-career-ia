@@ -31,13 +31,13 @@ type ErrorKey =
   | "cvType"
   | "generic";
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 const primaryButton =
-  "w-full rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
 const secondaryButton =
-  "rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium hover:bg-stone-100 disabled:opacity-60";
+  "rounded-lg border border-line-strong px-4 py-2.5 text-sm font-medium hover:bg-muted disabled:opacity-60";
 const dangerButton =
-  "rounded-lg border border-red-200 px-4 py-2.5 text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-60";
+  "rounded-lg border border-danger-line px-4 py-2.5 text-sm font-medium text-danger-ink hover:bg-danger-soft disabled:opacity-60";
 
 function errorKey(error: unknown, fallback: ErrorKey = "generic"): ErrorKey {
   if (error instanceof VaultDecryptError) return fallback;
@@ -83,7 +83,7 @@ function Alert({ error }: { error: ErrorKey | null }) {
   return (
     <p
       role="alert"
-      className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+      className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
     >
       {t(error, { min: MIN_PASSPHRASE_LENGTH })}
     </p>
@@ -112,11 +112,11 @@ function TextInput({
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-stone-800">
+      <label htmlFor={id} className="text-ink block text-sm font-medium">
         {label}
       </label>
       {hint ? (
-        <p id={`${id}-hint`} className="mt-0.5 text-sm text-stone-500">
+        <p id={`${id}-hint`} className="text-ink-subtle mt-0.5 text-sm">
           {hint}
         </p>
       ) : null}
@@ -141,18 +141,18 @@ function TextInput({
 function Explainer() {
   const t = useTranslations("identity.explain");
   return (
-    <section className={`${sectionClass} bg-stone-50`} aria-labelledby="zero-connaissance">
+    <section className={`${sectionClass} bg-subtle`} aria-labelledby="zero-connaissance">
       <h2 id="zero-connaissance" className="flex items-center gap-2 text-lg font-semibold">
         <LockIcon />
         {t("title")}
       </h2>
-      <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-stone-700">
+      <ul className="text-ink-muted mt-3 list-disc space-y-2 pl-5 text-sm">
         <li>{t("encrypted")}</li>
         <li>{t("nobody")}</li>
         <li>{t("you")}</li>
         <li>{t("handover")}</li>
       </ul>
-      <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+      <p className="border-warning-line bg-warning-soft text-warning-ink mt-4 rounded-lg border px-4 py-3 text-sm">
         <strong className="font-semibold">{t("lossTitle")}</strong> {t("loss")}
       </p>
     </section>
@@ -201,18 +201,18 @@ function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone:
 
   return (
     <section
-      className={`${sectionClass} border-amber-300`}
+      className={`${sectionClass} border-warning-line`}
       aria-labelledby="cle-secours"
       role="region"
     >
       <h2 id="cle-secours" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 text-sm text-stone-700">{t("intro")}</p>
-      <p className="mt-3 rounded-xl border border-stone-300 bg-stone-50 px-4 py-4 text-center font-mono text-base font-semibold tracking-wider break-words sm:text-lg">
+      <p className="text-ink-muted mt-1 text-sm">{t("intro")}</p>
+      <p className="border-line-strong bg-subtle mt-3 rounded-xl border px-4 py-4 text-center font-mono text-base font-semibold tracking-wider break-words sm:text-lg">
         {recoveryKey}
       </p>
-      <p className="mt-3 text-sm text-amber-900">{t("warning")}</p>
+      <p className="text-warning-ink mt-3 text-sm">{t("warning")}</p>
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <button type="button" onClick={download} className={secondaryButton}>
           {t("download")}
@@ -243,7 +243,7 @@ function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone:
           onChange={(e) => setSaved(e.target.checked)}
           className="mt-1 size-4 shrink-0"
         />
-        <label htmlFor={checkboxId} className="text-sm text-stone-700">
+        <label htmlFor={checkboxId} className="text-ink-muted text-sm">
           {t("confirm")}
         </label>
       </div>
@@ -268,7 +268,7 @@ function UnlockForm({ onForgot }: { onForgot: () => void }) {
         <LockIcon />
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           setError(null);
@@ -298,7 +298,7 @@ function UnlockForm({ onForgot }: { onForgot: () => void }) {
           <button
             type="button"
             onClick={onForgot}
-            className="text-sm font-medium text-stone-700 underline underline-offset-4"
+            className="text-ink-muted text-sm font-medium underline underline-offset-4"
           >
             {t("forgot")}
           </button>
@@ -321,7 +321,7 @@ function RecoverForm({ onBack }: { onBack: () => void }) {
       <h2 id="recuperer" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           if (passphrase.length < MIN_PASSPHRASE_LENGTH) return setError("tooShort");
@@ -367,7 +367,7 @@ function RecoverForm({ onBack }: { onBack: () => void }) {
           <button
             type="button"
             onClick={onBack}
-            className="text-sm font-medium text-stone-700 underline underline-offset-4"
+            className="text-ink-muted text-sm font-medium underline underline-offset-4"
           >
             {t("back")}
           </button>
@@ -393,7 +393,7 @@ function AccountSetupForm({ onCreated }: { onCreated: (recoveryKey: string) => v
       <h2 id="creer-coffre" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           if (!understood) return setError("understand");
@@ -427,7 +427,7 @@ function AccountSetupForm({ onCreated }: { onCreated: (recoveryKey: string) => v
             onChange={(e) => setUnderstood(e.target.checked)}
             className="mt-1 size-4 shrink-0"
           />
-          <label htmlFor={checkboxId} className="text-sm text-stone-700">
+          <label htmlFor={checkboxId} className="text-ink-muted text-sm">
             {t("understand")}
           </label>
         </div>
@@ -450,7 +450,7 @@ function NoPasswordNotice() {
       <h2 id="sans-mot-de-passe" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("text")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("text")}</p>
       <Link
         href="/app/parametres#mot-de-passe"
         className={`${primaryButton} inline-block text-center`}
@@ -464,7 +464,7 @@ function NoPasswordNotice() {
 function PasswordTip() {
   const t = useTranslations("identity");
   return (
-    <p className="border-brand-100 bg-brand-50 text-brand-800 rounded-2xl border px-4 py-3 text-sm">
+    <p className="border-brand-line bg-brand-soft text-brand-ink rounded-2xl border px-4 py-3 text-sm">
       {t("passwordTip")}{" "}
       <Link
         href="/app/parametres#mot-de-passe"
@@ -488,7 +488,7 @@ function AccountUnlockForm() {
         <LockIcon />
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           setError(null);
@@ -516,7 +516,7 @@ function AccountUnlockForm() {
           </button>
           <Link
             href="/connexion/mot-de-passe-oublie"
-            className="text-sm font-medium text-stone-700 underline underline-offset-4"
+            className="text-ink-muted text-sm font-medium underline underline-offset-4"
           >
             {t("forgot")}
           </Link>
@@ -546,7 +546,7 @@ function BindForm({ kind }: { kind: "legacy" | "stale" }) {
         <LockIcon />
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           setError(null);
@@ -601,7 +601,7 @@ function BindForm({ kind }: { kind: "legacy" | "stale" }) {
                 setSecret("");
                 setError(null);
               }}
-              className="text-sm font-medium text-stone-700 underline underline-offset-4"
+              className="text-ink-muted text-sm font-medium underline underline-offset-4"
             >
               {useRecovery ? t("usePassphrase") : t("useRecovery")}
             </button>
@@ -615,7 +615,7 @@ function BindForm({ kind }: { kind: "legacy" | "stale" }) {
 function StaleNoKey() {
   const t = useTranslations("identity.stale");
   return (
-    <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+    <p className="border-warning-line bg-warning-soft text-warning-ink rounded-2xl border px-4 py-3 text-sm">
       <strong className="font-semibold">{t("noKeyTitle")}</strong> {t("noKey")}
     </p>
   );
@@ -644,11 +644,11 @@ function ListSection<T>({
   return (
     <fieldset className="space-y-3">
       <legend className="text-base font-semibold">{title}</legend>
-      {intro ? <p className="-mt-1 text-sm text-stone-600">{intro}</p> : null}
-      {items.length === 0 ? <p className="text-sm text-stone-500">{t("none")}</p> : null}
+      {intro ? <p className="text-ink-muted -mt-1 text-sm">{intro}</p> : null}
+      {items.length === 0 ? <p className="text-ink-subtle text-sm">{t("none")}</p> : null}
       <ul className="space-y-3">
         {items.map((item, index) => (
-          <li key={index} className="rounded-xl border border-stone-200 p-3 sm:p-4">
+          <li key={index} className="border-line rounded-xl border p-3 sm:p-4">
             <div className="grid gap-3 sm:grid-cols-2">
               {render(item, (patch) =>
                 onChange(items.map((it, i) => (i === index ? { ...it, ...patch } : it))),
@@ -658,7 +658,7 @@ function ListSection<T>({
               <button
                 type="button"
                 onClick={() => onChange(items.filter((_, i) => i !== index))}
-                className="rounded-lg border border-stone-200 px-2.5 py-1 text-sm text-stone-700 hover:bg-stone-50"
+                className="border-line text-ink-muted hover:bg-subtle rounded-lg border px-2.5 py-1 text-sm"
               >
                 {t("remove")}
               </button>
@@ -690,7 +690,7 @@ function ExperienceSelect({
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-stone-800">
+      <label htmlFor={id} className="text-ink block text-sm font-medium">
         {t("employerExperience")}
       </label>
       <select
@@ -727,7 +727,7 @@ function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
       <h2 id="mon-identite" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-5 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-5 text-sm">{t("intro")}</p>
       <LocalForm
         className="space-y-8"
         onSubmit={async () => {
@@ -765,7 +765,7 @@ function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
 
         <fieldset className="space-y-3">
           <legend className="text-base font-semibold">{t("contactTitle")}</legend>
-          <p className="-mt-1 text-sm text-stone-600">{t("contactIntro")}</p>
+          <p className="text-ink-muted -mt-1 text-sm">{t("contactIntro")}</p>
           <div className="grid gap-3 sm:grid-cols-2">
             <TextInput
               label={t("email")}
@@ -853,19 +853,19 @@ function IdentityEditor({ experiences }: { experiences: ExperienceOption[] }) {
           )}
         />
 
-        <div className="space-y-3 border-t border-stone-200 pt-5">
+        <div className="border-line space-y-3 border-t pt-5">
           <Alert error={error} />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button type="submit" disabled={pending} className={primaryButton}>
               {pending ? t("saving") : t("save")}
             </button>
             {saved ? (
-              <p role="status" className="text-brand-700 text-sm font-medium">
+              <p role="status" className="text-brand-ink text-sm font-medium">
                 {t("saved")}
               </p>
             ) : null}
           </div>
-          <p className="text-xs text-stone-500">{t("saveHint")}</p>
+          <p className="text-ink-subtle text-xs">{t("saveHint")}</p>
         </div>
       </LocalForm>
     </section>
@@ -911,10 +911,10 @@ function CvSection() {
       <h2 id="cv-origine" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <div className="space-y-3">
         <Alert error={error} />
-        <p className="text-sm font-medium text-stone-800">{hasCv ? t("current") : t("none")}</p>
+        <p className="text-ink text-sm font-medium">{hasCv ? t("current") : t("none")}</p>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           {hasCv ? (
             <button
@@ -947,7 +947,7 @@ function CvSection() {
           />
           <label
             htmlFor={inputId}
-            className={`${secondaryButton} peer-focus-visible:outline-brand-600 cursor-pointer text-center peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 ${pending ? "pointer-events-none opacity-60" : ""}`}
+            className={`${secondaryButton} peer-focus-visible:outline-focus cursor-pointer text-center peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 ${pending ? "pointer-events-none opacity-60" : ""}`}
           >
             {pending === "upload" ? t("uploading") : hasCv ? t("replace") : t("choose")}
           </label>
@@ -964,7 +964,7 @@ function CvSection() {
             </button>
           ) : null}
         </div>
-        <p className="text-xs text-stone-500">
+        <p className="text-ink-subtle text-xs">
           {t("hint", { max: format.number(MAX_CV_BYTES / 1024 / 1024) })}
         </p>
       </div>
@@ -988,7 +988,7 @@ function ChangePassphraseForm() {
       <h2 id="changer-phrase" className="text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <LocalForm
         onSubmit={async () => {
           setDone(false);
@@ -1038,7 +1038,7 @@ function ChangePassphraseForm() {
             {pending ? t("working") : t("submit")}
           </button>
           {done ? (
-            <p role="status" className="text-brand-700 text-sm font-medium">
+            <p role="status" className="text-brand-ink text-sm font-medium">
               {t("done")}
             </p>
           ) : null}
@@ -1056,20 +1056,20 @@ function LockBar() {
     ? IDLE_CHOICES
     : [...IDLE_CHOICES, idleMinutes].sort((a, b) => a - b);
   return (
-    <div className="border-brand-100 bg-brand-50 flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-brand-800 flex items-center gap-2 text-sm font-medium" role="status">
+    <div className="border-brand-line bg-brand-soft flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-brand-ink flex items-center gap-2 text-sm font-medium" role="status">
         <LockIcon open />
         {t("unlocked.status")}
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <label htmlFor={id} className="text-sm text-stone-700">
+        <label htmlFor={id} className="text-ink-muted text-sm">
           {t("unlocked.idle")}
         </label>
         <select
           id={id}
           value={idleMinutes}
           onChange={(e) => setIdleMinutes(Number(e.target.value))}
-          className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-base sm:text-sm"
+          className="border-line-strong bg-surface rounded-lg border px-3 py-2 text-base sm:text-sm"
         >
           {choices.map((minutes) => (
             <option key={minutes} value={minutes}>
@@ -1091,11 +1091,11 @@ function ResetSection() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<ErrorKey | null>(null);
   return (
-    <section className={`${sectionClass} border-red-200`} aria-labelledby="reinitialiser">
-      <h2 id="reinitialiser" className="text-lg font-semibold text-red-800">
+    <section className={`${sectionClass} border-danger-line`} aria-labelledby="reinitialiser">
+      <h2 id="reinitialiser" className="text-danger-ink text-lg font-semibold">
         {t("title")}
       </h2>
-      <p className="mt-1 mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 mb-4 text-sm">{t("intro")}</p>
       <Alert error={error} />
       <button
         type="button"
@@ -1133,7 +1133,7 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
     body = <RecoveryKeyStep recoveryKey={recoveryKey} onDone={() => setRecoveryKey(null)} />;
   } else if (status === "loading") {
     body = (
-      <p role="status" className="text-sm text-stone-500">
+      <p role="status" className="text-ink-subtle text-sm">
         {t("loading")}
       </p>
     );

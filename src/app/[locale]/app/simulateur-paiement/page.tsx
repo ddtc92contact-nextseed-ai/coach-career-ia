@@ -45,7 +45,7 @@ const ERRORS: Record<string, string> = {
 };
 
 const button =
-  "w-full rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-stone-100 sm:w-auto sm:shrink-0";
+  "w-full rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-muted sm:w-auto sm:shrink-0";
 
 export default async function BillingSimulatorAdminPage({
   searchParams,
@@ -92,14 +92,14 @@ export default async function BillingSimulatorAdminPage({
       />
 
       {!active ? (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p className="border-warning-line bg-warning-soft text-warning-ink rounded-lg border px-4 py-3 text-sm">
           {ERRORS.inactif}
         </p>
       ) : null}
       {query.introuvable ? (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
         >
           Aucun compte avec cette adresse.
         </p>
@@ -107,7 +107,7 @@ export default async function BillingSimulatorAdminPage({
       {isAction(query.fait) ? (
         <p
           role="status"
-          className="border-brand-100 bg-brand-50 text-brand-900 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink rounded-lg border px-4 py-3 text-sm"
         >
           Fait : {ACTIONS[query.fait].label}.
         </p>
@@ -115,7 +115,7 @@ export default async function BillingSimulatorAdminPage({
       {query.erreur ? (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
         >
           {ERRORS[query.erreur] ??
             (isAction(query.erreur)
@@ -132,7 +132,7 @@ export default async function BillingSimulatorAdminPage({
             name="email"
             required
             autoComplete="off"
-            className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+            className="border-line-strong mt-1 w-full rounded-lg border px-3 py-2"
           />
         </label>
         <button type="submit" className={button}>
@@ -141,25 +141,25 @@ export default async function BillingSimulatorAdminPage({
       </form>
 
       {target && account && entitlements ? (
-        <section className="rounded-2xl border border-stone-200 bg-white p-4 text-sm sm:p-6">
+        <section className="border-line bg-surface rounded-2xl border p-4 text-sm sm:p-6">
           <h2 className="font-semibold break-all">{target.email}</h2>
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-            <dt className="text-stone-500">Droits</dt>
+            <dt className="text-ink-subtle">Droits</dt>
             <dd>
               {entitlements.plan} ({entitlements.source})
             </dd>
-            <dt className="text-stone-500">Offre enregistrée</dt>
+            <dt className="text-ink-subtle">Offre enregistrée</dt>
             <dd>{account.plan}</dd>
-            <dt className="text-stone-500">Statut</dt>
+            <dt className="text-ink-subtle">Statut</dt>
             <dd>{account.subscriptionStatus ?? "—"}</dd>
-            <dt className="text-stone-500">Fin de période</dt>
+            <dt className="text-ink-subtle">Fin de période</dt>
             <dd>
               {account.currentPeriodEnd ? dateTime.format(account.currentPeriodEnd) : "—"}
               {account.cancelAtPeriodEnd ? " (résilié à l'échéance)" : ""}
             </dd>
-            <dt className="text-stone-500">Abonnement</dt>
+            <dt className="text-ink-subtle">Abonnement</dt>
             <dd className="break-all">{account.stripeSubscriptionId ?? "—"}</dd>
-            <dt className="text-stone-500">Simulé en cours</dt>
+            <dt className="text-ink-subtle">Simulé en cours</dt>
             <dd>
               {sub
                 ? `${sub.status}${sub.cancelAtPeriodEnd ? ", résiliation demandée" : ""}`
@@ -167,7 +167,7 @@ export default async function BillingSimulatorAdminPage({
             </dd>
           </dl>
           {entitlements.source === "admin" ? (
-            <p className="mt-3 text-amber-800">
+            <p className="text-warning-ink mt-3">
               Compte administrateur : Premium d’office quel que soit l’abonnement. Tester le
               parcours avec un compte hors ADMIN_EMAILS.
             </p>
@@ -189,7 +189,7 @@ export default async function BillingSimulatorAdminPage({
                   >
                     {ACTIONS[action].label}
                   </button>
-                  <span className="text-xs text-stone-500">{ACTIONS[action].hint}</span>
+                  <span className="text-ink-subtle text-xs">{ACTIONS[action].hint}</span>
                 </form>
               </li>
             ))}

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { legalPath } from "@/lib/legal/pages";
 
-const linkClass = "underline underline-offset-2 hover:text-stone-900";
+const linkClass = "underline underline-offset-2 hover:text-ink";
 
 /**
  * « En continuant, vous acceptez… » sous les formulaires d'inscription. La
@@ -14,7 +14,7 @@ const linkClass = "underline underline-offset-2 hover:text-stone-900";
 export function LegalConsent({ audience }: { audience: "candidate" | "company" }) {
   const t = useTranslations("legal.consent");
   return (
-    <p className="text-xs leading-relaxed text-stone-500">
+    <p className="text-ink-subtle text-xs leading-relaxed">
       {t.rich(audience, {
         terms: (chunks) => (
           <Link

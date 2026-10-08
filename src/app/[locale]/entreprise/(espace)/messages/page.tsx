@@ -30,23 +30,23 @@ export default async function EmployerInboxPage() {
       {threads.length === 0 ? (
         <EmptyState title={t("emptyTitle")} text={t("emptyText")} />
       ) : (
-        <ul className="divide-y divide-stone-200 overflow-hidden rounded-2xl border border-stone-200 bg-white">
+        <ul className="divide-line border-line bg-surface divide-y overflow-hidden rounded-2xl border">
           {threads.map((thread) => (
             <li key={thread.id}>
               <Link
                 href={`/entreprise/messages/${thread.id}`}
-                className="flex flex-col gap-1 px-4 py-3 hover:bg-stone-50 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                className="hover:bg-subtle flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
               >
                 <span className="min-w-0">
                   <span
-                    className={`block break-words text-stone-900 ${
+                    className={`text-ink block break-words ${
                       thread.status === "NEW" ? "font-semibold" : "font-medium"
                     }`}
                   >
                     {t("threadTitle", { title: thread.offerTitle })}
                   </span>
                   {thread.lastActivityAt ? (
-                    <span className="block text-xs text-stone-500">
+                    <span className="text-ink-subtle block text-xs">
                       {t("lastActivity", {
                         date: format.dateTime(thread.lastActivityAt, "short"),
                       })}
@@ -59,7 +59,7 @@ export default async function EmployerInboxPage() {
           ))}
         </ul>
       )}
-      <p className="mt-6 text-xs text-stone-500">{t("privacy")}</p>
+      <p className="text-ink-subtle mt-6 text-xs">{t("privacy")}</p>
     </div>
   );
 }

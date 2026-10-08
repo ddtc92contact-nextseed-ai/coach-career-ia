@@ -10,8 +10,8 @@ import type { SuggestionData, SuggestionView } from "@/lib/coach/shared";
 import { acceptCoachSuggestion, rejectCoachSuggestion } from "../actions";
 
 const smallButton = "rounded-lg border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
-const acceptClass = `${smallButton} border-brand-600 bg-brand-600 text-white hover:bg-brand-700`;
-const neutralClass = `${smallButton} border-stone-300 bg-white text-stone-700 hover:bg-stone-100`;
+const acceptClass = `${smallButton} border-brand bg-brand text-on-brand hover:bg-brand-hover`;
+const neutralClass = `${smallButton} border-line-strong bg-surface text-ink-muted hover:bg-muted`;
 
 function text(form: FormData, name: string) {
   return String(form.get(name) ?? "");
@@ -70,7 +70,7 @@ export function SuggestionCard({
     <article
       aria-label={t(`kinds.${suggestion.kind}`)}
       className={`ml-0 rounded-xl border p-4 sm:ml-6 ${
-        decided ? "border-stone-200 bg-stone-50" : "border-brand-200 bg-white shadow-xs"
+        decided ? "border-line bg-subtle" : "border-brand-line bg-surface shadow-xs"
       }`}
     >
       <div className="flex flex-wrap items-center gap-2">
@@ -82,12 +82,12 @@ export function SuggestionCard({
         {suggestion.status === "REJECTED" ? <Badge>{t("rejectedBadge")}</Badge> : null}
       </div>
       {suggestion.rationale ? (
-        <p className="mt-1 text-sm text-stone-600">
+        <p className="text-ink-muted mt-1 text-sm">
           {t("why", { rationale: suggestion.rationale })}
         </p>
       ) : null}
       {suggestion.identityRemoved ? (
-        <p className="mt-2 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-900">
+        <p className="bg-warning-soft text-warning-ink mt-2 rounded-md px-3 py-2 text-xs">
           {t("identityRemoved")}
         </p>
       ) : null}
@@ -122,7 +122,7 @@ export function SuggestionCard({
             <FormError errors={errors} />
           </div>
           {decided ? (
-            <p className="mt-3 text-sm text-stone-600">
+            <p className="text-ink-muted mt-3 text-sm">
               {suggestion.status === "ACCEPTED" ? (
                 <>
                   {suggestion.kind === "GUARD_RAIL" ? t("acceptedGuardRail") : t("accepted")}{" "}
@@ -139,7 +139,7 @@ export function SuggestionCard({
             </p>
           ) : (
             <>
-              <p className="mt-3 text-xs text-stone-500">{t("draft")}</p>
+              <p className="text-ink-subtle mt-3 text-xs">{t("draft")}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <button
                   type="button"
@@ -177,7 +177,7 @@ export function SuggestionCard({
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="grid gap-0.5 sm:grid-cols-[11rem_1fr] sm:gap-3">
-      <dt className="text-xs font-medium text-stone-500 sm:text-sm">{label}</dt>
+      <dt className="text-ink-subtle text-xs font-medium sm:text-sm">{label}</dt>
       <dd className="text-sm break-words whitespace-pre-wrap">{children}</dd>
     </div>
   );
@@ -341,7 +341,7 @@ function EditFields({ suggestion, errors }: { suggestion: SuggestionView; errors
             ? area("responsibilities", f("responsibilities"), c.responsibilities)
             : null}
           {c.roleTitle === undefined && c.responsibilities === undefined ? (
-            <p className="text-sm text-stone-600">{t("nothingToEdit")}</p>
+            <p className="text-ink-muted text-sm">{t("nothingToEdit")}</p>
           ) : null}
         </>
       );
@@ -368,7 +368,7 @@ function EditFields({ suggestion, errors }: { suggestion: SuggestionView; errors
           {[d.minFixedSalary, d.targetTotalPackage, d.minRemoteDays, d.maxWeeklyHours].every(
             (v) => v === undefined,
           ) ? (
-            <p className="text-sm text-stone-600">{t("nothingToEdit")}</p>
+            <p className="text-ink-muted text-sm">{t("nothingToEdit")}</p>
           ) : null}
         </>
       );

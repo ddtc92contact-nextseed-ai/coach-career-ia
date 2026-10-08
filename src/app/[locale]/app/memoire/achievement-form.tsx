@@ -113,7 +113,7 @@ export function AchievementForm({
         <SubmitButton pending={pending}>{id ? t("save") : t("create")}</SubmitButton>
         <Link
           href="/app/memoire#realisations"
-          className="text-center text-sm text-stone-600 underline-offset-4 hover:underline"
+          className="text-ink-muted text-center text-sm underline-offset-4 hover:underline"
         >
           {tm("cancel")}
         </Link>

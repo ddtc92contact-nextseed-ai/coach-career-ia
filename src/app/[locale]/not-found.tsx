@@ -6,8 +6,8 @@ export default function NotFound() {
   const t = useTranslations("notFound");
   return (
     <AuthCard title={t("title")}>
-      <p className="text-stone-600">{t("text")}</p>
-      <Link href="/" className="text-brand-700 mt-6 inline-block underline underline-offset-4">
+      <p className="text-ink-muted">{t("text")}</p>
+      <Link href="/" className="text-brand-ink mt-6 inline-block underline underline-offset-4">
         {t("back")}
       </Link>
     </AuthCard>

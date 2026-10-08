@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 export default async function SettingsPage() {
   const user = await requireUser();
@@ -36,7 +36,7 @@ export default async function SettingsPage() {
         <h2 id="mot-de-passe-titre" className="text-lg font-semibold">
           {t("password.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">
+        <p className="text-ink-muted mt-1 mb-4 text-sm">
           {hasPassword ? t("password.introChange") : t("password.introSet")}
         </p>
         <PasswordForm hasPassword={hasPassword} email={user.email} />
@@ -46,7 +46,7 @@ export default async function SettingsPage() {
         <h2 id="langue" className="text-lg font-semibold">
           {t("language.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("language.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("language.intro")}</p>
         <LocaleSwitcher persist showLabel />
       </section>
 
@@ -58,7 +58,7 @@ export default async function SettingsPage() {
         <h2 id="alertes-titre" className="text-lg font-semibold">
           {t("alerts.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("alerts.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("alerts.intro")}</p>
         <AlertsForm frequency={alerts.frequency} minScore={alerts.minScore} />
       </section>
 
@@ -66,21 +66,21 @@ export default async function SettingsPage() {
         <h2 id="export" className="text-lg font-semibold">
           {t("export.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("export.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("export.intro")}</p>
         <a
           href="/api/account/export"
           download
-          className="inline-block rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium hover:bg-stone-100"
+          className="border-line-strong hover:bg-muted inline-block rounded-lg border px-4 py-2.5 text-sm font-medium"
         >
           {t("export.button")}
         </a>
       </section>
 
-      <section className={`${sectionClass} border-red-200`} aria-labelledby="suppression">
-        <h2 id="suppression" className="text-lg font-semibold text-red-800">
+      <section className={`${sectionClass} border-danger-line`} aria-labelledby="suppression">
+        <h2 id="suppression" className="text-danger-ink text-lg font-semibold">
           {t("delete.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("delete.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("delete.intro")}</p>
         <DeleteAccountForm />
       </section>
     </div>

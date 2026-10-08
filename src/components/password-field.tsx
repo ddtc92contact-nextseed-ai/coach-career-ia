@@ -9,7 +9,7 @@ import {
   STRENGTH_LEVELS,
 } from "@/lib/auth/password-strength";
 
-const BAR_COLORS = ["bg-red-500", "bg-red-500", "bg-amber-500", "bg-brand-600", "bg-brand-700"];
+const BAR_COLORS = ["bg-danger", "bg-danger", "bg-warning", "bg-brand", "bg-brand"];
 
 /**
  * Champ mot de passe avec bouton afficher/masquer et, pour un nouveau mot de
@@ -50,7 +50,7 @@ export function PasswordField({
 
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-stone-800">
+      <label htmlFor={id} className="text-ink block text-sm font-medium">
         {label}
       </label>
       <div className="relative">
@@ -73,7 +73,7 @@ export function PasswordField({
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? t("hideLabel") : t("showLabel")}
           aria-pressed={visible}
-          className="absolute inset-y-0 right-0 mt-1 rounded-r-lg px-3 text-sm font-medium text-stone-600 hover:text-stone-900"
+          className="text-ink-muted hover:text-ink absolute inset-y-0 right-0 mt-1 rounded-r-lg px-3 text-sm font-medium"
         >
           {visible ? t("hide") : t("show")}
         </button>
@@ -86,22 +86,22 @@ export function PasswordField({
                 {[1, 2, 3, 4].map((step) => (
                   <span
                     key={step}
-                    className={`h-1.5 flex-1 rounded-full ${level >= step ? BAR_COLORS[level] : "bg-stone-200"}`}
+                    className={`h-1.5 flex-1 rounded-full ${level >= step ? BAR_COLORS[level] : "bg-line"}`}
                   />
                 ))}
               </div>
-              <p className="mt-1 text-xs text-stone-600">
+              <p className="text-ink-muted mt-1 text-xs">
                 {t("strength", { level: t(`levels.${strength}`) })}
               </p>
             </div>
           ) : null}
-          <p id={`${id}-hint`} className="mt-1 text-xs text-stone-500">
+          <p id={`${id}-hint`} className="text-ink-subtle mt-1 text-xs">
             {t("hint", { min: MIN_PASSWORD_LENGTH })}
           </p>
         </>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="mt-1.5 text-sm text-red-700">
+        <p id={`${id}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
           {error}
         </p>
       ) : null}

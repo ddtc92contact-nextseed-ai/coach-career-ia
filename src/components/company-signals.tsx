@@ -85,12 +85,12 @@ export async function CompanySignalList({
             <Badge tone={signal.strength >= 3 ? "proven" : "neutral"}>
               {t(`strength.${STRENGTH[signal.strength as 1 | 2 | 3] ?? "weak"}`)}
             </Badge>
-            <span className="text-xs text-stone-500">
+            <span className="text-ink-subtle text-xs">
               {t("week", { date: format.dateTime(signal.periodStart, "short") })}
             </span>
           </div>
           {explain(signal, t, format, locale).map((line) => (
-            <p key={line} className={`mt-1 text-stone-700 ${compact ? "text-xs" : "text-sm"}`}>
+            <p key={line} className={`text-ink-muted mt-1 ${compact ? "text-xs" : "text-sm"}`}>
               {line}
             </p>
           ))}

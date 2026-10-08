@@ -23,7 +23,7 @@ type Pending = {
 type SendBody = { content: string } | { retry: true };
 
 const buttonClass =
-  "rounded-lg bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700 disabled:opacity-50";
+  "rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:opacity-50";
 
 /** Lit un flux NDJSON ligne par ligne. */
 async function* readEvents(response: Response): AsyncGenerator<CoachStreamEvent> {
@@ -257,12 +257,12 @@ export function CoachChat({
         ) : null}
       </ol>
 
-      <p aria-live="polite" className="min-h-5 text-sm text-stone-500">
+      <p aria-live="polite" className="text-ink-subtle min-h-5 text-sm">
         {pending ? (
           <span className="inline-flex items-center gap-2">
             <span
               aria-hidden="true"
-              className="size-2 animate-pulse rounded-full bg-stone-400 motion-reduce:animate-none"
+              className="bg-ink-subtle size-2 animate-pulse rounded-full motion-reduce:animate-none"
             />
             {t(`chat.status.${pending.status}`)}
           </span>
@@ -273,7 +273,7 @@ export function CoachChat({
       {error && error !== "quotaExceeded" ? (
         <div
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
         >
           <p className="font-medium">{t("errors.title")}</p>
           <p className="mt-1">{t(`errors.${error}`, { limit: limit ?? 0 })}</p>
@@ -282,7 +282,7 @@ export function CoachChat({
       ) : null}
       {canRetry && configured && error !== "tooManyRetries" ? (
         <div className="flex flex-wrap items-center gap-3">
-          {!error ? <p className="text-sm text-stone-600">{t("chat.unanswered")}</p> : null}
+          {!error ? <p className="text-ink-muted text-sm">{t("chat.unanswered")}</p> : null}
           <button type="button" className={buttonClass} onClick={() => void run({ retry: true })}>
             {t("errors.retry")}
           </button>
@@ -291,7 +291,7 @@ export function CoachChat({
 
       <form
         onSubmit={submit}
-        className="sticky bottom-0 -mx-4 border-t border-stone-200 bg-stone-50/95 px-4 pt-3 pb-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-white sm:p-3"
+        className="border-line bg-subtle/95 sm:bg-surface sticky bottom-0 -mx-4 border-t px-4 pt-3 pb-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:p-3"
       >
         <label htmlFor="coach-input" className="sr-only">
           {t("chat.inputLabel")}
@@ -307,10 +307,10 @@ export function CoachChat({
           placeholder={t("chat.placeholder")}
           aria-invalid={tooLong || undefined}
           aria-describedby="coach-input-hint"
-          className="focus:border-brand-600 block w-full resize-y rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-base placeholder:text-stone-400 focus:outline-none disabled:bg-stone-100 aria-[invalid=true]:border-red-600 sm:text-sm"
+          className="focus:border-brand border-line-strong bg-surface placeholder:text-ink-subtle disabled:bg-muted aria-[invalid=true]:border-danger block w-full resize-y rounded-lg border px-3 py-2.5 text-base focus:outline-none sm:text-sm"
         />
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <p id="coach-input-hint" className="text-xs text-stone-500">
+          <p id="coach-input-hint" className="text-ink-subtle text-xs">
             {tooLong
               ? t("chat.tooLong", { max: COACH_LIMITS.messageMaxChars })
               : !configured
@@ -343,10 +343,12 @@ function Bubble({
     <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
       <div
         className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm sm:max-w-[80%] ${
-          mine ? "bg-stone-900 text-white" : "border border-stone-200 bg-white text-stone-900"
+          mine ? "bg-primary text-on-primary" : "border-line bg-surface text-ink border"
         }`}
       >
-        <p className={`mb-1 text-xs font-medium ${mine ? "text-stone-300" : "text-stone-500"}`}>
+        <p
+          className={`mb-1 text-xs font-medium ${mine ? "text-on-primary/75" : "text-ink-subtle"}`}
+        >
           {author}
         </p>
         <div className="break-words whitespace-pre-wrap">{children}</div>

@@ -15,7 +15,7 @@ type FieldErrors = { email?: boolean; password?: boolean; terms?: boolean };
 type FormError = { key: "rateLimited" | "network" | "generic"; minutes: number };
 
 const emailSchema = z.email().max(254);
-const linkClass = "underline underline-offset-2 hover:text-stone-900";
+const linkClass = "underline underline-offset-2 hover:text-ink";
 
 /**
  * Inscription : e-mail + mot de passe (dérivé ici, jamais envoyé) +
@@ -70,13 +70,13 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
       {error ? (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
         >
           {t(`errors.${error.key}`, { minutes: error.minutes })}
         </p>
       ) : null}
       <div>
-        <label htmlFor={emailId} className="block text-sm font-medium text-stone-800">
+        <label htmlFor={emailId} className="text-ink block text-sm font-medium">
           {t("emailLabel")}
         </label>
         <input
@@ -93,7 +93,7 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
           className={inputClass}
         />
         {fields.email ? (
-          <p id={`${emailId}-error`} role="alert" className="mt-1.5 text-sm text-red-700">
+          <p id={`${emailId}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
             {t("errors.invalidEmail")}
           </p>
         ) : null}
@@ -106,7 +106,7 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
         meter
         error={fields.password ? tField("tooShort", { min: MIN_PASSWORD_LENGTH }) : undefined}
       />
-      <p className="rounded-lg bg-stone-50 px-3 py-2 text-xs text-stone-600">{t("vaultNote")}</p>
+      <p className="bg-subtle text-ink-muted rounded-lg px-3 py-2 text-xs">{t("vaultNote")}</p>
       <div>
         <div className="flex items-start gap-2">
           <input
@@ -118,7 +118,7 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
             aria-describedby={fields.terms ? `${termsId}-error` : undefined}
             className="mt-1 size-4 shrink-0"
           />
-          <label htmlFor={termsId} className="text-sm text-stone-700">
+          <label htmlFor={termsId} className="text-ink-muted text-sm">
             {t.rich("acceptTerms", {
               terms: (chunks) => (
                 <Link href={legalPath("terms")} className={linkClass} target="_blank">
@@ -134,7 +134,7 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
           </label>
         </div>
         {fields.terms ? (
-          <p id={`${termsId}-error`} role="alert" className="mt-1.5 text-sm text-red-700">
+          <p id={`${termsId}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
             {t("errors.terms")}
           </p>
         ) : null}
@@ -142,7 +142,7 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-stone-900 px-4 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60"
+        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
       >
         {pending ? t("submitting") : t("submit")}
       </button>

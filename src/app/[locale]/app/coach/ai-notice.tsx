@@ -6,7 +6,7 @@ export function AiNotice() {
   return (
     <p
       role="note"
-      className="mb-6 flex gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700"
+      className="border-line bg-subtle text-ink-muted mb-6 flex gap-2 rounded-lg border px-4 py-3 text-sm"
     >
       <span aria-hidden="true" className="font-semibold">
         {t("aiBadge")}

@@ -45,34 +45,34 @@ export default async function LoginPage({ params, searchParams }: Props) {
       {notice ? (
         <p
           role="status"
-          className="border-brand-100 bg-brand-50 text-brand-800 mb-4 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink mb-4 rounded-lg border px-4 py-3 text-sm"
         >
           {notice}
         </p>
       ) : null}
-      <p className="mb-6 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mb-6 text-sm">{t("intro")}</p>
       <PasswordLoginForm callbackUrl={callbackUrl} />
-      <p className="mt-4 text-center text-sm text-stone-600">
+      <p className="text-ink-muted mt-4 text-center text-sm">
         {tPassword("noAccount")}{" "}
         <Link
           href={withCallback("/inscription")}
-          className="text-brand-700 font-medium underline underline-offset-4"
+          className="text-brand-ink font-medium underline underline-offset-4"
         >
           {tPassword("signup")}
         </Link>
       </p>
-      <details className="group mt-6 rounded-xl border border-stone-200 p-4">
-        <summary className="cursor-pointer text-sm font-medium text-stone-700">
+      <details className="group border-line mt-6 rounded-xl border p-4">
+        <summary className="text-ink-muted cursor-pointer text-sm font-medium">
           {t("magicToggle")}
         </summary>
-        <p className="mt-3 mb-4 text-sm text-stone-600">{t("magicIntro")}</p>
+        <p className="text-ink-muted mt-3 mb-4 text-sm">{t("magicIntro")}</p>
         <LoginForm callbackUrl={callbackUrl} />
       </details>
       <div className="mt-6">
         <LegalConsent audience="candidate" />
       </div>
       <p className="mt-6 text-center text-sm">
-        <Link href="/" className="text-stone-500 underline-offset-4 hover:underline">
+        <Link href="/" className="text-ink-subtle underline-offset-4 hover:underline">
           {t("backHome")}
         </Link>
       </p>

@@ -19,10 +19,10 @@ export function RevealedIdentityView({
     ? [identity.name.firstName, identity.name.lastName].filter(Boolean).join(" ")
     : null;
   const row = "grid gap-0.5 sm:grid-cols-[10rem_1fr] sm:gap-3";
-  const label = "text-sm text-stone-500";
-  const value = "text-sm text-stone-900 [overflow-wrap:anywhere] break-words";
+  const label = "text-sm text-ink-subtle";
+  const value = "text-sm text-ink [overflow-wrap:anywhere] break-words";
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6">
+    <div className="border-line bg-surface rounded-2xl border p-4 sm:p-6">
       {name ? <p className="text-xl font-semibold tracking-tight break-words">{name}</p> : null}
       <dl className={`space-y-3 ${name ? "mt-4" : ""}`}>
         {identity.email ? (
@@ -48,7 +48,7 @@ export function RevealedIdentityView({
               <ul className="space-y-1">
                 {identity.links.map((l, i) => (
                   <li key={i}>
-                    {l.label ? <span className="text-stone-600">{l.label} : </span> : null}
+                    {l.label ? <span className="text-ink-muted">{l.label} : </span> : null}
                     {isHttpUrl(l.url) ? (
                       <a
                         href={l.url}
@@ -75,7 +75,7 @@ export function RevealedIdentityView({
                 {identity.employers.map((e, i) => (
                   <li key={i}>
                     <span className="font-medium">{e.name}</span>
-                    {e.role ? <span className="text-stone-600"> — {e.role}</span> : null}
+                    {e.role ? <span className="text-ink-muted"> — {e.role}</span> : null}
                   </li>
                 ))}
               </ul>
@@ -101,7 +101,7 @@ export function RevealedIdentityView({
               {cvHref ? (
                 <a
                   href={cvHref}
-                  className="inline-block rounded-lg bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-700"
+                  className="bg-primary text-on-primary hover:bg-primary-hover inline-block rounded-lg px-3 py-1.5 text-sm font-medium"
                   download
                 >
                   {t("cvDownload", { name: identity.cv.name })}

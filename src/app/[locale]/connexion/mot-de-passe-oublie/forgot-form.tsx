@@ -23,7 +23,7 @@ export function ForgotForm() {
     return (
       <p
         role="status"
-        className="border-brand-100 bg-brand-50 text-brand-800 rounded-lg border px-4 py-3 text-sm"
+        className="border-brand-line bg-brand-soft text-brand-ink rounded-lg border px-4 py-3 text-sm"
       >
         {t("sent")}
       </p>
@@ -51,7 +51,7 @@ export function ForgotForm() {
   return (
     <form method="post" noValidate onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label htmlFor={id} className="block text-sm font-medium text-stone-800">
+        <label htmlFor={id} className="text-ink block text-sm font-medium">
           {t("emailLabel")}
         </label>
         <input
@@ -68,7 +68,7 @@ export function ForgotForm() {
           className={inputClass}
         />
         {error ? (
-          <p id={`${id}-error`} role="alert" className="mt-1.5 text-sm text-red-700">
+          <p id={`${id}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
             {t(`errors.${error.key}`, { minutes: error.minutes })}
           </p>
         ) : null}
@@ -76,7 +76,7 @@ export function ForgotForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-stone-900 px-4 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60"
+        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
       >
         {pending ? t("submitting") : t("submit")}
       </button>

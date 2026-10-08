@@ -10,7 +10,7 @@ import { CARD_LIMITS, type CardContent } from "@/lib/card/schema";
 import { approveCardAction, createLinkAction, saveCardAction, type CardFormState } from "./actions";
 
 const secondaryButton =
-  "w-full rounded-lg border border-stone-300 px-5 py-2.5 font-medium hover:bg-stone-100 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
 
 /** Modification de la carte : textes, éléments affichés, garde-fous montrés. */
 export function CardForm({ card }: { card: CardContent }) {
@@ -31,7 +31,7 @@ export function CardForm({ card }: { card: CardContent }) {
   return (
     <ActionForm action={action} className="space-y-6">
       {state.message === "invalid" ? (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-danger-ink text-sm">
           {t("invalid")}
         </p>
       ) : null}
@@ -48,21 +48,21 @@ export function CardForm({ card }: { card: CardContent }) {
 
       {card.achievements.length > 0 ? (
         <fieldset className="space-y-4">
-          <legend className="text-sm font-medium text-stone-800">{t("achievements")}</legend>
-          <p className="text-sm text-stone-500">{t("achievementsHint")}</p>
+          <legend className="text-ink text-sm font-medium">{t("achievements")}</legend>
+          <p className="text-ink-subtle text-sm">{t("achievementsHint")}</p>
           {card.achievements.map((a, i) => (
-            <div key={i} className="space-y-3 rounded-lg border border-stone-200 p-3">
+            <div key={i} className="border-line space-y-3 rounded-lg border p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     name={`achievement-${i}-include`}
                     defaultChecked
-                    className="accent-brand-700"
+                    className="accent-brand"
                   />
                   {t("include")}
                 </label>
-                <span className="text-xs text-stone-500">{tc(a.evidenceLevel)}</span>
+                <span className="text-ink-subtle text-xs">{tc(a.evidenceLevel)}</span>
               </div>
               <Field id={`achievement-${i}-title`} label={t("achievementTitle")}>
                 <input
@@ -90,19 +90,19 @@ export function CardForm({ card }: { card: CardContent }) {
 
       {card.skills.length > 0 ? (
         <fieldset>
-          <legend className="text-sm font-medium text-stone-800">{t("skills")}</legend>
-          <p className="text-sm text-stone-500">{t("skillsHint")}</p>
+          <legend className="text-ink text-sm font-medium">{t("skills")}</legend>
+          <p className="text-ink-subtle text-sm">{t("skillsHint")}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {card.skills.map((s, i) => (
               <label
                 key={s.name}
-                className="flex items-center gap-2 rounded-full border border-stone-200 px-3 py-1 text-sm"
+                className="border-line flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
               >
                 <input
                   type="checkbox"
                   name={`skill-${i}-include`}
                   defaultChecked
-                  className="accent-brand-700"
+                  className="accent-brand"
                 />
                 {s.name} · {s.proven ? tm("proven") : tm("declared")}
               </label>
@@ -112,14 +112,14 @@ export function CardForm({ card }: { card: CardContent }) {
       ) : null}
 
       <fieldset className="space-y-2">
-        <legend className="text-sm font-medium text-stone-800">{t("conditions")}</legend>
+        <legend className="text-ink text-sm font-medium">{t("conditions")}</legend>
         {salary ? (
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
               name="showSalary"
               defaultChecked={card.showSalary}
-              className="accent-brand-700"
+              className="accent-brand"
             />
             {t("showSalary", { amount: salary })}
           </label>
@@ -130,7 +130,7 @@ export function CardForm({ card }: { card: CardContent }) {
               type="checkbox"
               name="showLocations"
               defaultChecked={card.showLocations}
-              className="accent-brand-700"
+              className="accent-brand"
             />
             {t("showLocations")}
           </label>
@@ -141,11 +141,11 @@ export function CardForm({ card }: { card: CardContent }) {
             name="allowProofUrls"
             defaultChecked={card.allowProofUrls}
             aria-describedby="allowProofUrls-hint"
-            className="accent-brand-700 mt-1"
+            className="accent-brand mt-1"
           />
           <span>
             {t("allowProofUrls")}
-            <span id="allowProofUrls-hint" className="block text-stone-500">
+            <span id="allowProofUrls-hint" className="text-ink-subtle block">
               {t("allowProofUrlsHint")}
             </span>
           </span>
@@ -155,7 +155,7 @@ export function CardForm({ card }: { card: CardContent }) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SubmitButton pending={pending}>{t("save")}</SubmitButton>
         {state.message === "saved" && !pending ? (
-          <p role="status" className="text-brand-700 text-sm font-medium">
+          <p role="status" className="text-brand-ink text-sm font-medium">
             {t("saved")}
           </p>
         ) : null}
@@ -192,12 +192,12 @@ export function ApproveCard({ card, disabled }: { card: CardContent; disabled: b
         <button
           type="submit"
           disabled={pending || disabled || (vaultIssues?.length ?? 0) > 0}
-          className="bg-brand-700 hover:bg-brand-800 w-full rounded-lg px-5 py-2.5 font-medium text-white disabled:opacity-60 sm:w-auto"
+          className="bg-brand hover:bg-brand-hover text-on-brand w-full rounded-lg px-5 py-2.5 font-medium disabled:opacity-60 sm:w-auto"
         >
           {t("approve")}
         </button>
         {state.ok && !pending ? (
-          <p role="status" className="text-brand-700 text-sm font-medium">
+          <p role="status" className="text-brand-ink text-sm font-medium">
             {t("approved")}
           </p>
         ) : null}
@@ -211,12 +211,12 @@ export function VaultCheck({ card }: { card: CardContent }) {
   const t = useTranslations("card");
   const issues = useVaultIssues(card);
   return (
-    <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6">
+    <section className="border-line bg-surface rounded-2xl border p-4 sm:p-6">
       <h2 className="text-lg font-semibold">{t("vault.title")}</h2>
       {issues === null ? (
-        <p className="mt-2 text-sm text-stone-600">{t("vault.locked")}</p>
+        <p className="text-ink-muted mt-2 text-sm">{t("vault.locked")}</p>
       ) : issues.length === 0 ? (
-        <p role="status" className="text-brand-700 mt-2 text-sm">
+        <p role="status" className="text-brand-ink mt-2 text-sm">
           {t("vault.clean")}
         </p>
       ) : (
@@ -242,13 +242,13 @@ export function CreateLink() {
         {t("create")}
       </button>
       {state.message === "notShareable" ? (
-        <p role="alert" className="text-sm text-amber-800">
+        <p role="alert" className="text-warning-ink text-sm">
           {t("notShareable")}
         </p>
       ) : null}
       {url ? (
         <div role="status" className="space-y-1">
-          <p className="text-sm text-stone-700">{t("created")}</p>
+          <p className="text-ink-muted text-sm">{t("created")}</p>
           <input readOnly value={url} className={inputClass} onFocus={(e) => e.target.select()} />
         </div>
       ) : null}

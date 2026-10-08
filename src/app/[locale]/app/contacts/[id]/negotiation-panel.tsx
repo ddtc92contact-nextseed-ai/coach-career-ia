@@ -24,12 +24,12 @@ import {
 import { CopyText } from "./draft-panel";
 
 const primary =
-  "w-full rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
 const approveClass =
-  "bg-brand-700 hover:bg-brand-800 w-full rounded-lg px-5 py-2.5 font-medium text-white disabled:opacity-60 sm:w-auto";
+  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
 const secondary =
-  "w-full rounded-lg border border-stone-300 px-5 py-2.5 font-medium hover:bg-stone-100 disabled:opacity-60 sm:w-auto";
-const labelClass = "block text-sm font-medium text-stone-800";
+  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
+const labelClass = "block text-sm font-medium text-ink";
 
 /** Liste des problèmes bloquants d'un message au regard du mandat. */
 export function IssueList({ issues }: { issues: NegotiationIssue[] }) {
@@ -38,7 +38,7 @@ export function IssueList({ issues }: { issues: NegotiationIssue[] }) {
   return (
     <div
       role="alert"
-      className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
+      className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-3 py-2 text-sm"
     >
       <p className="font-medium">{t("composer.blocked")}</p>
       <ul className="mt-1 list-disc pl-5">
@@ -55,7 +55,7 @@ function ActionMessage({ state }: { state: NegotiationActionState }) {
   const format = useFormatter();
   if (state.error === "invalid" && state.fields) {
     return (
-      <p role="alert" className="text-sm text-red-700">
+      <p role="alert" className="text-danger-ink text-sm">
         {t("mandate.invalid", {
           fields: format.list(state.fields.map((f) => t(`fields.${f}`))),
         })}
@@ -65,14 +65,14 @@ function ActionMessage({ state }: { state: NegotiationActionState }) {
   if (state.error === "blocked" && state.issues) return <IssueList issues={state.issues} />;
   if (state.error) {
     return (
-      <p role="alert" className="text-sm text-red-700">
+      <p role="alert" className="text-danger-ink text-sm">
         {t(`errors.${state.error}`, { excerpt: state.excerpt ?? "", limit: state.limit ?? 0 })}
       </p>
     );
   }
   if (state.fallback) {
     return (
-      <p role="status" className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
+      <p role="status" className="bg-warning-soft text-warning-ink rounded-lg px-3 py-2 text-sm">
         {t("composer.fallback")}
       </p>
     );
@@ -80,7 +80,7 @@ function ActionMessage({ state }: { state: NegotiationActionState }) {
   if (state.ok) {
     const key = state.ok === "saved" ? "composer.saved" : `composer.${state.ok}`;
     return (
-      <p role="status" className="text-brand-700 text-sm font-medium">
+      <p role="status" className="text-brand-ink text-sm font-medium">
         {t(key as "composer.saved")}
       </p>
     );
@@ -123,7 +123,7 @@ export function MandateForm({
             aria-describedby="salaryFloor-hint"
             className={inputClass}
           />
-          <p id="salaryFloor-hint" className="mt-1 text-xs text-stone-500">
+          <p id="salaryFloor-hint" className="text-ink-subtle mt-1 text-xs">
             {t("salaryFloorHint")}
           </p>
         </div>
@@ -142,7 +142,7 @@ export function MandateForm({
         </div>
       </div>
 
-      <fieldset className="space-y-4 rounded-xl border border-stone-200 p-4">
+      <fieldset className="border-line space-y-4 rounded-xl border p-4">
         <legend className="px-1 text-sm font-semibold">{t("nonNegotiable")}</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -260,7 +260,7 @@ export function MandateForm({
           aria-describedby="facts-hint"
           className={inputClass}
         />
-        <p id="facts-hint" className="mt-1 text-xs text-stone-500">
+        <p id="facts-hint" className="text-ink-subtle mt-1 text-xs">
           {t("factsHint")}
         </p>
       </div>
@@ -269,7 +269,7 @@ export function MandateForm({
           {t("save")}
         </button>
         {state.ok === "saved" ? (
-          <p role="status" className="text-brand-700 text-sm font-medium">
+          <p role="status" className="text-brand-ink text-sm font-medium">
             {t("saved")}
           </p>
         ) : (
@@ -358,7 +358,7 @@ export function MessageEditor({
             aria-describedby="negotiation-body-hint"
             className={inputClass}
           />
-          <p id="negotiation-body-hint" className="mt-1 text-sm text-stone-500">
+          <p id="negotiation-body-hint" className="text-ink-subtle mt-1 text-sm">
             {t(channel === "PORTAL" ? "appendedPortal" : "appended")}
           </p>
         </div>
@@ -385,7 +385,7 @@ export function MessageEditor({
             </button>
             <ActionMessage state={sendState} />
           </div>
-          <p className="text-xs text-stone-500">
+          <p className="text-ink-subtle text-xs">
             {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
           </p>
         </form>
@@ -406,9 +406,9 @@ export function PasteBlock({
 }) {
   const t = useTranslations("negotiation.composer");
   return (
-    <div className="space-y-3 border-t border-stone-100 pt-4">
+    <div className="border-line space-y-3 border-t pt-4">
       <h4 className="font-semibold">{t("paste")}</h4>
-      <p className="text-sm text-stone-600">{t("pasteHint")}</p>
+      <p className="text-ink-muted text-sm">{t("pasteHint")}</p>
       <CopyText text={text} />
       <form action={markTransmittedAction.bind(null, contactId, id)}>
         <button type="submit" className={primary}>

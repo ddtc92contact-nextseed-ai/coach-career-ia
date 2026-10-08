@@ -3,59 +3,204 @@
     "siteName": "Coach Career IA",
     "title": "Coach Career IA — Ihr privater Karriereagent",
     "titleTemplate": "%s · Coach Career IA",
-    "description": "Ihr privater Karriereagent: Ihre Nachweise, Ihre Leitplanken und nur die Chancen, die sie respektieren. Standardmäßig anonym."
+    "description": "Ihr privater Karriereagent arbeitet für Sie, im Hintergrund: ein Gedächtnis Ihrer belegten Erfolge, feste Leitplanken, anonymer Kontakt zu Recruitern. Gehostet in Frankreich, europäische KI."
   },
   "header": {
     "mainNav": "Hauptnavigation",
     "signIn": "Anmelden",
-    "recruiter": "Für Unternehmen"
+    "recruiter": "Für Unternehmen",
+    "createAgent": "Agent erstellen",
+    "sections": "Seitenabschnitte",
+    "home": "Startseite"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
-    "privacy": "Ihre Daten gehören Ihnen: niemals verkauft, niemals ohne Ihre Zustimmung weitergegeben."
+    "privacy": "Ihre Daten gehören Ihnen: niemals verkauft, niemals ohne Ihre Zustimmung weitergegeben.",
+    "tagline": "Ihr privater Karriereagent. Gehostet in Frankreich, mit europäischer KI."
   },
   "localeSwitcher": {
     "label": "Sprache"
   },
   "landing": {
-    "eyebrow": "Privater Karriereagent",
-    "title": "Hören Sie auf, nach Jobs zu suchen. Lassen Sie die richtigen Chancen zu sich kommen.",
-    "intro": "Coach Career IA kehrt die Jobsuche um: Sie bauen ein Karrieregedächtnis auf, das auf Nachweisen beruht, legen Ihre Bedingungen fest, und unser Agent bringt Ihnen nur Angebote, die diese erfüllen. Ohne Ihre Identität preiszugeben.",
-    "ctaPrimary": "Meinen Bereich erstellen",
-    "ctaSecondary": "So funktioniert es",
-    "pillarsTitle": "Vier Prinzipien, keine Kompromisse",
-    "pillars": {
-      "anonymous": {
-        "title": "Standardmäßig anonym",
-        "text": "Ihre Identität, Ihre Kontaktdaten und Ihr aktueller Arbeitgeber werden getrennt und verschlüsselt gespeichert. Recruiter sehen nur ein anonymisiertes Profil, das auf Ihren Fähigkeiten beruht."
+    "skip": "Zum Inhalt springen",
+    "nav": {
+      "how": "So funktioniert’s",
+      "privacy": "Datenschutz",
+      "coach": "Coach",
+      "pricing": "Preise",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "eyebrow": "Privater Karriereagent · gehostet in Frankreich",
+      "title": "Ihr Karriereagent arbeitet für Sie, im Hintergrund, bis Sie <signal>grünes Licht</signal> geben.",
+      "intro": "Er merkt sich, was Sie bewiesen haben, sortiert alles aus, was Ihre roten Linien überschreitet, beobachtet den Markt und kontaktiert Recruiter, ohne Ihren Namen zu nennen. Sie geben jede Nachricht frei. Sie entscheiden, wann Sie aus der Deckung kommen.",
+      "ctaPrimary": "Kostenlos Agent erstellen",
+      "ctaSecondary": "So funktioniert’s",
+      "reassurance": "Kostenlos, ohne Kreditkarte. Identität in Ihrem Browser verschlüsselt."
+    },
+    "demo": {
+      "label": "Animierte Vorschau: Der Agent findet ein Angebot, prüft Ihre Leitplanken und entwirft eine anonyme Nachricht, die auf Ihre Freigabe wartet.",
+      "status": "Agent aktiv · beobachtet",
+      "radar": "{count, number} Angebote heute analysiert",
+      "found": "Neuer Treffer",
+      "offerTitle": "Lead Data Engineer",
+      "offerMeta": "Energie-Scale-up · Lyon · hybrid",
+      "offerSalary": "72–80 T€ brutto/Jahr",
+      "checksTitle": "Ihre Leitplanken",
+      "checks": {
+        "salary": "Gehalt ≥ 70 T€",
+        "remote": "Mind. 2 Tage Homeoffice",
+        "sector": "Keine ausgeschlossene Branche"
       },
-      "proofs": {
-        "title": "Nachweise statt Versprechen",
-        "text": "Ihr Karrieregedächtnis bündelt konkrete Erfolge: abgeschlossene Projekte, messbare Ergebnisse, nachgewiesene Kompetenzen. Sie sprechen für Sie."
-      },
-      "guardRails": {
-        "title": "Ihre Leitplanken filtern vor",
-        "text": "Mindestgehalt, Homeoffice, ausgeschlossene Branchen, Pendelzeit: Sie legen nicht verhandelbare Regeln fest. Ein Angebot, das gegen eine davon verstößt, erreicht Sie nie."
-      },
-      "control": {
-        "title": "Sie behalten die Kontrolle",
-        "text": "Nichts wird ohne Ihre Zustimmung weitergegeben. Interessiert Sie eine Chance, heben Sie die Anonymität mit einem Klick auf — und nur für diesen einen Recruiter."
+      "match": "Passung",
+      "matchScore": "{score, number, percent}",
+      "why": "Warum: die Spark-Migration, die Sie umgesetzt haben (−40 % Kosten), und Ihr sechsköpfiges Team.",
+      "draftTitle": "Anonymer Entwurf",
+      "draft": "Guten Tag, ich vertrete eine Person, die die Kosten einer Datenplattform um 40 % gesenkt hat. Ihre Stelle in Lyon erfüllt ihre Bedingungen. Möchten Sie ihr anonymes Profil sehen?",
+      "approve": "Versand freigeben",
+      "waiting": "Nichts geht raus ohne Sie"
+    },
+    "how": {
+      "eyebrow": "So funktioniert’s",
+      "title": "Vier Schritte. Bei jedem behalten Sie die Kontrolle.",
+      "intro": "Sie legen einmal die Grundlagen, dann arbeitet Ihr Agent rund um die Uhr. Sie greifen nur ein, wenn es sich lohnt.",
+      "steps": {
+        "memory": {
+          "title": "Ihr Karrieregedächtnis",
+          "text": "Erfahrungen, messbare Erfolge und Nachweise (Links, Dokumente, Empfehlungen), aus Lebenslauf oder LinkedIn importiert und mit dem Coach geschärft."
+        },
+        "guardRails": {
+          "title": "Ihre Leitplanken",
+          "text": "Mindestgehalt, Homeoffice, Ort, ausgeschlossene Branchen, Vertragsart. Nicht verhandelbar: Ein Angebot, das eine verletzt, erreicht Sie nie."
+        },
+        "radar": {
+          "title": "Der Radar und erklärte Treffer",
+          "text": "Der Agent durchsucht den Markt laufend und sagt Ihnen, warum ein Angebot passt: welche Nachweise, welche Kompetenzen, welches Gehalt im Marktvergleich."
+        },
+        "contact": {
+          "title": "Anonymer Kontakt, Verhandlung, Übergabe",
+          "text": "Er schreibt Recruitern, ohne zu verraten, wer Sie sind, verhandelt im Rahmen Ihres Mandats und gibt Ihre Identität erst preis, wenn Sie „los“ sagen."
+        }
       }
     },
-    "stepsTitle": "So funktioniert es",
-    "steps": {
-      "one": "Sie beschreiben Ihren Werdegang mit überprüfbaren Nachweisen.",
-      "two": "Sie legen Ihre Leitplanken ein für alle Mal fest.",
-      "three": "Der Agent analysiert den Markt und zeigt Ihnen nur qualifizierte Angebote.",
-      "four": "Sie entscheiden für jedes Angebot, ob Sie sich zu erkennen geben."
+    "privacy": {
+      "eyebrow": "Datenschutz",
+      "title": "Diskretion ist kein Versprechen. Sie ist die Architektur.",
+      "intro": "Vielleicht sind Sie gerade angestellt. Ihr Agent ist so gebaut, dass niemand davon erfährt, bevor Sie es wollen.",
+      "items": {
+        "vault": {
+          "title": "Zero-Knowledge-Tresor",
+          "text": "Name, Kontaktdaten und Arbeitgeber werden in Ihrem Browser verschlüsselt, mit einem Schlüssel aus Ihrem Passwort. Unsere Server speichern nur unlesbare Daten."
+        },
+        "cards": {
+          "title": "Anonyme Karten",
+          "text": "Recruiter sehen Ihre Kompetenzen und Nachweise. Nie Ihren Namen, Ihre Kontaktdaten oder Ihren aktuellen Arbeitgeber."
+        },
+        "hosting": {
+          "title": "Gehostet in Frankreich, in der EU",
+          "text": "Ihre Daten bleiben in Europa, unter der DSGVO. Nie verkauft, jederzeit exportier- und löschbar."
+        },
+        "ai": {
+          "title": "Europäische KI",
+          "text": "Coach und Agent nutzen Mistral AI. Übermittelt wird nur das Nötigste, nie Ihre Identität, und kein Modell wird mit Ihren Daten trainiert."
+        },
+        "approval": {
+          "title": "Sie geben jede Nachricht frei",
+          "text": "Nichts geht raus ohne Ihren Klick. Sie lesen, bearbeiten oder verwerfen jeden Entwurf des Agenten."
+        }
+      }
     },
-    "closingTitle": "Ihre Karriere, Ihre Regeln, Ihr Tempo.",
-    "closingText": "Anmeldung ohne Passwort, per Link an Ihre E-Mail-Adresse. Keine Daten werden ohne Ihre ausdrückliche Zustimmung weitergegeben.",
-    "closingCta": "Jetzt starten",
-    "recruiter": {
-      "title": "Sie stellen ein?",
-      "text": "Veröffentlichen Sie Ihre Stellen mit einer klaren Gehaltsspanne: Die Agenten der Kandidaten zeigen sie nur Profilen, deren Bedingungen sie erfüllen. Sie erhalten anonyme Profile, die Kandidaten Ihnen bewusst senden.",
-      "cta": "Stellen veröffentlichen"
+    "coach": {
+      "eyebrow": "Der Coach",
+      "title": "Aus „Ich habe ein Projekt geleitet“ wird ein Nachweis, der überzeugt.",
+      "intro": "Der Coach befragt Sie nach der STAR-Methode (Situation, Aufgabe, Aktion, Resultat) und legt jeden Erfolg in Ihrem Karrieregedächtnis ab.",
+      "points": {
+        "questions": "Präzise Fragen, ohne HR-Jargon",
+        "numbers": "Messbare, überprüfbare Ergebnisse",
+        "control": "Sie bestätigen jeden Eintrag in Ihrem Gedächtnis"
+      },
+      "chatLabel": "Beispielgespräch mit dem Coach",
+      "coachName": "Coach",
+      "you": "Sie",
+      "star": {
+        "s": "Situation",
+        "t": "Aufgabe",
+        "a": "Aktion",
+        "r": "Resultat"
+      },
+      "messages": {
+        "m1": "Erzählen Sie mir von einem Moment, in dem Sie etwas bewegt haben. Wie war die Ausgangslage?",
+        "m2": "Unsere Datenplattform war zu teuer, und die Berichte kamen einen Tag zu spät.",
+        "m3": "Was genau wurde von Ihnen erwartet? Und was haben Sie getan?",
+        "m4": "Ich sollte die Kosten senken, ohne eine einzige Datenzeile zu verlieren. Ich habe die Verarbeitung auf Spark migriert und die Prüfungen automatisiert.",
+        "m5": "Und das Ergebnis, in Zahlen?",
+        "m6": "−40 % Infrastrukturkosten, und Berichte in 2 statt 24 Stunden."
+      },
+      "saved": "Zu Ihrem Gedächtnis hinzugefügt: „Spark-Migration: −40 % Kosten, Berichte in 2 Std.“"
+    },
+    "pricing": {
+      "eyebrow": "Preise",
+      "title": "Kostenlos starten. Premium, wenn es ernst wird.",
+      "intro": "Das Wesentliche ist kostenlos, ohne zeitliche Begrenzung. Premium schaltet den unbegrenzten Coach und den Verhandlungsagenten frei.",
+      "freeTagline": "Ihr Gedächtnis aufbauen und den Agenten suchen lassen.",
+      "premiumTagline": "Schneller vorankommen und zum richtigen Preis verhandeln.",
+      "recommended": "Am umfassendsten",
+      "contact": "Anonymer Kontakt zu Recruitern, jede Nachricht freigegeben",
+      "freeCta": "Kostenlos Agent erstellen",
+      "premiumCta": "Kostenlos starten",
+      "premiumNote": "Wechseln Sie jederzeit in Ihrem Bereich zu Premium. Ohne Vertragsbindung.",
+      "forever": "für immer",
+      "perInterval": "{interval, select, day {pro Tag} week {pro Woche} year {pro Jahr} other {pro Monat}}"
+    },
+    "companies": {
+      "eyebrow": "Für Unternehmen",
+      "title": "Stellen Sie Kandidaten ein, die Ihren Bedingungen schon zugestimmt haben.",
+      "text": "Veröffentlichen Sie Ihre Angebote mit Gehaltsspanne. Die Agenten zeigen sie nur Profilen, deren Leitplanken sie erfüllen, und interessierte Kandidaten schreiben Ihnen, zunächst anonym.",
+      "points": {
+        "salary": "Gehaltsspanne Pflicht, offen angezeigt",
+        "anonymous": "Profile auf Basis von Nachweisen, Identität nur mit Zustimmung des Kandidaten",
+        "price": "{price} pro Angebot, {days, plural, one {# Tag} other {# Tage}} online, ohne Abo"
+      },
+      "cta": "Unternehmensbereich erstellen"
+    },
+    "faq": {
+      "eyebrow": "Häufige Fragen",
+      "title": "Die Fragen, die man uns stellt, und ehrliche Antworten.",
+      "items": {
+        "free": {
+          "q": "Ist das wirklich kostenlos?",
+          "a": "Ja. Karrieregedächtnis, Leitplanken, Chancen und anonymer Kontakt sind kostenlos, ohne zeitliche Begrenzung. Der Coach ist mit einem Tageskontingent enthalten; Premium macht ihn unbegrenzt und fügt den Verhandlungsagenten hinzu."
+        },
+        "employer": {
+          "q": "Kann mein aktueller Arbeitgeber mich entdecken?",
+          "a": "Nein, solange Sie es nicht wollen. Ihr Profil ist anonym, Ihre Identität in Ihrem Browser verschlüsselt, und Sie können Unternehmen oder ganze Branchen ausschließen."
+        },
+        "zeroKnowledge": {
+          "q": "Was bedeutet „Zero-Knowledge“?",
+          "a": "Ihre Identität wird auf Ihrem Gerät verschlüsselt, bevor sie gesendet wird. Wir verwahren einen verschlossenen Tresor ohne Schlüssel: Weder wir noch ein Recruiter noch ein Hacker kann ihn ohne Sie lesen."
+        },
+        "approval": {
+          "q": "Kann der Agent ungefragt in meinem Namen schreiben?",
+          "a": "Nein. Er entwirft, Sie geben frei. Keine Nachricht geht ohne Ihre ausdrückliche Freigabe raus, und Sie bestimmen, wann Sie die Anonymität aufheben, Feld für Feld."
+        },
+        "ai": {
+          "q": "Welche KI nutzen Sie, und wohin gehen meine Daten?",
+          "a": "Modelle von Mistral AI, gehostet in der Europäischen Union. Sie erhalten nur die für die Aufgabe nötigen Daten, nie Ihre Identität, und wir trainieren kein Modell mit Ihren Daten."
+        },
+        "negotiation": {
+          "q": "Wie läuft die Verhandlung ab?",
+          "a": "Sie legen ein Mandat fest: Wunschgehalt, Untergrenze, Bedingungen. Der Agent entwirft Gegenangebote mit einem Marktgehalt als Richtwert, nie unter Ihrer Untergrenze. Sie geben jede Nachricht frei."
+        },
+        "delete": {
+          "q": "Kann ich alles herunterladen oder alles löschen?",
+          "a": "Ja, jederzeit in Ihren Einstellungen: vollständiger Export Ihrer Daten, danach endgültige Löschung des Kontos."
+        }
+      }
+    },
+    "closing": {
+      "title": "Lassen Sie Ihren Agenten wachen. Kommen Sie aus der Deckung, wann Sie wollen.",
+      "text": "Erstellen Sie Ihren Agenten in wenigen Minuten: Er legt los, sobald Ihre Leitplanken stehen.",
+      "cta": "Kostenlos Agent erstellen"
     }
   },
   "notFound": {

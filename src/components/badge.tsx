@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
 const TONES = {
-  neutral: "bg-stone-100 text-stone-700 ring-stone-200",
-  proven: "bg-brand-50 text-brand-800 ring-brand-100",
-  warning: "bg-amber-50 text-amber-800 ring-amber-200",
+  neutral: "bg-muted text-ink-muted ring-line",
+  proven: "bg-brand-soft text-brand-ink ring-brand-line",
+  warning: "bg-warning-soft text-warning-ink ring-warning-line",
 } as const;
 
 export function Badge({

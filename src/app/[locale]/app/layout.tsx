@@ -34,13 +34,13 @@ export default async function AppLayout({ children }: Readonly<{ children: React
   return (
     <VaultProvider>
       <div className="flex min-h-dvh flex-col">
-        <header className="border-b border-stone-200 bg-white">
+        <header className="border-line bg-surface border-b">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="flex h-16 items-center justify-between gap-3">
               <Logo href="/app" />
               <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                 <span
-                  className="hidden truncate text-sm text-stone-500 md:inline"
+                  className="text-ink-subtle hidden truncate text-sm md:inline"
                   title={user.email}
                 >
                   {user.email}
@@ -48,7 +48,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
                 {membership ? (
                   <Link
                     href="/entreprise"
-                    className="hidden text-sm text-stone-600 hover:text-stone-900 hover:underline md:inline"
+                    className="text-ink-muted hover:text-ink hidden text-sm hover:underline md:inline"
                   >
                     {t("nav.employer")}
                   </Link>

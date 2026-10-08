@@ -12,7 +12,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
     <form action={action} className="space-y-4" noValidate>
       {callbackUrl ? <input type="hidden" name="callbackUrl" value={callbackUrl} /> : null}
       <div>
-        <label htmlFor="magic-email" className="block text-sm font-medium text-stone-700">
+        <label htmlFor="magic-email" className="text-ink-muted block text-sm font-medium">
           {t("emailLabel")}
         </label>
         <input
@@ -26,10 +26,10 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
           placeholder={t("emailPlaceholder")}
           aria-invalid={state.error ? true : undefined}
           aria-describedby={state.error ? "email-erreur" : undefined}
-          className="focus:border-brand-600 mt-1 block w-full rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-base shadow-xs placeholder:text-stone-400 focus:outline-none"
+          className="focus:border-brand border-line-strong bg-surface placeholder:text-ink-subtle mt-1 block w-full rounded-lg border px-3 py-2.5 text-base shadow-xs focus:outline-none"
         />
         {state.error ? (
-          <p id="email-erreur" role="alert" className="mt-2 text-sm text-red-700">
+          <p id="email-erreur" role="alert" className="text-danger-ink mt-2 text-sm">
             {t(`errors.${state.error}`)}
           </p>
         ) : null}
@@ -37,7 +37,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 font-medium hover:bg-stone-100 disabled:opacity-60"
+        className="border-line-strong bg-surface hover:bg-muted w-full rounded-lg border px-4 py-2.5 font-medium disabled:opacity-60"
       >
         {pending ? t("submitting") : t("submit")}
       </button>

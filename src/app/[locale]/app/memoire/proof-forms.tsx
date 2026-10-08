@@ -45,7 +45,7 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
   };
 
   return (
-    <div className="rounded-xl border border-stone-200 bg-white p-4 sm:p-5">
+    <div className="border-line bg-surface rounded-xl border p-4 sm:p-5">
       <h3 className="font-semibold">{t("addTitle")}</h3>
       <div role="radiogroup" aria-label={t("kindLabel")} className="mt-3 flex flex-wrap gap-2">
         {KINDS.map((k) => (
@@ -60,8 +60,8 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
             }}
             className={`rounded-full border px-3 py-1.5 text-sm font-medium ${
               kind === k
-                ? "border-stone-900 bg-stone-900 text-white"
-                : "border-stone-300 bg-white hover:bg-stone-100"
+                ? "border-primary bg-primary text-on-primary"
+                : "border-line-strong bg-surface hover:bg-muted"
             }`}
           >
             {t(`kinds.${k}`)}
@@ -105,7 +105,7 @@ export function ProofForms({ achievementId }: { achievementId: string }) {
                   setFileError(undefined);
                 }
               }}
-              className="mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-stone-100 file:px-3 file:py-2 file:font-medium"
+              className="file:bg-muted mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:px-3 file:py-2 file:font-medium"
             />
           </Field>
         ) : null}

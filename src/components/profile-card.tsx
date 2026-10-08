@@ -38,10 +38,10 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
   ].filter((line): line is string => Boolean(line));
 
   return (
-    <article className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+    <article className="border-line bg-surface rounded-2xl border p-5 sm:p-7">
       <Badge>{t("badge")}</Badge>
       <h2 className="mt-3 text-xl font-semibold tracking-tight break-words">{shown.headline}</h2>
-      <p className="mt-1 text-sm text-stone-600">
+      <p className="text-ink-muted mt-1 text-sm">
         {[
           shown.seniority ? codes(`seniority.${shown.seniority}`) : null,
           shown.yearsOfExperience ? t("years", { years: shown.yearsOfExperience }) : null,
@@ -63,10 +63,10 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
                   </Badge>
                 </div>
                 {a.result ? (
-                  <p className="mt-1 text-sm break-words text-stone-700">{a.result}</p>
+                  <p className="text-ink-muted mt-1 text-sm break-words">{a.result}</p>
                 ) : null}
                 {a.skills.length > 0 ? (
-                  <p className="mt-1 text-xs text-stone-500">{a.skills.join(" · ")}</p>
+                  <p className="text-ink-subtle mt-1 text-xs">{a.skills.join(" · ")}</p>
                 ) : null}
                 {a.proofUrls.map((url) => (
                   <a
@@ -74,7 +74,7 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="mt-1 mr-3 inline-block text-xs text-stone-600 underline"
+                    className="text-ink-muted mt-1 mr-3 inline-block text-xs underline"
                   >
                     {t("proof")}
                   </a>
@@ -103,7 +103,7 @@ export async function ProfileCardView({ card }: { card: CardContent }) {
       {conditions.length > 0 ? (
         <section className="mt-6">
           <h3 className="text-sm font-semibold">{t("conditions")}</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-stone-700">
+          <ul className="text-ink-muted mt-2 list-disc space-y-1 pl-5 text-sm">
             {conditions.map((line) => (
               <li key={line}>{line}</li>
             ))}

@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const buttonClass =
-  "inline-block rounded-lg bg-stone-900 px-4 py-2 text-center text-sm font-medium text-white hover:bg-stone-700";
+  "inline-block rounded-lg bg-primary px-4 py-2 text-center text-sm font-medium text-on-primary hover:bg-primary-hover";
 
 export default async function CareerMemoryPage() {
   const user = await requireUser();
@@ -47,7 +47,7 @@ export default async function CareerMemoryPage() {
             <Link href="/app/memoire/importer" className={buttonClass}>
               {t("importCta")}
             </Link>
-            <p className="max-w-xs text-xs text-stone-500 sm:text-right">{t("importHint")}</p>
+            <p className="text-ink-subtle max-w-xs text-xs sm:text-right">{t("importHint")}</p>
           </div>
         }
       />
@@ -57,7 +57,7 @@ export default async function CareerMemoryPage() {
           <a
             key={anchor}
             href={`#${anchor}`}
-            className="rounded-full border border-stone-300 bg-white px-3 py-1 hover:bg-stone-100"
+            className="border-line-strong bg-surface hover:bg-muted rounded-full border px-3 py-1"
           >
             {t(`anchors.${anchor}`)}
           </a>
@@ -81,16 +81,16 @@ export default async function CareerMemoryPage() {
             {experiences.map((experience) => (
               <li
                 key={experience.id}
-                className="rounded-xl border border-stone-200 bg-white p-4 sm:p-5"
+                className="border-line bg-surface rounded-xl border p-4 sm:p-5"
               >
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <h3 className="font-semibold break-words">{experience.roleTitle}</h3>
                     <VaultEmployerName experienceId={experience.id} />
-                    <p className="mt-0.5 text-sm text-stone-500">
+                    <p className="text-ink-subtle mt-0.5 text-sm">
                       {period(experience.startMonth, experience.endMonth)}
                     </p>
-                    <p className="mt-2 text-sm text-stone-700">
+                    <p className="text-ink-muted mt-2 text-sm">
                       {[
                         tc(`companyStage.${experience.companyStage}`),
                         tc(`sector.${asSector(experience.sector)}`),
@@ -111,7 +111,7 @@ export default async function CareerMemoryPage() {
                   </div>
                   <Link
                     href={`/app/memoire/experiences/${experience.id}`}
-                    className="shrink-0 text-sm font-medium text-stone-700 underline underline-offset-4"
+                    className="text-ink-muted shrink-0 text-sm font-medium underline underline-offset-4"
                   >
                     {t("edit")}
                   </Link>
@@ -132,7 +132,7 @@ export default async function CareerMemoryPage() {
             {t("achievements.add")}
           </Link>
         </div>
-        <p className="mb-4 text-sm text-stone-600">{t("achievements.intro")}</p>
+        <p className="text-ink-muted mb-4 text-sm">{t("achievements.intro")}</p>
         {achievements.length === 0 ? (
           <EmptyState title={t("achievements.emptyTitle")} text={t("achievements.emptyText")} />
         ) : (
@@ -140,7 +140,7 @@ export default async function CareerMemoryPage() {
             {achievements.map((achievement) => (
               <li
                 key={achievement.id}
-                className="flex flex-col rounded-xl border border-stone-200 bg-white p-4 sm:p-5"
+                className="border-line bg-surface flex flex-col rounded-xl border p-4 sm:p-5"
               >
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="min-w-0 font-semibold break-words">{achievement.title}</h3>
@@ -149,12 +149,12 @@ export default async function CareerMemoryPage() {
                   </Badge>
                 </div>
                 {achievement.experience ? (
-                  <p className="mt-0.5 text-sm text-stone-500">
+                  <p className="text-ink-subtle mt-0.5 text-sm">
                     {achievement.experience.roleTitle}
                   </p>
                 ) : null}
                 {achievement.result ? (
-                  <p className="mt-2 text-sm text-stone-700">{achievement.result}</p>
+                  <p className="text-ink-muted mt-2 text-sm">{achievement.result}</p>
                 ) : null}
                 {achievement.skills.length > 0 ? (
                   <div className="mt-3 flex flex-wrap gap-1.5">
@@ -164,12 +164,12 @@ export default async function CareerMemoryPage() {
                   </div>
                 ) : null}
                 <div className="mt-auto flex items-center justify-between gap-3 pt-4 text-sm">
-                  <span className="text-stone-500">
+                  <span className="text-ink-subtle">
                     {t("achievements.proofCount", { count: achievement.proofs.length })}
                   </span>
                   <Link
                     href={`/app/memoire/realisations/${achievement.id}`}
-                    className="font-medium text-stone-700 underline underline-offset-4"
+                    className="text-ink-muted font-medium underline underline-offset-4"
                   >
                     {achievement.proofs.length === 0 ? t("achievements.addProof") : t("edit")}
                   </Link>
@@ -185,8 +185,8 @@ export default async function CareerMemoryPage() {
         <h2 id="skills-title" className="text-xl font-semibold">
           {t("skills.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("skills.intro")}</p>
-        <div className="mb-4 rounded-xl border border-stone-200 bg-white p-4">
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("skills.intro")}</p>
+        <div className="border-line bg-surface mb-4 rounded-xl border p-4">
           <SkillForm />
         </div>
         {skills.length === 0 ? (
@@ -196,11 +196,11 @@ export default async function CareerMemoryPage() {
             {skills.map((skill) => {
               const proven = skill.provenCount > 0;
               return (
-                <li key={skill.id} className="rounded-xl border border-stone-200 bg-white p-4">
+                <li key={skill.id} className="border-line bg-surface rounded-xl border p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <h3 className="font-semibold break-words">{skill.name}</h3>
-                      <p className="mt-0.5 text-sm text-stone-500">
+                      <p className="text-ink-subtle mt-0.5 text-sm">
                         {skill.current
                           ? t("skills.usedNow")
                           : skill.lastUsed
@@ -216,7 +216,7 @@ export default async function CareerMemoryPage() {
                   </div>
                   {skill.achievements.length > 0 ? (
                     <>
-                      <p className="mt-3 text-xs font-medium tracking-wide text-stone-500 uppercase">
+                      <p className="text-ink-subtle mt-3 text-xs font-medium tracking-wide uppercase">
                         {t("skills.backedBy")}
                       </p>
                       <ul className="mt-1 space-y-1 text-sm">
@@ -228,7 +228,7 @@ export default async function CareerMemoryPage() {
                             >
                               {a.title}
                             </Link>
-                            <span className="shrink-0 text-stone-500">
+                            <span className="text-ink-subtle shrink-0">
                               {t("achievements.proofCount", { count: a.proofCount })}
                             </span>
                           </li>
@@ -236,7 +236,7 @@ export default async function CareerMemoryPage() {
                       </ul>
                     </>
                   ) : (
-                    <p className="mt-3 text-sm text-amber-800">{t("skills.unprovenHint")}</p>
+                    <p className="text-warning-ink mt-3 text-sm">{t("skills.unprovenHint")}</p>
                   )}
                   <div className="mt-3 flex justify-end">
                     <DeleteButton

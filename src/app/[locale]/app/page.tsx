@@ -38,7 +38,7 @@ export default async function DashboardPage() {
 
       <section
         aria-labelledby="completude"
-        className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6"
+        className="border-line bg-surface rounded-2xl border p-5 sm:p-6"
       >
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="completude" className="text-lg font-semibold">
@@ -54,14 +54,14 @@ export default async function DashboardPage() {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={completeness.score}
-          className="mt-3 h-2.5 overflow-hidden rounded-full bg-stone-100"
+          className="bg-muted mt-3 h-2.5 overflow-hidden rounded-full"
         >
           <div
-            className="bg-brand-600 h-full rounded-full"
+            className="bg-brand h-full rounded-full"
             style={{ width: `${completeness.score}%` }}
           />
         </div>
-        <p className="mt-3 text-sm text-stone-600">
+        <p className="text-ink-muted mt-3 text-sm">
           {t("completeness.summary", {
             achievements: counts.achievements,
             proven: counts.provenAchievements,
@@ -75,16 +75,16 @@ export default async function DashboardPage() {
                 <li key={step}>
                   <Link
                     href={STEP_LINKS[step]}
-                    className="flex h-full items-start gap-3 rounded-lg border border-stone-200 p-3 text-sm hover:border-stone-400"
+                    className="border-line hover:border-line-strong flex h-full items-start gap-3 rounded-lg border p-3 text-sm"
                   >
-                    <span aria-hidden="true" className="text-brand-700 font-semibold">
+                    <span aria-hidden="true" className="text-brand-ink font-semibold">
                       →
                     </span>
                     <span>
                       <span className="block font-medium">
                         {t(`completeness.steps.${step}.title`)}
                       </span>
-                      <span className="mt-0.5 block text-stone-500">
+                      <span className="text-ink-subtle mt-0.5 block">
                         {t(`completeness.steps.${step}.text`)}
                       </span>
                     </span>
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
             </ul>
           </>
         ) : (
-          <p className="text-brand-700 mt-4 text-sm font-medium">{t("completeness.complete")}</p>
+          <p className="text-brand-ink mt-4 text-sm font-medium">{t("completeness.complete")}</p>
         )}
       </section>
 
@@ -102,7 +102,7 @@ export default async function DashboardPage() {
         <h2 id="visibilite" className="text-lg font-semibold">
           {t("visibility.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("visibility.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("visibility.intro")}</p>
         <VisibilityForm current={dashboard.visibility} />
       </section>
 
@@ -111,11 +111,11 @@ export default async function DashboardPage() {
           <Link
             key={section.href}
             href={section.href}
-            className="group rounded-xl border border-stone-200 bg-white p-5 hover:border-stone-400"
+            className="group border-line bg-surface hover:border-line-strong rounded-xl border p-5"
           >
             <h2 className="font-semibold">{t(`sections.${section.key}.title`)}</h2>
-            <p className="mt-2 text-sm text-stone-600">{t(`sections.${section.key}.text`)}</p>
-            <p className="text-brand-700 mt-4 text-sm font-medium group-hover:underline">
+            <p className="text-ink-muted mt-2 text-sm">{t(`sections.${section.key}.text`)}</p>
+            <p className="text-brand-ink mt-4 text-sm font-medium group-hover:underline">
               {t("open")}
             </p>
           </Link>

@@ -51,7 +51,7 @@ export const EMPTY_POSTING: PostingFormValues = {
   salaryPeriod: "YEAR",
 };
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 export function PostingForm({
   action,
@@ -163,7 +163,7 @@ export function PostingForm({
         <h2 id="posting-salary" className="text-lg font-semibold">
           {t("sections.salary")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("salaryIntro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("salaryIntro")}</p>
         <div className="grid gap-5 sm:grid-cols-4">
           <Field id="salaryMin" label={t("fields.salaryMin")} error={e.salaryMin}>
             <input

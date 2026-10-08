@@ -3,59 +3,204 @@
     "siteName": "Coach Career IA",
     "title": "Coach Career IA — uw persoonlijke carrièreagent",
     "titleTemplate": "%s · Coach Career IA",
-    "description": "Uw persoonlijke carrièreagent: uw bewijzen, uw randvoorwaarden, en alleen de kansen die daaraan voldoen. Standaard anoniem."
+    "description": "Uw persoonlijke carrièreagent werkt voor u, achter de schermen: een geheugen van uw bewezen prestaties, harde randvoorwaarden, anoniem contact met recruiters. Gehost in Frankrijk, Europese AI."
   },
   "header": {
     "mainNav": "Hoofdnavigatie",
     "signIn": "Inloggen",
-    "recruiter": "Voor werkgevers"
+    "recruiter": "Voor werkgevers",
+    "createAgent": "Mijn agent aanmaken",
+    "sections": "Onderdelen van de pagina",
+    "home": "Home"
   },
   "footer": {
     "copyright": "© {year} Coach Career IA — NextSeed-AI",
-    "privacy": "Uw gegevens blijven van u: nooit verkocht, nooit gedeeld zonder uw toestemming."
+    "privacy": "Uw gegevens blijven van u: nooit verkocht, nooit gedeeld zonder uw toestemming.",
+    "tagline": "Uw persoonlijke carrièreagent. Gehost in Frankrijk, aangedreven door Europese AI."
   },
   "localeSwitcher": {
     "label": "Taal"
   },
   "landing": {
-    "eyebrow": "Persoonlijke carrièreagent",
-    "title": "Stop met zoeken naar werk. Laat de juiste kansen naar u toe komen.",
-    "intro": "Coach Career IA draait het zoeken naar werk om: u bouwt een carrièregeheugen op dat op bewijzen berust, u bepaalt uw voorwaarden, en onze agent brengt u alleen vacatures die daaraan voldoen. Zonder uw identiteit prijs te geven.",
-    "ctaPrimary": "Mijn omgeving aanmaken",
-    "ctaSecondary": "Zo werkt het",
-    "pillarsTitle": "Vier principes, geen compromissen",
-    "pillars": {
-      "anonymous": {
-        "title": "Standaard anoniem",
-        "text": "Uw identiteit, contactgegevens en huidige werkgever worden apart en versleuteld opgeslagen. Recruiters zien alleen een geanonimiseerd profiel, gebaseerd op wat u kunt."
+    "skip": "Naar de inhoud",
+    "nav": {
+      "how": "Zo werkt het",
+      "privacy": "Privacy",
+      "coach": "Coach",
+      "pricing": "Prijzen",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "eyebrow": "Persoonlijke carrièreagent · gehost in Frankrijk",
+      "title": "Uw carrièreagent werkt voor u, achter de schermen, tot u <signal>groen licht</signal> geeft.",
+      "intro": "Hij onthoudt wat u hebt bewezen, weert alles wat uw grenzen overschrijdt, volgt de markt en benadert recruiters zonder uw naam prijs te geven. U keurt elk bericht goed. U bepaalt wanneer u uit de schaduw stapt.",
+      "ctaPrimary": "Gratis mijn agent aanmaken",
+      "ctaSecondary": "Bekijk hoe het werkt",
+      "reassurance": "Gratis, zonder creditcard. Identiteit versleuteld in uw browser."
+    },
+    "demo": {
+      "label": "Geanimeerde preview: de agent spot een vacature, controleert uw randvoorwaarden en schrijft een anoniem bericht dat op uw akkoord wacht.",
+      "status": "Agent actief · op wacht",
+      "radar": "{count, number} vacatures vandaag geanalyseerd",
+      "found": "Nieuwe kans",
+      "offerTitle": "Lead Data Engineer",
+      "offerMeta": "Energie-scale-up · Lyon · hybride",
+      "offerSalary": "€ 72–80k bruto/jaar",
+      "checksTitle": "Uw randvoorwaarden",
+      "checks": {
+        "salary": "Salaris ≥ € 70k",
+        "remote": "Minstens 2 dagen thuiswerken",
+        "sector": "Geen uitgesloten sector"
       },
-      "proofs": {
-        "title": "Bewijzen, geen beloftes",
-        "text": "Uw carrièregeheugen bundelt concrete prestaties: opgeleverde projecten, gemeten resultaten, aangetoonde vaardigheden. Zij spreken voor u."
-      },
-      "guardRails": {
-        "title": "Uw randvoorwaarden maken de selectie",
-        "text": "Minimumsalaris, thuiswerken, uitgesloten sectoren, reistijd: u stelt niet-onderhandelbare regels. Een vacature die er één schendt, bereikt u nooit."
-      },
-      "control": {
-        "title": "U houdt de regie",
-        "text": "Niets gaat de deur uit zonder uw toestemming. Spreekt een kans u aan, dan heft u met één klik uw anonimiteit op — en alleen voor die ene recruiter."
+      "match": "Match",
+      "matchScore": "{score, number, percent}",
+      "why": "Waarom: de Spark-migratie die u opleverde (−40% kosten) en het team van zes dat u leidt.",
+      "draftTitle": "Anoniem concept",
+      "draft": "Goedendag, ik vertegenwoordig iemand die de kosten van een dataplatform met 40% heeft verlaagd. Uw functie in Lyon voldoet aan diens voorwaarden. Wilt u het anonieme profiel bekijken?",
+      "approve": "Verzenden goedkeuren",
+      "waiting": "Niets gaat de deur uit zonder u"
+    },
+    "how": {
+      "eyebrow": "Zo werkt het",
+      "title": "Vier stappen. Bij elke stap houdt u de regie.",
+      "intro": "U legt één keer de basis, daarna werkt uw agent doorlopend. U grijpt alleen in als het de moeite waard is.",
+      "steps": {
+        "memory": {
+          "title": "Uw carrièregeheugen",
+          "text": "Werkervaring, meetbare prestaties en bewijzen (links, documenten, aanbevelingen), geïmporteerd uit uw cv of LinkedIn en aangescherpt met de coach."
+        },
+        "guardRails": {
+          "title": "Uw randvoorwaarden",
+          "text": "Minimumsalaris, thuiswerken, locatie, uitgesloten sectoren, type contract. Niet onderhandelbaar: een vacature die er één schendt, bereikt u nooit."
+        },
+        "radar": {
+          "title": "De radar en uitgelegde matches",
+          "text": "De agent scant de markt continu en vertelt u waarom een vacature past: welke bewijzen, welke vaardigheden, welk salaris ten opzichte van de markt."
+        },
+        "contact": {
+          "title": "Anoniem contact, onderhandeling, overdracht",
+          "text": "Hij schrijft recruiters zonder te onthullen wie u bent, onderhandelt binnen het mandaat dat u bepaalt en onthult uw identiteit pas als u „go” zegt."
+        }
       }
     },
-    "stepsTitle": "Hoe het werkt",
-    "steps": {
-      "one": "U beschrijft uw loopbaan met controleerbare bewijzen.",
-      "two": "U legt uw randvoorwaarden vast, eens en voor altijd.",
-      "three": "De agent analyseert de markt en toont u alleen gekwalificeerde vacatures.",
-      "four": "U beslist per vacature of u zich bekendmaakt."
+    "privacy": {
+      "eyebrow": "Privacy",
+      "title": "Discretie is geen belofte. Het is de architectuur.",
+      "intro": "Misschien hebt u nu een baan. Uw agent is zo gebouwd dat niemand het weet voordat u dat besluit.",
+      "items": {
+        "vault": {
+          "title": "Zero-knowledge-kluis",
+          "text": "Uw naam, contactgegevens en werkgevers worden in uw browser versleuteld, met een sleutel afgeleid van uw wachtwoord. Onze servers bewaren alleen onleesbare data."
+        },
+        "cards": {
+          "title": "Anonieme kaarten",
+          "text": "Recruiters zien uw vaardigheden en bewijzen. Nooit uw naam, uw contactgegevens of uw huidige werkgever."
+        },
+        "hosting": {
+          "title": "Gehost in Frankrijk, in de EU",
+          "text": "Uw gegevens blijven in Europa, onder de AVG. Nooit verkocht, altijd te exporteren en te verwijderen."
+        },
+        "ai": {
+          "title": "Europese AI",
+          "text": "De coach en de agent draaien op Mistral AI. Alleen het nodige wordt gedeeld, nooit uw identiteit, en geen enkel model wordt met uw data getraind."
+        },
+        "approval": {
+          "title": "U keurt elk bericht goed",
+          "text": "Niets gaat de deur uit zonder uw klik. U leest, bewerkt of weigert elk concept van de agent."
+        }
+      }
     },
-    "closingTitle": "Uw carrière, uw regels, uw tempo.",
-    "closingText": "Inloggen zonder wachtwoord, via een link naar uw e-mailadres. Er worden geen gegevens gedeeld zonder uw uitdrukkelijke toestemming.",
-    "closingCta": "Beginnen",
-    "recruiter": {
-      "title": "Werft u aan?",
-      "text": "Publiceer uw vacatures met een duidelijke salarisrange: de agenten van kandidaten tonen ze alleen aan profielen waarvan ze de voorwaarden respecteren. U ontvangt anonieme profielen die kandidaten zelf naar u sturen.",
-      "cta": "Vacatures publiceren"
+    "coach": {
+      "eyebrow": "De coach",
+      "title": "Maak van „ik heb een project geleid” een bewijs dat overtuigt.",
+      "intro": "De coach bevraagt u met de STAR-methode (situatie, taak, actie, resultaat) en slaat elke prestatie op in uw carrièregeheugen.",
+      "points": {
+        "questions": "Gerichte vragen, zonder HR-jargon",
+        "numbers": "Meetbare, controleerbare resultaten",
+        "control": "U keurt elke toevoeging aan uw geheugen goed"
+      },
+      "chatLabel": "Voorbeeldgesprek met de coach",
+      "coachName": "Coach",
+      "you": "U",
+      "star": {
+        "s": "Situatie",
+        "t": "Taak",
+        "a": "Actie",
+        "r": "Resultaat"
+      },
+      "messages": {
+        "m1": "Vertel me over een moment waarop u het verschil maakte. Wat was de situatie?",
+        "m2": "Ons dataplatform was te duur en de rapporten kwamen een dag te laat.",
+        "m3": "Wat werd er precies van u verwacht? En wat hebt u gedaan?",
+        "m4": "Ik moest de kosten verlagen zonder één regel data te verliezen. Ik heb de verwerking naar Spark gemigreerd en de controles geautomatiseerd.",
+        "m5": "En het resultaat, in cijfers?",
+        "m6": "−40% infrastructuurkosten, en rapporten klaar in 2 uur in plaats van 24."
+      },
+      "saved": "Toegevoegd aan uw geheugen: „Spark-migratie: −40% kosten, rapporten in 2 u”"
+    },
+    "pricing": {
+      "eyebrow": "Prijzen",
+      "title": "Gratis beginnen. Premium als u in actie komt.",
+      "intro": "De basis is gratis, zonder tijdslimiet. Premium ontgrendelt de onbeperkte coach en de onderhandelingsagent.",
+      "freeTagline": "Bouw uw geheugen op en laat de agent zoeken.",
+      "premiumTagline": "Sneller vooruit, en onderhandelen tegen de juiste prijs.",
+      "recommended": "Meest compleet",
+      "contact": "Anoniem contact met recruiters, elk bericht goedgekeurd",
+      "freeCta": "Gratis mijn agent aanmaken",
+      "premiumCta": "Gratis beginnen",
+      "premiumNote": "Stap over op Premium vanuit uw omgeving, wanneer u wilt. Zonder verplichtingen.",
+      "forever": "voor altijd",
+      "perInterval": "{interval, select, day {per dag} week {per week} year {per jaar} other {per maand}}"
+    },
+    "companies": {
+      "eyebrow": "Voor werkgevers",
+      "title": "Werf kandidaten die al ja hebben gezegd tegen uw voorwaarden.",
+      "text": "Publiceer uw vacatures met een salarisrange. Agenten tonen ze alleen aan profielen waarvan ze de randvoorwaarden respecteren, en geïnteresseerde kandidaten schrijven u, eerst anoniem.",
+      "points": {
+        "salary": "Verplichte salarisrange, duidelijk zichtbaar",
+        "anonymous": "Profielen op basis van bewijzen, identiteit onthuld met toestemming van de kandidaat",
+        "price": "{price} per vacature, {days, plural, one {# dag} other {# dagen}} online, zonder abonnement"
+      },
+      "cta": "Mijn werkgeversomgeving aanmaken"
+    },
+    "faq": {
+      "eyebrow": "Veelgestelde vragen",
+      "title": "De vragen die we krijgen, eerlijk beantwoord.",
+      "items": {
+        "free": {
+          "q": "Is het echt gratis?",
+          "a": "Ja. Carrièregeheugen, randvoorwaarden, kansen en anoniem contact zijn gratis, zonder tijdslimiet. De coach is inbegrepen met een dagquotum; Premium maakt hem onbeperkt en voegt de onderhandelingsagent toe."
+        },
+        "employer": {
+          "q": "Kan mijn huidige werkgever mij ontdekken?",
+          "a": "Nee, zolang u dat niet besluit. Uw profiel is anoniem, uw identiteit versleuteld in uw browser, en u kunt bedrijven of hele sectoren uitsluiten."
+        },
+        "zeroKnowledge": {
+          "q": "Wat betekent „zero-knowledge”?",
+          "a": "Uw identiteit wordt op uw apparaat versleuteld voordat ze wordt verstuurd. Wij bewaren een gesloten kluis waarvan we de sleutel niet hebben: wij niet, een recruiter niet, een hacker niet; niemand leest hem zonder u."
+        },
+        "approval": {
+          "q": "Kan de agent namens mij schrijven zonder het te vragen?",
+          "a": "Nee. Hij schrijft, u keurt goed. Geen bericht gaat weg zonder uw uitdrukkelijke akkoord, en u kiest zelf wanneer u de anonimiteit opheft, veld voor veld."
+        },
+        "ai": {
+          "q": "Welke AI gebruikt u, en waar gaan mijn gegevens heen?",
+          "a": "De modellen van Mistral AI, gehost in de Europese Unie. Ze krijgen alleen de gegevens die voor de taak nodig zijn, nooit uw identiteit, en we trainen geen enkel model met uw gegevens."
+        },
+        "negotiation": {
+          "q": "Hoe verloopt de onderhandeling?",
+          "a": "U legt een mandaat vast: streefsalaris, ondergrens, voorwaarden. De agent stelt tegenvoorstellen op met een marktsalaris als referentie, nooit onder uw ondergrens. U keurt elk bericht goed."
+        },
+        "delete": {
+          "q": "Kan ik alles opvragen, of alles verwijderen?",
+          "a": "Ja, op elk moment, via uw instellingen: een volledige export van uw gegevens, daarna definitieve verwijdering van het account."
+        }
+      }
+    },
+    "closing": {
+      "title": "Laat uw agent de wacht houden. Stap uit de schaduw wanneer u wilt.",
+      "text": "Maak uw agent in een paar minuten aan: hij gaat aan de slag zodra uw randvoorwaarden vastliggen.",
+      "cta": "Gratis mijn agent aanmaken"
     }
   },
   "notFound": {

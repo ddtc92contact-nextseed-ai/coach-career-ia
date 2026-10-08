@@ -20,8 +20,8 @@ export function RedirectButton({
       aria-busy={pending || undefined}
       className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-60 sm:w-auto ${
         primary
-          ? "bg-stone-900 text-white hover:bg-stone-700"
-          : "border border-stone-300 bg-white hover:bg-stone-100"
+          ? "bg-primary text-on-primary hover:bg-primary-hover"
+          : "border-line-strong bg-surface hover:bg-muted border"
       }`}
     >
       {pending ? pendingLabel : label}

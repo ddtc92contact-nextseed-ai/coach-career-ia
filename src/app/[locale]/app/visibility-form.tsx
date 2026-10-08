@@ -25,18 +25,18 @@ export function VisibilityForm({ current }: { current: VisibilityStatusCode }) {
           {VISIBILITY_STATUSES.map((status) => (
             <label
               key={status}
-              className="flex cursor-pointer gap-3 rounded-xl border border-stone-200 bg-white p-4 has-[:checked]:border-stone-900 has-[:checked]:ring-1 has-[:checked]:ring-stone-900"
+              className="border-line bg-surface has-[:checked]:border-primary has-[:checked]:ring-primary flex cursor-pointer gap-3 rounded-xl border p-4 has-[:checked]:ring-1"
             >
               <input
                 type="radio"
                 name="visibility"
                 value={status}
                 defaultChecked={status === current}
-                className="accent-brand-700 mt-1"
+                className="accent-brand mt-1"
               />
               <span>
                 <span className="block font-medium">{tc(`${status}.label`)}</span>
-                <span className="mt-1 block text-sm text-stone-500">
+                <span className="text-ink-subtle mt-1 block text-sm">
                   {tc(`${status}.description`)}
                 </span>
               </span>

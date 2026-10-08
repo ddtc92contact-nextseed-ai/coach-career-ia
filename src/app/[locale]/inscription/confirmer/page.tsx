@@ -27,10 +27,10 @@ export default async function ConfirmEmailPage({ searchParams }: Props) {
 
   return (
     <AuthCard title={ok ? t("successTitle") : t("failedTitle")}>
-      <p className="text-stone-600">{ok ? t("successText") : t("failedText")}</p>
+      <p className="text-ink-muted">{ok ? t("successText") : t("failedText")}</p>
       <Link
         href={ok ? login : "/connexion"}
-        className="mt-6 inline-block rounded-lg bg-stone-900 px-4 py-2.5 font-medium text-white hover:bg-stone-700"
+        className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 font-medium"
       >
         {t("login")}
       </Link>

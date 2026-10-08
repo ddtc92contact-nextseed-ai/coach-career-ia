@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 function Notice({
   tone,
@@ -25,9 +25,9 @@ function Notice({
   children: React.ReactNode;
 }) {
   const tones = {
-    info: "border-brand-100 bg-brand-50 text-brand-900",
-    warn: "border-amber-200 bg-amber-50 text-amber-900",
-    error: "border-red-200 bg-red-50 text-red-800",
+    info: "border-brand-line bg-brand-soft text-brand-ink",
+    warn: "border-warning-line bg-warning-soft text-warning-ink",
+    error: "border-danger-line bg-danger-soft text-danger-ink",
   };
   return (
     <p
@@ -88,13 +88,13 @@ export default async function BillingPage({
       {!configured ? <Notice tone="warn">{t("notAvailable")}</Notice> : null}
 
       <section className={sectionClass} aria-labelledby="offre-actuelle">
-        <h2 id="offre-actuelle" className="text-sm font-medium text-stone-500">
+        <h2 id="offre-actuelle" className="text-ink-subtle text-sm font-medium">
           {t("current.title")}
         </h2>
         <p className="mt-1 text-2xl font-semibold tracking-tight">
           {t(`plans.${entitlements.plan}.name`)}
         </p>
-        <div className="mt-2 space-y-1 text-sm text-stone-600">
+        <div className="text-ink-muted mt-2 space-y-1 text-sm">
           {entitlements.source === "admin" ? <p>{t("current.admin")}</p> : null}
           {entitlements.source === "subscription" && periodEnd ? (
             <p>
@@ -108,7 +108,7 @@ export default async function BillingPage({
         {!premium && account?.subscriptionStatus === "UNPAID" ? (
           <p
             role="alert"
-            className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="border-danger-line bg-danger-soft text-danger-ink mt-4 rounded-lg border px-4 py-3 text-sm"
           >
             {t("current.unpaid")}
           </p>
@@ -116,7 +116,7 @@ export default async function BillingPage({
         {account?.subscriptionStatus === "PAST_DUE" ? (
           <p
             role="alert"
-            className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+            className="border-warning-line bg-warning-soft text-warning-ink mt-4 rounded-lg border px-4 py-3 text-sm"
           >
             {t("current.pastDue")}
           </p>
@@ -124,7 +124,7 @@ export default async function BillingPage({
         {canManage ? (
           <form action={openPortal} className="mt-4">
             <RedirectButton label={t("manage")} pendingLabel={t("redirecting")} />
-            <p className="mt-2 text-xs text-stone-500">{hint("manageHint")}</p>
+            <p className="text-ink-subtle mt-2 text-xs">{hint("manageHint")}</p>
           </form>
         ) : null}
       </section>
@@ -136,8 +136,8 @@ export default async function BillingPage({
         <ul className="grid gap-4 sm:grid-cols-2">
           <li className={sectionClass}>
             <h3 className="font-semibold">{t("plans.FREE.name")}</h3>
-            <p className="mt-1 text-sm text-stone-500">{t("plans.FREE.price")}</p>
-            <ul className="mt-4 space-y-2 text-sm text-stone-700">
+            <p className="text-ink-subtle mt-1 text-sm">{t("plans.FREE.price")}</p>
+            <ul className="text-ink-muted mt-4 space-y-2 text-sm">
               <li>✓ {t("features.memory")}</li>
               <li>✓ {t("features.opportunities")}</li>
               <li>
@@ -148,10 +148,10 @@ export default async function BillingPage({
               </li>
             </ul>
           </li>
-          <li className={`${sectionClass} border-stone-900`}>
+          <li className={`${sectionClass} border-primary`}>
             <h3 className="font-semibold">{t("plans.PREMIUM.name")}</h3>
-            <p className="mt-1 text-sm text-stone-500">{priceLabel ?? t("priceUnknown")}</p>
-            <ul className="mt-4 space-y-2 text-sm text-stone-700">
+            <p className="text-ink-subtle mt-1 text-sm">{priceLabel ?? t("priceUnknown")}</p>
+            <ul className="text-ink-muted mt-4 space-y-2 text-sm">
               <li>✓ {t("features.everythingFree")}</li>
               <li>✓ {t("features.coachUnlimited")}</li>
               <li>✓ {t("features.negotiation")}</li>
@@ -159,14 +159,14 @@ export default async function BillingPage({
             {!premium && configured ? (
               <form action={startCheckout} className="mt-5">
                 <RedirectButton primary label={t("upgrade")} pendingLabel={t("redirecting")} />
-                <p className="mt-2 text-xs text-stone-500">{hint("upgradeHint")}</p>
+                <p className="text-ink-subtle mt-2 text-xs">{hint("upgradeHint")}</p>
               </form>
             ) : null}
           </li>
         </ul>
       </section>
 
-      <p className="text-xs text-stone-500">{hint("privacy")}</p>
+      <p className="text-ink-subtle text-xs">{hint("privacy")}</p>
     </div>
   );
 }

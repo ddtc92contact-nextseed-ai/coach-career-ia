@@ -47,28 +47,28 @@ export default async function SimulatedPostingCheckoutPage({
     <div className="mx-auto max-w-lg">
       <SimulatedBanner />
       <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mt-2 text-stone-600">{ts("checkout.intro")}</p>
+      <p className="text-ink-muted mt-2">{ts("checkout.intro")}</p>
 
       {query.refus ? (
         <p
           role="alert"
-          className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
         >
           {ts("checkout.declined")}
         </p>
       ) : null}
 
-      <dl className="mt-6 divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white text-sm">
+      <dl className="divide-line border-line bg-surface mt-6 divide-y rounded-2xl border text-sm">
         <div className="flex justify-between gap-4 p-4">
-          <dt className="text-stone-500">{t("offer")}</dt>
+          <dt className="text-ink-subtle">{t("offer")}</dt>
           <dd className="text-right font-medium break-words">{checkout.posting.offer.title}</dd>
         </div>
         <div className="flex justify-between gap-4 p-4">
-          <dt className="text-stone-500">{t("duration")}</dt>
+          <dt className="text-ink-subtle">{t("duration")}</dt>
           <dd className="font-medium">{t("days", { days: postingDurationDays() })}</dd>
         </div>
         <div className="flex justify-between gap-4 p-4">
-          <dt className="text-stone-500">{t("total")}</dt>
+          <dt className="text-ink-subtle">{t("total")}</dt>
           <dd className="font-medium">{amount}</dd>
         </div>
       </dl>
@@ -82,7 +82,7 @@ export default async function SimulatedPostingCheckoutPage({
           type="submit"
           name="outcome"
           value="success"
-          className={`${button} bg-stone-900 text-white hover:bg-stone-700`}
+          className={`${button} bg-primary text-on-primary hover:bg-primary-hover`}
         >
           {ts("checkout.pay")}
         </button>
@@ -90,7 +90,7 @@ export default async function SimulatedPostingCheckoutPage({
           type="submit"
           name="outcome"
           value="declined"
-          className={`${button} border border-stone-300 bg-white hover:bg-stone-100`}
+          className={`${button} border-line-strong bg-surface hover:bg-muted border`}
         >
           {ts("checkout.decline")}
         </button>
@@ -98,16 +98,16 @@ export default async function SimulatedPostingCheckoutPage({
           type="submit"
           name="outcome"
           value="cancel"
-          className={`${button} text-stone-600 hover:bg-stone-100`}
+          className={`${button} text-ink-muted hover:bg-muted`}
         >
           {ts("checkout.cancel")}
         </button>
       </form>
-      <p className="mt-6 text-xs text-stone-500">{ts("checkout.noCard")}</p>
+      <p className="text-ink-subtle mt-6 text-xs">{ts("checkout.noCard")}</p>
       <p className="mt-4 text-sm">
         <Link
           href={`/entreprise/offres/${checkout.postingId}`}
-          className="text-stone-600 underline hover:text-stone-900"
+          className="text-ink-muted hover:text-ink underline"
         >
           {t("back")}
         </Link>

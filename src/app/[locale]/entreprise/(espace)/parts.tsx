@@ -27,8 +27,8 @@ export async function OrganizationNotice({ org }: { org: Organization }) {
       role="status"
       className={`mb-6 rounded-lg border px-4 py-3 text-sm ${
         pending
-          ? "border-amber-200 bg-amber-50 text-amber-900"
-          : "border-red-200 bg-red-50 text-red-800"
+          ? "border-warning-line bg-warning-soft text-warning-ink"
+          : "border-danger-line bg-danger-soft text-danger-ink"
       }`}
     >
       <p className="font-medium">{pending ? t("pendingTitle") : t("suspendedTitle")}</p>
@@ -44,8 +44,8 @@ export function Notice({ tone, children }: { tone: "info" | "error"; children: R
       role={tone === "error" ? "alert" : "status"}
       className={`mb-6 rounded-lg border px-4 py-3 text-sm ${
         tone === "error"
-          ? "border-red-200 bg-red-50 text-red-800"
-          : "border-brand-100 bg-brand-50 text-brand-900"
+          ? "border-danger-line bg-danger-soft text-danger-ink"
+          : "border-brand-line bg-brand-soft text-brand-ink"
       }`}
     >
       {children}

@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 export default async function OpportunityPage({ params, searchParams }: Props) {
   const user = await requireUser();
@@ -65,7 +65,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/app/opportunites" className="text-sm text-stone-600 hover:underline">
+      <Link href="/app/opportunites" className="text-ink-muted text-sm hover:underline">
         {t("actions.back")}
       </Link>
 
@@ -76,7 +76,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
             <OfferFacts offer={match.offer} />
           </div>
           {match.offer.publishedAt ? (
-            <p className="mt-1 text-xs text-stone-500">
+            <p className="text-ink-subtle mt-1 text-xs">
               {t("detail.published", { date: format.dateTime(match.offer.publishedAt, "short") })}
             </p>
           ) : null}
@@ -93,7 +93,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
             href={match.offer.url}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-stone-700"
+            className="bg-primary text-on-primary hover:bg-primary-hover inline-block rounded-lg px-4 py-2.5 text-center text-sm font-medium"
           >
             {t("actions.original")}
           </a>
@@ -103,7 +103,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
 
       {match.offer.direct ? (
         <section className={sectionClass}>
-          <p className="text-sm whitespace-pre-line text-stone-700">{match.offer.description}</p>
+          <p className="text-ink-muted text-sm whitespace-pre-line">{match.offer.description}</p>
         </section>
       ) : null}
 
@@ -114,21 +114,21 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           </h2>
           {contact.contact ? (
             <>
-              <p className="mt-2 text-sm text-stone-700">
+              <p className="text-ink-muted mt-2 text-sm">
                 {t(`contact.status.${contact.contact.status}`)}
               </p>
               <Link
                 href={`/app/contacts/${contact.contact.id}`}
-                className="mt-3 inline-block rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium hover:bg-stone-100"
+                className="border-line-strong hover:bg-muted mt-3 inline-block rounded-lg border px-4 py-2 text-sm font-medium"
               >
                 {t("contact.existing")}
               </Link>
             </>
           ) : contact.channel === null ? (
-            <p className="mt-2 text-sm text-stone-700">{t("contact.none")}</p>
+            <p className="text-ink-muted mt-2 text-sm">{t("contact.none")}</p>
           ) : (
             <>
-              <p className="mt-2 text-sm text-stone-700">
+              <p className="text-ink-muted mt-2 text-sm">
                 {t(
                   contact.channel === "PORTAL"
                     ? "contact.portal"
@@ -138,12 +138,12 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                 )}
               </p>
               {contactError ? (
-                <p role="alert" className="mt-2 text-sm text-red-700">
+                <p role="alert" className="text-danger-ink mt-2 text-sm">
                   {tce(contactError, { excerpt: "", limit: 0 })}
                 </p>
               ) : null}
               {!contact.cardApproved ? (
-                <p className="mt-2 text-sm text-amber-800">
+                <p className="text-warning-ink mt-2 text-sm">
                   {t("contact.cardNeeded")}{" "}
                   <Link href="/app/carte" className="underline">
                     {t("contact.cardLink")}
@@ -153,7 +153,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                 <form action={startContactAction.bind(null, match.id)} className="mt-3">
                   <button
                     type="submit"
-                    className="rounded-lg bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700"
+                    className="bg-primary text-on-primary hover:bg-primary-hover rounded-lg px-4 py-2.5 text-sm font-medium"
                   >
                     {t("contact.button")}
                   </button>
@@ -168,8 +168,8 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
         <h2 id="pourquoi" className="text-lg font-semibold">
           {t("detail.why")}
         </h2>
-        <p className="mt-2 text-stone-800">{displaySummary(explanation, match.score, locale)}</p>
-        <p className="mt-2 text-xs text-stone-500">
+        <p className="text-ink mt-2">{displaySummary(explanation, match.score, locale)}</p>
+        <p className="text-ink-subtle mt-2 text-xs">
           {t(`detail.generatedBy.${fromLlm ? "llm" : "rules"}`)} {t("detail.guardRailsOk")}
         </p>
       </section>
@@ -181,7 +181,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
               {t("detail.proofs")}
             </h2>
             {explanation.matches.length === 0 ? (
-              <p className="mt-2 text-sm text-stone-600">{t("detail.proofsEmpty")}</p>
+              <p className="text-ink-muted mt-2 text-sm">{t("detail.proofsEmpty")}</p>
             ) : (
               <ul className="mt-3 space-y-3">
                 {explanation.matches.map((m, i) => (
@@ -191,7 +191,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                         {m.proven ? tm("proven") : tm("declared")}
                       </Badge>
                     </span>
-                    <span className="text-sm text-stone-800">{lines.matches[i]}</span>
+                    <span className="text-ink text-sm">{lines.matches[i]}</span>
                   </li>
                 ))}
               </ul>
@@ -231,7 +231,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                   <h2 id="attention" className="text-lg font-semibold">
                     {t("detail.gaps")}
                   </h2>
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-stone-700">
+                  <ul className="text-ink-muted mt-2 list-disc space-y-1 pl-5 text-sm">
                     {lines.gaps.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -246,7 +246,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                   >
                     {t("detail.unknowns")}
                   </h2>
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-stone-700">
+                  <ul className="text-ink-muted mt-2 list-disc space-y-1 pl-5 text-sm">
                     {lines.unknowns.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -269,10 +269,10 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                   </div>
                   <div
                     aria-hidden="true"
-                    className="mt-1 h-2 overflow-hidden rounded-full bg-stone-100"
+                    className="bg-muted mt-1 h-2 overflow-hidden rounded-full"
                   >
                     <div
-                      className="bg-brand-600 h-full rounded-full"
+                      className="bg-brand h-full rounded-full"
                       style={{ width: `${explanation.components[key]}%` }}
                     />
                   </div>
@@ -288,7 +288,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           <h2 id="dynamique" className="text-lg font-semibold">
             {ts("title")}
           </h2>
-          <p className="mt-1 mb-3 text-xs text-stone-500">{ts("intro")}</p>
+          <p className="text-ink-subtle mt-1 mb-3 text-xs">{ts("intro")}</p>
           <CompanySignalList signals={signals} />
         </section>
       ) : null}
@@ -298,7 +298,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
           <h2 id="marche" className="text-lg font-semibold">
             {tb("title")}
           </h2>
-          <p className="mt-1 mb-3 text-xs text-stone-500">{tb("intro")}</p>
+          <p className="text-ink-subtle mt-1 mb-3 text-xs">{tb("intro")}</p>
           <SalaryBenchmarkBlock
             benchmark={market.benchmark}
             minSample={BENCHMARK_CONFIG.minSample}
@@ -313,7 +313,7 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
         <h2 id="description" className="text-lg font-semibold">
           {t("detail.description")}
         </h2>
-        <p className="mt-2 text-sm whitespace-pre-line text-stone-700">{match.offer.description}</p>
+        <p className="text-ink-muted mt-2 text-sm whitespace-pre-line">{match.offer.description}</p>
       </section>
     </div>
   );

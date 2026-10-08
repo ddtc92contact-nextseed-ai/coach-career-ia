@@ -35,7 +35,7 @@ export default async function CoachConversationPage({
 
   return (
     <div className="mx-auto max-w-3xl">
-      <Link href="/app/coach" className="text-sm text-stone-600 underline-offset-2 hover:underline">
+      <Link href="/app/coach" className="text-ink-muted text-sm underline-offset-2 hover:underline">
         ← {t("chat.back")}
       </Link>
       <h1 className="mt-2 mb-4 text-2xl font-semibold tracking-tight">

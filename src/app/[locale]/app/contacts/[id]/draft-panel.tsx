@@ -12,24 +12,24 @@ import {
 } from "../actions";
 
 const primary =
-  "w-full rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
 const approveClass =
-  "bg-brand-700 hover:bg-brand-800 w-full rounded-lg px-5 py-2.5 font-medium text-white disabled:opacity-60 sm:w-auto";
+  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
 const secondary =
-  "w-full rounded-lg border border-stone-300 px-5 py-2.5 font-medium hover:bg-stone-100 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
 
 function ActionMessage({ state }: { state: ContactActionState }) {
   const t = useTranslations("contacts");
   if (state.error) {
     return (
-      <p role="alert" className="text-sm text-red-700">
+      <p role="alert" className="text-danger-ink text-sm">
         {t(`errors.${state.error}`, { excerpt: state.excerpt ?? "", limit: state.limit ?? 0 })}
       </p>
     );
   }
   if (state.ok) {
     return (
-      <p role="status" className="text-brand-700 text-sm font-medium">
+      <p role="status" className="text-brand-ink text-sm font-medium">
         {t(`detail.${state.ok}`)}
       </p>
     );
@@ -81,7 +81,7 @@ export function DraftPanel({
         className="space-y-4"
       >
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-stone-800">
+          <label htmlFor="subject" className="text-ink block text-sm font-medium">
             {t("subject")}
           </label>
           <input
@@ -94,7 +94,7 @@ export function DraftPanel({
           />
         </div>
         <div>
-          <label htmlFor="body" className="block text-sm font-medium text-stone-800">
+          <label htmlFor="body" className="text-ink block text-sm font-medium">
             {t("body")}
           </label>
           <textarea
@@ -107,7 +107,7 @@ export function DraftPanel({
             aria-describedby="body-hint"
             className={inputClass}
           />
-          <p id="body-hint" className="mt-1 text-sm text-stone-500">
+          <p id="body-hint" className="text-ink-subtle mt-1 text-sm">
             {t(channel === "PORTAL" ? "appendedPortal" : "appended")}
           </p>
         </div>
@@ -134,7 +134,7 @@ export function DraftPanel({
             </button>
             <ActionMessage state={sendState} />
           </div>
-          <p className="text-xs text-stone-500">
+          <p className="text-ink-subtle text-xs">
             {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
           </p>
         </form>
@@ -162,7 +162,7 @@ export function CopyText({ text, rows = 12 }: { text: string; rows?: number }) {
           {t("copy")}
         </button>
         {copied ? (
-          <span role="status" className="text-brand-700 text-sm">
+          <span role="status" className="text-brand-ink text-sm">
             {t("copied")}
           </span>
         ) : null}

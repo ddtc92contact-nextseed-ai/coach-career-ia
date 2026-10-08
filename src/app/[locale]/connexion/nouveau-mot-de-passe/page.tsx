@@ -27,10 +27,10 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
   if (!valid) {
     return (
       <AuthCard title={t("invalidTitle")}>
-        <p className="text-stone-600">{t("invalidText")}</p>
+        <p className="text-ink-muted">{t("invalidText")}</p>
         <Link
           href="/connexion/mot-de-passe-oublie"
-          className="mt-6 inline-block rounded-lg bg-stone-900 px-4 py-2.5 font-medium text-white hover:bg-stone-700"
+          className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 font-medium"
         >
           {t("requestNew")}
         </Link>
@@ -40,7 +40,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
 
   return (
     <AuthCard title={t("title")}>
-      <p className="mb-4 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mb-4 text-sm">{t("intro")}</p>
       <div className="mb-6">
         <VaultResetNotice />
       </div>

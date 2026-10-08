@@ -18,7 +18,7 @@ export default async function NewPostingPage() {
   const [t, locale] = await Promise.all([getTranslations("employer.posting"), getLocale()]);
   return (
     <div className="max-w-3xl">
-      <Link href="/entreprise" className="text-sm text-stone-600 hover:underline">
+      <Link href="/entreprise" className="text-ink-muted text-sm hover:underline">
         {t("back")}
       </Link>
       <div className="mt-4">

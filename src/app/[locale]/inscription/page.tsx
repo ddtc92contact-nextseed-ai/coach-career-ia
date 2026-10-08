@@ -33,11 +33,11 @@ export default async function SignupPage({ params, searchParams }: Props) {
 
   return (
     <AuthCard title={t("title")}>
-      <p className="mb-6 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mb-6 text-sm">{t("intro")}</p>
       <SignupForm callbackUrl={callbackUrl} />
-      <p className="mt-6 text-center text-sm text-stone-600">
+      <p className="text-ink-muted mt-6 text-center text-sm">
         {t("haveAccount")}{" "}
-        <Link href={loginHref} className="text-brand-700 font-medium underline underline-offset-4">
+        <Link href={loginHref} className="text-brand-ink font-medium underline underline-offset-4">
           {t("login")}
         </Link>
       </p>

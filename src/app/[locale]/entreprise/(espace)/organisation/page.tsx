@@ -49,13 +49,13 @@ export default async function OrganizationPage() {
           </Badge>
         }
       />
-      <dl className="divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white text-sm">
+      <dl className="divide-line border-line bg-surface divide-y rounded-2xl border text-sm">
         {rows.map(([label, value]) => (
           <div
             key={label}
             className="flex flex-col gap-1 p-4 sm:flex-row sm:justify-between sm:gap-4"
           >
-            <dt className="text-stone-500">{label}</dt>
+            <dt className="text-ink-subtle">{label}</dt>
             <dd className="font-medium sm:text-right">{value}</dd>
           </div>
         ))}

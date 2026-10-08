@@ -26,19 +26,19 @@ export function AlertsForm({
     <ActionForm action={action} className="space-y-4">
       <FormError errors={state.errors} />
       <fieldset>
-        <legend className="text-sm font-medium text-stone-800">{t("frequency")}</legend>
+        <legend className="text-ink text-sm font-medium">{t("frequency")}</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-3">
           {ALERT_FREQUENCIES.map((value) => (
             <label
               key={value}
-              className="flex cursor-pointer items-center gap-3 rounded-lg border border-stone-200 px-3 py-2.5 text-sm has-[:checked]:border-stone-900 has-[:checked]:ring-1 has-[:checked]:ring-stone-900"
+              className="border-line has-[:checked]:border-primary has-[:checked]:ring-primary flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm has-[:checked]:ring-1"
             >
               <input
                 type="radio"
                 name="frequency"
                 value={value}
                 defaultChecked={value === frequency}
-                className="accent-brand-700"
+                className="accent-brand"
               />
               {t(`frequencyOptions.${value}`)}
             </label>
@@ -46,10 +46,10 @@ export function AlertsForm({
         </div>
       </fieldset>
       <div className="sm:w-60">
-        <label htmlFor="minScore" className="block text-sm font-medium text-stone-800">
+        <label htmlFor="minScore" className="text-ink block text-sm font-medium">
           {t("minScore")}
         </label>
-        <p id="minScore-hint" className="mt-0.5 text-sm text-stone-500">
+        <p id="minScore-hint" className="text-ink-subtle mt-0.5 text-sm">
           {t("minScoreHint")}
         </p>
         <select

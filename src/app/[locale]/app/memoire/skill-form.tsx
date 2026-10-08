@@ -27,12 +27,12 @@ export function SkillForm() {
         <button
           type="submit"
           disabled={pending}
-          className="mt-1 rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium hover:bg-stone-100 disabled:opacity-60"
+          className="border-line-strong hover:bg-muted mt-1 rounded-lg border px-4 py-2.5 text-sm font-medium disabled:opacity-60"
         >
           {t("addButton")}
         </button>
       </div>
-      <p id="skill-name-hint" className="mt-1.5 text-sm text-stone-500">
+      <p id="skill-name-hint" className="text-ink-subtle mt-1.5 text-sm">
         {t("addHint")}
       </p>
       <FieldError id="skill-name" error={state.errors?.name} />

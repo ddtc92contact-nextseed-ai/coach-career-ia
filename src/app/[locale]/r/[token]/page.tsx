@@ -38,10 +38,10 @@ export default async function RevealedProfilePage({ params }: Props) {
         <LocaleSwitcher />
       </div>
       <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mt-1 text-sm break-words text-stone-600">
+      <p className="text-ink-muted mt-1 text-sm break-words">
         {t("context", { title: profile.offerTitle })}
       </p>
-      <p className="bg-brand-50 text-brand-800 mt-4 rounded-lg px-3 py-2 text-sm">
+      <p className="bg-brand-soft text-brand-ink mt-4 rounded-lg px-3 py-2 text-sm">
         {t("disclosure")}
       </p>
       <section className="mt-6" aria-labelledby="identite">
@@ -58,7 +58,7 @@ export default async function RevealedProfilePage({ params }: Props) {
           <ProfileCardView card={profile.card} />
         </section>
       ) : null}
-      <p className="mt-6 text-xs text-stone-500">
+      <p className="text-ink-subtle mt-6 text-xs">
         {t("expires", { date: format.dateTime(profile.expiresAt, "short") })} {t("notice")}
       </p>
     </main>

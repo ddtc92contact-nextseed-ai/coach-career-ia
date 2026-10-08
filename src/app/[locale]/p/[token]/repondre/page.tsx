@@ -35,14 +35,14 @@ export default async function ReplyPage({ params }: Props) {
         <Logo />
         <LocaleSwitcher />
       </div>
-      <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+      <div className="border-line bg-surface rounded-2xl border p-5 sm:p-7">
         <h1 className="text-xl font-semibold tracking-tight">{t("title")}</h1>
-        <p className="mt-2 text-sm text-stone-600">{t("intro", { title: target.offer.title })}</p>
+        <p className="text-ink-muted mt-2 text-sm">{t("intro", { title: target.offer.title })}</p>
         <div className="mt-6">
           <ReplyForm token={token} />
         </div>
       </div>
-      <Link href={`/p/${token}`} className="mt-6 text-sm text-stone-600 hover:underline">
+      <Link href={`/p/${token}`} className="text-ink-muted mt-6 text-sm hover:underline">
         {t("back")}
       </Link>
     </main>

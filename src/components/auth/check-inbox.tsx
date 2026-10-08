@@ -28,15 +28,15 @@ export function CheckInbox({
   return (
     <div role="status" className="space-y-4">
       <h2 className="text-lg font-semibold">{t("title")}</h2>
-      <p className="text-sm break-words text-stone-700">
+      <p className="text-ink-muted text-sm break-words">
         {reason === "signup" ? t("text", { email }) : t("unverified", { email })}
       </p>
-      <p className="text-sm text-stone-500">{t("help")}</p>
+      <p className="text-ink-subtle text-sm">{t("help")}</p>
       {state === "sent" ? (
-        <p className="text-brand-700 text-sm font-medium">{t("resent")}</p>
+        <p className="text-brand-ink text-sm font-medium">{t("resent")}</p>
       ) : null}
       {error ? (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-danger-ink text-sm">
           {t(`errors.${error.key}`, { minutes: error.minutes })}
         </p>
       ) : null}
@@ -56,14 +56,14 @@ export function CheckInbox({
               setState("idle");
             }
           }}
-          className="rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium hover:bg-stone-100 disabled:opacity-60"
+          className="border-line-strong hover:bg-muted rounded-lg border px-4 py-2.5 text-sm font-medium disabled:opacity-60"
         >
           {state === "sending" ? t("resending") : t("resend")}
         </button>
         <button
           type="button"
           onClick={onBack}
-          className="text-sm font-medium text-stone-700 underline underline-offset-4"
+          className="text-ink-muted text-sm font-medium underline underline-offset-4"
         >
           {t("back")}
         </button>

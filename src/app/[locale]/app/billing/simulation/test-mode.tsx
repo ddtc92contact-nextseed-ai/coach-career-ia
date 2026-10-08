@@ -7,7 +7,7 @@ export function TestModeBadge() {
   return (
     <p className="flex flex-col items-start gap-1 sm:items-end">
       <Badge tone="warning">{t("badge")}</Badge>
-      <span className="text-xs text-stone-500">{t("badgeHint")}</span>
+      <span className="text-ink-subtle text-xs">{t("badgeHint")}</span>
     </p>
   );
 }
@@ -18,7 +18,7 @@ export function SimulatedBanner() {
   return (
     <p
       role="note"
-      className="mb-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900"
+      className="border-warning-line bg-warning-soft text-warning-ink mb-6 rounded-lg border px-4 py-3 text-sm font-medium"
     >
       {t("banner")}
     </p>
