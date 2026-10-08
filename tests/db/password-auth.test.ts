@@ -464,4 +464,76 @@ describe.skipIf(!url)("connexion par e-mail + mot de passe", { timeout: 120_000 
     });
     expect((await accounts.deriveKey(PASSWORD, kdf!, true)).kdf).toEqual(kdf);
   });
+  it("prise de contrôle avant inscription : le lien magique de la victime efface le mot de passe de l'attaquant", async () => {
+    const email = emailFor("victime-pwd-");
+    const ATTACKER = "mot de passe de l'attaquant";
+    await accounts.signup(email, ATTACKER, "fr");
+    expect((await rejection(accounts.login(email, ATTACKER, false))).code).toBe("unverified");
+    const { id } = await db.user.findUniqueOrThrow({ where: { email } });
+    expect(await db.authToken.count({ where: { userId: id } })).toBe(1);
+
+    // La victime se connecte par lien magique : Auth.js appelle `updateUser` avec `emailVerified`.
+    const { PrismaAdapter } = await import("@auth/prisma-adapter");
+    const { secureAdapter } = await import("@/lib/auth/adapter");
+    const adapter = secureAdapter(PrismaAdapter(db));
+    const updated = await adapter.updateUser!({ id, emailVerified: new Date() });
+    expect(updated).not.toHaveProperty("passwordHash");
+    expect(updated).not.toHaveProperty("kdfSalt");
+
+    const user = await db.user.findUniqueOrThrow({ where: { id } });
+    expect(user.emailVerified).not.toBeNull();
+    expect(user.passwordHash).toBeNull();
+    expect(user.kdfSalt).toBeNull();
+    expect(user.kdfIterations).toBeNull();
+    expect(await db.authToken.count({ where: { userId: id } })).toBe(0);
+
+    // L'authHash de l'attaquant, rejoué tel quel, est refusé.
+    const signupBody = requests
+      .filter((r) => r.path === "/api/account/signup" && r.body.includes(email))
+      .at(-1)!;
+    const { authHash } = JSON.parse(signupBody.body) as { authHash: string };
+    const replay = await routedFetch("/api/account/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, authHash, remember: false }),
+    });
+    expect(replay.status).toBe(401);
+    expect(await db.session.count({ where: { userId: id } })).toBe(0);
+
+    // Un compte déjà vérifié garde son mot de passe lors d'une connexion par lien magique.
+    const owner = await verifiedAccount("proprietaire-pwd-");
+    const ownerRow = await db.user.findUniqueOrThrow({ where: { email: owner } });
+    await adapter.updateUser!({ id: ownerRow.id, emailVerified: new Date() });
+    expect(await accounts.login(owner, PASSWORD, false)).toBeTruthy();
+  });
+
+  it("/api/auth/session n'expose ni hachage, ni sel, ni jeton de session", async () => {
+    const email = await verifiedAccount("session-pwd-");
+    await accounts.login(email, PASSWORD, false);
+    const cookie = requests
+      .filter((r) => r.path === "/api/account/login")
+      .at(-1)!
+      .setCookie!.split(";")[0]!;
+    const { handlers } = await import("@/auth");
+    const { NextRequest } = await import("next/server");
+    const response = await handlers.GET(
+      new NextRequest("http://localhost/api/auth/session", { headers: { cookie } }),
+    );
+    const text = await response.text();
+    const session = JSON.parse(text) as { user?: Record<string, unknown> };
+    expect(session.user?.email).toBe(email);
+    expect(Object.keys(session).sort()).toEqual(["expires", "user"]);
+    expect(Object.keys(session.user!).sort()).toEqual(["email", "id"]);
+    for (const forbidden of [
+      "passwordHash",
+      "kdfSalt",
+      "kdfIterations",
+      "sessionToken",
+      "scrypt",
+      "stripe",
+    ]) {
+      expect(text).not.toContain(forbidden);
+    }
+    expect(text).not.toContain(cookie.split("=")[1]!);
+  });
 });
