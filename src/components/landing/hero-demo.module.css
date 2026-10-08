@@ -1,0 +1,215 @@
+/*
+ * Animation du visuel d'accueil : une boucle de 16 s où l'agent repère une
+ * offre, coche les garde-fous, calcule la correspondance puis prépare un
+ * brouillon. Sans animation (mouvement réduit, ou avant le chargement du CSS),
+ * l'état final s'affiche tel quel.
+ */
+
+@property --score {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 87;
+}
+
+.ring {
+  --score: 87;
+  background: conic-gradient(var(--cc-signal) calc(var(--score) * 1%), var(--cc-night-line) 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .offer,
+  .check1,
+  .check2,
+  .check3,
+  .match,
+  .draft,
+  .approve {
+    animation: 16s cubic-bezier(0.22, 1, 0.36, 1) infinite both;
+  }
+  .offer {
+    animation-name: offer;
+  }
+  .check1 {
+    animation-name: check1;
+  }
+  .check2 {
+    animation-name: check2;
+  }
+  .check3 {
+    animation-name: check3;
+  }
+  .match {
+    animation-name: match;
+  }
+  .ring {
+    animation: ring 16s ease-out infinite both;
+  }
+  .draft {
+    animation-name: draft;
+  }
+  .approve {
+    animation-name: approve;
+  }
+  .pulse {
+    animation: pulse 2s ease-out infinite;
+  }
+  .sweep {
+    animation: sweep 4s linear infinite;
+  }
+  .scan {
+    animation: scan 2.4s ease-in-out infinite;
+  }
+  .caret {
+    animation: blink 1s steps(2, jump-none) infinite;
+  }
+}
+
+/* Chaque étape : invisible, apparaît à son tour, reste, puis tout s'efface. */
+@keyframes offer {
+  0%,
+  5% {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+  10%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes check1 {
+  0%,
+  16% {
+    opacity: 0;
+    translate: -0.5rem 0;
+  }
+  19%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes check2 {
+  0%,
+  22% {
+    opacity: 0;
+    translate: -0.5rem 0;
+  }
+  25%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes check3 {
+  0%,
+  28% {
+    opacity: 0;
+    translate: -0.5rem 0;
+  }
+  31%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes match {
+  0%,
+  36% {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+  41%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes ring {
+  0%,
+  38% {
+    --score: 0;
+  }
+  48%,
+  100% {
+    --score: 87;
+  }
+}
+@keyframes draft {
+  0%,
+  50% {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+  55%,
+  93% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes approve {
+  0%,
+  64% {
+    opacity: 0;
+    scale: 0.96;
+  }
+  68%,
+  93% {
+    opacity: 1;
+    scale: 1;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--cc-signal) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0.6rem transparent;
+  }
+}
+@keyframes sweep {
+  to {
+    rotate: 1turn;
+  }
+}
+@keyframes scan {
+  0% {
+    translate: -100% 0;
+  }
+  100% {
+    translate: 250% 0;
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
