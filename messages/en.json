@@ -587,9 +587,7 @@
   "dashboard": {
     "title": "Welcome to your space",
     "intro": "Your career agent is getting set up. Start with your career memory and your guard-rails: they will guide the selection of opportunities.",
-    "open": "Open →",
     "completeness": {
-      "title": "Profile completeness",
       "summary": "{achievements, plural, =0 {No achievements yet.} one {One achievement} other {# achievements}}{achievements, plural, =0 {} other {, {proven, plural, =0 {none proven} one {one proven} other {# proven}}.}} Achievements backed by proof count the most.",
       "nextSteps": "Next steps",
       "complete": "Your profile is complete. Remember to keep it up to date.",
@@ -633,19 +631,33 @@
       "intro": "Decide whether your anonymised profile can be shown to recruiters.",
       "save": "Update"
     },
-    "sections": {
-      "memory": {
-        "title": "My career memory",
-        "text": "Gather your achievements and the proof that backs them."
-      },
-      "guardRails": {
-        "title": "My guard-rails",
-        "text": "Set the conditions no offer may break."
-      },
-      "opportunities": {
-        "title": "Opportunities",
-        "text": "Find the offers qualified by your agent here."
-      }
+    "eyebrow": "Dashboard",
+    "stats": {
+      "completeness": "of your career memory completed",
+      "achievements": "{count, plural, one {achievement} other {achievements}}",
+      "proven": "{count, plural, one {proven achievement} other {proven achievements}}",
+      "experiences": "{count, plural, one {position} other {positions}}"
+    },
+    "cta": {
+      "opportunities": "See my opportunities"
+    },
+    "approvals": {
+      "title": "Awaiting your approval",
+      "intro": "Nothing goes out without your go-ahead.",
+      "empty": "Nothing waiting for now. Your agent will let you know.",
+      "draft": "Draft to review",
+      "open": "Open my contacts"
+    },
+    "opportunities": {
+      "title": "Current opportunities",
+      "intro": "The best-scored offers, already filtered by your guard-rails.",
+      "all": "All opportunities",
+      "empty": "No qualified opportunity yet: your agent keeps watching the market."
+    },
+    "rails": {
+      "title": "My guard-rails",
+      "intro": "No offer that breaks them is ever shown to you.",
+      "edit": "Edit"
     }
   },
   "opportunities": {
@@ -830,7 +842,11 @@
         "companyStage": "Type of organisation",
         "responsibilities": "Responsibilities",
         "responsibilitiesHint": "Your scope and main duties. Don’t include any company or person names.",
-        "save": "Save experience"
+        "save": "Save experience",
+        "groups": {
+          "role": "The position",
+          "missions": "Your responsibilities"
+        }
       }
     },
     "achievements": {
@@ -844,7 +860,6 @@
       "newTitle": "New achievement",
       "editTitle": "Achievement",
       "formIntro": "Be concrete: figures, timelines, impact. Avoid names of people, clients and employers.",
-      "detailsTitle": "Description",
       "deleteTitle": "Delete this achievement",
       "deleteText": "Its proofs, including uploaded documents, will be deleted.",
       "confirmDelete": "Permanently delete this achievement and all its proofs?",
@@ -863,7 +878,18 @@
         "skillsHint": "Comma-separated. They automatically feed your skills list.",
         "skillsPlaceholder": "PostgreSQL, project management, negotiation",
         "save": "Save",
-        "create": "Create and add proof"
+        "create": "Create and add proof",
+        "groups": {
+          "essentials": "The essentials",
+          "story": "The story",
+          "storyIntro": "Three steps: the starting point, your actions, the measured result."
+        }
+      },
+      "story": {
+        "context": "Context",
+        "action": "Action",
+        "result": "Result",
+        "missing": "To be completed"
       }
     },
     "proofs": {
@@ -905,7 +931,12 @@
       "confirmDelete": "Delete the skill “{name}”? It will be removed from the achievements that mention it."
     },
     "importCta": "Import my background",
-    "importHint": "CV, LinkedIn export or GitHub: the AI prepares a draft that you approve."
+    "importHint": "CV, LinkedIn export or GitHub: the AI prepares a draft that you approve.",
+    "eyebrow": "Proof, not promises",
+    "back": "Back to my career memory",
+    "stats": {
+      "provenSkills": "{count, plural, one {proven skill} other {proven skills}}"
+    }
   },
   "identity": {
     "title": "My identity",
@@ -924,7 +955,13 @@
       "you": "Only you can unlock it, with your account password. It is never sent to or stored by our services: only a fingerprint that cannot open the vault is used to sign in.",
       "handover": "Your identity is only revealed to a recruiter if you decide so, for that specific recruiter.",
       "lossTitle": "Important consequence:",
-      "loss": "if you forget your password and lose your recovery key, this data is lost for good. We will not be able to recover it for you. Your professional profile is not affected."
+      "loss": "if you forget your password and lose your recovery key, this data is lost for good. We will not be able to recover it for you. Your professional profile is not affected.",
+      "steps": {
+        "encrypted": "Encrypted on your device",
+        "nobody": "Unreadable to us",
+        "you": "Only you hold the key",
+        "handover": "Revealed only when you decide"
+      }
     },
     "recovery": {
       "title": "Your recovery key",
@@ -1083,6 +1120,12 @@
       "working": "Opening… (a few seconds)",
       "noKeyTitle": "No recovery key?",
       "noKey": "Your encrypted identity (name, contact details, employers, schools, links, original CV) can no longer be read by anyone, including us. Reset the vault below, then enter it again. Your Career Memory, contacts, guard rails and everything else are kept."
+    },
+    "eyebrow": "Zero-knowledge vault",
+    "state": {
+      "unlocked": "Vault unlocked",
+      "locked": "Vault locked",
+      "none": "Vault not created yet"
     }
   },
   "guardRails": {
@@ -1090,11 +1133,6 @@
     "intro": "The non-negotiable conditions an offer must meet to reach you. They are applied as strict filters.",
     "emptyHint": "No guard-rails set yet. Start with your minimum salary and your contract types.",
     "save": "Save my guard-rails",
-    "summary": {
-      "title": "Summary",
-      "minFixed": "Minimum base salary: {amount} gross per year",
-      "targetPackage": "Target total compensation: {amount}"
-    },
     "salary": {
       "title": "Compensation",
       "intro": "Gross annual amounts, in euros.",
@@ -1143,6 +1181,18 @@
     "culture": {
       "title": "Company culture",
       "intro": "Optional: what matters to you. These preferences refine how offers are ranked."
+    },
+    "eyebrow": "Strict filters",
+    "overview": {
+      "salary": "Salary floor",
+      "salaryValue": "{amount} gross/year",
+      "hybridDays": "{policy}, {count, plural, one {# day minimum} other {# days minimum}}",
+      "locations": "Locations",
+      "location": "{label} ({km} km)",
+      "contracts": "Accepted contracts",
+      "contractsAll": "All",
+      "exclusionsValue": "{sectors, plural, =0 {No sector} one {# sector} other {# sectors}}, {companies, plural, =0 {no company} one {# company} other {# companies}}",
+      "unset": "Not set"
     }
   },
   "coach": {
@@ -1365,7 +1415,6 @@
   },
   "import": {
     "title": "Import my background",
-    "back": "← Back to my career memory",
     "intro": "Start from your CV, your LinkedIn export or your GitHub: the AI prepares a career memory draft that you approve item by item.",
     "privacy": {
       "title": "What happens to your data",
@@ -1870,6 +1919,14 @@
       "revoked": "Revoked",
       "revoke": "Revoke",
       "notShareable": "Approve your card first (with no re-identification issue)."
+    },
+    "eyebrow": "What the company sees",
+    "editTitle": "Edit the card",
+    "approveTitle": "Approval",
+    "stats": {
+      "issues": "{count, plural, one {issue to fix} other {issues to fix}}",
+      "activeLinks": "{count, plural, one {active link} other {active links}}",
+      "views": "{count, plural, one {view} other {views}}"
     }
   },
   "publicCard": {
@@ -1890,7 +1947,8 @@
     "notice": "Profile presented by Coach Career IA. The candidate’s identity is only shared with their consent.",
     "reply": "Reply to the candidate",
     "unavailableTitle": "Link unavailable",
-    "unavailableText": "This link has expired or was revoked by the candidate."
+    "unavailableText": "This link has expired or was revoked by the candidate.",
+    "provenCount": "{count, plural, =0 {No proven achievement yet} one {# proven achievement} other {# proven achievements}}"
   },
   "contacts": {
     "title": "Contacts",

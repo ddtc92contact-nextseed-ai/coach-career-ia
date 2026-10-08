@@ -64,6 +64,25 @@ export async function ScoreGauge({ score, size = "md" }: { score: number; size?:
   );
 }
 
+/** Pastille de score compacte (tableau de bord), colorée selon la force de la correspondance. */
+export async function ScoreBadge({ score }: { score: number }) {
+  const t = await getTranslations("opportunities");
+  const tone = {
+    strong: "bg-brand text-on-brand",
+    good: "bg-brand-soft text-brand-ink ring-1 ring-brand-line ring-inset",
+    fair: "bg-muted text-ink-muted ring-1 ring-line ring-inset",
+  }[scoreBand(score)];
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-sm font-semibold tabular-nums ${tone}`}
+      aria-label={t("scoreLabel", { score })}
+      title={t("scoreLabel", { score })}
+    >
+      {t("score", { score })}
+    </span>
+  );
+}
+
 /** Ligne de qualification sous la jauge : « Excellente / Bonne / Correspondance partielle ». */
 export async function ScoreBandLabel({ score }: { score: number }) {
   const t = await getTranslations("opportunities.band");

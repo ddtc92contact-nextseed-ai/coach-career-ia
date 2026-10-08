@@ -147,6 +147,15 @@ Titres en `text-balance`, paragraphes en `text-pretty`.
   vert avec halo.
 - **Badges** : `Badge` — tons `neutral`, `proven`, `warning`, `info`, `danger` ; `dot` ajoute
   une pastille de couleur (le libellé reste porteur du sens) ; tailles `sm` et `md` (statuts).
+- **Niveau de preuve** d'une réalisation :
+  `EvidenceBadge` (`src/components/evidence-badge.tsx`) — « Déclarée » ambre + horloge,
+  « Prouvée » vert doux + coche, « Vérifiée » vert plein + coche ; partout où une réalisation
+  apparaît (mémoire, carte anonyme).
+- **Chiffres clés** : `StatTile` (`src/components/stat-tile.tsx`) — icône, valeur en
+  Bricolage Grotesque, libellé ; `tone="default" | "brand" | "night"` selon le fond (bandeau
+  vert, bandeau nuit). On montre le produit (complétude, réalisations prouvées, liens actifs)
+  plutôt qu'un paragraphe.
+- **États vides** : `EmptyState` accepte une `icon` de la charte.
 - **Coque de l'application** : `AppShell` (`src/components/shell/app-shell.tsx`), partagée
   par l'espace candidat et l'espace entreprise — voir §11.
 - **En-tête de page** : `PageHeader` (`src/components/page-header.tsx`) — `title` (h1),
@@ -156,7 +165,8 @@ Titres en `text-balance`, paragraphes en `text-pretty`.
   d'une fonctionnalité ; les écrans de formulaire gardent un en-tête simple.
 - **Cartes** : `Card` (`src/components/card.tsx`) — `tone="default" | "brand" | "night"`,
   `as="section" | "div" | "article" | "aside"` ; `CardHeader` (titre h2 ou h3, description,
-  actions). Fond de page teinté + cartes blanches : jamais de blanc sur blanc.
+  actions, `icon` en pastille à gauche du titre). Fond de page teinté + cartes blanches :
+  jamais de blanc sur blanc.
 - **En-tête / pied de page du site** : `SiteHeader` (ancres de section sur l'accueil),
   `SiteFooter` (symbole, promesse, liens légaux ; aussi sous le contenu de l'application).
 

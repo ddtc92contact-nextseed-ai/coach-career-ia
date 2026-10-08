@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { Card, CardHeader } from "@/components/card";
 import { DeleteButton } from "@/components/delete-button";
-import { PageTitle } from "@/components/empty-state";
+import { PageHeader } from "@/components/page-header";
 import { VaultEmployerName } from "@/components/vault/vault-widgets";
 import { requireUser } from "@/lib/auth/session";
 import { dateToMonth } from "@/lib/career/derive";
 import { getExperience } from "@/lib/career/repository";
 import { removeExperience } from "../../actions";
+import { BackToMemory } from "../../back-link";
 import { ExperienceForm } from "../../experience-form";
 
 type Props = { params: Promise<{ id: string }> };
@@ -25,11 +27,11 @@ export default async function EditExperiencePage({ params }: Props) {
   const t = await getTranslations("memory.experiences");
 
   return (
-    <div className="max-w-3xl">
-      <PageTitle title={t("editTitle")} intro={t("formIntro")} />
-      <div className="-mt-5 mb-6">
+    <div className="max-w-4xl">
+      <BackToMemory anchor="experiences" />
+      <PageHeader eyebrow={t("editTitle")} title={experience.roleTitle} lead={t("formIntro")}>
         <VaultEmployerName experienceId={experience.id} />
-      </div>
+      </PageHeader>
       <ExperienceForm
         id={experience.id}
         defaults={{
@@ -44,14 +46,19 @@ export default async function EditExperiencePage({ params }: Props) {
           responsibilities: experience.responsibilities,
         }}
       />
-      <div className="border-line mt-10 border-t pt-6">
-        <h2 className="font-semibold">{t("deleteTitle")}</h2>
-        <p className="text-ink-muted mt-1 mb-3 text-sm">{t("deleteText")}</p>
-        <DeleteButton
-          action={removeExperience.bind(null, experience.id)}
-          confirmMessage={t("confirmDelete")}
+      <Card aria-labelledby="supprimer-experience" className="border-danger-line! mt-10">
+        <CardHeader
+          id="supprimer-experience"
+          title={t("deleteTitle")}
+          description={t("deleteText")}
         />
-      </div>
+        <div className="mt-4">
+          <DeleteButton
+            action={removeExperience.bind(null, experience.id)}
+            confirmMessage={t("confirmDelete")}
+          />
+        </div>
+      </Card>
     </div>
   );
 }

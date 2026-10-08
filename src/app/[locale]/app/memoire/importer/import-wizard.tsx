@@ -2,7 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Card, CardHeader } from "@/components/card";
 import { Field, inputClass } from "@/components/form";
+import { Icon } from "@/components/icons";
 import {
   checkImportFile,
   CV_ACCEPT,
@@ -124,20 +126,20 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
         <Progress started={phase.started} onCancel={() => controller.current?.abort.abort()} />
       ) : null}
       <div hidden={phase.kind === "loading"} className="space-y-6">
-        <section
-          aria-labelledby="privacy-title"
-          className="border-brand-line bg-brand-soft text-ink rounded-xl border p-4 text-sm sm:p-5"
-        >
-          <h2 id="privacy-title" className="font-semibold">
-            {t("privacy.title")}
-          </h2>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li>{t("privacy.files")}</li>
-            <li>{t("privacy.contacts")}</li>
-            <li>{t("privacy.identity")}</li>
-            <li>{t("privacy.review")}</li>
+        <Card tone="night" aria-labelledby="privacy-title">
+          <CardHeader id="privacy-title" icon="lock" title={t("privacy.title")} />
+          <ul className="mt-5 grid gap-3 md:grid-cols-2">
+            {(["files", "contacts", "identity", "review"] as const).map((key) => (
+              <li
+                key={key}
+                className="border-night-line bg-night-raised/60 text-on-night flex gap-3 rounded-xl border p-3.5"
+              >
+                <Icon name="check" className="text-signal mt-0.5 size-5 shrink-0" />
+                {t(`privacy.${key}`)}
+              </li>
+            ))}
           </ul>
-        </section>
+        </Card>
 
         {!aiConfigured ? (
           <p
@@ -173,7 +175,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
         <form
           noValidate
           onSubmit={onSubmit}
-          className="border-line bg-surface space-y-6 rounded-xl border p-4 sm:p-6"
+          className="border-line bg-surface space-y-6 rounded-2xl border p-5 shadow-sm sm:p-7"
         >
           <Field
             id="cv"
@@ -274,11 +276,11 @@ function Progress({ started, onCancel }: { started: number; onCancel: () => void
     <div
       role="status"
       aria-live="polite"
-      className="border-line bg-surface rounded-xl border p-6 text-center sm:p-10"
+      className="border-line bg-surface rounded-2xl border p-6 text-center shadow-sm sm:p-10"
     >
       <div
         aria-hidden="true"
-        className="border-t-brand-600 border-line mx-auto h-10 w-10 animate-spin rounded-full border-4"
+        className="border-line border-t-brand mx-auto h-10 w-10 rounded-full border-4 motion-safe:animate-spin"
       />
       <p className="mt-4 font-semibold">{t("label")}</p>
       <ol className="mx-auto mt-4 max-w-xs space-y-1 text-left text-sm">
