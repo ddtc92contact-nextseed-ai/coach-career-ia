@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AuthCard } from "@/components/auth-card";
+import { buttonClass } from "@/components/button";
 import { VaultResetNotice } from "@/components/auth/vault-reset-notice";
 import { Link } from "@/i18n/navigation";
 import { peekToken } from "@/lib/auth/tokens";
@@ -30,7 +31,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
         <p className="text-ink-muted">{t("invalidText")}</p>
         <Link
           href="/connexion/mot-de-passe-oublie"
-          className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 font-medium"
+          className={`${buttonClass("primary", "lg")} mt-7 w-full sm:w-auto`}
         >
           {t("requestNew")}
         </Link>
@@ -40,7 +41,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
 
   return (
     <AuthCard title={t("title")}>
-      <p className="text-ink-muted mb-4 text-sm">{t("intro")}</p>
+      <p className="text-ink-muted mb-5 text-pretty">{t("intro")}</p>
       <div className="mb-6">
         <VaultResetNotice />
       </div>

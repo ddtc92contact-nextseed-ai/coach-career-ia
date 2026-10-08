@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import { useId, useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { CheckInbox } from "@/components/auth/check-inbox";
-import { inputClass } from "@/components/form";
+import { buttonClass } from "@/components/button";
+import { inputClassLg } from "@/components/form";
 import { PasswordField } from "@/components/password-field";
 import { Link, useRouter } from "@/i18n/navigation";
 import { accountErrorKey, createAccountClient } from "@/lib/auth/account-client";
@@ -72,17 +73,17 @@ export function PasswordLoginForm({ callbackUrl }: { callbackUrl: string }) {
 
   const emailError = error?.key === "invalidEmail";
   return (
-    <form method="post" noValidate onSubmit={onSubmit} className="space-y-4">
+    <form method="post" noValidate onSubmit={onSubmit} className="space-y-5">
       {error && !emailError && error.key !== "passwordRequired" ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-xl border px-4 py-3"
         >
           {t(`errors.${error.key}`, { minutes: error.minutes })}
         </p>
       ) : null}
       <div>
-        <label htmlFor={emailId} className="text-ink block text-sm font-medium">
+        <label htmlFor={emailId} className="text-ink block text-base font-medium">
           {tLogin("emailLabel")}
         </label>
         <input
@@ -97,10 +98,10 @@ export function PasswordLoginForm({ callbackUrl }: { callbackUrl: string }) {
           placeholder={tLogin("emailPlaceholder")}
           aria-invalid={emailError ? true : undefined}
           aria-describedby={emailError ? `${emailId}-error` : undefined}
-          className={inputClass}
+          className={inputClassLg}
         />
         {emailError ? (
-          <p id={`${emailId}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
+          <p id={`${emailId}-error`} role="alert" className="text-danger-ink mt-1.5 text-base">
             {t("errors.invalidEmail")}
           </p>
         ) : null}
@@ -110,6 +111,7 @@ export function PasswordLoginForm({ callbackUrl }: { callbackUrl: string }) {
         value={password}
         onChange={setPassword}
         autoComplete="current-password"
+        size="lg"
         error={error?.key === "passwordRequired" ? t("errors.passwordRequired") : undefined}
       />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -119,24 +121,20 @@ export function PasswordLoginForm({ callbackUrl }: { callbackUrl: string }) {
             type="checkbox"
             checked={remember}
             onChange={(e) => setRemember(e.target.checked)}
-            className="size-4 shrink-0"
+            className="accent-brand size-5 shrink-0"
           />
-          <label htmlFor={rememberId} className="text-ink-muted text-sm">
+          <label htmlFor={rememberId} className="text-ink-muted text-base">
             {t("remember")}
           </label>
         </div>
         <Link
           href="/connexion/mot-de-passe-oublie"
-          className="text-ink-muted text-sm font-medium underline underline-offset-4"
+          className="text-ink-muted hover:text-ink text-base font-medium underline underline-offset-4"
         >
           {t("forgot")}
         </Link>
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className={`${buttonClass("primary", "lg")} w-full`}>
         {pending ? t("submitting") : t("submit")}
       </button>
     </form>

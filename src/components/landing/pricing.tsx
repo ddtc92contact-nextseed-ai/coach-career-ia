@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { DEFAULT_SIMULATED_CURRENCY } from "@/lib/billing/config";
 import { getBillingProvider } from "@/lib/billing/provider";
 import { coachMessagesPerDay } from "@/lib/coach/quota";
-import { SECTION_IDS, SectionHeading } from "./sections";
+import { Section, SECTION_IDS, SectionHeading } from "./sections";
 
 /**
  * Offres Gratuit / Premium. Le prix vient du fournisseur de paiement actif
@@ -64,69 +64,76 @@ export async function Pricing() {
   ] as const;
 
   return (
-    <section
-      id={SECTION_IDS.pricing}
-      aria-labelledby={heading}
-      className="border-line bg-subtle border-y"
-    >
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
-        <SectionHeading
-          id={heading}
-          align="center"
-          eyebrow={t("eyebrow")}
-          title={t("title")}
-          intro={t("intro")}
-        />
-        <ul className="mx-auto mt-14 grid max-w-4xl gap-6 md:grid-cols-2">
-          {plans.map((plan) => (
+    <Section id={SECTION_IDS.pricing} band="surface">
+      <SectionHeading
+        id={heading}
+        align="center"
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        intro={t("intro")}
+      />
+      <ul className="mx-auto mt-14 grid max-w-4xl gap-6 md:grid-cols-2">
+        {plans.map((plan) => {
+          // Offre mise en avant : panneau « nuit » ; l'autre sur fond brume.
+          const night = plan.featured;
+          return (
             <li
               key={plan.key}
-              className={`reveal bg-surface relative flex flex-col rounded-3xl border p-6 sm:p-8 ${
-                plan.featured
-                  ? "border-primary ring-primary shadow-lg ring-1"
-                  : "border-line shadow-sm"
+              className={`reveal relative flex flex-col rounded-3xl border p-6 sm:p-8 ${
+                night
+                  ? "band-night on-night text-on-night border-night-line shadow-lg"
+                  : "bg-canvas border-line shadow-sm"
               }`}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="font-display text-xl font-bold tracking-tight">
+                <h3 className="font-display text-2xl font-bold tracking-tight">
                   {tb(`plans.${plan.key}.name`)}
                 </h3>
-                {plan.featured ? (
-                  <span className="bg-brand-soft text-brand-ink rounded-full px-3 py-1 text-xs font-semibold">
+                {night ? (
+                  <span className="bg-signal text-night rounded-full px-3 py-1 text-sm font-semibold">
                     {t("recommended")}
                   </span>
                 ) : null}
               </div>
-              <p className="text-ink-muted mt-2">{plan.tagline}</p>
+              <p className={`mt-2 ${night ? "text-on-night-muted" : "text-ink-muted"}`}>
+                {plan.tagline}
+              </p>
               <p className="mt-6 flex flex-wrap items-baseline gap-x-2">
                 {plan.amount ? (
-                  <span className="font-display text-4xl font-bold tracking-tight tabular-nums">
+                  <span className="font-display text-5xl font-bold tracking-tight tabular-nums">
                     {plan.amount}
                   </span>
                 ) : null}
-                <span className="text-ink-subtle">{plan.period}</span>
+                <span className={night ? "text-on-night-muted" : "text-ink-subtle"}>
+                  {plan.period}
+                </span>
               </p>
-              <ul className="border-line mt-6 flex-1 space-y-3 border-t pt-6">
+              <ul
+                className={`mt-6 flex-1 space-y-3 border-t pt-6 ${night ? "border-night-line" : "border-line"}`}
+              >
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex gap-3">
-                    <Icon name="check" className="text-brand-ink mt-0.5 size-5 shrink-0" />
+                    <Icon
+                      name="check"
+                      className={`mt-1 size-5 shrink-0 ${night ? "text-signal" : "text-brand-ink"}`}
+                    />
                     <span>{feature}</span>
                   </li>
                 ))}
               </ul>
               <Link
                 href={SIGN_UP_PATH}
-                className={`${buttonClass(plan.featured ? "primary" : "secondary", "lg")} mt-8 w-full`}
+                className={`${buttonClass(night ? "signal" : "primary", "lg")} mt-8 w-full`}
               >
                 {plan.cta}
               </Link>
-              {plan.featured ? (
-                <p className="text-ink-subtle mt-3 text-center text-sm">{t("premiumNote")}</p>
+              {night ? (
+                <p className="text-on-night-muted mt-3 text-center text-base">{t("premiumNote")}</p>
               ) : null}
             </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+          );
+        })}
+      </ul>
+    </Section>
   );
 }

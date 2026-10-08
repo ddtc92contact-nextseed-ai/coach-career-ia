@@ -1,7 +1,8 @@
 # Charte de marque — Coach Career IA (v2)
 
 > v2 : coque de l'application avec menu latéral « nuit », fond teinté « brume », échelle de
-> texte agrandie, composants `PageHeader` et `Card` (§4, §5, §6, §11).
+> texte agrandie, composants `PageHeader` et `Card` (§4, §5, §6, §11). Pages hors application
+> (accueil, connexion, espace entreprise, pages publiques) : §12.
 
 > Source unique des couleurs, polices, ombres et animations : `src/app/globals.css`.
 > Ce document explique les choix ; le code les applique. Toute nouvelle couleur passe
@@ -80,6 +81,7 @@ Toutes les couleurs sont des **rôles sémantiques** en oklch, redéfinis en th�
 | danger                 | `bg-danger`, `text-danger-ink`, `bg-danger-soft`, `border-danger-line`, `text-on-danger` | rouge 25°                      | rouge clair                   | Erreurs, actions destructrices                                                 |
 | warning                | `bg-warning`, `text-warning-ink`, `bg-warning-soft`, `border-warning-line`               | ambre                          | ambre sombre                  | Avertissements                                                                 |
 | success                | `text-success-ink`                                                                       | vert                           | vert clair                    | Confirmations                                                                  |
+| info                   | `text-info-ink`, `bg-info-soft`, `border-info-line`                                      | bleu 250°                      | bleu clair                    | Statut « en vérification » (badge `info`)                                      |
 | focus                  | `outline-focus`                                                                          | indigo `oklch(0.5 0.2 270)`    | vert clair                    | Anneau de focus clavier, toujours visible                                      |
 
 Hors CSS (image Open Graph, favicon), les équivalents sRGB sont dans `src/config/brand.ts`
@@ -143,7 +145,9 @@ Titres en `text-balance`, paragraphes en `text-pretty`.
   `secondary`, `ghost`, `signal` (sur fond nuit) ; tailles `sm`, `md`, `lg`.
 - **Champs** : `inputClass` (`src/components/form.tsx`) — bordure `line-strong`, focus
   vert avec halo.
-- **Badges** : `Badge` (`neutral`, `proven`, `warning`). Niveau de preuve d'une réalisation :
+- **Badges** : `Badge` — tons `neutral`, `proven`, `warning`, `info`, `danger` ; `dot` ajoute
+  une pastille de couleur (le libellé reste porteur du sens) ; tailles `sm` et `md` (statuts).
+- **Niveau de preuve** d'une réalisation :
   `EvidenceBadge` (`src/components/evidence-badge.tsx`) — « Déclarée » ambre + horloge,
   « Prouvée » vert doux + coche, « Vérifiée » vert plein + coche ; partout où une réalisation
   apparaît (mémoire, carte anonyme).
@@ -227,3 +231,26 @@ text-night`, avec un libellé pour les lecteurs d'écran ; point sur l'icône en
   en tiroir modal (`role="dialog"`) : focus piégé, Échap et clic sur le voile ferment,
   fermeture à la navigation, défilement de la page bloqué, reste de la page `inert`.
 - Lien d'évitement « Aller au contenu » en premier élément focalisable.
+
+## 12. Pages hors application (v2)
+
+- **Accueil** : corps de texte à 18 px (`text-lg` sur `<main>`), titres de section
+  `text-4xl sm:text-5xl`, hero jusqu'à 64 px. Les sections alternent des bandeaux
+  (`Section band="canvas" | "surface" | "brand" | "night"`) : jamais deux fonds blancs de
+  suite — brume, vert doux, nuit, brume, blanc, vert doux, brume, nuit, pied de page.
+- **En-tête du site** (`SiteHeader`) : ancres de section visibles dès 1024 px (`SectionNav`),
+  section lue mise en avant (pastille `brand-soft` + trait, `aria-current`). Sous 1024 px,
+  bouton menu et panneau plein écran « nuit » (`SiteMenu`, `role="dialog"`) : focus piégé,
+  Échap, fermeture au clic sur un lien, défilement bloqué, reste de la page `inert`.
+- **Connexion, inscription** (`AuthCard`) : sur bureau, formulaire à gauche et panneau
+  `band-night` de la promesse à droite (candidat, ou entreprise si `callbackUrl` mène à
+  `/entreprise`) ; sur téléphone, formulaire seul en pleine largeur. Champs et boutons
+  agrandis (`inputClassLg`, `PasswordField size="lg"`, `buttonClass(…, "lg")`).
+  `panel={false}` : carte centrée (404, désabonnement).
+- **Espace entreprise** : statut d'offre en badge coloré avec pastille — brouillon (neutre),
+  paiement (ambre), vérification (bleu `info`), en ligne (vert), fermée (neutre), expirée et
+  refusée (rouge) — et frise des étapes de publication.
+- **Pages à jeton** (`PublicFrame`) : barre du haut, colonne de 768 px, texte à 17 px, note de
+  confidentialité ; aucune donnée ajoutée à ce que la page affichait déjà.
+- **Pages légales** : bandeau vert doux, sommaire collant, colonne de lecture `max-w-[70ch]`
+  en 17–18 px, interligne 1,7.

@@ -2355,7 +2355,13 @@
         "views": "Aufrufe"
       },
       "noDate": "—",
-      "privacy": "Hier erscheinen keine Kandidatendaten: Sie sehen nur, wie viele Kandidaten Ihre Stelle unter ihren Chancen geöffnet haben."
+      "privacy": "Hier erscheinen keine Kandidatendaten: Sie sehen nur, wie viele Kandidaten Ihre Stelle unter ihren Chancen geöffnet haben.",
+      "stats": {
+        "live": "Online",
+        "pending": "In Veröffentlichung",
+        "drafts": "Entwürfe",
+        "views": "Aufrufe"
+      }
     },
     "status": {
       "DRAFT": "Entwurf",
@@ -2363,6 +2369,7 @@
       "IN_REVIEW": "In Prüfung",
       "LIVE": "Online",
       "CLOSED": "Geschlossen",
+      "EXPIRED": "Abgelaufen",
       "REJECTED": "Abgelehnt"
     },
     "posting": {
@@ -2434,7 +2441,8 @@
         "notAllowed": "Diese Aktion ist im aktuellen Status der Stelle nicht möglich.",
         "unavailable": "Die Zahlung ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
         "suspended": "Ihre Organisation ist gesperrt: Es kann nichts veröffentlicht werden."
-      }
+      },
+      "progress": "Schritte bis zur Veröffentlichung"
     },
     "checkout": {
       "title": "Zahlung der Veröffentlichung",

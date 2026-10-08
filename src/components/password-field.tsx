@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
-import { inputClass } from "@/components/form";
+import { inputClass, inputClassLg } from "@/components/form";
 import {
   MIN_PASSWORD_LENGTH,
   passwordStrength,
@@ -24,6 +24,7 @@ export function PasswordField({
   meter = false,
   error,
   name = "password",
+  size = "md",
 }: {
   label: string;
   value: string;
@@ -33,6 +34,8 @@ export function PasswordField({
   meter?: boolean;
   error?: string;
   name?: string;
+  /** `lg` : champ agrandi des pages de connexion et d'inscription. */
+  size?: "md" | "lg";
 }) {
   const t = useTranslations("auth.passwordField");
   const id = useId();
@@ -50,7 +53,10 @@ export function PasswordField({
 
   return (
     <div>
-      <label htmlFor={id} className="text-ink block text-sm font-medium">
+      <label
+        htmlFor={id}
+        className={`text-ink block font-medium ${size === "lg" ? "text-base" : "text-sm"}`}
+      >
         {label}
       </label>
       <div className="relative">
@@ -66,14 +72,16 @@ export function PasswordField({
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           onChange={(event) => onChange(event.target.value)}
-          className={`${inputClass} pr-24`}
+          className={`${size === "lg" ? inputClassLg : inputClass} pr-24`}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? t("hideLabel") : t("showLabel")}
           aria-pressed={visible}
-          className="text-ink-muted hover:text-ink absolute inset-y-0 right-0 mt-1 rounded-r-lg px-3 text-sm font-medium"
+          className={`text-ink-muted hover:text-ink absolute inset-y-0 right-0 rounded-r-lg font-medium ${
+            size === "lg" ? "mt-1.5 px-4 text-base" : "mt-1 px-3 text-sm"
+          }`}
         >
           {visible ? t("hide") : t("show")}
         </button>
@@ -90,12 +98,12 @@ export function PasswordField({
                   />
                 ))}
               </div>
-              <p className="text-ink-muted mt-1 text-xs">
+              <p className="text-ink-muted mt-1 text-sm">
                 {t("strength", { level: t(`levels.${strength}`) })}
               </p>
             </div>
           ) : null}
-          <p id={`${id}-hint`} className="text-ink-subtle mt-1 text-xs">
+          <p id={`${id}-hint`} className="text-ink-subtle mt-1 text-sm">
             {t("hint", { min: MIN_PASSWORD_LENGTH })}
           </p>
         </>

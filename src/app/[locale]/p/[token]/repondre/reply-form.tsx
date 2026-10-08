@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
+import { buttonClass } from "@/components/button";
 import { inputClass } from "@/components/form";
 import { MAX_REPLY_LENGTH } from "@/lib/contact/config";
 import { submitReply, type ReplyState } from "./actions";
@@ -14,20 +15,26 @@ export function ReplyForm({ token }: { token: string }) {
   );
   if (state.ok) {
     return (
-      <p role="status" className="bg-brand-soft text-brand-ink rounded-lg px-4 py-3 text-sm">
+      <p
+        role="status"
+        className="border-brand-line bg-brand-soft text-brand-ink rounded-xl border px-4 py-3 font-medium"
+      >
         {t("sent")}
       </p>
     );
   }
   return (
-    <form action={action} className="space-y-4">
+    <form action={action} className="space-y-5">
       {state.error ? (
-        <p role="alert" className="text-danger-ink text-sm">
+        <p
+          role="alert"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-xl border px-4 py-3"
+        >
           {t(state.error)}
         </p>
       ) : null}
       <div>
-        <label htmlFor="body" className="text-ink block text-sm font-medium">
+        <label htmlFor="body" className="text-ink block font-semibold">
           {t("label")}
         </label>
         <textarea
@@ -37,16 +44,16 @@ export function ReplyForm({ token }: { token: string }) {
           rows={8}
           maxLength={MAX_REPLY_LENGTH}
           aria-describedby="body-hint"
-          className={inputClass}
+          className={`${inputClass} sm:text-base`}
         />
-        <p id="body-hint" className="text-ink-subtle mt-1 text-sm">
+        <p id="body-hint" className="text-ink-muted mt-2 text-base text-pretty">
           {t("hint")}
         </p>
       </div>
       <button
         type="submit"
         disabled={pending}
-        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-5 py-2.5 font-medium disabled:opacity-60 sm:w-auto"
+        className={`${buttonClass("primary", "lg")} w-full sm:w-auto`}
       >
         {t("submit")}
       </button>

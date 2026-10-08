@@ -11,6 +11,7 @@ import {
 } from "@/lib/employer/config";
 import { checkMemberDomain, emailDomain, websiteDomain } from "@/lib/employer/domain";
 import {
+  displayStatus,
   offerStatusFor,
   transition,
   type LifecycleContext,
@@ -271,6 +272,17 @@ describe("cycle de vie : échéance, fermeture, renouvellement, suspension", () 
 
   it("suspension de l'organisation : offre fermée", () => {
     expect(transition(live, { type: "orgChanged" }, ctx("SUSPENDED"))!.status).toBe("CLOSED");
+  });
+
+  it("statut affiché : « Expirée » seulement pour une fermeture à l'échéance", () => {
+    const later = new Date(NOW.getTime() + 30 * DAY);
+    const expired = transition(live, { type: "expire" }, ctx("ACTIVE", later))!;
+    expect(displayStatus(expired)).toBe("EXPIRED");
+    expect(displayStatus(transition(live, { type: "close" }, ctx())!)).toBe("CLOSED");
+    expect(displayStatus(transition(live, { type: "orgChanged" }, ctx("SUSPENDED"))!)).toBe(
+      "CLOSED",
+    );
+    expect(displayStatus(live)).toBe("LIVE");
   });
 
   it("retrait d'une offre en ligne par la modération", () => {

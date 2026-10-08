@@ -20,10 +20,12 @@ export function RevealedIdentityView({
     : null;
   const row = "grid gap-0.5 sm:grid-cols-[10rem_1fr] sm:gap-3";
   const label = "text-sm text-ink-subtle";
-  const value = "text-sm text-ink [overflow-wrap:anywhere] break-words";
+  const value = "text-ink [overflow-wrap:anywhere] break-words";
   return (
-    <div className="border-line bg-surface rounded-2xl border p-4 sm:p-6">
-      {name ? <p className="text-xl font-semibold tracking-tight break-words">{name}</p> : null}
+    <div className="border-line bg-surface rounded-2xl border p-5 shadow-sm sm:p-7">
+      {name ? (
+        <p className="font-display text-2xl font-bold tracking-tight break-words">{name}</p>
+      ) : null}
       <dl className={`space-y-3 ${name ? "mt-4" : ""}`}>
         {identity.email ? (
           <div className={row}>

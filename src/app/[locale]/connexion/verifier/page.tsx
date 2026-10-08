@@ -13,7 +13,7 @@ export default async function VerifyRequestPage() {
   return (
     <AuthCard title={t("title")}>
       <p className="text-ink-muted">{t("text")}</p>
-      <p className="text-ink-subtle mt-4 text-sm">
+      <p className="text-ink-muted mt-4 text-base">
         {t.rich("help", {
           link: (chunks) => (
             <Link href="/connexion" className="text-brand-ink underline underline-offset-4">

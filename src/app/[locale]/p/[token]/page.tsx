@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { Logo } from "@/components/logo";
-import { LocaleSwitcher } from "@/components/locale-switcher";
+import { buttonClass } from "@/components/button";
+import { Icon } from "@/components/icons";
 import { ProfileCardView } from "@/components/profile-card";
+import { PublicFrame } from "@/components/public-frame";
 import { Link } from "@/i18n/navigation";
 import { resolveCardLink } from "@/lib/card/repository";
 
@@ -30,22 +31,17 @@ export default async function PublicCardPage({ params }: Props) {
   const t = await getTranslations("publicCard");
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 py-8 sm:py-12">
-      <div className="mb-8 flex items-center justify-between gap-3">
-        <Logo />
-        <LocaleSwitcher />
-      </div>
-      <h1 className="sr-only">{t("title")}</h1>
+    <PublicFrame title={t("title")} titleHidden notice={t("notice")}>
       <ProfileCardView card={link.card} />
       {link.contactId ? (
         <Link
           href={`/p/${token}/repondre`}
-          className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 text-center text-sm font-medium"
+          className={`${buttonClass("primary", "lg")} mt-8 max-sm:w-full`}
         >
+          <Icon name="chat" className="size-5" />
           {t("reply")}
         </Link>
       ) : null}
-      <p className="text-ink-subtle mt-6 text-xs">{t("notice")}</p>
-    </main>
+    </PublicFrame>
   );
 }
