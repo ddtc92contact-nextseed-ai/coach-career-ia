@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { buttonClass } from "@/components/button";
+import { Card } from "@/components/card";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { billingMode, simulatedPriceFromEnv } from "@/lib/billing/config";
@@ -12,8 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("billing.simulator");
   return { title: t("checkout.title"), robots: { index: false } };
 }
-
-const button = "w-full rounded-lg px-5 py-2.5 text-sm font-medium sm:w-auto";
 
 /**
  * Page de paiement simulée (remplace Stripe Checkout en phase de test) :
@@ -42,63 +44,74 @@ export default async function SimulatedCheckoutPage({
   const amount = format.number(price.amount, { style: "currency", currency: price.currency });
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-2xl">
       <SimulatedBanner />
-      <h1 className="text-2xl font-semibold tracking-tight">{t("checkout.title")}</h1>
-      <p className="text-ink-muted mt-2">{t("checkout.intro")}</p>
+      <PageHeader title={t("checkout.title")} lead={t("checkout.intro")} />
 
       {query.refus ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink mb-6 rounded-2xl border px-4 py-3"
         >
           {t("checkout.declined")}
         </p>
       ) : null}
 
-      <dl className="divide-line border-line bg-surface mt-6 divide-y rounded-2xl border text-sm">
-        <div className="flex justify-between gap-4 p-4">
-          <dt className="text-ink-subtle">{t("checkout.plan")}</dt>
-          <dd className="font-medium">{tb("plans.PREMIUM.name")}</dd>
-        </div>
-        <div className="flex justify-between gap-4 p-4">
-          <dt className="text-ink-subtle">{t("checkout.total")}</dt>
-          <dd className="font-medium">
-            {tb("price", { price: amount, interval: price.interval })}
-          </dd>
-        </div>
-      </dl>
+      <Card>
+        <dl className="divide-line divide-y">
+          <div className="flex justify-between gap-4 pb-4">
+            <dt className="text-ink-subtle">{t("checkout.plan")}</dt>
+            <dd className="font-semibold">{tb("plans.PREMIUM.name")}</dd>
+          </div>
+          <div className="flex justify-between gap-4 pt-4">
+            <dt className="text-ink-subtle">{t("checkout.total")}</dt>
+            <dd className="font-display text-xl font-bold">
+              {tb("price", { price: amount, interval: price.interval })}
+            </dd>
+          </div>
+        </dl>
 
-      <form action={completeSimulatedCheckout} className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <input type="hidden" name="session" value={session} />
-        <button
-          type="submit"
-          name="outcome"
-          value="success"
-          className={`${button} bg-primary text-on-primary hover:bg-primary-hover`}
+        <form
+          action={completeSimulatedCheckout}
+          className="border-line mt-6 flex flex-col gap-3 border-t pt-6 sm:flex-row sm:flex-wrap"
         >
-          {t("checkout.pay")}
-        </button>
-        <button
-          type="submit"
-          name="outcome"
-          value="declined"
-          className={`${button} border-line-strong bg-surface hover:bg-muted border`}
+          <input type="hidden" name="session" value={session} />
+          <button
+            type="submit"
+            name="outcome"
+            value="success"
+            className={`${buttonClass("primary")} w-full sm:w-auto`}
+          >
+            {t("checkout.pay")}
+          </button>
+          <button
+            type="submit"
+            name="outcome"
+            value="declined"
+            className={`${buttonClass("secondary")} w-full sm:w-auto`}
+          >
+            {t("checkout.decline")}
+          </button>
+          <button
+            type="submit"
+            name="outcome"
+            value="cancel"
+            className={`${buttonClass("ghost")} w-full sm:w-auto`}
+          >
+            {t("checkout.cancel")}
+          </button>
+        </form>
+      </Card>
+      <p className="text-ink-subtle mt-6 flex items-start gap-2 text-sm">
+        <Icon name="lock" className="mt-0.5 size-4 shrink-0" />
+        {t("checkout.noCard")}
+      </p>
+      <p className="mt-4">
+        <Link
+          href="/app/billing"
+          className="text-ink-muted hover:text-ink inline-flex items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
         >
-          {t("checkout.decline")}
-        </button>
-        <button
-          type="submit"
-          name="outcome"
-          value="cancel"
-          className={`${button} text-ink-muted hover:bg-muted`}
-        >
-          {t("checkout.cancel")}
-        </button>
-      </form>
-      <p className="text-ink-subtle mt-6 text-xs">{t("checkout.noCard")}</p>
-      <p className="mt-4 text-sm">
-        <Link href="/app/billing" className="text-ink-muted hover:text-ink underline">
+          <Icon name="arrow" className="size-4 rotate-180" />
           {t("back")}
         </Link>
       </p>

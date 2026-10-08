@@ -1,16 +1,20 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
+import { buttonClass } from "@/components/button";
 
 /** Bouton d'un formulaire qui redirige vers Stripe : désactivé pendant l'envoi. */
 export function RedirectButton({
   label,
   pendingLabel,
   primary = false,
+  signal = false,
 }: {
   label: string;
   pendingLabel: string;
   primary?: boolean;
+  /** Appel à l'action sur fond nuit (offre Premium). */
+  signal?: boolean;
 }) {
   const { pending } = useFormStatus();
   return (
@@ -18,11 +22,7 @@ export function RedirectButton({
       type="submit"
       disabled={pending}
       aria-busy={pending || undefined}
-      className={`w-full rounded-lg px-5 py-2.5 text-sm font-medium disabled:opacity-60 sm:w-auto ${
-        primary
-          ? "bg-primary text-on-primary hover:bg-primary-hover"
-          : "border-line-strong bg-surface hover:bg-muted border"
-      }`}
+      className={`${buttonClass(signal ? "signal" : primary ? "primary" : "secondary", signal ? "lg" : "md")} w-full sm:w-auto`}
     >
       {pending ? pendingLabel : label}
     </button>

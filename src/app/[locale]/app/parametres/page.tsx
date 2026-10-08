@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { PageTitle } from "@/components/empty-state";
+import { buttonClass } from "@/components/button";
+import { Card, CardHeader } from "@/components/card";
+import { Icon, type IconName } from "@/components/icons";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { PageHeader } from "@/components/page-header";
 import { accountKdf } from "@/lib/auth/accounts";
 import { requireUser } from "@/lib/auth/session";
 import { getAlertSettings } from "@/lib/matching/repository";
@@ -14,7 +17,45 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
+/** Groupe de réglages : titre `h2` avec pictogramme, cartes `h3` en dessous. */
+function Group({
+  id,
+  icon,
+  title,
+  children,
+}: {
+  id: string;
+  icon: IconName;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section aria-labelledby={id} className="space-y-4">
+      <h2
+        id={id}
+        className="font-display flex items-center gap-3 text-xl font-bold tracking-tight sm:text-2xl"
+      >
+        <span
+          aria-hidden="true"
+          className="bg-brand-soft text-brand-ink inline-flex size-9 shrink-0 items-center justify-center rounded-xl"
+        >
+          <Icon name={icon} className="size-5" />
+        </span>
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+function SettingTitle({ icon, children }: { icon: IconName; children: React.ReactNode }) {
+  return (
+    <span className="flex items-center gap-2">
+      <Icon name={icon} className="text-ink-subtle size-5 shrink-0" />
+      {children}
+    </span>
+  );
+}
 
 export default async function SettingsPage() {
   const user = await requireUser();
@@ -25,64 +66,82 @@ export default async function SettingsPage() {
   ]);
   const hasPassword = kdf !== null;
   return (
-    <div className="max-w-3xl space-y-6">
-      <PageTitle title={t("title")} intro={t("intro")} />
+    <div className="max-w-3xl">
+      <PageHeader title={t("title")} lead={t("intro")} />
 
-      <section
-        id="mot-de-passe"
-        className={`${sectionClass} scroll-mt-6`}
-        aria-labelledby="mot-de-passe-titre"
-      >
-        <h2 id="mot-de-passe-titre" className="text-lg font-semibold">
-          {t("password.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">
-          {hasPassword ? t("password.introChange") : t("password.introSet")}
-        </p>
-        <PasswordForm hasPassword={hasPassword} email={user.email} />
-      </section>
+      <div className="space-y-10">
+        <Group id="groupe-compte" icon="user" title={t("groups.account")}>
+          <Card id="mot-de-passe" className="scroll-mt-24" aria-labelledby="mot-de-passe-titre">
+            <CardHeader
+              id="mot-de-passe-titre"
+              as="h3"
+              title={<SettingTitle icon="key">{t("password.title")}</SettingTitle>}
+              description={hasPassword ? t("password.introChange") : t("password.introSet")}
+            />
+            <div className="mt-5">
+              <PasswordForm hasPassword={hasPassword} email={user.email} />
+            </div>
+          </Card>
+        </Group>
 
-      <section className={sectionClass} aria-labelledby="langue">
-        <h2 id="langue" className="text-lg font-semibold">
-          {t("language.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("language.intro")}</p>
-        <LocaleSwitcher persist showLabel />
-      </section>
+        <Group id="groupe-preferences" icon="sliders" title={t("groups.preferences")}>
+          <Card aria-labelledby="langue">
+            <CardHeader
+              id="langue"
+              as="h3"
+              title={<SettingTitle icon="globe">{t("language.title")}</SettingTitle>}
+              description={t("language.intro")}
+            />
+            <div className="mt-5">
+              <LocaleSwitcher persist showLabel />
+            </div>
+          </Card>
 
-      <section
-        id="alertes"
-        className={`${sectionClass} scroll-mt-6`}
-        aria-labelledby="alertes-titre"
-      >
-        <h2 id="alertes-titre" className="text-lg font-semibold">
-          {t("alerts.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("alerts.intro")}</p>
-        <AlertsForm frequency={alerts.frequency} minScore={alerts.minScore} />
-      </section>
+          <Card id="alertes" className="scroll-mt-24" aria-labelledby="alertes-titre">
+            <CardHeader
+              id="alertes-titre"
+              as="h3"
+              title={<SettingTitle icon="bell">{t("alerts.title")}</SettingTitle>}
+              description={t("alerts.intro")}
+            />
+            <div className="mt-5">
+              <AlertsForm frequency={alerts.frequency} minScore={alerts.minScore} />
+            </div>
+          </Card>
+        </Group>
 
-      <section className={sectionClass} aria-labelledby="export">
-        <h2 id="export" className="text-lg font-semibold">
-          {t("export.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("export.intro")}</p>
-        <a
-          href="/api/account/export"
-          download
-          className="border-line-strong hover:bg-muted inline-block rounded-lg border px-4 py-2.5 text-sm font-medium"
-        >
-          {t("export.button")}
-        </a>
-      </section>
+        <Group id="groupe-donnees" icon="server" title={t("groups.data")}>
+          <Card aria-labelledby="export">
+            <CardHeader
+              id="export"
+              as="h3"
+              title={<SettingTitle icon="download">{t("export.title")}</SettingTitle>}
+              description={t("export.intro")}
+            />
+            <a href="/api/account/export" download className={`${buttonClass("secondary")} mt-5`}>
+              <Icon name="download" className="size-4" />
+              {t("export.button")}
+            </a>
+          </Card>
 
-      <section className={`${sectionClass} border-danger-line`} aria-labelledby="suppression">
-        <h2 id="suppression" className="text-danger-ink text-lg font-semibold">
-          {t("delete.title")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("delete.intro")}</p>
-        <DeleteAccountForm />
-      </section>
+          <Card aria-labelledby="suppression" className="border-danger-line">
+            <CardHeader
+              id="suppression"
+              as="h3"
+              title={
+                <span className="text-danger-ink flex items-center gap-2">
+                  <Icon name="trash" className="size-5 shrink-0" />
+                  {t("delete.title")}
+                </span>
+              }
+              description={t("delete.intro")}
+            />
+            <div className="border-danger-line bg-danger-soft/40 mt-5 rounded-xl border p-4">
+              <DeleteAccountForm />
+            </div>
+          </Card>
+        </Group>
+      </div>
     </div>
   );
 }
