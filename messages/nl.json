@@ -519,7 +519,8 @@
     "saving": "Opslaan…",
     "saved": "Opgeslagen.",
     "delete": "Verwijderen",
-    "deleting": "Verwijderen…"
+    "deleting": "Verwijderen…",
+    "loading": "Laden…"
   },
   "shell": {
     "menu": "Menu",
@@ -691,7 +692,8 @@
         "saved": "Bewaard",
         "dismissed": "Afgewezen",
         "all": "Alle (behalve afgewezen)"
-      }
+      },
+      "reset": "Filters wissen"
     },
     "count": "{count, plural, =0 {Geen kansen} one {# kans} other {# kansen}}",
     "score": "{score}/100",
@@ -777,7 +779,26 @@
       },
       "portal": "Vacature rechtstreeks door het bedrijf gepubliceerd: je agent schrijft een kort bericht, dat met je anonieme kaart in zijn inbox wordt afgeleverd. Je leest en keurt het goed: niets wordt zonder jou verstuurd."
     },
-    "directBadge": "Rechtstreeks door het bedrijf gepubliceerd"
+    "directBadge": "Rechtstreeks door het bedrijf gepubliceerd",
+    "band": {
+      "strong": "Uitstekende match",
+      "good": "Goede match",
+      "fair": "Gedeeltelijke match"
+    },
+    "rails": {
+      "title": "Uw vangrails",
+      "summary": "Vangrails gerespecteerd",
+      "toCheck": "{count, plural, one {# punt om te controleren} other {# punten om te controleren}}",
+      "ok": "Verenigbaar",
+      "unknown": "Niet vermeld in de vacature: controleer dit",
+      "items": {
+        "salary": "Minimumsalaris",
+        "remote": "Thuiswerk",
+        "contract": "Contracttype",
+        "location": "Regio"
+      },
+      "unknownLocation": "Afstand niet gecontroleerd: geen van uw locaties kon worden gelokaliseerd"
+    }
   },
   "memory": {
     "title": "Mijn carrièregeheugen",
@@ -1211,7 +1232,8 @@
       "pending": "{count, plural, one {# voorstel te beoordelen} other {# voorstellen te beoordelen}}",
       "updated": "Bijgewerkt op {date}",
       "open": "Openen",
-      "confirmDelete": "Dit gesprek definitief verwijderen? Niet-beoordeelde voorstellen gaan verloren; wat aan uw carrièregeheugen is toegevoegd, blijft bewaard."
+      "confirmDelete": "Dit gesprek definitief verwijderen? Niet-beoordeelde voorstellen gaan verloren; wat aan uw carrièregeheugen is toegevoegd, blijft bewaard.",
+      "emptyText": "Kies hierboven een modus: uw gesprekken met de coach verschijnen hier."
     },
     "chat": {
       "back": "Alle gesprekken",
@@ -1228,6 +1250,25 @@
         "thinking": "De coach denkt na…",
         "reading": "De coach raadpleegt uw carrièregeheugen…",
         "suggesting": "De coach bereidt een voorstel voor…"
+      },
+      "chipsLabel": "Om te beginnen kunt u schrijven:",
+      "replyAnnounce": "Antwoord van de coach: {text}",
+      "chips": {
+        "DISCOVER": {
+          "first": "Ik heb een project geleid waar ik trots op ben",
+          "second": "Ik heb mijn team tijd of geld bespaard",
+          "third": "Help me een resultaat in cijfers uit te drukken"
+        },
+        "CLARIFY": {
+          "first": "Ik wil mijn minimumsalaris vastleggen",
+          "second": "Ik zoek meer thuiswerk",
+          "third": "Ik wil bepaalde sectoren vermijden"
+        },
+        "INTERVIEW": {
+          "first": "Ik mik op een functie als senior projectleider",
+          "second": "Stel me een vraag over een lastige situatie",
+          "third": "Laten we salarisonderhandeling oefenen"
+        }
       }
     },
     "errors": {
@@ -1365,6 +1406,11 @@
         "network": "Geen verbinding met de server. Controleer je netwerk en probeer het opnieuw.",
         "generic": "Er is een fout opgetreden. Probeer het opnieuw."
       }
+    },
+    "groups": {
+      "account": "Account en beveiliging",
+      "preferences": "Voorkeuren",
+      "data": "Mijn gegevens"
     }
   },
   "import": {
@@ -1666,7 +1712,8 @@
     "manageHint": "Betaalmethode, facturen en opzegging, op de beveiligde pagina van Stripe.",
     "redirecting": "Doorsturen…",
     "compare": {
-      "title": "De abonnementen"
+      "title": "De abonnementen",
+      "current": "Uw abonnement"
     },
     "plans": {
       "FREE": {
@@ -1968,7 +2015,10 @@
       "closedOn": "Gesprek afgesloten door het bedrijf op {date}",
       "sendPortal": "Naar de bedrijfsomgeving sturen",
       "sendPortalHint": "Afgeleverd in de inbox van het bedrijf, dat een melding zonder de inhoud krijgt. Je identiteit wordt niet gedeeld.",
-      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd, samen met je anonieme kaart."
+      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd, samen met je anonieme kaart.",
+      "draftTitle": "Uw bericht, om na te lezen en goed te keuren",
+      "approvalHint": "Niets vertrekt zonder uw akkoord: lees het bericht na en keur het dan goed.",
+      "saveFirst": "Sla eerst uw wijzigingen op."
     },
     "errors": {
       "noChannel": "Deze vacature publiceert geen bruikbaar sollicitatiekanaal.",
@@ -1981,6 +2031,21 @@
       "sendUnavailable": "Het versturen van e-mails is niet ingesteld op deze server.",
       "sendFailed": "Versturen mislukt. Probeer het later opnieuw.",
       "invalid": "Het onderwerp (maximaal 160 tekens) en het bericht (20 tot 3.000 tekens) zijn verplicht."
+    },
+    "inbox": {
+      "title": "{count, plural, one {# gesprek} other {# gesprekken}}",
+      "toApprove": "{count, plural, one {# bericht goed te keuren} other {# berichten goed te keuren}}",
+      "awaitingApproval": "Goed te keuren"
+    },
+    "steps": {
+      "label": "Voortgang van het contact",
+      "drafted": "Opgesteld door de agent",
+      "approved": "Goedgekeurd door u",
+      "sent": "Verzonden",
+      "replied": "Antwoord ontvangen",
+      "done": "klaar",
+      "current": "bezig",
+      "upcoming": "nog te doen"
     }
   },
   "handover": {
@@ -2199,7 +2264,9 @@
       "blocked": "Dit bericht kan in deze vorm niet worden goedgekeurd:",
       "sendPortal": "Naar de bedrijfsomgeving sturen",
       "sendPortalHint": "Afgeleverd in de inbox van het bedrijf, dat een melding zonder de inhoud krijgt.",
-      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd; het antwoordt direct in zijn inbox."
+      "appendedPortal": "Het bedrijf ziet de vermelding dat het bericht door je AI-assistent is opgesteld en door jou is goedgekeurd; het antwoordt direct in zijn inbox.",
+      "approvalHint": "Niets vertrekt zonder uw akkoord: lees het bericht na en keur het dan goed.",
+      "saveFirst": "Sla eerst uw wijzigingen op."
     },
     "issues": {
       "belowFloor": "een bedrag ligt onder uw ondergrens ({excerpt});",

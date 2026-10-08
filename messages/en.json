@@ -519,7 +519,8 @@
     "saving": "Saving…",
     "saved": "Saved.",
     "delete": "Delete",
-    "deleting": "Deleting…"
+    "deleting": "Deleting…",
+    "loading": "Loading…"
   },
   "shell": {
     "menu": "Menu",
@@ -691,7 +692,8 @@
         "saved": "Saved",
         "dismissed": "Dismissed",
         "all": "All (except dismissed)"
-      }
+      },
+      "reset": "Reset filters"
     },
     "count": "{count, plural, =0 {No opportunity} one {# opportunity} other {# opportunities}}",
     "score": "{score}/100",
@@ -777,7 +779,26 @@
       },
       "portal": "Offer posted directly by the company: your agent drafts a short message, delivered with your anonymous card to its inbox. You review and approve it: nothing is sent without you."
     },
-    "directBadge": "Posted directly by the company"
+    "directBadge": "Posted directly by the company",
+    "band": {
+      "strong": "Excellent match",
+      "good": "Good match",
+      "fair": "Partial match"
+    },
+    "rails": {
+      "title": "Your guardrails",
+      "summary": "Guardrails respected",
+      "toCheck": "{count, plural, one {# point to check} other {# points to check}}",
+      "ok": "Compatible",
+      "unknown": "Not stated in the offer: check it",
+      "items": {
+        "salary": "Salary floor",
+        "remote": "Remote work",
+        "contract": "Contract type",
+        "location": "Location"
+      },
+      "unknownLocation": "Distance not checked: none of your locations could be located"
+    }
   },
   "memory": {
     "title": "My career memory",
@@ -1211,7 +1232,8 @@
       "pending": "{count, plural, one {# suggestion to review} other {# suggestions to review}}",
       "updated": "Updated on {date}",
       "open": "Open",
-      "confirmDelete": "Permanently delete this conversation? Suggestions you have not reviewed will be lost; what was added to your Career Memory is kept."
+      "confirmDelete": "Permanently delete this conversation? Suggestions you have not reviewed will be lost; what was added to your Career Memory is kept.",
+      "emptyText": "Pick a mode above: your conversations with the coach will appear here."
     },
     "chat": {
       "back": "All conversations",
@@ -1228,6 +1250,25 @@
         "thinking": "The coach is thinking…",
         "reading": "The coach is reading your Career Memory…",
         "suggesting": "The coach is preparing a suggestion…"
+      },
+      "chipsLabel": "To get started, you could write:",
+      "replyAnnounce": "Coach’s reply: {text}",
+      "chips": {
+        "DISCOVER": {
+          "first": "I led a project I’m proud of",
+          "second": "I saved my team time or money",
+          "third": "Help me put a number on a result"
+        },
+        "CLARIFY": {
+          "first": "I want to set my salary floor",
+          "second": "I’m looking for more remote work",
+          "third": "I want to avoid some sectors"
+        },
+        "INTERVIEW": {
+          "first": "I’m aiming for a senior project manager role",
+          "second": "Ask me about a difficult situation",
+          "third": "Let’s practise negotiating salary"
+        }
       }
     },
     "errors": {
@@ -1365,6 +1406,11 @@
         "network": "Can’t reach the server. Check your connection and try again.",
         "generic": "Something went wrong. Please try again."
       }
+    },
+    "groups": {
+      "account": "Account and security",
+      "preferences": "Preferences",
+      "data": "My data"
     }
   },
   "import": {
@@ -1666,7 +1712,8 @@
     "manageHint": "Payment method, invoices and cancellation, on Stripe’s secure page.",
     "redirecting": "Redirecting…",
     "compare": {
-      "title": "Plans"
+      "title": "Plans",
+      "current": "Your plan"
     },
     "plans": {
       "FREE": {
@@ -1968,7 +2015,10 @@
       "closedOn": "Thread closed by the company on {date}",
       "sendPortal": "Send to the company portal",
       "sendPortalHint": "Delivered to the company’s inbox; the company is notified without the content. Your identity is not shared.",
-      "appendedPortal": "The company will see a note saying the message was prepared by your AI assistant and approved by you, along with your anonymous card."
+      "appendedPortal": "The company will see a note saying the message was prepared by your AI assistant and approved by you, along with your anonymous card.",
+      "draftTitle": "Your message, to review and approve",
+      "approvalHint": "Nothing goes out without your approval: review the message, then approve it.",
+      "saveFirst": "Save your changes first."
     },
     "errors": {
       "noChannel": "This offer publishes no usable application channel.",
@@ -1981,6 +2031,21 @@
       "sendUnavailable": "Email sending is not configured on this server.",
       "sendFailed": "Sending failed. Please try again later.",
       "invalid": "The subject (160 characters maximum) and the message (20 to 3,000 characters) are required."
+    },
+    "inbox": {
+      "title": "{count, plural, one {# conversation} other {# conversations}}",
+      "toApprove": "{count, plural, one {# message to approve} other {# messages to approve}}",
+      "awaitingApproval": "To approve"
+    },
+    "steps": {
+      "label": "Contact progress",
+      "drafted": "Drafted by the agent",
+      "approved": "Approved by you",
+      "sent": "Sent",
+      "replied": "Reply received",
+      "done": "done",
+      "current": "in progress",
+      "upcoming": "to come"
     }
   },
   "handover": {
@@ -2199,7 +2264,9 @@
       "blocked": "This message cannot be approved as it stands:",
       "sendPortal": "Send to the company portal",
       "sendPortalHint": "Delivered to the company’s inbox; the company is notified without the content.",
-      "appendedPortal": "The company will see a note saying the message was written by your AI assistant and approved by you; it replies directly in its inbox."
+      "appendedPortal": "The company will see a note saying the message was written by your AI assistant and approved by you; it replies directly in its inbox.",
+      "approvalHint": "Nothing goes out without your approval: review the message, then approve it.",
+      "saveFirst": "Save your changes first."
     },
     "issues": {
       "belowFloor": "an amount is below your floor ({excerpt});",

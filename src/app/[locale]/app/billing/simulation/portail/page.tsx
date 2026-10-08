@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { buttonClass } from "@/components/button";
+import { Card } from "@/components/card";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { billingMode } from "@/lib/billing/config";
@@ -18,8 +22,6 @@ const PORTAL_ACTIONS = ["cancelAtPeriodEnd", "resume", "cancelNow", "payOutstand
 type PortalAction = (typeof PORTAL_ACTIONS)[number];
 const isPortalAction = (value: string | undefined): value is PortalAction =>
   (PORTAL_ACTIONS as readonly string[]).includes(value ?? "");
-
-const button = "w-full rounded-lg px-5 py-2.5 text-sm font-medium sm:w-auto";
 
 /**
  * Gestion de l'abonnement simulée (remplace le portail client Stripe en phase
@@ -53,14 +55,14 @@ export default async function SimulatedPortalPage({
           : [];
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-2xl">
       <SimulatedBanner />
-      <h1 className="text-2xl font-semibold tracking-tight">{t("portal.title")}</h1>
+      <PageHeader title={t("portal.title")} />
 
       {isPortalAction(query.fait) ? (
         <p
           role="status"
-          className="border-brand-line bg-brand-soft text-brand-ink mt-6 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink mb-6 rounded-2xl border px-4 py-3"
         >
           {t(`portal.done.${query.fait}`)}
         </p>
@@ -68,16 +70,16 @@ export default async function SimulatedPortalPage({
       {query.erreur ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink mb-6 rounded-2xl border px-4 py-3"
         >
           {t("portal.error")}
         </p>
       ) : null}
 
-      <section className="border-line bg-surface mt-6 rounded-2xl border p-4 text-sm sm:p-6">
+      <Card>
         {sub ? (
           <>
-            <p className="font-medium">
+            <p className="text-lg font-semibold">
               {t(`portal.status.${sub.status as "ACTIVE" | "TRIALING" | "PAST_DUE"}`)}
             </p>
             {periodEnd ? (
@@ -95,28 +97,31 @@ export default async function SimulatedPortalPage({
         )}
 
         {available.length > 0 ? (
-          <form action={simulatedPortalAction} className="mt-5 flex flex-col gap-3 sm:flex-row">
+          <form
+            action={simulatedPortalAction}
+            className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+          >
             {available.map((action, i) => (
               <button
                 key={action}
                 type="submit"
                 name="action"
                 value={action}
-                className={`${button} ${
-                  i === 0
-                    ? "bg-primary text-on-primary hover:bg-primary-hover"
-                    : "border-line-strong bg-surface hover:bg-muted border"
-                }`}
+                className={`${buttonClass(i === 0 ? "primary" : "secondary")} w-full sm:w-auto`}
               >
                 {t(`portal.actions.${action}`)}
               </button>
             ))}
           </form>
         ) : null}
-      </section>
+      </Card>
 
-      <p className="mt-6 text-sm">
-        <Link href="/app/billing" className="text-ink-muted hover:text-ink underline">
+      <p className="mt-6">
+        <Link
+          href="/app/billing"
+          className="text-ink-muted hover:text-ink inline-flex items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
+        >
+          <Icon name="arrow" className="size-4 rotate-180" />
           {t("back")}
         </Link>
       </p>

@@ -16,7 +16,7 @@ import {
   revealedFields,
   type HandoverSelection,
 } from "@/lib/handover/schema";
-import { CopyText } from "./draft-panel";
+import { approveClass, CopyText, primary, secondary } from "./draft-panel";
 
 /**
  * Levée d'anonymat pour CE fil : déverrouillage du coffre dans le navigateur,
@@ -27,12 +27,7 @@ import { CopyText } from "./draft-panel";
  * localement). Aucun champ n'est coché par défaut.
  */
 
-const primary =
-  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
-const revealClass =
-  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
-const secondary =
-  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
+const revealClass = approveClass;
 
 type Step = "closed" | "select" | "preview" | "done";
 type ErrorCode =

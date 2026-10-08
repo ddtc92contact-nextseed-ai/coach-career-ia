@@ -31,14 +31,14 @@ export function AlertsForm({
           {ALERT_FREQUENCIES.map((value) => (
             <label
               key={value}
-              className="border-line has-[:checked]:border-primary has-[:checked]:ring-primary flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm has-[:checked]:ring-1"
+              className="border-line-strong bg-surface hover:bg-subtle has-[:checked]:border-brand has-[:checked]:bg-brand-soft has-[:checked]:ring-brand flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-2.5 font-medium has-[:checked]:ring-1"
             >
               <input
                 type="radio"
                 name="frequency"
                 value={value}
                 defaultChecked={value === frequency}
-                className="accent-brand"
+                className="accent-brand size-4"
               />
               {t(`frequencyOptions.${value}`)}
             </label>

@@ -24,18 +24,18 @@ export function EmptyState({
   title: string;
   text: string;
   action?: ReactNode;
-  /** Icône de la charte au-dessus du titre (facultative). */
+  /** Pictogramme décoratif au-dessus du titre. */
   icon?: IconName;
 }) {
   return (
     <div className="border-line-strong bg-surface rounded-2xl border border-dashed px-6 py-10 text-center">
       {icon ? (
-        <span className="bg-brand-soft text-brand-ink mx-auto mb-4 inline-flex size-12 items-center justify-center rounded-2xl">
+        <span className="bg-brand-soft text-brand-ink mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl">
           <Icon name={icon} className="size-6" />
         </span>
       ) : null}
-      <p className="font-medium">{title}</p>
-      <p className="text-ink-subtle mx-auto mt-2 max-w-md text-sm">{text}</p>
+      <p className="text-lg font-semibold text-balance">{title}</p>
+      <p className="text-ink-muted mx-auto mt-2 max-w-md text-pretty">{text}</p>
       {action ? <div className="mt-5">{action}</div> : null}
     </div>
   );

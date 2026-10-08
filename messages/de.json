@@ -519,7 +519,8 @@
     "saving": "Wird gespeichert…",
     "saved": "Gespeichert.",
     "delete": "Löschen",
-    "deleting": "Wird gelöscht…"
+    "deleting": "Wird gelöscht…",
+    "loading": "Wird geladen…"
   },
   "shell": {
     "menu": "Menü",
@@ -691,7 +692,8 @@
         "saved": "Gespeichert",
         "dismissed": "Verworfen",
         "all": "Alle (außer verworfene)"
-      }
+      },
+      "reset": "Filter zurücksetzen"
     },
     "count": "{count, plural, =0 {Keine Gelegenheit} one {# Gelegenheit} other {# Gelegenheiten}}",
     "score": "{score}/100",
@@ -777,7 +779,26 @@
       },
       "portal": "Direkt vom Unternehmen veröffentlichtes Angebot: Ihr Agent verfasst eine kurze Nachricht, die mit Ihrer anonymen Karte in dessen Postfach zugestellt wird. Sie prüfen und genehmigen sie: Nichts wird ohne Sie gesendet."
     },
-    "directBadge": "Direkt vom Unternehmen veröffentlicht"
+    "directBadge": "Direkt vom Unternehmen veröffentlicht",
+    "band": {
+      "strong": "Hervorragende Übereinstimmung",
+      "good": "Gute Übereinstimmung",
+      "fair": "Teilweise Übereinstimmung"
+    },
+    "rails": {
+      "title": "Ihre Leitplanken",
+      "summary": "Leitplanken eingehalten",
+      "toCheck": "{count, plural, one {# Punkt zu prüfen} other {# Punkte zu prüfen}}",
+      "ok": "Vereinbar",
+      "unknown": "Im Angebot nicht angegeben: bitte prüfen",
+      "items": {
+        "salary": "Mindestgehalt",
+        "remote": "Homeoffice",
+        "contract": "Vertragsart",
+        "location": "Region"
+      },
+      "unknownLocation": "Entfernung nicht geprüft: Keiner Ihrer Orte konnte lokalisiert werden"
+    }
   },
   "memory": {
     "title": "Mein Karrieregedächtnis",
@@ -1211,7 +1232,8 @@
       "pending": "{count, plural, one {# Vorschlag zu prüfen} other {# Vorschläge zu prüfen}}",
       "updated": "Aktualisiert am {date}",
       "open": "Öffnen",
-      "confirmDelete": "Dieses Gespräch endgültig löschen? Nicht bestätigte Vorschläge gehen verloren; was in Ihr Karrieregedächtnis übernommen wurde, bleibt erhalten."
+      "confirmDelete": "Dieses Gespräch endgültig löschen? Nicht bestätigte Vorschläge gehen verloren; was in Ihr Karrieregedächtnis übernommen wurde, bleibt erhalten.",
+      "emptyText": "Wählen Sie oben einen Modus: Ihre Gespräche mit dem Coach erscheinen hier."
     },
     "chat": {
       "back": "Alle Gespräche",
@@ -1228,6 +1250,25 @@
         "thinking": "Der Coach denkt nach…",
         "reading": "Der Coach liest Ihr Karrieregedächtnis…",
         "suggesting": "Der Coach bereitet einen Vorschlag vor…"
+      },
+      "chipsLabel": "Zum Einstieg könnten Sie schreiben:",
+      "replyAnnounce": "Antwort des Coachs: {text}",
+      "chips": {
+        "DISCOVER": {
+          "first": "Ich habe ein Projekt geleitet, auf das ich stolz bin",
+          "second": "Ich habe meinem Team Zeit oder Geld gespart",
+          "third": "Helfen Sie mir, ein Ergebnis zu beziffern"
+        },
+        "CLARIFY": {
+          "first": "Ich möchte mein Mindestgehalt festlegen",
+          "second": "Ich suche mehr Homeoffice",
+          "third": "Ich möchte bestimmte Branchen meiden"
+        },
+        "INTERVIEW": {
+          "first": "Ich strebe eine Stelle als Senior-Projektleitung an",
+          "second": "Stellen Sie mir eine Frage zu einer schwierigen Situation",
+          "third": "Üben wir die Gehaltsverhandlung"
+        }
       }
     },
     "errors": {
@@ -1365,6 +1406,11 @@
         "network": "Keine Verbindung zum Server. Prüfen Sie Ihr Netzwerk und versuchen Sie es erneut.",
         "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
       }
+    },
+    "groups": {
+      "account": "Konto und Sicherheit",
+      "preferences": "Einstellungen",
+      "data": "Meine Daten"
     }
   },
   "import": {
@@ -1666,7 +1712,8 @@
     "manageHint": "Zahlungsmethode, Rechnungen und Kündigung auf der sicheren Seite von Stripe.",
     "redirecting": "Weiterleitung…",
     "compare": {
-      "title": "Die Tarife"
+      "title": "Die Tarife",
+      "current": "Ihr Tarif"
     },
     "plans": {
       "FREE": {
@@ -1968,7 +2015,10 @@
       "closedOn": "Vom Unternehmen am {date} abgeschlossen",
       "sendPortal": "An den Unternehmensbereich senden",
       "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt. Ihre Identität wird nicht weitergegeben.",
-      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten vorbereitet und von Ihnen freigegeben wurde, sowie Ihre anonyme Karte."
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten vorbereitet und von Ihnen freigegeben wurde, sowie Ihre anonyme Karte.",
+      "draftTitle": "Ihre Nachricht – prüfen und genehmigen",
+      "approvalHint": "Ohne Ihre Zustimmung geht nichts hinaus: Lesen Sie die Nachricht und genehmigen Sie sie dann.",
+      "saveFirst": "Speichern Sie zuerst Ihre Änderungen."
     },
     "errors": {
       "noChannel": "Diese Stelle veröffentlicht keinen nutzbaren Bewerbungskanal.",
@@ -1981,6 +2031,21 @@
       "sendUnavailable": "Der E-Mail-Versand ist auf diesem Server nicht eingerichtet.",
       "sendFailed": "Der Versand ist fehlgeschlagen. Bitte später erneut versuchen.",
       "invalid": "Betreff (höchstens 160 Zeichen) und Nachricht (20 bis 3.000 Zeichen) sind erforderlich."
+    },
+    "inbox": {
+      "title": "{count, plural, one {# Austausch} other {# Austausche}}",
+      "toApprove": "{count, plural, one {# Nachricht zu genehmigen} other {# Nachrichten zu genehmigen}}",
+      "awaitingApproval": "Zu genehmigen"
+    },
+    "steps": {
+      "label": "Fortschritt der Kontaktaufnahme",
+      "drafted": "Vom Agenten verfasst",
+      "approved": "Von Ihnen genehmigt",
+      "sent": "Gesendet",
+      "replied": "Antwort erhalten",
+      "done": "erledigt",
+      "current": "läuft",
+      "upcoming": "ausstehend"
     }
   },
   "handover": {
@@ -2199,7 +2264,9 @@
       "blocked": "Diese Nachricht kann so nicht genehmigt werden:",
       "sendPortal": "An den Unternehmensbereich senden",
       "sendPortalHint": "Wird im Postfach des Unternehmens zugestellt; es wird ohne den Inhalt benachrichtigt.",
-      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen freigegeben wurde; es antwortet direkt in seinem Postfach."
+      "appendedPortal": "Das Unternehmen sieht den Hinweis, dass die Nachricht von Ihrem KI-Assistenten verfasst und von Ihnen freigegeben wurde; es antwortet direkt in seinem Postfach.",
+      "approvalHint": "Ohne Ihre Zustimmung geht nichts hinaus: Lesen Sie die Nachricht und genehmigen Sie sie dann.",
+      "saveFirst": "Speichern Sie zuerst Ihre Änderungen."
     },
     "issues": {
       "belowFloor": "ein Betrag liegt unter Ihrer Untergrenze ({excerpt});",

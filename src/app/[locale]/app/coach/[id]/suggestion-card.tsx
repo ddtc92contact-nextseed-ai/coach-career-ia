@@ -3,15 +3,17 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useState, useTransition, type FormEvent, type ReactNode } from "react";
 import { Badge } from "@/components/badge";
+import { buttonClass } from "@/components/button";
 import { Field, FormError, inputClass } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import type { FieldErrors } from "@/lib/career/schemas";
 import type { SuggestionData, SuggestionView } from "@/lib/coach/shared";
 import { acceptCoachSuggestion, rejectCoachSuggestion } from "../actions";
 
-const smallButton = "rounded-lg border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
-const acceptClass = `${smallButton} border-brand bg-brand text-on-brand hover:bg-brand-hover`;
-const neutralClass = `${smallButton} border-line-strong bg-surface text-ink-muted hover:bg-muted`;
+const acceptClass = buttonClass("approve");
+const neutralClass = buttonClass("secondary");
+const ghostClass = buttonClass("ghost");
 
 function text(form: FormData, name: string) {
   return String(form.get(name) ?? "");
@@ -69,116 +71,155 @@ export function SuggestionCard({
   return (
     <article
       aria-label={t(`kinds.${suggestion.kind}`)}
-      className={`ml-0 rounded-xl border p-4 sm:ml-6 ${
-        decided ? "border-line bg-subtle" : "border-brand-line bg-surface shadow-xs"
+      className={`overflow-hidden rounded-2xl border sm:ml-12 ${
+        decided ? "border-line bg-subtle" : "border-brand-line bg-surface shadow-sm"
       }`}
     >
-      <div className="flex flex-wrap items-center gap-2">
-        <h3 className="text-sm font-semibold">{t(`kinds.${suggestion.kind}`)}</h3>
-        {suggestion.status === "PENDING" ? <Badge tone="warning">{t("pendingBadge")}</Badge> : null}
+      <div
+        className={`flex flex-wrap items-center gap-x-3 gap-y-2 border-b px-4 py-3 sm:px-5 ${
+          decided ? "border-line" : "band-brand border-brand-line"
+        }`}
+      >
+        <span
+          aria-hidden="true"
+          className={`inline-flex size-8 shrink-0 items-center justify-center rounded-lg ${
+            decided ? "bg-muted text-ink-muted" : "bg-brand text-on-brand"
+          }`}
+        >
+          <Icon name="spark" className="size-4.5" />
+        </span>
+        <h3 className="min-w-0 flex-1 font-semibold text-balance">
+          {t(`kinds.${suggestion.kind}`)}
+        </h3>
+        {suggestion.status === "PENDING" ? (
+          <Badge tone="warning" icon="clock">
+            {t("pendingBadge")}
+          </Badge>
+        ) : null}
         {suggestion.status === "ACCEPTED" ? (
-          <Badge tone="proven">{t("acceptedBadge")}</Badge>
+          <Badge tone="proven" icon="check">
+            {t("acceptedBadge")}
+          </Badge>
         ) : null}
         {suggestion.status === "REJECTED" ? <Badge>{t("rejectedBadge")}</Badge> : null}
       </div>
-      {suggestion.rationale ? (
-        <p className="text-ink-muted mt-1 text-sm">
-          {t("why", { rationale: suggestion.rationale })}
-        </p>
-      ) : null}
-      {suggestion.identityRemoved ? (
-        <p className="bg-warning-soft text-warning-ink mt-2 rounded-md px-3 py-2 text-xs">
-          {t("identityRemoved")}
-        </p>
-      ) : null}
 
-      {editing ? (
-        <form onSubmit={submitEdit} noValidate className="mt-3 space-y-3">
-          <EditFields suggestion={suggestion} errors={errors} />
-          <FormError errors={errors} />
-          <div className="flex flex-wrap gap-2">
-            <button type="submit" disabled={pending} className={acceptClass}>
-              {t("saveAccept")}
-            </button>
-            <button
-              type="button"
-              disabled={pending}
-              className={neutralClass}
-              onClick={() => {
-                setEditing(false);
-                setErrors(undefined);
-              }}
-            >
-              {t("cancel")}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <>
-          <div className="mt-3">
-            <SuggestionDetails suggestion={suggestion} />
-          </div>
-          <div className="mt-3">
+      <div className="px-4 py-4 sm:px-5">
+        {suggestion.rationale ? (
+          <p className="text-ink-muted text-pretty">
+            {t("why", { rationale: suggestion.rationale })}
+          </p>
+        ) : null}
+        {suggestion.identityRemoved ? (
+          <p className="bg-warning-soft text-warning-ink mt-3 flex items-start gap-2 rounded-lg px-3 py-2 text-sm">
+            <Icon name="shield" className="mt-0.5 size-4 shrink-0" />
+            {t("identityRemoved")}
+          </p>
+        ) : null}
+
+        {editing ? (
+          <form onSubmit={submitEdit} noValidate className="mt-4 space-y-4">
+            <EditFields suggestion={suggestion} errors={errors} />
             <FormError errors={errors} />
-          </div>
-          {decided ? (
-            <p className="text-ink-muted mt-3 text-sm">
-              {suggestion.status === "ACCEPTED" ? (
-                <>
-                  {suggestion.kind === "GUARD_RAIL" ? t("acceptedGuardRail") : t("accepted")}{" "}
-                  <Link
-                    href={suggestion.kind === "GUARD_RAIL" ? "/app/garde-fous" : "/app/memoire"}
-                    className="font-medium underline underline-offset-2"
-                  >
-                    {t("view")}
-                  </Link>
-                </>
-              ) : (
-                t("rejected")
-              )}
-            </p>
-          ) : (
-            <>
-              <p className="text-ink-subtle mt-3 text-xs">{t("draft")}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  disabled={pending}
-                  className={acceptClass}
-                  onClick={() => decide(() => acceptCoachSuggestion(suggestion.id))}
-                >
-                  {t("accept")}
-                </button>
-                <button
-                  type="button"
-                  disabled={pending}
-                  className={neutralClass}
-                  onClick={() => setEditing(true)}
-                >
-                  {t("edit")}
-                </button>
-                <button
-                  type="button"
-                  disabled={pending}
-                  className={neutralClass}
-                  onClick={() => decide(() => rejectCoachSuggestion(suggestion.id))}
-                >
-                  {t("reject")}
-                </button>
+            <div className="flex flex-wrap gap-2">
+              <button type="submit" disabled={pending} className={acceptClass}>
+                <Icon name="check" className="size-4" />
+                {t("saveAccept")}
+              </button>
+              <button
+                type="button"
+                disabled={pending}
+                className={ghostClass}
+                onClick={() => {
+                  setEditing(false);
+                  setErrors(undefined);
+                }}
+              >
+                {t("cancel")}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <div className="border-line bg-subtle mt-4 rounded-xl border p-3 sm:p-4">
+              <SuggestionDetails suggestion={suggestion} />
+            </div>
+            {errors ? (
+              <div className="mt-3">
+                <FormError errors={errors} />
               </div>
-            </>
-          )}
-        </>
-      )}
+            ) : null}
+            {decided ? (
+              <p className="text-ink-muted mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <Icon
+                  name={suggestion.status === "ACCEPTED" ? "approve" : "deny"}
+                  className={`size-5 shrink-0 ${
+                    suggestion.status === "ACCEPTED" ? "text-brand-ink" : "text-ink-subtle"
+                  }`}
+                />
+                {suggestion.status === "ACCEPTED" ? (
+                  <>
+                    {suggestion.kind === "GUARD_RAIL" ? t("acceptedGuardRail") : t("accepted")}{" "}
+                    <Link
+                      href={suggestion.kind === "GUARD_RAIL" ? "/app/garde-fous" : "/app/memoire"}
+                      className="text-brand-ink font-semibold underline underline-offset-4"
+                    >
+                      {t("view")}
+                    </Link>
+                  </>
+                ) : (
+                  t("rejected")
+                )}
+              </p>
+            ) : (
+              <>
+                <p className="text-ink-subtle mt-4 flex items-center gap-2 text-sm">
+                  <Icon name="lock" className="size-4 shrink-0" />
+                  {t("draft")}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={pending}
+                    aria-busy={pending || undefined}
+                    className={acceptClass}
+                    onClick={() => decide(() => acceptCoachSuggestion(suggestion.id))}
+                  >
+                    <Icon name="check" className="size-4" />
+                    {t("accept")}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={pending}
+                    className={neutralClass}
+                    onClick={() => setEditing(true)}
+                  >
+                    <Icon name="edit" className="size-4" />
+                    {t("edit")}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={pending}
+                    className={ghostClass}
+                    onClick={() => decide(() => rejectCoachSuggestion(suggestion.id))}
+                  >
+                    {t("reject")}
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
     </article>
   );
 }
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="grid gap-0.5 sm:grid-cols-[11rem_1fr] sm:gap-3">
-      <dt className="text-ink-subtle text-xs font-medium sm:text-sm">{label}</dt>
-      <dd className="text-sm break-words whitespace-pre-wrap">{children}</dd>
+    <div className="grid gap-0.5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-3">
+      <dt className="text-ink-subtle text-sm font-medium">{label}</dt>
+      <dd className="break-words whitespace-pre-wrap">{children}</dd>
     </div>
   );
 }

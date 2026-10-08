@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Icon, type IconName } from "@/components/icons";
 
 const TONES = {
   neutral: "bg-muted text-ink-muted ring-line",
@@ -6,6 +7,10 @@ const TONES = {
   warning: "bg-warning-soft text-warning-ink ring-warning-line",
   info: "bg-info-soft text-info-ink ring-info-line",
   danger: "bg-danger-soft text-danger-ink ring-danger-line",
+  /** Pastille pleine « feu vert » (réponse reçue, nouveauté). */
+  brand: "bg-brand text-on-brand ring-brand",
+  /** Ce qui se passe « dans l'ombre » : identité révélée, mode de l'agent. */
+  night: "bg-night text-on-night ring-night-line",
 } as const;
 
 /** Couleur de la pastille (`dot`) : la teinte pleine du ton. */
@@ -15,6 +20,8 @@ const DOTS = {
   warning: "bg-warning",
   info: "bg-info-ink",
   danger: "bg-danger",
+  brand: "bg-on-brand",
+  night: "bg-signal",
 } as const;
 
 const SIZES = {
@@ -25,17 +32,20 @@ const SIZES = {
 export type BadgeTone = keyof typeof TONES;
 
 /**
- * Pastille de statut. `dot` ajoute un point de couleur devant le libellé (les
- * statuts restent lisibles sans la couleur : le libellé dit tout).
+ * Pastille de statut. `dot` ajoute un point de couleur devant le libellé, `icon`
+ * une icône décorative (les statuts restent lisibles sans la couleur : le
+ * libellé dit tout).
  */
 export function Badge({
   tone = "neutral",
   dot = false,
+  icon,
   size = "sm",
   children,
 }: {
   tone?: BadgeTone;
   dot?: boolean;
+  icon?: IconName;
   size?: keyof typeof SIZES;
   children: ReactNode;
 }) {
@@ -46,6 +56,7 @@ export function Badge({
       {dot ? (
         <span aria-hidden="true" className={`size-1.5 shrink-0 rounded-full ${DOTS[tone]}`} />
       ) : null}
+      {icon ? <Icon name={icon} className="size-3.5 shrink-0" /> : null}
       {children}
     </span>
   );

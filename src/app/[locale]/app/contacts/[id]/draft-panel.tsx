@@ -2,7 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
+import { buttonClass } from "@/components/button";
 import { ActionForm, inputClass } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { MAX_BODY, MAX_SUBJECT } from "@/lib/contact/draft";
 import {
   approveDraftAction,
@@ -11,18 +13,32 @@ import {
   type ContactActionState,
 } from "../actions";
 
-const primary =
-  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
-const approveClass =
-  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
-const secondary =
-  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
+export const primary = `${buttonClass("primary", "lg")} w-full sm:w-auto`;
+export const approveClass = `${buttonClass("approve", "lg")} w-full sm:w-auto`;
+export const secondary = `${buttonClass("secondary")} w-full sm:w-auto`;
+
+/**
+ * Zone de décision mise en avant (approuver, envoyer) : rien ne part sans le
+ * geste explicite de la personne.
+ */
+export function DecisionZone({ hint, children }: { hint: string; children: React.ReactNode }) {
+  return (
+    <div className="band-brand border-brand-line rounded-xl border p-4 sm:p-5">
+      <p className="text-ink mb-3 flex items-start gap-2 font-medium">
+        <Icon name="shield" className="text-brand-ink mt-0.5 size-5 shrink-0" />
+        {hint}
+      </p>
+      {children}
+    </div>
+  );
+}
 
 function ActionMessage({ state }: { state: ContactActionState }) {
   const t = useTranslations("contacts");
   if (state.error) {
     return (
-      <p role="alert" className="text-danger-ink text-sm">
+      <p role="alert" className="text-danger-ink flex items-start gap-2 text-sm font-medium">
+        <Icon name="alert" className="mt-0.5 size-4 shrink-0" />
         {t(`errors.${state.error}`, { excerpt: state.excerpt ?? "", limit: state.limit ?? 0 })}
       </p>
     );
@@ -113,6 +129,7 @@ export function DraftPanel({
         </div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button type="submit" disabled={saving} className={secondary}>
+            <Icon name="edit" className="size-4" />
             {t("save")}
           </button>
           <ActionMessage state={saveState} />
@@ -120,24 +137,27 @@ export function DraftPanel({
       </ActionForm>
 
       {!approved ? (
-        <form action={approve} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <button type="submit" disabled={approving || dirty} className={approveClass}>
-            {t("approve")}
-          </button>
-          <ActionMessage state={approveState} />
-        </form>
+        <DecisionZone hint={t("approvalHint")}>
+          <form action={approve} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button type="submit" disabled={approving || dirty} className={approveClass}>
+              <Icon name="approve" className="size-5" />
+              {t("approve")}
+            </button>
+            {dirty ? <p className="text-ink-muted text-sm">{t("saveFirst")}</p> : null}
+            <ActionMessage state={approveState} />
+          </form>
+        </DecisionZone>
       ) : channel === "EMAIL" || channel === "PORTAL" ? (
-        <form action={send} className="space-y-2">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <DecisionZone hint={t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}>
+          <form action={send} className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <button type="submit" disabled={sending || dirty} className={primary}>
+              <Icon name="send" className="size-5" />
               {t(channel === "PORTAL" ? "sendPortal" : "send")}
             </button>
+            {dirty ? <p className="text-ink-muted text-sm">{t("saveFirst")}</p> : null}
             <ActionMessage state={sendState} />
-          </div>
-          <p className="text-ink-subtle text-xs">
-            {t(channel === "PORTAL" ? "sendPortalHint" : "sendHint")}
-          </p>
-        </form>
+          </form>
+        </DecisionZone>
       ) : null}
     </div>
   );
