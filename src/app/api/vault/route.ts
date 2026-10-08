@@ -1,6 +1,8 @@
+import { accountKdf } from "@/lib/auth/accounts";
 import { getCurrentUser } from "@/lib/auth/session";
 import { logger } from "@/lib/logger";
 import { createVault, deleteVault, getVault, updateVault } from "@/lib/vault/repository";
+import { ACCOUNT_KDF_NAME, type KdfParams } from "@/lib/vault/crypto";
 import { createVaultInput, updateVaultInput } from "@/lib/vault/schemas";
 
 /**
@@ -33,6 +35,16 @@ async function readJson(request: Request): Promise<unknown> {
   }
 }
 
+/**
+ * Un coffre « lié au compte » doit porter les paramètres du mot de passe
+ * ACTUEL du compte : sinon le navigateur ne pourrait plus l'ouvrir.
+ */
+async function accountKdfMismatch(userId: string, kdf: KdfParams | undefined) {
+  if (kdf?.name !== ACCOUNT_KDF_NAME) return false;
+  const account = await accountKdf(userId);
+  return !account || account.salt !== kdf.salt || account.iterations !== kdf.iterations;
+}
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) return empty(401);
@@ -45,6 +57,7 @@ export async function POST(request: Request) {
   if (!user) return empty(401);
   const parsed = createVaultInput.safeParse(await readJson(request));
   if (!parsed.success) return empty(400);
+  if (await accountKdfMismatch(user.id, parsed.data.kdf)) return empty(409);
   if (!(await createVault(user.id, parsed.data))) return empty(409);
   logger.info("vault.created", { userId: user.id });
   return json({ revision: 0 }, 201);
@@ -55,6 +68,7 @@ export async function PUT(request: Request) {
   if (!user) return empty(401);
   const parsed = updateVaultInput.safeParse(await readJson(request));
   if (!parsed.success) return empty(400);
+  if (await accountKdfMismatch(user.id, parsed.data.keys?.kdf)) return empty(409);
   const result = await updateVault(user.id, parsed.data);
   if (!result.ok) return empty(result.reason === "missing" ? 404 : 409);
   if (parsed.data.keys) logger.info("vault.passphrase_changed", { userId: user.id });
