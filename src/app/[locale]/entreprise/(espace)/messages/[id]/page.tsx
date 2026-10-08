@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { Card, CardHeader } from "@/components/card";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { ProfileCardView } from "@/components/profile-card";
 import { RevealedIdentityView } from "@/components/revealed-identity";
-import { Link } from "@/i18n/navigation";
 import { getThread } from "@/lib/employer/inbox";
 import { requireEmployer } from "@/lib/employer/session";
+import { BackLink } from "../../parts";
 import { ThreadStatusBadge } from "../status-badge";
 import { CloseThreadButton, ThreadReplyForm } from "./thread-forms";
 
@@ -15,8 +18,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("employer.inbox");
   return { title: t("title"), referrer: "no-referrer" };
 }
-
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 /**
  * Un fil de la messagerie : carte anonyme (mêmes règles que le lien public),
@@ -33,111 +34,119 @@ export default async function EmployerThreadPage({ params }: Props) {
   const closed = thread.status === "CLOSED";
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <Link href="/entreprise/messages" className="text-ink-muted text-sm hover:underline">
-        {t("back")}
-      </Link>
+    <div className="max-w-4xl">
+      <BackLink href="/entreprise/messages">{t("back")}</BackLink>
 
-      <header>
-        <ThreadStatusBadge status={thread.status} />
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight break-words">
-          {t("threadTitle", { title: thread.offerTitle })}
-        </h1>
-        {thread.sentAt ? (
-          <p className="text-ink-muted mt-1 text-sm">
-            {t("receivedOn", { date: format.dateTime(thread.sentAt, "short") })}
-          </p>
-        ) : null}
-      </header>
+      <PageHeader
+        title={t("threadTitle", { title: thread.offerTitle })}
+        lead={
+          thread.sentAt
+            ? t("receivedOn", { date: format.dateTime(thread.sentAt, "short") })
+            : undefined
+        }
+        actions={<ThreadStatusBadge status={thread.status} />}
+      />
 
-      {thread.revealed ? (
-        <section aria-labelledby="identite" className="space-y-3">
-          <h2 id="identite" className="text-lg font-semibold">
-            {t("revealedTitle")}
-          </h2>
-          <p className="bg-brand-soft text-brand-ink rounded-lg px-3 py-2 text-sm">
-            {t("revealedDisclosure")}
-          </p>
-          <RevealedIdentityView
-            identity={thread.revealed.identity}
-            cvHref={`/api/entreprise/messages/${encodeURIComponent(thread.id)}/cv`}
-          />
-          <p className="text-ink-subtle text-xs">
-            {t("revealedExpires", { date: format.dateTime(thread.revealed.expiresAt, "short") })}
-          </p>
-        </section>
-      ) : null}
-
-      <section aria-labelledby="carte">
-        <h2 id="carte" className="mb-3 text-lg font-semibold">
-          {t("cardTitle")}
-        </h2>
-        {thread.card ? (
-          <ProfileCardView card={thread.card} />
-        ) : (
-          <p className="border-line-strong bg-surface text-ink-muted rounded-lg border border-dashed px-4 py-3 text-sm">
-            {t("cardGone")}
-          </p>
-        )}
-      </section>
-
-      <section className={sectionClass} aria-labelledby="message">
-        <h2 id="message" className="text-lg font-semibold">
-          {t("messageTitle")}
-        </h2>
-        <p className="bg-subtle text-ink-muted mt-2 rounded-lg px-3 py-2 text-sm">
-          {t("aiDisclosure")}
-        </p>
-        <p className="mt-3 text-sm font-medium [overflow-wrap:anywhere] break-words">
-          {thread.message.subject}
-        </p>
-        <p className="text-ink mt-2 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
-          {thread.message.body}
-        </p>
-      </section>
-
-      <section className={`${sectionClass} space-y-4`} aria-labelledby="reponses">
-        <h2 id="reponses" className="text-lg font-semibold">
-          {t("repliesTitle")}
-        </h2>
-        {thread.replies.length === 0 ? (
-          <p className="text-ink-muted text-sm">{t("noReply")}</p>
-        ) : (
-          <ul className="space-y-3">
-            {thread.replies.map((r) => (
-              <li
-                key={r.id}
-                className={`rounded-lg border p-3 ${
-                  r.from === "candidate" ? "border-line bg-subtle" : "border-line"
-                }`}
-              >
-                <p className="text-ink-subtle text-xs">
-                  {t(
-                    r.from === "candidate" ? "candidateOn" : r.closing ? "closedOn" : "repliedOn",
-                    { date: format.dateTime(r.createdAt, "short") },
-                  )}
-                </p>
-                <p className="text-ink mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
-                  {r.body}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
-        {closed ? (
-          <p className="text-ink-muted text-sm">{t("closedNotice")}</p>
-        ) : (
-          <div className="border-line space-y-4 border-t pt-4">
-            <ThreadReplyForm id={thread.id} />
-            <div className="border-line border-t pt-4">
-              <p className="text-ink-muted mb-2 text-sm">{t("closeHint")}</p>
-              <CloseThreadButton id={thread.id} />
+      <div className="space-y-6">
+        {thread.revealed ? (
+          <Card tone="brand" aria-labelledby="identite">
+            <CardHeader
+              id="identite"
+              title={t("revealedTitle")}
+              description={t("revealedDisclosure")}
+            />
+            <div className="mt-5">
+              <RevealedIdentityView
+                identity={thread.revealed.identity}
+                cvHref={`/api/entreprise/messages/${encodeURIComponent(thread.id)}/cv`}
+              />
             </div>
-          </div>
-        )}
-      </section>
+            <p className="text-ink-muted mt-3 text-sm">
+              {t("revealedExpires", { date: format.dateTime(thread.revealed.expiresAt, "short") })}
+            </p>
+          </Card>
+        ) : null}
 
-      <p className="text-ink-subtle text-xs">{t("threadPrivacy")}</p>
+        <section aria-labelledby="carte">
+          <h2 id="carte" className="font-display mb-4 text-xl font-bold tracking-tight sm:text-2xl">
+            {t("cardTitle")}
+          </h2>
+          {thread.card ? (
+            <ProfileCardView card={thread.card} />
+          ) : (
+            <p className="border-line-strong bg-surface text-ink-muted rounded-2xl border border-dashed px-5 py-4">
+              {t("cardGone")}
+            </p>
+          )}
+        </section>
+
+        <Card aria-labelledby="message">
+          <CardHeader id="message" title={t("messageTitle")} />
+          <p className="bg-subtle text-ink-muted mt-4 flex items-start gap-2 rounded-xl px-4 py-3 text-sm">
+            <Icon name="spark" className="text-brand-ink mt-0.5 size-4 shrink-0" />
+            {t("aiDisclosure")}
+          </p>
+          <p className="mt-5 text-lg font-semibold [overflow-wrap:anywhere] break-words">
+            {thread.message.subject}
+          </p>
+          <p className="text-ink mt-2 max-w-[70ch] [overflow-wrap:anywhere] break-words whitespace-pre-line">
+            {thread.message.body}
+          </p>
+        </Card>
+
+        <Card aria-labelledby="reponses">
+          <CardHeader id="reponses" title={t("repliesTitle")} />
+          {thread.replies.length === 0 ? (
+            <p className="text-ink-muted mt-3">{t("noReply")}</p>
+          ) : (
+            <ol className="mt-5 space-y-4">
+              {thread.replies.map((r) => {
+                const candidate = r.from === "candidate";
+                return (
+                  <li key={r.id} className={`flex ${candidate ? "justify-start" : "justify-end"}`}>
+                    <div
+                      className={`max-w-[88%] rounded-2xl px-4 py-3 sm:max-w-[80%] ${
+                        candidate
+                          ? "bg-muted text-ink rounded-tl-sm"
+                          : "bg-primary text-on-primary rounded-tr-sm"
+                      }`}
+                    >
+                      <p
+                        className={`text-sm font-medium ${candidate ? "text-ink-muted" : "text-on-primary/80"}`}
+                      >
+                        {t(candidate ? "candidateOn" : r.closing ? "closedOn" : "repliedOn", {
+                          date: format.dateTime(r.createdAt, "short"),
+                        })}
+                      </p>
+                      <p className="mt-1 [overflow-wrap:anywhere] break-words whitespace-pre-line">
+                        {r.body}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+          {closed ? (
+            <p className="bg-subtle text-ink-muted mt-6 rounded-xl px-4 py-3">
+              {t("closedNotice")}
+            </p>
+          ) : (
+            <div className="border-line mt-6 space-y-6 border-t pt-6">
+              <ThreadReplyForm id={thread.id} />
+              <div className="border-line border-t pt-5">
+                <p className="text-ink-muted mb-3">{t("closeHint")}</p>
+                <CloseThreadButton id={thread.id} />
+              </div>
+            </div>
+          )}
+        </Card>
+
+        <p className="text-ink-muted flex items-start gap-2 text-sm">
+          <Icon name="lock" className="mt-0.5 size-4 shrink-0" />
+          {t("threadPrivacy")}
+        </p>
+      </div>
     </div>
   );
 }

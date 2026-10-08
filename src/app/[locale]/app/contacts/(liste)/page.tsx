@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
 import { getQuota, listContacts } from "@/lib/contact/repository";
-import { ContactStatusBadge, needsAction } from "./contact-status";
+import { ContactStatusBadge, needsAction } from "../contact-status";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("contacts");

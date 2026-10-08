@@ -173,3 +173,18 @@ export const isEditable = (status: PostingStatus) =>
 
 /** Un paiement peut être lancé (publication ou renouvellement). */
 export const canPay = (status: PostingStatus) => status === "AWAITING_PAYMENT" || status === "LIVE";
+
+/**
+ * Statut affiché à l'entreprise : une offre fermée par son échéance (et non
+ * à la main ou par suspension) s'affiche « Expirée ».
+ */
+export type PostingDisplayStatus = PostingStatus | "EXPIRED";
+
+export function displayStatus(
+  state: Pick<PostingState, "status" | "expiresAt" | "closedAt">,
+): PostingDisplayStatus {
+  if (state.status === "CLOSED" && state.expiresAt && state.closedAt) {
+    return state.closedAt >= state.expiresAt ? "EXPIRED" : "CLOSED";
+  }
+  return state.status;
+}

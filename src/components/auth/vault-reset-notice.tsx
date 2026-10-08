@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 export function VaultResetNotice() {
   const t = useTranslations("auth.vaultAfterReset");
   return (
-    <p className="border-warning-line bg-warning-soft text-warning-ink rounded-lg border px-4 py-3 text-sm">
+    <p className="border-warning-line bg-warning-soft text-warning-ink rounded-xl border px-4 py-3 text-base">
       <strong className="font-semibold">{t("title")}</strong> {t("text")}
     </p>
   );

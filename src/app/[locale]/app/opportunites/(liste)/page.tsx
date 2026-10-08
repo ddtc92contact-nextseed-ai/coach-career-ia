@@ -22,7 +22,7 @@ import {
   ScoreBandLabel,
   ScoreGauge,
   StatusActions,
-} from "./opportunity-parts";
+} from "../opportunity-parts";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("opportunities");

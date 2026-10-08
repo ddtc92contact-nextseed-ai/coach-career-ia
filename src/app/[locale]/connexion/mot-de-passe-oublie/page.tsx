@@ -24,13 +24,13 @@ export default async function ForgotPasswordPage() {
   const t = await getTranslations("auth.forgot");
   return (
     <AuthCard title={t("title")}>
-      <p className="text-ink-muted mb-4 text-sm">{t("intro")}</p>
+      <p className="text-ink-muted mb-5 text-pretty">{t("intro")}</p>
       <div className="mb-6">
         <VaultResetNotice />
       </div>
       <ForgotForm />
-      <p className="mt-6 text-center text-sm">
-        <Link href="/connexion" className="text-ink-subtle underline-offset-4 hover:underline">
+      <p className="mt-6 text-center">
+        <Link href="/connexion" className="text-ink-muted underline-offset-4 hover:underline">
           {t("back")}
         </Link>
       </p>

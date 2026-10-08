@@ -22,13 +22,18 @@ function CardSkeleton({ lines = 3 }: { lines?: number }) {
  * (`loading.tsx`) : même silhouette que la page, annoncé une fois aux lecteurs
  * d'écran, pulsation seulement hors mouvement réduit. Jamais de chargement sans
  * fin : la page remplace le squelette, ou `error.tsx` prend le relais.
+ *
+ * Réservé aux pages de liste, isolées dans un groupe de routes (`(liste)`) :
+ * un `loading.tsx` au-dessus d'une page qui appelle `notFound()` ferait
+ * répondre 200 au lieu de 404 (réponse déjà en flux), et retarderait le
+ * défilement vers une ancre (`#alertes`).
  */
 export async function PageSkeleton({
   variant = "list",
   band = true,
 }: {
-  /** `list` : cartes empilées ; `detail` : contenu et colonne latérale ; `chat` : fil. */
-  variant?: "list" | "detail" | "chat" | "form";
+  /** `list` : cartes empilées ; `form` : sections d'un écran de réglages. */
+  variant?: "list" | "form";
   /** En-tête avec bandeau de couleur (comme `PageHeader band`). */
   band?: boolean;
 }) {
@@ -46,30 +51,7 @@ export async function PageSkeleton({
           <Bar className="mt-4 h-8 w-2/3 max-w-md" />
           <Bar className="mt-4 h-4 w-full max-w-xl" />
         </div>
-        {variant === "chat" ? (
-          <div className="mx-auto max-w-3xl space-y-4">
-            {[70, 45, 80].map((width, i) => (
-              <div key={i} className={`flex ${i % 2 ? "justify-end" : "justify-start"}`}>
-                <div
-                  className="border-line bg-surface h-20 rounded-2xl border"
-                  style={{ width: `${width}%` }}
-                />
-              </div>
-            ))}
-            <div className="border-line bg-surface mt-8 h-28 rounded-2xl border" />
-          </div>
-        ) : variant === "detail" ? (
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-            <div className="space-y-6">
-              <CardSkeleton lines={4} />
-              <CardSkeleton lines={3} />
-            </div>
-            <div className="space-y-6">
-              <CardSkeleton lines={2} />
-              <CardSkeleton lines={3} />
-            </div>
-          </div>
-        ) : variant === "form" ? (
+        {variant === "form" ? (
           <div className="max-w-3xl space-y-6">
             <CardSkeleton lines={2} />
             <CardSkeleton lines={3} />

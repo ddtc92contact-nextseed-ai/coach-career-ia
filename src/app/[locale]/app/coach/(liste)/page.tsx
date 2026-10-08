@@ -15,10 +15,10 @@ import { getEntitlements } from "@/lib/billing/server";
 import { remainingMessages } from "@/lib/coach/quota";
 import { countRecentUserMessages, listConversations } from "@/lib/coach/repository";
 import { COACH_MODES } from "@/lib/coach/shared";
-import { removeConversation, startConversation } from "./actions";
-import { AiNotice } from "./ai-notice";
-import { MODE_ICONS } from "./mode-icons";
-import { CoachUpsell } from "./upsell";
+import { removeConversation, startConversation } from "../actions";
+import { AiNotice } from "../ai-notice";
+import { MODE_ICONS } from "../mode-icons";
+import { CoachUpsell } from "../upsell";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("coach");

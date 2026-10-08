@@ -71,7 +71,7 @@ export default async function SettingsPage() {
 
       <div className="space-y-10">
         <Group id="groupe-compte" icon="user" title={t("groups.account")}>
-          <Card id="mot-de-passe" className="scroll-mt-24" aria-labelledby="mot-de-passe-titre">
+          <Card id="mot-de-passe" className="scroll-mt-6" aria-labelledby="mot-de-passe-titre">
             <CardHeader
               id="mot-de-passe-titre"
               as="h3"
@@ -97,7 +97,7 @@ export default async function SettingsPage() {
             </div>
           </Card>
 
-          <Card id="alertes" className="scroll-mt-24" aria-labelledby="alertes-titre">
+          <Card id="alertes" className="scroll-mt-6" aria-labelledby="alertes-titre">
             <CardHeader
               id="alertes-titre"
               as="h3"

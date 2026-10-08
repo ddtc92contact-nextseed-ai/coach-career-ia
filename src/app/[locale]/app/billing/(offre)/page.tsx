@@ -9,9 +9,9 @@ import { getBillingProvider } from "@/lib/billing/provider";
 import { getBillingAccount } from "@/lib/billing/repository";
 import { getEntitlements } from "@/lib/billing/server";
 import { coachMessagesPerDay } from "@/lib/coach/quota";
-import { openPortal, startCheckout } from "./actions";
-import { RedirectButton } from "./redirect-button";
-import { TestModeBadge } from "./simulation/test-mode";
+import { openPortal, startCheckout } from "../actions";
+import { RedirectButton } from "../redirect-button";
+import { TestModeBadge } from "../simulation/test-mode";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("billing");

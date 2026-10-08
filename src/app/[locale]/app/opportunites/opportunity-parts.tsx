@@ -223,7 +223,9 @@ export async function RailChecks({
           </span>
           <span className="min-w-0">
             <span className="block font-medium">{t(`items.${key}`)}</span>
-            <span className="block text-sm opacity-90">{unknown ? t("unknown") : t("ok")}</span>
+            <span className="block text-sm opacity-90">
+              {!unknown ? t("ok") : key === "location" ? t("unknownLocation") : t("unknown")}
+            </span>
           </span>
         </li>
       ))}

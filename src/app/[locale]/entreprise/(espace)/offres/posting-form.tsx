@@ -12,6 +12,7 @@ import {
   SubmitButton,
   type FormState,
 } from "@/components/form";
+import { Card, CardHeader } from "@/components/card";
 import { CONTRACT_TYPES, SECTORS, SENIORITIES } from "@/lib/career/codes";
 import {
   COUNTRIES,
@@ -50,8 +51,6 @@ export const EMPTY_POSTING: PostingFormValues = {
   salaryCurrency: "EUR",
   salaryPeriod: "YEAR",
 };
-
-const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 export function PostingForm({
   action,
@@ -95,11 +94,9 @@ export function PostingForm({
     <ActionForm action={formAction} className="space-y-6">
       <FormError errors={state.errors} />
 
-      <section className={sectionClass} aria-labelledby="posting-job">
-        <h2 id="posting-job" className="mb-4 text-lg font-semibold">
-          {t("sections.job")}
-        </h2>
-        <div className="space-y-5">
+      <Card aria-labelledby="posting-job">
+        <CardHeader id="posting-job" title={t("sections.job")} />
+        <div className="mt-5 space-y-5">
           <Field id="title" label={t("fields.title")} error={e.title}>
             <input
               {...fieldProps("title", e.title)}
@@ -131,13 +128,11 @@ export function PostingForm({
             </Field>
           </div>
         </div>
-      </section>
+      </Card>
 
-      <section className={sectionClass} aria-labelledby="posting-place">
-        <h2 id="posting-place" className="mb-4 text-lg font-semibold">
-          {t("sections.place")}
-        </h2>
-        <div className="grid gap-5 sm:grid-cols-2">
+      <Card aria-labelledby="posting-place">
+        <CardHeader id="posting-place" title={t("sections.place")} />
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <Field id="contractType" label={t("fields.contractType")} error={e.contractType}>
             {select("contractType", CONTRACT_TYPES, (c) => to(`contract.${c}`))}
           </Field>
@@ -157,14 +152,15 @@ export function PostingForm({
             {select("country", COUNTRIES, (c) => countryNames[c] ?? c, false)}
           </Field>
         </div>
-      </section>
+      </Card>
 
-      <section className={sectionClass} aria-labelledby="posting-salary">
-        <h2 id="posting-salary" className="text-lg font-semibold">
-          {t("sections.salary")}
-        </h2>
-        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("salaryIntro")}</p>
-        <div className="grid gap-5 sm:grid-cols-4">
+      <Card aria-labelledby="posting-salary">
+        <CardHeader
+          id="posting-salary"
+          title={t("sections.salary")}
+          description={t("salaryIntro")}
+        />
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <Field id="salaryMin" label={t("fields.salaryMin")} error={e.salaryMin}>
             <input
               {...fieldProps("salaryMin", e.salaryMin)}
@@ -192,7 +188,7 @@ export function PostingForm({
             {select("salaryPeriod", SALARY_PERIODS, (c) => t(`periods.${c}`), false)}
           </Field>
         </div>
-      </section>
+      </Card>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SubmitButton pending={pending}>{submitLabel}</SubmitButton>
