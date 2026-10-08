@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
@@ -35,12 +37,14 @@ export default async function CoachConversationPage({
 
   return (
     <div className="mx-auto max-w-3xl">
-      <Link href="/app/coach" className="text-ink-muted text-sm underline-offset-2 hover:underline">
-        ← {t("chat.back")}
+      <Link
+        href="/app/coach"
+        className="text-ink-muted hover:text-ink mb-4 inline-flex items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
+      >
+        <Icon name="arrow" className="size-4 rotate-180" />
+        {t("chat.back")}
       </Link>
-      <h1 className="mt-2 mb-4 text-2xl font-semibold tracking-tight">
-        {t(`modes.${conversation.mode}.title`)}
-      </h1>
+      <PageHeader title={t(`modes.${conversation.mode}.title`)} eyebrow={t("title")} />
       <AiNotice />
       <CoachChat
         conversationId={conversation.id}

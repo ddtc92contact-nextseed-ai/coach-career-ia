@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { buttonClass } from "@/components/button";
+import { Icon } from "@/components/icons";
 import {
   COACH_LIMITS,
   isCoachErrorCode,
@@ -22,8 +24,8 @@ type Pending = {
 
 type SendBody = { content: string } | { retry: true };
 
-const buttonClass =
-  "rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:opacity-50";
+/** Idées de premier message, par mode (remplissent la zone de saisie). */
+const CHIPS = ["first", "second", "third"] as const;
 
 /** Lit un flux NDJSON ligne par ligne. */
 async function* readEvents(response: Response): AsyncGenerator<CoachStreamEvent> {
@@ -72,6 +74,9 @@ export function CoachChat({
   const [error, setError] = useState<CoachErrorCode | null>(null);
   const [remaining, setRemaining] = useState(initialRemaining);
   const [input, setInput] = useState("");
+  // Dernière réponse complète, lue une seule fois par les lecteurs d'écran
+  // (le texte en cours de rédaction n'est pas annoncé morceau par morceau).
+  const [announcement, setAnnouncement] = useState("");
   const controller = useRef<AbortController | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -112,6 +117,7 @@ export function CoachChat({
       ]);
     }
     setError(null);
+    setAnnouncement("");
     setPending({ status: "thinking", text: "", suggestions: [] });
 
     let accepted = "retry" in body;
@@ -171,6 +177,7 @@ export function CoachChat({
             finished = true;
             setMessages((list) => [...list, event.message]);
             setRemaining(event.remaining);
+            setAnnouncement(t("chat.replyAnnounce", { text: event.message.content }));
             break;
           case "error":
             finished = true;
@@ -198,6 +205,11 @@ export function CoachChat({
     void run({ content });
   }
 
+  function pickChip(text: string) {
+    setInput(text);
+    inputRef.current?.focus();
+  }
+
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
       event.preventDefault();
@@ -214,9 +226,22 @@ export function CoachChat({
     );
   }
 
+  const showChips = configured && !busy && !exhausted && !messages.some((m) => m.role === "USER");
+  const showRetry = canRetry && configured && error !== "tooManyRetries";
+  const retryButton = (
+    <button
+      type="button"
+      className={buttonClass("secondary", "sm")}
+      onClick={() => void run({ retry: true })}
+    >
+      <Icon name="refresh" className="size-4" />
+      {t("errors.retry")}
+    </button>
+  );
+
   return (
-    <div className="flex flex-col gap-4">
-      <ol aria-label={t("chat.label")} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
+      <ol aria-label={t("chat.label")} className="flex flex-col gap-5">
         <li>
           <Bubble role="ASSISTANT" author={t("chat.coach")}>
             {t(`modes.${mode}.welcome`)}
@@ -241,11 +266,16 @@ export function CoachChat({
         ))}
         {pending ? (
           <li className="flex flex-col gap-3">
-            {pending.text ? (
-              <Bubble role="ASSISTANT" author={t("chat.coach")}>
-                {pending.text}
-              </Bubble>
-            ) : null}
+            <Bubble role="ASSISTANT" author={t("chat.coach")} working={!pending.text}>
+              {pending.text ? (
+                pending.text
+              ) : (
+                <span className="text-ink-muted inline-flex items-center gap-3">
+                  <TypingDots />
+                  {t(`chat.status.${pending.status}`)}
+                </span>
+              )}
+            </Bubble>
             {pending.suggestions.map((suggestion) => (
               <SuggestionCard
                 key={suggestion.id}
@@ -257,97 +287,162 @@ export function CoachChat({
         ) : null}
       </ol>
 
-      <p aria-live="polite" className="text-ink-subtle min-h-5 text-sm">
-        {pending ? (
-          <span className="inline-flex items-center gap-2">
-            <span
-              aria-hidden="true"
-              className="bg-ink-subtle size-2 animate-pulse rounded-full motion-reduce:animate-none"
-            />
-            {t(`chat.status.${pending.status}`)}
-          </span>
-        ) : null}
+      {/* Annonces aux lecteurs d'écran : l'étape en cours, puis la réponse complète. */}
+      <p aria-live="polite" className="sr-only">
+        {pending ? t(`chat.status.${pending.status}`) : announcement}
       </p>
+      {pending?.text ? (
+        <p
+          aria-hidden="true"
+          className="text-ink-subtle -mt-2 flex items-center gap-2 pl-12 text-sm"
+        >
+          <TypingDots />
+          {t(`chat.status.${pending.status}`)}
+        </p>
+      ) : null}
 
       {exhausted && limit !== null ? <CoachUpsell limit={limit} billing={billing} /> : null}
       {error && error !== "quotaExceeded" ? (
         <div
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink flex items-start gap-3 rounded-2xl border px-4 py-4"
         >
-          <p className="font-medium">{t("errors.title")}</p>
-          <p className="mt-1">{t(`errors.${error}`, { limit: limit ?? 0 })}</p>
-          {canRetry ? <p className="mt-1">{t("errors.kept")}</p> : null}
+          <Icon name="alert" className="mt-0.5 size-5 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">{t("errors.title")}</p>
+            <p className="mt-1">{t(`errors.${error}`, { limit: limit ?? 0 })}</p>
+            {canRetry ? <p className="mt-1">{t("errors.kept")}</p> : null}
+            {showRetry ? <div className="mt-3">{retryButton}</div> : null}
+          </div>
         </div>
-      ) : null}
-      {canRetry && configured && error !== "tooManyRetries" ? (
-        <div className="flex flex-wrap items-center gap-3">
-          {!error ? <p className="text-ink-muted text-sm">{t("chat.unanswered")}</p> : null}
-          <button type="button" className={buttonClass} onClick={() => void run({ retry: true })}>
-            {t("errors.retry")}
-          </button>
+      ) : showRetry ? (
+        <div className="border-warning-line bg-warning-soft text-warning-ink flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3">
+          <p className="flex items-center gap-2">
+            <Icon name="clock" className="size-5 shrink-0" />
+            {t("chat.unanswered")}
+          </p>
+          {retryButton}
         </div>
       ) : null}
 
-      <form
-        onSubmit={submit}
-        className="border-line bg-subtle/95 sm:bg-surface sticky bottom-0 -mx-4 border-t px-4 pt-3 pb-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:p-3"
-      >
-        <label htmlFor="coach-input" className="sr-only">
-          {t("chat.inputLabel")}
-        </label>
-        <textarea
-          id="coach-input"
-          ref={inputRef}
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={onKeyDown}
-          rows={3}
-          disabled={!configured || exhausted}
-          placeholder={t("chat.placeholder")}
-          aria-invalid={tooLong || undefined}
-          aria-describedby="coach-input-hint"
-          className="focus:border-brand border-line-strong bg-surface placeholder:text-ink-subtle disabled:bg-muted aria-[invalid=true]:border-danger block w-full resize-y rounded-lg border px-3 py-2.5 text-base focus:outline-none sm:text-sm"
-        />
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <p id="coach-input-hint" className="text-ink-subtle text-xs">
-            {tooLong
-              ? t("chat.tooLong", { max: COACH_LIMITS.messageMaxChars })
-              : !configured
-                ? t("notConfigured")
-                : remaining === null
-                  ? t("quotaUnlimited")
-                  : t("quota", { remaining })}
-          </p>
-          <button type="submit" disabled={!canSend} className={buttonClass}>
-            {busy ? t("chat.sending") : t("chat.send")}
-          </button>
-        </div>
-      </form>
+      <div className="bg-canvas/90 sticky bottom-0 z-10 -mx-4 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:mx-0 sm:px-0">
+        {showChips ? (
+          <div className="mb-3">
+            <p id="coach-chips" className="text-ink-subtle mb-2 text-sm font-medium">
+              {t("chat.chipsLabel")}
+            </p>
+            <ul aria-labelledby="coach-chips" className="flex flex-wrap gap-2">
+              {CHIPS.map((key) => {
+                const text = t(`chat.chips.${mode}.${key}`);
+                return (
+                  <li key={key} className="max-w-full">
+                    <button
+                      type="button"
+                      onClick={() => pickChip(text)}
+                      className="border-brand-line bg-surface text-ink hover:bg-brand-soft max-w-full rounded-full border px-3.5 py-2 text-left text-sm font-medium shadow-xs motion-safe:transition-colors"
+                    >
+                      {text}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
+        <form
+          onSubmit={submit}
+          className="border-line-strong bg-surface focus-within:border-brand focus-within:ring-brand/20 rounded-2xl border p-2 shadow-md focus-within:ring-3 sm:p-3"
+        >
+          <label htmlFor="coach-input" className="sr-only">
+            {t("chat.inputLabel")}
+          </label>
+          <textarea
+            id="coach-input"
+            ref={inputRef}
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={onKeyDown}
+            rows={2}
+            disabled={!configured || exhausted}
+            placeholder={t("chat.placeholder")}
+            aria-invalid={tooLong || undefined}
+            aria-describedby="coach-input-hint"
+            className="placeholder:text-ink-subtle text-ink block max-h-60 min-h-14 w-full resize-y bg-transparent px-2 py-1.5 text-base focus:outline-none disabled:cursor-not-allowed"
+          />
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-1">
+            <p
+              id="coach-input-hint"
+              className={`text-sm ${tooLong ? "text-danger-ink font-medium" : "text-ink-subtle"}`}
+            >
+              {tooLong
+                ? t("chat.tooLong", { max: COACH_LIMITS.messageMaxChars })
+                : !configured
+                  ? t("notConfigured")
+                  : remaining === null
+                    ? t("quotaUnlimited")
+                    : t("quota", { remaining })}
+            </p>
+            <button type="submit" disabled={!canSend} className={buttonClass("primary")}>
+              {busy ? t("chat.sending") : t("chat.send")}
+              <Icon name="send" className="size-4" />
+            </button>
+          </div>
+        </form>
+      </div>
       <div ref={endRef} />
     </div>
+  );
+}
+
+/** Trois points qui « tapent » : le coach rédige (immobiles en mouvement réduit). */
+function TypingDots() {
+  return (
+    <span aria-hidden="true" className="inline-flex items-center gap-1">
+      {[0, 150, 300].map((delay) => (
+        <span
+          key={delay}
+          className="bg-brand size-1.5 rounded-full motion-safe:animate-bounce"
+          style={{ animationDelay: `${delay}ms` }}
+        />
+      ))}
+    </span>
   );
 }
 
 function Bubble({
   role,
   author,
+  working = false,
   children,
 }: {
   role: "USER" | "ASSISTANT";
   author: string;
+  /** Le coach n'a encore rien écrit : bulle d'attente. */
+  working?: boolean;
   children: React.ReactNode;
 }) {
   const mine = role === "USER";
   return (
-    <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+    <div className={`flex items-end gap-3 ${mine ? "justify-end" : "justify-start"}`}>
+      {!mine ? (
+        <span
+          aria-hidden="true"
+          className="bg-night text-signal ring-night-line inline-flex size-9 shrink-0 items-center justify-center rounded-full ring-1"
+        >
+          <Icon name="spark" className="size-4.5" />
+        </span>
+      ) : null}
       <div
-        className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm sm:max-w-[80%] ${
-          mine ? "bg-primary text-on-primary" : "border-line bg-surface text-ink border"
+        className={`max-w-[85%] min-w-0 rounded-2xl px-4 py-3 text-base leading-relaxed sm:max-w-[78%] sm:px-5 sm:py-3.5 ${
+          mine
+            ? "bg-primary text-on-primary rounded-br-md shadow-sm"
+            : `border-line bg-surface text-ink rounded-bl-md border shadow-xs ${
+                working ? "border-dashed" : ""
+              }`
         }`}
       >
         <p
-          className={`mb-1 text-xs font-medium ${mine ? "text-on-primary/75" : "text-ink-subtle"}`}
+          className={`mb-1 text-xs font-semibold ${mine ? "text-on-primary/80" : "text-brand-ink"}`}
         >
           {author}
         </p>
