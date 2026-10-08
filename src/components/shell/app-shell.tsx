@@ -185,7 +185,7 @@ export function AppShell({
           aria-modal={open ? true : undefined}
           aria-label={t("menu")}
           onClick={onSidebarClick}
-          className={`sidebar-night on-night text-on-night ease-out-soft fixed inset-y-0 left-0 z-50 flex w-[min(20rem,calc(100vw-3rem))] flex-col duration-300 lg:visible lg:sticky lg:top-0 lg:z-auto lg:h-dvh lg:shrink-0 lg:translate-x-0 lg:shadow-none ${
+          className={`sidebar-night on-night text-on-night motion-safe:ease-out-soft fixed inset-y-0 left-0 z-50 flex w-[min(20rem,calc(100vw-3rem))] flex-col motion-safe:duration-300 motion-reduce:transition-none lg:visible lg:sticky lg:top-0 lg:z-auto lg:h-dvh lg:shrink-0 lg:translate-x-0 lg:shadow-none ${
             collapsed ? "lg:w-20" : "lg:w-[17rem]"
           } ${
             // À l'ouverture, visible tout de suite (le focus peut y entrer) ; à la
