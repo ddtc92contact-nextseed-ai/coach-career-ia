@@ -18,7 +18,7 @@ export default async function ImportPage() {
     <div className="max-w-4xl">
       <Link
         href="/app/memoire"
-        className="mb-4 inline-block text-sm text-stone-600 underline-offset-4 hover:underline"
+        className="text-ink-muted mb-4 inline-block text-sm underline-offset-4 hover:underline"
       >
         {t("back")}
       </Link>

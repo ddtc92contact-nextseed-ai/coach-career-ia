@@ -27,7 +27,7 @@ export function DeleteButton({
           await action();
         });
       }}
-      className={`rounded-lg border border-red-200 font-medium text-red-700 hover:bg-red-50 disabled:opacity-60 ${
+      className={`border-danger-line text-danger-ink hover:bg-danger-soft rounded-lg border font-medium disabled:opacity-60 ${
         small ? "px-2.5 py-1 text-sm" : "px-4 py-2.5"
       }`}
     >

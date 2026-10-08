@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title"), referrer: "no-referrer" };
 }
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 /**
  * Un fil de la messagerie : carte anonyme (mêmes règles que le lien public),
@@ -34,7 +34,7 @@ export default async function EmployerThreadPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/entreprise/messages" className="text-sm text-stone-600 hover:underline">
+      <Link href="/entreprise/messages" className="text-ink-muted text-sm hover:underline">
         {t("back")}
       </Link>
 
@@ -44,7 +44,7 @@ export default async function EmployerThreadPage({ params }: Props) {
           {t("threadTitle", { title: thread.offerTitle })}
         </h1>
         {thread.sentAt ? (
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="text-ink-muted mt-1 text-sm">
             {t("receivedOn", { date: format.dateTime(thread.sentAt, "short") })}
           </p>
         ) : null}
@@ -55,14 +55,14 @@ export default async function EmployerThreadPage({ params }: Props) {
           <h2 id="identite" className="text-lg font-semibold">
             {t("revealedTitle")}
           </h2>
-          <p className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
+          <p className="bg-brand-soft text-brand-ink rounded-lg px-3 py-2 text-sm">
             {t("revealedDisclosure")}
           </p>
           <RevealedIdentityView
             identity={thread.revealed.identity}
             cvHref={`/api/entreprise/messages/${encodeURIComponent(thread.id)}/cv`}
           />
-          <p className="text-xs text-stone-500">
+          <p className="text-ink-subtle text-xs">
             {t("revealedExpires", { date: format.dateTime(thread.revealed.expiresAt, "short") })}
           </p>
         </section>
@@ -75,7 +75,7 @@ export default async function EmployerThreadPage({ params }: Props) {
         {thread.card ? (
           <ProfileCardView card={thread.card} />
         ) : (
-          <p className="rounded-lg border border-dashed border-stone-300 bg-white px-4 py-3 text-sm text-stone-600">
+          <p className="border-line-strong bg-surface text-ink-muted rounded-lg border border-dashed px-4 py-3 text-sm">
             {t("cardGone")}
           </p>
         )}
@@ -85,13 +85,13 @@ export default async function EmployerThreadPage({ params }: Props) {
         <h2 id="message" className="text-lg font-semibold">
           {t("messageTitle")}
         </h2>
-        <p className="mt-2 rounded-lg bg-stone-50 px-3 py-2 text-sm text-stone-700">
+        <p className="bg-subtle text-ink-muted mt-2 rounded-lg px-3 py-2 text-sm">
           {t("aiDisclosure")}
         </p>
         <p className="mt-3 text-sm font-medium [overflow-wrap:anywhere] break-words">
           {thread.message.subject}
         </p>
-        <p className="mt-2 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
+        <p className="text-ink mt-2 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
           {thread.message.body}
         </p>
       </section>
@@ -101,23 +101,23 @@ export default async function EmployerThreadPage({ params }: Props) {
           {t("repliesTitle")}
         </h2>
         {thread.replies.length === 0 ? (
-          <p className="text-sm text-stone-600">{t("noReply")}</p>
+          <p className="text-ink-muted text-sm">{t("noReply")}</p>
         ) : (
           <ul className="space-y-3">
             {thread.replies.map((r) => (
               <li
                 key={r.id}
                 className={`rounded-lg border p-3 ${
-                  r.from === "candidate" ? "border-stone-200 bg-stone-50" : "border-stone-200"
+                  r.from === "candidate" ? "border-line bg-subtle" : "border-line"
                 }`}
               >
-                <p className="text-xs text-stone-500">
+                <p className="text-ink-subtle text-xs">
                   {t(
                     r.from === "candidate" ? "candidateOn" : r.closing ? "closedOn" : "repliedOn",
                     { date: format.dateTime(r.createdAt, "short") },
                   )}
                 </p>
-                <p className="mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
+                <p className="text-ink mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
                   {r.body}
                 </p>
               </li>
@@ -125,19 +125,19 @@ export default async function EmployerThreadPage({ params }: Props) {
           </ul>
         )}
         {closed ? (
-          <p className="text-sm text-stone-600">{t("closedNotice")}</p>
+          <p className="text-ink-muted text-sm">{t("closedNotice")}</p>
         ) : (
-          <div className="space-y-4 border-t border-stone-100 pt-4">
+          <div className="border-line space-y-4 border-t pt-4">
             <ThreadReplyForm id={thread.id} />
-            <div className="border-t border-stone-100 pt-4">
-              <p className="mb-2 text-sm text-stone-600">{t("closeHint")}</p>
+            <div className="border-line border-t pt-4">
+              <p className="text-ink-muted mb-2 text-sm">{t("closeHint")}</p>
               <CloseThreadButton id={thread.id} />
             </div>
           </div>
         )}
       </section>
 
-      <p className="text-xs text-stone-500">{t("threadPrivacy")}</p>
+      <p className="text-ink-subtle text-xs">{t("threadPrivacy")}</p>
     </div>
   );
 }

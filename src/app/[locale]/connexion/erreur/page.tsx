@@ -22,10 +22,10 @@ export default async function AuthErrorPage({
 
   return (
     <AuthCard title={t("title")}>
-      <p className="text-stone-600">{known ? t(`messages.${known}`) : t("messages.Default")}</p>
+      <p className="text-ink-muted">{known ? t(`messages.${known}`) : t("messages.Default")}</p>
       <Link
         href="/connexion"
-        className="mt-6 inline-block rounded-lg bg-stone-900 px-4 py-2.5 font-medium text-white hover:bg-stone-700"
+        className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 font-medium"
       >
         {t("retry")}
       </Link>

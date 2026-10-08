@@ -9,7 +9,7 @@ export default function GlobalNotFound() {
       <body className="grid min-h-dvh place-items-center px-4 font-sans">
         <main className="text-center">
           <h1 className="text-xl font-semibold">Page introuvable</h1>
-          <Link href="/" className="text-brand-700 mt-4 inline-block underline underline-offset-4">
+          <Link href="/" className="text-brand-ink mt-4 inline-block underline underline-offset-4">
             Coach Career IA
           </Link>
         </main>

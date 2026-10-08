@@ -8,9 +8,9 @@ import { changeMatchStatus } from "./actions";
 export async function ScoreBadge({ score }: { score: number }) {
   const t = await getTranslations("opportunities");
   const tone = {
-    strong: "bg-brand-700 text-white",
-    good: "bg-brand-50 text-brand-800 ring-1 ring-brand-100 ring-inset",
-    fair: "bg-stone-100 text-stone-700 ring-1 ring-stone-200 ring-inset",
+    strong: "bg-brand text-on-brand",
+    good: "bg-brand-soft text-brand-ink ring-1 ring-brand-line ring-inset",
+    fair: "bg-muted text-ink-muted ring-1 ring-line ring-inset",
   }[scoreBand(score)];
   return (
     <span
@@ -50,10 +50,10 @@ export async function OfferFacts({ offer }: { offer: MatchView["offer"] }) {
     .join(", ");
   return (
     <>
-      <p className="text-sm text-stone-600">
+      <p className="text-ink-muted text-sm">
         {[offer.companyName ?? t("companyUnknown"), place || t("placeUnknown")].join(" · ")}
       </p>
-      <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-stone-500">
+      <p className="text-ink-subtle mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs">
         <span>{t(`contract.${offer.contractType}`)}</span>
         <span>{t(`remote.${offer.remotePolicy}`)}</span>
         <span>{salary}</span>
@@ -68,7 +68,7 @@ export async function OfferFacts({ offer }: { offer: MatchView["offer"] }) {
 }
 
 const buttonClass =
-  "rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium hover:bg-stone-100";
+  "rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium hover:bg-muted";
 
 /** Sauvegarder / écarter / remettre dans la liste (formulaires d'actions serveur, sans JavaScript). */
 export async function StatusActions({ id, status }: { id: string; status: MatchView["status"] }) {
@@ -89,7 +89,7 @@ export async function StatusActions({ id, status }: { id: string; status: MatchV
             </button>
           </form>
           <form action={changeMatchStatus.bind(null, id, "DISMISSED")}>
-            <button type="submit" className={`${buttonClass} text-stone-600`}>
+            <button type="submit" className={`${buttonClass} text-ink-muted`}>
               {t("dismiss")}
             </button>
           </form>

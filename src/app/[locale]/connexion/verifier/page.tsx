@@ -12,11 +12,11 @@ export default async function VerifyRequestPage() {
   const t = await getTranslations("auth.verify");
   return (
     <AuthCard title={t("title")}>
-      <p className="text-stone-600">{t("text")}</p>
-      <p className="mt-4 text-sm text-stone-500">
+      <p className="text-ink-muted">{t("text")}</p>
+      <p className="text-ink-subtle mt-4 text-sm">
         {t.rich("help", {
           link: (chunks) => (
-            <Link href="/connexion" className="text-brand-700 underline underline-offset-4">
+            <Link href="/connexion" className="text-brand-ink underline underline-offset-4">
               {chunks}
             </Link>
           ),

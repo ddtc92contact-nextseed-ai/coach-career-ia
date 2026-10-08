@@ -46,21 +46,21 @@ export default async function EditAchievementPage({ params }: Props) {
             {tc(`evidence.${achievement.evidenceLevel}`)}
           </Badge>
         </div>
-        <p className="mb-4 text-sm text-stone-600">{tp("intro")}</p>
+        <p className="text-ink-muted mb-4 text-sm">{tp("intro")}</p>
 
         {achievement.proofs.length === 0 ? (
-          <p className="mb-4 rounded-lg border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="border-warning-line bg-warning-soft text-warning-ink mb-4 rounded-lg border border-dashed px-4 py-3 text-sm">
             {tp("empty")}
           </p>
         ) : (
-          <ul className="mb-4 divide-y divide-stone-200 rounded-xl border border-stone-200 bg-white">
+          <ul className="divide-line border-line bg-surface mb-4 divide-y rounded-xl border">
             {achievement.proofs.map((proof) => (
               <li
                 key={proof.id}
                 className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0">
-                  <p className="text-xs font-medium tracking-wide text-stone-500 uppercase">
+                  <p className="text-ink-subtle text-xs font-medium tracking-wide uppercase">
                     {tp(`kinds.${proof.kind}`)}
                   </p>
                   {proof.kind === "URL" && proof.url ? (
@@ -68,7 +68,7 @@ export default async function EditAchievementPage({ params }: Props) {
                       href={proof.url}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="text-brand-700 block truncate underline underline-offset-4"
+                      className="text-brand-ink block truncate underline underline-offset-4"
                     >
                       {proof.url}
                     </a>
@@ -76,11 +76,11 @@ export default async function EditAchievementPage({ params }: Props) {
                   {proof.kind === "DOCUMENT" ? (
                     <a
                       href={`/api/proofs/${proof.id}`}
-                      className="text-brand-700 block truncate underline underline-offset-4"
+                      className="text-brand-ink block truncate underline underline-offset-4"
                     >
                       {proof.fileName}
                       {proof.sizeBytes ? (
-                        <span className="text-stone-500">
+                        <span className="text-ink-subtle">
                           {" "}
                           ({format.number(Math.max(1, Math.round(proof.sizeBytes / 1024)))}{" "}
                           {tp("kilobytes")})
@@ -89,11 +89,11 @@ export default async function EditAchievementPage({ params }: Props) {
                     </a>
                   ) : null}
                   {proof.kind === "REFERENCE" ? (
-                    <p className="text-sm whitespace-pre-line text-stone-700">
+                    <p className="text-ink-muted text-sm whitespace-pre-line">
                       {proof.referenceText}
                     </p>
                   ) : null}
-                  <p className="mt-1 text-xs text-stone-500">
+                  <p className="text-ink-subtle mt-1 text-xs">
                     {tp("addedOn", { date: format.dateTime(proof.createdAt, "short") })}
                   </p>
                 </div>
@@ -123,9 +123,9 @@ export default async function EditAchievementPage({ params }: Props) {
         }}
       />
 
-      <div className="mt-10 border-t border-stone-200 pt-6">
+      <div className="border-line mt-10 border-t pt-6">
         <h2 className="font-semibold">{t("deleteTitle")}</h2>
-        <p className="mt-1 mb-3 text-sm text-stone-600">{t("deleteText")}</p>
+        <p className="text-ink-muted mt-1 mb-3 text-sm">{t("deleteText")}</p>
         <DeleteButton
           action={removeAchievement.bind(null, achievement.id)}
           confirmMessage={t("confirmDelete")}

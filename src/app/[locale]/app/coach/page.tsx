@@ -37,7 +37,7 @@ export default async function CoachPage() {
       <PageTitle title={t("title")} intro={t("intro")} />
       <AiNotice />
       {!configured ? (
-        <p className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p className="border-warning-line bg-warning-soft text-warning-ink mb-6 rounded-lg border px-4 py-3 text-sm">
           {t("notConfigured")}
         </p>
       ) : null}
@@ -46,23 +46,23 @@ export default async function CoachPage() {
         <h2 id="coach-start" className="text-lg font-semibold">
           {t("start.title")}
         </h2>
-        <p className="mt-1 text-sm text-stone-600">{t("start.intro")}</p>
+        <p className="text-ink-muted mt-1 text-sm">{t("start.intro")}</p>
         <ul className="mt-4 grid gap-3 sm:grid-cols-3">
           {COACH_MODES.map((mode) => (
             <li key={mode}>
               <form
                 action={startConversation.bind(null, mode)}
-                className="flex h-full flex-col rounded-xl border border-stone-200 bg-white p-4"
+                className="border-line bg-surface flex h-full flex-col rounded-xl border p-4"
               >
                 <h3 className="font-medium">{t(`modes.${mode}.title`)}</h3>
-                <p className="mt-1 flex-1 text-sm text-stone-600">
+                <p className="text-ink-muted mt-1 flex-1 text-sm">
                   {t(`modes.${mode}.description`)}
                 </p>
                 <button
                   type="submit"
                   disabled={!configured || remaining === 0}
                   aria-label={t("start.buttonFor", { mode: t(`modes.${mode}.title`) })}
-                  className="mt-4 rounded-lg bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700 disabled:opacity-50"
+                  className="bg-primary text-on-primary hover:bg-primary-hover mt-4 rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
                 >
                   {t("start.button")}
                 </button>
@@ -75,7 +75,7 @@ export default async function CoachPage() {
             <CoachUpsell limit={limit} billing={isBillingAvailable()} />
           </div>
         ) : (
-          <p className="mt-3 text-sm text-stone-500">
+          <p className="text-ink-subtle mt-3 text-sm">
             {remaining === null ? t("quotaUnlimited") : t("quota", { remaining })}
           </p>
         )}
@@ -86,11 +86,11 @@ export default async function CoachPage() {
           {t("history.title")}
         </h2>
         {conversations.length === 0 ? (
-          <p className="mt-3 rounded-lg border border-dashed border-stone-300 bg-white px-4 py-6 text-center text-sm text-stone-500">
+          <p className="border-line-strong bg-surface text-ink-subtle mt-3 rounded-lg border border-dashed px-4 py-6 text-center text-sm">
             {t("history.empty")}
           </p>
         ) : (
-          <ul className="mt-3 divide-y divide-stone-200 rounded-xl border border-stone-200 bg-white">
+          <ul className="divide-line border-line bg-surface mt-3 divide-y rounded-xl border">
             {conversations.map((conversation) => (
               <li
                 key={conversation.id}
@@ -103,7 +103,7 @@ export default async function CoachPage() {
                   >
                     {t(`modes.${conversation.mode}.title`)}
                   </Link>
-                  <p className="text-sm text-stone-500">
+                  <p className="text-ink-subtle text-sm">
                     {t("history.updated", {
                       date: format.dateTime(conversation.updatedAt, "short"),
                     })}
@@ -112,7 +112,7 @@ export default async function CoachPage() {
                     {conversation.pendingSuggestions > 0 ? (
                       <>
                         {" · "}
-                        <span className="text-brand-800">
+                        <span className="text-brand-ink">
                           {t("history.pending", { count: conversation.pendingSuggestions })}
                         </span>
                       </>
@@ -122,7 +122,7 @@ export default async function CoachPage() {
                 <div className="flex shrink-0 gap-2">
                   <Link
                     href={`/app/coach/${conversation.id}`}
-                    className="rounded-lg border border-stone-300 px-2.5 py-1 text-sm font-medium hover:bg-stone-100"
+                    className="border-line-strong hover:bg-muted rounded-lg border px-2.5 py-1 text-sm font-medium"
                   >
                     {t("history.open")}
                   </Link>

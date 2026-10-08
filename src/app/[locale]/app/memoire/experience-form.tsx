@@ -85,7 +85,7 @@ export function ExperienceForm({
               placeholder="2025-06"
               disabled={current}
               defaultValue={defaults?.endMonth}
-              className={`${inputClass} disabled:bg-stone-100 disabled:text-stone-400`}
+              className={`${inputClass} disabled:bg-muted disabled:text-ink-subtle`}
             />
           </Field>
           <label className="mt-2 flex items-center gap-2 text-sm">
@@ -94,7 +94,7 @@ export function ExperienceForm({
               name="current"
               checked={current}
               onChange={(event) => setCurrent(event.target.checked)}
-              className="accent-brand-700 size-4"
+              className="accent-brand size-4"
             />
             {t("current")}
           </label>
@@ -136,9 +136,9 @@ export function ExperienceForm({
         </Field>
       </div>
 
-      <fieldset className="rounded-xl border border-stone-200 bg-stone-50 p-4">
+      <fieldset className="border-line bg-subtle rounded-xl border p-4">
         <legend className="px-1 text-sm font-semibold">{t("employerTitle")}</legend>
-        <p className="mb-4 text-sm text-stone-600">{t("employerHint")}</p>
+        <p className="text-ink-muted mb-4 text-sm">{t("employerHint")}</p>
         <div className="grid gap-6 sm:grid-cols-3">
           <Field id="sector" label={t("sector")} error={e.sector}>
             <select
@@ -211,7 +211,7 @@ export function ExperienceForm({
         <SubmitButton pending={pending}>{t("save")}</SubmitButton>
         <Link
           href="/app/memoire#experiences"
-          className="text-center text-sm text-stone-600 underline-offset-4 hover:underline"
+          className="text-ink-muted text-center text-sm underline-offset-4 hover:underline"
         >
           {tm("cancel")}
         </Link>

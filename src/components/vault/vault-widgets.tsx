@@ -16,7 +16,7 @@ export function VaultEmployerName({ experienceId }: { experienceId: string }) {
   const name = employerForExperience(identity, experienceId);
   if (!name) return null;
   return (
-    <p className="mt-1 flex items-center gap-1.5 text-sm text-stone-800">
+    <p className="text-ink mt-1 flex items-center gap-1.5 text-sm">
       <LockIcon open />
       <span className="sr-only">{t("employerLabel")}</span>
       <span className="font-medium break-words">{name}</span>
@@ -34,7 +34,7 @@ export function VaultStatusBadge() {
   const { status, lock } = useVault();
   if (status !== "unlocked") return null;
   return (
-    <span className="sm:bg-brand-50 text-brand-800 sm:ring-brand-100 inline-flex shrink-0 items-center gap-1 rounded-full text-xs font-medium sm:py-0.5 sm:pr-1 sm:pl-2 sm:ring-1 sm:ring-inset">
+    <span className="sm:bg-brand-soft text-brand-ink sm:ring-brand-line inline-flex shrink-0 items-center gap-1 rounded-full text-xs font-medium sm:py-0.5 sm:pr-1 sm:pl-2 sm:ring-1 sm:ring-inset">
       <span className="hidden sm:contents">
         <LockIcon open />
       </span>
@@ -45,7 +45,7 @@ export function VaultStatusBadge() {
         type="button"
         onClick={lock}
         title={t("lock")}
-        className="bg-brand-50 ring-brand-100 inline-flex items-center rounded-full p-2 ring-1 hover:bg-stone-50 sm:bg-white sm:px-2 sm:py-0.5 sm:ring-stone-200"
+        className="bg-brand-soft ring-brand-line hover:bg-subtle sm:bg-surface sm:ring-line inline-flex items-center rounded-full p-2 ring-1 sm:px-2 sm:py-0.5"
       >
         <span className="sm:hidden">
           <LockIcon />
@@ -63,7 +63,7 @@ export function LogoutButton({ action, label }: { action: () => Promise<void>; l
     <form action={action} onSubmit={lock} className="shrink-0">
       <button
         type="submit"
-        className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium whitespace-nowrap hover:bg-stone-100"
+        className="border-line-strong hover:bg-muted rounded-lg border px-3 py-1.5 text-sm font-medium whitespace-nowrap"
       >
         {label}
       </button>

@@ -45,17 +45,17 @@ export default async function EmployerSignupPage() {
       <SiteHeader />
       <main className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-2">
         <section>
-          <p className="text-brand-700 text-sm font-medium tracking-wide uppercase">
+          <p className="text-brand-ink text-sm font-medium tracking-wide uppercase">
             {t("eyebrow")}
           </p>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             {t("title")}
           </h1>
-          <p className="mt-4 text-pretty text-stone-600">{t("intro")}</p>
+          <p className="text-ink-muted mt-4 text-pretty">{t("intro")}</p>
           <ul className="mt-6 space-y-3">
             {POINTS.map((point) => (
-              <li key={point} className="flex gap-3 text-stone-700">
-                <span aria-hidden="true" className="text-brand-700 mt-0.5 font-semibold">
+              <li key={point} className="text-ink-muted flex gap-3">
+                <span aria-hidden="true" className="text-brand-ink mt-0.5 font-semibold">
                   ✓
                 </span>
                 <span>{t(`points.${point}`, { days })}</span>
@@ -66,15 +66,15 @@ export default async function EmployerSignupPage() {
 
         <section
           aria-labelledby="org-form-title"
-          className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8"
+          className="border-line bg-surface rounded-2xl border p-5 sm:p-8"
         >
           <h2 id="org-form-title" className="text-lg font-semibold">
             {t("formTitle")}
           </h2>
-          <p className="mt-2 mb-6 text-sm text-stone-600">{t("formIntro")}</p>
+          <p className="text-ink-muted mt-2 mb-6 text-sm">{t("formIntro")}</p>
           {user ? (
             <>
-              <p className="mb-5 text-sm break-all text-stone-500">
+              <p className="text-ink-subtle mb-5 text-sm break-all">
                 {t("signedInAs", { email: user.email })}
               </p>
               <OrganizationForm countryNames={countryNames(locale)} />
@@ -82,7 +82,7 @@ export default async function EmployerSignupPage() {
           ) : (
             <Link
               href="/connexion?callbackUrl=%2Fentreprise%2Finscription"
-              className="block rounded-lg bg-stone-900 px-5 py-3 text-center font-medium text-white hover:bg-stone-700"
+              className="bg-primary text-on-primary hover:bg-primary-hover block rounded-lg px-5 py-3 text-center font-medium"
             >
               {t("cta")}
             </Link>

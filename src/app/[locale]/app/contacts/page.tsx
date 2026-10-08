@@ -25,7 +25,7 @@ export default async function ContactsPage() {
   return (
     <div className="max-w-3xl">
       <PageTitle title={t("title")} intro={t("intro")} />
-      <p className="mb-6 text-sm text-stone-600">
+      <p className="text-ink-muted mb-6 text-sm">
         {t("quota", { remaining: quota.remaining, limit: quota.limit })}
       </p>
       {contacts.length === 0 ? (
@@ -35,23 +35,23 @@ export default async function ContactsPage() {
           action={
             <Link
               href="/app/opportunites"
-              className="inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-700"
+              className="bg-primary text-on-primary hover:bg-primary-hover inline-block rounded-lg px-4 py-2.5 text-sm font-medium"
             >
               {t("emptyAction")}
             </Link>
           }
         />
       ) : (
-        <ul className="divide-y divide-stone-100 rounded-2xl border border-stone-200 bg-white">
+        <ul className="divide-line border-line bg-surface divide-y rounded-2xl border">
           {contacts.map((c) => (
             <li key={c.id}>
               <Link
                 href={`/app/contacts/${c.id}`}
-                className="flex flex-col gap-2 px-4 py-4 hover:bg-stone-50 sm:flex-row sm:items-center sm:justify-between"
+                className="hover:bg-subtle flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0">
                   <p className="font-medium break-words">{c.offer.title}</p>
-                  <p className="text-sm text-stone-600">
+                  <p className="text-ink-muted text-sm">
                     {[
                       c.offer.companyName ?? t("companyUnknown"),
                       t(`channel.${c.channel}`),

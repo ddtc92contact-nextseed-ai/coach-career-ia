@@ -44,9 +44,9 @@ export default async function EditExperiencePage({ params }: Props) {
           responsibilities: experience.responsibilities,
         }}
       />
-      <div className="mt-10 border-t border-stone-200 pt-6">
+      <div className="border-line mt-10 border-t pt-6">
         <h2 className="font-semibold">{t("deleteTitle")}</h2>
-        <p className="mt-1 mb-3 text-sm text-stone-600">{t("deleteText")}</p>
+        <p className="text-ink-muted mt-1 mb-3 text-sm">{t("deleteText")}</p>
         <DeleteButton
           action={removeExperience.bind(null, experience.id)}
           confirmMessage={t("confirmDelete")}

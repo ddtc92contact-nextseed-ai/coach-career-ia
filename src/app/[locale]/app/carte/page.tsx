@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 export default async function CardPage() {
   const user = await requireUser();
@@ -39,8 +39,8 @@ export default async function CardPage() {
         role="status"
         className={`rounded-lg px-4 py-3 text-sm ${
           state.approvedAt
-            ? "bg-brand-50 text-brand-800"
-            : "border border-stone-200 bg-white text-stone-700"
+            ? "bg-brand-soft text-brand-ink"
+            : "border-line bg-surface text-ink-muted border"
         }`}
       >
         {status}
@@ -54,7 +54,7 @@ export default async function CardPage() {
                 <CardIssues issues={state.issues} />
               </div>
             ) : (
-              <p className="text-brand-700 mb-5 text-sm">{t("issues.none")}</p>
+              <p className="text-brand-ink mb-5 text-sm">{t("issues.none")}</p>
             )}
             {/* Remonté à chaque enregistrement : les valeurs par défaut suivent la carte. */}
             <CardForm key={JSON.stringify(state.card)} card={state.card} />
@@ -70,11 +70,11 @@ export default async function CardPage() {
             <form action={regenerateCardAction}>
               <button
                 type="submit"
-                className="text-sm text-stone-600 underline underline-offset-4 hover:text-stone-900"
+                className="text-ink-muted hover:text-ink text-sm underline underline-offset-4"
               >
                 {t("form.regenerate")}
               </button>
-              <p className="mt-1 text-xs text-stone-500">{t("form.regenerateHint")}</p>
+              <p className="text-ink-subtle mt-1 text-xs">{t("form.regenerateHint")}</p>
             </form>
           </section>
         </div>
@@ -91,14 +91,14 @@ export default async function CardPage() {
             <h2 id="liens" className="text-lg font-semibold">
               {t("links.title")}
             </h2>
-            <p className="mt-1 text-sm text-stone-600">{t("links.intro")}</p>
+            <p className="text-ink-muted mt-1 text-sm">{t("links.intro")}</p>
             <div className="mt-4">
               <CreateLink />
             </div>
             {links.length === 0 ? (
-              <p className="mt-4 text-sm text-stone-500">{t("links.empty")}</p>
+              <p className="text-ink-subtle mt-4 text-sm">{t("links.empty")}</p>
             ) : (
-              <ul className="mt-4 divide-y divide-stone-100">
+              <ul className="divide-line mt-4 divide-y">
                 {links.map((link) => {
                   const state = link.revokedAt
                     ? "revoked"
@@ -116,7 +116,7 @@ export default async function CardPage() {
                             ? t("links.forContact", { title: link.contact.offer.title })
                             : t("links.manual")}
                         </p>
-                        <p className="text-xs text-stone-500">
+                        <p className="text-ink-subtle text-xs">
                           {[
                             t("links.createdAt", {
                               date: format.dateTime(link.createdAt, "short"),
@@ -133,7 +133,7 @@ export default async function CardPage() {
                         <form action={revokeLinkAction.bind(null, link.id)}>
                           <button
                             type="submit"
-                            className="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50"
+                            className="border-danger-line text-danger-ink hover:bg-danger-soft rounded-lg border px-3 py-1.5 text-sm font-medium"
                           >
                             {t("links.revoke")}
                           </button>

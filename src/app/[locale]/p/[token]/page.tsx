@@ -40,12 +40,12 @@ export default async function PublicCardPage({ params }: Props) {
       {link.contactId ? (
         <Link
           href={`/p/${token}/repondre`}
-          className="mt-6 inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-stone-700"
+          className="bg-primary text-on-primary hover:bg-primary-hover mt-6 inline-block rounded-lg px-4 py-2.5 text-center text-sm font-medium"
         >
           {t("reply")}
         </Link>
       ) : null}
-      <p className="mt-6 text-xs text-stone-500">{t("notice")}</p>
+      <p className="text-ink-subtle mt-6 text-xs">{t("notice")}</p>
     </main>
   );
 }

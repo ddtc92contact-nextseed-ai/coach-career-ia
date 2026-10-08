@@ -1,24 +1,207 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --color-brand-50: oklch(0.97 0.02 175);
-  --color-brand-100: oklch(0.93 0.04 175);
-  --color-brand-600: oklch(0.5 0.09 175);
-  --color-brand-700: oklch(0.43 0.08 175);
-  --color-brand-800: oklch(0.36 0.07 175);
-  --color-brand-900: oklch(0.29 0.05 175);
+/*
+ * Charte graphique — voir docs/brand.md. Ce fichier est la SEULE source des
+ * couleurs, polices, ombres et rayons : les composants n'utilisent que les
+ * rôles sémantiques ci-dessous (bg-surface, text-ink, bg-primary…), jamais
+ * une valeur en dur. Thème clair par défaut, thème sombre selon le système.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Neutres : papier chaud (clair) / nuit (sombre). */
+  --cc-canvas: oklch(0.985 0.005 85);
+  --cc-surface: oklch(1 0 0);
+  --cc-subtle: oklch(0.972 0.006 85);
+  --cc-muted: oklch(0.948 0.008 85);
+  --cc-line: oklch(0.912 0.009 85);
+  --cc-line-strong: oklch(0.83 0.012 85);
+  --cc-ink: oklch(0.22 0.035 275);
+  --cc-ink-muted: oklch(0.42 0.03 275);
+  --cc-ink-subtle: oklch(0.52 0.025 275);
+
+  /* Action principale : l'encre de nuit. */
+  --cc-primary: oklch(0.26 0.06 275);
+  --cc-primary-hover: oklch(0.35 0.08 275);
+  --cc-on-primary: oklch(0.99 0.004 85);
+
+  /* Marque : le « feu vert » (preuves, correspondances, accord donné). */
+  --cc-brand: oklch(0.5 0.12 162);
+  --cc-brand-hover: oklch(0.44 0.11 162);
+  --cc-on-brand: oklch(0.99 0.004 85);
+  --cc-brand-ink: oklch(0.42 0.1 162);
+  --cc-brand-soft: oklch(0.962 0.03 162);
+  --cc-brand-line: oklch(0.87 0.06 162);
+
+  /* Signal : vert vif, uniquement sur fond de nuit (accents, grands textes). */
+  --cc-signal: oklch(0.87 0.18 152);
+  --cc-night: oklch(0.2 0.045 275);
+  --cc-night-raised: oklch(0.26 0.05 275);
+  --cc-night-line: oklch(0.36 0.05 275);
+  --cc-on-night: oklch(0.97 0.006 85);
+  --cc-on-night-muted: oklch(0.8 0.02 275);
+
+  /* États. */
+  --cc-danger: oklch(0.5 0.17 25);
+  --cc-danger-hover: oklch(0.44 0.16 25);
+  --cc-on-danger: oklch(0.99 0.004 85);
+  --cc-danger-ink: oklch(0.46 0.16 25);
+  --cc-danger-soft: oklch(0.965 0.018 25);
+  --cc-danger-line: oklch(0.88 0.055 25);
+  --cc-warning-ink: oklch(0.45 0.1 60);
+  --cc-warning-soft: oklch(0.972 0.035 85);
+  --cc-warning-line: oklch(0.87 0.09 80);
+  --cc-success-ink: oklch(0.42 0.1 162);
+
+  --cc-focus: oklch(0.5 0.2 270);
+  --cc-shadow-color: 275 40% 15%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cc-canvas: oklch(0.165 0.022 275);
+    --cc-surface: oklch(0.205 0.026 275);
+    --cc-subtle: oklch(0.23 0.028 275);
+    --cc-muted: oklch(0.265 0.03 275);
+    --cc-line: oklch(0.31 0.03 275);
+    --cc-line-strong: oklch(0.42 0.03 275);
+    --cc-ink: oklch(0.96 0.008 85);
+    --cc-ink-muted: oklch(0.83 0.015 275);
+    --cc-ink-subtle: oklch(0.72 0.02 275);
+
+    --cc-primary: oklch(0.95 0.01 85);
+    --cc-primary-hover: oklch(0.86 0.015 85);
+    --cc-on-primary: oklch(0.2 0.04 275);
+
+    --cc-brand: oklch(0.8 0.15 158);
+    --cc-brand-hover: oklch(0.86 0.15 158);
+    --cc-on-brand: oklch(0.2 0.04 275);
+    --cc-brand-ink: oklch(0.84 0.13 158);
+    --cc-brand-soft: oklch(0.27 0.05 168);
+    --cc-brand-line: oklch(0.42 0.08 162);
+
+    --cc-night: oklch(0.12 0.03 275);
+    --cc-night-raised: oklch(0.2 0.035 275);
+    --cc-night-line: oklch(0.32 0.04 275);
+
+    --cc-danger: oklch(0.72 0.16 25);
+    --cc-danger-hover: oklch(0.78 0.14 25);
+    --cc-on-danger: oklch(0.2 0.04 275);
+    --cc-danger-ink: oklch(0.82 0.11 25);
+    --cc-danger-soft: oklch(0.27 0.06 25);
+    --cc-danger-line: oklch(0.43 0.1 25);
+    --cc-warning-ink: oklch(0.87 0.11 85);
+    --cc-warning-soft: oklch(0.27 0.045 75);
+    --cc-warning-line: oklch(0.46 0.08 75);
+    --cc-success-ink: oklch(0.84 0.13 158);
+
+    --cc-focus: oklch(0.82 0.14 158);
+    --cc-shadow-color: 275 60% 3%;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: var(--cc-canvas);
+  --color-surface: var(--cc-surface);
+  --color-subtle: var(--cc-subtle);
+  --color-muted: var(--cc-muted);
+  --color-line: var(--cc-line);
+  --color-line-strong: var(--cc-line-strong);
+  --color-ink: var(--cc-ink);
+  --color-ink-muted: var(--cc-ink-muted);
+  --color-ink-subtle: var(--cc-ink-subtle);
+  --color-primary: var(--cc-primary);
+  --color-primary-hover: var(--cc-primary-hover);
+  --color-on-primary: var(--cc-on-primary);
+  --color-brand: var(--cc-brand);
+  --color-brand-hover: var(--cc-brand-hover);
+  --color-on-brand: var(--cc-on-brand);
+  --color-brand-ink: var(--cc-brand-ink);
+  --color-brand-soft: var(--cc-brand-soft);
+  --color-brand-line: var(--cc-brand-line);
+  --color-signal: var(--cc-signal);
+  --color-night: var(--cc-night);
+  --color-night-raised: var(--cc-night-raised);
+  --color-night-line: var(--cc-night-line);
+  --color-on-night: var(--cc-on-night);
+  --color-on-night-muted: var(--cc-on-night-muted);
+  --color-danger: var(--cc-danger);
+  --color-danger-hover: var(--cc-danger-hover);
+  --color-on-danger: var(--cc-on-danger);
+  --color-danger-ink: var(--cc-danger-ink);
+  --color-danger-soft: var(--cc-danger-soft);
+  --color-danger-line: var(--cc-danger-line);
+  --color-warning-ink: var(--cc-warning-ink);
+  --color-warning-soft: var(--cc-warning-soft);
+  --color-warning-line: var(--cc-warning-line);
+  --color-success-ink: var(--cc-success-ink);
+  --color-focus: var(--cc-focus);
+
+  --shadow-xs: 0 1px 2px hsl(var(--cc-shadow-color) / 0.06);
+  --shadow-sm:
+    0 1px 2px hsl(var(--cc-shadow-color) / 0.06), 0 1px 3px hsl(var(--cc-shadow-color) / 0.08);
+  --shadow-md:
+    0 2px 4px hsl(var(--cc-shadow-color) / 0.05), 0 8px 20px -4px hsl(var(--cc-shadow-color) / 0.12);
+  --shadow-lg:
+    0 4px 8px hsl(var(--cc-shadow-color) / 0.05),
+    0 24px 48px -12px hsl(var(--cc-shadow-color) / 0.22);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-reveal: cc-reveal linear both;
+
+  @keyframes cc-reveal {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
-    @apply bg-stone-50 text-stone-900 antialiased;
+    @apply bg-canvas text-ink antialiased;
+  }
+  h1,
+  h2 {
+    @apply font-display;
+    font-optical-sizing: auto;
   }
   :focus-visible {
-    @apply outline-brand-600 outline-2 outline-offset-2;
+    @apply outline-focus outline-2 outline-offset-2;
+  }
+  ::selection {
+    @apply bg-brand-soft text-ink;
+  }
+}
+
+@layer utilities {
+  /* Apparition au défilement, sans JavaScript : uniquement là où le navigateur
+     sait lier une animation au défilement, et jamais en mouvement réduit. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        animation: var(--animate-reveal);
+        animation-timeline: view();
+        animation-range: entry 0% entry 60%;
+      }
+    }
   }
 }

@@ -60,7 +60,7 @@ export default async function SimulatedPortalPage({
       {isPortalAction(query.fait) ? (
         <p
           role="status"
-          className="border-brand-100 bg-brand-50 text-brand-900 mt-6 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink mt-6 rounded-lg border px-4 py-3 text-sm"
         >
           {t(`portal.done.${query.fait}`)}
         </p>
@@ -68,20 +68,20 @@ export default async function SimulatedPortalPage({
       {query.erreur ? (
         <p
           role="alert"
-          className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
         >
           {t("portal.error")}
         </p>
       ) : null}
 
-      <section className="mt-6 rounded-2xl border border-stone-200 bg-white p-4 text-sm sm:p-6">
+      <section className="border-line bg-surface mt-6 rounded-2xl border p-4 text-sm sm:p-6">
         {sub ? (
           <>
             <p className="font-medium">
               {t(`portal.status.${sub.status as "ACTIVE" | "TRIALING" | "PAST_DUE"}`)}
             </p>
             {periodEnd ? (
-              <p className="mt-1 text-stone-600">
+              <p className="text-ink-muted mt-1">
                 {sub.cancelAtPeriodEnd
                   ? t("portal.endsOn", { date: periodEnd })
                   : sub.status === "PAST_DUE"
@@ -91,7 +91,7 @@ export default async function SimulatedPortalPage({
             ) : null}
           </>
         ) : (
-          <p className="text-stone-600">{t("portal.none")}</p>
+          <p className="text-ink-muted">{t("portal.none")}</p>
         )}
 
         {available.length > 0 ? (
@@ -104,8 +104,8 @@ export default async function SimulatedPortalPage({
                 value={action}
                 className={`${button} ${
                   i === 0
-                    ? "bg-stone-900 text-white hover:bg-stone-700"
-                    : "border border-stone-300 bg-white hover:bg-stone-100"
+                    ? "bg-primary text-on-primary hover:bg-primary-hover"
+                    : "border-line-strong bg-surface hover:bg-muted border"
                 }`}
               >
                 {t(`portal.actions.${action}`)}
@@ -116,7 +116,7 @@ export default async function SimulatedPortalPage({
       </section>
 
       <p className="mt-6 text-sm">
-        <Link href="/app/billing" className="text-stone-600 underline hover:text-stone-900">
+        <Link href="/app/billing" className="text-ink-muted hover:text-ink underline">
           {t("back")}
         </Link>
       </p>

@@ -28,11 +28,11 @@ import { CopyText } from "./draft-panel";
  */
 
 const primary =
-  "w-full rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60 sm:w-auto";
 const revealClass =
-  "bg-brand-700 hover:bg-brand-800 w-full rounded-lg px-5 py-2.5 font-medium text-white disabled:opacity-60 sm:w-auto";
+  "bg-brand hover:bg-brand-hover w-full rounded-lg px-5 py-2.5 font-medium text-on-brand disabled:opacity-60 sm:w-auto";
 const secondary =
-  "w-full rounded-lg border border-stone-300 px-5 py-2.5 font-medium hover:bg-stone-100 disabled:opacity-60 sm:w-auto";
+  "w-full rounded-lg border border-line-strong px-5 py-2.5 font-medium hover:bg-muted disabled:opacity-60 sm:w-auto";
 
 type Step = "closed" | "select" | "preview" | "done";
 type ErrorCode =
@@ -80,7 +80,7 @@ function Check({
         onChange={(e) => onChange(e.target.checked)}
         className="mt-1 size-4 shrink-0"
       />
-      <label htmlFor={id} className="text-sm [overflow-wrap:anywhere] break-words text-stone-800">
+      <label htmlFor={id} className="text-ink text-sm [overflow-wrap:anywhere] break-words">
         {children}
       </label>
     </div>
@@ -119,7 +119,7 @@ export function HandoverPanel({
 
   const company = companyName ?? t("thisCompany");
   const alert = error ? (
-    <p role="alert" className="text-sm text-red-700">
+    <p role="alert" className="text-danger-ink text-sm">
       {t(`errors.${error}`)}
     </p>
   ) : null;
@@ -127,7 +127,7 @@ export function HandoverPanel({
   if (step === "done") {
     return (
       <div className="space-y-3">
-        <p role="status" className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm">
+        <p role="status" className="bg-brand-soft text-brand-ink rounded-lg px-3 py-2 text-sm">
           {doneUrl
             ? t("doneManual")
             : t(channel === "PORTAL" ? "donePortal" : "doneEmail", { company })}
@@ -142,7 +142,7 @@ export function HandoverPanel({
   if (step === "closed") {
     return (
       <div className="space-y-2">
-        <p className="text-sm text-stone-600">{t("intro", { company })}</p>
+        <p className="text-ink-muted text-sm">{t("intro", { company })}</p>
         <button type="button" className={primary} onClick={() => setStep("select")}>
           {t("start")}
         </button>
@@ -168,7 +168,7 @@ export function HandoverPanel({
   // --- Coffre ---------------------------------------------------------------------
   if (vault.status === "loading") {
     return (
-      <p role="status" className="text-sm text-stone-500">
+      <p role="status" className="text-ink-subtle text-sm">
         {t("vaultLoading")}
       </p>
     );
@@ -176,7 +176,7 @@ export function HandoverPanel({
   if (vault.status === "error") {
     return (
       <div className="space-y-3">
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-danger-ink text-sm">
           {t("errors.network")}
         </p>
         <button type="button" className={secondary} onClick={() => void vault.reload()}>
@@ -187,8 +187,8 @@ export function HandoverPanel({
   }
   if (vault.status === "none") {
     return (
-      <div className="space-y-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
-        <p className="text-sm text-amber-900">{t("noVault")}</p>
+      <div className="border-warning-line bg-warning-soft space-y-3 rounded-lg border p-3">
+        <p className="text-warning-ink text-sm">{t("noVault")}</p>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Link href="/app/identite" className={`${primary} text-center`}>
             {t("createVault")}
@@ -216,7 +216,7 @@ export function HandoverPanel({
           }
         }}
       >
-        <p className="flex items-center gap-2 text-sm text-stone-700">
+        <p className="text-ink-muted flex items-center gap-2 text-sm">
           <LockIcon />
           {t("unlockIntro")}
         </p>
@@ -257,8 +257,8 @@ export function HandoverPanel({
 
   if (nothingInVault) {
     return (
-      <div className="space-y-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
-        <p className="text-sm text-amber-900">{t("emptyVault")}</p>
+      <div className="border-warning-line bg-warning-soft space-y-3 rounded-lg border p-3">
+        <p className="text-warning-ink text-sm">{t("emptyVault")}</p>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Link href="/app/identite" className={`${primary} text-center`}>
             {t("completeVault")}
@@ -272,7 +272,7 @@ export function HandoverPanel({
   if (step === "select") {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-stone-600">{t("selectIntro", { company })}</p>
+        <p className="text-ink-muted text-sm">{t("selectIntro", { company })}</p>
         <fieldset className="space-y-2">
           <legend className="mb-2 text-sm font-semibold">{t("selectTitle")}</legend>
           {fullName ? (
@@ -321,7 +321,7 @@ export function HandoverPanel({
               >
                 {t("fields.employer")} : <span className="font-medium">{e.name}</span>
                 {e.experienceId && roles[e.experienceId] ? (
-                  <span className="text-stone-500"> ({roles[e.experienceId]})</span>
+                  <span className="text-ink-subtle"> ({roles[e.experienceId]})</span>
                 ) : null}
               </Check>
             ) : null,
@@ -386,9 +386,9 @@ export function HandoverPanel({
   return (
     <div className="space-y-4">
       <h3 className="font-semibold">{t("previewTitle", { company })}</h3>
-      <p className="text-sm text-stone-600">{t("previewIntro")}</p>
+      <p className="text-ink-muted text-sm">{t("previewIntro")}</p>
       <RevealedIdentityView identity={preview} />
-      <p className="text-sm text-stone-600">
+      <p className="text-ink-muted text-sm">
         {channel === "EMAIL"
           ? t("previewEmail")
           : channel === "PORTAL"

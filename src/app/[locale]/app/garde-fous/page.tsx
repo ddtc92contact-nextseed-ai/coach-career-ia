@@ -29,18 +29,18 @@ export default async function GuardRailsPage() {
     <div className="max-w-4xl">
       <PageTitle title={t("title")} intro={t("intro")} />
       {initial.updatedAt === null ? (
-        <p className="mb-6 rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600">
+        <p className="border-line bg-surface text-ink-muted mb-6 rounded-lg border px-4 py-3 text-sm">
           {t("emptyHint")}
         </p>
       ) : null}
       {initial.minFixedSalary !== null ? (
-        <div className="mb-6 rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm">
+        <div className="border-line bg-surface mb-6 rounded-lg border px-4 py-3 text-sm">
           <p className="font-medium">{t("summary.title")}</p>
-          <p className="mt-1 text-stone-600">
+          <p className="text-ink-muted mt-1">
             {t("summary.minFixed", { amount: format.number(initial.minFixedSalary, "salary") })}
           </p>
           {initial.targetTotalPackage !== null ? (
-            <p className="text-stone-600">
+            <p className="text-ink-muted">
               {t("summary.targetPackage", {
                 amount: format.number(initial.targetTotalPackage, "salary"),
               })}
@@ -51,12 +51,12 @@ export default async function GuardRailsPage() {
       {market ? (
         <section
           aria-labelledby="repere-marche"
-          className="mb-6 rounded-lg border border-stone-200 bg-white px-4 py-3"
+          className="border-line bg-surface mb-6 rounded-lg border px-4 py-3"
         >
           <h2 id="repere-marche" className="text-sm font-medium">
             {tb("title")}
           </h2>
-          <p className="mt-1 mb-3 text-xs text-stone-500">{tb("intro")}</p>
+          <p className="text-ink-subtle mt-1 mb-3 text-xs">{tb("intro")}</p>
           <SalaryBenchmarkBlock
             benchmark={market.benchmark}
             minSample={BENCHMARK_CONFIG.minSample}

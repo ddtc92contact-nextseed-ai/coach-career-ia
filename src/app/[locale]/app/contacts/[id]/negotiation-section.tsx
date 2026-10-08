@@ -18,7 +18,7 @@ import {
   PasteBlock,
 } from "./negotiation-panel";
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 
 /**
  * Onglet « Négocier » d'un contact : mandat, analyse (estimation) de la
@@ -39,7 +39,7 @@ export async function NegotiationSection({
   if (!view.sent) {
     return (
       <section className={sectionClass}>
-        <p className="text-sm text-stone-600">{t("notSent")}</p>
+        <p className="text-ink-muted text-sm">{t("notSent")}</p>
       </section>
     );
   }
@@ -51,7 +51,7 @@ export async function NegotiationSection({
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted text-sm">{t("intro")}</p>
 
       <section className={`${sectionClass} space-y-4`} aria-labelledby="mandat">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -64,15 +64,12 @@ export async function NegotiationSection({
             </Badge>
           ) : null}
         </div>
-        <p className="text-sm text-stone-600">{t("mandate.intro")}</p>
-        {!view.hasReplies ? <p className="text-sm text-stone-600">{t("waitReply")}</p> : null}
+        <p className="text-ink-muted text-sm">{t("mandate.intro")}</p>
+        {!view.hasReplies ? <p className="text-ink-muted text-sm">{t("waitReply")}</p> : null}
         {market ? (
-          <div
-            className="rounded-xl border border-stone-200 px-4 py-3"
-            data-testid="negotiation-market"
-          >
+          <div className="border-line rounded-xl border px-4 py-3" data-testid="negotiation-market">
             <h3 className="text-sm font-medium">{t("mandate.market.title")}</h3>
-            <p className="mt-1 mb-3 text-xs text-stone-500">{t("mandate.market.intro")}</p>
+            <p className="text-ink-subtle mt-1 mb-3 text-xs">{t("mandate.market.intro")}</p>
             <SalaryBenchmarkBlock
               benchmark={market.benchmark}
               minSample={BENCHMARK_CONFIG.minSample}
@@ -83,7 +80,7 @@ export async function NegotiationSection({
               positionKey="floorPosition"
             />
             {market.hints.length > 0 ? (
-              <ul className="mt-3 space-y-1 text-sm text-amber-800" data-testid="mandate-hints">
+              <ul className="text-warning-ink mt-3 space-y-1 text-sm" data-testid="mandate-hints">
                 {market.hints.map((hint) => (
                   <li key={hint}>
                     {t(`mandate.market.hints.${hint}`, {
@@ -106,15 +103,15 @@ export async function NegotiationSection({
           {t("analysis.title")}
         </h2>
         {!mandate ? (
-          <p className="text-sm text-stone-600">{t("analysis.noMandate")}</p>
+          <p className="text-ink-muted text-sm">{t("analysis.noMandate")}</p>
         ) : !analysis || !view.analysedAt ? (
-          <p className="text-sm text-stone-600">{t("analysis.none")}</p>
+          <p className="text-ink-muted text-sm">{t("analysis.none")}</p>
         ) : (
           <>
-            <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            <p className="bg-warning-soft text-warning-ink rounded-lg px-3 py-2 text-xs">
               {t("analysis.estimate", { date: format.dateTime(view.analysedAt, "short") })}
             </p>
-            <ul className="space-y-1 text-sm text-stone-800">
+            <ul className="text-ink space-y-1 text-sm">
               <li>
                 {t(`analysis.salary.${analysis.salary.status}`, {
                   amount:
@@ -138,7 +135,7 @@ export async function NegotiationSection({
                 </li>
               ) : null}
               {analysis.unchecked > 0 ? (
-                <li className="text-stone-600">
+                <li className="text-ink-muted">
                   {t("analysis.unchecked", { count: analysis.unchecked })}
                 </li>
               ) : null}
@@ -152,17 +149,17 @@ export async function NegotiationSection({
           {t("thread.title")}
         </h2>
         {view.messages.length === 0 ? (
-          <p className="text-sm text-stone-600">{t("thread.empty")}</p>
+          <p className="text-ink-muted text-sm">{t("thread.empty")}</p>
         ) : (
           <ul className="space-y-3">
             {view.messages.map((m) => (
               <li
                 key={m.id}
                 className={`rounded-lg border p-3 ${
-                  m.direction === "OUT" ? "border-brand-100 bg-brand-50/40" : "border-stone-200"
+                  m.direction === "OUT" ? "border-brand-line bg-brand-soft/40" : "border-line"
                 }`}
               >
-                <p className="text-xs text-stone-500">
+                <p className="text-ink-subtle text-xs">
                   {m.direction === "OUT" ? t("thread.out") : t("thread.in")} ·{" "}
                   {m.direction === "IN"
                     ? t("thread.receivedOn", { date: format.dateTime(m.createdAt, "short") })
@@ -170,7 +167,7 @@ export async function NegotiationSection({
                         date: format.dateTime(m.sentAt ?? m.createdAt, "short"),
                       })}
                 </p>
-                <p className="mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line text-stone-800">
+                <p className="text-ink mt-1 text-sm [overflow-wrap:anywhere] break-words whitespace-pre-line">
                   {m.direction === "OUT" ? (m.sentText ?? m.body) : m.body}
                 </p>
               </li>
@@ -184,7 +181,7 @@ export async function NegotiationSection({
           <h2 id="message" className="text-lg font-semibold">
             {t("composer.title")}
           </h2>
-          <p className="text-sm text-stone-600">
+          <p className="text-ink-muted text-sm">
             {t("composer.language", { language: LOCALE_NAMES[view.locale] })}
           </p>
           {canGenerate ? (
@@ -196,27 +193,27 @@ export async function NegotiationSection({
           ) : (
             <div
               role="status"
-              className="border-brand-100 bg-brand-50 text-brand-900 rounded-xl border px-4 py-4 text-sm"
+              className="border-brand-line bg-brand-soft text-brand-ink rounded-xl border px-4 py-4 text-sm"
             >
               <p className="font-medium">{t("upsell.title")}</p>
               <p className="mt-1">{t("upsell.text")}</p>
               <Link
                 href="/app/billing"
-                className="mt-3 inline-block rounded-lg bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700"
+                className="bg-primary text-on-primary hover:bg-primary-hover mt-3 inline-block rounded-lg px-4 py-2 text-sm font-medium"
               >
                 {t("upsell.cta")}
               </Link>
             </div>
           )}
           {pending ? (
-            <div className="space-y-4 border-t border-stone-100 pt-4">
-              <p className="text-sm text-stone-600">
+            <div className="border-line space-y-4 border-t pt-4">
+              <p className="text-ink-muted text-sm">
                 {pending.draftSource === "llm" ? t("composer.draftLlm") : t("composer.draftRules")}
               </p>
               {pending.approved && pending.approvedAt ? (
                 <p
                   role="status"
-                  className="bg-brand-50 text-brand-800 rounded-lg px-3 py-2 text-sm"
+                  className="bg-brand-soft text-brand-ink rounded-lg px-3 py-2 text-sm"
                 >
                   {t("composer.approvedOn", {
                     date: format.dateTime(pending.approvedAt, "short"),
@@ -253,7 +250,7 @@ export async function NegotiationSection({
           <h2 id="decision" className="text-lg font-semibold">
             {t("outcome.title")}
           </h2>
-          <p className="text-sm text-stone-600">{t("outcome.intro")}</p>
+          <p className="text-ink-muted text-sm">{t("outcome.intro")}</p>
           <OutcomeButtons contactId={view.contactId} status={status} />
         </section>
       ) : null}

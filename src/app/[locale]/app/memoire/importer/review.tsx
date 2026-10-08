@@ -33,9 +33,9 @@ const achievementSchema = CareerMemoryDraft.shape.achievements.element;
 
 const smallButton =
   "rounded-lg border px-3 py-1.5 text-sm font-medium disabled:opacity-50 aria-pressed:ring-2";
-const acceptClass = `${smallButton} border-brand-600 text-brand-800 hover:bg-brand-50 aria-pressed:bg-brand-600 aria-pressed:text-white aria-pressed:ring-brand-200`;
-const rejectClass = `${smallButton} border-stone-300 text-stone-700 hover:bg-stone-100 aria-pressed:bg-stone-700 aria-pressed:text-white aria-pressed:ring-stone-300`;
-const neutralClass = `${smallButton} border-stone-300 bg-white text-stone-700 hover:bg-stone-100`;
+const acceptClass = `${smallButton} border-brand text-brand-ink hover:bg-brand-soft aria-pressed:bg-brand aria-pressed:text-on-brand aria-pressed:ring-brand-line`;
+const rejectClass = `${smallButton} border-line-strong text-ink-muted hover:bg-muted aria-pressed:bg-primary-hover aria-pressed:text-on-primary aria-pressed:ring-line-strong`;
+const neutralClass = `${smallButton} border-line-strong bg-surface text-ink-muted hover:bg-muted`;
 
 function toItems<T>(data: T[], flags: ItemFlags[]): Item<T>[] {
   return data.map((value, index) => ({
@@ -130,10 +130,10 @@ export function ReviewPanel({
 
   return (
     <div className="space-y-10 pb-28">
-      <div className="rounded-xl border border-stone-200 bg-white p-4 sm:p-5">
+      <div className="border-line bg-surface rounded-xl border p-4 sm:p-5">
         <h2 className="text-lg font-semibold">{t("title")}</h2>
-        <p className="mt-1 text-sm text-stone-600">{t("intro")}</p>
-        <p className="mt-2 text-sm text-stone-600">
+        <p className="text-ink-muted mt-1 text-sm">{t("intro")}</p>
+        <p className="text-ink-muted mt-2 text-sm">
           {t("found", {
             experiences: experiences.length,
             achievements: achievements.length,
@@ -182,7 +182,7 @@ export function ReviewPanel({
       </Section>
 
       <Section id="import-skills" title={t("skillsTitle")} empty={!skills.length}>
-        <p className="text-sm text-stone-600">{t("skillsIntro")}</p>
+        <p className="text-ink-muted text-sm">{t("skillsIntro")}</p>
         <ul className="flex flex-wrap gap-2">
           {skills.map((skill, index) => (
             <li key={skill.name}>
@@ -196,8 +196,8 @@ export function ReviewPanel({
                 }
                 className={`rounded-full border px-3 py-1 text-sm ${
                   skill.accepted
-                    ? "border-brand-600 bg-brand-600 text-white"
-                    : "border-stone-300 bg-white text-stone-700 hover:bg-stone-100"
+                    ? "border-brand bg-brand text-on-brand"
+                    : "border-line-strong bg-surface text-ink-muted hover:bg-muted"
                 }`}
               >
                 {skill.accepted ? "✓ " : "+ "}
@@ -208,13 +208,13 @@ export function ReviewPanel({
         </ul>
       </Section>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 px-4 py-3 backdrop-blur">
+      <div className="border-line bg-surface/95 fixed inset-x-0 bottom-0 z-10 border-t px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-4xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0 text-sm">
             {saveErrors ? (
               <FormError errors={saveErrors._form ? saveErrors : { _form: "invalid" }} />
             ) : (
-              <span className="text-stone-600">{t("saveHint")}</span>
+              <span className="text-ink-muted">{t("saveHint")}</span>
             )}
           </div>
           <div className="flex shrink-0 flex-col-reverse gap-2 sm:flex-row">
@@ -225,7 +225,7 @@ export function ReviewPanel({
               type="button"
               disabled={acceptedCount === 0 || pending}
               onClick={save}
-              className="rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60"
+              className="bg-primary text-on-primary hover:bg-primary-hover rounded-lg px-5 py-2.5 font-medium disabled:opacity-60"
             >
               {pending ? t("saving") : t("save", { count: acceptedCount })}
             </button>
@@ -253,7 +253,7 @@ function Section({
       <h2 id={id} className="text-xl font-semibold">
         {title}
       </h2>
-      {empty ? <p className="text-sm text-stone-500">{t("empty")}</p> : children}
+      {empty ? <p className="text-ink-subtle text-sm">{t("empty")}</p> : children}
     </section>
   );
 }
@@ -331,7 +331,7 @@ function FlagNotes({ flags }: { flags: ItemFlags }) {
   }
   if (!notes.length) return null;
   return (
-    <ul className="mt-3 space-y-1 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
+    <ul className="bg-warning-soft text-warning-ink mt-3 space-y-1 rounded-lg px-3 py-2 text-sm">
       {notes.map((note, index) => (
         <li key={index}>⚠ {note}</li>
       ))}
@@ -365,16 +365,16 @@ function ExperienceCard({
   return (
     <article
       aria-label={data.roleTitle}
-      className={`rounded-xl border bg-white p-4 sm:p-5 ${item.decision === "rejected" ? "border-stone-200 opacity-60" : "border-stone-200"}`}
+      className={`bg-surface rounded-xl border p-4 sm:p-5 ${item.decision === "rejected" ? "border-line opacity-60" : "border-line"}`}
     >
       <h3 className="font-semibold break-words">{data.roleTitle}</h3>
-      <p className="mt-0.5 text-sm text-stone-500">
+      <p className="text-ink-subtle mt-0.5 text-sm">
         {tm("period", {
           start: month(data.startMonth),
           end: data.endMonth ? month(data.endMonth) : tm("present"),
         })}
       </p>
-      <p className="mt-2 text-sm text-stone-700">
+      <p className="text-ink-muted mt-2 text-sm">
         {[
           tc(`companyStage.${data.companyStage}`),
           tc(`sector.${data.sector}`),
@@ -386,7 +386,7 @@ function ExperienceCard({
         <Badge>{tc(`contractType.${data.contractType}`)}</Badge>
       </div>
       {data.responsibilities ? (
-        <p className="mt-2 text-sm whitespace-pre-line text-stone-700">{data.responsibilities}</p>
+        <p className="text-ink-muted mt-2 text-sm whitespace-pre-line">{data.responsibilities}</p>
       ) : null}
       <FlagNotes flags={item.flags} />
       <DecisionBar item={item} onChange={onChange} />
@@ -452,7 +452,7 @@ function ExperienceEditor({
   );
 
   return (
-    <form noValidate onSubmit={submit} className="mt-4 space-y-4 border-t border-stone-200 pt-4">
+    <form noValidate onSubmit={submit} className="border-line mt-4 space-y-4 border-t pt-4">
       <FormError errors={Object.keys(errors).length ? errors : undefined} />
       <Field id={`${p}-roleTitle`} label={t("roleTitle")} error={errors.roleTitle}>
         <input
@@ -527,7 +527,7 @@ function EditorButtons({ onCancel, label }: { onCancel: () => void; label: strin
       </button>
       <button
         type="submit"
-        className="rounded-lg bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700"
+        className="bg-primary text-on-primary hover:bg-primary-hover rounded-lg px-4 py-2 text-sm font-medium"
       >
         {label}
       </button>
@@ -559,7 +559,7 @@ function AchievementCard({
   return (
     <article
       aria-label={data.title}
-      className={`rounded-xl border border-stone-200 bg-white p-4 sm:p-5 ${item.decision === "rejected" ? "opacity-60" : ""}`}
+      className={`border-line bg-surface rounded-xl border p-4 sm:p-5 ${item.decision === "rejected" ? "opacity-60" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
         <h3 className="min-w-0 font-semibold break-words">{data.title}</h3>
@@ -568,10 +568,10 @@ function AchievementCard({
         </Badge>
       </div>
       {linkedRole ? (
-        <p className="mt-0.5 text-sm text-stone-500">
+        <p className="text-ink-subtle mt-0.5 text-sm">
           {t("linkedTo", { role: linkedRole.data.roleTitle })}
           {linkedRole.decision === "rejected" ? (
-            <span className="block text-amber-800">{t("linkedRejected")}</span>
+            <span className="text-warning-ink block">{t("linkedRejected")}</span>
           ) : null}
         </p>
       ) : null}
@@ -579,8 +579,8 @@ function AchievementCard({
         {(["context", "actions", "result"] as const).map((key) =>
           data[key] ? (
             <div key={key}>
-              <dt className="font-medium text-stone-800">{tf(key)}</dt>
-              <dd className="whitespace-pre-line text-stone-700">{data[key]}</dd>
+              <dt className="text-ink font-medium">{tf(key)}</dt>
+              <dd className="text-ink-muted whitespace-pre-line">{data[key]}</dd>
             </div>
           ) : null,
         )}
@@ -594,16 +594,16 @@ function AchievementCard({
       ) : null}
       {data.proofs.length ? (
         <div className="mt-3 text-sm">
-          <p className="font-medium text-stone-800">{t("proofs")}</p>
+          <p className="text-ink font-medium">{t("proofs")}</p>
           <ul className="mt-1 space-y-1">
             {data.proofs.map((proof, proofIndex) => (
               <li key={proofIndex} className="flex items-center justify-between gap-2">
-                <span className="min-w-0 truncate text-stone-700">
+                <span className="text-ink-muted min-w-0 truncate">
                   {proof.kind === "URL" ? proof.url : proof.referenceText}
                 </span>
                 <button
                   type="button"
-                  className="shrink-0 text-sm text-red-700 underline underline-offset-4"
+                  className="text-danger-ink shrink-0 text-sm underline underline-offset-4"
                   onClick={() =>
                     onChange({
                       ...item,
@@ -674,7 +674,7 @@ function AchievementEditor({
   }
 
   return (
-    <form noValidate onSubmit={submit} className="mt-4 space-y-4 border-t border-stone-200 pt-4">
+    <form noValidate onSubmit={submit} className="border-line mt-4 space-y-4 border-t pt-4">
       <FormError errors={Object.keys(errors).length ? errors : undefined} />
       <Field id={`${p}-title`} label={t("title")} error={errors.title}>
         <input
@@ -769,15 +769,15 @@ function IdentityPanel({
   const filled = rows.filter(([, values]) => values.length);
   if (!filled.length) return null;
   return (
-    <details className="rounded-xl border border-stone-200 bg-stone-50 p-4 sm:p-5">
+    <details className="border-line bg-subtle rounded-xl border p-4 sm:p-5">
       <summary className="cursor-pointer font-semibold">{t("title")}</summary>
-      <p className="mt-2 text-sm text-stone-600">{t("intro")}</p>
-      <p className="mt-1 text-sm text-stone-600">{t("vault")}</p>
+      <p className="text-ink-muted mt-2 text-sm">{t("intro")}</p>
+      <p className="text-ink-muted mt-1 text-sm">{t("vault")}</p>
       <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-[12rem_1fr]">
         {filled.map(([key, values]) => (
           <div key={key} className="contents">
-            <dt className="font-medium text-stone-800">{t(key as "emails")}</dt>
-            <dd className="min-w-0 break-words text-stone-700">{values.join(" · ")}</dd>
+            <dt className="text-ink font-medium">{t(key as "emails")}</dt>
+            <dd className="text-ink-muted min-w-0 break-words">{values.join(" · ")}</dd>
           </div>
         ))}
       </dl>
@@ -788,21 +788,21 @@ function IdentityPanel({
 function Done({ summary, onRestart }: { summary: ImportedDraftSummary; onRestart: () => void }) {
   const t = useTranslations("import.done");
   return (
-    <div role="status" className="rounded-xl border border-stone-200 bg-white p-6 sm:p-8">
+    <div role="status" className="border-line bg-surface rounded-xl border p-6 sm:p-8">
       <h2 className="text-xl font-semibold">{t("title")}</h2>
-      <p className="mt-2 text-stone-700">
+      <p className="text-ink-muted mt-2">
         {t("text", {
           experiences: summary.experiences,
           achievements: summary.achievements,
           skills: summary.skills,
         })}
       </p>
-      <p className="mt-2 text-sm text-stone-600">{t("next")}</p>
-      <p className="mt-1 text-sm text-stone-600">{t("identityForgotten")}</p>
+      <p className="text-ink-muted mt-2 text-sm">{t("next")}</p>
+      <p className="text-ink-muted mt-1 text-sm">{t("identityForgotten")}</p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <Link
           href="/app/memoire"
-          className="rounded-lg bg-stone-900 px-5 py-2.5 text-center font-medium text-white hover:bg-stone-700"
+          className="bg-primary text-on-primary hover:bg-primary-hover rounded-lg px-5 py-2.5 text-center font-medium"
         >
           {t("cta")}
         </Link>

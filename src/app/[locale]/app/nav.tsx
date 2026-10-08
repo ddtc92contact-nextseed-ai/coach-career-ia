@@ -38,8 +38,8 @@ export function AppNav({ isAdmin = false }: { isAdmin?: boolean }) {
             aria-current={active ? "page" : undefined}
             className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium whitespace-nowrap ${
               active
-                ? "border-stone-900 text-stone-900"
-                : "border-transparent text-stone-500 hover:border-stone-300 hover:text-stone-800"
+                ? "border-brand text-ink"
+                : "text-ink-subtle hover:border-line-strong hover:text-ink border-transparent"
             }`}
           >
             {t(item.key)}

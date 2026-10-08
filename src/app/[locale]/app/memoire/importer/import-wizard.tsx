@@ -25,9 +25,9 @@ type Phase =
 
 const MB = 1024 * 1024;
 const buttonClass =
-  "rounded-lg bg-stone-900 px-5 py-2.5 font-medium text-white hover:bg-stone-700 disabled:opacity-60";
+  "rounded-lg bg-primary px-5 py-2.5 font-medium text-on-primary hover:bg-primary-hover disabled:opacity-60";
 const secondaryClass =
-  "rounded-lg border border-stone-300 bg-white px-5 py-2.5 font-medium text-stone-800 hover:bg-stone-100";
+  "rounded-lg border border-line-strong bg-surface px-5 py-2.5 font-medium text-ink hover:bg-muted";
 
 /** Appel de l'API d'import ; toute défaillance devient un code traduisible. */
 async function requestImport(sources: Sources, signal: AbortSignal): Promise<ImportResponse> {
@@ -126,7 +126,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
       <div hidden={phase.kind === "loading"} className="space-y-6">
         <section
           aria-labelledby="privacy-title"
-          className="border-brand-100 bg-brand-50 rounded-xl border p-4 text-sm text-stone-800 sm:p-5"
+          className="border-brand-line bg-brand-soft text-ink rounded-xl border p-4 text-sm sm:p-5"
         >
           <h2 id="privacy-title" className="font-semibold">
             {t("privacy.title")}
@@ -142,7 +142,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
         {!aiConfigured ? (
           <p
             role="status"
-            className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+            className="border-warning-line bg-warning-soft text-warning-ink rounded-lg border px-4 py-3 text-sm"
           >
             {t("form.notConfigured")}
           </p>
@@ -151,7 +151,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
         {phase.kind === "error" ? (
           <div
             role="alert"
-            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
           >
             <p className="font-semibold">{t("errors.title")}</p>
             <p className="mt-1">{errorMessage(phase.code)}</p>
@@ -161,7 +161,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
                 <button
                   type="button"
                   onClick={() => void analyse()}
-                  className="mt-3 rounded-lg bg-red-700 px-4 py-2 font-medium text-white hover:bg-red-800"
+                  className="bg-danger text-on-danger hover:bg-danger-hover mt-3 rounded-lg px-4 py-2 font-medium"
                 >
                   {t("errors.retry")}
                 </button>
@@ -173,7 +173,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
         <form
           noValidate
           onSubmit={onSubmit}
-          className="space-y-6 rounded-xl border border-stone-200 bg-white p-4 sm:p-6"
+          className="border-line bg-surface space-y-6 rounded-xl border p-4 sm:p-6"
         >
           <Field
             id="cv"
@@ -192,10 +192,10 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
                 setSources((s) => ({ ...s, cv: event.target.files?.[0] ?? null }));
                 setFieldErrors((e) => ({ ...e, cv: undefined }));
               }}
-              className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-stone-100 file:px-3 file:py-1.5`}
+              className={`${inputClass} file:bg-muted file:mr-3 file:rounded-md file:border-0 file:px-3 file:py-1.5`}
             />
             {fieldErrors.cv ? (
-              <p id="cv-error" role="alert" className="mt-1.5 text-sm text-red-700">
+              <p id="cv-error" role="alert" className="text-danger-ink mt-1.5 text-sm">
                 {errorMessage(fieldErrors.cv)}
               </p>
             ) : null}
@@ -220,10 +220,10 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
                 setSources((s) => ({ ...s, linkedin: event.target.files?.[0] ?? null }));
                 setFieldErrors((e) => ({ ...e, linkedin: undefined }));
               }}
-              className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-stone-100 file:px-3 file:py-1.5`}
+              className={`${inputClass} file:bg-muted file:mr-3 file:rounded-md file:border-0 file:px-3 file:py-1.5`}
             />
             {fieldErrors.linkedin ? (
-              <p id="linkedin-error" role="alert" className="mt-1.5 text-sm text-red-700">
+              <p id="linkedin-error" role="alert" className="text-danger-ink mt-1.5 text-sm">
                 {errorMessage(fieldErrors.linkedin)}
               </p>
             ) : null}
@@ -274,11 +274,11 @@ function Progress({ started, onCancel }: { started: number; onCancel: () => void
     <div
       role="status"
       aria-live="polite"
-      className="rounded-xl border border-stone-200 bg-white p-6 text-center sm:p-10"
+      className="border-line bg-surface rounded-xl border p-6 text-center sm:p-10"
     >
       <div
         aria-hidden="true"
-        className="border-t-brand-600 mx-auto h-10 w-10 animate-spin rounded-full border-4 border-stone-200"
+        className="border-t-brand-600 border-line mx-auto h-10 w-10 animate-spin rounded-full border-4"
       />
       <p className="mt-4 font-semibold">{t("label")}</p>
       <ol className="mx-auto mt-4 max-w-xs space-y-1 text-left text-sm">
@@ -288,18 +288,18 @@ function Progress({ started, onCancel }: { started: number; onCancel: () => void
             aria-current={index === step ? "step" : undefined}
             className={
               index < step
-                ? "text-stone-400 line-through"
+                ? "text-ink-subtle line-through"
                 : index === step
-                  ? "font-medium text-stone-900"
-                  : "text-stone-400"
+                  ? "text-ink font-medium"
+                  : "text-ink-subtle"
             }
           >
             {t(key)}
           </li>
         ))}
       </ol>
-      <p className="mt-4 text-sm text-stone-500">{t("elapsed", { seconds })}</p>
-      {seconds >= 60 ? <p className="mt-1 text-sm text-amber-800">{t("slow")}</p> : null}
+      <p className="text-ink-subtle mt-4 text-sm">{t("elapsed", { seconds })}</p>
+      {seconds >= 60 ? <p className="text-warning-ink mt-1 text-sm">{t("slow")}</p> : null}
       <button type="button" onClick={onCancel} className={`mt-6 ${secondaryClass}`}>
         {t("cancel")}
       </button>

@@ -24,7 +24,7 @@ type RichValues = Record<string, string | number | ((chunks: ReactNode) => React
 type RichTranslator = (key: string, values: RichValues) => ReactNode;
 
 const CNIL_COMPLAINT_URL = "https://www.cnil.fr/fr/adresser-une-plainte";
-const linkClass = "text-brand-700 underline underline-offset-2 hover:text-brand-800";
+const linkClass = "text-brand-ink underline underline-offset-2 hover:text-brand-ink";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, page } = await params;
@@ -67,7 +67,7 @@ export default async function LegalPage({ params }: Props) {
     cardDays: cardLinkTtlDays(),
     handoverDays: handoverTtlDays(),
     postingDays: postingDurationDays(),
-    strong: (chunks) => <strong className="font-semibold text-stone-900">{chunks}</strong>,
+    strong: (chunks) => <strong className="text-ink font-semibold">{chunks}</strong>,
     privacy: internal(legalPath("privacy")),
     terms: internal(legalPath("terms")),
     ai: internal(legalPath("ai")),
@@ -88,24 +88,24 @@ export default async function LegalPage({ params }: Props) {
         <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="mt-3 text-sm text-stone-500">
+        <p className="text-ink-subtle mt-3 text-sm">
           {tl("updated", {
             date: format.dateTime(legalUpdatedAt(), { dateStyle: "long", timeZone: "UTC" }),
           })}
         </p>
-        <p className="mt-6 text-lg text-pretty text-stone-600">{rich("intro", values)}</p>
+        <p className="text-ink-muted mt-6 text-lg text-pretty">{rich("intro", values)}</p>
 
         <nav
           aria-labelledby="legal-contents"
-          className="mt-8 rounded-xl border border-stone-200 bg-white p-5"
+          className="border-line bg-surface mt-8 rounded-xl border p-5"
         >
-          <h2 id="legal-contents" className="text-sm font-semibold text-stone-900">
+          <h2 id="legal-contents" className="text-ink text-sm font-semibold">
             {tl("contents")}
           </h2>
           <ol className="mt-3 space-y-1.5 text-sm">
             {Object.entries(sections).map(([id, section]) => (
               <li key={id}>
-                <a href={`#${id}`} className="text-stone-600 hover:text-stone-900 hover:underline">
+                <a href={`#${id}`} className="text-ink-muted hover:text-ink hover:underline">
                   {section.title}
                 </a>
               </li>
@@ -118,14 +118,14 @@ export default async function LegalPage({ params }: Props) {
             <h2 id={`${id}-title`} className="text-xl font-semibold tracking-tight">
               {section.title}
             </h2>
-            <div className="mt-3 space-y-3 leading-relaxed text-stone-700">
+            <div className="text-ink-muted mt-3 space-y-3 leading-relaxed">
               {Object.entries(section.content).map(([block, value]) => {
                 const path = `sections.${id}.content.${block}`;
                 if (typeof value === "string") {
                   return <p key={block}>{rich(path, values)}</p>;
                 }
                 return (
-                  <ul key={block} className="list-disc space-y-2 pl-5 marker:text-stone-400">
+                  <ul key={block} className="marker:text-ink-subtle list-disc space-y-2 pl-5">
                     {Object.keys(value).map((item) => (
                       <li key={item}>{rich(`${path}.${item}`, values)}</li>
                     ))}

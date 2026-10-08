@@ -30,10 +30,10 @@ export default async function LoginPage({ params, searchParams }: Props) {
 
   return (
     <AuthCard title={t("title")}>
-      <p className="mb-6 text-sm text-stone-600">{t("intro")}</p>
+      <p className="text-ink-muted mb-6 text-sm">{t("intro")}</p>
       <LoginForm callbackUrl={callbackUrl} />
       <p className="mt-6 text-center text-sm">
-        <Link href="/" className="text-stone-500 underline-offset-4 hover:underline">
+        <Link href="/" className="text-ink-subtle underline-offset-4 hover:underline">
           {t("backHome")}
         </Link>
       </p>

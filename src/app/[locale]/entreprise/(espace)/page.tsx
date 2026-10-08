@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const primaryButton =
-  "inline-block rounded-lg bg-stone-900 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-stone-700";
+  "inline-block rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-medium text-on-primary hover:bg-primary-hover";
 
 /**
  * Tableau de bord entreprise : les offres de l'organisation, leur statut,
@@ -44,9 +44,9 @@ export default async function EmployerDashboardPage() {
       {postings.length === 0 ? (
         <EmptyState title={t("emptyTitle")} text={t("emptyText")} action={newLink} />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white">
+        <div className="border-line bg-surface overflow-hidden rounded-2xl border">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-stone-200 bg-stone-50 text-xs text-stone-500 max-sm:sr-only">
+            <thead className="border-line bg-subtle text-ink-subtle border-b text-xs max-sm:sr-only">
               <tr>
                 <th scope="col" className="px-4 py-3 font-medium">
                   {t("columns.title")}
@@ -62,7 +62,7 @@ export default async function EmployerDashboardPage() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-200">
+            <tbody className="divide-line divide-y">
               {postings.map((posting) => (
                 <tr
                   key={posting.id}
@@ -71,18 +71,18 @@ export default async function EmployerDashboardPage() {
                   <td className="px-4 py-3 max-sm:w-full max-sm:py-0">
                     <Link
                       href={`/entreprise/offres/${posting.id}`}
-                      className="font-medium break-words text-stone-900 hover:underline"
+                      className="text-ink font-medium break-words hover:underline"
                     >
                       {posting.offer.title}
                     </Link>
                     {posting.offer.city ? (
-                      <span className="block text-xs text-stone-500">{posting.offer.city}</span>
+                      <span className="text-ink-subtle block text-xs">{posting.offer.city}</span>
                     ) : null}
                   </td>
                   <td className="px-4 py-3 max-sm:py-1">
                     <PostingStatusBadge status={posting.status} />
                   </td>
-                  <td className="px-4 py-3 text-stone-600 tabular-nums max-sm:py-1">
+                  <td className="text-ink-muted px-4 py-3 tabular-nums max-sm:py-1">
                     {posting.status === "LIVE" && posting.expiresAt ? (
                       <>
                         <span className="max-sm:hidden">
@@ -96,7 +96,7 @@ export default async function EmployerDashboardPage() {
                       <span className="max-sm:hidden">{t("noDate")}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right text-stone-600 tabular-nums max-sm:w-full max-sm:py-0 max-sm:text-left max-sm:text-xs">
+                  <td className="text-ink-muted px-4 py-3 text-right tabular-nums max-sm:w-full max-sm:py-0 max-sm:text-left max-sm:text-xs">
                     <span className="max-sm:hidden">{posting.viewCount}</span>
                     <span className="sm:hidden">{tp("views", { count: posting.viewCount })}</span>
                   </td>
@@ -106,7 +106,7 @@ export default async function EmployerDashboardPage() {
           </table>
         </div>
       )}
-      <p className="mt-6 text-xs text-stone-500">{t("privacy")}</p>
+      <p className="text-ink-subtle mt-6 text-xs">{t("privacy")}</p>
     </div>
   );
 }

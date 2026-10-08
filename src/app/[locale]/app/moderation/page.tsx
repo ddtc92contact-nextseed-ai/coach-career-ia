@@ -53,12 +53,12 @@ const PERIOD: Record<string, string> = {
   HOUR: "/ heure",
 };
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 const button =
-  "w-full rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-stone-100 sm:w-auto";
+  "w-full rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-muted sm:w-auto";
 const danger =
-  "w-full rounded-lg border border-red-200 px-4 py-2 text-sm font-medium whitespace-nowrap text-red-700 hover:bg-red-50 sm:w-auto";
-const reasonInput = "w-full rounded-lg border border-stone-300 px-3 py-2 text-sm";
+  "w-full rounded-lg border border-danger-line px-4 py-2 text-sm font-medium whitespace-nowrap text-danger-ink hover:bg-danger-soft sm:w-auto";
+const reasonInput = "w-full rounded-lg border border-line-strong px-3 py-2 text-sm";
 
 function RejectForm({
   action,
@@ -109,7 +109,7 @@ export default async function ModerationPage({
       {query.fait && DONE[query.fait] ? (
         <p
           role="status"
-          className="border-brand-100 bg-brand-50 text-brand-900 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink rounded-lg border px-4 py-3 text-sm"
         >
           {DONE[query.fait]}
         </p>
@@ -117,7 +117,7 @@ export default async function ModerationPage({
       {query.erreur ? (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
         >
           {ERRORS[query.erreur] ?? "Action impossible."}
         </p>
@@ -128,21 +128,21 @@ export default async function ModerationPage({
           Organisations en attente ({queue.pendingOrgs.length})
         </h2>
         {queue.pendingOrgs.length === 0 ? (
-          <p className="text-sm text-stone-500">Aucune organisation en attente.</p>
+          <p className="text-ink-subtle text-sm">Aucune organisation en attente.</p>
         ) : null}
         {queue.pendingOrgs.map((org) => (
           <article key={org.id} className={sectionClass}>
             <h3 className="font-semibold break-words">{org.name}</h3>
             <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-              <dt className="text-stone-500">Site</dt>
+              <dt className="text-ink-subtle">Site</dt>
               <dd className="break-all">{org.website}</dd>
-              <dt className="text-stone-500">Inscrit avec</dt>
+              <dt className="text-ink-subtle">Inscrit avec</dt>
               <dd className="break-all">{org.ownerEmails.join(", ") || "—"}</dd>
-              <dt className="text-stone-500">Pays / secteur</dt>
+              <dt className="text-ink-subtle">Pays / secteur</dt>
               <dd>
                 {org.country} · {org.sector}
               </dd>
-              <dt className="text-stone-500">Créée le</dt>
+              <dt className="text-ink-subtle">Créée le</dt>
               <dd>{dateTime.format(org.createdAt)}</dd>
             </dl>
             <div className="mt-4 space-y-3">
@@ -168,7 +168,7 @@ export default async function ModerationPage({
           Offres en revue ({queue.reviewPostings.length})
         </h2>
         {queue.reviewPostings.length === 0 ? (
-          <p className="text-sm text-stone-500">Aucune offre en revue.</p>
+          <p className="text-ink-subtle text-sm">Aucune offre en revue.</p>
         ) : null}
         {queue.reviewPostings.map((posting) => (
           <article key={posting.id} className={sectionClass}>
@@ -183,14 +183,14 @@ export default async function ModerationPage({
                 </Badge>
               ))}
             </div>
-            <p className="mt-1 text-sm text-stone-600">
+            <p className="text-ink-muted mt-1 text-sm">
               {posting.organization.name} · {posting.offer.city ?? "—"} ·{" "}
               {money(posting.offer.salaryMin, posting.offer.salaryCurrency)} –{" "}
               {money(posting.offer.salaryMax, posting.offer.salaryCurrency)}{" "}
               {posting.offer.salaryPeriod ? PERIOD[posting.offer.salaryPeriod] : ""}
             </p>
             {posting.excerpts.length > 0 ? (
-              <ul className="mt-2 list-inside list-disc text-sm text-amber-800">
+              <ul className="text-warning-ink mt-2 list-inside list-disc text-sm">
                 {posting.excerpts.map((excerpt) => (
                   <li key={excerpt.category}>
                     {FLAGS[excerpt.category]} : « {excerpt.excerpt} »
@@ -199,11 +199,11 @@ export default async function ModerationPage({
               </ul>
             ) : null}
             {posting.reviewNote ? (
-              <p className="mt-2 text-sm text-stone-600">Refus précédent : {posting.reviewNote}</p>
+              <p className="text-ink-muted mt-2 text-sm">Refus précédent : {posting.reviewNote}</p>
             ) : null}
             <details className="mt-3 text-sm">
-              <summary className="cursor-pointer text-stone-600">Lire la description</summary>
-              <p className="mt-2 whitespace-pre-line text-stone-700">{posting.offer.description}</p>
+              <summary className="text-ink-muted cursor-pointer">Lire la description</summary>
+              <p className="text-ink-muted mt-2 whitespace-pre-line">{posting.offer.description}</p>
             </details>
             <div className="mt-4 space-y-3">
               <form action={approvePostingAction}>
@@ -228,18 +228,18 @@ export default async function ModerationPage({
           Organisations actives et suspendues
         </h2>
         {queue.activeOrgs.length === 0 ? (
-          <p className="text-sm text-stone-500">Aucune organisation.</p>
+          <p className="text-ink-subtle text-sm">Aucune organisation.</p>
         ) : null}
-        <ul className="divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white">
+        <ul className="divide-line border-line bg-surface divide-y rounded-2xl border">
           {queue.activeOrgs.map((org) => (
             <li key={org.id} className="space-y-3 p-4 text-sm">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-medium break-words">{org.name}</span>
-                <span className="text-stone-500">{org.domain}</span>
+                <span className="text-ink-subtle">{org.domain}</span>
                 <Badge tone={org.status === "ACTIVE" ? "proven" : "warning"}>
                   {org.status === "ACTIVE" ? "Active" : "Suspendue"}
                 </Badge>
-                <span className="text-stone-500">{org._count.postings} en ligne</span>
+                <span className="text-ink-subtle">{org._count.postings} en ligne</span>
               </div>
               {org.status === "ACTIVE" ? (
                 <RejectForm
@@ -251,7 +251,7 @@ export default async function ModerationPage({
               ) : (
                 <>
                   {org.reviewNote ? (
-                    <p className="text-stone-600">Motif : {org.reviewNote}</p>
+                    <p className="text-ink-muted">Motif : {org.reviewNote}</p>
                   ) : null}
                   <form action={approveOrganizationAction}>
                     <input type="hidden" name="orgId" value={org.id} />

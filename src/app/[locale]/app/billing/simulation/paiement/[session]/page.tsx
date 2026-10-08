@@ -45,24 +45,24 @@ export default async function SimulatedCheckoutPage({
     <div className="mx-auto max-w-lg">
       <SimulatedBanner />
       <h1 className="text-2xl font-semibold tracking-tight">{t("checkout.title")}</h1>
-      <p className="mt-2 text-stone-600">{t("checkout.intro")}</p>
+      <p className="text-ink-muted mt-2">{t("checkout.intro")}</p>
 
       {query.refus ? (
         <p
           role="alert"
-          className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="border-danger-line bg-danger-soft text-danger-ink mt-6 rounded-lg border px-4 py-3 text-sm"
         >
           {t("checkout.declined")}
         </p>
       ) : null}
 
-      <dl className="mt-6 divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white text-sm">
+      <dl className="divide-line border-line bg-surface mt-6 divide-y rounded-2xl border text-sm">
         <div className="flex justify-between gap-4 p-4">
-          <dt className="text-stone-500">{t("checkout.plan")}</dt>
+          <dt className="text-ink-subtle">{t("checkout.plan")}</dt>
           <dd className="font-medium">{tb("plans.PREMIUM.name")}</dd>
         </div>
         <div className="flex justify-between gap-4 p-4">
-          <dt className="text-stone-500">{t("checkout.total")}</dt>
+          <dt className="text-ink-subtle">{t("checkout.total")}</dt>
           <dd className="font-medium">
             {tb("price", { price: amount, interval: price.interval })}
           </dd>
@@ -75,7 +75,7 @@ export default async function SimulatedCheckoutPage({
           type="submit"
           name="outcome"
           value="success"
-          className={`${button} bg-stone-900 text-white hover:bg-stone-700`}
+          className={`${button} bg-primary text-on-primary hover:bg-primary-hover`}
         >
           {t("checkout.pay")}
         </button>
@@ -83,7 +83,7 @@ export default async function SimulatedCheckoutPage({
           type="submit"
           name="outcome"
           value="declined"
-          className={`${button} border border-stone-300 bg-white hover:bg-stone-100`}
+          className={`${button} border-line-strong bg-surface hover:bg-muted border`}
         >
           {t("checkout.decline")}
         </button>
@@ -91,14 +91,14 @@ export default async function SimulatedCheckoutPage({
           type="submit"
           name="outcome"
           value="cancel"
-          className={`${button} text-stone-600 hover:bg-stone-100`}
+          className={`${button} text-ink-muted hover:bg-muted`}
         >
           {t("checkout.cancel")}
         </button>
       </form>
-      <p className="mt-6 text-xs text-stone-500">{t("checkout.noCard")}</p>
+      <p className="text-ink-subtle mt-6 text-xs">{t("checkout.noCard")}</p>
       <p className="mt-4 text-sm">
-        <Link href="/app/billing" className="text-stone-600 underline hover:text-stone-900">
+        <Link href="/app/billing" className="text-ink-muted hover:text-ink underline">
           {t("back")}
         </Link>
       </p>

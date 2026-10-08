@@ -20,9 +20,9 @@ import { updateGuardRails, type GuardRailsFormState } from "./actions";
 /** `located` : `false` = enregistré mais introuvable ; `undefined` = pas encore enregistré. */
 type Location = { key: string; label: string; radiusKm: number; located?: boolean };
 
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 const chipClass =
-  "has-[:checked]:border-stone-900 has-[:checked]:bg-stone-900 has-[:checked]:text-white flex cursor-pointer items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm";
+  "has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-on-primary flex cursor-pointer items-center gap-2 rounded-lg border border-line-strong bg-surface px-3 py-2 text-sm";
 
 export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
   const t = useTranslations("guardRails");
@@ -63,7 +63,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
         <h2 id="gf-salary" className="text-lg font-semibold">
           {t("salary.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("salary.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("salary.intro")}</p>
         <div className="grid gap-6 sm:grid-cols-2">
           <Field
             id="minFixedSalary"
@@ -102,10 +102,10 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
         <h2 id="gf-location" className="text-lg font-semibold">
           {t("location.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("location.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("location.intro")}</p>
 
         {locations.length === 0 ? (
-          <p className="mb-3 text-sm text-stone-500">{t("location.empty")}</p>
+          <p className="text-ink-subtle mb-3 text-sm">{t("location.empty")}</p>
         ) : (
           <ul className="mb-3 space-y-3">
             {locations.map((location, index) => {
@@ -115,7 +115,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
               return (
                 <li
                   key={location.key}
-                  className="grid gap-3 rounded-xl border border-stone-200 p-3 sm:grid-cols-[1fr_10rem_auto] sm:items-start"
+                  className="border-line grid gap-3 rounded-xl border p-3 sm:grid-cols-[1fr_10rem_auto] sm:items-start"
                 >
                   <div>
                     <label htmlFor={labelId} className="block text-sm font-medium">
@@ -139,7 +139,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                     />
                     <FieldError id={labelId} error={labelError} />
                     {location.located === false && !labelError ? (
-                      <p id={`${labelId}-geo`} className="mt-1.5 text-sm text-amber-800">
+                      <p id={`${labelId}-geo`} className="text-warning-ink mt-1.5 text-sm">
                         {t("location.notLocated")}
                       </p>
                     ) : null}
@@ -167,7 +167,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                     onClick={() =>
                       setLocations((list) => list.filter((l) => l.key !== location.key))
                     }
-                    className="rounded-lg border border-stone-300 px-3 py-2 text-sm hover:bg-stone-100 sm:mt-6"
+                    className="border-line-strong hover:bg-muted rounded-lg border px-3 py-2 text-sm sm:mt-6"
                   >
                     {t("location.remove")}
                   </button>
@@ -179,7 +179,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
         {unlocatedCount > 0 ? (
           <p
             role="status"
-            className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+            className="border-warning-line bg-warning-soft text-warning-ink mb-3 rounded-lg border px-4 py-3 text-sm"
           >
             {t("location.notLocatedSummary", { count: unlocatedCount })}
           </p>
@@ -194,7 +194,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                 { key: crypto.randomUUID(), label: "", radiusKm: 30 },
               ])
             }
-            className="rounded-lg border border-dashed border-stone-400 px-3 py-2 text-sm font-medium hover:bg-stone-50"
+            className="border-line-strong hover:bg-subtle rounded-lg border border-dashed px-3 py-2 text-sm font-medium"
           >
             {t("location.add")}
           </button>
@@ -245,7 +245,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
           <legend id="gf-contracts" className="text-lg font-semibold">
             {t("contracts.title")}
           </legend>
-          <p className="mt-1 mb-4 text-sm text-stone-600">{t("contracts.intro")}</p>
+          <p className="text-ink-muted mt-1 mb-4 text-sm">{t("contracts.intro")}</p>
           <div className="grid gap-2 sm:grid-cols-3">
             {CONTRACT_TYPES.map((code) => (
               <label key={code} className={chipClass}>
@@ -254,7 +254,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                   name="contractTypes"
                   value={code}
                   defaultChecked={initial.contractTypes.includes(code)}
-                  className="accent-brand-700 size-4"
+                  className="accent-brand size-4"
                 />
                 {tc(`contractType.${code}`)}
               </label>
@@ -269,7 +269,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
         <h2 id="gf-exclusions" className="text-lg font-semibold">
           {t("exclusions.title")}
         </h2>
-        <p className="mt-1 mb-4 text-sm text-stone-600">{t("exclusions.intro")}</p>
+        <p className="text-ink-muted mt-1 mb-4 text-sm">{t("exclusions.intro")}</p>
         <fieldset>
           <legend className="text-sm font-semibold">{t("exclusions.sectors")}</legend>
           <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -280,7 +280,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                   name="excludedSectors"
                   value={code}
                   defaultChecked={initial.excludedSectors.includes(code)}
-                  className="accent-brand-700 size-4 shrink-0"
+                  className="accent-brand size-4 shrink-0"
                 />
                 {tc(`sector.${code}`)}
               </label>
@@ -337,11 +337,11 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
               type="checkbox"
               name="acceptsOnCall"
               defaultChecked={initial.acceptsOnCall}
-              className="accent-brand-700 mt-0.5 size-4"
+              className="accent-brand mt-0.5 size-4"
             />
             <span>
               <span className="block font-medium">{t("workload.onCall")}</span>
-              <span className="text-stone-500">{t("workload.onCallHint")}</span>
+              <span className="text-ink-subtle">{t("workload.onCallHint")}</span>
             </span>
           </label>
         </div>
@@ -353,7 +353,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
           <legend id="gf-culture" className="text-lg font-semibold">
             {t("culture.title")}
           </legend>
-          <p className="mt-1 mb-4 text-sm text-stone-600">{t("culture.intro")}</p>
+          <p className="text-ink-muted mt-1 mb-4 text-sm">{t("culture.intro")}</p>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {CULTURE_PREFERENCES.map((code) => (
               <label key={code} className={chipClass}>
@@ -362,7 +362,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
                   name="culturePreferences"
                   value={code}
                   defaultChecked={initial.culturePreferences.includes(code)}
-                  className="accent-brand-700 size-4"
+                  className="accent-brand size-4"
                 />
                 {tc(`culture.${code}`)}
               </label>
@@ -372,7 +372,7 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
         </fieldset>
       </section>
 
-      <div className="sticky bottom-0 -mx-4 flex flex-col gap-3 border-t border-stone-200 bg-stone-50/95 px-4 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:items-center sm:rounded-xl sm:border">
+      <div className="border-line bg-subtle/95 sticky bottom-0 -mx-4 flex flex-col gap-3 border-t px-4 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:items-center sm:rounded-xl sm:border">
         <SubmitButton pending={pending}>{t("save")}</SubmitButton>
         <SavedNotice show={state.ok && !pending} />
       </div>

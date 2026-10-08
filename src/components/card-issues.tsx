@@ -40,9 +40,9 @@ export function CardIssues({ issues, title }: { issues: ReidentificationIssue[];
   const t = useTranslations("card");
   if (issues.length === 0) return null;
   return (
-    <div role="alert" className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-      <p className="text-sm font-medium text-amber-900">{title ?? t("issues.title")}</p>
-      <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-900">
+    <div role="alert" className="border-warning-line bg-warning-soft rounded-lg border px-4 py-3">
+      <p className="text-warning-ink text-sm font-medium">{title ?? t("issues.title")}</p>
+      <ul className="text-warning-ink mt-2 list-disc space-y-1 pl-5 text-sm">
         {issues.map((issue, i) => {
           const field = issueField(issue.path);
           return (

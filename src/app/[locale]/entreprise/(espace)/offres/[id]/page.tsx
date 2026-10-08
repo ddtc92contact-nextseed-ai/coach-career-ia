@@ -36,9 +36,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const DONE = ["submitted", "closed", "renewed", "published"] as const;
 const ERRORS = ["notAllowed", "unavailable", "suspended"] as const;
-const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
+const sectionClass = "rounded-2xl border border-line bg-surface p-4 sm:p-6";
 const secondary =
-  "w-full rounded-lg border border-stone-300 bg-white px-5 py-2.5 text-sm font-medium hover:bg-stone-100 sm:w-auto";
+  "w-full rounded-lg border border-line-strong bg-surface px-5 py-2.5 text-sm font-medium hover:bg-muted sm:w-auto";
 
 const pick = <T extends string>(values: readonly T[], value: string | undefined) =>
   values.find((v) => v === value) ?? null;
@@ -82,7 +82,7 @@ export default async function PostingPage({ params, searchParams }: Props) {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <Link href="/entreprise" className="text-sm text-stone-600 hover:underline">
+      <Link href="/entreprise" className="text-ink-muted text-sm hover:underline">
         {t("back")}
       </Link>
       <OrganizationNotice org={org} />
@@ -95,30 +95,30 @@ export default async function PostingPage({ params, searchParams }: Props) {
         <div className="flex flex-wrap items-center gap-2">
           <PostingStatusBadge status={status} />
           {status === "LIVE" && posting.expiresAt ? (
-            <span className="text-sm text-stone-600">
+            <span className="text-ink-muted text-sm">
               {t("liveUntil", { date: format.dateTime(posting.expiresAt, "short") })}
             </span>
           ) : null}
         </div>
         <h1 className="mt-3 text-2xl font-semibold tracking-tight break-words">{offer.title}</h1>
-        <p className="mt-1 text-sm text-stone-500">{t("views", { count: posting.viewCount })}</p>
+        <p className="text-ink-subtle mt-1 text-sm">{t("views", { count: posting.viewCount })}</p>
       </header>
 
       <section className={sectionClass} aria-label={t(`help.${status}`)}>
-        <p className="text-stone-700">{t(`help.${status}`)}</p>
+        <p className="text-ink-muted">{t(`help.${status}`)}</p>
         {status === "IN_REVIEW" && org.status === "PENDING" ? (
-          <p className="mt-2 text-sm text-amber-800">{t("reviewPendingOrg")}</p>
+          <p className="text-warning-ink mt-2 text-sm">{t("reviewPendingOrg")}</p>
         ) : null}
         {posting.flags.length > 0 && (status === "IN_REVIEW" || status === "AWAITING_PAYMENT") ? (
-          <p className="mt-2 text-sm text-amber-800">{t("flagged")}</p>
+          <p className="text-warning-ink mt-2 text-sm">{t("flagged")}</p>
         ) : null}
         {status === "REJECTED" && posting.reviewNote ? (
-          <p className="mt-2 rounded-lg bg-stone-100 px-3 py-2 text-sm text-stone-700">
+          <p className="bg-muted text-ink-muted mt-2 rounded-lg px-3 py-2 text-sm">
             {t("rejectedReason", { reason: posting.reviewNote })}
           </p>
         ) : null}
         {payable ? (
-          <p className="mt-3 text-sm text-stone-600">{t("price", { days, price: priceLabel })}</p>
+          <p className="text-ink-muted mt-3 text-sm">{t("price", { days, price: priceLabel })}</p>
         ) : null}
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -177,7 +177,7 @@ export default async function PostingPage({ params, searchParams }: Props) {
         />
       ) : (
         <section className={sectionClass}>
-          <p className="text-sm whitespace-pre-line text-stone-700">{offer.description}</p>
+          <p className="text-ink-muted text-sm whitespace-pre-line">{offer.description}</p>
         </section>
       )}
     </div>
