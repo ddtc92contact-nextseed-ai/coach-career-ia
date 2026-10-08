@@ -32,10 +32,13 @@ export default async function SignupPage({ params, searchParams }: Props) {
       : `/connexion?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   return (
-    <AuthCard title={t("title")}>
-      <p className="text-ink-muted mb-6 text-sm">{t("intro")}</p>
+    <AuthCard
+      title={t("title")}
+      panel={callbackUrl.startsWith("/entreprise") ? "company" : "candidate"}
+    >
+      <p className="text-ink-muted mb-7 text-pretty">{t("intro")}</p>
       <SignupForm callbackUrl={callbackUrl} />
-      <p className="text-ink-muted mt-6 text-center text-sm">
+      <p className="text-ink-muted mt-6 text-center">
         {t("haveAccount")}{" "}
         <Link href={loginHref} className="text-brand-ink font-medium underline underline-offset-4">
           {t("login")}

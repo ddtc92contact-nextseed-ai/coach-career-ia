@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useMemo, useState, type FormEvent } from "react";
+import { buttonClass } from "@/components/button";
 import { PasswordField } from "@/components/password-field";
 import { useRouter } from "@/i18n/navigation";
 import { accountErrorKey, createAccountClient } from "@/lib/auth/account-client";
@@ -37,11 +38,11 @@ export function ResetForm({ token }: { token: string }) {
   };
 
   return (
-    <form method="post" noValidate onSubmit={onSubmit} className="space-y-4">
+    <form method="post" noValidate onSubmit={onSubmit} className="space-y-5">
       {error ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-xl border px-4 py-3"
         >
           {t(`errors.${error.key}`, { minutes: error.minutes })}
         </p>
@@ -51,14 +52,11 @@ export function ResetForm({ token }: { token: string }) {
         value={password}
         onChange={setPassword}
         autoComplete="new-password"
+        size="lg"
         meter
         error={tooShort ? tField("tooShort", { min: MIN_PASSWORD_LENGTH }) : undefined}
       />
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className={`${buttonClass("primary", "lg")} w-full`}>
         {pending ? t("submitting") : t("submit")}
       </button>
     </form>

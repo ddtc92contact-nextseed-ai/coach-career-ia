@@ -8,8 +8,13 @@ import type { FieldErrors, ValidationError } from "@/lib/career/schemas";
 /** État renvoyé par les actions serveur des formulaires. */
 export type FormState = { ok?: boolean; errors?: FieldErrors };
 
-export const inputClass =
-  "mt-1 block w-full rounded-lg border border-line-strong bg-surface px-3 py-2.5 text-base text-ink shadow-xs transition-[border-color,box-shadow] placeholder:text-ink-subtle focus:border-brand focus:ring-3 focus:ring-brand/20 focus:outline-none aria-[invalid=true]:border-danger sm:text-sm";
+const inputBase =
+  "mt-1 block w-full rounded-lg border border-line-strong bg-surface text-ink shadow-xs transition-[border-color,box-shadow] placeholder:text-ink-subtle focus:border-brand focus:ring-3 focus:ring-brand/20 focus:outline-none aria-[invalid=true]:border-danger";
+
+export const inputClass = `${inputBase} px-3 py-2.5 text-base sm:text-sm`;
+
+/** Champ agrandi (connexion, inscription) : 52 px de haut, texte 17 px. */
+export const inputClassLg = `${inputBase} mt-1.5 px-4 py-3 text-[1.0625rem]`;
 
 /**
  * Formulaire qui appelle une action sans réinitialiser les champs (les

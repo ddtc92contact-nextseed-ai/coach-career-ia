@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { AuthCard } from "@/components/auth-card";
+import { Icon } from "@/components/icons";
 import { LegalConsent } from "@/components/legal-consent";
 import { Link, redirect } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -41,18 +42,21 @@ export default async function LoginPage({ params, searchParams }: Props) {
     callbackUrl === "/app" ? path : `${path}?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   return (
-    <AuthCard title={t("title")}>
+    <AuthCard
+      title={t("title")}
+      panel={callbackUrl.startsWith("/entreprise") ? "company" : "candidate"}
+    >
       {notice ? (
         <p
           role="status"
-          className="border-brand-line bg-brand-soft text-brand-ink mb-4 rounded-lg border px-4 py-3 text-sm"
+          className="border-brand-line bg-brand-soft text-brand-ink mb-5 rounded-xl border px-4 py-3"
         >
           {notice}
         </p>
       ) : null}
-      <p className="text-ink-muted mb-6 text-sm">{t("intro")}</p>
+      <p className="text-ink-muted mb-7 text-pretty">{t("intro")}</p>
       <PasswordLoginForm callbackUrl={callbackUrl} />
-      <p className="text-ink-muted mt-4 text-center text-sm">
+      <p className="text-ink-muted mt-6 text-center">
         {tPassword("noAccount")}{" "}
         <Link
           href={withCallback("/inscription")}
@@ -61,18 +65,27 @@ export default async function LoginPage({ params, searchParams }: Props) {
           {tPassword("signup")}
         </Link>
       </p>
-      <details className="group border-line mt-6 rounded-xl border p-4">
-        <summary className="text-ink-muted cursor-pointer text-sm font-medium">
-          {t("magicToggle")}
+      <details className="group border-line bg-subtle mt-8 rounded-2xl border">
+        <summary className="text-ink hover:bg-muted flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-5 py-4 font-medium [&::-webkit-details-marker]:hidden">
+          <span className="flex items-center gap-3">
+            <Icon name="send" className="text-brand-ink size-5 shrink-0" />
+            {t("magicToggle")}
+          </span>
+          <Icon
+            name="chevron"
+            className="text-ink-subtle size-5 shrink-0 group-open:rotate-180 motion-safe:transition-transform"
+          />
         </summary>
-        <p className="text-ink-muted mt-3 mb-4 text-sm">{t("magicIntro")}</p>
-        <LoginForm callbackUrl={callbackUrl} />
+        <div className="px-5 pb-5">
+          <p className="text-ink-muted mb-4 text-base text-pretty">{t("magicIntro")}</p>
+          <LoginForm callbackUrl={callbackUrl} />
+        </div>
       </details>
       <div className="mt-6">
         <LegalConsent audience="candidate" />
       </div>
-      <p className="mt-6 text-center text-sm">
-        <Link href="/" className="text-ink-subtle underline-offset-4 hover:underline">
+      <p className="mt-6 text-center text-base">
+        <Link href="/" className="text-ink-muted underline-offset-4 hover:underline">
           {t("backHome")}
         </Link>
       </p>

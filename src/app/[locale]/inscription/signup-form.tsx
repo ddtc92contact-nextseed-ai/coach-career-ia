@@ -4,7 +4,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { useId, useMemo, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { CheckInbox } from "@/components/auth/check-inbox";
-import { inputClass } from "@/components/form";
+import { buttonClass } from "@/components/button";
+import { inputClassLg } from "@/components/form";
+import { Icon } from "@/components/icons";
 import { PasswordField } from "@/components/password-field";
 import { Link } from "@/i18n/navigation";
 import { accountErrorKey, createAccountClient } from "@/lib/auth/account-client";
@@ -66,17 +68,17 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
   };
 
   return (
-    <form method="post" noValidate onSubmit={onSubmit} className="space-y-4">
+    <form method="post" noValidate onSubmit={onSubmit} className="space-y-5">
       {error ? (
         <p
           role="alert"
-          className="border-danger-line bg-danger-soft text-danger-ink rounded-lg border px-4 py-3 text-sm"
+          className="border-danger-line bg-danger-soft text-danger-ink rounded-xl border px-4 py-3"
         >
           {t(`errors.${error.key}`, { minutes: error.minutes })}
         </p>
       ) : null}
       <div>
-        <label htmlFor={emailId} className="text-ink block text-sm font-medium">
+        <label htmlFor={emailId} className="text-ink block text-base font-medium">
           {t("emailLabel")}
         </label>
         <input
@@ -90,10 +92,10 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
           onChange={(e) => setEmail(e.target.value)}
           aria-invalid={fields.email ? true : undefined}
           aria-describedby={fields.email ? `${emailId}-error` : undefined}
-          className={inputClass}
+          className={inputClassLg}
         />
         {fields.email ? (
-          <p id={`${emailId}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
+          <p id={`${emailId}-error`} role="alert" className="text-danger-ink mt-1.5 text-base">
             {t("errors.invalidEmail")}
           </p>
         ) : null}
@@ -103,10 +105,14 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
         value={password}
         onChange={setPassword}
         autoComplete="new-password"
+        size="lg"
         meter
         error={fields.password ? tField("tooShort", { min: MIN_PASSWORD_LENGTH }) : undefined}
       />
-      <p className="bg-subtle text-ink-muted rounded-lg px-3 py-2 text-xs">{t("vaultNote")}</p>
+      <p className="border-line bg-subtle text-ink-muted flex gap-3 rounded-xl border px-4 py-3 text-sm">
+        <Icon name="lock" className="text-brand-ink mt-0.5 size-4.5 shrink-0" />
+        <span>{t("vaultNote")}</span>
+      </p>
       <div>
         <div className="flex items-start gap-2">
           <input
@@ -116,9 +122,9 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
             onChange={(e) => setTerms(e.target.checked)}
             aria-invalid={fields.terms ? true : undefined}
             aria-describedby={fields.terms ? `${termsId}-error` : undefined}
-            className="mt-1 size-4 shrink-0"
+            className="accent-brand mt-0.5 size-5 shrink-0"
           />
-          <label htmlFor={termsId} className="text-ink-muted text-sm">
+          <label htmlFor={termsId} className="text-ink-muted text-base">
             {t.rich("acceptTerms", {
               terms: (chunks) => (
                 <Link href={legalPath("terms")} className={linkClass} target="_blank">
@@ -134,16 +140,12 @@ export function SignupForm({ callbackUrl }: { callbackUrl: string }) {
           </label>
         </div>
         {fields.terms ? (
-          <p id={`${termsId}-error`} role="alert" className="text-danger-ink mt-1.5 text-sm">
+          <p id={`${termsId}-error`} role="alert" className="text-danger-ink mt-1.5 text-base">
             {t("errors.terms")}
           </p>
         ) : null}
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-primary text-on-primary hover:bg-primary-hover w-full rounded-lg px-4 py-2.5 font-medium disabled:opacity-60"
-      >
+      <button type="submit" disabled={pending} className={`${buttonClass("primary", "lg")} w-full`}>
         {pending ? t("submitting") : t("submit")}
       </button>
     </form>
