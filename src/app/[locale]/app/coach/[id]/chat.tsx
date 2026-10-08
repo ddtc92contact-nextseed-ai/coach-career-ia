@@ -241,6 +241,8 @@ export function CoachChat({
 
   return (
     <div className="flex flex-col gap-5">
+      {/* Titre de section pour l'ordre des titres (les suggestions sont des h3). */}
+      <h2 className="sr-only">{t("chat.label")}</h2>
       <ol aria-label={t("chat.label")} className="flex flex-col gap-5">
         <li>
           <Bubble role="ASSISTANT" author={t("chat.coach")}>

@@ -8,7 +8,7 @@
 const VARIANTS = {
   primary: "bg-primary text-on-primary shadow-sm hover:bg-primary-hover",
   secondary: "border border-line-strong bg-surface text-ink shadow-xs hover:bg-muted",
-  ghost: "text-ink-muted hover:bg-muted hover:text-ink",
+  ghost: "border border-transparent text-ink-muted hover:bg-muted hover:text-ink",
   signal: "bg-signal text-night shadow-md hover:brightness-110",
   approve: "bg-brand text-on-brand shadow-sm hover:bg-brand-hover",
 } as const;
