@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { Icon, type IconName } from "@/components/icons";
 
 const TONES = {
   default: "bg-surface border-line",
@@ -35,38 +36,50 @@ export function Card({
   );
 }
 
-/** Titre de carte (`h2` par défaut, style H2 de la charte), description et actions. */
+/**
+ * Titre de carte (`h2` par défaut, style H2 de la charte), description,
+ * actions et, en option, une icône de la charte dans une pastille.
+ */
 export function CardHeader({
   title,
   description,
   actions,
   id,
+  icon,
   as: Heading = "h2",
 }: {
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
   id?: string;
+  icon?: IconName;
   as?: "h2" | "h3";
 }) {
   return (
     <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-      <div className="min-w-0">
-        <Heading
-          id={id}
-          className={
-            Heading === "h2"
-              ? "font-display text-xl font-bold tracking-tight text-balance sm:text-2xl"
-              : "text-lg font-semibold text-balance"
-          }
-        >
-          {title}
-        </Heading>
-        {description ? (
-          <p className="text-ink-muted in-data-[tone=night]:text-on-night-muted mt-1.5 max-w-3xl text-pretty">
-            {description}
-          </p>
+      <div className="flex min-w-0 grow items-start gap-3">
+        {icon ? (
+          <span className="bg-brand-soft text-brand-ink in-data-[tone=night]:bg-signal/15 in-data-[tone=night]:text-signal inline-flex size-11 shrink-0 items-center justify-center rounded-xl">
+            <Icon name={icon} className="size-6" />
+          </span>
         ) : null}
+        <div className="min-w-0">
+          <Heading
+            id={id}
+            className={
+              Heading === "h2"
+                ? "font-display text-xl font-bold tracking-tight text-balance sm:text-2xl"
+                : "text-lg font-semibold text-balance"
+            }
+          >
+            {title}
+          </Heading>
+          {description ? (
+            <p className="text-ink-muted in-data-[tone=night]:text-on-night-muted mt-1.5 max-w-3xl text-pretty">
+              {description}
+            </p>
+          ) : null}
+        </div>
       </div>
       {actions}
     </div>
