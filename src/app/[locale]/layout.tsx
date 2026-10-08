@@ -36,7 +36,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   // Mêmes valeurs que --cc-canvas (globals.css), clair puis sombre.
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "oklch(0.985 0.005 85)" },
+    { media: "(prefers-color-scheme: light)", color: "oklch(0.952 0.014 275)" },
     { media: "(prefers-color-scheme: dark)", color: "oklch(0.165 0.022 275)" },
   ],
 };
