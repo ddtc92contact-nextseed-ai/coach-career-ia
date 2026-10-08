@@ -28,14 +28,15 @@ const POINTS = ["salary", "pay", "privacy"] as const;
 
 /**
  * « Je recrute » : présentation publique de l'espace entreprise, puis (une
- * fois connecté par lien magique) création de l'organisation. Un compte
+ * fois connecté, par mot de passe ou lien magique) création de l'organisation. Un compte
  * déjà membre est renvoyé vers son espace.
  */
 export default async function EmployerSignupPage() {
-  const [user, locale, t] = await Promise.all([
+  const [user, locale, t, tSignup] = await Promise.all([
     getCurrentUser(),
     getLocale(),
     getTranslations("employer.signup"),
+    getTranslations("auth.signup"),
   ]);
   if (user && (await getMembership(user.id))) redirect({ href: "/entreprise", locale });
   const days = postingDurationDays();
@@ -80,12 +81,23 @@ export default async function EmployerSignupPage() {
               <OrganizationForm countryNames={countryNames(locale)} />
             </>
           ) : (
-            <Link
-              href="/connexion?callbackUrl=%2Fentreprise%2Finscription"
-              className="block rounded-lg bg-stone-900 px-5 py-3 text-center font-medium text-white hover:bg-stone-700"
-            >
-              {t("cta")}
-            </Link>
+            <>
+              <Link
+                href="/inscription?callbackUrl=%2Fentreprise%2Finscription"
+                className="block rounded-lg bg-stone-900 px-5 py-3 text-center font-medium text-white hover:bg-stone-700"
+              >
+                {t("cta")}
+              </Link>
+              <p className="mt-4 text-center text-sm text-stone-600">
+                {tSignup("haveAccount")}{" "}
+                <Link
+                  href="/connexion?callbackUrl=%2Fentreprise%2Finscription"
+                  className="text-brand-700 font-medium underline underline-offset-4"
+                >
+                  {tSignup("login")}
+                </Link>
+              </p>
+            </>
           )}
         </section>
       </main>

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { EmailConfig } from "next-auth/providers";
+import { secureAdapter } from "@/lib/auth/adapter";
 import { db } from "@/lib/db";
 import { serverEnv } from "@/lib/env";
 import { logger } from "@/lib/logger";
@@ -37,7 +38,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
   };
 
   return {
-    adapter: PrismaAdapter(db),
+    adapter: secureAdapter(PrismaAdapter(db)),
     providers: [magicLink],
     secret: env.AUTH_SECRET,
     // Derrière Traefik : l'hôte vient des en-têtes X-Forwarded-* du proxy.
@@ -49,9 +50,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
       error: "/connexion/erreur",
     },
     callbacks: {
+      // Forme minimale exposée au navigateur (`/api/auth/session`) : ni hachage,
+      // ni paramètres de dérivation, ni facturation, ni jeton de session.
       session({ session, user }) {
-        session.user.id = user.id;
-        return session;
+        return {
+          expires: session.expires,
+          user: { id: user.id, email: user.email },
+        } as typeof session;
       },
     },
     events: {

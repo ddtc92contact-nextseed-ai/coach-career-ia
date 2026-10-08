@@ -73,7 +73,7 @@
     "login": {
       "metaTitle": "Connexion",
       "title": "Connexion à votre espace",
-      "intro": "Pas de mot de passe : saisissez votre adresse e-mail, nous vous envoyons un lien de connexion à usage unique. Si vous n’avez pas encore d’espace, il sera créé à la première connexion.",
+      "intro": "Connectez-vous avec votre adresse e-mail et votre mot de passe.",
       "emailLabel": "Adresse e-mail",
       "emailPlaceholder": "vous@exemple.fr",
       "submit": "Recevoir mon lien de connexion",
@@ -82,7 +82,9 @@
       "errors": {
         "invalidEmail": "Saisissez une adresse e-mail valide.",
         "sendFailed": "Impossible d’envoyer le lien pour le moment. Réessayez dans quelques instants."
-      }
+      },
+      "magicToggle": "Recevoir plutôt un lien de connexion par e-mail",
+      "magicIntro": "Sans mot de passe : nous vous envoyons un lien de connexion à usage unique, valable 15 minutes. Si vous n’avez pas encore d’espace, il sera créé à la première connexion."
     },
     "verify": {
       "title": "Vérifiez votre boîte mail",
@@ -97,6 +99,120 @@
         "Configuration": "Le service de connexion est momentanément indisponible. Réessayez dans quelques instants.",
         "AccessDenied": "L’accès a été refusé.",
         "Default": "Une erreur est survenue pendant la connexion. Réessayez."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Mot de passe",
+      "remember": "Rester connecté (30 jours)",
+      "submit": "Se connecter",
+      "submitting": "Connexion… (quelques secondes)",
+      "forgot": "Mot de passe oublié ?",
+      "noAccount": "Pas encore de compte ?",
+      "signup": "Créer un compte",
+      "verified": "Adresse e-mail confirmée. Vous pouvez maintenant vous connecter.",
+      "passwordReset": "Mot de passe modifié. Connectez-vous avec votre nouveau mot de passe.",
+      "errors": {
+        "invalidEmail": "Saisissez une adresse e-mail valide.",
+        "passwordRequired": "Saisissez votre mot de passe.",
+        "invalidCredentials": "Adresse e-mail ou mot de passe incorrect. Vous vous connectiez jusqu’ici par lien e-mail ? Définissez un mot de passe avec « Mot de passe oublié ? », ou recevez un lien de connexion ci-dessous.",
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+        "generic": "Une erreur est survenue. Réessayez."
+      }
+    },
+    "passwordField": {
+      "show": "Afficher",
+      "hide": "Masquer",
+      "showLabel": "Afficher le mot de passe",
+      "hideLabel": "Masquer le mot de passe",
+      "hint": "Au moins {min} caractères. Une phrase de plusieurs mots est facile à retenir et difficile à deviner.",
+      "strength": "Robustesse : {level}",
+      "levels": {
+        "tooShort": "trop court",
+        "weak": "faible",
+        "fair": "moyenne",
+        "good": "bonne",
+        "strong": "excellente"
+      },
+      "tooShort": "Le mot de passe doit contenir au moins {min} caractères."
+    },
+    "signup": {
+      "metaTitle": "Créer un compte",
+      "title": "Créer votre compte",
+      "intro": "Une adresse e-mail et un mot de passe suffisent. Nous vous enverrons un lien pour confirmer votre adresse.",
+      "emailLabel": "Adresse e-mail",
+      "passwordLabel": "Mot de passe",
+      "vaultNote": "Ce mot de passe protège aussi votre coffre d’identité, chiffré dans votre navigateur : nous ne le recevons jamais et ne pouvons pas le retrouver pour vous.",
+      "acceptTerms": "J’accepte les <terms>conditions d’utilisation</terms> et la <privacy>politique de confidentialité</privacy>.",
+      "submit": "Créer mon compte",
+      "submitting": "Création du compte… (quelques secondes)",
+      "haveAccount": "Déjà un compte ?",
+      "login": "Se connecter",
+      "errors": {
+        "invalidEmail": "Saisissez une adresse e-mail valide.",
+        "terms": "Acceptez les conditions d’utilisation et la politique de confidentialité pour continuer.",
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+        "generic": "Une erreur est survenue. Réessayez."
+      }
+    },
+    "checkInbox": {
+      "title": "Confirmez votre adresse e-mail",
+      "text": "Nous avons envoyé un e-mail à {email}. Cliquez sur le lien qu’il contient pour confirmer votre adresse (valable 24 heures), puis connectez-vous. Si cette adresse avait déjà un compte, l’e-mail vous explique comment vous connecter.",
+      "unverified": "Votre adresse e-mail n’est pas encore confirmée. Cliquez sur le lien reçu à {email}, puis connectez-vous à nouveau.",
+      "help": "Rien reçu ? Vérifiez vos courriers indésirables, ou renvoyez le lien.",
+      "resend": "Renvoyer le lien",
+      "resending": "Envoi…",
+      "resent": "Si un compte non confirmé existe pour cette adresse, un nouveau lien vient d’être envoyé.",
+      "back": "Retour à la connexion",
+      "errors": {
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "generic": "Impossible d’envoyer le lien pour le moment. Réessayez dans quelques instants."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Confirmation de l’adresse e-mail",
+      "successTitle": "Adresse e-mail confirmée",
+      "successText": "Votre compte est activé. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
+      "login": "Se connecter",
+      "failedTitle": "Lien invalide ou expiré",
+      "failedText": "Ce lien de confirmation a expiré ou a déjà été utilisé. Connectez-vous : si votre adresse n’est pas encore confirmée, vous pourrez demander un nouveau lien."
+    },
+    "vaultAfterReset": {
+      "title": "À savoir avant de réinitialiser votre mot de passe :",
+      "text": "votre coffre d’identité est chiffré avec votre mot de passe actuel, que nous ne connaissons pas. Après une réinitialisation, il ne pourra être rouvert qu’avec votre clé de secours. Sans elle, vous devrez saisir à nouveau votre identité (nom, coordonnées, employeurs, écoles, liens, CV d’origine). Votre mémoire de carrière, vos contacts et tout le reste sont conservés."
+    },
+    "forgot": {
+      "metaTitle": "Mot de passe oublié",
+      "title": "Mot de passe oublié",
+      "intro": "Saisissez l’adresse e-mail de votre compte : nous vous envoyons un lien pour choisir un nouveau mot de passe (valable 30 minutes). Il permet aussi de définir un mot de passe si vous vous connectiez jusqu’ici par lien e-mail.",
+      "emailLabel": "Adresse e-mail",
+      "submit": "Recevoir le lien",
+      "submitting": "Envoi…",
+      "sent": "Si un compte existe pour cette adresse, un lien vient d’être envoyé. Il est valable 30 minutes et ne fonctionne qu’une seule fois.",
+      "back": "Retour à la connexion",
+      "errors": {
+        "invalidEmail": "Saisissez une adresse e-mail valide.",
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+        "generic": "Une erreur est survenue. Réessayez."
+      }
+    },
+    "reset": {
+      "metaTitle": "Nouveau mot de passe",
+      "title": "Choisir un nouveau mot de passe",
+      "intro": "Ce mot de passe vous servira à vous connecter et à ouvrir votre coffre d’identité.",
+      "passwordLabel": "Nouveau mot de passe",
+      "submit": "Enregistrer le mot de passe",
+      "submitting": "Enregistrement… (quelques secondes)",
+      "invalidTitle": "Lien invalide ou expiré",
+      "invalidText": "Ce lien de réinitialisation a expiré (il est valable 30 minutes) ou a déjà été utilisé.",
+      "requestNew": "Demander un nouveau lien",
+      "errors": {
+        "invalidToken": "Ce lien a expiré ou a déjà été utilisé. Demandez-en un nouveau.",
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+        "generic": "Une erreur est survenue. Réessayez."
       }
     }
   },
@@ -227,6 +343,29 @@
       "portalMessage": {
         "subject": "Nouveau message de la personne candidate pour {title}",
         "body": "La personne candidate qui vous a contacté au sujet de votre offre « {title} » vous a envoyé un nouveau message. Il vous attend dans la messagerie de votre espace entreprise."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Bonjour,",
+      "verifyEmail": {
+        "subject": "Confirmez votre adresse e-mail",
+        "intro": "Pour activer votre compte sur {host}, confirmez votre adresse e-mail avec ce lien (valable 24 heures) :",
+        "button": "Confirmer mon adresse",
+        "ignore": "Si vous n’avez pas créé de compte, ignorez ce message : aucun compte ne sera activé."
+      },
+      "resetPassword": {
+        "subject": "Réinitialisation de votre mot de passe",
+        "intro": "Pour choisir un nouveau mot de passe sur {host}, utilisez ce lien (valable 30 minutes, une seule fois) :",
+        "button": "Choisir un nouveau mot de passe",
+        "ignore": "Si vous n’êtes pas à l’origine de cette demande, ignorez ce message : votre mot de passe ne change pas."
+      },
+      "accountExists": {
+        "subject": "Un compte existe déjà avec cette adresse",
+        "intro": "Quelqu’un (vous, sans doute) a voulu créer un compte sur {host} avec cette adresse, qui en a déjà un. Pour vous connecter :",
+        "button": "Me connecter",
+        "extraText": "Mot de passe oublié, ou vous vous connectiez par lien e-mail ? Choisissez un mot de passe ici : {url}",
+        "ignore": "Si vous n’êtes pas à l’origine de cette demande, ignorez ce message : rien n’a été modifié."
       }
     }
   },
@@ -601,24 +740,14 @@
       "title": "Personne, pas même nous, ne peut lire ces données",
       "encrypted": "Vos nom, coordonnées, employeurs, écoles, liens et CV d’origine sont chiffrés dans votre navigateur avant tout envoi. Nos serveurs ne reçoivent et ne stockent qu’un bloc illisible.",
       "nobody": "Ni notre équipe, ni notre hébergeur, ni quelqu’un qui volerait notre base de données ne peut les déchiffrer : la clé n’existe que chez vous.",
-      "you": "Vous seul les déverrouillez, avec votre phrase secrète. Elle n’est jamais envoyée ni enregistrée par nos services.",
+      "you": "Vous seul les déverrouillez, avec le mot de passe de votre compte. Il n’est jamais envoyé ni enregistré par nos services : seule une empreinte qui n’ouvre pas le coffre sert à la connexion.",
       "handover": "Votre identité n’est révélée à un recruteur que si vous le décidez, pour ce recruteur précis.",
       "lossTitle": "Conséquence importante :",
-      "loss": "si vous perdez à la fois votre phrase secrète et votre clé de secours, ces données sont perdues définitivement. Nous ne pourrons pas les récupérer pour vous. Votre profil professionnel, lui, n’est pas concerné."
-    },
-    "setup": {
-      "title": "Créer mon coffre d’identité",
-      "intro": "Choisissez une phrase secrète propre à ce coffre, différente de vos autres mots de passe. Une suite de plusieurs mots est facile à retenir et difficile à deviner.",
-      "passphrase": "Phrase secrète",
-      "passphraseHint": "Au moins {min} caractères.",
-      "confirm": "Confirmez la phrase secrète",
-      "understand": "J’ai compris que si je perds ma phrase secrète et ma clé de secours, personne ne pourra récupérer mon identité.",
-      "submit": "Créer mon coffre",
-      "working": "Création du coffre… (quelques secondes)"
+      "loss": "si vous oubliez votre mot de passe et perdez votre clé de secours, ces données sont perdues définitivement. Nous ne pourrons pas les récupérer pour vous. Votre profil professionnel, lui, n’est pas concerné."
     },
     "recovery": {
       "title": "Votre clé de secours",
-      "intro": "Elle permet de rouvrir votre coffre si vous oubliez votre phrase secrète. Elle ne sera plus jamais affichée.",
+      "intro": "Elle permet de rouvrir votre coffre si vous oubliez votre mot de passe (ou votre ancienne phrase secrète). Elle ne sera plus jamais affichée.",
       "warning": "Conservez-la hors ligne : imprimée, dans un gestionnaire de mots de passe ou dans un fichier rangé en lieu sûr. Ne la partagez avec personne.",
       "download": "Télécharger (.txt)",
       "print": "Imprimer",
@@ -711,7 +840,7 @@
     },
     "reset": {
       "title": "Réinitialiser le coffre",
-      "intro": "Supprime définitivement votre identité chiffrée et votre CV d’origine. Utile si vous avez perdu votre phrase secrète et votre clé de secours : vous pourrez ensuite créer un nouveau coffre. Votre mémoire de carrière n’est pas touchée.",
+      "intro": "Supprime définitivement votre identité chiffrée et votre CV d’origine. Utile si vous ne pouvez plus ouvrir le coffre (mot de passe réinitialisé ou phrase secrète oubliée, sans clé de secours) : vous pourrez ensuite créer un nouveau coffre. Votre mémoire de carrière n’est pas touchée.",
       "button": "Supprimer mon coffre",
       "confirm": "Supprimer définitivement votre coffre d’identité et votre CV ? Cette action est irréversible.",
       "working": "Suppression…"
@@ -726,9 +855,54 @@
       "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
       "cvTooLarge": "Fichier trop volumineux.",
       "cvType": "Format non accepté : PDF, Word ou OpenDocument uniquement.",
-      "generic": "Une erreur est survenue. Réessayez."
+      "generic": "Une erreur est survenue. Réessayez.",
+      "wrongPassword": "Mot de passe incorrect."
     },
-    "exportNotice": "Données chiffrées dans votre navigateur : seules votre phrase secrète ou votre clé de secours permettent de les lire."
+    "exportNotice": "Données chiffrées dans votre navigateur : seules votre phrase secrète ou votre clé de secours permettent de les lire.",
+    "accountSetup": {
+      "title": "Créer mon coffre d’identité",
+      "intro": "Votre coffre est protégé par le mot de passe de votre compte : aucune phrase secrète supplémentaire. Une clé de secours vous sera remise : elle seule permet de le rouvrir si vous réinitialisez votre mot de passe par e-mail.",
+      "password": "Mot de passe du compte",
+      "understand": "J’ai compris que si j’oublie mon mot de passe et perds ma clé de secours, personne ne pourra récupérer mon identité.",
+      "submit": "Créer mon coffre",
+      "working": "Création du coffre… (quelques secondes)"
+    },
+    "noPassword": {
+      "title": "Définissez d’abord un mot de passe",
+      "text": "Votre coffre d’identité est protégé par le mot de passe de votre compte. Vous vous connectez aujourd’hui par lien e-mail : définissez un mot de passe dans les paramètres, puis revenez ici.",
+      "link": "Définir un mot de passe"
+    },
+    "passwordTip": "Définissez un mot de passe de compte dans les paramètres : il remplacera la phrase secrète de ce coffre, et un seul mot de passe vous suffira.",
+    "passwordTipLink": "Définir un mot de passe",
+    "accountUnlock": {
+      "title": "Déverrouiller mon identité",
+      "intro": "Votre coffre est verrouillé. Saisissez le mot de passe de votre compte : le déchiffrement se fait dans ce navigateur.",
+      "password": "Mot de passe",
+      "submit": "Déverrouiller",
+      "working": "Déverrouillage… (quelques secondes)",
+      "forgot": "Mot de passe oublié ?"
+    },
+    "legacy": {
+      "title": "Un seul mot de passe pour votre coffre",
+      "intro": "Votre coffre est encore protégé par son ancienne phrase secrète. Saisissez-la une dernière fois : il s’ouvrira ensuite avec le mot de passe de votre compte, sans rien d’autre à retenir. Votre clé de secours reste valable.",
+      "passphrase": "Ancienne phrase secrète du coffre",
+      "recoveryKey": "Clé de secours",
+      "useRecovery": "Phrase oubliée ? Utiliser ma clé de secours",
+      "usePassphrase": "Utiliser l’ancienne phrase secrète",
+      "password": "Mot de passe du compte",
+      "submit": "Relier mon coffre à mon mot de passe",
+      "working": "Mise à jour du coffre… (quelques secondes)"
+    },
+    "stale": {
+      "title": "Votre mot de passe a été réinitialisé",
+      "intro": "Votre coffre d’identité était chiffré avec votre ancien mot de passe, que nous ne connaissons pas. Saisissez votre clé de secours pour le rouvrir : il sera ensuite protégé par votre nouveau mot de passe.",
+      "recoveryKey": "Clé de secours",
+      "password": "Mot de passe du compte",
+      "submit": "Rouvrir mon coffre",
+      "working": "Ouverture… (quelques secondes)",
+      "noKeyTitle": "Pas de clé de secours ?",
+      "noKey": "Votre identité chiffrée (nom, coordonnées, employeurs, écoles, liens, CV d’origine) ne peut plus être lue, par personne, nous compris. Réinitialisez le coffre ci-dessous, puis saisissez-la à nouveau. Votre mémoire de carrière, vos contacts, vos garde-fous et tout le reste sont conservés."
+    }
   },
   "guardRails": {
     "title": "Mes garde-fous",
@@ -962,6 +1136,25 @@
       "minScore": "Score minimal",
       "minScoreHint": "Seules les opportunités avec au moins ce score sont envoyées.",
       "save": "Enregistrer"
+    },
+    "password": {
+      "title": "Mot de passe",
+      "introSet": "Votre compte n’a pas encore de mot de passe : vous vous connectez par lien e-mail. Définissez-en un pour vous connecter avec votre adresse et ce mot de passe ; il ouvrira aussi votre coffre d’identité.",
+      "introChange": "Ce mot de passe sert à la connexion et ouvre votre coffre d’identité. En le changeant, la clé du coffre est ré-enveloppée dans votre navigateur : vos données restent lisibles et votre clé de secours reste valable. Vos autres sessions sont déconnectées.",
+      "current": "Mot de passe actuel",
+      "next": "Nouveau mot de passe",
+      "submitSet": "Définir mon mot de passe",
+      "submitChange": "Changer mon mot de passe",
+      "working": "Enregistrement… (quelques secondes)",
+      "doneSet": "Mot de passe défini. Vous pouvez désormais vous connecter avec votre adresse e-mail et ce mot de passe.",
+      "doneChange": "Mot de passe modifié.",
+      "errors": {
+        "invalidCurrent": "Mot de passe actuel incorrect.",
+        "vaultConflict": "Votre coffre d’identité a été modifié entre-temps. Rechargez la page puis réessayez.",
+        "rateLimited": "Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} other {# minutes}}.",
+        "network": "Connexion au serveur impossible. Vérifiez votre réseau puis réessayez.",
+        "generic": "Une erreur est survenue. Réessayez."
+      }
     }
   },
   "import": {

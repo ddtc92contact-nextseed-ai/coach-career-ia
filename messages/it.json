@@ -73,7 +73,7 @@
     "login": {
       "metaTitle": "Accesso",
       "title": "Acceda al Suo spazio",
-      "intro": "Nessuna password: inserisca il Suo indirizzo e-mail e Le invieremo un link di accesso monouso. Se non ha ancora uno spazio, verrà creato al primo accesso.",
+      "intro": "Acceda con il Suo indirizzo e-mail e la Sua password.",
       "emailLabel": "Indirizzo e-mail",
       "emailPlaceholder": "lei@esempio.it",
       "submit": "Ricevi il link di accesso",
@@ -82,7 +82,9 @@
       "errors": {
         "invalidEmail": "Inserisca un indirizzo e-mail valido.",
         "sendFailed": "Al momento non è possibile inviare il link. Riprovi tra qualche istante."
-      }
+      },
+      "magicToggle": "Ricevere invece un link di accesso via e-mail",
+      "magicIntro": "Senza password: Le inviamo un link di accesso monouso, valido 15 minuti. Se non ha ancora uno spazio, verrà creato al primo accesso."
     },
     "verify": {
       "title": "Controlli la Sua casella di posta",
@@ -97,6 +99,120 @@
         "Configuration": "Il servizio di accesso è momentaneamente non disponibile. Riprovi tra qualche istante.",
         "AccessDenied": "Accesso negato.",
         "Default": "Si è verificato un errore durante l’accesso. Riprovi."
+      }
+    },
+    "passwordLogin": {
+      "passwordLabel": "Password",
+      "remember": "Resta connesso (30 giorni)",
+      "submit": "Accedi",
+      "submitting": "Accesso in corso… (qualche secondo)",
+      "forgot": "Password dimenticata?",
+      "noAccount": "Non ha ancora un account?",
+      "signup": "Crea un account",
+      "verified": "Indirizzo e-mail confermato. Ora può accedere.",
+      "passwordReset": "Password modificata. Acceda con la nuova password.",
+      "errors": {
+        "invalidEmail": "Inserisca un indirizzo e-mail valido.",
+        "passwordRequired": "Inserisca la Sua password.",
+        "invalidCredentials": "Indirizzo e-mail o password errati. Finora accedeva con un link via e-mail? Imposti una password con «Password dimenticata?» oppure riceva un link di accesso qui sotto.",
+        "rateLimited": "Troppi tentativi. Riprovi tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "network": "Impossibile raggiungere il server. Controlli la connessione e riprovi.",
+        "generic": "Si è verificato un errore. Riprovi."
+      }
+    },
+    "passwordField": {
+      "show": "Mostra",
+      "hide": "Nascondi",
+      "showLabel": "Mostra la password",
+      "hideLabel": "Nascondi la password",
+      "hint": "Almeno {min} caratteri. Una frase di più parole è facile da ricordare e difficile da indovinare.",
+      "strength": "Robustezza: {level}",
+      "levels": {
+        "tooShort": "troppo corta",
+        "weak": "debole",
+        "fair": "media",
+        "good": "buona",
+        "strong": "eccellente"
+      },
+      "tooShort": "La password deve contenere almeno {min} caratteri."
+    },
+    "signup": {
+      "metaTitle": "Crea un account",
+      "title": "Crei il Suo account",
+      "intro": "Bastano un indirizzo e-mail e una password. Le invieremo un link per confermare il Suo indirizzo.",
+      "emailLabel": "Indirizzo e-mail",
+      "passwordLabel": "Password",
+      "vaultNote": "Questa password protegge anche la Sua cassaforte dell’identità, cifrata nel Suo browser: non la riceviamo mai e non possiamo recuperarla per Lei.",
+      "acceptTerms": "Accetto le <terms>condizioni d’uso</terms> e l’<privacy>informativa sulla privacy</privacy>.",
+      "submit": "Crea il mio account",
+      "submitting": "Creazione dell’account… (qualche secondo)",
+      "haveAccount": "Ha già un account?",
+      "login": "Accedi",
+      "errors": {
+        "invalidEmail": "Inserisca un indirizzo e-mail valido.",
+        "terms": "Accetti le condizioni d’uso e l’informativa sulla privacy per continuare.",
+        "rateLimited": "Troppi tentativi. Riprovi tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "network": "Impossibile raggiungere il server. Controlli la connessione e riprovi.",
+        "generic": "Si è verificato un errore. Riprovi."
+      }
+    },
+    "checkInbox": {
+      "title": "Confermi il Suo indirizzo e-mail",
+      "text": "Abbiamo inviato un’e-mail a {email}. Clicchi sul link che contiene per confermare il Suo indirizzo (valido 24 ore), poi acceda. Se questo indirizzo aveva già un account, l’e-mail Le spiega come accedere.",
+      "unverified": "Il Suo indirizzo e-mail non è ancora confermato. Clicchi sul link inviato a {email}, poi acceda di nuovo.",
+      "help": "Non ha ricevuto nulla? Controlli la posta indesiderata oppure invii di nuovo il link.",
+      "resend": "Invia di nuovo il link",
+      "resending": "Invio in corso…",
+      "resent": "Se esiste un account non confermato per questo indirizzo, è appena stato inviato un nuovo link.",
+      "back": "Torna all’accesso",
+      "errors": {
+        "rateLimited": "Troppi tentativi. Riprovi tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "generic": "Impossibile inviare il link al momento. Riprovi tra qualche istante."
+      }
+    },
+    "confirm": {
+      "metaTitle": "Conferma dell’indirizzo e-mail",
+      "successTitle": "Indirizzo e-mail confermato",
+      "successText": "Il Suo account è attivo. Acceda con il Suo indirizzo e-mail e la Sua password.",
+      "login": "Accedi",
+      "failedTitle": "Link non valido o scaduto",
+      "failedText": "Questo link di conferma è scaduto o è già stato utilizzato. Acceda: se il Suo indirizzo non è ancora confermato, potrà richiedere un nuovo link."
+    },
+    "vaultAfterReset": {
+      "title": "Da sapere prima di reimpostare la password:",
+      "text": "la Sua cassaforte dell’identità è cifrata con la password attuale, che non conosciamo. Dopo una reimpostazione potrà essere riaperta solo con la chiave di recupero. Senza di essa, dovrà inserire di nuovo la Sua identità (nome, recapiti, datori di lavoro, scuole, link, CV originale). La Sua memoria di carriera, i Suoi contatti e tutto il resto vengono conservati."
+    },
+    "forgot": {
+      "metaTitle": "Password dimenticata",
+      "title": "Password dimenticata",
+      "intro": "Inserisca l’indirizzo e-mail del Suo account: Le invieremo un link per scegliere una nuova password (valido 30 minuti). Le permette anche di impostare una password se finora accedeva con un link via e-mail.",
+      "emailLabel": "Indirizzo e-mail",
+      "submit": "Ricevi il link",
+      "submitting": "Invio in corso…",
+      "sent": "Se esiste un account per questo indirizzo, è appena stato inviato un link. È valido 30 minuti e funziona una sola volta.",
+      "back": "Torna all’accesso",
+      "errors": {
+        "invalidEmail": "Inserisca un indirizzo e-mail valido.",
+        "rateLimited": "Troppi tentativi. Riprovi tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "network": "Impossibile raggiungere il server. Controlli la connessione e riprovi.",
+        "generic": "Si è verificato un errore. Riprovi."
+      }
+    },
+    "reset": {
+      "metaTitle": "Nuova password",
+      "title": "Scegliere una nuova password",
+      "intro": "Questa password Le servirà per accedere e per aprire la Sua cassaforte dell’identità.",
+      "passwordLabel": "Nuova password",
+      "submit": "Salva la password",
+      "submitting": "Salvataggio… (qualche secondo)",
+      "invalidTitle": "Link non valido o scaduto",
+      "invalidText": "Questo link di reimpostazione è scaduto (è valido 30 minuti) o è già stato utilizzato.",
+      "requestNew": "Richiedi un nuovo link",
+      "errors": {
+        "invalidToken": "Questo link è scaduto o è già stato utilizzato. Ne richieda uno nuovo.",
+        "rateLimited": "Troppi tentativi. Riprovi tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "network": "Impossibile raggiungere il server. Controlli la connessione e riprovi.",
+        "generic": "Si è verificato un errore. Riprovi."
       }
     }
   },
@@ -227,6 +343,29 @@
       "portalMessage": {
         "subject": "Nuovo messaggio della persona candidata per {title}",
         "body": "La persona candidata che ti ha contattato per la tua offerta «{title}» ti ha inviato un nuovo messaggio. Ti aspetta nella casella della tua area aziende."
+      }
+    },
+    "account": {
+      "brand": "Coach Career IA",
+      "greeting": "Buongiorno,",
+      "verifyEmail": {
+        "subject": "Confermi il Suo indirizzo e-mail",
+        "intro": "Per attivare il Suo account su {host}, confermi il Suo indirizzo e-mail con questo link (valido 24 ore):",
+        "button": "Conferma il mio indirizzo",
+        "ignore": "Se non ha creato alcun account, ignori questo messaggio: nessun account verrà attivato."
+      },
+      "resetPassword": {
+        "subject": "Reimpostazione della password",
+        "intro": "Per scegliere una nuova password su {host}, usi questo link (valido 30 minuti, una sola volta):",
+        "button": "Scegli una nuova password",
+        "ignore": "Se non ha fatto Lei questa richiesta, ignori questo messaggio: la Sua password non cambia."
+      },
+      "accountExists": {
+        "subject": "Esiste già un account con questo indirizzo",
+        "intro": "Qualcuno (probabilmente Lei) ha cercato di creare un account su {host} con questo indirizzo, che ne ha già uno. Per accedere:",
+        "button": "Accedi",
+        "extraText": "Password dimenticata, o accedeva con un link via e-mail? Scelga una password qui: {url}",
+        "ignore": "Se non ha fatto Lei questa richiesta, ignori questo messaggio: non è stato modificato nulla."
       }
     }
   },
@@ -601,24 +740,14 @@
       "title": "Nessuno, nemmeno noi, può leggere questi dati",
       "encrypted": "Nome, recapiti, datori di lavoro, scuole, link e CV originale vengono cifrati nel tuo browser prima di qualsiasi invio. I nostri server ricevono e conservano solo un blocco illeggibile.",
       "nobody": "Né il nostro team, né il nostro hosting, né chi rubasse il nostro database può decifrarli: la chiave esiste solo da te.",
-      "you": "Solo tu li sblocchi, con la tua passphrase. Non viene mai inviata né salvata dai nostri servizi.",
+      "you": "Solo tu li sblocchi, con la password del tuo account. Non viene mai inviata né salvata dai nostri servizi: per l’accesso si usa solo un’impronta che non apre la cassaforte.",
       "handover": "La tua identità viene rivelata a un recruiter solo se lo decidi tu, per quel recruiter specifico.",
       "lossTitle": "Conseguenza importante:",
-      "loss": "se perdi sia la passphrase sia la chiave di recupero, questi dati sono persi per sempre. Non potremo recuperarli per te. Il tuo profilo professionale non è interessato."
-    },
-    "setup": {
-      "title": "Crea la mia cassaforte d’identità",
-      "intro": "Scegli una passphrase dedicata a questa cassaforte, diversa dalle tue altre password. Una sequenza di più parole è facile da ricordare e difficile da indovinare.",
-      "passphrase": "Passphrase",
-      "passphraseHint": "Almeno {min} caratteri.",
-      "confirm": "Conferma la passphrase",
-      "understand": "Ho capito che se perdo la passphrase e la chiave di recupero, nessuno potrà recuperare la mia identità.",
-      "submit": "Crea la mia cassaforte",
-      "working": "Creazione della cassaforte… (qualche secondo)"
+      "loss": "se dimentichi la password e perdi la chiave di recupero, questi dati sono persi per sempre. Non potremo recuperarli per te. Il tuo profilo professionale non è interessato."
     },
     "recovery": {
       "title": "La tua chiave di recupero",
-      "intro": "Ti permette di riaprire la cassaforte se dimentichi la passphrase. Non verrà più mostrata.",
+      "intro": "Ti permette di riaprire la cassaforte se dimentichi la password (o la vecchia passphrase). Non verrà mai più mostrata.",
       "warning": "Conservala offline: stampata, in un gestore di password o in un file custodito in un luogo sicuro. Non condividerla con nessuno.",
       "download": "Scarica (.txt)",
       "print": "Stampa",
@@ -711,7 +840,7 @@
     },
     "reset": {
       "title": "Reimposta la cassaforte",
-      "intro": "Elimina definitivamente la tua identità cifrata e il CV originale. Utile se hai perso passphrase e chiave di recupero: potrai poi creare una nuova cassaforte. La tua memoria professionale non viene toccata.",
+      "intro": "Elimina definitivamente la tua identità cifrata e il CV originale. Utile se non riesci più ad aprire la cassaforte (password reimpostata o passphrase dimenticata, senza chiave di recupero): potrai poi crearne una nuova. La tua memoria di carriera non viene toccata.",
       "button": "Elimina la mia cassaforte",
       "confirm": "Eliminare definitivamente la cassaforte d’identità e il CV? L’azione è irreversibile.",
       "working": "Eliminazione…"
@@ -726,9 +855,54 @@
       "network": "Impossibile contattare il server. Controlla la connessione e riprova.",
       "cvTooLarge": "File troppo grande.",
       "cvType": "Formato non supportato: solo PDF, Word o OpenDocument.",
-      "generic": "Si è verificato un errore. Riprova."
+      "generic": "Si è verificato un errore. Riprova.",
+      "wrongPassword": "Password errata."
     },
-    "exportNotice": "Dati cifrati nel tuo browser: solo la tua frase segreta o la tua chiave di recupero permettono di leggerli."
+    "exportNotice": "Dati cifrati nel tuo browser: solo la tua frase segreta o la tua chiave di recupero permettono di leggerli.",
+    "accountSetup": {
+      "title": "Crea la mia cassaforte dell’identità",
+      "intro": "La tua cassaforte è protetta dalla password del tuo account: nessuna passphrase aggiuntiva. Riceverai una chiave di recupero: è l’unico modo per riaprirla se reimposti la password via e-mail.",
+      "password": "Password dell’account",
+      "understand": "Ho capito che se dimentico la password e perdo la chiave di recupero, nessuno potrà recuperare la mia identità.",
+      "submit": "Crea la mia cassaforte",
+      "working": "Creazione della cassaforte… (qualche secondo)"
+    },
+    "noPassword": {
+      "title": "Imposta prima una password",
+      "text": "La tua cassaforte dell’identità è protetta dalla password del tuo account. Oggi accedi con un link via e-mail: imposta una password nelle impostazioni, poi torna qui.",
+      "link": "Imposta una password"
+    },
+    "passwordTip": "Imposta una password dell’account nelle impostazioni: sostituirà la passphrase di questa cassaforte e ti basterà una sola password.",
+    "passwordTipLink": "Imposta una password",
+    "accountUnlock": {
+      "title": "Sblocca la mia identità",
+      "intro": "La tua cassaforte è bloccata. Inserisci la password del tuo account: la decifratura avviene in questo browser.",
+      "password": "Password",
+      "submit": "Sblocca",
+      "working": "Sblocco… (qualche secondo)",
+      "forgot": "Password dimenticata?"
+    },
+    "legacy": {
+      "title": "Una sola password per la tua cassaforte",
+      "intro": "La tua cassaforte è ancora protetta dalla sua vecchia passphrase. Inseriscila un’ultima volta: da allora si aprirà con la password del tuo account, senza nient’altro da ricordare. La chiave di recupero resta valida.",
+      "passphrase": "Vecchia passphrase della cassaforte",
+      "recoveryKey": "Chiave di recupero",
+      "useRecovery": "Passphrase dimenticata? Usa la chiave di recupero",
+      "usePassphrase": "Usa la vecchia passphrase",
+      "password": "Password dell’account",
+      "submit": "Collega la cassaforte alla mia password",
+      "working": "Aggiornamento della cassaforte… (qualche secondo)"
+    },
+    "stale": {
+      "title": "La tua password è stata reimpostata",
+      "intro": "La tua cassaforte dell’identità era cifrata con la vecchia password, che non conosciamo. Inserisci la chiave di recupero per riaprirla: sarà poi protetta dalla nuova password.",
+      "recoveryKey": "Chiave di recupero",
+      "password": "Password dell’account",
+      "submit": "Riapri la mia cassaforte",
+      "working": "Apertura… (qualche secondo)",
+      "noKeyTitle": "Nessuna chiave di recupero?",
+      "noKey": "La tua identità cifrata (nome, recapiti, datori di lavoro, scuole, link, CV originale) non può più essere letta da nessuno, nemmeno da noi. Reimposta la cassaforte qui sotto, poi inseriscila di nuovo. La tua memoria di carriera, i contatti, i paletti e tutto il resto vengono conservati."
+    }
   },
   "guardRails": {
     "title": "I miei paletti",
@@ -962,6 +1136,25 @@
       "minScore": "Punteggio minimo",
       "minScoreHint": "Vengono inviate solo le opportunità con almeno questo punteggio.",
       "save": "Salva"
+    },
+    "password": {
+      "title": "Password",
+      "introSet": "Il tuo account non ha ancora una password: accedi con un link via e-mail. Impostane una per accedere con il tuo indirizzo e questa password; aprirà anche la tua cassaforte dell’identità.",
+      "introChange": "Questa password serve per accedere e apre la tua cassaforte dell’identità. Quando la cambi, la chiave della cassaforte viene reincapsulata nel tuo browser: i tuoi dati restano leggibili e la chiave di recupero resta valida. Le tue altre sessioni vengono disconnesse.",
+      "current": "Password attuale",
+      "next": "Nuova password",
+      "submitSet": "Imposta la mia password",
+      "submitChange": "Cambia la mia password",
+      "working": "Salvataggio… (qualche secondo)",
+      "doneSet": "Password impostata. Ora puoi accedere con il tuo indirizzo e-mail e questa password.",
+      "doneChange": "Password modificata.",
+      "errors": {
+        "invalidCurrent": "Password attuale errata.",
+        "vaultConflict": "La tua cassaforte dell’identità è stata modificata nel frattempo. Ricarica la pagina e riprova.",
+        "rateLimited": "Troppi tentativi. Riprova tra {minutes, plural, one {# minuto} other {# minuti}}.",
+        "network": "Impossibile raggiungere il server. Controlla la connessione e riprova.",
+        "generic": "Si è verificato un errore. Riprova."
+      }
     }
   },
   "import": {

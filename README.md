@@ -21,7 +21,7 @@ La v1 est un outil réservé aux candidats.
 - Next.js 16 (App Router) + TypeScript strict + Tailwind CSS 4
 - next-intl : 6 langues (fr par défaut, en, es, it, de, nl), routes préfixées `/fr`, `/en`…
 - PostgreSQL 17 + pgvector, Prisma 7 (adaptateur `pg`)
-- Auth.js v5 : connexion sans mot de passe par lien magique (SMTP), sessions en base
+- Auth.js v5 : e-mail + mot de passe « zéro connaissance » (lien magique en option), sessions en base
 - zod pour la validation, Vitest pour les tests, ESLint + Prettier
 - Docker (image Next.js standalone) derrière Traefik
 
@@ -641,13 +641,76 @@ canal **`PORTAL`** au lieu de l'e-mail. Code : `src/lib/employer/inbox.ts`, migr
 
 ## Authentification
 
-- Lien magique valable 15 minutes, à usage unique (jeton haché en base).
-- L'e-mail est rédigé dans la langue de la page où le lien a été demandé (sinon la préférence
-  du compte, sinon le français).
-- Sessions persistées en base (déconnexion = révocation immédiate), 30 jours.
+Comptes à **e-mail + mot de passe**, avec le lien magique comme option secondaire. Un seul mot de
+passe sert à la connexion **et** ouvre le coffre d'identité, sans que le serveur le connaisse
+(modèle Bitwarden).
+
+### Dérivation (navigateur, `deriveAccountKeys` dans `src/lib/vault/crypto.ts`)
+
+```
+mot de passe ─PBKDF2-SHA256 (≥ 600 000 it., sel de 16 o propre au compte)→ clé maîtresse
+clé maîtresse ─HKDF « ccia-account:v1:auth »→ hash d'authentification (32 o) ──→ serveur
+clé maîtresse ─HKDF « ccia-account:v1:vault-wrap »→ clé AES-GCM qui enveloppe la clé du coffre
+```
+
+- Le serveur ne reçoit que le hash d'authentification et n'en stocke qu'un scrypt
+  (N = 2^15, r = 8, p = 3, sel aléatoire ; `users.password_hash`, format versionné
+  `scrypt$…`). Le sel et les itérations PBKDF2 sont dans `users.kdf_salt` / `kdf_iterations`.
+- Le hash d'authentification ne permet pas d'ouvrir le coffre (sous-clé HKDF indépendante).
+- Avant la connexion, `POST /api/account/prelogin` renvoie les paramètres du compte ; pour une
+  adresse sans mot de passe (inconnue ou lien magique seul), un sel factice stable (HMAC de
+  `AUTH_SECRET`) : la réponse ne révèle pas l'existence du compte.
+
+### Parcours
+
+- **Inscription** `/inscription` : e-mail, mot de passe (12 caractères min., jauge,
+  afficher/masquer), case d'acceptation des conditions (`recordTermsAcceptance`). Compte créé
+  non vérifié + e-mail de vérification (24 h, `/inscription/confirmer`). Adresse déjà prise :
+  même réponse, le titulaire reçoit un e-mail « un compte existe déjà ».
+- **Connexion** `/connexion` : e-mail + mot de passe, « rester connecté » (cookie de 30 jours,
+  sinon cookie de session du navigateur), « mot de passe oublié », et « recevoir plutôt un lien ».
+  Compte non vérifié : écran « vérifiez votre boîte mail » avec renvoi du lien.
+- `POST /api/account/login` vérifie le hash puis crée une ligne `sessions` au format d'Auth.js
+  (même cookie `authjs.session-token`, `__Secure-` en HTTPS) : `auth()`, `requireUser()`, la
+  déconnexion (révocation en base) et `ADMIN_EMAILS` fonctionnent à l'identique, espace
+  entreprise compris. Credentials d'Auth.js non utilisé : il impose des sessions JWT.
+- **Coffre ouvert à la connexion** : la clé d'enveloppe dérivée est passée en mémoire à l'espace
+  candidat (`src/lib/auth/key-handoff.ts`, variable de module, deux minutes, jamais de stockage
+  navigateur). Après un rechargement de page ou un verrouillage, le coffre redemande le mot de
+  passe du compte (aucune phrase secrète distincte). Déconnexion : clés effacées.
+- **Mot de passe oublié** `/connexion/mot-de-passe-oublie` : lien de 30 minutes, à usage unique
+  (`auth_tokens`, SHA-256 du jeton seul stocké), réponse identique que le compte existe ou non.
+  Après réinitialisation : sessions fermées, et le coffre **ne se rouvre qu'avec la clé de
+  secours** (le serveur ne peut pas le ré-envelopper). Sans elle, l'identité doit être saisie à
+  nouveau ; mémoire de carrière, contacts, etc. sont conservés.
+- **Paramètres** (`/app/parametres#mot-de-passe`) : définir un premier mot de passe (compte à lien
+  magique, comme celui du manager) ou le changer. Au changement, la clé du coffre est
+  ré-enveloppée dans le navigateur et enregistrée dans la même transaction (sinon 409) ; les
+  autres sessions sont fermées.
+- **Anciens coffres à phrase secrète** : une fois un mot de passe défini, « Mon identité » demande
+  une seule fois l'ancienne phrase (ou la clé de secours) et lie le coffre au mot de passe.
+  Avant d'envelopper le coffre avec un mot de passe saisi, le serveur le vérifie
+  (`/api/account/password/verify`).
+
+### Protections
+
+- Limitation de débit en base (`rate_limits`, clés HMAC : ni IP ni e-mail en clair) : connexion
+  30 / 15 min par IP et 10 par e-mail ; **verrouillage 15 min après 5 échecs** pour une adresse ;
+  inscription 10 / h par IP, 3 par e-mail ; e-mails (vérification, réinitialisation) 10 / h par
+  IP, 3 par e-mail ; réinitialisation 20 / h par IP ; changement de mot de passe 10 / 15 min.
+- Même message pour une adresse inconnue et un mauvais mot de passe (même calcul scrypt).
+- Aucun mot de passe, hash ni jeton dans les journaux ; pages à jeton en `no-referrer`.
+- Le lien magique (15 min, usage unique) reste disponible, dans la langue de la page.
 - `src/proxy.ts` redirige `/<langue>/app/*` vers `/<langue>/connexion` sans cookie de session ;
   la vérification qui fait foi est `requireUser()` (`src/lib/auth/session.ts`), appelée dans
   chaque page et action protégée.
+
+Tests : `tests/unit/account-crypto.test.ts` (dérivation, mauvais mot de passe, ré-enveloppement
+au changement, migration d'un coffre à phrase, coffre après réinitialisation),
+`tests/unit/password-hash.test.ts`, `tests/db/password-auth.test.ts` (client navigateur contre
+les vraies routes : le mot de passe n'apparaît dans aucune requête ni ligne de journal, compte
+non vérifié, réponse générique, verrouillage et limites, jetons expirés/réutilisés, migration du
+compte à lien magique).
 
 ## Langues (next-intl)
 
@@ -738,8 +801,9 @@ navigateur** : le serveur ne stocke que des blobs qu'il ne peut pas lire. Page :
 `/app/identite` (« Mon identité »).
 
 - Cryptographie : `src/lib/vault/crypto.ts`, WebCrypto uniquement. Clé de données
-  AES-256-GCM aléatoire ; enveloppée par une clé dérivée de la phrase secrète
-  (PBKDF2-SHA256, 600 000 itérations, sel de 16 octets) et par une clé de secours de 256 bits
+  AES-256-GCM aléatoire ; enveloppée par une clé dérivée du mot de passe du compte
+  (PBKDF2-SHA256 + HKDF, voir « Authentification » ; les anciens coffres utilisaient une phrase
+  secrète propre, PBKDF2-SHA256 600 000 itérations, jusqu'à leur migration) et par une clé de secours de 256 bits
   (52 caractères base32 Crockford), affichée une seule fois, téléchargeable et imprimable. Les
   AAD lient chaque chiffré à son usage (identité, CV, enveloppes) ; l'identité est complétée à
   256 octets pour ne pas trahir la longueur des noms ; le nom et le type du CV sont chiffrés

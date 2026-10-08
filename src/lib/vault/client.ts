@@ -1,14 +1,19 @@
 import {
   changePassphrase,
+  createAccountVault,
   createVault,
   decryptFile,
   decryptJson,
   encryptFile,
   encryptJson,
   resetPassphraseWithRecoveryKey,
+  rewrapForAccount,
+  unlockWithAccountKey,
   unlockWithPassphrase,
   unlockWithRecoveryKey,
+  type AccountKdf,
   type VaultFile,
+  type VaultSecret,
   type VaultMaterial,
 } from "./crypto";
 import { emptyIdentity, identityData, type IdentityData } from "./identity";
@@ -108,6 +113,44 @@ export function createVaultClient(fetcher: Fetch = (input, init) => fetch(input,
       });
       const vault: UnlockedVault = { key, material, revision: 0, identity, hasCv: false };
       return { vault, recoveryKey };
+    },
+
+    /** Crée un coffre lié au mot de passe du compte ; renvoie la clé de secours. */
+    async setupWithAccount(
+      accountKey: CryptoKey,
+      kdf: AccountKdf,
+      identity: IdentityData = emptyIdentity(),
+    ) {
+      const { material, key, recoveryKey } = await createAccountVault(accountKey, kdf);
+      const encrypted = await encryptJson(key, identity);
+      await call("/api/vault", {
+        method: "POST",
+        headers: JSON_HEADERS,
+        body: JSON.stringify({ ...material, identity: encrypted }),
+      });
+      const vault: UnlockedVault = { key, material, revision: 0, identity, hasCv: false };
+      return { vault, recoveryKey };
+    },
+
+    /** Ouvre un coffre lié au compte avec la clé dérivée du mot de passe. */
+    async unlockWithAccount(vault: VaultResponse, accountKey: CryptoKey): Promise<UnlockedVault> {
+      return open(vault, await unlockWithAccountKey(materialOf(vault), accountKey));
+    },
+
+    /**
+     * Lie le coffre au mot de passe du compte : migration d'un ancien coffre
+     * (ancienne phrase ou clé de secours) ou reprise après réinitialisation
+     * du mot de passe (clé de secours).
+     */
+    async bindToAccount(
+      vault: VaultResponse,
+      secret: VaultSecret,
+      accountKey: CryptoKey,
+      kdf: AccountKdf,
+    ): Promise<UnlockedVault> {
+      const { material, key } = await rewrapForAccount(materialOf(vault), secret, accountKey, kdf);
+      const revision = await this.putKeys(vault.revision, material);
+      return { ...(await open(vault, key)), material, revision };
     },
 
     async unlock(vault: VaultResponse, passphrase: string): Promise<UnlockedVault> {

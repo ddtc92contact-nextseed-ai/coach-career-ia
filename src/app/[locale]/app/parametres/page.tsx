@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { PageTitle } from "@/components/empty-state";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { accountKdf } from "@/lib/auth/accounts";
 import { requireUser } from "@/lib/auth/session";
 import { getAlertSettings } from "@/lib/matching/repository";
 import { AlertsForm } from "./alerts-form";
 import { DeleteAccountForm } from "./delete-account-form";
+import { PasswordForm } from "./password-form";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("settings");
@@ -16,10 +18,29 @@ const sectionClass = "rounded-2xl border border-stone-200 bg-white p-4 sm:p-6";
 
 export default async function SettingsPage() {
   const user = await requireUser();
-  const [t, alerts] = await Promise.all([getTranslations("settings"), getAlertSettings(user.id)]);
+  const [t, alerts, kdf] = await Promise.all([
+    getTranslations("settings"),
+    getAlertSettings(user.id),
+    accountKdf(user.id),
+  ]);
+  const hasPassword = kdf !== null;
   return (
     <div className="max-w-3xl space-y-6">
       <PageTitle title={t("title")} intro={t("intro")} />
+
+      <section
+        id="mot-de-passe"
+        className={`${sectionClass} scroll-mt-6`}
+        aria-labelledby="mot-de-passe-titre"
+      >
+        <h2 id="mot-de-passe-titre" className="text-lg font-semibold">
+          {t("password.title")}
+        </h2>
+        <p className="mt-1 mb-4 text-sm text-stone-600">
+          {hasPassword ? t("password.introChange") : t("password.introSet")}
+        </p>
+        <PasswordForm hasPassword={hasPassword} email={user.email} />
+      </section>
 
       <section className={sectionClass} aria-labelledby="langue">
         <h2 id="langue" className="text-lg font-semibold">
