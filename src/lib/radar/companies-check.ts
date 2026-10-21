@@ -95,6 +95,8 @@ export type CheckResult = {
   unknownCountry: number;
   /** Nom donné par l'ATS, quand il en donne un. */
   atsName: string | null;
+  /** Quelques intitulés d'offres (aide à l'attribution du secteur). */
+  titles: string[];
   /** `confirmed` : nom de l'ATS ou nom cité dans les annonces ; `unverified` : ni l'un ni l'autre. */
   identity: "confirmed" | "unverified" | "mismatch";
   error: string | null;
@@ -171,6 +173,7 @@ export async function checkCandidate(http: HttpClient, candidate: Candidate): Pr
     eu: 0,
     unknownCountry: 0,
     atsName: null,
+    titles: [],
     identity: "unverified",
     error: null,
   };
@@ -209,6 +212,7 @@ export async function checkCandidate(http: HttpClient, candidate: Candidate): Pr
     }
     if (!offer) continue;
     result.offers++;
+    if (result.titles.length < 3) result.titles.push(offer.title);
     const country = offer.location.country;
     if (!country) result.unknownCountry++;
     else if (country === "FR") result.fr++;
