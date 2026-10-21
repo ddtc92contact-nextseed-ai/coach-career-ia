@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   computeCompleteness,
+  firstRunGuide,
+  isMemoryEmpty,
+  type CompletenessInput,
   dateToMonth,
   evidenceLevelFor,
   monthToDate,
@@ -63,6 +66,7 @@ describe("computeCompleteness", () => {
   const empty = {
     experienceCount: 0,
     achievements: [],
+    skillCount: 0,
     provenSkillCount: 0,
     guardRails: { hasSalary: false, hasLocationOrRemote: false, hasContractTypes: false },
   };
@@ -70,8 +74,32 @@ describe("computeCompleteness", () => {
   it("part de zéro avec toutes les étapes à faire", () => {
     const result = computeCompleteness(empty);
     expect(result.score).toBe(0);
-    expect(result.todo[0]).toBe("addExperience");
+    expect(result.todo.slice(0, 2)).toEqual(["importProfile", "addExperience"]);
     expect(result.done).toEqual([]);
+  });
+
+  it("propose l'import tant que la mémoire est vide, quel que soit son point d'entrée", () => {
+    expect(isMemoryEmpty(empty)).toBe(true);
+    for (const filled of [
+      { ...empty, experienceCount: 1 },
+      { ...empty, achievements: [{ evidenceLevel: "DECLARED" as const }] },
+      { ...empty, skillCount: 2 },
+    ]) {
+      expect(isMemoryEmpty(filled)).toBe(false);
+      expect(computeCompleteness(filled).done).toContain("importProfile");
+    }
+    // Les garde-fous seuls ne remplissent pas la mémoire.
+    const railsOnly = computeCompleteness({
+      ...empty,
+      guardRails: { hasSalary: true, hasLocationOrRemote: true, hasContractTypes: true },
+    });
+    expect(railsOnly.todo[0]).toBe("importProfile");
+  });
+
+  it("ne rapporte aucun point pour l'étape d'import elle-même", () => {
+    const skillsOnly = computeCompleteness({ ...empty, skillCount: 3 });
+    expect(skillsOnly.score).toBe(0);
+    expect(skillsOnly.done).toEqual(["importProfile"]);
   });
 
   it("récompense davantage une réalisation prouvée qu'une réalisation déclarée", () => {
@@ -93,6 +121,7 @@ describe("computeCompleteness", () => {
         { evidenceLevel: "DOCUMENT" },
         { evidenceLevel: "VERIFIED" },
       ],
+      skillCount: 5,
       provenSkillCount: 4,
       guardRails: { hasSalary: true, hasLocationOrRemote: true, hasContractTypes: true },
     });
@@ -103,11 +132,60 @@ describe("computeCompleteness", () => {
     const result = computeCompleteness({
       experienceCount: 1,
       achievements: [{ evidenceLevel: "DOCUMENT" }],
+      skillCount: 3,
       provenSkillCount: 3,
       guardRails: { hasSalary: true, hasLocationOrRemote: true, hasContractTypes: true },
     });
     expect(result.score).toBeLessThan(100);
     expect(result.todo).toEqual(["moreProofs"]);
+  });
+});
+
+describe("firstRunGuide", () => {
+  const rails = (hasSalary: boolean, hasLocationOrRemote: boolean, hasContractTypes: boolean) => ({
+    hasSalary,
+    hasLocationOrRemote,
+    hasContractTypes,
+  });
+  const guide = (input: Partial<CompletenessInput>) =>
+    firstRunGuide(
+      computeCompleteness({
+        experienceCount: 0,
+        achievements: [],
+        skillCount: 0,
+        provenSkillCount: 0,
+        guardRails: rails(false, false, false),
+        ...input,
+      }),
+    );
+
+  it("commence par la mémoire (import) pour un nouveau compte", () => {
+    expect(guide({})).toEqual({
+      current: "memory",
+      steps: [
+        { step: "memory", state: "current" },
+        { step: "guardRails", state: "todo" },
+        { step: "opportunities", state: "todo" },
+      ],
+    });
+  });
+
+  it("passe aux garde-fous une fois la mémoire remplie, tant qu'ils sont incomplets", () => {
+    for (const partial of [rails(false, false, false), rails(true, true, false)]) {
+      const result = guide({ experienceCount: 2, guardRails: partial });
+      expect(result?.current).toBe("guardRails");
+      expect(result?.steps.map((s) => s.state)).toEqual(["done", "current", "todo"]);
+    }
+  });
+
+  it("revient à la mémoire si seuls les garde-fous sont posés", () => {
+    const result = guide({ guardRails: rails(true, true, true) });
+    expect(result?.current).toBe("memory");
+    expect(result?.steps.map((s) => s.state)).toEqual(["current", "done", "todo"]);
+  });
+
+  it("disparaît dès que la mémoire et les garde-fous sont posés", () => {
+    expect(guide({ skillCount: 1, guardRails: rails(true, true, true) })).toBeNull();
   });
 });
 

@@ -12,7 +12,7 @@ import { StatTile } from "@/components/stat-tile";
 import { VaultEmployerName } from "@/components/vault/vault-widgets";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
-import { isProven } from "@/lib/career/derive";
+import { isMemoryEmpty, isProven } from "@/lib/career/derive";
 import type { ContractTypeCode } from "@/lib/career/codes";
 import { asSector, listAchievements, listExperiences, listSkills } from "@/lib/career/repository";
 import { removeSkill } from "./actions";
@@ -39,6 +39,12 @@ export default async function CareerMemoryPage() {
   ]);
   const provenAchievements = achievements.filter((a) => isProven(a.evidenceLevel)).length;
   const provenSkills = skills.filter((s) => s.provenCount > 0).length;
+  // Mémoire vide : l'import passe devant la saisie manuelle.
+  const empty = isMemoryEmpty({
+    experienceCount: experiences.length,
+    achievements,
+    skillCount: skills.length,
+  });
 
   const period = (start: Date, end: Date | null) =>
     t("period", {
@@ -54,10 +60,20 @@ export default async function CareerMemoryPage() {
         title={t("title")}
         lead={t("intro")}
         actions={
-          <Link href="/app/memoire/realisations/nouvelle" className={buttonClass("primary", "lg")}>
-            <Icon name="plus" className="size-5" />
-            {t("achievements.add")}
-          </Link>
+          empty ? (
+            <Link href="/app/memoire/importer" className={buttonClass("primary", "lg")}>
+              <Icon name="upload" className="size-5" />
+              {t("firstRun.import")}
+            </Link>
+          ) : (
+            <Link
+              href="/app/memoire/realisations/nouvelle"
+              className={buttonClass("primary", "lg")}
+            >
+              <Icon name="plus" className="size-5" />
+              {t("achievements.add")}
+            </Link>
+          )
         }
       >
         <div className="mt-6 grid grid-cols-2 gap-3 xl:grid-cols-4">
@@ -98,13 +114,23 @@ export default async function CareerMemoryPage() {
               </a>
             ))}
           </nav>
-          <div className="flex flex-col gap-1 lg:items-end">
-            <Link href="/app/memoire/importer" className={buttonClass("secondary")}>
-              <Icon name="upload" className="size-4" />
-              {t("importCta")}
-            </Link>
-            <p className="text-ink-muted max-w-sm text-sm lg:text-right">{t("importHint")}</p>
-          </div>
+          {empty ? (
+            <div className="flex flex-col gap-1 lg:items-end">
+              <Link href="/app/memoire/experiences/nouvelle" className={buttonClass("secondary")}>
+                <Icon name="edit" className="size-4" />
+                {t("firstRun.manual")}
+              </Link>
+              <p className="text-ink-muted max-w-sm text-sm lg:text-right">{t("importHint")}</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-1 lg:items-end">
+              <Link href="/app/memoire/importer" className={buttonClass("secondary")}>
+                <Icon name="upload" className="size-4" />
+                {t("importCta")}
+              </Link>
+              <p className="text-ink-muted max-w-sm text-sm lg:text-right">{t("importHint")}</p>
+            </div>
+          )}
         </div>
       </PageHeader>
 
@@ -119,8 +145,24 @@ export default async function CareerMemoryPage() {
           <div className="mt-5">
             <EmptyState
               icon="spark"
-              title={t("achievements.emptyTitle")}
-              text={t("achievements.emptyText")}
+              title={empty ? t("firstRun.title") : t("achievements.emptyTitle")}
+              text={empty ? t("firstRun.text") : t("achievements.emptyText")}
+              action={
+                empty ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Link href="/app/memoire/importer" className={buttonClass("primary")}>
+                      <Icon name="upload" className="size-4" />
+                      {t("firstRun.import")}
+                    </Link>
+                    <Link
+                      href="/app/memoire/experiences/nouvelle"
+                      className="text-ink-muted hover:text-ink inline-flex min-h-11 items-center px-2 text-sm font-medium underline underline-offset-4"
+                    >
+                      {t("firstRun.manual")}
+                    </Link>
+                  </div>
+                ) : undefined
+              }
             />
           </div>
         ) : (

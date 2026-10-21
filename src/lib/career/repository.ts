@@ -629,6 +629,7 @@ export async function getDashboard(userId: string) {
   const completeness = computeCompleteness({
     experienceCount,
     achievements,
+    skillCount: skills.length,
     provenSkillCount: skills.filter((s) => s.provenCount > 0).length,
     guardRails: {
       hasSalary: rails?.minFixedSalary != null,

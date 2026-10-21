@@ -623,6 +623,10 @@
         "setContractTypes": {
           "title": "Choose your contract types",
           "text": "Permanent, freelance, fixed-term… whatever you accept."
+        },
+        "importProfile": {
+          "title": "Import my CV, LinkedIn or GitHub",
+          "text": "The fastest way to fill your memory: you approve every item."
         }
       }
     },
@@ -658,6 +662,34 @@
       "title": "My guard-rails",
       "intro": "No offer that breaks them is ever shown to you.",
       "edit": "Edit"
+    },
+    "firstRun": {
+      "title": "Get started in 3 steps",
+      "intro": "Your agent needs two things to search on your behalf: your background and your guard-rails.",
+      "progress": "Step {current} of {total}",
+      "manual": "or fill it in by hand",
+      "states": {
+        "done": "Done",
+        "current": "Current step",
+        "todo": "Coming next"
+      },
+      "steps": {
+        "memory": {
+          "title": "Import your background",
+          "text": "Your CV, your LinkedIn export or your GitHub: the AI extracts experiences, achievements and skills, and you approve every item.",
+          "cta": "Import my CV, LinkedIn or GitHub"
+        },
+        "guardRails": {
+          "title": "Set your guard-rails",
+          "text": "Salary floor, location or remote work, contract types: no offer that breaks them will ever be shown to you.",
+          "cta": "Set my guard-rails"
+        },
+        "opportunities": {
+          "title": "Discover your first opportunities",
+          "text": "Your agent compares market offers with your profile: the first results arrive within a few minutes.",
+          "cta": "See my opportunities"
+        }
+      }
     }
   },
   "opportunities": {
@@ -665,8 +697,8 @@
     "intro": "Only offers that respect your guard-rails, with an explanation of every match.",
     "empty": {
       "noMemoryTitle": "Your agent needs your career memory",
-      "noMemoryText": "Add at least one experience, achievement or skill: that is what your agent compares with job offers.",
-      "noMemoryAction": "Complete my memory",
+      "noMemoryText": "Import your CV, LinkedIn or GitHub, or add at least one achievement or skill by hand: that is what your agent compares with job offers.",
+      "noMemoryAction": "Import my CV, LinkedIn or GitHub",
       "noRailsTitle": "Set your guard-rails",
       "noRailsText": "Minimum salary, area, remote work, contracts: without guard-rails, your agent cannot guarantee that the offers it suggests suit you.",
       "noRailsAction": "Set my guard-rails",
@@ -675,7 +707,8 @@
       "noMatchTitle": "No qualified offer yet",
       "noMatchText": "No open offer currently meets all your guard-rails with a high enough score. Your agent keeps watching the market; proving more achievements also improves your matches.",
       "noResultTitle": "No opportunity with these filters",
-      "noResultText": "Change the filters to see your other opportunities."
+      "noResultText": "Change the filters to see your other opportunities.",
+      "noMemoryManual": "or fill it in by hand"
     },
     "pending": "Update in progress: your latest changes will be taken into account within a few minutes.",
     "lastComputed": "Last analysis: {date}",
@@ -936,6 +969,12 @@
     "back": "Back to my career memory",
     "stats": {
       "provenSkills": "{count, plural, one {proven skill} other {proven skills}}"
+    },
+    "firstRun": {
+      "title": "Your career memory is empty",
+      "text": "The fastest way: import your CV, your LinkedIn export or your GitHub. The AI prepares a pseudonymised draft and you stay in control of every item.",
+      "import": "Import my CV, LinkedIn or GitHub",
+      "manual": "Fill it in by hand"
     }
   },
   "identity": {
@@ -1193,7 +1232,8 @@
       "contractsAll": "All",
       "exclusionsValue": "{sectors, plural, =0 {No sector} one {# sector} other {# sectors}}, {companies, plural, =0 {no company} one {# company} other {# companies}}",
       "unset": "Not set"
-    }
+    },
+    "seeOpportunities": "See my opportunities"
   },
   "coach": {
     "title": "AI coach",
@@ -1500,14 +1540,23 @@
       "identity": {
         "title": "Identifying data found",
         "intro": "It is kept apart: it is not stored on our servers and will not appear in your profile.",
-        "vault": "The encrypted identity vault is coming soon. Until then, this data will be forgotten as soon as you leave this page.",
+        "vault": "You can save it in your identity vault: it is encrypted in your browser and our servers only ever receive ciphertext. Otherwise, it will be forgotten as soon as you leave this page.",
         "fullName": "Name",
         "emails": "Emails",
         "phones": "Phone numbers",
         "links": "Personal links",
         "employers": "Employers",
         "schools": "Schools",
-        "organizations": "Other organisations"
+        "organizations": "Other organisations",
+        "vaultMergeHint": "What your vault already holds is not changed: only empty fields are filled in. “Other organisations” are not kept.",
+        "vaultSave": "Save to my vault",
+        "vaultSaving": "Encrypting and saving…",
+        "vaultSaved": "Saved to your encrypted vault.",
+        "vaultOpen": "See my identity",
+        "vaultUnlock": "Open your vault to save this data: saving will follow automatically.",
+        "vaultCancel": "Cancel",
+        "vaultError": "Saving to the vault failed. Check your connection and try again.",
+        "vaultContinue": "Continue"
       },
       "saveHint": "Only accepted items will be added to your memory.",
       "save": "{count, plural, =0 {No item accepted} one {Save # item} other {Save # items}}",
@@ -1518,9 +1567,11 @@
       "title": "Your career memory is up to date",
       "text": "Added: {experiences, plural, =0 {no experience} one {# experience} other {# experiences}}, {achievements, plural, =0 {no achievement} one {# achievement} other {# achievements}} and {skills, plural, =0 {no skill} one {# skill} other {# skills}}.",
       "next": "Now add proof to your declared achievements: proof is what counts most.",
-      "identityForgotten": "The identifying data found was not saved.",
+      "identityForgotten": "The identifying data found is not saved: it will be forgotten as soon as you leave this page.",
       "cta": "View my career memory",
-      "again": "Import other sources"
+      "again": "Import other sources",
+      "nextRails": "Next step: your guard-rails (salary floor, location or remote work, contract types). Your agent can then look for your first opportunities.",
+      "ctaRails": "Set my guard-rails"
     }
   },
   "codes": {

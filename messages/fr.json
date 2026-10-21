@@ -623,6 +623,10 @@
         "setContractTypes": {
           "title": "Choisir vos types de contrat",
           "text": "CDI, freelance, CDD… ce que vous acceptez."
+        },
+        "importProfile": {
+          "title": "Importer mon CV, LinkedIn ou GitHub",
+          "text": "Le plus rapide pour remplir votre mémoire : vous validez chaque élément."
         }
       }
     },
@@ -658,6 +662,34 @@
       "title": "Mes garde-fous",
       "intro": "Aucune offre qui les enfreint ne vous est présentée.",
       "edit": "Modifier"
+    },
+    "firstRun": {
+      "title": "Bien démarrer en 3 étapes",
+      "intro": "Votre agent a besoin de deux choses pour chercher à votre place : votre parcours et vos garde-fous.",
+      "progress": "Étape {current} sur {total}",
+      "manual": "ou remplir à la main",
+      "states": {
+        "done": "Fait",
+        "current": "Étape en cours",
+        "todo": "À venir"
+      },
+      "steps": {
+        "memory": {
+          "title": "Importer votre parcours",
+          "text": "Votre CV, votre export LinkedIn ou votre GitHub : l’IA en tire expériences, réalisations et compétences, et vous validez chaque élément.",
+          "cta": "Importer mon CV, LinkedIn ou GitHub"
+        },
+        "guardRails": {
+          "title": "Poser vos garde-fous",
+          "text": "Salaire plancher, lieu ou télétravail, types de contrat : aucune offre qui les enfreint ne vous sera présentée.",
+          "cta": "Définir mes garde-fous"
+        },
+        "opportunities": {
+          "title": "Découvrir vos premières opportunités",
+          "text": "Votre agent compare les offres du marché à votre profil : les premiers résultats arrivent en quelques minutes.",
+          "cta": "Voir mes opportunités"
+        }
+      }
     }
   },
   "opportunities": {
@@ -665,8 +697,8 @@
     "intro": "Uniquement des offres qui respectent vos garde-fous, avec l’explication de chaque correspondance.",
     "empty": {
       "noMemoryTitle": "Votre agent a besoin de votre mémoire de carrière",
-      "noMemoryText": "Ajoutez au moins une expérience, une réalisation ou une compétence : c’est ce que votre agent compare aux offres.",
-      "noMemoryAction": "Compléter ma mémoire",
+      "noMemoryText": "Importez votre CV, LinkedIn ou GitHub, ou ajoutez à la main au moins une réalisation ou une compétence : c’est ce que votre agent compare aux offres.",
+      "noMemoryAction": "Importer mon CV, LinkedIn ou GitHub",
       "noRailsTitle": "Définissez vos garde-fous",
       "noRailsText": "Salaire plancher, zone, télétravail, contrats : sans garde-fous, votre agent ne peut pas garantir que les offres proposées vous conviennent.",
       "noRailsAction": "Définir mes garde-fous",
@@ -675,7 +707,8 @@
       "noMatchTitle": "Aucune offre qualifiée pour le moment",
       "noMatchText": "Aucune offre ouverte ne respecte aujourd’hui tous vos garde-fous avec un score suffisant. Votre agent continue de surveiller le marché ; prouver davantage de réalisations améliore aussi vos correspondances.",
       "noResultTitle": "Aucune opportunité avec ces filtres",
-      "noResultText": "Modifiez les filtres pour voir les autres opportunités."
+      "noResultText": "Modifiez les filtres pour voir les autres opportunités.",
+      "noMemoryManual": "ou remplir à la main"
     },
     "pending": "Mise à jour en cours : vos derniers changements seront pris en compte dans quelques minutes.",
     "lastComputed": "Dernière analyse : {date}",
@@ -936,6 +969,12 @@
     "back": "Retour à ma mémoire de carrière",
     "stats": {
       "provenSkills": "{count, plural, one {compétence prouvée} other {compétences prouvées}}"
+    },
+    "firstRun": {
+      "title": "Votre mémoire de carrière est vide",
+      "text": "Le plus rapide : importez votre CV, votre export LinkedIn ou votre GitHub. L’IA prépare un brouillon pseudonymisé, vous gardez la main sur chaque élément.",
+      "import": "Importer mon CV, LinkedIn ou GitHub",
+      "manual": "Remplir à la main"
     }
   },
   "identity": {
@@ -1193,7 +1232,8 @@
       "contractsAll": "Tous",
       "exclusionsValue": "{sectors, plural, =0 {Aucun secteur} one {# secteur} other {# secteurs}}, {companies, plural, =0 {aucune entreprise} one {# entreprise} other {# entreprises}}",
       "unset": "Non défini"
-    }
+    },
+    "seeOpportunities": "Voir mes opportunités"
   },
   "coach": {
     "title": "Coach IA",
@@ -1500,14 +1540,23 @@
       "identity": {
         "title": "Données identifiantes repérées",
         "intro": "Elles sont mises à part : elles ne sont pas enregistrées sur nos serveurs et n’apparaîtront pas dans votre profil.",
-        "vault": "Le coffre d’identité chiffré arrive bientôt. En attendant, ces données seront oubliées dès que vous quitterez cette page.",
+        "vault": "Vous pouvez les enregistrer dans votre coffre d’identité : elles y sont chiffrées dans votre navigateur et nos serveurs ne reçoivent que du texte chiffré. Sinon, elles seront oubliées dès que vous quitterez cette page.",
         "fullName": "Nom",
         "emails": "E-mails",
         "phones": "Téléphones",
         "links": "Liens personnels",
         "employers": "Employeurs",
         "schools": "Écoles",
-        "organizations": "Autres organisations"
+        "organizations": "Autres organisations",
+        "vaultMergeHint": "Ce que votre coffre contient déjà n’est pas modifié : seuls les champs vides sont complétés. Les « autres organisations » ne sont pas conservées.",
+        "vaultSave": "Enregistrer dans mon coffre",
+        "vaultSaving": "Chiffrement et enregistrement…",
+        "vaultSaved": "Enregistré dans votre coffre chiffré.",
+        "vaultOpen": "Voir mon identité",
+        "vaultUnlock": "Ouvrez votre coffre pour y enregistrer ces données : l’enregistrement suivra automatiquement.",
+        "vaultCancel": "Annuler",
+        "vaultError": "L’enregistrement dans le coffre a échoué. Vérifiez votre connexion et réessayez.",
+        "vaultContinue": "Continuer"
       },
       "saveHint": "Seuls les éléments acceptés seront ajoutés à votre mémoire.",
       "save": "{count, plural, =0 {Aucun élément accepté} one {Enregistrer # élément} other {Enregistrer # éléments}}",
@@ -1518,9 +1567,11 @@
       "title": "Votre mémoire de carrière est à jour",
       "text": "Ajouté : {experiences, plural, =0 {aucune expérience} one {# expérience} other {# expériences}}, {achievements, plural, =0 {aucune réalisation} one {# réalisation} other {# réalisations}} et {skills, plural, =0 {aucune compétence} one {# compétence} other {# compétences}}.",
       "next": "Ajoutez maintenant des preuves à vos réalisations déclarées : ce sont elles qui comptent le plus.",
-      "identityForgotten": "Les données identifiantes repérées n’ont pas été enregistrées.",
+      "identityForgotten": "Les données identifiantes repérées ne sont pas enregistrées : elles seront oubliées dès que vous quitterez cette page.",
       "cta": "Voir ma mémoire de carrière",
-      "again": "Importer d’autres sources"
+      "again": "Importer d’autres sources",
+      "nextRails": "Étape suivante : vos garde-fous (salaire plancher, lieu ou télétravail, types de contrat). Votre agent pourra ensuite chercher vos premières opportunités.",
+      "ctaRails": "Définir mes garde-fous"
     }
   },
   "codes": {

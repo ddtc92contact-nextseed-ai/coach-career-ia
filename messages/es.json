@@ -623,6 +623,10 @@
         "setContractTypes": {
           "title": "Elegir sus tipos de contrato",
           "text": "Indefinido, freelance, temporal… lo que usted acepta."
+        },
+        "importProfile": {
+          "title": "Importar mi CV, LinkedIn o GitHub",
+          "text": "La forma más rápida de rellenar tu memoria: validas cada elemento."
         }
       }
     },
@@ -658,6 +662,34 @@
       "title": "Mis salvaguardas",
       "intro": "Nunca se le presenta una oferta que las incumpla.",
       "edit": "Modificar"
+    },
+    "firstRun": {
+      "title": "Empieza en 3 pasos",
+      "intro": "Tu agente necesita dos cosas para buscar por ti: tu trayectoria y tus salvaguardas.",
+      "progress": "Paso {current} de {total}",
+      "manual": "o rellenarla a mano",
+      "states": {
+        "done": "Hecho",
+        "current": "Paso actual",
+        "todo": "Próximamente"
+      },
+      "steps": {
+        "memory": {
+          "title": "Importa tu trayectoria",
+          "text": "Tu CV, tu exportación de LinkedIn o tu GitHub: la IA extrae experiencias, logros y competencias, y tú validas cada elemento.",
+          "cta": "Importar mi CV, LinkedIn o GitHub"
+        },
+        "guardRails": {
+          "title": "Define tus salvaguardas",
+          "text": "Salario mínimo, lugar o teletrabajo, tipos de contrato: nunca verás una oferta que no los respete.",
+          "cta": "Definir mis salvaguardas"
+        },
+        "opportunities": {
+          "title": "Descubre tus primeras oportunidades",
+          "text": "Tu agente compara las ofertas del mercado con tu perfil: los primeros resultados llegan en pocos minutos.",
+          "cta": "Ver mis oportunidades"
+        }
+      }
     }
   },
   "opportunities": {
@@ -665,8 +697,8 @@
     "intro": "Solo ofertas que respetan sus salvaguardas, con la explicación de cada coincidencia.",
     "empty": {
       "noMemoryTitle": "Tu agente necesita tu memoria profesional",
-      "noMemoryText": "Añade al menos una experiencia, un logro o una competencia: es lo que tu agente compara con las ofertas.",
-      "noMemoryAction": "Completar mi memoria",
+      "noMemoryText": "Importa tu CV, LinkedIn o GitHub, o añade a mano al menos un logro o una competencia: es lo que tu agente compara con las ofertas.",
+      "noMemoryAction": "Importar mi CV, LinkedIn o GitHub",
       "noRailsTitle": "Define tus límites",
       "noRailsText": "Salario mínimo, zona, teletrabajo, contratos: sin límites, tu agente no puede garantizar que las ofertas propuestas te convengan.",
       "noRailsAction": "Definir mis límites",
@@ -675,7 +707,8 @@
       "noMatchTitle": "Ninguna oferta cualificada por ahora",
       "noMatchText": "Ninguna oferta abierta cumple hoy todos tus límites con una puntuación suficiente. Tu agente sigue vigilando el mercado; demostrar más logros también mejora tus coincidencias.",
       "noResultTitle": "Ninguna oportunidad con estos filtros",
-      "noResultText": "Cambia los filtros para ver tus otras oportunidades."
+      "noResultText": "Cambia los filtros para ver tus otras oportunidades.",
+      "noMemoryManual": "o rellenarla a mano"
     },
     "pending": "Actualización en curso: tus últimos cambios se tendrán en cuenta en unos minutos.",
     "lastComputed": "Último análisis: {date}",
@@ -936,6 +969,12 @@
     "back": "Volver a mi memoria de carrera",
     "stats": {
       "provenSkills": "{count, plural, one {competencia demostrada} other {competencias demostradas}}"
+    },
+    "firstRun": {
+      "title": "Tu memoria de carrera está vacía",
+      "text": "Lo más rápido: importa tu CV, tu exportación de LinkedIn o tu GitHub. La IA prepara un borrador seudonimizado y tú decides sobre cada elemento.",
+      "import": "Importar mi CV, LinkedIn o GitHub",
+      "manual": "Rellenar a mano"
     }
   },
   "identity": {
@@ -1193,7 +1232,8 @@
       "contractsAll": "Todos",
       "exclusionsValue": "{sectors, plural, =0 {Ningún sector} one {# sector} other {# sectores}}, {companies, plural, =0 {ninguna empresa} one {# empresa} other {# empresas}}",
       "unset": "Sin definir"
-    }
+    },
+    "seeOpportunities": "Ver mis oportunidades"
   },
   "coach": {
     "title": "Coach IA",
@@ -1500,14 +1540,23 @@
       "identity": {
         "title": "Datos identificativos detectados",
         "intro": "Se guardan aparte: no se almacenan en nuestros servidores y no aparecerán en tu perfil.",
-        "vault": "La caja fuerte de identidad cifrada llegará pronto. Mientras tanto, estos datos se olvidarán en cuanto salgas de esta página.",
+        "vault": "Puedes guardarlos en tu caja fuerte de identidad: se cifran en tu navegador y nuestros servidores solo reciben texto cifrado. Si no, se olvidarán en cuanto salgas de esta página.",
         "fullName": "Nombre",
         "emails": "Correos electrónicos",
         "phones": "Teléfonos",
         "links": "Enlaces personales",
         "employers": "Empleadores",
         "schools": "Centros de estudios",
-        "organizations": "Otras organizaciones"
+        "organizations": "Otras organizaciones",
+        "vaultMergeHint": "Lo que ya contiene tu caja fuerte no se modifica: solo se completan los campos vacíos. Las «otras organizaciones» no se conservan.",
+        "vaultSave": "Guardar en mi caja fuerte",
+        "vaultSaving": "Cifrando y guardando…",
+        "vaultSaved": "Guardado en tu caja fuerte cifrada.",
+        "vaultOpen": "Ver mi identidad",
+        "vaultUnlock": "Abre tu caja fuerte para guardar estos datos: se guardarán automáticamente a continuación.",
+        "vaultCancel": "Cancelar",
+        "vaultError": "No se ha podido guardar en la caja fuerte. Comprueba tu conexión e inténtalo de nuevo.",
+        "vaultContinue": "Continuar"
       },
       "saveHint": "Solo los elementos aceptados se añadirán a tu memoria.",
       "save": "{count, plural, =0 {Ningún elemento aceptado} one {Guardar # elemento} other {Guardar # elementos}}",
@@ -1518,9 +1567,11 @@
       "title": "Tu memoria de carrera está al día",
       "text": "Añadido: {experiences, plural, =0 {ninguna experiencia} one {# experiencia} other {# experiencias}}, {achievements, plural, =0 {ningún logro} one {# logro} other {# logros}} y {skills, plural, =0 {ninguna competencia} one {# competencia} other {# competencias}}.",
       "next": "Añade ahora pruebas a tus logros declarados: son lo que más cuenta.",
-      "identityForgotten": "Los datos identificativos detectados no se han guardado.",
+      "identityForgotten": "Los datos identificativos detectados no se han guardado: se olvidarán en cuanto salgas de esta página.",
       "cta": "Ver mi memoria de carrera",
-      "again": "Importar otras fuentes"
+      "again": "Importar otras fuentes",
+      "nextRails": "Siguiente paso: tus salvaguardas (salario mínimo, lugar o teletrabajo, tipos de contrato). Después tu agente podrá buscar tus primeras oportunidades.",
+      "ctaRails": "Definir mis salvaguardas"
     }
   },
   "codes": {
