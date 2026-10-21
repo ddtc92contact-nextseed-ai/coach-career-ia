@@ -355,7 +355,12 @@ export function CoachChat({
         </div>
       ) : null}
 
-      <div className="bg-canvas/90 sticky bottom-0 z-10 -mx-4 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:mx-0 sm:px-0">
+      {/* Limite atteinte : saisie inutilisable, elle ne colle plus en bas pour laisser voir l'encart. */}
+      <div
+        className={`bg-canvas/90 -mx-4 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:mx-0 sm:px-0 ${
+          exhausted ? "" : "sticky bottom-0 z-10"
+        }`}
+      >
         {showChips ? (
           <div className="mb-3">
             <p id="coach-chips" className="text-ink-subtle mb-2 text-sm font-medium">
