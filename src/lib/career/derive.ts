@@ -63,6 +63,7 @@ export function summarizeSkill(usages: SkillUsage[]): SkillSummary {
 export type CompletenessInput = {
   experienceCount: number;
   achievements: { evidenceLevel: EvidenceLevelCode }[];
+  skillCount: number;
   provenSkillCount: number;
   guardRails: {
     hasSalary: boolean;
@@ -72,6 +73,9 @@ export type CompletenessInput = {
 };
 
 export const COMPLETENESS_STEPS = [
+  // Première étape d'un nouveau compte : l'import (CV, LinkedIn, GitHub) remplit
+  // l'essentiel de la mémoire. La saisie manuelle reste l'étape suivante.
+  "importProfile",
   "addExperience",
   "addAchievement",
   "addProof",
@@ -90,8 +94,17 @@ export type Completeness = {
   todo: CompletenessStep[];
 };
 
+/** Mémoire de carrière vide : ni expérience, ni réalisation, ni compétence. */
+export function isMemoryEmpty(
+  input: Pick<CompletenessInput, "experienceCount" | "achievements" | "skillCount">,
+): boolean {
+  return input.experienceCount === 0 && input.achievements.length === 0 && input.skillCount === 0;
+}
+
 /**
  * Complétude du profil, sur 100 : les réalisations PROUVÉES pèsent le plus.
+ * L'étape `importProfile` (mémoire non vide) ne rapporte aucun point : elle
+ * oriente seulement un nouveau compte vers l'import.
  * - au moins une expérience : 15
  * - réalisations : 15 par réalisation prouvée, 5 par réalisation déclarée (45 max)
  * - compétences prouvées : 5 dès une, 10 à partir de trois
@@ -111,6 +124,7 @@ export function computeCompleteness(input: CompletenessInput): Completeness {
   if (input.guardRails.hasContractTypes) score += 10;
 
   const status: Record<CompletenessStep, boolean> = {
+    importProfile: !isMemoryEmpty(input),
     addExperience: input.experienceCount > 0,
     addAchievement: input.achievements.length > 0,
     addProof: proven > 0,
@@ -125,6 +139,39 @@ export function computeCompleteness(input: CompletenessInput): Completeness {
     score: Math.min(100, score),
     done: COMPLETENESS_STEPS.filter((step) => status[step]),
     todo: COMPLETENESS_STEPS.filter((step) => !status[step]),
+  };
+}
+
+export const FIRST_RUN_STEPS = ["memory", "guardRails", "opportunities"] as const;
+export type FirstRunStep = (typeof FIRST_RUN_STEPS)[number];
+export type FirstRunGuide = {
+  current: FirstRunStep;
+  steps: { step: FirstRunStep; state: "done" | "current" | "todo" }[];
+};
+
+const RAIL_STEPS = ["setSalary", "setLocation", "setContractTypes"] as const;
+
+/**
+ * Parcours de démarrage en trois temps : remplir la mémoire (import), fixer les
+ * garde-fous (salaire, lieu ou télétravail, contrats), puis voir les
+ * opportunités. `null` dès que la mémoire et les garde-fous sont posés : le
+ * guide disparaît.
+ */
+export function firstRunGuide(completeness: Pick<Completeness, "done">): FirstRunGuide | null {
+  const done = new Set<string>(completeness.done);
+  const status: Record<FirstRunStep, boolean> = {
+    memory: done.has("importProfile"),
+    guardRails: RAIL_STEPS.every((step) => done.has(step)),
+    opportunities: false,
+  };
+  if (status.memory && status.guardRails) return null;
+  const current = FIRST_RUN_STEPS.find((step) => !status[step])!;
+  return {
+    current,
+    steps: FIRST_RUN_STEPS.map((step) => ({
+      step,
+      state: status[step] ? "done" : step === current ? "current" : "todo",
+    })),
   };
 }
 
