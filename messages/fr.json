@@ -1555,7 +1555,8 @@
         "vaultOpen": "Voir mon identité",
         "vaultUnlock": "Ouvrez votre coffre pour y enregistrer ces données : l’enregistrement suivra automatiquement.",
         "vaultCancel": "Annuler",
-        "vaultError": "L’enregistrement dans le coffre a échoué. Vérifiez votre connexion et réessayez."
+        "vaultError": "L’enregistrement dans le coffre a échoué. Vérifiez votre connexion et réessayez.",
+        "vaultContinue": "Continuer"
       },
       "saveHint": "Seuls les éléments acceptés seront ajoutés à votre mémoire.",
       "save": "{count, plural, =0 {Aucun élément accepté} one {Enregistrer # élément} other {Enregistrer # éléments}}",

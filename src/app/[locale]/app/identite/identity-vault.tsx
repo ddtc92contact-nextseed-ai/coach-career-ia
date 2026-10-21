@@ -151,9 +151,12 @@ function TextInput({
 export function RecoveryKeyStep({
   recoveryKey,
   onDone,
+  doneLabel,
 }: {
   recoveryKey: string;
   onDone: () => void;
+  /** Libellé du bouton final (défaut : « Continuer vers mon identité »). */
+  doneLabel?: string;
 }) {
   const t = useTranslations("identity.recovery");
   const format = useFormatter();
@@ -242,7 +245,7 @@ export function RecoveryKeyStep({
         </label>
       </div>
       <button type="button" disabled={!saved} onClick={onDone} className={`${primaryButton} mt-4`}>
-        {t("continue")}
+        {doneLabel ?? t("continue")}
       </button>
     </section>
   );

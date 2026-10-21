@@ -1555,7 +1555,8 @@
         "vaultOpen": "Meine Identität ansehen",
         "vaultUnlock": "Öffnen Sie Ihren Tresor, um diese Daten zu speichern: Das Speichern folgt automatisch.",
         "vaultCancel": "Abbrechen",
-        "vaultError": "Das Speichern im Tresor ist fehlgeschlagen. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+        "vaultError": "Das Speichern im Tresor ist fehlgeschlagen. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+        "vaultContinue": "Weiter"
       },
       "saveHint": "Nur übernommene Einträge werden Ihrem Gedächtnis hinzugefügt.",
       "save": "{count, plural, =0 {Kein Eintrag übernommen} one {# Eintrag speichern} other {# Einträge speichern}}",

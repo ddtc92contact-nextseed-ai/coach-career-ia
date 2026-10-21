@@ -1555,7 +1555,8 @@
         "vaultOpen": "Ver mi identidad",
         "vaultUnlock": "Abre tu caja fuerte para guardar estos datos: se guardarán automáticamente a continuación.",
         "vaultCancel": "Cancelar",
-        "vaultError": "No se ha podido guardar en la caja fuerte. Comprueba tu conexión e inténtalo de nuevo."
+        "vaultError": "No se ha podido guardar en la caja fuerte. Comprueba tu conexión e inténtalo de nuevo.",
+        "vaultContinue": "Continuar"
       },
       "saveHint": "Solo los elementos aceptados se añadirán a tu memoria.",
       "save": "{count, plural, =0 {Ningún elemento aceptado} one {Guardar # elemento} other {Guardar # elementos}}",

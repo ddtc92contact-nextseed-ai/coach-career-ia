@@ -1555,7 +1555,8 @@
         "vaultOpen": "Vedi la mia identità",
         "vaultUnlock": "Apri la tua cassaforte per salvare questi dati: il salvataggio seguirà automaticamente.",
         "vaultCancel": "Annulla",
-        "vaultError": "Il salvataggio nella cassaforte non è riuscito. Controlla la connessione e riprova."
+        "vaultError": "Il salvataggio nella cassaforte non è riuscito. Controlla la connessione e riprova.",
+        "vaultContinue": "Continua"
       },
       "saveHint": "Solo gli elementi accettati verranno aggiunti alla tua memoria.",
       "save": "{count, plural, =0 {Nessun elemento accettato} one {Salva # elemento} other {Salva # elementi}}",

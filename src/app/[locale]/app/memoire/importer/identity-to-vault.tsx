@@ -77,7 +77,11 @@ export function IdentityToVault({
   return (
     <div className="border-line mt-4 space-y-4 border-t pt-4">
       {recoveryKey ? (
-        <RecoveryKeyStep recoveryKey={recoveryKey} onDone={() => setRecoveryKey(null)} />
+        <RecoveryKeyStep
+          recoveryKey={recoveryKey}
+          onDone={() => setRecoveryKey(null)}
+          doneLabel={t("vaultContinue")}
+        />
       ) : null}
 
       {saved ? (

@@ -1555,7 +1555,8 @@
         "vaultOpen": "See my identity",
         "vaultUnlock": "Open your vault to save this data: saving will follow automatically.",
         "vaultCancel": "Cancel",
-        "vaultError": "Saving to the vault failed. Check your connection and try again."
+        "vaultError": "Saving to the vault failed. Check your connection and try again.",
+        "vaultContinue": "Continue"
       },
       "saveHint": "Only accepted items will be added to your memory.",
       "save": "{count, plural, =0 {No item accepted} one {Save # item} other {Save # items}}",

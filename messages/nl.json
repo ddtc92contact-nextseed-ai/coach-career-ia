@@ -1555,7 +1555,8 @@
         "vaultOpen": "Mijn identiteit bekijken",
         "vaultUnlock": "Open uw kluis om deze gegevens op te slaan: het opslaan volgt automatisch.",
         "vaultCancel": "Annuleren",
-        "vaultError": "Opslaan in de kluis is mislukt. Controleer uw verbinding en probeer het opnieuw."
+        "vaultError": "Opslaan in de kluis is mislukt. Controleer uw verbinding en probeer het opnieuw.",
+        "vaultContinue": "Doorgaan"
       },
       "saveHint": "Alleen geaccepteerde onderdelen worden aan uw geheugen toegevoegd.",
       "save": "{count, plural, =0 {Geen onderdeel geaccepteerd} one {# onderdeel opslaan} other {# onderdelen opslaan}}",
