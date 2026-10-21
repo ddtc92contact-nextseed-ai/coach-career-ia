@@ -66,7 +66,15 @@ export type Evaluation = {
 
 export type OfferResult =
   | { offerId: string; pass: false; violations: ViolationCode[] }
-  | ({ offerId: string; pass: true; followed?: boolean } & Evaluation);
+  | ({
+      offerId: string;
+      pass: true;
+      followed?: boolean;
+      /** Score avant le bonus « entreprise suivie ». */
+      baseScore?: number;
+      /** Points réellement ajoutés pour l'entreprise suivie (après plafond à 100). */
+      followedBoost?: number;
+    } & Evaluation);
 
 /**
  * Points ajoutés au score d'une offre d'une entreprise suivie par le
@@ -275,10 +283,13 @@ export function rankOffers(
       continue;
     }
     if (offer.companyId && followed.has(offer.companyId)) {
+      const score = Math.min(100, result.score + FOLLOWED_COMPANY_BOOST);
       matches.push({
         ...result,
         followed: true,
-        score: Math.min(100, result.score + FOLLOWED_COMPANY_BOOST),
+        baseScore: result.score,
+        followedBoost: score - result.score,
+        score,
       });
     } else matches.push(result);
   }

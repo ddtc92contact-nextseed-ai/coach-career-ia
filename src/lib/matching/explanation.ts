@@ -6,7 +6,7 @@ import type { AiClient } from "@/lib/ai/client";
 import { isAiError } from "@/lib/ai/errors";
 import { languageInstruction } from "@/lib/ai/locale";
 import { CULTURE_PREFERENCES } from "@/lib/career/codes";
-import { FOLLOWED_COMPANY_BOOST, type Evaluation } from "./score";
+import type { Evaluation } from "./score";
 import { GAP_CODES, UNKNOWN_CODES } from "./types";
 
 /**
@@ -47,7 +47,10 @@ export const explanationSchema = z.object({
   culture: z.array(z.enum(CULTURE_PREFERENCES)),
   gaps: z.array(z.object({ code: z.enum(GAP_CODES), value: z.string().optional() })),
   unknowns: z.array(z.enum(UNKNOWN_CODES)),
-  /** Points ajoutés parce que le candidat suit l'entreprise (absent sinon). */
+  /**
+   * Points ajoutés parce que le candidat suit l'entreprise (absent sinon, et
+   * dans les explications stockées avant cette information).
+   */
   followedBonus: z.number().int().min(1).max(100).optional(),
 });
 export type Explanation = z.infer<typeof explanationSchema>;
@@ -55,7 +58,7 @@ export type ExplanationFacts = Omit<Explanation, "version" | "locale" | "source"
 
 /** Faits d'explication d'une évaluation (sans le résumé). */
 export function explanationFacts(
-  evaluation: Evaluation & { followed?: boolean },
+  evaluation: Evaluation & { followedBoost?: number },
 ): ExplanationFacts {
   return {
     components: evaluation.components,
@@ -64,7 +67,8 @@ export function explanationFacts(
     culture: evaluation.culture,
     gaps: evaluation.gaps,
     unknowns: evaluation.unknowns,
-    ...(evaluation.followed ? { followedBonus: FOLLOWED_COMPANY_BOOST } : {}),
+    // Points réellement ajoutés : détail du score + bonus = score affiché.
+    ...(evaluation.followedBoost ? { followedBonus: evaluation.followedBoost } : {}),
   };
 }
 

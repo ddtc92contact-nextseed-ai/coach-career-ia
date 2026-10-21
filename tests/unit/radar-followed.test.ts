@@ -3,7 +3,7 @@ import { createAiClient, createMockProvider, scriptedReplies } from "@/lib/ai";
 import { LOCALES } from "@/i18n/routing";
 import { buildExplanation, explanationFacts, parseExplanation } from "@/lib/matching/explanation";
 import { companyIdInput, followQueryInput } from "@/lib/radar/follow-schemas";
-import { FOLLOWED_COMPANY_BOOST, rankOffers } from "@/lib/matching/score";
+import { FOLLOWED_COMPANY_BOOST, WEIGHTS, rankOffers } from "@/lib/matching/score";
 import type { MatchOffer } from "@/lib/matching/types";
 import { detectAtsBoard, looksLikeUrl, nameFromToken, probeBoard } from "@/lib/radar/careers";
 import { CASES, OFFERS } from "../fixtures/matching/cases";
@@ -41,6 +41,10 @@ describe("détection de l'ATS d'une page carrières", () => {
     "https://apply.workable.com/api/v1/accounts",
     "https://boards.greenhouse.io/<script>",
     "ftp://jobs.lever.co/qonto",
+    "https://boards.greenhouse.io/embed/job_board?for=..",
+    "https://boards.greenhouse.io/embed/job_board?for=.",
+    "https://jobs.lever.co/..%2F",
+    "https://apply.workable.com/---",
     "javascript:alert(1)",
     "qonto",
   ])("%s : non pris en charge", (input) => {
@@ -153,7 +157,10 @@ describe("classement : entreprises suivies", () => {
 describe("explication du bonus « entreprise suivie »", () => {
   const testCase = CASES[0]!;
   const offers: MatchOffer[] = OFFERS.map((o) => ({ ...o, companyId: `company-${o.id}` }));
-  const first = rankOffers(testCase.profile, testCase.rails, offers, null).matches[0]!;
+  // Offre loin du plafond : le bonus s'ajoute en entier.
+  const first = rankOffers(testCase.profile, testCase.rails, offers, null).matches.find(
+    (m) => m.score <= 100 - FOLLOWED_COMPANY_BOOST,
+  )!;
   const followed = new Set([`company-${first.offerId}`]);
   const match = rankOffers(
     testCase.profile,
@@ -164,6 +171,25 @@ describe("explication du bonus « entreprise suivie »", () => {
     followed,
   ).matches.find((m) => m.offerId === first.offerId)!;
   const title = offers.find((o) => o.id === first.offerId)!.title;
+
+  it("détail du score + bonus = score affiché", () => {
+    const facts = explanationFacts(match);
+    const weighted =
+      (Object.keys(WEIGHTS) as (keyof typeof WEIGHTS)[]).reduce(
+        (n, key) => n + WEIGHTS[key] * facts.components[key],
+        0,
+      ) / Object.values(WEIGHTS).reduce((n, w) => n + w, 0);
+    expect(match.baseScore).toBe(first.score);
+    expect(facts.followedBonus).toBe(match.score - first.score);
+    // Composantes arrondies à l'unité : écart d'arrondi d'au plus 1 point.
+    expect(Math.abs(weighted + facts.followedBonus! - match.score)).toBeLessThanOrEqual(1);
+  });
+
+  it("score plafonné à 100 : seuls les points réellement ajoutés sont annoncés", () => {
+    const capped = explanationFacts({ ...match, followedBoost: 3 });
+    expect(capped.followedBonus).toBe(3);
+    expect(explanationFacts({ ...match, followedBoost: 0 }).followedBonus).toBeUndefined();
+  });
 
   it("les faits portent le bonus ; une offre non suivie n'en a pas", () => {
     expect(explanationFacts(match).followedBonus).toBe(FOLLOWED_COMPANY_BOOST);

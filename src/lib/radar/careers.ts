@@ -81,7 +81,10 @@ function token(value: string | undefined | null): string | null {
   } catch {
     return null;
   }
-  if (!TOKEN.test(decoded) || RESERVED.has(decoded.toLowerCase())) return null;
+  // Au moins un caractère alphanumérique : « . » ou « .. » ne sont pas des jetons.
+  if (!TOKEN.test(decoded) || !/[A-Za-z0-9]/.test(decoded) || RESERVED.has(decoded.toLowerCase())) {
+    return null;
+  }
   return decoded;
 }
 
