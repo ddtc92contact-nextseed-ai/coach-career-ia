@@ -73,7 +73,9 @@ export default async function FollowedCompaniesPage() {
                 className="bg-subtle ring-line rounded-lg px-2.5 py-1 ring-1 ring-inset"
               >
                 <span className="text-ink-muted font-medium">{ATS_LABELS[ats]}</span>{" "}
-                <code className="text-xs break-all">{ATS_URL_EXAMPLES[ats]}</code>
+                <code className="text-xs break-all">
+                  {ATS_URL_EXAMPLES[ats].replace("{slug}", `<${t("add.slug")}>`)}
+                </code>
               </li>
             ))}
           </ul>

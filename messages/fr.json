@@ -2943,7 +2943,8 @@
       "submit": "Ajouter",
       "pending": "Vérification…",
       "supported": "Pages carrières prises en charge (job boards publics) :",
-      "unsupportedNote": "Les autres sites carrières ne sont pas collectés : le radar n’utilise que des sources publiques prévues pour cela."
+      "unsupportedNote": "Les autres sites carrières ne sont pas collectés : le radar n’utilise que des sources publiques prévues pour cela.",
+      "slug": "entreprise"
     },
     "added": "{name} est suivie ({count, plural, =0 {aucune offre ouverte pour l’instant} one {# offre ouverte} other {# offres ouvertes}}). Ses offres entreront au prochain passage du radar.",
     "alreadyFollowed": "Vous suivez déjà {name}.",

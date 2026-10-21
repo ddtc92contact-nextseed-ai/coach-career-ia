@@ -31,14 +31,14 @@ export const SUPPORTED_ATS: AtsType[] = [
   "WORKABLE",
 ];
 
-/** Exemple d'URL de page carrières par ATS (aide affichée au candidat). */
+/** Modèle d'URL de page carrières par ATS (aide affichée ; `{slug}` = nom de l'entreprise). */
 export const ATS_URL_EXAMPLES: Record<AtsType, string> = {
-  GREENHOUSE: "boards.greenhouse.io/<entreprise>",
-  LEVER: "jobs.lever.co/<entreprise>",
-  ASHBY: "jobs.ashbyhq.com/<entreprise>",
-  SMARTRECRUITERS: "careers.smartrecruiters.com/<entreprise>",
-  RECRUITEE: "<entreprise>.recruitee.com",
-  WORKABLE: "apply.workable.com/<entreprise>",
+  GREENHOUSE: "boards.greenhouse.io/{slug}",
+  LEVER: "jobs.lever.co/{slug}",
+  ASHBY: "jobs.ashbyhq.com/{slug}",
+  SMARTRECRUITERS: "careers.smartrecruiters.com/{slug}",
+  RECRUITEE: "{slug}.recruitee.com",
+  WORKABLE: "apply.workable.com/{slug}",
 };
 
 export const ATS_LABELS: Record<AtsType, string> = {

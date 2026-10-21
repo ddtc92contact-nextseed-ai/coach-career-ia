@@ -2943,7 +2943,8 @@
       "submit": "Add",
       "pending": "Checking…",
       "supported": "Supported careers pages (public job boards):",
-      "unsupportedNote": "Other careers sites are not collected: the radar only uses public sources meant for this."
+      "unsupportedNote": "Other careers sites are not collected: the radar only uses public sources meant for this.",
+      "slug": "company"
     },
     "added": "You now follow {name} ({count, plural, =0 {no open jobs yet} one {# open job} other {# open jobs}}). Its jobs will be picked up on the next radar pass.",
     "alreadyFollowed": "You already follow {name}.",

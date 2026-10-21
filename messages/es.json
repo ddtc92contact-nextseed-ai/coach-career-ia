@@ -2943,7 +2943,8 @@
       "submit": "Añadir",
       "pending": "Comprobando…",
       "supported": "Páginas de empleo compatibles (portales públicos):",
-      "unsupportedNote": "Los demás sitios de empleo no se recopilan: el radar solo usa fuentes públicas previstas para ello."
+      "unsupportedNote": "Los demás sitios de empleo no se recopilan: el radar solo usa fuentes públicas previstas para ello.",
+      "slug": "empresa"
     },
     "added": "Ahora sigue a {name} ({count, plural, =0 {sin ofertas abiertas por ahora} one {# oferta abierta} other {# ofertas abiertas}}). Sus ofertas entrarán en la próxima pasada del radar.",
     "alreadyFollowed": "Ya sigue a {name}.",

@@ -2943,7 +2943,8 @@
       "submit": "Aggiungi",
       "pending": "Verifica in corso…",
       "supported": "Pagine carriere supportate (job board pubblici):",
-      "unsupportedNote": "Gli altri siti carriere non vengono raccolti: il radar usa solo fonti pubbliche previste a questo scopo."
+      "unsupportedNote": "Gli altri siti carriere non vengono raccolti: il radar usa solo fonti pubbliche previste a questo scopo.",
+      "slug": "azienda"
     },
     "added": "Ora segue {name} ({count, plural, =0 {nessuna offerta aperta per ora} one {# offerta aperta} other {# offerte aperte}}). Le sue offerte entreranno al prossimo passaggio del radar.",
     "alreadyFollowed": "Segue già {name}.",

@@ -2943,7 +2943,8 @@
       "submit": "Toevoegen",
       "pending": "Controleren…",
       "supported": "Ondersteunde vacaturepagina’s (openbare jobboards):",
-      "unsupportedNote": "Andere vacaturesites worden niet verzameld: de radar gebruikt alleen openbare bronnen die daarvoor bedoeld zijn."
+      "unsupportedNote": "Andere vacaturesites worden niet verzameld: de radar gebruikt alleen openbare bronnen die daarvoor bedoeld zijn.",
+      "slug": "bedrijf"
     },
     "added": "U volgt nu {name} ({count, plural, =0 {nog geen open vacatures} one {# open vacature} other {# open vacatures}}). De vacatures komen mee in de volgende radarronde.",
     "alreadyFollowed": "U volgt {name} al.",

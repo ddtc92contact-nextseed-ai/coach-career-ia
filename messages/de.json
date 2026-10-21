@@ -2943,7 +2943,8 @@
       "submit": "Hinzufügen",
       "pending": "Wird geprüft…",
       "supported": "Unterstützte Karriereseiten (öffentliche Jobbörsen):",
-      "unsupportedNote": "Andere Karriereseiten werden nicht erfasst: Der Radar nutzt nur öffentliche, dafür vorgesehene Quellen."
+      "unsupportedNote": "Andere Karriereseiten werden nicht erfasst: Der Radar nutzt nur öffentliche, dafür vorgesehene Quellen.",
+      "slug": "unternehmen"
     },
     "added": "Sie folgen jetzt {name} ({count, plural, =0 {derzeit keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}). Die Stellen werden beim nächsten Radar-Durchlauf erfasst.",
     "alreadyFollowed": "Sie folgen {name} bereits.",
