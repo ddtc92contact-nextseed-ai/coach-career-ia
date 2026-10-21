@@ -148,7 +148,16 @@ function TextInput({
 
 // --- Clé de secours ------------------------------------------------------------------
 
-function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone: () => void }) {
+export function RecoveryKeyStep({
+  recoveryKey,
+  onDone,
+  doneLabel,
+}: {
+  recoveryKey: string;
+  onDone: () => void;
+  /** Libellé du bouton final (défaut : « Continuer vers mon identité »). */
+  doneLabel?: string;
+}) {
   const t = useTranslations("identity.recovery");
   const format = useFormatter();
   const [saved, setSaved] = useState(false);
@@ -236,7 +245,7 @@ function RecoveryKeyStep({ recoveryKey, onDone }: { recoveryKey: string; onDone:
         </label>
       </div>
       <button type="button" disabled={!saved} onClick={onDone} className={`${primaryButton} mt-4`}>
-        {t("continue")}
+        {doneLabel ?? t("continue")}
       </button>
     </section>
   );
@@ -1118,11 +1127,47 @@ function ResetSection() {
 
 // --- Page -------------------------------------------------------------------------------
 
+/**
+ * Formulaire qui ouvre (ou crée) le coffre selon son état, hors coffre
+ * déverrouillé. Réutilisé par la revue d'import pour enregistrer l'identité
+ * repérée sans quitter la page.
+ */
+export function VaultAccess({ onCreated }: { onCreated: (recoveryKey: string) => void }) {
+  const { status, hasPassword } = useVault();
+  const [recovering, setRecovering] = useState(false);
+  if (status === "none") {
+    return hasPassword ? <AccountSetupForm onCreated={onCreated} /> : <NoPasswordNotice />;
+  }
+  if (status === "locked" && hasPassword) return <AccountUnlockForm />;
+  if (status === "legacy") return <BindForm kind="legacy" />;
+  if (status === "stale") {
+    return (
+      <>
+        <BindForm kind="stale" />
+        <StaleNoKey />
+      </>
+    );
+  }
+  if (status === "locked") {
+    // Compte sans mot de passe (lien magique) : ancienne phrase secrète du coffre.
+    return (
+      <>
+        <PasswordTip />
+        {recovering ? (
+          <RecoverForm onBack={() => setRecovering(false)} />
+        ) : (
+          <UnlockForm onForgot={() => setRecovering(true)} />
+        )}
+      </>
+    );
+  }
+  return null;
+}
+
 export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOption[] }) {
   const t = useTranslations("identity");
   const { status, reload, hasPassword } = useVault();
   const [recoveryKey, setRecoveryKey] = useState<string | null>(null);
-  const [recovering, setRecovering] = useState(false);
 
   let body: ReactNode;
   if (recoveryKey) {
@@ -1142,44 +1187,7 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
         </button>
       </div>
     );
-  } else if (status === "none") {
-    body = hasPassword ? <AccountSetupForm onCreated={setRecoveryKey} /> : <NoPasswordNotice />;
-  } else if (status === "locked" && hasPassword) {
-    body = (
-      <>
-        <AccountUnlockForm />
-        <ResetSection />
-      </>
-    );
-  } else if (status === "legacy") {
-    body = (
-      <>
-        <BindForm kind="legacy" />
-        <ResetSection />
-      </>
-    );
-  } else if (status === "stale") {
-    body = (
-      <>
-        <BindForm kind="stale" />
-        <StaleNoKey />
-        <ResetSection />
-      </>
-    );
-  } else if (status === "locked") {
-    // Compte sans mot de passe (lien magique) : ancienne phrase secrète du coffre.
-    body = (
-      <>
-        <PasswordTip />
-        {recovering ? (
-          <RecoverForm onBack={() => setRecovering(false)} />
-        ) : (
-          <UnlockForm onForgot={() => setRecovering(true)} />
-        )}
-        <ResetSection />
-      </>
-    );
-  } else {
+  } else if (status === "unlocked") {
     body = (
       <>
         <LockBar />
@@ -1187,6 +1195,13 @@ export function IdentityVaultPanel({ experiences }: { experiences: ExperienceOpt
         <CvSection />
         {hasPassword ? null : <ChangePassphraseForm />}
         <ResetSection />
+      </>
+    );
+  } else {
+    body = (
+      <>
+        <VaultAccess onCreated={setRecoveryKey} />
+        {status === "none" ? null : <ResetSection />}
       </>
     );
   }

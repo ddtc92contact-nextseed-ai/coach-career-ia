@@ -4,6 +4,7 @@ import { buttonClass } from "@/components/button";
 import { Icon, type IconName } from "@/components/icons";
 import { SIGN_UP_PATH } from "@/config/routes";
 import { Link } from "@/i18n/navigation";
+import { coachMessagesPerDay } from "@/lib/coach/quota";
 
 /** Ancres des sections de l'accueil (en-tête et liens internes). */
 export const SECTION_IDS = {
@@ -301,6 +302,8 @@ const FAQ = [
 
 export function Faq() {
   const t = useTranslations("landing.faq");
+  // « C'est vraiment gratuit ? » cite le quota du coach configuré.
+  const limit = coachMessagesPerDay();
   const heading = `${SECTION_IDS.faq}-titre`;
   return (
     <Section id={SECTION_IDS.faq}>
@@ -316,7 +319,9 @@ export function Faq() {
                   className="text-ink-subtle size-5 shrink-0 transition-transform duration-200 group-open:rotate-180"
                 />
               </summary>
-              <p className="text-ink-muted px-5 pb-6 text-pretty sm:px-7">{t(`items.${item}.a`)}</p>
+              <p className="text-ink-muted px-5 pb-6 text-pretty sm:px-7">
+                {t(`items.${item}.a`, { limit })}
+              </p>
             </details>
           ))}
         </div>

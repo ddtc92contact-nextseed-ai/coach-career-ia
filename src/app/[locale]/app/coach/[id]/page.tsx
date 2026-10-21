@@ -6,10 +6,9 @@ import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { isBillingAvailable } from "@/lib/billing/config";
+import { getBillingProvider } from "@/lib/billing/provider";
 import { getEntitlements } from "@/lib/billing/server";
-import { remainingMessages } from "@/lib/coach/quota";
-import { countRecentUserMessages, getConversation } from "@/lib/coach/repository";
+import { getConversation, getCoachQuota } from "@/lib/coach/repository";
 import { AiNotice } from "../ai-notice";
 import { CoachChat } from "./chat";
 
@@ -26,14 +25,19 @@ export default async function CoachConversationPage({
   const user = await requireUser();
   const { id } = await params;
   // Conversation d'un autre utilisateur : 404, comme une conversation inexistante.
-  const [t, conversation, sent, entitlements] = await Promise.all([
+  const [t, conversation, entitlements] = await Promise.all([
     getTranslations("coach"),
     getConversation(user.id, id),
-    countRecentUserMessages(user.id),
     getEntitlements(user.id),
   ]);
   if (!conversation) notFound();
   const limit = entitlements.limits.coachMessagesPerDay;
+  // Offre gratuite : prix de Premium pour l'encart affiché à la limite atteinte.
+  const provider = limit === null ? null : getBillingProvider();
+  const [quota, price] = await Promise.all([
+    getCoachQuota(user.id, limit),
+    provider ? provider.getPremiumPrice() : Promise.resolve(null),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -50,10 +54,12 @@ export default async function CoachConversationPage({
         conversationId={conversation.id}
         mode={conversation.mode}
         initialMessages={conversation.messages}
-        initialRemaining={remainingMessages(sent, limit)}
+        initialRemaining={quota.remaining}
+        initialResetAt={quota.resetAt?.toISOString() ?? null}
         limit={limit}
         configured={isAiConfigured()}
-        billing={isBillingAvailable()}
+        billing={provider !== null}
+        price={price}
       />
     </div>
   );

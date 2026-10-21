@@ -169,7 +169,7 @@
       "items": {
         "free": {
           "q": "È davvero gratis?",
-          "a": "Sì. Memoria di carriera, paletti, opportunità e contatto anonimo sono gratuiti, senza limiti di tempo. Il coach è incluso con una quota giornaliera; Premium lo rende illimitato e aggiunge l’agente di negoziazione."
+          "a": "Sì. Memoria di carriera, paletti, opportunità e contatto anonimo sono gratuiti, senza limiti di tempo. {limit, plural, =0 {Il coach IA e l’agente di negoziazione fanno parte di Premium.} one {Il coach è incluso con # messaggio ogni 24 ore; Premium lo rende illimitato e aggiunge l’agente di negoziazione.} other {Il coach è incluso con # messaggi ogni 24 ore; Premium lo rende illimitato e aggiunge l’agente di negoziazione.}}"
         },
         "employer": {
           "q": "Il mio datore di lavoro attuale può scoprirmi?",
@@ -624,6 +624,10 @@
         "setContractTypes": {
           "title": "Scegliere i tipi di contratto",
           "text": "Tempo indeterminato, freelance, tempo determinato… ciò che accetta."
+        },
+        "importProfile": {
+          "title": "Importa il mio CV, LinkedIn o GitHub",
+          "text": "Il modo più rapido per riempire la tua memoria: convalidi ogni elemento."
         }
       }
     },
@@ -659,6 +663,34 @@
       "title": "I miei paletti",
       "intro": "Nessuna offerta che li viola le viene mai proposta.",
       "edit": "Modifica"
+    },
+    "firstRun": {
+      "title": "Inizia in 3 passi",
+      "intro": "Il tuo agente ha bisogno di due cose per cercare al posto tuo: il tuo percorso e i tuoi paletti.",
+      "progress": "Passo {current} di {total}",
+      "manual": "o compilala a mano",
+      "states": {
+        "done": "Fatto",
+        "current": "Passo in corso",
+        "todo": "In arrivo"
+      },
+      "steps": {
+        "memory": {
+          "title": "Importa il tuo percorso",
+          "text": "Il tuo CV, l’esportazione LinkedIn o il tuo GitHub: l’IA ne ricava esperienze, risultati e competenze, e tu convalidi ogni elemento.",
+          "cta": "Importa il mio CV, LinkedIn o GitHub"
+        },
+        "guardRails": {
+          "title": "Fissa i tuoi paletti",
+          "text": "Stipendio minimo, luogo o lavoro da remoto, tipi di contratto: nessuna offerta che li viola ti verrà mai proposta.",
+          "cta": "Definisci i miei paletti"
+        },
+        "opportunities": {
+          "title": "Scopri le tue prime opportunità",
+          "text": "Il tuo agente confronta le offerte del mercato con il tuo profilo: i primi risultati arrivano in pochi minuti.",
+          "cta": "Vedi le mie opportunità"
+        }
+      }
     }
   },
   "opportunities": {
@@ -666,8 +698,8 @@
     "intro": "Solo offerte che rispettano i Suoi paletti, con la spiegazione di ogni corrispondenza.",
     "empty": {
       "noMemoryTitle": "Il tuo agente ha bisogno della tua memoria professionale",
-      "noMemoryText": "Aggiungi almeno un’esperienza, un risultato o una competenza: è ciò che il tuo agente confronta con le offerte.",
-      "noMemoryAction": "Completare la mia memoria",
+      "noMemoryText": "Importa il tuo CV, LinkedIn o GitHub, oppure aggiungi a mano almeno un risultato o una competenza: è ciò che il tuo agente confronta con le offerte.",
+      "noMemoryAction": "Importa il mio CV, LinkedIn o GitHub",
       "noRailsTitle": "Definisci i tuoi paletti",
       "noRailsText": "Stipendio minimo, zona, smart working, contratti: senza paletti, il tuo agente non può garantire che le offerte proposte ti vadano bene.",
       "noRailsAction": "Definire i miei paletti",
@@ -676,7 +708,8 @@
       "noMatchTitle": "Nessuna offerta qualificata per ora",
       "noMatchText": "Nessuna offerta aperta rispetta oggi tutti i tuoi paletti con un punteggio sufficiente. Il tuo agente continua a monitorare il mercato; dimostrare più risultati migliora anche le tue corrispondenze.",
       "noResultTitle": "Nessuna opportunità con questi filtri",
-      "noResultText": "Modifica i filtri per vedere le altre opportunità."
+      "noResultText": "Modifica i filtri per vedere le altre opportunità.",
+      "noMemoryManual": "o compilala a mano"
     },
     "pending": "Aggiornamento in corso: le tue ultime modifiche saranno considerate entro pochi minuti.",
     "lastComputed": "Ultima analisi: {date}",
@@ -938,6 +971,12 @@
     "back": "Torna alla mia memoria di carriera",
     "stats": {
       "provenSkills": "{count, plural, one {competenza dimostrata} other {competenze dimostrate}}"
+    },
+    "firstRun": {
+      "title": "La tua memoria di carriera è vuota",
+      "text": "Il modo più rapido: importa il tuo CV, l’esportazione LinkedIn o il tuo GitHub. L’IA prepara una bozza pseudonimizzata e tu decidi su ogni elemento.",
+      "import": "Importa il mio CV, LinkedIn o GitHub",
+      "manual": "Compila a mano"
     }
   },
   "identity": {
@@ -1195,7 +1234,8 @@
       "contractsAll": "Tutti",
       "exclusionsValue": "{sectors, plural, =0 {Nessun settore} one {# settore} other {# settori}}, {companies, plural, =0 {nessuna azienda} one {# azienda} other {# aziende}}",
       "unset": "Non definito"
-    }
+    },
+    "seeOpportunities": "Vedi le mie opportunità"
   },
   "coach": {
     "title": "Coach IA",
@@ -1271,7 +1311,8 @@
           "second": "Mi faccia una domanda su una situazione difficile",
           "third": "Esercitiamoci a negoziare lo stipendio"
         }
-      }
+      },
+      "locked": "Invio disattivato: messaggi gratuiti esauriti nelle ultime 24 ore."
     },
     "errors": {
       "title": "Il coach non è riuscito a rispondere",
@@ -1280,7 +1321,7 @@
       "aiUnavailable": "Il servizio di IA è momentaneamente non disponibile.",
       "aiRateLimited": "Il servizio di IA è molto richiesto in questo momento.",
       "aiInvalidOutput": "Il coach ha prodotto una risposta inutilizzabile.",
-      "quotaExceeded": "Ha raggiunto il limite di {limit} messaggi in 24 ore. Torni un po’ più tardi.",
+      "quotaExceeded": "Ha raggiunto il limite di {limit} messaggi in 24 ore. Passi a Premium per un coach illimitato.",
       "tooManyRetries": "Questo messaggio è già stato riprovato più volte senza successo. Lo riformuli o invii un nuovo messaggio.",
       "busy": "Il coach sta già rispondendo a un messaggio in questa conversazione. Attenda qualche secondo.",
       "notFound": "Questa conversazione non esiste più.",
@@ -1348,13 +1389,14 @@
     },
     "quotaUnlimited": "Messaggi illimitati con Premium.",
     "upsell": {
-      "title": "Ha utilizzato i Suoi messaggi gratuiti",
-      "text": "Il piano gratuito comprende {limit, plural, one {# messaggio} other {# messaggi}} al coach nelle ultime 24 ore; si liberano man mano.",
+      "title": "{limit, plural, one {Ha utilizzato il Suo messaggio gratuito} other {Ha utilizzato i Suoi # messaggi gratuiti}}",
+      "text": "Il piano gratuito comprende {limit, plural, one {# messaggio} other {# messaggi}} al coach su 24 ore mobili: ciascuno si libera 24 ore dopo l’invio. La conversazione resta consultabile.",
+      "resetsAt": "Prossimo messaggio gratuito {relative}, alle {time}.",
       "titlePremiumOnly": "Il coach IA è riservato a Premium",
       "textPremiumOnly": "Su questo servizio, il coach IA fa parte del piano Premium.",
-      "premium": "Con Premium, il coach è illimitato.",
-      "later": "Il pagamento online non è ancora disponibile: torni un po’ più tardi.",
-      "cta": "Scopri Premium"
+      "unlocks": "Premium sblocca:",
+      "later": "Il pagamento online non è ancora disponibile su questo servizio.",
+      "cta": "Passa a Premium"
     }
   },
   "settings": {
@@ -1502,14 +1544,23 @@
       "identity": {
         "title": "Dati identificativi rilevati",
         "intro": "Sono tenuti da parte: non vengono salvati sui nostri server e non compariranno nel tuo profilo.",
-        "vault": "La cassaforte d’identità cifrata arriverà presto. Nel frattempo, questi dati verranno dimenticati non appena lasci questa pagina.",
+        "vault": "Puoi salvarli nella tua cassaforte d’identità: vengono cifrati nel tuo browser e i nostri server ricevono solo testo cifrato. Altrimenti verranno dimenticati non appena lasci questa pagina.",
         "fullName": "Nome",
         "emails": "E-mail",
         "phones": "Telefoni",
         "links": "Link personali",
         "employers": "Datori di lavoro",
         "schools": "Scuole",
-        "organizations": "Altre organizzazioni"
+        "organizations": "Altre organizzazioni",
+        "vaultMergeHint": "Ciò che la tua cassaforte contiene già non viene modificato: si completano solo i campi vuoti. Le «altre organizzazioni» non vengono conservate.",
+        "vaultSave": "Salva nella mia cassaforte",
+        "vaultSaving": "Cifratura e salvataggio…",
+        "vaultSaved": "Salvato nella tua cassaforte cifrata.",
+        "vaultOpen": "Vedi la mia identità",
+        "vaultUnlock": "Apri la tua cassaforte per salvare questi dati: il salvataggio seguirà automaticamente.",
+        "vaultCancel": "Annulla",
+        "vaultError": "Il salvataggio nella cassaforte non è riuscito. Controlla la connessione e riprova.",
+        "vaultContinue": "Continua"
       },
       "saveHint": "Solo gli elementi accettati verranno aggiunti alla tua memoria.",
       "save": "{count, plural, =0 {Nessun elemento accettato} one {Salva # elemento} other {Salva # elementi}}",
@@ -1520,9 +1571,11 @@
       "title": "La tua memoria di carriera è aggiornata",
       "text": "Aggiunto: {experiences, plural, =0 {nessuna esperienza} one {# esperienza} other {# esperienze}}, {achievements, plural, =0 {nessun risultato} one {# risultato} other {# risultati}} e {skills, plural, =0 {nessuna competenza} one {# competenza} other {# competenze}}.",
       "next": "Ora aggiungi delle prove ai tuoi risultati dichiarati: sono ciò che conta di più.",
-      "identityForgotten": "I dati identificativi rilevati non sono stati salvati.",
+      "identityForgotten": "I dati identificativi rilevati non sono salvati: verranno dimenticati non appena lasci questa pagina.",
       "cta": "Vedi la mia memoria di carriera",
-      "again": "Importa altre fonti"
+      "again": "Importa altre fonti",
+      "nextRails": "Passo successivo: i tuoi paletti (stipendio minimo, luogo o lavoro da remoto, tipi di contratto). Poi il tuo agente potrà cercare le tue prime opportunità.",
+      "ctaRails": "Definisci i miei paletti"
     }
   },
   "codes": {

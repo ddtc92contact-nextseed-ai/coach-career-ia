@@ -14,6 +14,7 @@ import {
   SubmitButton,
 } from "@/components/form";
 import { Icon } from "@/components/icons";
+import { Link } from "@/i18n/navigation";
 import { CONTRACT_TYPES, CULTURE_PREFERENCES, REMOTE_POLICIES, SECTORS } from "@/lib/career/codes";
 import type { GuardRailsView } from "@/lib/career/repository";
 import { LIMITS } from "@/lib/career/schemas";
@@ -408,6 +409,16 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
       <div className="border-line bg-surface/95 sticky bottom-0 -mx-4 flex flex-col gap-3 border-t px-4 py-4 shadow-md backdrop-blur sm:mx-0 sm:flex-row sm:items-center sm:rounded-2xl sm:border lg:col-span-2">
         <SubmitButton pending={pending}>{t("save")}</SubmitButton>
         <SavedNotice show={state.ok && !pending} />
+        {state.ok && !pending ? (
+          // Étape suivante du démarrage : les opportunités (calcul en cours le cas échéant).
+          <Link
+            href="/app/opportunites"
+            className="text-brand-ink inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline sm:ml-auto"
+          >
+            {t("seeOpportunities")}
+            <Icon name="arrow" className="size-4" />
+          </Link>
+        ) : null}
       </div>
     </ActionForm>
   );

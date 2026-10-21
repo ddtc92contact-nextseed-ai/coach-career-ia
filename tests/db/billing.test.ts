@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import Stripe from "stripe";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createAiClient, createMockProvider } from "@/lib/ai";
+import { COACH_QUOTA_WINDOW_MS } from "@/lib/coach/quota";
 import { createLogger } from "@/lib/logger";
 
 // Base de test, session, fournisseur IA et Stripe simulés (aucun appel à l'API Stripe).
@@ -318,17 +319,25 @@ describe.skipIf(!url)("abonnements : webhook Stripe et droits", () => {
       return { statuses, lastEvents };
     }
 
-    it("gratuit : limite appliquée ; Premium : illimité", async () => {
-      process.env.COACH_MESSAGES_PER_DAY = "2";
+    it("gratuit : 5 messages par défaut, le 6ᵉ refusé ; Premium : illimité", async () => {
+      delete process.env.COACH_MESSAGES_PER_DAY;
       const free = await user("gratuit");
-      const { statuses, lastEvents } = await sendMany(free, 3);
-      expect(statuses).toEqual([200, 200, 429]);
-      expect(lastEvents[2]).toEqual({ error: "quotaExceeded", limit: 2 });
+      const before = Date.now();
+      const { statuses, lastEvents } = await sendMany(free, 6);
+      expect(statuses).toEqual([200, 200, 200, 200, 200, 429]);
+      // Le 5ᵉ épuise le quota : la réponse dit quand un message se libère.
+      const fifth = lastEvents[4] as { type: string; remaining: number; resetAt: string };
+      expect(fifth).toMatchObject({ type: "done", remaining: 0 });
+      const resetAt = new Date(fifth.resetAt).getTime();
+      expect(resetAt).toBeGreaterThanOrEqual(before + COACH_QUOTA_WINDOW_MS);
+      expect(resetAt).toBeLessThanOrEqual(Date.now() + COACH_QUOTA_WINDOW_MS);
+      expect(lastEvents[5]).toEqual({ error: "quotaExceeded", limit: 5, resetAt: fifth.resetAt });
+      expect(await db.coachMessage.count({ where: { userId: free.id, role: "USER" } })).toBe(5);
 
       const premium = await user("premium");
       await db.user.update({ where: { id: premium.id }, data: { plan: "PREMIUM" } });
-      const unlimited = await sendMany(premium, 4);
-      expect(unlimited.statuses).toEqual([200, 200, 200, 200]);
+      const unlimited = await sendMany(premium, 7);
+      expect(unlimited.statuses).toEqual(Array(7).fill(200));
       expect(unlimited.lastEvents.at(-1)).toMatchObject({ type: "done", remaining: null });
     });
 
@@ -340,6 +349,9 @@ describe.skipIf(!url)("abonnements : webhook Stripe et droits", () => {
       const admin = await user("gerant");
       process.env.ADMIN_EMAILS = admin.email.toUpperCase();
       expect((await sendMany(admin, 2)).statuses).toEqual([200, 200]);
+      // Quota gratuit par défaut : l'administrateur reste illimité.
+      delete process.env.COACH_MESSAGES_PER_DAY;
+      expect((await sendMany(admin, 6)).statuses).toEqual(Array(6).fill(200));
     });
   });
 });

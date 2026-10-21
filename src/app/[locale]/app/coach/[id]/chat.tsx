@@ -13,7 +13,7 @@ import {
   type CoachStreamEvent,
   type SuggestionView,
 } from "@/lib/coach/shared";
-import { CoachUpsell } from "../upsell";
+import { CoachUpsell, type UpsellPrice } from "../upsell";
 import { SuggestionCard } from "./suggestion-card";
 
 type Pending = {
@@ -54,25 +54,32 @@ export function CoachChat({
   mode,
   initialMessages,
   initialRemaining,
+  initialResetAt,
   limit,
   configured,
   billing,
+  price,
 }: {
   conversationId: string;
   mode: CoachModeCode;
   initialMessages: CoachMessageView[];
   /** `null` : illimité (Premium). */
   initialRemaining: number | null;
+  /** Limite atteinte : instant (ISO) où un message gratuit se libère. */
+  initialResetAt: string | null;
   limit: number | null;
   configured: boolean;
   /** Paiement disponible : la limite atteinte propose Premium. */
   billing: boolean;
+  /** Prix de Premium affiché à la limite atteinte (`null` s'il est inconnu). */
+  price: UpsellPrice | null;
 }) {
   const t = useTranslations("coach");
   const [messages, setMessages] = useState(initialMessages);
   const [pending, setPending] = useState<Pending | null>(null);
   const [error, setError] = useState<CoachErrorCode | null>(null);
   const [remaining, setRemaining] = useState(initialRemaining);
+  const [resetAt, setResetAt] = useState(initialResetAt);
   const [input, setInput] = useState("");
   // Dernière réponse complète, lue une seule fois par les lecteurs d'écran
   // (le texte en cours de rédaction n'est pas annoncé morceau par morceau).
@@ -82,6 +89,18 @@ export function CoachChat({
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => () => controller.current?.abort(), []);
+  // Fenêtre glissante : à l'échéance, un message se libère (le serveur recompte à l'envoi).
+  useEffect(() => {
+    if (!resetAt) return;
+    const timer = setTimeout(
+      () => {
+        setRemaining((r) => (r === 0 ? 1 : r));
+        setResetAt(null);
+      },
+      Math.max(0, new Date(resetAt).getTime() - Date.now()),
+    );
+    return () => clearTimeout(timer);
+  }, [resetAt]);
   useEffect(() => {
     endRef.current?.scrollIntoView?.({ block: "end", behavior: "smooth" });
   }, [messages.length, pending?.text, pending?.suggestions.length, error]);
@@ -139,13 +158,19 @@ export function CoachChat({
         signal: abort.signal,
       });
       if (!response.ok || !response.body) {
-        const data = (await response.json().catch(() => null)) as { error?: unknown } | null;
+        const data = (await response.json().catch(() => null)) as {
+          error?: unknown;
+          resetAt?: unknown;
+        } | null;
         const code = isCoachErrorCode(data?.error)
           ? data.error
           : response.status === 401
             ? "unauthorized"
             : "unknown";
-        if (code === "quotaExceeded") setRemaining(0);
+        if (code === "quotaExceeded") {
+          setRemaining(0);
+          setResetAt(typeof data?.resetAt === "string" ? data.resetAt : null);
+        }
         failBeforeAcceptance(code);
         finished = true;
         return;
@@ -177,6 +202,7 @@ export function CoachChat({
             finished = true;
             setMessages((list) => [...list, event.message]);
             setRemaining(event.remaining);
+            setResetAt(event.resetAt);
             setAnnouncement(t("chat.replyAnnounce", { text: event.message.content }));
             break;
           case "error":
@@ -303,7 +329,9 @@ export function CoachChat({
         </p>
       ) : null}
 
-      {exhausted && limit !== null ? <CoachUpsell limit={limit} billing={billing} /> : null}
+      {exhausted && limit !== null ? (
+        <CoachUpsell limit={limit} billing={billing} price={price} resetAt={resetAt} />
+      ) : null}
       {error && error !== "quotaExceeded" ? (
         <div
           role="alert"
@@ -327,7 +355,12 @@ export function CoachChat({
         </div>
       ) : null}
 
-      <div className="bg-canvas/90 sticky bottom-0 z-10 -mx-4 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:mx-0 sm:px-0">
+      {/* Limite atteinte : saisie inutilisable, elle ne colle plus en bas pour laisser voir l'encart. */}
+      <div
+        className={`bg-canvas/90 -mx-4 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur sm:mx-0 sm:px-0 ${
+          exhausted ? "" : "sticky bottom-0 z-10"
+        }`}
+      >
         {showChips ? (
           <div className="mb-3">
             <p id="coach-chips" className="text-ink-subtle mb-2 text-sm font-medium">
@@ -374,15 +407,23 @@ export function CoachChat({
           <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-1">
             <p
               id="coach-input-hint"
-              className={`text-sm ${tooLong ? "text-danger-ink font-medium" : "text-ink-subtle"}`}
+              className={`text-sm ${
+                tooLong || (configured && exhausted)
+                  ? "text-danger-ink font-medium"
+                  : remaining !== null && remaining <= 1
+                    ? "text-warning-ink font-medium"
+                    : "text-ink-subtle"
+              }`}
             >
               {tooLong
                 ? t("chat.tooLong", { max: COACH_LIMITS.messageMaxChars })
                 : !configured
                   ? t("notConfigured")
-                  : remaining === null
-                    ? t("quotaUnlimited")
-                    : t("quota", { remaining })}
+                  : exhausted
+                    ? t("chat.locked")
+                    : remaining === null
+                      ? t("quotaUnlimited")
+                      : t("quota", { remaining })}
             </p>
             <button type="submit" disabled={!canSend} className={buttonClass("primary")}>
               {busy ? t("chat.sending") : t("chat.send")}
