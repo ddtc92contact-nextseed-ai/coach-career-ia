@@ -151,6 +151,11 @@ export type FirstRunGuide = {
 
 const RAIL_STEPS = ["setSalary", "setLocation", "setContractTypes"] as const;
 
+/** Garde-fous posés : salaire plancher, lieu ou télétravail, types de contrat. */
+export function guardRailsSet(completeness: Pick<Completeness, "done">): boolean {
+  return RAIL_STEPS.every((step) => completeness.done.includes(step));
+}
+
 /**
  * Parcours de démarrage en trois temps : remplir la mémoire (import), fixer les
  * garde-fous (salaire, lieu ou télétravail, contrats), puis voir les
@@ -158,10 +163,9 @@ const RAIL_STEPS = ["setSalary", "setLocation", "setContractTypes"] as const;
  * guide disparaît.
  */
 export function firstRunGuide(completeness: Pick<Completeness, "done">): FirstRunGuide | null {
-  const done = new Set<string>(completeness.done);
   const status: Record<FirstRunStep, boolean> = {
-    memory: done.has("importProfile"),
-    guardRails: RAIL_STEPS.every((step) => done.has(step)),
+    memory: completeness.done.includes("importProfile"),
+    guardRails: guardRailsSet(completeness),
     opportunities: false,
   };
   if (status.memory && status.guardRails) return null;

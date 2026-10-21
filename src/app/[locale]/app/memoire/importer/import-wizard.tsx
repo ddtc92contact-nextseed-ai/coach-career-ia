@@ -49,7 +49,14 @@ async function requestImport(sources: Sources, signal: AbortSignal): Promise<Imp
   return { ok: false, error: response.status === 401 ? "unauthorized" : "unknown" };
 }
 
-export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
+export function ImportWizard({
+  aiConfigured,
+  railsDone,
+}: {
+  aiConfigured: boolean;
+  /** Garde-fous déjà posés (sinon, l'écran de fin y mène : étape suivante du démarrage). */
+  railsDone: boolean;
+}) {
   const t = useTranslations("import");
   const [sources, setSources] = useState<Sources>({ cv: null, linkedin: null, github: "" });
   const [fieldErrors, setFieldErrors] = useState<
@@ -105,6 +112,7 @@ export function ImportWizard({ aiConfigured }: { aiConfigured: boolean }) {
     return (
       <ReviewPanel
         result={phase.result}
+        railsDone={railsDone}
         onRestart={() => {
           setSources({ cv: null, linkedin: null, github: "" });
           setPhase({ kind: "form" });

@@ -623,6 +623,10 @@
         "setContractTypes": {
           "title": "Vertragsarten wählen",
           "text": "Unbefristet, freiberuflich, befristet… was Sie akzeptieren."
+        },
+        "importProfile": {
+          "title": "Lebenslauf, LinkedIn oder GitHub importieren",
+          "text": "Der schnellste Weg, Ihr Gedächtnis zu füllen: Sie bestätigen jedes Element."
         }
       }
     },
@@ -658,6 +662,34 @@
       "title": "Meine Leitplanken",
       "intro": "Angebote, die sie verletzen, werden Ihnen nie angezeigt.",
       "edit": "Bearbeiten"
+    },
+    "firstRun": {
+      "title": "In 3 Schritten starten",
+      "intro": "Ihr Agent braucht zwei Dinge, um für Sie zu suchen: Ihren Werdegang und Ihre Leitplanken.",
+      "progress": "Schritt {current} von {total}",
+      "manual": "oder von Hand ausfüllen",
+      "states": {
+        "done": "Erledigt",
+        "current": "Aktueller Schritt",
+        "todo": "Als Nächstes"
+      },
+      "steps": {
+        "memory": {
+          "title": "Werdegang importieren",
+          "text": "Ihr Lebenslauf, Ihr LinkedIn-Export oder Ihr GitHub: Die KI entnimmt daraus Erfahrungen, Erfolge und Kompetenzen, und Sie bestätigen jedes Element.",
+          "cta": "Lebenslauf, LinkedIn oder GitHub importieren"
+        },
+        "guardRails": {
+          "title": "Leitplanken festlegen",
+          "text": "Mindestgehalt, Ort oder Homeoffice, Vertragsarten: Ein Angebot, das sie verletzt, wird Ihnen nie vorgelegt.",
+          "cta": "Meine Leitplanken festlegen"
+        },
+        "opportunities": {
+          "title": "Erste Chancen entdecken",
+          "text": "Ihr Agent vergleicht die Angebote des Marktes mit Ihrem Profil: Die ersten Ergebnisse kommen in wenigen Minuten.",
+          "cta": "Meine Chancen ansehen"
+        }
+      }
     }
   },
   "opportunities": {
@@ -665,8 +697,8 @@
     "intro": "Nur Angebote, die Ihre Leitplanken respektieren, jeweils mit einer Erklärung der Übereinstimmung.",
     "empty": {
       "noMemoryTitle": "Ihr Agent braucht Ihr Karrieregedächtnis",
-      "noMemoryText": "Fügen Sie mindestens eine Erfahrung, einen Erfolg oder eine Kompetenz hinzu: Das vergleicht Ihr Agent mit den Stellenangeboten.",
-      "noMemoryAction": "Mein Gedächtnis ergänzen",
+      "noMemoryText": "Importieren Sie Ihren Lebenslauf, LinkedIn oder GitHub, oder fügen Sie von Hand mindestens einen Erfolg oder eine Kompetenz hinzu: Das vergleicht Ihr Agent mit den Stellenangeboten.",
+      "noMemoryAction": "Lebenslauf, LinkedIn oder GitHub importieren",
       "noRailsTitle": "Legen Sie Ihre Leitplanken fest",
       "noRailsText": "Mindestgehalt, Umkreis, Homeoffice, Vertragsarten: Ohne Leitplanken kann Ihr Agent nicht garantieren, dass die vorgeschlagenen Angebote zu Ihnen passen.",
       "noRailsAction": "Meine Leitplanken festlegen",
@@ -675,7 +707,8 @@
       "noMatchTitle": "Noch kein passendes Angebot",
       "noMatchText": "Derzeit erfüllt kein offenes Angebot alle Ihre Leitplanken mit ausreichender Punktzahl. Ihr Agent beobachtet den Markt weiter; mehr belegte Erfolge verbessern Ihre Treffer ebenfalls.",
       "noResultTitle": "Keine Gelegenheit mit diesen Filtern",
-      "noResultText": "Ändern Sie die Filter, um Ihre anderen Gelegenheiten zu sehen."
+      "noResultText": "Ändern Sie die Filter, um Ihre anderen Gelegenheiten zu sehen.",
+      "noMemoryManual": "oder von Hand ausfüllen"
     },
     "pending": "Aktualisierung läuft: Ihre letzten Änderungen werden in wenigen Minuten berücksichtigt.",
     "lastComputed": "Letzte Analyse: {date}",
@@ -936,6 +969,12 @@
     "back": "Zurück zu meinem Karrieregedächtnis",
     "stats": {
       "provenSkills": "{count, plural, one {belegte Kompetenz} other {belegte Kompetenzen}}"
+    },
+    "firstRun": {
+      "title": "Ihr Karrieregedächtnis ist leer",
+      "text": "Am schnellsten: Importieren Sie Ihren Lebenslauf, Ihren LinkedIn-Export oder Ihr GitHub. Die KI erstellt einen pseudonymisierten Entwurf, und Sie entscheiden über jedes Element.",
+      "import": "Lebenslauf, LinkedIn oder GitHub importieren",
+      "manual": "Von Hand ausfüllen"
     }
   },
   "identity": {
@@ -1193,7 +1232,8 @@
       "contractsAll": "Alle",
       "exclusionsValue": "{sectors, plural, =0 {Keine Branche} one {# Branche} other {# Branchen}}, {companies, plural, =0 {kein Unternehmen} one {# Unternehmen} other {# Unternehmen}}",
       "unset": "Nicht festgelegt"
-    }
+    },
+    "seeOpportunities": "Meine Chancen ansehen"
   },
   "coach": {
     "title": "KI-Coach",
@@ -1500,14 +1540,22 @@
       "identity": {
         "title": "Erkannte identifizierende Daten",
         "intro": "Sie werden getrennt gehalten: Sie werden nicht auf unseren Servern gespeichert und erscheinen nicht in Ihrem Profil.",
-        "vault": "Der verschlüsselte Identitätstresor kommt bald. Bis dahin werden diese Daten vergessen, sobald Sie diese Seite verlassen.",
+        "vault": "Sie können sie in Ihrem Identitätstresor speichern: Sie werden in Ihrem Browser verschlüsselt, und unsere Server erhalten nur verschlüsselten Text. Andernfalls werden sie vergessen, sobald Sie diese Seite verlassen.",
         "fullName": "Name",
         "emails": "E-Mail-Adressen",
         "phones": "Telefonnummern",
         "links": "Persönliche Links",
         "employers": "Arbeitgeber",
         "schools": "Hochschulen und Schulen",
-        "organizations": "Weitere Organisationen"
+        "organizations": "Weitere Organisationen",
+        "vaultMergeHint": "Was Ihr Tresor bereits enthält, bleibt unverändert: Nur leere Felder werden ergänzt. „Weitere Organisationen“ werden nicht übernommen.",
+        "vaultSave": "In meinem Tresor speichern",
+        "vaultSaving": "Verschlüsseln und speichern …",
+        "vaultSaved": "In Ihrem verschlüsselten Tresor gespeichert.",
+        "vaultOpen": "Meine Identität ansehen",
+        "vaultUnlock": "Öffnen Sie Ihren Tresor, um diese Daten zu speichern: Das Speichern folgt automatisch.",
+        "vaultCancel": "Abbrechen",
+        "vaultError": "Das Speichern im Tresor ist fehlgeschlagen. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut."
       },
       "saveHint": "Nur übernommene Einträge werden Ihrem Gedächtnis hinzugefügt.",
       "save": "{count, plural, =0 {Kein Eintrag übernommen} one {# Eintrag speichern} other {# Einträge speichern}}",
@@ -1518,9 +1566,11 @@
       "title": "Ihr Karrieregedächtnis ist aktuell",
       "text": "Hinzugefügt: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}}, {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}} und {skills, plural, =0 {keine Kompetenz} one {# Kompetenz} other {# Kompetenzen}}.",
       "next": "Fügen Sie jetzt Belege zu Ihren angegebenen Erfolgen hinzu: Sie zählen am meisten.",
-      "identityForgotten": "Die erkannten identifizierenden Daten wurden nicht gespeichert.",
+      "identityForgotten": "Die erkannten identifizierenden Daten sind nicht gespeichert: Sie werden vergessen, sobald Sie diese Seite verlassen.",
       "cta": "Mein Karrieregedächtnis ansehen",
-      "again": "Weitere Quellen importieren"
+      "again": "Weitere Quellen importieren",
+      "nextRails": "Nächster Schritt: Ihre Leitplanken (Mindestgehalt, Ort oder Homeoffice, Vertragsarten). Danach kann Ihr Agent Ihre ersten Chancen suchen.",
+      "ctaRails": "Meine Leitplanken festlegen"
     }
   },
   "codes": {

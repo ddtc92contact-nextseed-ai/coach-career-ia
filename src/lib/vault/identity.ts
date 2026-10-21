@@ -134,11 +134,11 @@ export function mergeImportedIdentity(
 export function hasVaultableIdentity(imported: IdentityPayload): boolean {
   return Boolean(
     imported.fullName ||
-      imported.emails.length ||
-      imported.phones.length ||
-      imported.employers.length ||
-      imported.schools.length ||
-      imported.links.length,
+    imported.emails.length ||
+    imported.phones.length ||
+    imported.employers.length ||
+    imported.schools.length ||
+    imported.links.length,
   );
 }
 

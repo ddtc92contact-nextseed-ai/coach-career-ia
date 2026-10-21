@@ -97,9 +97,18 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
         title={t("empty.noMemoryTitle")}
         text={t("empty.noMemoryText")}
         action={
-          <Link href="/app/memoire" className={actionClass}>
-            {t("empty.noMemoryAction")}
-          </Link>
+          <div className="flex flex-col items-center gap-2">
+            <Link href="/app/memoire/importer" className={actionClass}>
+              <Icon name="upload" className="size-4" />
+              {t("empty.noMemoryAction")}
+            </Link>
+            <Link
+              href="/app/memoire/experiences/nouvelle"
+              className="text-ink-muted hover:text-ink inline-flex min-h-11 items-center px-2 text-sm font-medium underline underline-offset-4"
+            >
+              {t("empty.noMemoryManual")}
+            </Link>
+          </div>
         }
       />
     );

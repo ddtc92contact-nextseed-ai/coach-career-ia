@@ -7,16 +7,18 @@ import { PageHeader } from "@/components/page-header";
 import { StatTile } from "@/components/stat-tile";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
-import type { CompletenessStep } from "@/lib/career/derive";
+import { firstRunGuide, type CompletenessStep } from "@/lib/career/derive";
 import { getDashboard, getGuardRails } from "@/lib/career/repository";
 import { listContacts } from "@/lib/contact/repository";
 import { getOpportunities } from "@/lib/matching/repository";
+import { FIRST_RUN_LINKS, FirstRunGuidePanel, MANUAL_ENTRY_LINK } from "./first-run-guide";
 import { RailsSummary } from "./garde-fous/rails-summary";
 import { ScoreBadge } from "./opportunites/opportunity-parts";
 import { VisibilityForm } from "./visibility-form";
 
 const STEP_LINKS: Record<CompletenessStep, string> = {
-  addExperience: "/app/memoire/experiences/nouvelle",
+  importProfile: FIRST_RUN_LINKS.memory,
+  addExperience: MANUAL_ENTRY_LINK,
   addAchievement: "/app/memoire/realisations/nouvelle",
   addProof: "/app/memoire#realisations",
   moreProofs: "/app/memoire/realisations/nouvelle",
@@ -34,8 +36,9 @@ const linkClass =
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  const [t, to, tc, format, dashboard, rails, opportunities, contacts] = await Promise.all([
+  const [t, tf, to, tc, format, dashboard, rails, opportunities, contacts] = await Promise.all([
     getTranslations("dashboard"),
+    getTranslations("dashboard.firstRun"),
     getTranslations("opportunities"),
     getTranslations("contacts"),
     getFormatter(),
@@ -46,6 +49,13 @@ export default async function DashboardPage() {
   ]);
   const { completeness, counts } = dashboard;
   const nextStep = completeness.todo[0];
+  // Premier passage : l'appel principal suit le guide (import, puis garde-fous).
+  const guide = firstRunGuide(completeness);
+  const primary = guide
+    ? { href: FIRST_RUN_LINKS[guide.current], label: tf(`steps.${guide.current}.cta`) }
+    : nextStep
+      ? { href: STEP_LINKS[nextStep], label: t(`completeness.steps.${nextStep}.title`) }
+      : { href: "/app/opportunites", label: t("cta.opportunities") };
   const drafts = contacts.filter((c) => c.status === "DRAFT");
   const unread = contacts.filter((c) => c.unread > 0);
   const latest = opportunities.items.slice(0, PREVIEW_COUNT);
@@ -58,13 +68,20 @@ export default async function DashboardPage() {
         title={t("title")}
         lead={t("intro")}
         actions={
-          <Link
-            href={nextStep ? STEP_LINKS[nextStep] : "/app/opportunites"}
-            className={buttonClass("signal", "lg")}
-          >
-            {nextStep ? t(`completeness.steps.${nextStep}.title`) : t("cta.opportunities")}
-            <Icon name="arrow" className="size-5" />
-          </Link>
+          <div className="flex flex-col items-stretch gap-2 sm:items-end">
+            <Link href={primary.href} className={buttonClass("signal", "lg")}>
+              {primary.label}
+              <Icon name="arrow" className="size-5" />
+            </Link>
+            {guide?.current === "memory" ? (
+              <Link
+                href={MANUAL_ENTRY_LINK}
+                className="text-on-night-muted hover:text-on-night inline-flex min-h-11 items-center justify-center px-2 text-sm font-medium underline underline-offset-4"
+              >
+                {tf("manual")}
+              </Link>
+            ) : null}
+          </div>
         }
       >
         <div className="mt-8 grid grid-cols-2 gap-3 xl:grid-cols-4">
@@ -109,6 +126,8 @@ export default async function DashboardPage() {
           />
         </div>
       </PageHeader>
+
+      {guide ? <FirstRunGuidePanel guide={guide} /> : null}
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card aria-labelledby="prochaines-etapes" className="lg:col-span-2">
@@ -241,7 +260,9 @@ export default async function DashboardPage() {
               </p>
             </div>
             <Link
-              href={opportunities.blocker === "noMemory" ? "/app/memoire" : "/app/garde-fous"}
+              href={
+                opportunities.blocker === "noMemory" ? FIRST_RUN_LINKS.memory : "/app/garde-fous"
+              }
               className={`${buttonClass("secondary")} shrink-0`}
             >
               {to(
@@ -250,6 +271,20 @@ export default async function DashboardPage() {
                   : "empty.noRailsAction",
               )}
             </Link>
+          </div>
+        ) : latest.length === 0 && (opportunities.pending || !opportunities.computedAt) ? (
+          <div
+            role="status"
+            className="border-warning-line bg-warning-soft text-warning-ink mt-5 flex items-start gap-3 rounded-xl border p-5"
+          >
+            <span aria-hidden="true" className="relative mt-1.5 flex size-2.5 shrink-0">
+              <span className="bg-warning absolute inline-flex size-full rounded-full opacity-60 motion-safe:animate-ping" />
+              <span className="bg-warning relative inline-flex size-2.5 rounded-full" />
+            </span>
+            <span>
+              <span className="block font-semibold">{to("empty.pendingTitle")}</span>
+              <span className="mt-1 block text-sm">{to("empty.pendingText")}</span>
+            </span>
           </div>
         ) : latest.length === 0 ? (
           <p className="text-ink-muted border-line-strong mt-5 flex items-center gap-3 rounded-xl border border-dashed p-5">

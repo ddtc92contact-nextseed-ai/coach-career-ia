@@ -3,7 +3,9 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useState, useTransition, type FormEvent, type ReactNode } from "react";
 import { Badge } from "@/components/badge";
+import { buttonClass } from "@/components/button";
 import { Field, fieldProps, FormError, inputClass } from "@/components/form";
+import { useVault } from "@/components/vault/vault-provider";
 import { Link } from "@/i18n/navigation";
 import type { ImportedDraftSummary } from "@/lib/career/repository";
 import {
@@ -21,7 +23,9 @@ import {
   type FieldErrors,
 } from "@/lib/career/schemas";
 import type { ImportResult, ItemFlags } from "@/lib/import/shared";
+import { hasVaultableIdentity, mergeImportedIdentity } from "@/lib/vault/identity";
 import { saveImport } from "./actions";
+import { IdentityToVault } from "./identity-to-vault";
 
 type DraftExperience = CareerMemoryDraft["experiences"][number];
 type DraftAchievement = CareerMemoryDraft["achievements"][number];
@@ -59,11 +63,16 @@ function text(form: FormData, name: string) {
 export function ReviewPanel({
   result,
   onRestart,
+  railsDone,
 }: {
   result: ImportResult;
   onRestart: () => void;
+  /** Garde-fous déjà posés : sinon, l'étape suivante du démarrage. */
+  railsDone: boolean;
 }) {
   const t = useTranslations("import.review");
+  const vault = useVault();
+  const [identitySaved, setIdentitySaved] = useState(false);
   const [experiences, setExperiences] = useState(() =>
     toItems(result.draft.experiences, result.flags.experiences),
   );
@@ -113,15 +122,39 @@ export function ReviewPanel({
     startTransition(async () => {
       try {
         const response = await saveImport(draft);
-        if (response.ok) setSaved(response.summary);
-        else setSaveErrors(response.errors);
+        if (!response.ok) return setSaveErrors(response.errors);
+        // Identité déjà mise au coffre pendant la revue : on relie maintenant
+        // chaque employeur à l'expérience créée (rien de bloquant en cas d'échec).
+        if (identitySaved && vault.status === "unlocked" && vault.identity) {
+          await vault
+            .saveIdentity(
+              mergeImportedIdentity(
+                vault.identity,
+                result.identity,
+                response.summary.experienceIds,
+              ),
+            )
+            .catch(() => undefined);
+        }
+        setSaved(response.summary);
       } catch {
         setSaveErrors({ _form: "invalid" });
       }
     });
   }
 
-  if (saved) return <Done summary={saved} onRestart={onRestart} />;
+  if (saved) {
+    return (
+      <Done
+        summary={saved}
+        onRestart={onRestart}
+        railsDone={railsDone}
+        identity={result.identity}
+        identitySaved={identitySaved}
+        onIdentitySaved={() => setIdentitySaved(true)}
+      />
+    );
+  }
 
   const experienceOptions = experiences
     .filter((e) => e.decision !== "rejected")
@@ -150,7 +183,12 @@ export function ReviewPanel({
         </div>
       </div>
 
-      <IdentityPanel identity={result.identity} experiences={experiences.map((e) => e.data)} />
+      <IdentityPanel
+        identity={result.identity}
+        experiences={experiences.map((e) => e.data)}
+        saved={identitySaved}
+        onSaved={() => setIdentitySaved(true)}
+      />
 
       <Section id="import-experiences" title={t("experiencesTitle")} empty={!experiences.length}>
         {experiences.map((item, index) => (
@@ -745,9 +783,13 @@ function AchievementEditor({
 function IdentityPanel({
   identity,
   experiences,
+  saved,
+  onSaved,
 }: {
   identity: ImportResult["identity"];
   experiences: DraftExperience[];
+  saved: boolean;
+  onSaved: () => void;
 }) {
   const t = useTranslations("import.review.identity");
   const roleByRef = new Map(experiences.map((e) => [e.ref, e.roleTitle]));
@@ -769,41 +811,76 @@ function IdentityPanel({
   const filled = rows.filter(([, values]) => values.length);
   if (!filled.length) return null;
   return (
-    <details className="border-line bg-subtle rounded-xl border p-4 sm:p-5">
-      <summary className="cursor-pointer font-semibold">{t("title")}</summary>
-      <p className="text-ink-muted mt-2 text-sm">{t("intro")}</p>
-      <p className="text-ink-muted mt-1 text-sm">{t("vault")}</p>
-      <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-[12rem_1fr]">
-        {filled.map(([key, values]) => (
-          <div key={key} className="contents">
-            <dt className="text-ink font-medium">{t(key as "emails")}</dt>
-            <dd className="text-ink-muted min-w-0 break-words">{values.join(" · ")}</dd>
-          </div>
-        ))}
-      </dl>
-    </details>
+    <div className="border-line bg-subtle rounded-xl border p-4 sm:p-5">
+      <details>
+        <summary className="cursor-pointer font-semibold">{t("title")}</summary>
+        <p className="text-ink-muted mt-2 text-sm">{t("intro")}</p>
+        <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-[12rem_1fr]">
+          {filled.map(([key, values]) => (
+            <div key={key} className="contents">
+              <dt className="text-ink font-medium">{t(key as "emails")}</dt>
+              <dd className="text-ink-muted min-w-0 break-words">{values.join(" · ")}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+      {hasVaultableIdentity(identity) ? (
+        <IdentityToVault identity={identity} saved={saved} onSaved={onSaved} />
+      ) : null}
+    </div>
   );
 }
 
-function Done({ summary, onRestart }: { summary: ImportedDraftSummary; onRestart: () => void }) {
+function Done({
+  summary,
+  onRestart,
+  railsDone,
+  identity,
+  identitySaved,
+  onIdentitySaved,
+}: {
+  summary: ImportedDraftSummary;
+  onRestart: () => void;
+  railsDone: boolean;
+  identity: ImportResult["identity"];
+  identitySaved: boolean;
+  onIdentitySaved: () => void;
+}) {
   const t = useTranslations("import.done");
+  const vaultable = hasVaultableIdentity(identity);
   return (
-    <div role="status" className="border-line bg-surface rounded-xl border p-6 sm:p-8">
-      <h2 className="text-xl font-semibold">{t("title")}</h2>
-      <p className="text-ink-muted mt-2">
-        {t("text", {
-          experiences: summary.experiences,
-          achievements: summary.achievements,
-          skills: summary.skills,
-        })}
-      </p>
-      <p className="text-ink-muted mt-2 text-sm">{t("next")}</p>
-      <p className="text-ink-muted mt-1 text-sm">{t("identityForgotten")}</p>
+    <div className="border-line bg-surface rounded-xl border p-6 sm:p-8">
+      <div role="status">
+        <h2 className="text-xl font-semibold">{t("title")}</h2>
+        <p className="text-ink-muted mt-2">
+          {t("text", {
+            experiences: summary.experiences,
+            achievements: summary.achievements,
+            skills: summary.skills,
+          })}
+        </p>
+      </div>
+      <p className="text-ink-muted mt-2 text-sm">{railsDone ? t("next") : t("nextRails")}</p>
+      {vaultable ? (
+        <>
+          {identitySaved ? null : (
+            <p className="text-ink-muted mt-1 text-sm">{t("identityForgotten")}</p>
+          )}
+          <IdentityToVault
+            identity={identity}
+            experienceIds={summary.experienceIds}
+            saved={identitySaved}
+            onSaved={onIdentitySaved}
+          />
+        </>
+      ) : null}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <Link
-          href="/app/memoire"
-          className="bg-primary text-on-primary hover:bg-primary-hover rounded-lg px-5 py-2.5 text-center font-medium"
-        >
+        {railsDone ? null : (
+          <Link href="/app/garde-fous" className={buttonClass("primary")}>
+            {t("ctaRails")}
+          </Link>
+        )}
+        <Link href="/app/memoire" className={buttonClass(railsDone ? "primary" : "secondary")}>
           {t("cta")}
         </Link>
         <button type="button" onClick={onRestart} className={neutralClass}>
