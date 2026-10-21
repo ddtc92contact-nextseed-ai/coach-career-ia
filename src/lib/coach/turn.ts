@@ -59,6 +59,8 @@ export type CoachTurnInput = {
   userMessage: { id: string; createdAt: Date };
   /** Messages restants après celui-ci (`null` : illimité). */
   remaining: number | null;
+  /** Limite atteinte avec ce message : quand un message gratuit se libère. */
+  resetAt?: Date | null;
   /** Appelé quand le tour est terminé (libération du verrou de la conversation). */
   onFinish?: () => Promise<void>;
 };
@@ -162,6 +164,7 @@ async function runTurn(input: CoachTurnInput, send: (event: CoachStreamEvent) =>
         suggestions,
       },
       remaining: input.remaining,
+      resetAt: input.resetAt?.toISOString() ?? null,
     });
     logger.info("coach.turn", {
       userId,

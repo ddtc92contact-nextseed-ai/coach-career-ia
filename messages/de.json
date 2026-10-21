@@ -169,7 +169,7 @@
       "items": {
         "free": {
           "q": "Ist das wirklich kostenlos?",
-          "a": "Ja. Karrieregedächtnis, Leitplanken, Chancen und anonymer Kontakt sind kostenlos, ohne zeitliche Begrenzung. Der Coach ist mit einem Tageskontingent enthalten; Premium macht ihn unbegrenzt und fügt den Verhandlungsagenten hinzu."
+          "a": "Ja. Karrieregedächtnis, Leitplanken, Chancen und anonymer Kontakt sind kostenlos, ohne zeitliche Begrenzung. {limit, plural, =0 {Der KI-Coach und der Verhandlungsagent sind Teil von Premium.} one {Der Coach ist mit # Nachricht pro 24 Stunden enthalten; Premium macht ihn unbegrenzt und fügt den Verhandlungsagenten hinzu.} other {Der Coach ist mit # Nachrichten pro 24 Stunden enthalten; Premium macht ihn unbegrenzt und fügt den Verhandlungsagenten hinzu.}}"
         },
         "employer": {
           "q": "Kann mein aktueller Arbeitgeber mich entdecken?",
@@ -1309,7 +1309,8 @@
           "second": "Stellen Sie mir eine Frage zu einer schwierigen Situation",
           "third": "Üben wir die Gehaltsverhandlung"
         }
-      }
+      },
+      "locked": "Senden deaktiviert: kostenlose Nachrichten der letzten 24 Stunden aufgebraucht."
     },
     "errors": {
       "title": "Der Coach konnte nicht antworten",
@@ -1318,7 +1319,7 @@
       "aiUnavailable": "Der KI-Dienst ist vorübergehend nicht verfügbar.",
       "aiRateLimited": "Der KI-Dienst ist gerade stark ausgelastet.",
       "aiInvalidOutput": "Der Coach hat eine unbrauchbare Antwort erzeugt.",
-      "quotaExceeded": "Sie haben das Limit von {limit} Nachrichten pro 24 Stunden erreicht. Bitte kommen Sie etwas später wieder.",
+      "quotaExceeded": "Sie haben das Limit von {limit} Nachrichten pro 24 Stunden erreicht. Mit Premium ist der Coach unbegrenzt.",
       "tooManyRetries": "Diese Nachricht wurde bereits mehrmals erfolglos erneut gesendet. Formulieren Sie sie um oder senden Sie eine neue Nachricht.",
       "busy": "Der Coach beantwortet in diesem Gespräch bereits eine Nachricht. Bitte warten Sie einige Sekunden.",
       "notFound": "Dieses Gespräch existiert nicht mehr.",
@@ -1386,13 +1387,14 @@
     },
     "quotaUnlimited": "Unbegrenzte Nachrichten mit Premium.",
     "upsell": {
-      "title": "Sie haben Ihre kostenlosen Nachrichten aufgebraucht",
-      "text": "Der kostenlose Tarif umfasst {limit, plural, one {# Nachricht} other {# Nachrichten}} an den Coach in rollierenden 24 Stunden; sie werden nach und nach wieder frei.",
+      "title": "{limit, plural, one {Sie haben Ihre kostenlose Nachricht aufgebraucht} other {Sie haben Ihre # kostenlosen Nachrichten aufgebraucht}}",
+      "text": "Der kostenlose Tarif umfasst {limit, plural, one {# Nachricht} other {# Nachrichten}} an den Coach in rollierenden 24 Stunden: Jede wird 24 Stunden nach dem Senden wieder frei. Ihre Unterhaltung bleibt lesbar.",
+      "resetsAt": "Nächste kostenlose Nachricht {relative}, um {time}.",
       "titlePremiumOnly": "Der KI-Coach ist Premium vorbehalten",
       "textPremiumOnly": "In diesem Dienst ist der KI-Coach Teil des Premium-Tarifs.",
-      "premium": "Mit Premium ist der Coach unbegrenzt.",
-      "later": "Die Online-Zahlung ist noch nicht verfügbar: Bitte kommen Sie etwas später wieder.",
-      "cta": "Premium entdecken"
+      "unlocks": "Premium schaltet frei:",
+      "later": "Die Online-Zahlung ist in diesem Dienst noch nicht verfügbar.",
+      "cta": "Zu Premium wechseln"
     }
   },
   "settings": {

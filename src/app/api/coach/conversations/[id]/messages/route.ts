@@ -7,8 +7,8 @@ import {
   acquireTurn,
   addUserMessageWithinQuota,
   claimRetry,
-  countRecentUserMessages,
   findConversation,
+  getCoachQuota,
   loadHistory,
   releaseTurn,
 } from "@/lib/coach/repository";
@@ -73,6 +73,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   let userMessage: { id: string; createdAt: Date };
   let remaining: number | null;
+  // Limite atteinte : quand un message gratuit se libère (affiché avec l'offre Premium).
+  let resetAt: Date | null = null;
   try {
     if (parsed.data.retry) {
       // Nouvel essai : seulement si le dernier message est du candidat, sans réponse.
@@ -86,15 +88,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         return fail("tooManyRetries");
       }
       userMessage = last;
-      remaining = remainingMessages(await countRecentUserMessages(user.id), limit);
+      ({ remaining, resetAt } = await getCoachQuota(user.id, limit));
     } else {
       const added = await addUserMessageWithinQuota(user.id, id, parsed.data.content, limit);
       if (!added) {
         await releaseTurn(user.id, id);
-        return fail("quotaExceeded", { limit });
+        const quota = await getCoachQuota(user.id, limit);
+        return fail("quotaExceeded", { limit, resetAt: quota.resetAt?.toISOString() ?? null });
       }
       userMessage = added.message;
       remaining = remainingMessages(added.sent, limit);
+      if (remaining === 0) resetAt = (await getCoachQuota(user.id, limit)).resetAt;
     }
   } catch (error) {
     await releaseTurn(user.id, id);
@@ -110,6 +114,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     signal: request.signal,
     userMessage,
     remaining,
+    resetAt,
     onFinish: () => releaseTurn(user.id, id),
   });
   return new Response(stream, {

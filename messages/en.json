@@ -169,7 +169,7 @@
       "items": {
         "free": {
           "q": "Is it really free?",
-          "a": "Yes. Career memory, guard-rails, opportunities and anonymous outreach are free, with no time limit. The coach is included with a daily quota; Premium makes it unlimited and adds the negotiation agent."
+          "a": "Yes. Career memory, guard-rails, opportunities and anonymous outreach are free, with no time limit. {limit, plural, =0 {The AI coach and the negotiation agent are part of Premium.} one {The coach is included with # message per 24 hours; Premium makes it unlimited and adds the negotiation agent.} other {The coach is included with # messages per 24 hours; Premium makes it unlimited and adds the negotiation agent.}}"
         },
         "employer": {
           "q": "Can my current employer find me?",
@@ -1309,7 +1309,8 @@
           "second": "Ask me about a difficult situation",
           "third": "Let’s practise negotiating salary"
         }
-      }
+      },
+      "locked": "Sending disabled: free messages used up for the last 24 hours."
     },
     "errors": {
       "title": "The coach could not answer",
@@ -1318,7 +1319,7 @@
       "aiUnavailable": "The AI service is temporarily unavailable.",
       "aiRateLimited": "The AI service is very busy right now.",
       "aiInvalidOutput": "The coach produced an unusable answer.",
-      "quotaExceeded": "You have reached the limit of {limit} messages per 24 hours. Please come back a little later.",
+      "quotaExceeded": "You have reached the limit of {limit} messages per 24 hours. Upgrade to Premium for an unlimited coach.",
       "tooManyRetries": "This message has already been retried several times without success. Rephrase it or send a new message.",
       "busy": "The coach is already answering a message in this conversation. Please wait a few seconds.",
       "notFound": "This conversation no longer exists.",
@@ -1386,13 +1387,14 @@
     },
     "quotaUnlimited": "Unlimited messages with Premium.",
     "upsell": {
-      "title": "You have used your free messages",
-      "text": "The free plan includes {limit, plural, one {# message} other {# messages}} to the coach over a rolling 24 hours; they free up again over time.",
+      "title": "{limit, plural, one {You have used your free message} other {You have used your # free messages}}",
+      "text": "The free plan includes {limit, plural, one {# message} other {# messages}} to the coach over a rolling 24 hours: each one frees up 24 hours after it was sent. Your conversation stays available to read.",
+      "resetsAt": "Next free message {relative}, at {time}.",
       "titlePremiumOnly": "The AI coach is a Premium feature",
       "textPremiumOnly": "On this service, the AI coach is part of the Premium plan.",
-      "premium": "With Premium, the coach is unlimited.",
-      "later": "Online payment is not available yet: please come back a little later.",
-      "cta": "Discover Premium"
+      "unlocks": "Premium unlocks:",
+      "later": "Online payment is not available on this service yet.",
+      "cta": "Upgrade to Premium"
     }
   },
   "settings": {

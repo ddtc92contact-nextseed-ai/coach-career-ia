@@ -64,12 +64,12 @@ describe("droits (entitlements)", () => {
     const free = entitlementsFor({ email: "jeanne@exemple.test", plan: "FREE" }, {});
     expect(free).toMatchObject({ plan: "FREE", source: "free" });
     expect(hasFeature(free, "coach.unlimited")).toBe(false);
-    expect(free.limits.coachMessagesPerDay).toBe(40);
+    expect(free.limits.coachMessagesPerDay).toBe(5);
     const custom = entitlementsFor(
       { email: "jeanne@exemple.test", plan: "FREE" },
-      { COACH_MESSAGES_PER_DAY: "5" },
+      { COACH_MESSAGES_PER_DAY: "12" },
     );
-    expect(custom.limits.coachMessagesPerDay).toBe(5);
+    expect(custom.limits.coachMessagesPerDay).toBe(12);
   });
 
   it("Premium : coach illimité", () => {
@@ -80,6 +80,12 @@ describe("droits (entitlements)", () => {
     expect(premium).toMatchObject({ plan: "PREMIUM", source: "subscription" });
     expect(hasFeature(premium, "coach.unlimited")).toBe(true);
     expect(premium.limits.coachMessagesPerDay).toBeNull();
+    // Illimité aussi avec le quota par défaut ou un coach réservé à Premium.
+    for (const env of [{}, { COACH_MESSAGES_PER_DAY: "0" }]) {
+      const p = entitlementsFor({ email: "jeanne@exemple.test", plan: "PREMIUM" }, env);
+      expect(p.limits.coachMessagesPerDay).toBeNull();
+      expect(hasFeature(p, "negotiation")).toBe(true);
+    }
   });
 
   it("les adresses de ADMIN_EMAILS sont Premium sans abonnement", () => {
@@ -87,6 +93,11 @@ describe("droits (entitlements)", () => {
     const admin = entitlementsFor({ email: "gerant@exemple.test", plan: "FREE" }, env);
     expect(admin).toMatchObject({ plan: "PREMIUM", source: "admin" });
     expect(admin.limits.coachMessagesPerDay).toBeNull();
+    // Le quota gratuit par défaut ne s'applique pas aux administrateurs.
+    expect(
+      entitlementsFor({ email: "autre@exemple.test", plan: "FREE" }, env).limits
+        .coachMessagesPerDay,
+    ).toBeNull();
     expect(entitlementsFor({ email: "jeanne@exemple.test", plan: "FREE" }, env).plan).toBe("FREE");
     // Compte introuvable (adresse vide) : jamais administrateur.
     expect(entitlementsFor({ email: "", plan: "FREE" }, { ADMIN_EMAILS: "" }).plan).toBe("FREE");

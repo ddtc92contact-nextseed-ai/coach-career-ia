@@ -169,7 +169,7 @@
       "items": {
         "free": {
           "q": "¿De verdad es gratis?",
-          "a": "Sí. Memoria de carrera, salvaguardas, oportunidades y contacto anónimo son gratis, sin límite de tiempo. El coach se incluye con una cuota diaria; Premium lo hace ilimitado y añade el agente de negociación."
+          "a": "Sí. Memoria de carrera, salvaguardas, oportunidades y contacto anónimo son gratis, sin límite de tiempo. {limit, plural, =0 {El coach IA y el agente de negociación forman parte de Premium.} one {El coach se incluye con # mensaje cada 24 horas; Premium lo hace ilimitado y añade el agente de negociación.} other {El coach se incluye con # mensajes cada 24 horas; Premium lo hace ilimitado y añade el agente de negociación.}}"
         },
         "employer": {
           "q": "¿Puede descubrirme mi empleador actual?",
@@ -1309,7 +1309,8 @@
           "second": "Hágame una pregunta sobre una situación difícil",
           "third": "Practiquemos la negociación salarial"
         }
-      }
+      },
+      "locked": "Envío desactivado: mensajes gratuitos agotados en las últimas 24 horas."
     },
     "errors": {
       "title": "El coach no ha podido responder",
@@ -1318,7 +1319,7 @@
       "aiUnavailable": "El servicio de IA no está disponible en este momento.",
       "aiRateLimited": "El servicio de IA está muy solicitado en este momento.",
       "aiInvalidOutput": "El coach ha producido una respuesta inutilizable.",
-      "quotaExceeded": "Ha alcanzado el límite de {limit} mensajes en 24 horas. Vuelva un poco más tarde.",
+      "quotaExceeded": "Ha alcanzado el límite de {limit} mensajes en 24 horas. Pase a Premium para un coach ilimitado.",
       "tooManyRetries": "Este mensaje ya se ha reintentado varias veces sin éxito. Reformúlelo o envíe un mensaje nuevo.",
       "busy": "El coach ya está respondiendo a un mensaje en esta conversación. Espere unos segundos.",
       "notFound": "Esta conversación ya no existe.",
@@ -1386,13 +1387,14 @@
     },
     "quotaUnlimited": "Mensajes ilimitados con Premium.",
     "upsell": {
-      "title": "Ha utilizado sus mensajes gratuitos",
-      "text": "El plan gratuito incluye {limit, plural, one {# mensaje} other {# mensajes}} al coach en 24 horas móviles; se van liberando con el tiempo.",
+      "title": "{limit, plural, one {Ha utilizado su mensaje gratuito} other {Ha utilizado sus # mensajes gratuitos}}",
+      "text": "El plan gratuito incluye {limit, plural, one {# mensaje} other {# mensajes}} al coach en 24 horas móviles: cada uno se libera 24 horas después de enviarlo. Su conversación sigue disponible para leer.",
+      "resetsAt": "Próximo mensaje gratuito {relative}, a las {time}.",
       "titlePremiumOnly": "El coach IA está reservado a Premium",
       "textPremiumOnly": "En este servicio, el coach IA forma parte del plan Premium.",
-      "premium": "Con Premium, el coach es ilimitado.",
-      "later": "El pago en línea aún no está disponible: vuelva un poco más tarde.",
-      "cta": "Descubrir Premium"
+      "unlocks": "Premium desbloquea:",
+      "later": "El pago en línea aún no está disponible en este servicio.",
+      "cta": "Pasar a Premium"
     }
   },
   "settings": {

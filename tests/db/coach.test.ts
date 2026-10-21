@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   AiError,
   createAiClient,
@@ -131,6 +131,12 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     const capture = (...args: unknown[]) => void logLines.push(args.map(String).join(" "));
     vi.spyOn(console, "log").mockImplementation(capture);
     vi.spyOn(console, "error").mockImplementation(capture);
+  });
+
+  // Quota large par défaut : ces tests envoient bien plus que les 5 messages gratuits.
+  const ROOMY_QUOTA = "1000";
+  beforeEach(() => {
+    process.env.COACH_MESSAGES_PER_DAY = ROOMY_QUOTA;
   });
 
   afterEach(() => {
@@ -420,7 +426,11 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     await events(await send(id, { content: "deux" }));
     const third = await send(id, { content: "trois" });
     expect(third.status).toBe(429);
-    expect(await third.json()).toEqual({ error: "quotaExceeded", limit: 2 });
+    expect(await third.json()).toEqual({
+      error: "quotaExceeded",
+      limit: 2,
+      resetAt: expect.any(String),
+    });
     // Le message refusé n'est pas enregistré.
     expect(await db.coachMessage.count({ where: { conversationId: id, role: "USER" } })).toBe(2);
   });
@@ -493,7 +503,7 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     expect(await off.json()).toEqual({ error: "quotaExceeded", limit: 0 });
 
     // Le candidat peut toujours écrire un nouveau message (le verrou est libéré).
-    delete process.env.COACH_MESSAGES_PER_DAY;
+    process.env.COACH_MESSAGES_PER_DAY = ROOMY_QUOTA;
     ai.replies = ["Me revoilà."];
     expect((await events(await send(id, { content: "Autre question" }))).at(-1)).toMatchObject({
       type: "done",
