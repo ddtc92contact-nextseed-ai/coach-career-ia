@@ -1,3 +1,5 @@
+"use client";
+
 import { useFormatter, useNow, useTranslations } from "next-intl";
 import { buttonClass } from "@/components/button";
 import { Icon } from "@/components/icons";
@@ -85,7 +87,6 @@ export function CoachUpsell({
                   price: format.number(price.amount, {
                     style: "currency",
                     currency: price.currency,
-                    maximumFractionDigits: Number.isInteger(price.amount) ? 0 : 2,
                   }),
                   interval: price.interval,
                 })}
