@@ -1705,7 +1705,8 @@
       "noSkills": "Das Angebot nennt nur wenige Ihrer Kompetenzen ausdrücklich.",
       "proofs": "{count, plural, one {Einer Ihrer Erfolge erfüllt direkt eine Anforderung.} other {# Ihrer Erfolge erfüllen direkt Anforderungen.}}",
       "seniorityAbove": "Die Stelle scheint höher angesiedelt als Ihre aktuelle Position.",
-      "salaryUnknown": "Das Gehalt ist nicht angegeben."
+      "salaryUnknown": "Das Gehalt ist nicht angegeben.",
+      "followed": "Der Score enthält einen Bonus von {bonus} Punkten, weil Sie diesem Unternehmen folgen."
     },
     "match": "Ihr Erfolg „{achievement}“ erfüllt die Anforderung „{requirement}“.",
     "matchSemantic": "Ihr Erfolg „{achievement}“ liegt nah an den Aufgaben der Stelle.",
@@ -1733,6 +1734,10 @@
       "seniority": "Seniorität",
       "salary": "Vergütung",
       "culture": "Unternehmenskultur"
+    },
+    "followedBonus": {
+      "label": "Gefolgtes Unternehmen",
+      "value": "+{bonus} Punkte"
     }
   },
   "unsubscribe": {
@@ -3004,13 +3009,15 @@
     "errors": {
       "tooShort": "Geben Sie die Adresse einer Karriereseite oder mindestens 2 Buchstaben des Namens ein.",
       "invalidUrl": "Diese Adresse ist ungültig.",
-      "unsupported": "Diese Karriereseite wird nicht unterstützt. Nur öffentliche Jobbörsen von Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee und Workable können gefolgt werden.",
+      "unsupported": "Diese Karriereseite wird nicht unterstützt. Sie können nur öffentlichen Jobbörsen von Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee und Workable folgen.",
       "notFound": "Unter dieser Adresse wurde keine öffentliche Jobbörse gefunden. Prüfen Sie den Link der Karriereseite.",
       "unreachable": "Die Jobbörse antwortet gerade nicht. Bitte versuchen Sie es später erneut.",
       "limit": "Sie folgen bereits der Höchstzahl von 50 Unternehmen. Entfernen Sie eines, um ein weiteres hinzuzufügen.",
       "rateLimited": "Zu viele Prüfungen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut.",
       "unknownCompany": "Dieses Unternehmen wird nicht mehr beobachtet.",
-      "unavailable": "Die Prüfung von Karriereseiten ist derzeit nicht verfügbar."
+      "unavailable": "Die Prüfung von Karriereseiten ist derzeit nicht verfügbar.",
+      "tooLong": "Geben Sie höchstens 500 Zeichen ein.",
+      "invalidInput": "Ungültige Eingabe. Laden Sie die Seite neu und versuchen Sie es erneut."
     },
     "search": {
       "title": "Ergebnisse für „{query}“",

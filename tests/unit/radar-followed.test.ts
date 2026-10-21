@@ -1,4 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { createAiClient, createMockProvider, scriptedReplies } from "@/lib/ai";
+import { LOCALES } from "@/i18n/routing";
+import { buildExplanation, explanationFacts, parseExplanation } from "@/lib/matching/explanation";
+import { companyIdInput, followQueryInput } from "@/lib/radar/follow-schemas";
 import { FOLLOWED_COMPANY_BOOST, rankOffers } from "@/lib/matching/score";
 import type { MatchOffer } from "@/lib/matching/types";
 import { detectAtsBoard, looksLikeUrl, nameFromToken, probeBoard } from "@/lib/radar/careers";
@@ -143,5 +147,73 @@ describe("classement : entreprises suivies", () => {
     expect(strict.excluded.find((e) => e.offerId === top.id)?.violations).toContain(
       "excludedCompany",
     );
+  });
+});
+
+describe("explication du bonus « entreprise suivie »", () => {
+  const testCase = CASES[0]!;
+  const offers: MatchOffer[] = OFFERS.map((o) => ({ ...o, companyId: `company-${o.id}` }));
+  const first = rankOffers(testCase.profile, testCase.rails, offers, null).matches[0]!;
+  const followed = new Set([`company-${first.offerId}`]);
+  const match = rankOffers(
+    testCase.profile,
+    testCase.rails,
+    offers,
+    null,
+    undefined,
+    followed,
+  ).matches.find((m) => m.offerId === first.offerId)!;
+  const title = offers.find((o) => o.id === first.offerId)!.title;
+
+  it("les faits portent le bonus ; une offre non suivie n'en a pas", () => {
+    expect(explanationFacts(match).followedBonus).toBe(FOLLOWED_COMPANY_BOOST);
+    expect(explanationFacts(first).followedBonus).toBeUndefined();
+  });
+
+  it.each(LOCALES)("le résumé de secours cite le bonus (%s)", async (locale) => {
+    const facts = explanationFacts(match);
+    const explanation = await buildExplanation(
+      { offerTitle: title, score: match.score, facts, locale },
+      null,
+    );
+    expect(explanation.followedBonus).toBe(FOLLOWED_COMPANY_BOOST);
+    expect(explanation.summary).toContain(String(FOLLOWED_COMPANY_BOOST));
+    expect(parseExplanation(explanation)?.followedBonus).toBe(FOLLOWED_COMPANY_BOOST);
+    const plain = await buildExplanation(
+      { offerTitle: title, score: first.score, facts: explanationFacts(first), locale },
+      null,
+    );
+    expect(plain.summary).not.toBe(explanation.summary);
+  });
+
+  it("le bonus est transmis à l'IA qui formule le résumé", async () => {
+    const provider = createMockProvider({
+      respond: scriptedReplies(
+        JSON.stringify({ summary: "Bonne correspondance, avec le bonus de l’entreprise suivie." }),
+      ),
+    });
+    const explanation = await buildExplanation(
+      { offerTitle: title, score: match.score, facts: explanationFacts(match), locale: "fr" },
+      createAiClient({ provider }),
+    );
+    expect(explanation).toMatchObject({ source: "llm", followedBonus: FOLLOWED_COMPANY_BOOST });
+    const prompt = provider.calls[0]!.messages.map((m) => m.content).join("\n");
+    expect(prompt).toContain("followedCompanyBonus");
+  });
+});
+
+describe("validation des entrées (zod)", () => {
+  it("saisie : 2 à 500 caractères, espaces retirés", () => {
+    expect(followQueryInput.safeParse("  Qonto ").data).toBe("Qonto");
+    expect(followQueryInput.safeParse(" a ").error?.issues[0]?.message).toBe("tooShort");
+    expect(followQueryInput.safeParse("x".repeat(501)).error?.issues[0]?.message).toBe("tooLong");
+    expect(followQueryInput.safeParse(["a", "b"]).success).toBe(false);
+  });
+
+  it("identifiant d'entreprise : chaîne de 1 à 64 caractères", () => {
+    expect(companyIdInput.safeParse("cmvi1s9ez000y4ul4gdxdtx3h").success).toBe(true);
+    expect(companyIdInput.safeParse("").success).toBe(false);
+    expect(companyIdInput.safeParse("x".repeat(65)).success).toBe(false);
+    expect(companyIdInput.safeParse({ not: "x" }).success).toBe(false);
   });
 });

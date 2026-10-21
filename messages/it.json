@@ -1705,7 +1705,8 @@
       "noSkills": "L’offerta cita esplicitamente poche delle tue competenze.",
       "proofs": "{count, plural, one {Uno dei tuoi risultati risponde direttamente a un requisito.} other {# dei tuoi risultati rispondono direttamente a dei requisiti.}}",
       "seniorityAbove": "Il ruolo sembra più senior della tua posizione attuale.",
-      "salaryUnknown": "Lo stipendio non è indicato."
+      "salaryUnknown": "Lo stipendio non è indicato.",
+      "followed": "Il punteggio include un bonus di {bonus} punti perché segue questa azienda."
     },
     "match": "Il tuo risultato «{achievement}» risponde al requisito «{requirement}».",
     "matchSemantic": "Il tuo risultato «{achievement}» è vicino alle mansioni del ruolo.",
@@ -1733,6 +1734,10 @@
       "seniority": "Seniority",
       "salary": "Retribuzione",
       "culture": "Cultura aziendale"
+    },
+    "followedBonus": {
+      "label": "Azienda seguita",
+      "value": "+{bonus} punti"
     }
   },
   "unsubscribe": {
@@ -3010,7 +3015,9 @@
       "limit": "Segue già il massimo di 50 aziende. Ne rimuova una per aggiungerne un’altra.",
       "rateLimited": "Troppe verifiche in poco tempo. Riprovi tra qualche minuto.",
       "unknownCompany": "Questa azienda non è più monitorata.",
-      "unavailable": "La verifica delle pagine carriere non è disponibile al momento."
+      "unavailable": "La verifica delle pagine carriere non è disponibile al momento.",
+      "tooLong": "Inserisca al massimo 500 caratteri.",
+      "invalidInput": "Inserimento non valido. Ricarichi la pagina e riprovi."
     },
     "search": {
       "title": "Risultati per «{query}»",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { Card, CardHeader } from "@/components/card";
 import { DeleteButton } from "@/components/delete-button";
@@ -33,13 +33,18 @@ const STATUS_TONE = {
 /** « Mes entreprises à suivre » : entreprises que le radar surveille pour le candidat. */
 export default async function FollowedCompaniesPage() {
   const user = await requireUser();
-  const [t, tn, format, rails] = await Promise.all([
+  const [t, tn, tc, format, locale, rails] = await Promise.all([
     getTranslations("followedCompanies"),
     getTranslations("app.nav.groups"),
+    getTranslations("codes"),
     getFormatter(),
+    getLocale(),
     loadRails(db, user.id),
   ]);
   const companies = await listFollowedCompanies(db, user.id, rails);
+  // Secteurs de la liste de référence rédigés en français : libellé traduit hors français.
+  const sectorLabel = (c: FollowedCompanyView) =>
+    locale !== "fr" && c.sectorCode ? tc(`sector.${c.sectorCode}`) : c.sector;
 
   return (
     <>
@@ -114,7 +119,7 @@ export default async function FollowedCompaniesPage() {
                   <p className="text-ink-muted mt-0.5 text-sm break-words">
                     {[
                       c.atsType ? ATS_LABELS[c.atsType] : null,
-                      c.sector,
+                      sectorLabel(c),
                       t("list.openOffers", { count: c.openOffers }),
                       t("list.followedOn", { date: format.dateTime(c.followedAt, "short") }),
                     ]

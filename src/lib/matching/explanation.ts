@@ -6,7 +6,7 @@ import type { AiClient } from "@/lib/ai/client";
 import { isAiError } from "@/lib/ai/errors";
 import { languageInstruction } from "@/lib/ai/locale";
 import { CULTURE_PREFERENCES } from "@/lib/career/codes";
-import type { Evaluation } from "./score";
+import { FOLLOWED_COMPANY_BOOST, type Evaluation } from "./score";
 import { GAP_CODES, UNKNOWN_CODES } from "./types";
 
 /**
@@ -47,12 +47,16 @@ export const explanationSchema = z.object({
   culture: z.array(z.enum(CULTURE_PREFERENCES)),
   gaps: z.array(z.object({ code: z.enum(GAP_CODES), value: z.string().optional() })),
   unknowns: z.array(z.enum(UNKNOWN_CODES)),
+  /** Points ajoutés parce que le candidat suit l'entreprise (absent sinon). */
+  followedBonus: z.number().int().min(1).max(100).optional(),
 });
 export type Explanation = z.infer<typeof explanationSchema>;
 export type ExplanationFacts = Omit<Explanation, "version" | "locale" | "source" | "summary">;
 
 /** Faits d'explication d'une évaluation (sans le résumé). */
-export function explanationFacts(evaluation: Evaluation): ExplanationFacts {
+export function explanationFacts(
+  evaluation: Evaluation & { followed?: boolean },
+): ExplanationFacts {
   return {
     components: evaluation.components,
     matches: evaluation.matches,
@@ -60,6 +64,7 @@ export function explanationFacts(evaluation: Evaluation): ExplanationFacts {
     culture: evaluation.culture,
     gaps: evaluation.gaps,
     unknowns: evaluation.unknowns,
+    ...(evaluation.followed ? { followedBonus: FOLLOWED_COMPANY_BOOST } : {}),
   };
 }
 
@@ -110,6 +115,7 @@ export function ruleSummary(score: number, facts: ExplanationFacts, locale: AppL
   if (direct > 0) parts.push(t("summary.proofs", { count: direct }));
   if (facts.gaps.some((g) => g.code === "seniorityAbove")) parts.push(t("summary.seniorityAbove"));
   if (facts.unknowns.includes("salaryNotStated")) parts.push(t("summary.salaryUnknown"));
+  if (facts.followedBonus) parts.push(t("summary.followed", { bonus: facts.followedBonus }));
   return parts.join(" ");
 }
 
@@ -128,6 +134,7 @@ export async function phraseSummary(
   options: { signal?: AbortSignal; timeoutMs?: number } = {},
 ): Promise<string> {
   const lines = factLines(input.facts, input.locale);
+  const t = matchingTranslator(input.locale);
   const facts = {
     offer: input.offerTitle,
     score: input.score,
@@ -135,6 +142,9 @@ export async function phraseSummary(
     matchedAchievements: lines.matches,
     gaps: lines.gaps,
     unknowns: lines.unknowns,
+    ...(input.facts.followedBonus
+      ? { followedCompanyBonus: t("summary.followed", { bonus: input.facts.followedBonus }) }
+      : {}),
   };
   const { object } = await client.generateObject({
     purpose: "matching.explain",
@@ -150,6 +160,7 @@ export async function phraseSummary(
         content: [
           "You are a private career agent. You explain to a candidate, in 2 or 3 short sentences (under 450 characters), why a job offer was selected for them.",
           "Use ONLY the facts given as JSON: mention the strongest matched achievement or proven skill, then the main gap or missing information. Never invent facts, figures, company details or requirements. Address the candidate directly and politely.",
+          "If `followedCompanyBonus` is present, say in one short clause that the score includes this bonus because the candidate follows the company.",
           'Return {"summary": "..."}.',
           languageInstruction(input.locale),
         ].join("\n"),

@@ -1705,7 +1705,8 @@
       "noSkills": "La oferta cita explícitamente pocas de tus competencias.",
       "proofs": "{count, plural, one {Uno de tus logros responde directamente a un requisito.} other {# de tus logros responden directamente a requisitos.}}",
       "seniorityAbove": "El puesto parece más sénior que tu puesto actual.",
-      "salaryUnknown": "El salario no está indicado."
+      "salaryUnknown": "El salario no está indicado.",
+      "followed": "La puntuación incluye una bonificación de {bonus} puntos porque sigue a esta empresa."
     },
     "match": "Tu logro «{achievement}» responde al requisito «{requirement}».",
     "matchSemantic": "Tu logro «{achievement}» se acerca a las funciones del puesto.",
@@ -1733,6 +1734,10 @@
       "seniority": "Seniority",
       "salary": "Remuneración",
       "culture": "Cultura de empresa"
+    },
+    "followedBonus": {
+      "label": "Empresa seguida",
+      "value": "+{bonus} puntos"
     }
   },
   "unsubscribe": {
@@ -3010,7 +3015,9 @@
       "limit": "Ya sigue el máximo de 50 empresas. Quite una para añadir otra.",
       "rateLimited": "Demasiadas comprobaciones en poco tiempo. Inténtelo de nuevo en unos minutos.",
       "unknownCompany": "Esta empresa ya no está vigilada.",
-      "unavailable": "La comprobación de páginas de empleo no está disponible en este momento."
+      "unavailable": "La comprobación de páginas de empleo no está disponible en este momento.",
+      "tooLong": "Introduzca 500 caracteres como máximo.",
+      "invalidInput": "Entrada no válida. Recargue la página e inténtelo de nuevo."
     },
     "search": {
       "title": "Resultados para «{query}»",

@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { looksLikeUrl } from "@/lib/radar/careers";
 import { followHttpClient, followProbeLimiter } from "@/lib/radar/follow-client";
+import { companyIdInput, followQueryInput } from "@/lib/radar/follow-schemas";
 import {
   followByUrl,
   followCompany,
@@ -16,7 +17,7 @@ import {
 } from "@/lib/radar/followed";
 
 export type FollowFormState = {
-  error?: FollowError | "tooShort" | "unavailable";
+  error?: FollowError | "tooShort" | "tooLong" | "invalidInput" | "unavailable";
   added?: { name: string; openOffers: number; alreadyFollowed: boolean };
   /** Recherche par nom : entreprises déjà surveillées par le radar. */
   search?: { query: string; results: CompanySearchResult[] };
@@ -34,9 +35,11 @@ export async function addFollowedCompany(
 ): Promise<FollowFormState> {
   const user = await requireUser();
   // Bouton « Suivre » d'un résultat de recherche.
-  const companyId = formData.get("companyId");
-  if (typeof companyId === "string" && companyId) {
-    const result = await followCompany(db, user.id, companyId);
+  const rawId = formData.get("companyId");
+  if (rawId !== null) {
+    const companyId = companyIdInput.safeParse(rawId);
+    if (!companyId.success) return { error: "invalidInput" };
+    const result = await followCompany(db, user.id, companyId.data);
     if (!result.ok) return { error: result.error };
     revalidate();
     return {
@@ -48,8 +51,12 @@ export async function addFollowedCompany(
     };
   }
 
-  const input = String(formData.get("company") ?? "").trim();
-  if (input.length < 2) return { error: "tooShort" };
+  const parsed = followQueryInput.safeParse(formData.get("company") ?? "");
+  if (!parsed.success) {
+    const code = parsed.error.issues[0]?.message;
+    return { error: code === "tooShort" || code === "tooLong" ? code : "invalidInput" };
+  }
+  const input = parsed.data;
 
   if (!looksLikeUrl(input)) {
     return { search: { query: input, results: await searchCompanies(db, user.id, input) } };
@@ -75,6 +82,8 @@ export async function addFollowedCompany(
 
 export async function unfollow(companyId: string) {
   const user = await requireUser();
-  await unfollowCompany(db, user.id, companyId);
+  const parsed = companyIdInput.safeParse(companyId);
+  if (!parsed.success) return;
+  await unfollowCompany(db, user.id, parsed.data);
   revalidate();
 }

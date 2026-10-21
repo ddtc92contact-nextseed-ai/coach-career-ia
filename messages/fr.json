@@ -1705,7 +1705,8 @@
       "noSkills": "Peu de vos compétences sont citées explicitement par l’offre.",
       "proofs": "{count, plural, one {Une de vos réalisations répond directement à une exigence.} other {# de vos réalisations répondent directement à des exigences.}}",
       "seniorityAbove": "Le poste semble plus senior que votre poste actuel.",
-      "salaryUnknown": "Le salaire n’est pas indiqué."
+      "salaryUnknown": "Le salaire n’est pas indiqué.",
+      "followed": "Le score inclut un bonus de {bonus} points : vous suivez cette entreprise."
     },
     "match": "Votre réalisation « {achievement} » répond à l’exigence « {requirement} ».",
     "matchSemantic": "Votre réalisation « {achievement} » est proche des missions du poste.",
@@ -1733,6 +1734,10 @@
       "seniority": "Séniorité",
       "salary": "Rémunération",
       "culture": "Culture d’entreprise"
+    },
+    "followedBonus": {
+      "label": "Entreprise suivie",
+      "value": "+{bonus} points"
     }
   },
   "unsubscribe": {
@@ -3010,7 +3015,9 @@
       "limit": "Vous suivez déjà le maximum de 50 entreprises. Retirez-en une pour en ajouter une autre.",
       "rateLimited": "Trop de vérifications en peu de temps. Réessayez dans quelques minutes.",
       "unknownCompany": "Cette entreprise n’est plus surveillée.",
-      "unavailable": "La vérification des pages carrières est indisponible pour le moment."
+      "unavailable": "La vérification des pages carrières est indisponible pour le moment.",
+      "tooLong": "Saisissez au plus 500 caractères.",
+      "invalidInput": "Saisie invalide. Rechargez la page puis réessayez."
     },
     "search": {
       "title": "Résultats pour « {query} »",

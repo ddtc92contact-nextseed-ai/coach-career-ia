@@ -1705,7 +1705,8 @@
       "noSkills": "De vacature noemt weinig van je vaardigheden expliciet.",
       "proofs": "{count, plural, one {Een van je prestaties beantwoordt rechtstreeks aan een eis.} other {# van je prestaties beantwoorden rechtstreeks aan eisen.}}",
       "seniorityAbove": "De functie lijkt senioriteit te vragen boven je huidige functie.",
-      "salaryUnknown": "Het salaris wordt niet vermeld."
+      "salaryUnknown": "Het salaris wordt niet vermeld.",
+      "followed": "De score bevat een bonus van {bonus} punten omdat u dit bedrijf volgt."
     },
     "match": "Je prestatie ‘{achievement}’ beantwoordt aan de eis ‘{requirement}’.",
     "matchSemantic": "Je prestatie ‘{achievement}’ ligt dicht bij de taken van de functie.",
@@ -1733,6 +1734,10 @@
       "seniority": "Senioriteit",
       "salary": "Beloning",
       "culture": "Bedrijfscultuur"
+    },
+    "followedBonus": {
+      "label": "Gevolgd bedrijf",
+      "value": "+{bonus} punten"
     }
   },
   "unsubscribe": {
@@ -3010,7 +3015,9 @@
       "limit": "U volgt al het maximum van 50 bedrijven. Verwijder er een om een ander toe te voegen.",
       "rateLimited": "Te veel controles in korte tijd. Probeer het over een paar minuten opnieuw.",
       "unknownCompany": "Dit bedrijf wordt niet meer gevolgd.",
-      "unavailable": "Het controleren van vacaturepagina’s is momenteel niet beschikbaar."
+      "unavailable": "Het controleren van vacaturepagina’s is momenteel niet beschikbaar.",
+      "tooLong": "Voer maximaal 500 tekens in.",
+      "invalidInput": "Ongeldige invoer. Laad de pagina opnieuw en probeer het nog eens."
     },
     "search": {
       "title": "Resultaten voor ‘{query}’",

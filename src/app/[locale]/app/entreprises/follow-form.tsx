@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useActionState } from "react";
 import { buttonClass } from "@/components/button";
 import { ActionForm, inputClass } from "@/components/form";
@@ -10,6 +10,8 @@ import { addFollowedCompany, type FollowFormState } from "./actions";
 /** Ajout d'une entreprise : URL de page carrières ou recherche par nom. */
 export function FollowForm({ full }: { full: boolean }) {
   const t = useTranslations("followedCompanies");
+  const tc = useTranslations("codes");
+  const locale = useLocale();
   const [state, action, pending] = useActionState<FollowFormState, FormData>(
     addFollowedCompany,
     {},
@@ -89,7 +91,11 @@ export function FollowForm({ full }: { full: boolean }) {
                   <span className="min-w-0 break-words">
                     <span className="font-medium">{r.name}</span>
                     {r.sector ? (
-                      <span className="text-ink-muted text-sm"> · {r.sector}</span>
+                      <span className="text-ink-muted text-sm">
+                        {" "}
+                        ·{" "}
+                        {locale !== "fr" && r.sectorCode ? tc(`sector.${r.sectorCode}`) : r.sector}
+                      </span>
                     ) : null}
                   </span>
                   {r.followed ? (

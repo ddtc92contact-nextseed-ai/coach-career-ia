@@ -1705,7 +1705,8 @@
       "noSkills": "Few of your skills are explicitly mentioned in the offer.",
       "proofs": "{count, plural, one {One of your achievements directly meets a requirement.} other {# of your achievements directly meet requirements.}}",
       "seniorityAbove": "The role seems more senior than your current position.",
-      "salaryUnknown": "The salary is not stated."
+      "salaryUnknown": "The salary is not stated.",
+      "followed": "The score includes a {bonus}-point bonus because you follow this company."
     },
     "match": "Your achievement “{achievement}” meets the requirement “{requirement}”.",
     "matchSemantic": "Your achievement “{achievement}” is close to the duties of the role.",
@@ -1733,6 +1734,10 @@
       "seniority": "Seniority",
       "salary": "Pay",
       "culture": "Company culture"
+    },
+    "followedBonus": {
+      "label": "Followed company",
+      "value": "+{bonus} points"
     }
   },
   "unsubscribe": {
@@ -3010,7 +3015,9 @@
       "limit": "You already follow the maximum of 50 companies. Remove one to add another.",
       "rateLimited": "Too many checks in a short time. Please try again in a few minutes.",
       "unknownCompany": "This company is no longer watched.",
-      "unavailable": "Careers page checks are unavailable right now."
+      "unavailable": "Careers page checks are unavailable right now.",
+      "tooLong": "Enter at most 500 characters.",
+      "invalidInput": "Invalid input. Reload the page and try again."
     },
     "search": {
       "title": "Results for “{query}”",

@@ -3,6 +3,7 @@ import type { AtsType } from "@/generated/prisma/enums";
 import { markMatchingDirty } from "@/lib/matching/jobs";
 import { detectSectors, isSameCompany } from "@/lib/matching/signals";
 import type { CandidateRails } from "@/lib/matching/types";
+import type { SectorCode } from "@/lib/career/codes";
 import { detectAtsBoard, looksLikeUrl, nameFromToken, probeBoard, type AtsBoard } from "./careers";
 import type { HttpClient } from "./http";
 
@@ -194,6 +195,8 @@ export type CompanySearchResult = {
   id: string;
   name: string;
   sector: string | null;
+  /** Secteur reconnu (code), pour l'afficher traduit hors français. */
+  sectorCode: SectorCode | null;
   atsType: AtsType;
   followed: boolean;
 };
@@ -226,6 +229,7 @@ export async function searchCompanies(
     id: r.id,
     name: r.name,
     sector: r.sector,
+    sectorCode: detectSectors(r.sector)[0] ?? null,
     atsType: r.atsType!,
     followed: r.followers.length > 0,
   }));
@@ -235,6 +239,8 @@ export type FollowedCompanyView = {
   id: string;
   name: string;
   sector: string | null;
+  /** Secteur reconnu (code), pour l'afficher traduit hors français. */
+  sectorCode: SectorCode | null;
   atsType: AtsType | null;
   followedAt: Date;
   openOffers: number;
@@ -310,6 +316,7 @@ export async function listFollowedCompanies(
       id: company.id,
       name: company.name,
       sector: company.sector,
+      sectorCode: detectSectors(company.sector)[0] ?? null,
       atsType: company.atsType,
       followedAt: createdAt,
       openOffers: company._count.offers,
