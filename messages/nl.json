@@ -581,7 +581,8 @@
         "account": "Account",
         "admin": "Beheer"
       },
-      "unread": "{count, plural, one {# nieuw antwoord} other {# nieuwe antwoorden}}"
+      "unread": "{count, plural, one {# nieuw antwoord} other {# nieuwe antwoorden}}",
+      "companies": "Gevolgde bedrijven"
     }
   },
   "dashboard": {
@@ -780,6 +781,7 @@
       "portal": "Vacature rechtstreeks door het bedrijf gepubliceerd: je agent schrijft een kort bericht, dat met je anonieme kaart in zijn inbox wordt afgeleverd. Je leest en keurt het goed: niets wordt zonder jou verstuurd."
     },
     "directBadge": "Rechtstreeks door het bedrijf gepubliceerd",
+    "followedBadge": "Gevolgd bedrijf",
     "band": {
       "strong": "Uitstekende match",
       "good": "Goede match",
@@ -2926,5 +2928,60 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Bedrijven die ik volg",
+    "intro": "Voeg de bedrijven toe waar u op mikt: de radar controleert bij elke ronde hun vacaturepagina en hun vacatures stijgen in uw kansen — altijd binnen uw grenzen.",
+    "count": "{count} / {limit} bedrijven gevolgd",
+    "privacyShort": "Alleen zichtbaar voor u",
+    "privacy": "De bedrijven die u volgt kunnen uw zoektocht verraden: ze worden nooit aan werkgevers getoond en staan niet op uw anonieme kaart. Ze zitten in de export van uw gegevens en worden met uw account verwijderd.",
+    "add": {
+      "title": "Een bedrijf toevoegen",
+      "description": "Plak het adres van de vacaturepagina, of zoek op naam onder de bedrijven die al worden gevolgd.",
+      "label": "Vacaturepagina of bedrijfsnaam",
+      "placeholder": "https://jobs.lever.co/bedrijf",
+      "submit": "Toevoegen",
+      "pending": "Controleren…",
+      "supported": "Ondersteunde vacaturepagina’s (openbare jobboards):",
+      "unsupportedNote": "Andere vacaturesites worden niet verzameld: de radar gebruikt alleen openbare bronnen die daarvoor bedoeld zijn."
+    },
+    "added": "U volgt nu {name} ({count, plural, =0 {nog geen open vacatures} one {# open vacature} other {# open vacatures}}). De vacatures komen mee in de volgende radarronde.",
+    "alreadyFollowed": "U volgt {name} al.",
+    "errors": {
+      "tooShort": "Voer het adres van een vacaturepagina of minstens 2 letters van de naam in.",
+      "invalidUrl": "Dit adres is ongeldig.",
+      "unsupported": "Deze vacaturesite wordt niet ondersteund. Alleen openbare jobboards van Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee en Workable kunnen worden gevolgd.",
+      "notFound": "Op dit adres is geen openbaar jobboard gevonden. Controleer de link van de vacaturepagina.",
+      "unreachable": "Het jobboard reageert op dit moment niet. Probeer het later opnieuw.",
+      "limit": "U volgt al het maximum van 50 bedrijven. Verwijder er een om een ander toe te voegen.",
+      "rateLimited": "Te veel controles in korte tijd. Probeer het over een paar minuten opnieuw.",
+      "unknownCompany": "Dit bedrijf wordt niet meer gevolgd.",
+      "unavailable": "Het controleren van vacaturepagina’s is momenteel niet beschikbaar."
+    },
+    "search": {
+      "title": "Resultaten voor ‘{query}’",
+      "empty": "Geen gevolgd bedrijf heeft deze naam. Plak het adres van de vacaturepagina om het toe te voegen.",
+      "follow": "Volgen",
+      "following": "Al gevolgd"
+    },
+    "list": {
+      "title": "{count, plural, one {# bedrijf gevolgd} other {# bedrijven gevolgd}}",
+      "emptyTitle": "Nog geen bedrijven gevolgd",
+      "emptyText": "Voeg de bedrijven toe die u interesseren: hun vacatures krijgt u als eerste te zien.",
+      "openOffers": "{count, plural, =0 {geen open vacatures} one {# open vacature} other {# open vacatures}}",
+      "followedOn": "gevolgd sinds {date}"
+    },
+    "status": {
+      "ok": "Gevolgd · laatste ronde op {date}",
+      "waiting": "Wacht op de volgende radarronde",
+      "failing": "Vacaturepagina onbereikbaar bij de laatste ronde",
+      "paused": "Volgen gepauzeerd"
+    },
+    "excluded": {
+      "company": "Uitgesloten door uw grenzen: de vacatures worden niet voorgesteld",
+      "sector": "Sector uitgesloten door uw grenzen: de vacatures worden niet voorgesteld"
+    },
+    "unfollow": "Niet meer volgen",
+    "unfollowConfirm": "{name} niet meer volgen?"
   }
 }

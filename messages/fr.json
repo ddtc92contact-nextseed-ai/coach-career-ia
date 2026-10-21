@@ -581,7 +581,8 @@
         "account": "Compte",
         "admin": "Administration"
       },
-      "unread": "{count, plural, one {# nouvelle réponse} other {# nouvelles réponses}}"
+      "unread": "{count, plural, one {# nouvelle réponse} other {# nouvelles réponses}}",
+      "companies": "Entreprises suivies"
     }
   },
   "dashboard": {
@@ -780,6 +781,7 @@
       "portal": "Offre publiée directement par l’entreprise : votre agent rédige un court message, remis avec votre carte anonyme dans sa messagerie. Vous le relisez et l’approuvez : rien n’est envoyé sans vous."
     },
     "directBadge": "Publiée directement par l’entreprise",
+    "followedBadge": "Entreprise suivie",
     "band": {
       "strong": "Excellente correspondance",
       "good": "Bonne correspondance",
@@ -2926,5 +2928,60 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Mes entreprises à suivre",
+    "intro": "Ajoutez les entreprises que vous visez : le radar surveille leur page carrières à chaque passage, et leurs offres remontent en tête de vos opportunités — toujours dans le respect de vos garde-fous.",
+    "count": "{count} / {limit} entreprises suivies",
+    "privacyShort": "Visible par vous seul",
+    "privacy": "Les entreprises que vous suivez peuvent révéler votre recherche : elles ne sont jamais montrées aux entreprises ni sur votre carte anonyme. Elles figurent dans l’export de vos données et sont supprimées avec votre compte.",
+    "add": {
+      "title": "Ajouter une entreprise",
+      "description": "Collez l’adresse de sa page carrières, ou cherchez-la par son nom parmi les entreprises déjà surveillées.",
+      "label": "Page carrières ou nom de l’entreprise",
+      "placeholder": "https://jobs.lever.co/entreprise",
+      "submit": "Ajouter",
+      "pending": "Vérification…",
+      "supported": "Pages carrières prises en charge (job boards publics) :",
+      "unsupportedNote": "Les autres sites carrières ne sont pas collectés : le radar n’utilise que des sources publiques prévues pour cela."
+    },
+    "added": "{name} est suivie ({count, plural, =0 {aucune offre ouverte pour l’instant} one {# offre ouverte} other {# offres ouvertes}}). Ses offres entreront au prochain passage du radar.",
+    "alreadyFollowed": "Vous suivez déjà {name}.",
+    "errors": {
+      "tooShort": "Saisissez une adresse de page carrières ou au moins 2 lettres du nom.",
+      "invalidUrl": "Cette adresse n’est pas valide.",
+      "unsupported": "Ce site carrières n’est pas pris en charge. Seuls les job boards publics Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee et Workable peuvent être suivis.",
+      "notFound": "Aucun job board public n’a été trouvé à cette adresse. Vérifiez le lien de la page carrières.",
+      "unreachable": "Le job board ne répond pas pour le moment. Réessayez plus tard.",
+      "limit": "Vous suivez déjà le maximum de 50 entreprises. Retirez-en une pour en ajouter une autre.",
+      "rateLimited": "Trop de vérifications en peu de temps. Réessayez dans quelques minutes.",
+      "unknownCompany": "Cette entreprise n’est plus surveillée.",
+      "unavailable": "La vérification des pages carrières est indisponible pour le moment."
+    },
+    "search": {
+      "title": "Résultats pour « {query} »",
+      "empty": "Aucune entreprise surveillée ne porte ce nom. Collez l’adresse de sa page carrières pour l’ajouter.",
+      "follow": "Suivre",
+      "following": "Déjà suivie"
+    },
+    "list": {
+      "title": "{count, plural, one {# entreprise suivie} other {# entreprises suivies}}",
+      "emptyTitle": "Aucune entreprise suivie",
+      "emptyText": "Ajoutez les entreprises qui vous intéressent : leurs offres vous seront signalées en priorité.",
+      "openOffers": "{count, plural, =0 {aucune offre ouverte} one {# offre ouverte} other {# offres ouvertes}}",
+      "followedOn": "suivie depuis le {date}"
+    },
+    "status": {
+      "ok": "Surveillée · dernier passage le {date}",
+      "waiting": "En attente du prochain passage du radar",
+      "failing": "Page carrières injoignable au dernier passage",
+      "paused": "Surveillance suspendue"
+    },
+    "excluded": {
+      "company": "Exclue par vos garde-fous : ses offres ne vous seront pas proposées",
+      "sector": "Secteur exclu par vos garde-fous : ses offres ne vous seront pas proposées"
+    },
+    "unfollow": "Ne plus suivre",
+    "unfollowConfirm": "Ne plus suivre {name} ?"
   }
 }

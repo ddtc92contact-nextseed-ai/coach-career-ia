@@ -581,7 +581,8 @@
         "account": "Konto",
         "admin": "Verwaltung"
       },
-      "unread": "{count, plural, one {# neue Antwort} other {# neue Antworten}}"
+      "unread": "{count, plural, one {# neue Antwort} other {# neue Antworten}}",
+      "companies": "Gefolgte Unternehmen"
     }
   },
   "dashboard": {
@@ -780,6 +781,7 @@
       "portal": "Direkt vom Unternehmen veröffentlichtes Angebot: Ihr Agent verfasst eine kurze Nachricht, die mit Ihrer anonymen Karte in dessen Postfach zugestellt wird. Sie prüfen und genehmigen sie: Nichts wird ohne Sie gesendet."
     },
     "directBadge": "Direkt vom Unternehmen veröffentlicht",
+    "followedBadge": "Gefolgtes Unternehmen",
     "band": {
       "strong": "Hervorragende Übereinstimmung",
       "good": "Gute Übereinstimmung",
@@ -2926,5 +2928,60 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Unternehmen, denen ich folge",
+    "intro": "Fügen Sie die Unternehmen hinzu, die Sie im Blick haben: Der Radar prüft bei jedem Durchlauf ihre Karriereseite, und ihre Stellen rücken in Ihren Chancen nach oben – stets innerhalb Ihrer Leitplanken.",
+    "count": "{count} / {limit} Unternehmen gefolgt",
+    "privacyShort": "Nur für Sie sichtbar",
+    "privacy": "Die Unternehmen, denen Sie folgen, können Ihre Jobsuche verraten: Sie werden Arbeitgebern nie gezeigt und erscheinen nicht auf Ihrer anonymen Karte. Sie sind in Ihrem Datenexport enthalten und werden mit Ihrem Konto gelöscht.",
+    "add": {
+      "title": "Unternehmen hinzufügen",
+      "description": "Fügen Sie die Adresse der Karriereseite ein oder suchen Sie nach dem Namen unter den bereits beobachteten Unternehmen.",
+      "label": "Karriereseite oder Unternehmensname",
+      "placeholder": "https://jobs.lever.co/unternehmen",
+      "submit": "Hinzufügen",
+      "pending": "Wird geprüft…",
+      "supported": "Unterstützte Karriereseiten (öffentliche Jobbörsen):",
+      "unsupportedNote": "Andere Karriereseiten werden nicht erfasst: Der Radar nutzt nur öffentliche, dafür vorgesehene Quellen."
+    },
+    "added": "Sie folgen jetzt {name} ({count, plural, =0 {derzeit keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}). Die Stellen werden beim nächsten Radar-Durchlauf erfasst.",
+    "alreadyFollowed": "Sie folgen {name} bereits.",
+    "errors": {
+      "tooShort": "Geben Sie die Adresse einer Karriereseite oder mindestens 2 Buchstaben des Namens ein.",
+      "invalidUrl": "Diese Adresse ist ungültig.",
+      "unsupported": "Diese Karriereseite wird nicht unterstützt. Nur öffentliche Jobbörsen von Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee und Workable können gefolgt werden.",
+      "notFound": "Unter dieser Adresse wurde keine öffentliche Jobbörse gefunden. Prüfen Sie den Link der Karriereseite.",
+      "unreachable": "Die Jobbörse antwortet gerade nicht. Bitte versuchen Sie es später erneut.",
+      "limit": "Sie folgen bereits der Höchstzahl von 50 Unternehmen. Entfernen Sie eines, um ein weiteres hinzuzufügen.",
+      "rateLimited": "Zu viele Prüfungen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut.",
+      "unknownCompany": "Dieses Unternehmen wird nicht mehr beobachtet.",
+      "unavailable": "Die Prüfung von Karriereseiten ist derzeit nicht verfügbar."
+    },
+    "search": {
+      "title": "Ergebnisse für „{query}“",
+      "empty": "Kein beobachtetes Unternehmen trägt diesen Namen. Fügen Sie die Adresse der Karriereseite ein, um es hinzuzufügen.",
+      "follow": "Folgen",
+      "following": "Bereits gefolgt"
+    },
+    "list": {
+      "title": "{count, plural, one {# Unternehmen gefolgt} other {# Unternehmen gefolgt}}",
+      "emptyTitle": "Noch keinem Unternehmen gefolgt",
+      "emptyText": "Fügen Sie die Unternehmen hinzu, die Sie interessieren: Ihre Stellen werden Ihnen bevorzugt angezeigt.",
+      "openOffers": "{count, plural, =0 {keine offenen Stellen} one {# offene Stelle} other {# offene Stellen}}",
+      "followedOn": "gefolgt seit {date}"
+    },
+    "status": {
+      "ok": "Beobachtet · letzter Durchlauf am {date}",
+      "waiting": "Wartet auf den nächsten Radar-Durchlauf",
+      "failing": "Karriereseite beim letzten Durchlauf nicht erreichbar",
+      "paused": "Beobachtung ausgesetzt"
+    },
+    "excluded": {
+      "company": "Durch Ihre Leitplanken ausgeschlossen: Stellen werden nicht vorgeschlagen",
+      "sector": "Branche durch Ihre Leitplanken ausgeschlossen: Stellen werden nicht vorgeschlagen"
+    },
+    "unfollow": "Nicht mehr folgen",
+    "unfollowConfirm": "{name} nicht mehr folgen?"
   }
 }

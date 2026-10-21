@@ -154,11 +154,18 @@ export async function OfferFacts({
         <Fact icon="home">{t(`remote.${offer.remotePolicy}`)}</Fact>
         <Fact icon="coins">{salary}</Fact>
       </ul>
-      {offer.direct ? (
-        <p className="mt-3">
-          <Badge tone="proven" icon="building">
-            {t("directBadge")}
-          </Badge>
+      {offer.direct || offer.followed ? (
+        <p className="mt-3 flex flex-wrap gap-2">
+          {offer.direct ? (
+            <Badge tone="proven" icon="building">
+              {t("directBadge")}
+            </Badge>
+          ) : null}
+          {offer.followed ? (
+            <Badge tone="info" icon="star">
+              {t("followedBadge")}
+            </Badge>
+          ) : null}
         </p>
       ) : null}
     </>

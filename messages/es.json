@@ -581,7 +581,8 @@
         "account": "Cuenta",
         "admin": "Administración"
       },
-      "unread": "{count, plural, one {# respuesta nueva} other {# respuestas nuevas}}"
+      "unread": "{count, plural, one {# respuesta nueva} other {# respuestas nuevas}}",
+      "companies": "Empresas seguidas"
     }
   },
   "dashboard": {
@@ -780,6 +781,7 @@
       "portal": "Oferta publicada directamente por la empresa: tu agente redacta un mensaje breve, entregado con tu tarjeta anónima en su mensajería. Lo revisas y lo apruebas: nada se envía sin ti."
     },
     "directBadge": "Publicada directamente por la empresa",
+    "followedBadge": "Empresa seguida",
     "band": {
       "strong": "Coincidencia excelente",
       "good": "Buena coincidencia",
@@ -2926,5 +2928,60 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Empresas que sigo",
+    "intro": "Añada las empresas a las que aspira: el radar revisa su página de empleo en cada pasada y sus ofertas suben en sus oportunidades, siempre respetando sus límites.",
+    "count": "{count} / {limit} empresas seguidas",
+    "privacyShort": "Visible solo para usted",
+    "privacy": "Las empresas que sigue pueden revelar su búsqueda: nunca se muestran a las empresas ni en su tarjeta anónima. Se incluyen en la exportación de sus datos y se eliminan con su cuenta.",
+    "add": {
+      "title": "Añadir una empresa",
+      "description": "Pegue la dirección de su página de empleo o búsquela por nombre entre las empresas ya vigiladas.",
+      "label": "Página de empleo o nombre de la empresa",
+      "placeholder": "https://jobs.lever.co/empresa",
+      "submit": "Añadir",
+      "pending": "Comprobando…",
+      "supported": "Páginas de empleo compatibles (portales públicos):",
+      "unsupportedNote": "Los demás sitios de empleo no se recopilan: el radar solo usa fuentes públicas previstas para ello."
+    },
+    "added": "Ahora sigue a {name} ({count, plural, =0 {sin ofertas abiertas por ahora} one {# oferta abierta} other {# ofertas abiertas}}). Sus ofertas entrarán en la próxima pasada del radar.",
+    "alreadyFollowed": "Ya sigue a {name}.",
+    "errors": {
+      "tooShort": "Introduzca la dirección de una página de empleo o al menos 2 letras del nombre.",
+      "invalidUrl": "Esta dirección no es válida.",
+      "unsupported": "Este sitio de empleo no es compatible. Solo se pueden seguir portales públicos de Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee y Workable.",
+      "notFound": "No se encontró ningún portal de empleo público en esta dirección. Compruebe el enlace de la página de empleo.",
+      "unreachable": "El portal de empleo no responde en este momento. Inténtelo más tarde.",
+      "limit": "Ya sigue el máximo de 50 empresas. Quite una para añadir otra.",
+      "rateLimited": "Demasiadas comprobaciones en poco tiempo. Inténtelo de nuevo en unos minutos.",
+      "unknownCompany": "Esta empresa ya no está vigilada.",
+      "unavailable": "La comprobación de páginas de empleo no está disponible en este momento."
+    },
+    "search": {
+      "title": "Resultados para «{query}»",
+      "empty": "Ninguna empresa vigilada tiene este nombre. Pegue la dirección de su página de empleo para añadirla.",
+      "follow": "Seguir",
+      "following": "Ya seguida"
+    },
+    "list": {
+      "title": "{count, plural, one {# empresa seguida} other {# empresas seguidas}}",
+      "emptyTitle": "Aún no sigue ninguna empresa",
+      "emptyText": "Añada las empresas que le interesan: sus ofertas se le señalarán en prioridad.",
+      "openOffers": "{count, plural, =0 {sin ofertas abiertas} one {# oferta abierta} other {# ofertas abiertas}}",
+      "followedOn": "seguida desde el {date}"
+    },
+    "status": {
+      "ok": "Vigilada · última pasada el {date}",
+      "waiting": "A la espera de la próxima pasada del radar",
+      "failing": "Página de empleo inaccesible en la última pasada",
+      "paused": "Vigilancia suspendida"
+    },
+    "excluded": {
+      "company": "Excluida por sus límites: sus ofertas no se le propondrán",
+      "sector": "Sector excluido por sus límites: sus ofertas no se le propondrán"
+    },
+    "unfollow": "Dejar de seguir",
+    "unfollowConfirm": "¿Dejar de seguir a {name}?"
   }
 }

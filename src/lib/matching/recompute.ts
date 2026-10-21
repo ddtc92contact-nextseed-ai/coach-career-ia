@@ -111,12 +111,19 @@ export async function recomputeUserMatches(
     }
   }
 
+  // Entreprises suivies : bonus de classement, après les garde-fous.
+  const followed = new Set(
+    (await prisma.followedCompany.findMany({ where: { userId }, select: { companyId: true } })).map(
+      (f) => f.companyId,
+    ),
+  );
   const { matches, excluded } = rankOffers(
     profile,
     rails,
     passing,
     similarities,
     deps.config.semanticRange,
+    followed,
   );
   const offerById = new Map(passing.map((o) => [o.id, o]));
   const existing = await prisma.match.findMany({

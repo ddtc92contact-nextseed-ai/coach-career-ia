@@ -39,9 +39,12 @@ export async function loadCompanyConfig(path: string): Promise<CompanyConfig> {
 }
 
 /**
- * Reporte la configuration en base (upsert par slug, idempotent) et renvoie
- * les entreprises actives à collecter. Une entreprise retirée du fichier est
- * désactivée, pas supprimée (ses offres restent consultables).
+ * Reporte la configuration en base (idempotent) et renvoie les entreprises
+ * actives de la liste de référence. Une entreprise déjà ajoutée par un
+ * candidat avec le même board est rattachée à la configuration (un board =
+ * une entreprise). Une entreprise retirée du fichier est désactivée, pas
+ * supprimée (ses offres restent consultables) — sauf si des candidats la
+ * suivent : elle reste alors surveillée comme entreprise ajoutée.
  */
 export async function syncCompanies(
   prisma: PrismaClient,
@@ -57,27 +60,104 @@ export async function syncCompanies(
       boardToken: c.boardToken,
       atsRegion: c.region ?? null,
       active: c.active,
+      origin: "CONFIG" as const,
     };
-    const row = await prisma.company.upsert({
-      where: { slug: c.slug },
-      update: data,
-      create: { slug: c.slug, ...data },
-    });
-    if (row.active) {
-      companies.push({
-        id: row.id,
-        slug: row.slug,
-        name: row.name,
-        sector: row.sector,
-        atsType: data.atsType,
-        boardToken: c.boardToken,
-        atsRegion: row.atsRegion,
-      });
-    }
+    const existing =
+      (await prisma.company.findUnique({ where: { slug: c.slug }, select: { id: true } })) ??
+      (await prisma.company.findUnique({
+        where: { atsType_boardToken: { atsType: data.atsType, boardToken: c.boardToken } },
+        select: { id: true },
+      }));
+    const row = existing
+      ? await prisma.company.update({ where: { id: existing.id }, data: { slug: c.slug, ...data } })
+      : await prisma.company.create({ data: { slug: c.slug, ...data } });
+    if (row.active) companies.push(toAtsCompany(row)!);
   }
+  const removed = {
+    slug: { notIn: config.map((c) => c.slug) },
+    atsType: { not: null },
+    origin: "CONFIG" as const,
+  };
   await prisma.company.updateMany({
-    where: { slug: { notIn: config.map((c) => c.slug) }, atsType: { not: null } },
-    data: { active: false },
+    where: { ...removed, followers: { some: {} } },
+    data: { origin: "USER" },
   });
+  await prisma.company.updateMany({ where: removed, data: { active: false } });
   return companies;
+}
+
+type CompanyRow = {
+  id: string;
+  slug: string;
+  name: string;
+  sector: string | null;
+  atsType: AtsType | null;
+  boardToken: string | null;
+  atsRegion: string | null;
+};
+
+function toAtsCompany(row: CompanyRow): AtsCompany | null {
+  if (!row.atsType || !row.boardToken) return null;
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    sector: row.sector,
+    atsType: row.atsType,
+    boardToken: row.boardToken,
+    atsRegion: row.atsRegion,
+  };
+}
+
+/**
+ * Entreprises surveillées à ce passage : l'union des entreprises de la
+ * configuration et de celles ajoutées par des candidats qui ont encore au
+ * moins un abonné. Chaque board n'apparaît qu'une fois (unicité ATS + jeton) :
+ * il est collecté une seule fois par passage, quel que soit son nombre
+ * d'abonnés.
+ */
+export async function loadWatchedCompanies(prisma: PrismaClient): Promise<AtsCompany[]> {
+  const rows = await prisma.company.findMany({
+    where: {
+      active: true,
+      atsType: { not: null },
+      boardToken: { not: null },
+      OR: [{ origin: "CONFIG" }, { followers: { some: {} } }],
+    },
+    orderBy: [{ origin: "asc" }, { slug: "asc" }],
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      sector: true,
+      atsType: true,
+      boardToken: true,
+      atsRegion: true,
+    },
+  });
+  return rows.map(toAtsCompany).filter((c): c is AtsCompany => c !== null);
+}
+
+/** Entreprises du radar pour la page d'administration : origine, abonnés, offres ouvertes. */
+export async function listRadarCompanies(prisma: PrismaClient) {
+  return prisma.company.findMany({
+    where: { atsType: { not: null } },
+    orderBy: [{ active: "desc" }, { origin: "asc" }, { name: "asc" }],
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      atsType: true,
+      boardToken: true,
+      origin: true,
+      active: true,
+      createdAt: true,
+      _count: {
+        select: {
+          followers: true,
+          offers: { where: { status: "OPEN", duplicateOfId: null } },
+        },
+      },
+    },
+  });
 }

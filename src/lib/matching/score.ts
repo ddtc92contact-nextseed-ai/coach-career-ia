@@ -66,7 +66,14 @@ export type Evaluation = {
 
 export type OfferResult =
   | { offerId: string; pass: false; violations: ViolationCode[] }
-  | ({ offerId: string; pass: true } & Evaluation);
+  | ({ offerId: string; pass: true; followed?: boolean } & Evaluation);
+
+/**
+ * Points ajoutés au score d'une offre d'une entreprise suivie par le
+ * candidat (plafonné à 100). Appliqué APRÈS les garde-fous : une entreprise
+ * ou un secteur exclus l'emportent toujours sur le suivi.
+ */
+export const FOLLOWED_COMPANY_BOOST = 10;
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 
@@ -242,6 +249,8 @@ export function evaluateOffer(
 /**
  * Classe des offres : celles qui violent un garde-fou sont écartées, les
  * autres triées par score décroissant (puis identifiant, pour un ordre stable).
+ * Les offres des entreprises suivies (`followed`, identifiants `Company`)
+ * gagnent `FOLLOWED_COMPANY_BOOST` points, sans jamais contourner un garde-fou.
  */
 export function rankOffers(
   candidate: CandidateProfile,
@@ -249,6 +258,7 @@ export function rankOffers(
   offers: MatchOffer[],
   similarities: ReadonlyMap<string, ReadonlyMap<string, number>> | null,
   range?: SemanticRange,
+  followed: ReadonlySet<string> = new Set(),
 ) {
   const matches: Extract<OfferResult, { pass: true }>[] = [];
   const excluded: Extract<OfferResult, { pass: false }>[] = [];
@@ -260,8 +270,17 @@ export function rankOffers(
       similarities ? (similarities.get(offer.id) ?? new Map()) : null,
       range,
     );
-    if (result.pass) matches.push(result);
-    else excluded.push(result);
+    if (!result.pass) {
+      excluded.push(result);
+      continue;
+    }
+    if (offer.companyId && followed.has(offer.companyId)) {
+      matches.push({
+        ...result,
+        followed: true,
+        score: Math.min(100, result.score + FOLLOWED_COMPANY_BOOST),
+      });
+    } else matches.push(result);
   }
   matches.sort((a, b) => b.score - a.score || a.offerId.localeCompare(b.offerId));
   return { matches, excluded };
