@@ -1,9 +1,12 @@
 /**
  * Worker de tâches de fond :
  * - Market Radar toutes les `RADAR_INTERVAL_HOURS` heures (6 par défaut), un
- *   passage à la fois. Le même client HTTP est conservé entre passages : les
- *   requêtes conditionnelles (ETag / Last-Modified) évitent de retélécharger
- *   un board inchangé. Chaque passage recalcule ensuite les signaux faibles
+ *   passage à la fois (le suivant est programmé à la fin du précédent ; un
+ *   `npm run radar:run` lancé en parallèle est écarté, voir `passes.ts`). La
+ *   liste de référence est reportée en base au démarrage. Le même client HTTP
+ *   est conservé entre passages : les requêtes conditionnelles (ETag /
+ *   Last-Modified) évitent de retélécharger un board inchangé (cache
+ *   compressé, `RADAR_HTTP_CACHE_MB`). Chaque passage recalcule ensuite les signaux faibles
  *   des entreprises, les repères de salaire du marché, et demande le recalcul
  *   des opportunités ;
  * - matching toutes les `MATCHING_POLL_SECONDS` secondes : recalcul des
@@ -27,7 +30,9 @@ import { runAlerts } from "../src/lib/matching/alerts";
 import { matchingConfig, type MatchingConfig } from "../src/lib/matching/config";
 import { markAllCandidatesDirty, runMatchingCycle } from "../src/lib/matching/jobs";
 import { radarConfig, type RadarConfig } from "../src/lib/radar/config";
+import { loadCompanyConfig, syncCompanies } from "../src/lib/radar/companies";
 import { radarHttpClient, runRadar } from "../src/lib/radar/job";
+import { interruptRunningPasses } from "../src/lib/radar/passes";
 import { runSalaryBenchmarks } from "../src/lib/radar/benchmarks/job";
 import { runCompanySignals } from "../src/lib/radar/signals/job";
 
@@ -146,19 +151,36 @@ function start(config: RadarConfig, matching: MatchingConfig) {
   });
 
   // Un passage interrompu (redémarrage du conteneur) resterait sinon « en cours ».
-  void prisma.sourceRun
-    .updateMany({
-      where: { status: "RUNNING" },
-      data: {
-        status: "FAILED",
-        error: "Interrompu (redémarrage du worker)",
-        finishedAt: new Date(),
-      },
-    })
-    .catch(() => undefined)
-    .then(() => {
-      if (!stopping) timer = setTimeout(tick, config.runOnStart ? 0 : intervalMs);
-    });
+  // Puis la liste de référence est reportée en base dès le déploiement (idempotent,
+  // sans toucher aux entreprises ajoutées par les candidats), avant le premier passage.
+  const prepare = async () => {
+    await prisma.sourceRun
+      .updateMany({
+        where: { status: "RUNNING" },
+        data: {
+          status: "FAILED",
+          error: "Interrompu (redémarrage du worker)",
+          finishedAt: new Date(),
+        },
+      })
+      .catch(() => undefined);
+    await interruptRunningPasses(prisma, new Date()).catch(() => undefined);
+    try {
+      const reference = await loadCompanyConfig(config.companiesFile);
+      const active = await syncCompanies(prisma, reference);
+      log.info("worker.radar.companies_synced", {
+        reference: reference.length,
+        active: active.length,
+      });
+    } catch (error) {
+      log.error("worker.radar.companies_failed", {
+        error: error instanceof Error ? error : String(error),
+      });
+    }
+  };
+  void prepare().then(() => {
+    if (!stopping) timer = setTimeout(tick, config.runOnStart ? 0 : intervalMs);
+  });
   startMatching(prisma, matching);
   startHandoverPurge(prisma);
   startPostingExpiry(prisma);

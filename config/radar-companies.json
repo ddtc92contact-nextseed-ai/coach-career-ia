@@ -139,7 +139,7 @@
     "slug": "handicap-international",
     "name": "Handicap International",
     "website": "https://www.handicap-international.fr",
-    "sector": "Humanitaire / solidarité",
+    "sector": "ONG / humanitaire",
     "ats": "workable",
     "boardToken": "hi-jobs"
   },
@@ -200,7 +200,7 @@
     "slug": "eurofins",
     "name": "Eurofins",
     "website": "https://www.eurofins.fr",
-    "sector": "Laboratoires / analyses",
+    "sector": "Biotech / laboratoires d'analyses",
     "ats": "smartrecruiters",
     "boardToken": "Eurofins",
     "active": false
@@ -240,5 +240,3362 @@
     "ats": "smartrecruiters",
     "boardToken": "Thales",
     "active": false
+  },
+  {
+    "slug": "liberkeys",
+    "name": "Liberkeys",
+    "sector": "Immobilier / proptech",
+    "ats": "recruitee",
+    "boardToken": "liberkeys"
+  },
+  {
+    "slug": "beezpro",
+    "name": "Beezpro",
+    "sector": "Automobile",
+    "ats": "recruitee",
+    "boardToken": "beezpro"
+  },
+  {
+    "slug": "theodo",
+    "name": "Theodo",
+    "website": "https://www.theodo.fr",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "theodo"
+  },
+  {
+    "slug": "umane",
+    "name": "Umane",
+    "sector": "Association / santé",
+    "ats": "recruitee",
+    "boardToken": "umane"
+  },
+  {
+    "slug": "jd-sports-france",
+    "name": "JD Sports France",
+    "sector": "Retail / commerce de détail",
+    "ats": "greenhouse",
+    "boardToken": "jdsportsfr"
+  },
+  {
+    "slug": "ouihelp",
+    "name": "Ouihelp",
+    "sector": "Santé",
+    "ats": "greenhouse",
+    "boardToken": "ouihelp"
+  },
+  {
+    "slug": "decathlon-digital",
+    "name": "Decathlon Digital",
+    "sector": "Retail / logiciel",
+    "ats": "greenhouse",
+    "boardToken": "decathlontechnology"
+  },
+  {
+    "slug": "voodoo",
+    "name": "Voodoo",
+    "website": "https://voodoo.io",
+    "sector": "Jeu vidéo",
+    "ats": "ashby",
+    "boardToken": "voodoo"
+  },
+  {
+    "slug": "veepee",
+    "name": "Veepee",
+    "website": "https://www.veepee.fr",
+    "sector": "E-commerce",
+    "ats": "lever",
+    "boardToken": "veepee"
+  },
+  {
+    "slug": "humanis-partners",
+    "name": "Humanis Partners",
+    "sector": "Gestion de patrimoine / banque",
+    "ats": "recruitee",
+    "boardToken": "humanispartners"
+  },
+  {
+    "slug": "rh-partners",
+    "name": "RH Partners",
+    "sector": "Recrutement / RH",
+    "ats": "recruitee",
+    "boardToken": "rhpartners"
+  },
+  {
+    "slug": "sezane",
+    "name": "Sézane",
+    "sector": "Mode / fashion",
+    "ats": "workable",
+    "boardToken": "sezane-3"
+  },
+  {
+    "slug": "gojob",
+    "name": "Gojob",
+    "website": "https://gojob.com",
+    "sector": "Recrutement / RH",
+    "ats": "lever",
+    "boardToken": "gojob"
+  },
+  {
+    "slug": "assifep",
+    "name": "Assifep",
+    "sector": "Formation professionnelle / BTP",
+    "ats": "recruitee",
+    "boardToken": "assifep"
+  },
+  {
+    "slug": "mon-chasseur-immo",
+    "name": "Mon Chasseur Immo",
+    "sector": "Immobilier",
+    "ats": "recruitee",
+    "boardToken": "welcomemonchasseurimmo"
+  },
+  {
+    "slug": "fleury-michon",
+    "name": "Fleury Michon",
+    "sector": "Agroalimentaire / food",
+    "ats": "recruitee",
+    "boardToken": "fleurymichon"
+  },
+  {
+    "slug": "ippon-technologies",
+    "name": "Ippon Technologies",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "ippon"
+  },
+  {
+    "slug": "omeris",
+    "name": "Omeris",
+    "sector": "Santé / médico-social",
+    "ats": "recruitee",
+    "boardToken": "omeris"
+  },
+  {
+    "slug": "luca-finance-management-school",
+    "name": "Luca Finance & Management School",
+    "sector": "Enseignement supérieur",
+    "ats": "recruitee",
+    "boardToken": "lucafinancemanagementschool"
+  },
+  {
+    "slug": "getlink",
+    "name": "Getlink",
+    "sector": "Transport / logistique",
+    "ats": "recruitee",
+    "boardToken": "getlink"
+  },
+  {
+    "slug": "la-panetiere",
+    "name": "La Panetière",
+    "sector": "Commerce de détail / boulangerie",
+    "ats": "recruitee",
+    "boardToken": "lapanetiere"
+  },
+  {
+    "slug": "pigment",
+    "name": "Pigment",
+    "website": "https://www.pigment.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "pigment"
+  },
+  {
+    "slug": "datadog",
+    "name": "Datadog",
+    "website": "https://www.datadoghq.com",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "datadog"
+  },
+  {
+    "slug": "joko",
+    "name": "Joko",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "joko"
+  },
+  {
+    "slug": "sogeclair",
+    "name": "SOGECLAIR",
+    "sector": "Aéronautique / ingénierie",
+    "ats": "workable",
+    "boardToken": "sogeclair"
+  },
+  {
+    "slug": "verkor",
+    "name": "Verkor",
+    "website": "https://verkor.com",
+    "sector": "Industrie",
+    "ats": "lever",
+    "boardToken": "verkor"
+  },
+  {
+    "slug": "guess",
+    "name": "Guess",
+    "sector": "Mode / fashion",
+    "ats": "workable",
+    "boardToken": "guess-europe-sagl"
+  },
+  {
+    "slug": "sfeir",
+    "name": "Sfeir",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "sfeir"
+  },
+  {
+    "slug": "percassi",
+    "name": "Percassi",
+    "sector": "Retail / commerce de détail",
+    "ats": "recruitee",
+    "boardToken": "percassi"
+  },
+  {
+    "slug": "sumup",
+    "name": "SumUp",
+    "website": "https://sumup.fr",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "sumup"
+  },
+  {
+    "slug": "alice-bob",
+    "name": "Alice & Bob",
+    "website": "https://alice-bob.com",
+    "sector": "Logiciel / technologies quantiques",
+    "ats": "lever",
+    "boardToken": "alice-bob"
+  },
+  {
+    "slug": "eight-advisory",
+    "name": "Eight Advisory",
+    "sector": "Conseil",
+    "ats": "recruitee",
+    "boardToken": "8advisory"
+  },
+  {
+    "slug": "margo",
+    "name": "Margo",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "margo-group"
+  },
+  {
+    "slug": "agence-de-services-et-de-paiement-asp",
+    "name": "Agence de Services et de Paiement (ASP)",
+    "sector": "Administration publique",
+    "ats": "recruitee",
+    "boardToken": "agencedeservicesetdepaiement"
+  },
+  {
+    "slug": "alta-ares",
+    "name": "Alta Ares",
+    "sector": "Défense / aéronautique",
+    "ats": "ashby",
+    "boardToken": "alta-ares"
+  },
+  {
+    "slug": "artefact",
+    "name": "Artefact",
+    "website": "https://www.artefact.com",
+    "sector": "Conseil",
+    "ats": "greenhouse",
+    "boardToken": "artefact"
+  },
+  {
+    "slug": "capfi",
+    "name": "Capfi",
+    "sector": "Conseil / ESN",
+    "ats": "greenhouse",
+    "boardToken": "capfigroupe"
+  },
+  {
+    "slug": "doctrine",
+    "name": "Doctrine",
+    "website": "https://www.doctrine.fr",
+    "sector": "Juridique / legaltech",
+    "ats": "lever",
+    "boardToken": "doctrine"
+  },
+  {
+    "slug": "groupe-mondial-tissus",
+    "name": "Groupe Mondial Tissus",
+    "sector": "Retail / commerce de détail",
+    "ats": "recruitee",
+    "boardToken": "recrutementmondialtissus"
+  },
+  {
+    "slug": "amo",
+    "name": "amo",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "amo"
+  },
+  {
+    "slug": "kickmaker",
+    "name": "Kickmaker",
+    "sector": "Industrie",
+    "ats": "lever",
+    "boardToken": "kickmaker"
+  },
+  {
+    "slug": "precia-molen",
+    "name": "Precia Molen",
+    "sector": "Industrie",
+    "ats": "recruitee",
+    "boardToken": "preciamolen"
+  },
+  {
+    "slug": "joya",
+    "name": "Joya",
+    "sector": "Santé / aide à domicile",
+    "ats": "greenhouse",
+    "boardToken": "joya"
+  },
+  {
+    "slug": "mirakl-labs",
+    "name": "Mirakl Labs",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "mirakllabs"
+  },
+  {
+    "slug": "jacquemus",
+    "name": "Jacquemus",
+    "sector": "Luxe / mode",
+    "ats": "lever",
+    "boardToken": "jacquemus",
+    "region": "eu"
+  },
+  {
+    "slug": "octopus-energy",
+    "name": "Octopus Energy",
+    "sector": "Énergie",
+    "ats": "lever",
+    "boardToken": "octoenergy"
+  },
+  {
+    "slug": "scaleway",
+    "name": "Scaleway",
+    "website": "https://www.scaleway.com",
+    "sector": "Logiciel / cloud",
+    "ats": "lever",
+    "boardToken": "scaleway"
+  },
+  {
+    "slug": "back-market",
+    "name": "Back Market",
+    "website": "https://www.backmarket.fr",
+    "sector": "E-commerce / marketplace",
+    "ats": "ashby",
+    "boardToken": "backmarket"
+  },
+  {
+    "slug": "exoceth-consulting",
+    "name": "Exoceth Consulting",
+    "sector": "Conseil / ingénierie",
+    "ats": "recruitee",
+    "boardToken": "exocethconsulting"
+  },
+  {
+    "slug": "hemeria",
+    "name": "Hemeria",
+    "sector": "Aérospatial / spatial",
+    "ats": "recruitee",
+    "boardToken": "hemeriagroup"
+  },
+  {
+    "slug": "winamax",
+    "name": "Winamax",
+    "sector": "Paris sportifs / poker",
+    "ats": "lever",
+    "boardToken": "winamax"
+  },
+  {
+    "slug": "mirakl",
+    "name": "Mirakl",
+    "website": "https://www.mirakl.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "mirakl"
+  },
+  {
+    "slug": "valeuriad",
+    "name": "Valeuriad",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "valeuriad"
+  },
+  {
+    "slug": "vo2-group",
+    "name": "VO2 Group",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "vo2-group"
+  },
+  {
+    "slug": "mdc-recrutement",
+    "name": "MDC Recrutement",
+    "sector": "Recrutement / RH",
+    "ats": "recruitee",
+    "boardToken": "mdcrecrutement"
+  },
+  {
+    "slug": "wpp-media",
+    "name": "WPP Media",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "wppmedia"
+  },
+  {
+    "slug": "bigblue",
+    "name": "Bigblue",
+    "website": "https://www.bigblue.co",
+    "sector": "Transport / logistique",
+    "ats": "lever",
+    "boardToken": "bigblue"
+  },
+  {
+    "slug": "vergers-gazeau-vergers-de-vendee",
+    "name": "Vergers Gazeau - Vergers de Vendée",
+    "sector": "Agroalimentaire / food",
+    "ats": "recruitee",
+    "boardToken": "vergersgazeauvergersdevendee"
+  },
+  {
+    "slug": "withings",
+    "name": "Withings",
+    "sector": "Santé / dispositifs médicaux",
+    "ats": "workable",
+    "boardToken": "withings"
+  },
+  {
+    "slug": "adae62",
+    "name": "ADAE62",
+    "sector": "Association / ONG",
+    "ats": "recruitee",
+    "boardToken": "adae62"
+  },
+  {
+    "slug": "commune-le-kremlin-bicetre",
+    "name": "Commune Le Kremlin-Bicêtre",
+    "sector": "Collectivité / administration publique",
+    "ats": "recruitee",
+    "boardToken": "lekremlinbicetre"
+  },
+  {
+    "slug": "ensup",
+    "name": "ENSUP",
+    "sector": "Enseignement supérieur",
+    "ats": "recruitee",
+    "boardToken": "ensup"
+  },
+  {
+    "slug": "hexa",
+    "name": "Hexa",
+    "sector": "Conseil",
+    "ats": "ashby",
+    "boardToken": "hexa"
+  },
+  {
+    "slug": "safran-ai",
+    "name": "Safran.AI",
+    "sector": "Défense / logiciel IA",
+    "ats": "lever",
+    "boardToken": "safran-ai"
+  },
+  {
+    "slug": "veeva",
+    "name": "Veeva",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "veeva"
+  },
+  {
+    "slug": "alma",
+    "name": "Alma",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "alma31"
+  },
+  {
+    "slug": "dataone",
+    "name": "Dataone",
+    "sector": "Construction / BTP",
+    "ats": "workable",
+    "boardToken": "dataone"
+  },
+  {
+    "slug": "ensta-paris",
+    "name": "ENSTA Paris",
+    "sector": "Enseignement supérieur / recherche",
+    "ats": "recruitee",
+    "boardToken": "enstaparis"
+  },
+  {
+    "slug": "elephant-technologies",
+    "name": "Elephant Technologies",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "elephanttechnologies"
+  },
+  {
+    "slug": "h-company",
+    "name": "H Company",
+    "website": "https://www.hcompany.ai",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "hcompany"
+  },
+  {
+    "slug": "valtech",
+    "name": "Valtech",
+    "sector": "Conseil / ESN",
+    "ats": "greenhouse",
+    "boardToken": "valtech"
+  },
+  {
+    "slug": "algolia",
+    "name": "Algolia",
+    "website": "https://www.algolia.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "algolia"
+  },
+  {
+    "slug": "databricks",
+    "name": "Databricks",
+    "website": "https://www.databricks.com",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "databricks"
+  },
+  {
+    "slug": "gerard-bertrand",
+    "name": "Gérard Bertrand",
+    "sector": "Vins et spiritueux",
+    "ats": "recruitee",
+    "boardToken": "gerardbertrand"
+  },
+  {
+    "slug": "hubvisory",
+    "name": "Hubvisory",
+    "sector": "Conseil",
+    "ats": "recruitee",
+    "boardToken": "hubvisory"
+  },
+  {
+    "slug": "qube-research-technologies",
+    "name": "Qube Research & Technologies",
+    "sector": "Banque / finance de marché",
+    "ats": "greenhouse",
+    "boardToken": "quberesearchandtechnologies"
+  },
+  {
+    "slug": "salonkee",
+    "name": "Salonkee",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "salonkee"
+  },
+  {
+    "slug": "soho-house-co",
+    "name": "Soho House & Co.",
+    "sector": "Hôtellerie / restauration",
+    "ats": "greenhouse",
+    "boardToken": "sohohouseco"
+  },
+  {
+    "slug": "360learning",
+    "name": "360Learning",
+    "website": "https://360learning.com",
+    "sector": "Éducation / edtech",
+    "ats": "lever",
+    "boardToken": "360learning"
+  },
+  {
+    "slug": "deliveroo",
+    "name": "Deliveroo",
+    "website": "https://deliveroo.fr",
+    "sector": "Food / foodtech",
+    "ats": "greenhouse",
+    "boardToken": "deliveroo"
+  },
+  {
+    "slug": "kong-recrutement",
+    "name": "Kong Recrutement",
+    "sector": "Recrutement / hôtellerie",
+    "ats": "recruitee",
+    "boardToken": "kongrecrutement"
+  },
+  {
+    "slug": "proton",
+    "name": "Proton",
+    "website": "https://proton.me",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "proton"
+  },
+  {
+    "slug": "star-s-service-sas",
+    "name": "Star's Service SAS",
+    "sector": "Transport / logistique",
+    "ats": "recruitee",
+    "boardToken": "starservice"
+  },
+  {
+    "slug": "thiga",
+    "name": "Thiga",
+    "sector": "Conseil",
+    "ats": "lever",
+    "boardToken": "thiga"
+  },
+  {
+    "slug": "aircall",
+    "name": "Aircall",
+    "website": "https://aircall.io",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "aircall"
+  },
+  {
+    "slug": "loft-orbital",
+    "name": "Loft Orbital",
+    "website": "https://loftorbital.com",
+    "sector": "Aérospatial / spatial",
+    "ats": "lever",
+    "boardToken": "loftorbital"
+  },
+  {
+    "slug": "avisia",
+    "name": "Avisia",
+    "sector": "Conseil / data",
+    "ats": "recruitee",
+    "boardToken": "avisia"
+  },
+  {
+    "slug": "batt-associes",
+    "name": "Batt & Associés",
+    "sector": "Conseil / expertise comptable",
+    "ats": "recruitee",
+    "boardToken": "battassocies"
+  },
+  {
+    "slug": "dilitrust",
+    "name": "DiliTrust",
+    "sector": "Logiciel / juridique",
+    "ats": "lever",
+    "boardToken": "dilitrust"
+  },
+  {
+    "slug": "malt",
+    "name": "Malt",
+    "website": "https://www.malt.fr",
+    "sector": "Recrutement / RH",
+    "ats": "lever",
+    "boardToken": "malt"
+  },
+  {
+    "slug": "ovrsea",
+    "name": "OVRSEA",
+    "sector": "Transport / logistique",
+    "ats": "lever",
+    "boardToken": "foresea-technologies"
+  },
+  {
+    "slug": "swile",
+    "name": "Swile",
+    "website": "https://www.swile.co",
+    "sector": "Fintech",
+    "ats": "lever",
+    "boardToken": "swile"
+  },
+  {
+    "slug": "brevo",
+    "name": "Brevo",
+    "website": "https://www.brevo.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "brevo"
+  },
+  {
+    "slug": "fever",
+    "name": "Fever",
+    "website": "https://feverup.com",
+    "sector": "Médias / divertissement",
+    "ats": "greenhouse",
+    "boardToken": "feverup"
+  },
+  {
+    "slug": "genetec",
+    "name": "Genetec",
+    "sector": "Logiciel / cybersécurité",
+    "ats": "workable",
+    "boardToken": "genetec-inc"
+  },
+  {
+    "slug": "novaspace",
+    "name": "Novaspace",
+    "sector": "Conseil / spatial",
+    "ats": "lever",
+    "boardToken": "novaspace"
+  },
+  {
+    "slug": "seyna",
+    "name": "Seyna",
+    "sector": "Insurtech / assurance",
+    "ats": "ashby",
+    "boardToken": "seyna"
+  },
+  {
+    "slug": "texen",
+    "name": "Texen",
+    "sector": "Industrie",
+    "ats": "recruitee",
+    "boardToken": "texen"
+  },
+  {
+    "slug": "dust",
+    "name": "Dust",
+    "website": "https://dust.tt",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "dust"
+  },
+  {
+    "slug": "teads",
+    "name": "Teads",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "teads1"
+  },
+  {
+    "slug": "vestiaire-collective",
+    "name": "Vestiaire Collective",
+    "website": "https://www.vestiairecollective.com",
+    "sector": "E-commerce / marketplace",
+    "ats": "lever",
+    "boardToken": "vestiairecollective"
+  },
+  {
+    "slug": "vibe",
+    "name": "Vibe",
+    "sector": "Marketing / adtech",
+    "ats": "ashby",
+    "boardToken": "vibe"
+  },
+  {
+    "slug": "dedale-intelligence",
+    "name": "Dedale Intelligence",
+    "sector": "Conseil / data",
+    "ats": "ashby",
+    "boardToken": "dedale-intelligence"
+  },
+  {
+    "slug": "deephealth",
+    "name": "DeepHealth",
+    "sector": "Santé / logiciel IA",
+    "ats": "recruitee",
+    "boardToken": "deephealth"
+  },
+  {
+    "slug": "hellofresh",
+    "name": "HelloFresh",
+    "website": "https://www.hellofresh.fr",
+    "sector": "Food / foodtech",
+    "ats": "greenhouse",
+    "boardToken": "hellofresh"
+  },
+  {
+    "slug": "norgine",
+    "name": "Norgine",
+    "sector": "Pharma",
+    "ats": "workable",
+    "boardToken": "norgine-2"
+  },
+  {
+    "slug": "rives-eaux-du-sud-ouest",
+    "name": "Rives & Eaux du Sud-Ouest",
+    "sector": "Environnement / eau",
+    "ats": "recruitee",
+    "boardToken": "riveseteaux"
+  },
+  {
+    "slug": "habitat-marseille-provence",
+    "name": "Habitat Marseille Provence",
+    "sector": "Immobilier / logement social",
+    "ats": "recruitee",
+    "boardToken": "hmp"
+  },
+  {
+    "slug": "la-manufacture-rh",
+    "name": "La Manufacture RH",
+    "sector": "Recrutement / RH",
+    "ats": "recruitee",
+    "boardToken": "lamanufacturerh"
+  },
+  {
+    "slug": "ledger",
+    "name": "Ledger",
+    "website": "https://www.ledger.com",
+    "sector": "Fintech / crypto",
+    "ats": "ashby",
+    "boardToken": "ledger"
+  },
+  {
+    "slug": "pret-a-manger",
+    "name": "Pret A Manger",
+    "sector": "Restauration",
+    "ats": "recruitee",
+    "boardToken": "pretamanger"
+  },
+  {
+    "slug": "3h18",
+    "name": "3H18",
+    "sector": "Ressources humaines / paie",
+    "ats": "recruitee",
+    "boardToken": "3h18"
+  },
+  {
+    "slug": "biggie-group",
+    "name": "Biggie Group",
+    "sector": "Marketing / agence de communication",
+    "ats": "lever",
+    "boardToken": "biggie"
+  },
+  {
+    "slug": "diabolocom",
+    "name": "Diabolocom",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "diabolocom",
+    "region": "eu"
+  },
+  {
+    "slug": "ekimetrics",
+    "name": "Ekimetrics",
+    "website": "https://www.ekimetrics.com",
+    "sector": "Conseil",
+    "ats": "lever",
+    "boardToken": "ekimetrics"
+  },
+  {
+    "slug": "gramian-consulting-group",
+    "name": "Gramian Consulting Group",
+    "sector": "Logiciel / IA",
+    "ats": "workable",
+    "boardToken": "gramian"
+  },
+  {
+    "slug": "helsing",
+    "name": "Helsing",
+    "website": "https://helsing.ai",
+    "sector": "Défense / aéronautique",
+    "ats": "greenhouse",
+    "boardToken": "helsing"
+  },
+  {
+    "slug": "intescia",
+    "name": "Intescia",
+    "sector": "Logiciel / data",
+    "ats": "recruitee",
+    "boardToken": "intescia"
+  },
+  {
+    "slug": "n2jsoft",
+    "name": "N2JSoft",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "n2jsoft"
+  },
+  {
+    "slug": "seloger",
+    "name": "SeLoger",
+    "sector": "Immobilier / proptech",
+    "ats": "ashby",
+    "boardToken": "seloger"
+  },
+  {
+    "slug": "advizeo",
+    "name": "Advizeo",
+    "sector": "Énergie / logiciel",
+    "ats": "recruitee",
+    "boardToken": "advizeo"
+  },
+  {
+    "slug": "arc-teryx",
+    "name": "Arc'teryx",
+    "sector": "Mode / fashion",
+    "ats": "lever",
+    "boardToken": "arcteryx.com"
+  },
+  {
+    "slug": "cesi",
+    "name": "CESI",
+    "sector": "Enseignement supérieur",
+    "ats": "recruitee",
+    "boardToken": "cesi"
+  },
+  {
+    "slug": "fastned",
+    "name": "Fastned",
+    "website": "https://www.fastnedcharging.com",
+    "sector": "Mobilité",
+    "ats": "recruitee",
+    "boardToken": "fastned"
+  },
+  {
+    "slug": "pullup-entertainment",
+    "name": "Pullup Entertainment",
+    "sector": "Jeu vidéo",
+    "ats": "recruitee",
+    "boardToken": "focusentertainment"
+  },
+  {
+    "slug": "homerez",
+    "name": "Homerez",
+    "sector": "Tourisme / voyage",
+    "ats": "workable",
+    "boardToken": "homerez"
+  },
+  {
+    "slug": "lecoq",
+    "name": "Lecoq",
+    "sector": "Automobile",
+    "ats": "recruitee",
+    "boardToken": "lecoq"
+  },
+  {
+    "slug": "mongodb",
+    "name": "MongoDB",
+    "website": "https://www.mongodb.com",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "mongodb"
+  },
+  {
+    "slug": "openai",
+    "name": "OpenAI",
+    "website": "https://openai.com",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "openai"
+  },
+  {
+    "slug": "outsight",
+    "name": "Outsight",
+    "sector": "Logiciel / IA",
+    "ats": "lever",
+    "boardToken": "outsight"
+  },
+  {
+    "slug": "photoroom",
+    "name": "Photoroom",
+    "website": "https://www.photoroom.com",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "photoroom"
+  },
+  {
+    "slug": "agicap",
+    "name": "Agicap",
+    "website": "https://agicap.com",
+    "sector": "Fintech",
+    "ats": "lever",
+    "boardToken": "agicap"
+  },
+  {
+    "slug": "airwallex",
+    "name": "Airwallex",
+    "sector": "Fintech / paiement",
+    "ats": "ashby",
+    "boardToken": "airwallex"
+  },
+  {
+    "slug": "anthropic",
+    "name": "Anthropic",
+    "website": "https://www.anthropic.com",
+    "sector": "Logiciel / IA",
+    "ats": "greenhouse",
+    "boardToken": "anthropic"
+  },
+  {
+    "slug": "blablacar",
+    "name": "BlaBlaCar",
+    "website": "https://www.blablacar.fr",
+    "sector": "Mobilité",
+    "ats": "lever",
+    "boardToken": "blablacar"
+  },
+  {
+    "slug": "cf2i",
+    "name": "CF2i",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "cf2i"
+  },
+  {
+    "slug": "gitlab",
+    "name": "GitLab",
+    "website": "https://about.gitlab.com",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "greenhouse",
+    "boardToken": "gitlab"
+  },
+  {
+    "slug": "le-cedre",
+    "name": "Le Cèdre",
+    "sector": "Énergie",
+    "ats": "recruitee",
+    "boardToken": "lecedre1"
+  },
+  {
+    "slug": "legora",
+    "name": "Legora",
+    "sector": "Juridique / legaltech",
+    "ats": "ashby",
+    "boardToken": "legora"
+  },
+  {
+    "slug": "lexroom",
+    "name": "Lexroom",
+    "sector": "Juridique / legaltech",
+    "ats": "ashby",
+    "boardToken": "lexroom"
+  },
+  {
+    "slug": "pixalione",
+    "name": "Pixalione",
+    "sector": "Marketing / adtech",
+    "ats": "recruitee",
+    "boardToken": "pixalione"
+  },
+  {
+    "slug": "payflows",
+    "name": "Payflows",
+    "sector": "Fintech",
+    "ats": "recruitee",
+    "boardToken": "payflows"
+  },
+  {
+    "slug": "powerdot",
+    "name": "Powerdot",
+    "sector": "Mobilité",
+    "ats": "greenhouse",
+    "boardToken": "powerdot"
+  },
+  {
+    "slug": "vml-wpp-enterprise-solutions",
+    "name": "VML/WPP Enterprise Solutions",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "vmlenterprisesolutions"
+  },
+  {
+    "slug": "egym-wellpass",
+    "name": "EGYM Wellpass",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "egym"
+  },
+  {
+    "slug": "braze",
+    "name": "Braze",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "braze"
+  },
+  {
+    "slug": "celonis",
+    "name": "Celonis",
+    "website": "https://www.celonis.com",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "celonis"
+  },
+  {
+    "slug": "corwave",
+    "name": "Corwave",
+    "sector": "Santé / dispositifs médicaux",
+    "ats": "workable",
+    "boardToken": "corwave-1"
+  },
+  {
+    "slug": "dashlane",
+    "name": "Dashlane",
+    "website": "https://www.dashlane.com",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "dashlane"
+  },
+  {
+    "slug": "filigran",
+    "name": "Filigran",
+    "sector": "Cybersécurité",
+    "ats": "ashby",
+    "boardToken": "filigran"
+  },
+  {
+    "slug": "idnow",
+    "name": "IDnow",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "idnow"
+  },
+  {
+    "slug": "insider-one",
+    "name": "Insider One",
+    "sector": "Logiciel / marketing",
+    "ats": "lever",
+    "boardToken": "insiderone"
+  },
+  {
+    "slug": "lemlist",
+    "name": "Lemlist",
+    "website": "https://www.lemlist.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "lemlist"
+  },
+  {
+    "slug": "mozilla",
+    "name": "Mozilla",
+    "website": "https://www.mozilla.org",
+    "sector": "Association / ONG",
+    "ats": "greenhouse",
+    "boardToken": "mozilla"
+  },
+  {
+    "slug": "notion",
+    "name": "Notion",
+    "website": "https://www.notion.so",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "notion"
+  },
+  {
+    "slug": "younited",
+    "name": "Younited",
+    "website": "https://www.younited-credit.com",
+    "sector": "Fintech",
+    "ats": "lever",
+    "boardToken": "younited"
+  },
+  {
+    "slug": "airbnb",
+    "name": "Airbnb",
+    "website": "https://www.airbnb.fr",
+    "sector": "Tourisme / voyage",
+    "ats": "greenhouse",
+    "boardToken": "airbnb"
+  },
+  {
+    "slug": "decathlon-group",
+    "name": "Decathlon Group",
+    "sector": "Retail / commerce de détail",
+    "ats": "greenhouse",
+    "boardToken": "decathlongroup"
+  },
+  {
+    "slug": "ebury",
+    "name": "Ebury",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "ebury"
+  },
+  {
+    "slug": "finary",
+    "name": "Finary",
+    "website": "https://finary.com",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "finary"
+  },
+  {
+    "slug": "hamelin",
+    "name": "Hamelin",
+    "sector": "Industrie",
+    "ats": "recruitee",
+    "boardToken": "hamelin"
+  },
+  {
+    "slug": "horizon-trading-solutions",
+    "name": "Horizon Trading Solutions",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "horizontradingsolutions"
+  },
+  {
+    "slug": "loisium",
+    "name": "Loisium",
+    "sector": "Hôtellerie",
+    "ats": "recruitee",
+    "boardToken": "loisium"
+  },
+  {
+    "slug": "la-javaness",
+    "name": "La Javaness",
+    "sector": "Conseil",
+    "ats": "workable",
+    "boardToken": "la-javaness"
+  },
+  {
+    "slug": "navan",
+    "name": "Navan",
+    "sector": "Tourisme / voyage",
+    "ats": "greenhouse",
+    "boardToken": "tripactions"
+  },
+  {
+    "slug": "solteo",
+    "name": "Solteo",
+    "sector": "Énergie renouvelable",
+    "ats": "ashby",
+    "boardToken": "solteo"
+  },
+  {
+    "slug": "speechify",
+    "name": "Speechify",
+    "sector": "Logiciel / IA",
+    "ats": "greenhouse",
+    "boardToken": "speechify"
+  },
+  {
+    "slug": "van-der-valk-hotel-paris-cdg-airport",
+    "name": "Van der Valk Hotel Paris CDG Airport",
+    "sector": "Hôtellerie",
+    "ats": "recruitee",
+    "boardToken": "hotelpariscdgairport"
+  },
+  {
+    "slug": "ami",
+    "name": "AMI",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "ami"
+  },
+  {
+    "slug": "apex-energies",
+    "name": "Apex Énergies",
+    "sector": "Énergie renouvelable",
+    "ats": "recruitee",
+    "boardToken": "apexenergies"
+  },
+  {
+    "slug": "ajax-systems",
+    "name": "Ajax Systems",
+    "sector": "Industrie",
+    "ats": "lever",
+    "boardToken": "ajax"
+  },
+  {
+    "slug": "catawiki",
+    "name": "Catawiki",
+    "sector": "E-commerce / marketplace",
+    "ats": "greenhouse",
+    "boardToken": "catawiki"
+  },
+  {
+    "slug": "egg-ai",
+    "name": "Egg AI",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "eggai"
+  },
+  {
+    "slug": "habilians",
+    "name": "Habilians",
+    "sector": "Immobilier / logement social",
+    "ats": "recruitee",
+    "boardToken": "habilians"
+  },
+  {
+    "slug": "heetch",
+    "name": "Heetch",
+    "website": "https://www.heetch.com",
+    "sector": "Mobilité",
+    "ats": "lever",
+    "boardToken": "heetch"
+  },
+  {
+    "slug": "inautalent",
+    "name": "Inautalent",
+    "sector": "Recrutement / RH",
+    "ats": "workable",
+    "boardToken": "inautalent"
+  },
+  {
+    "slug": "innovative-beauty-group",
+    "name": "Innovative Beauty Group",
+    "sector": "Cosmétique / retail",
+    "ats": "recruitee",
+    "boardToken": "innovativebeautygroup"
+  },
+  {
+    "slug": "interstellar-lab",
+    "name": "Interstellar Lab",
+    "sector": "Agriculture / aérospatial",
+    "ats": "greenhouse",
+    "boardToken": "interstellarlab"
+  },
+  {
+    "slug": "kong",
+    "name": "Kong",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "ashby",
+    "boardToken": "kong"
+  },
+  {
+    "slug": "lifen",
+    "name": "Lifen",
+    "website": "https://www.lifen.fr",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "lifen"
+  },
+  {
+    "slug": "lightspeed",
+    "name": "Lightspeed",
+    "website": "https://www.lightspeedhq.fr",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "lightspeedhq"
+  },
+  {
+    "slug": "morpho",
+    "name": "Morpho",
+    "sector": "Fintech / crypto",
+    "ats": "ashby",
+    "boardToken": "morpho"
+  },
+  {
+    "slug": "payhawk",
+    "name": "Payhawk",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "payhawkio"
+  },
+  {
+    "slug": "snowflake",
+    "name": "Snowflake",
+    "sector": "Logiciel / data",
+    "ats": "ashby",
+    "boardToken": "snowflake"
+  },
+  {
+    "slug": "team-for-the-planet",
+    "name": "Team for the Planet",
+    "sector": "Cleantech / climat",
+    "ats": "recruitee",
+    "boardToken": "teamfortheplanet1"
+  },
+  {
+    "slug": "white-circle",
+    "name": "White Circle",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "whitecircle"
+  },
+  {
+    "slug": "nlighten",
+    "name": "nLighten",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "nlighten"
+  },
+  {
+    "slug": "3p",
+    "name": "3P",
+    "sector": "Logiciel / SaaS",
+    "ats": "workable",
+    "boardToken": "3p-sarl"
+  },
+  {
+    "slug": "aajt",
+    "name": "AAJT",
+    "sector": "Association / ONG",
+    "ats": "recruitee",
+    "boardToken": "aajt"
+  },
+  {
+    "slug": "adyen",
+    "name": "Adyen",
+    "website": "https://www.adyen.com",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "adyen"
+  },
+  {
+    "slug": "bioptimus",
+    "name": "Bioptimus",
+    "sector": "Biotech",
+    "ats": "greenhouse",
+    "boardToken": "bioptimus8"
+  },
+  {
+    "slug": "centreon",
+    "name": "Centreon",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "centreon"
+  },
+  {
+    "slug": "cohere",
+    "name": "Cohere",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "cohere"
+  },
+  {
+    "slug": "convelio",
+    "name": "Convelio",
+    "sector": "Transport / logistique",
+    "ats": "lever",
+    "boardToken": "convelio"
+  },
+  {
+    "slug": "dim",
+    "name": "DIM",
+    "sector": "Mode / fashion",
+    "ats": "greenhouse",
+    "boardToken": "dim"
+  },
+  {
+    "slug": "emma-the-sleep-company",
+    "name": "Emma – The Sleep Company",
+    "sector": "E-commerce",
+    "ats": "lever",
+    "boardToken": "emma-sleep"
+  },
+  {
+    "slug": "equativ",
+    "name": "Equativ",
+    "website": "https://equativ.com",
+    "sector": "Marketing / adtech",
+    "ats": "lever",
+    "boardToken": "equativ"
+  },
+  {
+    "slug": "escape",
+    "name": "Escape",
+    "website": "https://escape.tech",
+    "sector": "Cybersécurité",
+    "ats": "ashby",
+    "boardToken": "escape"
+  },
+  {
+    "slug": "figma",
+    "name": "Figma",
+    "website": "https://www.figma.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "figma"
+  },
+  {
+    "slug": "lovehoney-group",
+    "name": "Lovehoney Group",
+    "sector": "E-commerce",
+    "ats": "lever",
+    "boardToken": "lovehoneygroup",
+    "region": "eu"
+  },
+  {
+    "slug": "marble",
+    "name": "Marble",
+    "sector": "Insurtech / assurance",
+    "ats": "ashby",
+    "boardToken": "marble"
+  },
+  {
+    "slug": "nabla",
+    "name": "Nabla",
+    "website": "https://www.nabla.com",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "nabla"
+  },
+  {
+    "slug": "scality",
+    "name": "Scality",
+    "website": "https://www.scality.com",
+    "sector": "Logiciel / cloud",
+    "ats": "lever",
+    "boardToken": "scality"
+  },
+  {
+    "slug": "tandem-health",
+    "name": "Tandem Health",
+    "sector": "Santé / logiciel IA",
+    "ats": "ashby",
+    "boardToken": "tandem-health"
+  },
+  {
+    "slug": "trade-republic-bank",
+    "name": "Trade Republic Bank",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "traderepublicbank"
+  },
+  {
+    "slug": "valiantys",
+    "name": "Valiantys",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "valiantys"
+  },
+  {
+    "slug": "viva-com",
+    "name": "Viva.com",
+    "sector": "Fintech / paiement",
+    "ats": "workable",
+    "boardToken": "viva"
+  },
+  {
+    "slug": "advancy",
+    "name": "Advancy",
+    "sector": "Conseil",
+    "ats": "recruitee",
+    "boardToken": "advancy"
+  },
+  {
+    "slug": "anaplan",
+    "name": "Anaplan",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "anaplan"
+  },
+  {
+    "slug": "cafe-joyeux",
+    "name": "Café Joyeux",
+    "sector": "Restauration",
+    "ats": "recruitee",
+    "boardToken": "cafejoyeux"
+  },
+  {
+    "slug": "groupe-marval",
+    "name": "Groupe Marval",
+    "sector": "Jeux d'argent / casino",
+    "ats": "recruitee",
+    "boardToken": "groupemarval"
+  },
+  {
+    "slug": "convera",
+    "name": "Convera",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "convera"
+  },
+  {
+    "slug": "convoicar",
+    "name": "Convoicar",
+    "sector": "Automobile",
+    "ats": "recruitee",
+    "boardToken": "convoicar1"
+  },
+  {
+    "slug": "deliverect",
+    "name": "Deliverect",
+    "website": "https://www.deliverect.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "deliverect"
+  },
+  {
+    "slug": "didomi",
+    "name": "Didomi",
+    "website": "https://www.didomi.io",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "didomi"
+  },
+  {
+    "slug": "harvey",
+    "name": "Harvey",
+    "sector": "Juridique / legaltech",
+    "ats": "ashby",
+    "boardToken": "harvey"
+  },
+  {
+    "slug": "holonomy",
+    "name": "Holonomy",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "holonomy"
+  },
+  {
+    "slug": "hugging-face",
+    "name": "Hugging Face",
+    "website": "https://huggingface.co",
+    "sector": "Logiciel / IA",
+    "ats": "workable",
+    "boardToken": "huggingface"
+  },
+  {
+    "slug": "inato",
+    "name": "Inato",
+    "website": "https://inato.com",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "inato"
+  },
+  {
+    "slug": "instant-system",
+    "name": "Instant System",
+    "sector": "Mobilité / logiciel",
+    "ats": "recruitee",
+    "boardToken": "instantsystem"
+  },
+  {
+    "slug": "kpler",
+    "name": "Kpler",
+    "website": "https://www.kpler.com",
+    "sector": "Logiciel / data",
+    "ats": "lever",
+    "boardToken": "kpler"
+  },
+  {
+    "slug": "n26",
+    "name": "N26",
+    "website": "https://n26.com",
+    "sector": "Banque",
+    "ats": "greenhouse",
+    "boardToken": "n26"
+  },
+  {
+    "slug": "organisation-internationale-de-la-francophonie",
+    "name": "Organisation internationale de la Francophonie",
+    "sector": "Administration publique / organisation internationale",
+    "ats": "recruitee",
+    "boardToken": "francophoniecarrieres"
+  },
+  {
+    "slug": "orness",
+    "name": "Orness",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "orness"
+  },
+  {
+    "slug": "owkin",
+    "name": "Owkin",
+    "website": "https://www.owkin.com",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "owkin"
+  },
+  {
+    "slug": "prodigees",
+    "name": "Prodigees",
+    "sector": "Recrutement / RH",
+    "ats": "recruitee",
+    "boardToken": "prodigees"
+  },
+  {
+    "slug": "icts-france",
+    "name": "ICTS France",
+    "sector": "Transport / sûreté aéroportuaire",
+    "ats": "recruitee",
+    "boardToken": "ictsfrance"
+  },
+  {
+    "slug": "kaliop",
+    "name": "Kaliop",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "kaliop"
+  },
+  {
+    "slug": "sellsy",
+    "name": "Sellsy",
+    "website": "https://www.sellsy.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "sellsy"
+  },
+  {
+    "slug": "sony-music-entertainment",
+    "name": "Sony Music Entertainment",
+    "sector": "Musique / divertissement",
+    "ats": "greenhouse",
+    "boardToken": "sonymusicentertainment"
+  },
+  {
+    "slug": "sotheby-s",
+    "name": "Sotheby's",
+    "sector": "Luxe / ventes aux enchères",
+    "ats": "greenhouse",
+    "boardToken": "sothebys"
+  },
+  {
+    "slug": "stripe",
+    "name": "Stripe",
+    "website": "https://stripe.com",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "stripe"
+  },
+  {
+    "slug": "telnyx",
+    "name": "Telnyx",
+    "sector": "Télécommunications",
+    "ats": "greenhouse",
+    "boardToken": "telnyx54"
+  },
+  {
+    "slug": "too-good-to-go",
+    "name": "Too Good To Go",
+    "website": "https://www.toogoodtogo.com",
+    "sector": "Environnement / recyclage",
+    "ats": "ashby",
+    "boardToken": "toogoodtogo"
+  },
+  {
+    "slug": "uipath",
+    "name": "UiPath",
+    "website": "https://www.uipath.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "uipath"
+  },
+  {
+    "slug": "vast",
+    "name": "Vast",
+    "sector": "Aérospatial / spatial",
+    "ats": "greenhouse",
+    "boardToken": "vast"
+  },
+  {
+    "slug": "wizz",
+    "name": "Wizz",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "wizz"
+  },
+  {
+    "slug": "ibanfirst",
+    "name": "iBanFirst",
+    "website": "https://www.ibanfirst.com",
+    "sector": "Fintech / paiement",
+    "ats": "recruitee",
+    "boardToken": "ibanfirst"
+  },
+  {
+    "slug": "adikteev",
+    "name": "Adikteev",
+    "sector": "Marketing / adtech",
+    "ats": "recruitee",
+    "boardToken": "adikteev"
+  },
+  {
+    "slug": "aikido-security",
+    "name": "Aikido Security",
+    "website": "https://www.aikido.dev",
+    "sector": "Cybersécurité",
+    "ats": "recruitee",
+    "boardToken": "aikidosecurity"
+  },
+  {
+    "slug": "akur8",
+    "name": "Akur8",
+    "website": "https://www.akur8.com",
+    "sector": "Insurtech / assurance",
+    "ats": "ashby",
+    "boardToken": "akur8"
+  },
+  {
+    "slug": "allego",
+    "name": "Allego",
+    "sector": "Mobilité",
+    "ats": "recruitee",
+    "boardToken": "allego"
+  },
+  {
+    "slug": "appian-corporation",
+    "name": "Appian Corporation",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "appian"
+  },
+  {
+    "slug": "aubay",
+    "name": "Aubay",
+    "sector": "Conseil / ESN",
+    "ats": "recruitee",
+    "boardToken": "aubay"
+  },
+  {
+    "slug": "banyan-software",
+    "name": "Banyan Software",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "banyansoftware"
+  },
+  {
+    "slug": "bitdefender",
+    "name": "Bitdefender",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "scbitdefendersrl"
+  },
+  {
+    "slug": "clo-virtual-fashion",
+    "name": "CLO Virtual Fashion",
+    "sector": "Logiciel / fashion",
+    "ats": "lever",
+    "boardToken": "clovirtualfashion"
+  },
+  {
+    "slug": "cheerz",
+    "name": "Cheerz",
+    "sector": "E-commerce",
+    "ats": "lever",
+    "boardToken": "cheerz"
+  },
+  {
+    "slug": "constructor",
+    "name": "Constructor",
+    "sector": "Logiciel / e-commerce",
+    "ats": "ashby",
+    "boardToken": "constructor"
+  },
+  {
+    "slug": "famoco",
+    "name": "Famoco",
+    "sector": "Logiciel / SaaS",
+    "ats": "workable",
+    "boardToken": "famoco"
+  },
+  {
+    "slug": "flexport",
+    "name": "Flexport",
+    "website": "https://www.flexport.com",
+    "sector": "Transport / logistique",
+    "ats": "greenhouse",
+    "boardToken": "flexport"
+  },
+  {
+    "slug": "front",
+    "name": "Front",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "frontcareers"
+  },
+  {
+    "slug": "getyourguide",
+    "name": "GetYourGuide",
+    "website": "https://www.getyourguide.com",
+    "sector": "Tourisme / voyage",
+    "ats": "greenhouse",
+    "boardToken": "getyourguide"
+  },
+  {
+    "slug": "gorgias",
+    "name": "Gorgias",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "gorgias"
+  },
+  {
+    "slug": "livestorm",
+    "name": "Livestorm",
+    "website": "https://livestorm.co",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "livestorm"
+  },
+  {
+    "slug": "lumapps",
+    "name": "LumApps",
+    "website": "https://www.lumapps.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "lumapps"
+  },
+  {
+    "slug": "medecins-sans-frontieres",
+    "name": "Médecins Sans Frontières",
+    "sector": "Association / ONG",
+    "ats": "recruitee",
+    "boardToken": "msf"
+  },
+  {
+    "slug": "oliver-agency",
+    "name": "OLIVER Agency",
+    "sector": "Marketing / agence de communication",
+    "ats": "greenhouse",
+    "boardToken": "oliver"
+  },
+  {
+    "slug": "okta",
+    "name": "Okta",
+    "website": "https://www.okta.com",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "okta"
+  },
+  {
+    "slug": "plenetude",
+    "name": "Plenetude",
+    "sector": "Construction / BTP",
+    "ats": "recruitee",
+    "boardToken": "plenetude"
+  },
+  {
+    "slug": "palantir",
+    "name": "Palantir",
+    "website": "https://www.palantir.com",
+    "sector": "Logiciel / data",
+    "ats": "lever",
+    "boardToken": "palantir"
+  },
+  {
+    "slug": "pexin",
+    "name": "Pexin",
+    "sector": "Construction / BTP",
+    "ats": "recruitee",
+    "boardToken": "pexin"
+  },
+  {
+    "slug": "playplay",
+    "name": "PlayPlay",
+    "website": "https://playplay.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "playplay"
+  },
+  {
+    "slug": "ruby-hotels",
+    "name": "Ruby Hotels",
+    "sector": "Hôtellerie",
+    "ats": "greenhouse",
+    "boardToken": "rubyinternal"
+  },
+  {
+    "slug": "antadis",
+    "name": "Antadis",
+    "sector": "E-commerce",
+    "ats": "recruitee",
+    "boardToken": "antadis"
+  },
+  {
+    "slug": "sentinelone",
+    "name": "SentinelOne",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "sentinellabs"
+  },
+  {
+    "slug": "sifflet",
+    "name": "Sifflet",
+    "sector": "Logiciel / data",
+    "ats": "ashby",
+    "boardToken": "sifflet"
+  },
+  {
+    "slug": "sorare",
+    "name": "Sorare",
+    "website": "https://sorare.com",
+    "sector": "Jeu vidéo",
+    "ats": "ashby",
+    "boardToken": "sorare"
+  },
+  {
+    "slug": "synthesia",
+    "name": "Synthesia",
+    "website": "https://www.synthesia.io",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "synthesia"
+  },
+  {
+    "slug": "taboola",
+    "name": "Taboola",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "taboola"
+  },
+  {
+    "slug": "temporal",
+    "name": "Temporal",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "ashby",
+    "boardToken": "temporal"
+  },
+  {
+    "slug": "upvest",
+    "name": "Upvest",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "upvest"
+  },
+  {
+    "slug": "wiz",
+    "name": "Wiz",
+    "website": "https://www.wiz.io",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "wizinc"
+  },
+  {
+    "slug": "zscaler",
+    "name": "Zscaler",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "zscaler"
+  },
+  {
+    "slug": "epackpro",
+    "name": "ePackPro",
+    "sector": "E-commerce",
+    "ats": "ashby",
+    "boardToken": "epackpro"
+  },
+  {
+    "slug": "alphorm",
+    "name": "Alphorm",
+    "sector": "Formation professionnelle",
+    "ats": "recruitee",
+    "boardToken": "alphorm"
+  },
+  {
+    "slug": "ankorstore",
+    "name": "Ankorstore",
+    "website": "https://www.ankorstore.com",
+    "sector": "E-commerce / marketplace",
+    "ats": "ashby",
+    "boardToken": "ankorstore"
+  },
+  {
+    "slug": "apaleo",
+    "name": "Apaleo",
+    "sector": "Logiciel / hôtellerie",
+    "ats": "greenhouse",
+    "boardToken": "apaleo"
+  },
+  {
+    "slug": "cardiologs",
+    "name": "Cardiologs",
+    "sector": "Santé / dispositifs médicaux",
+    "ats": "lever",
+    "boardToken": "cardiologs"
+  },
+  {
+    "slug": "choco",
+    "name": "Choco",
+    "website": "https://choco.com",
+    "sector": "Food / foodtech",
+    "ats": "ashby",
+    "boardToken": "choco"
+  },
+  {
+    "slug": "cision",
+    "name": "Cision",
+    "sector": "Logiciel / médias",
+    "ats": "greenhouse",
+    "boardToken": "cision"
+  },
+  {
+    "slug": "clera",
+    "name": "Clera",
+    "sector": "Logiciel RH / recrutement",
+    "ats": "ashby",
+    "boardToken": "clera"
+  },
+  {
+    "slug": "clickhouse",
+    "name": "ClickHouse",
+    "website": "https://clickhouse.com",
+    "sector": "Logiciel / data",
+    "ats": "ashby",
+    "boardToken": "clickhouse"
+  },
+  {
+    "slug": "cognism",
+    "name": "Cognism",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "cognism"
+  },
+  {
+    "slug": "comwatt",
+    "name": "Comwatt",
+    "sector": "Énergie",
+    "ats": "recruitee",
+    "boardToken": "comwatt"
+  },
+  {
+    "slug": "curewiki",
+    "name": "Curewiki",
+    "sector": "Santé",
+    "ats": "workable",
+    "boardToken": "curewiki-1"
+  },
+  {
+    "slug": "docebo",
+    "name": "Docebo",
+    "sector": "Éducation / edtech",
+    "ats": "ashby",
+    "boardToken": "docebo"
+  },
+  {
+    "slug": "elastic",
+    "name": "Elastic",
+    "website": "https://www.elastic.co",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "elastic"
+  },
+  {
+    "slug": "elevenlabs",
+    "name": "ElevenLabs",
+    "website": "https://elevenlabs.io",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "elevenlabs"
+  },
+  {
+    "slug": "eurostar-international",
+    "name": "Eurostar International",
+    "sector": "Transport / ferroviaire",
+    "ats": "workable",
+    "boardToken": "eurostar"
+  },
+  {
+    "slug": "fastly",
+    "name": "Fastly",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "fastly"
+  },
+  {
+    "slug": "forcyd",
+    "name": "Forcyd",
+    "sector": "Conseil / cybersécurité",
+    "ats": "recruitee",
+    "boardToken": "forcyd"
+  },
+  {
+    "slug": "france-travail",
+    "name": "France Travail",
+    "sector": "Administration publique",
+    "ats": "recruitee",
+    "boardToken": "francetravail"
+  },
+  {
+    "slug": "go1",
+    "name": "Go1",
+    "sector": "Éducation / edtech",
+    "ats": "greenhouse",
+    "boardToken": "go1eu"
+  },
+  {
+    "slug": "heritage-holdings",
+    "name": "Heritage Holdings",
+    "sector": "Banque / gestion de fortune",
+    "ats": "greenhouse",
+    "boardToken": "heritageholdings"
+  },
+  {
+    "slug": "hightouch",
+    "name": "Hightouch",
+    "sector": "Logiciel / data",
+    "ats": "ashby",
+    "boardToken": "hightouch-inc"
+  },
+  {
+    "slug": "hive",
+    "name": "Hive",
+    "sector": "Transport / logistique",
+    "ats": "greenhouse",
+    "boardToken": "hive"
+  },
+  {
+    "slug": "jump-trading",
+    "name": "Jump Trading",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "jumptrading"
+  },
+  {
+    "slug": "la-cage",
+    "name": "La Cage",
+    "sector": "Restauration",
+    "ats": "recruitee",
+    "boardToken": "lacage"
+  },
+  {
+    "slug": "msr-fsr",
+    "name": "MSR-FSR",
+    "sector": "Industrie / semi-conducteurs",
+    "ats": "workable",
+    "boardToken": "msr-fsr"
+  },
+  {
+    "slug": "mollie",
+    "name": "Mollie",
+    "website": "https://www.mollie.com",
+    "sector": "Fintech / paiement",
+    "ats": "ashby",
+    "boardToken": "mollie"
+  },
+  {
+    "slug": "ogury",
+    "name": "Ogury",
+    "website": "https://ogury.com",
+    "sector": "Marketing / adtech",
+    "ats": "lever",
+    "boardToken": "ogury"
+  },
+  {
+    "slug": "parloa",
+    "name": "Parloa",
+    "website": "https://www.parloa.com",
+    "sector": "Logiciel / IA",
+    "ats": "greenhouse",
+    "boardToken": "parloa"
+  },
+  {
+    "slug": "pinterest",
+    "name": "Pinterest",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "pinterest"
+  },
+  {
+    "slug": "upsun-platform-sh",
+    "name": "Upsun (Platform.sh)",
+    "website": "https://platform.sh",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "platformsh"
+  },
+  {
+    "slug": "q-energy",
+    "name": "Q ENERGY",
+    "sector": "Énergie renouvelable",
+    "ats": "workable",
+    "boardToken": "q-energy"
+  },
+  {
+    "slug": "qare",
+    "name": "Qare",
+    "sector": "Santé",
+    "ats": "recruitee",
+    "boardToken": "qare"
+  },
+  {
+    "slug": "quantic-dream",
+    "name": "Quantic Dream",
+    "sector": "Jeu vidéo",
+    "ats": "lever",
+    "boardToken": "quanticdream",
+    "region": "eu"
+  },
+  {
+    "slug": "rp-global-france",
+    "name": "RP Global France",
+    "sector": "Énergie renouvelable",
+    "ats": "recruitee",
+    "boardToken": "rpglobalfrance"
+  },
+  {
+    "slug": "stx-group",
+    "name": "STX Group",
+    "sector": "Énergie",
+    "ats": "greenhouse",
+    "boardToken": "stxgroup"
+  },
+  {
+    "slug": "singlestore",
+    "name": "SingleStore",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "singlestore"
+  },
+  {
+    "slug": "spotify",
+    "name": "Spotify",
+    "website": "https://www.spotify.com",
+    "sector": "Musique / divertissement",
+    "ats": "lever",
+    "boardToken": "spotify"
+  },
+  {
+    "slug": "spring",
+    "name": "Spring",
+    "sector": "Recrutement / RH",
+    "ats": "recruitee",
+    "boardToken": "spring"
+  },
+  {
+    "slug": "studapart",
+    "name": "Studapart",
+    "sector": "Immobilier / proptech",
+    "ats": "greenhouse",
+    "boardToken": "studapart"
+  },
+  {
+    "slug": "sunrock-investments",
+    "name": "Sunrock Investments",
+    "sector": "Énergie renouvelable",
+    "ats": "recruitee",
+    "boardToken": "sunrock"
+  },
+  {
+    "slug": "swapcard",
+    "name": "Swapcard",
+    "website": "https://www.swapcard.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "swapcard"
+  },
+  {
+    "slug": "tanium",
+    "name": "Tanium",
+    "sector": "Cybersécurité",
+    "ats": "greenhouse",
+    "boardToken": "tanium"
+  },
+  {
+    "slug": "thefork",
+    "name": "TheFork",
+    "website": "https://www.thefork.fr",
+    "sector": "Restauration",
+    "ats": "greenhouse",
+    "boardToken": "thefork"
+  },
+  {
+    "slug": "tide",
+    "name": "Tide",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "tide"
+  },
+  {
+    "slug": "tower-research",
+    "name": "Tower Research",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "towerresearchcapital"
+  },
+  {
+    "slug": "unframe",
+    "name": "Unframe",
+    "sector": "Logiciel / IA",
+    "ats": "greenhouse",
+    "boardToken": "unframe"
+  },
+  {
+    "slug": "volta-medical",
+    "name": "Volta Medical",
+    "sector": "Santé / logiciel IA",
+    "ats": "lever",
+    "boardToken": "volta-medical",
+    "region": "eu"
+  },
+  {
+    "slug": "xebia-france",
+    "name": "Xebia France",
+    "sector": "Conseil / ESN",
+    "ats": "greenhouse",
+    "boardToken": "xebiafrance"
+  },
+  {
+    "slug": "yassir",
+    "name": "Yassir",
+    "sector": "Mobilité",
+    "ats": "lever",
+    "boardToken": "Yassir"
+  },
+  {
+    "slug": "8returns",
+    "name": "8returns",
+    "sector": "Logiciel / e-commerce",
+    "ats": "ashby",
+    "boardToken": "8returns"
+  },
+  {
+    "slug": "abi-global-health",
+    "name": "Abi Global Health",
+    "sector": "Santé",
+    "ats": "workable",
+    "boardToken": "abi-hiring"
+  },
+  {
+    "slug": "adjust",
+    "name": "Adjust",
+    "website": "https://www.adjust.com",
+    "sector": "Marketing / adtech",
+    "ats": "recruitee",
+    "boardToken": "adjust"
+  },
+  {
+    "slug": "aleph-alpha",
+    "name": "Aleph Alpha",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "alephalpha"
+  },
+  {
+    "slug": "appinio",
+    "name": "Appinio",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "appinio"
+  },
+  {
+    "slug": "ashoka",
+    "name": "Ashoka",
+    "sector": "Association / ONG",
+    "ats": "lever",
+    "boardToken": "ashoka"
+  },
+  {
+    "slug": "attio",
+    "name": "Attio",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "attio"
+  },
+  {
+    "slug": "awin",
+    "name": "Awin",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "awin"
+  },
+  {
+    "slug": "axon",
+    "name": "Axon",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "axon"
+  },
+  {
+    "slug": "babbel",
+    "name": "Babbel",
+    "website": "https://www.babbel.com",
+    "sector": "Éducation / edtech",
+    "ats": "ashby",
+    "boardToken": "babbel"
+  },
+  {
+    "slug": "bettermile",
+    "name": "Bettermile",
+    "sector": "Logiciel / logistique",
+    "ats": "ashby",
+    "boardToken": "bettermile"
+  },
+  {
+    "slug": "bitpanda",
+    "name": "Bitpanda",
+    "website": "https://www.bitpanda.com",
+    "sector": "Fintech / crypto",
+    "ats": "greenhouse",
+    "boardToken": "bitpanda"
+  },
+  {
+    "slug": "bunq",
+    "name": "Bunq",
+    "website": "https://www.bunq.com",
+    "sector": "Banque",
+    "ats": "recruitee",
+    "boardToken": "bunq"
+  },
+  {
+    "slug": "butternut-box",
+    "name": "Butternut Box",
+    "sector": "Food / foodtech",
+    "ats": "greenhouse",
+    "boardToken": "butternutbox"
+  },
+  {
+    "slug": "bynder",
+    "name": "Bynder",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "bynder"
+  },
+  {
+    "slug": "capco",
+    "name": "Capco",
+    "sector": "Conseil",
+    "ats": "greenhouse",
+    "boardToken": "capco"
+  },
+  {
+    "slug": "carwow",
+    "name": "Carwow",
+    "sector": "Automobile",
+    "ats": "ashby",
+    "boardToken": "carwow"
+  },
+  {
+    "slug": "centre-hospitalier-epicura",
+    "name": "Centre Hospitalier EpiCURA",
+    "sector": "Santé / hôpital",
+    "ats": "recruitee",
+    "boardToken": "emploisepicura"
+  },
+  {
+    "slug": "channable",
+    "name": "Channable",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "channable"
+  },
+  {
+    "slug": "coinbase",
+    "name": "Coinbase",
+    "sector": "Fintech / crypto",
+    "ats": "greenhouse",
+    "boardToken": "coinbase"
+  },
+  {
+    "slug": "collibra",
+    "name": "Collibra",
+    "website": "https://www.collibra.com",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "collibra"
+  },
+  {
+    "slug": "constellr",
+    "name": "Constellr",
+    "sector": "Aérospatial / climat",
+    "ats": "greenhouse",
+    "boardToken": "constellrgmbh"
+  },
+  {
+    "slug": "contentsquare",
+    "name": "Contentsquare",
+    "website": "https://contentsquare.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "contentsquare"
+  },
+  {
+    "slug": "crisp",
+    "name": "Crisp",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "crisp"
+  },
+  {
+    "slug": "dpd",
+    "name": "DPD",
+    "sector": "Transport / logistique",
+    "ats": "recruitee",
+    "boardToken": "dpd"
+  },
+  {
+    "slug": "dash0",
+    "name": "Dash0",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "ashby",
+    "boardToken": "dash0"
+  },
+  {
+    "slug": "docplanner",
+    "name": "Docplanner",
+    "website": "https://www.docplanner.com",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "docplanner"
+  },
+  {
+    "slug": "ey",
+    "name": "EY",
+    "sector": "Conseil",
+    "ats": "recruitee",
+    "boardToken": "ey"
+  },
+  {
+    "slug": "effectory",
+    "name": "Effectory",
+    "sector": "Logiciel RH / recrutement",
+    "ats": "recruitee",
+    "boardToken": "effectory"
+  },
+  {
+    "slug": "enpal",
+    "name": "Enpal",
+    "website": "https://www.enpal.de",
+    "sector": "Énergie renouvelable",
+    "ats": "ashby",
+    "boardToken": "enpal"
+  },
+  {
+    "slug": "farfetch",
+    "name": "Farfetch",
+    "sector": "Luxe / mode",
+    "ats": "lever",
+    "boardToken": "farfetch"
+  },
+  {
+    "slug": "feedzai",
+    "name": "Feedzai",
+    "website": "https://feedzai.com",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "feedzai"
+  },
+  {
+    "slug": "fiducial",
+    "name": "Fiducial",
+    "sector": "Conseil",
+    "ats": "ashby",
+    "boardToken": "fiducial"
+  },
+  {
+    "slug": "fireblocks",
+    "name": "Fireblocks",
+    "sector": "Fintech / crypto",
+    "ats": "greenhouse",
+    "boardToken": "fireblocks"
+  },
+  {
+    "slug": "fivetran",
+    "name": "Fivetran",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "fivetran"
+  },
+  {
+    "slug": "forto",
+    "name": "Forto",
+    "website": "https://forto.com",
+    "sector": "Transport / logistique",
+    "ats": "ashby",
+    "boardToken": "forto"
+  },
+  {
+    "slug": "free-now",
+    "name": "Free Now",
+    "website": "https://www.free-now.com",
+    "sector": "Mobilité",
+    "ats": "greenhouse",
+    "boardToken": "freenow"
+  },
+  {
+    "slug": "geodis",
+    "name": "Geodis",
+    "sector": "Transport / logistique",
+    "ats": "recruitee",
+    "boardToken": "geodis"
+  },
+  {
+    "slug": "gocardless",
+    "name": "GoCardless",
+    "website": "https://gocardless.com",
+    "sector": "Fintech / paiement",
+    "ats": "greenhouse",
+    "boardToken": "gocardless"
+  },
+  {
+    "slug": "gostudent",
+    "name": "GoStudent",
+    "website": "https://www.gostudent.org",
+    "sector": "Éducation / edtech",
+    "ats": "greenhouse",
+    "boardToken": "gostudent"
+  },
+  {
+    "slug": "gong",
+    "name": "Gong",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "gong"
+  },
+  {
+    "slug": "hawk",
+    "name": "Hawk",
+    "sector": "Marketing / adtech",
+    "ats": "ashby",
+    "boardToken": "hawk"
+  },
+  {
+    "slug": "holded",
+    "name": "Holded",
+    "sector": "Logiciel / SaaS",
+    "ats": "recruitee",
+    "boardToken": "holded"
+  },
+  {
+    "slug": "hostinger",
+    "name": "Hostinger",
+    "sector": "Logiciel / cloud",
+    "ats": "ashby",
+    "boardToken": "hostinger"
+  },
+  {
+    "slug": "imc-trading",
+    "name": "IMC Trading",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "imc"
+  },
+  {
+    "slug": "ion-group",
+    "name": "ION Group",
+    "sector": "Logiciel / fintech",
+    "ats": "lever",
+    "boardToken": "ion"
+  },
+  {
+    "slug": "iceye",
+    "name": "Iceye",
+    "website": "https://www.iceye.com",
+    "sector": "Aérospatial / spatial",
+    "ats": "ashby",
+    "boardToken": "iceye"
+  },
+  {
+    "slug": "innogames",
+    "name": "InnoGames",
+    "sector": "Jeu vidéo",
+    "ats": "lever",
+    "boardToken": "innogames",
+    "region": "eu"
+  },
+  {
+    "slug": "intercom",
+    "name": "Intercom",
+    "website": "https://www.intercom.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "intercom"
+  },
+  {
+    "slug": "isar-aerospace",
+    "name": "Isar Aerospace",
+    "website": "https://www.isaraerospace.com",
+    "sector": "Aérospatial / spatial",
+    "ats": "greenhouse",
+    "boardToken": "isaraerospace"
+  },
+  {
+    "slug": "iterable",
+    "name": "Iterable",
+    "sector": "Marketing / adtech",
+    "ats": "ashby",
+    "boardToken": "iterable"
+  },
+  {
+    "slug": "itsme",
+    "name": "Itsme",
+    "sector": "Cybersécurité",
+    "ats": "recruitee",
+    "boardToken": "itsme"
+  },
+  {
+    "slug": "jost",
+    "name": "JOST",
+    "sector": "Industrie / automobile",
+    "ats": "recruitee",
+    "boardToken": "jost"
+  },
+  {
+    "slug": "jetbrains",
+    "name": "JetBrains",
+    "website": "https://www.jetbrains.com",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "greenhouse",
+    "boardToken": "jetbrains"
+  },
+  {
+    "slug": "jobandtalent",
+    "name": "Jobandtalent",
+    "sector": "Recrutement / RH",
+    "ats": "lever",
+    "boardToken": "jobandtalent"
+  },
+  {
+    "slug": "keolis",
+    "name": "Keolis",
+    "sector": "Transport / logistique",
+    "ats": "recruitee",
+    "boardToken": "keolis"
+  },
+  {
+    "slug": "klaviyo",
+    "name": "Klaviyo",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "klaviyo"
+  },
+  {
+    "slug": "kolibri-games",
+    "name": "Kolibri Games",
+    "sector": "Jeu vidéo",
+    "ats": "lever",
+    "boardToken": "kolibrigames"
+  },
+  {
+    "slug": "kraken",
+    "name": "Kraken",
+    "sector": "Fintech / crypto",
+    "ats": "ashby",
+    "boardToken": "kraken.com"
+  },
+  {
+    "slug": "langdock",
+    "name": "Langdock",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "langdock"
+  },
+  {
+    "slug": "larian-studios",
+    "name": "Larian Studios",
+    "sector": "Jeu vidéo",
+    "ats": "lever",
+    "boardToken": "larian"
+  },
+  {
+    "slug": "lemonade",
+    "name": "Lemonade",
+    "sector": "Insurtech / assurance",
+    "ats": "ashby",
+    "boardToken": "lemonade"
+  },
+  {
+    "slug": "lighthouse",
+    "name": "Lighthouse",
+    "sector": "Hôtellerie",
+    "ats": "greenhouse",
+    "boardToken": "lighthouse"
+  },
+  {
+    "slug": "lodgify",
+    "name": "Lodgify",
+    "sector": "Tourisme / voyage",
+    "ats": "lever",
+    "boardToken": "lodgify"
+  },
+  {
+    "slug": "lovable",
+    "name": "Lovable",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "lovable"
+  },
+  {
+    "slug": "lucid-software",
+    "name": "Lucid Software",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "lucidsoftware"
+  },
+  {
+    "slug": "melotech",
+    "name": "Melotech",
+    "sector": "Musique / logiciel IA",
+    "ats": "ashby",
+    "boardToken": "melotech"
+  },
+  {
+    "slug": "mendix",
+    "name": "Mendix",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "mendix"
+  },
+  {
+    "slug": "miro",
+    "name": "Miro",
+    "website": "https://miro.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "realtimeboardglobal"
+  },
+  {
+    "slug": "monumental",
+    "name": "Monumental",
+    "sector": "Construction / robotique",
+    "ats": "ashby",
+    "boardToken": "monumental"
+  },
+  {
+    "slug": "moonfare",
+    "name": "Moonfare",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "moonfare"
+  },
+  {
+    "slug": "moss",
+    "name": "Moss",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "moss"
+  },
+  {
+    "slug": "neo4j",
+    "name": "Neo4j",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "neo4j"
+  },
+  {
+    "slug": "new-relic",
+    "name": "New Relic",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "newrelic"
+  },
+  {
+    "slug": "nmbrs",
+    "name": "Nmbrs",
+    "sector": "Logiciel RH / recrutement",
+    "ats": "recruitee",
+    "boardToken": "nmbrs"
+  },
+  {
+    "slug": "oppizi",
+    "name": "Oppizi",
+    "sector": "Marketing",
+    "ats": "workable",
+    "boardToken": "oppizi"
+  },
+  {
+    "slug": "otovo",
+    "name": "Otovo",
+    "website": "https://www.otovo.fr",
+    "sector": "Énergie renouvelable",
+    "ats": "recruitee",
+    "boardToken": "otovo"
+  },
+  {
+    "slug": "oyster",
+    "name": "Oyster",
+    "sector": "Logiciel RH / recrutement",
+    "ats": "ashby",
+    "boardToken": "oyster"
+  },
+  {
+    "slug": "ppro",
+    "name": "PPRO",
+    "sector": "Fintech / paiement",
+    "ats": "ashby",
+    "boardToken": "ppro"
+  },
+  {
+    "slug": "payconiq",
+    "name": "Payconiq",
+    "sector": "Fintech / paiement",
+    "ats": "recruitee",
+    "boardToken": "payconiq"
+  },
+  {
+    "slug": "peloton",
+    "name": "Peloton",
+    "sector": "Santé",
+    "ats": "greenhouse",
+    "boardToken": "peloton"
+  },
+  {
+    "slug": "perk",
+    "name": "Perk",
+    "sector": "Tourisme / voyage",
+    "ats": "ashby",
+    "boardToken": "perk"
+  },
+  {
+    "slug": "pipedrive",
+    "name": "Pipedrive",
+    "website": "https://www.pipedrive.com",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "pipedrive"
+  },
+  {
+    "slug": "planet-labs",
+    "name": "Planet Labs",
+    "sector": "Aérospatial / spatial",
+    "ats": "greenhouse",
+    "boardToken": "planetlabs"
+  },
+  {
+    "slug": "planhat",
+    "name": "Planhat",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "planhat"
+  },
+  {
+    "slug": "pliant",
+    "name": "Pliant",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "pliant"
+  },
+  {
+    "slug": "polarsteps",
+    "name": "Polarsteps",
+    "sector": "Tourisme / voyage",
+    "ats": "ashby",
+    "boardToken": "polarsteps"
+  },
+  {
+    "slug": "preply",
+    "name": "Preply",
+    "sector": "Éducation / edtech",
+    "ats": "ashby",
+    "boardToken": "preply"
+  },
+  {
+    "slug": "prima",
+    "name": "Prima",
+    "sector": "Insurtech / assurance",
+    "ats": "lever",
+    "boardToken": "prima",
+    "region": "eu"
+  },
+  {
+    "slug": "project44",
+    "name": "Project44",
+    "sector": "Transport / logistique",
+    "ats": "greenhouse",
+    "boardToken": "project44"
+  },
+  {
+    "slug": "qualtrics",
+    "name": "Qualtrics",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "qualtrics"
+  },
+  {
+    "slug": "rtb-house",
+    "name": "RTB House",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "rtbhouse"
+  },
+  {
+    "slug": "raisin",
+    "name": "Raisin",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "raisin"
+  },
+  {
+    "slug": "reachdesk",
+    "name": "Reachdesk",
+    "sector": "Logiciel / marketing",
+    "ats": "greenhouse",
+    "boardToken": "reachdesk"
+  },
+  {
+    "slug": "reddit",
+    "name": "Reddit",
+    "sector": "Médias",
+    "ats": "greenhouse",
+    "boardToken": "reddit"
+  },
+  {
+    "slug": "relex-solutions",
+    "name": "Relex Solutions",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "relex"
+  },
+  {
+    "slug": "riot-games",
+    "name": "Riot Games",
+    "sector": "Jeu vidéo",
+    "ats": "greenhouse",
+    "boardToken": "riotgames"
+  },
+  {
+    "slug": "rohlik",
+    "name": "Rohlik",
+    "sector": "E-commerce",
+    "ats": "ashby",
+    "boardToken": "rohlik"
+  },
+  {
+    "slug": "samsara",
+    "name": "Samsara",
+    "sector": "Industrie",
+    "ats": "greenhouse",
+    "boardToken": "samsara"
+  },
+  {
+    "slug": "satispay",
+    "name": "Satispay",
+    "website": "https://www.satispay.com",
+    "sector": "Fintech / paiement",
+    "ats": "ashby",
+    "boardToken": "satispay"
+  },
+  {
+    "slug": "scopely",
+    "name": "Scopely",
+    "sector": "Jeu vidéo",
+    "ats": "greenhouse",
+    "boardToken": "scopely"
+  },
+  {
+    "slug": "sentry",
+    "name": "Sentry",
+    "website": "https://sentry.io",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "ashby",
+    "boardToken": "sentry"
+  },
+  {
+    "slug": "sereact",
+    "name": "Sereact",
+    "sector": "Robotique / industrie",
+    "ats": "ashby",
+    "boardToken": "sereact"
+  },
+  {
+    "slug": "shield-ai",
+    "name": "Shield AI",
+    "sector": "Défense / aéronautique",
+    "ats": "lever",
+    "boardToken": "shieldai"
+  },
+  {
+    "slug": "silverfin",
+    "name": "Silverfin",
+    "sector": "Fintech",
+    "ats": "lever",
+    "boardToken": "silverfin",
+    "region": "eu"
+  },
+  {
+    "slug": "smartly-io",
+    "name": "Smartly.io",
+    "sector": "Marketing / adtech",
+    "ats": "greenhouse",
+    "boardToken": "smartlyio"
+  },
+  {
+    "slug": "staffbase",
+    "name": "Staffbase",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "staffbase"
+  },
+  {
+    "slug": "starburst",
+    "name": "Starburst",
+    "sector": "Logiciel / data",
+    "ats": "greenhouse",
+    "boardToken": "starburst"
+  },
+  {
+    "slug": "statista",
+    "name": "Statista",
+    "sector": "Logiciel / data",
+    "ats": "ashby",
+    "boardToken": "statista"
+  },
+  {
+    "slug": "surveymonkey",
+    "name": "SurveyMonkey",
+    "sector": "Logiciel / SaaS",
+    "ats": "ashby",
+    "boardToken": "surveymonkey"
+  },
+  {
+    "slug": "sword-health",
+    "name": "Sword Health",
+    "sector": "Santé",
+    "ats": "greenhouse",
+    "boardToken": "swordhealth"
+  },
+  {
+    "slug": "text",
+    "name": "Text",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "text"
+  },
+  {
+    "slug": "the-quality-group",
+    "name": "The Quality Group",
+    "sector": "Agroalimentaire / food",
+    "ats": "greenhouse",
+    "boardToken": "thequalitygroupgmbh2"
+  },
+  {
+    "slug": "thoughtworks",
+    "name": "Thoughtworks",
+    "sector": "Conseil / ESN",
+    "ats": "greenhouse",
+    "boardToken": "thoughtworks"
+  },
+  {
+    "slug": "toast",
+    "name": "Toast",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "toast"
+  },
+  {
+    "slug": "tomtom",
+    "name": "TomTom",
+    "sector": "Mobilité",
+    "ats": "lever",
+    "boardToken": "tomtom",
+    "region": "eu"
+  },
+  {
+    "slug": "transavia",
+    "name": "Transavia",
+    "sector": "Tourisme / voyage",
+    "ats": "recruitee",
+    "boardToken": "transavia"
+  },
+  {
+    "slug": "tripadvisor",
+    "name": "Tripadvisor",
+    "sector": "Tourisme / voyage",
+    "ats": "greenhouse",
+    "boardToken": "tripadvisor"
+  },
+  {
+    "slug": "truecaller",
+    "name": "Truecaller",
+    "sector": "Logiciel / SaaS",
+    "ats": "greenhouse",
+    "boardToken": "truecaller"
+  },
+  {
+    "slug": "twilio",
+    "name": "Twilio",
+    "website": "https://www.twilio.com",
+    "sector": "Logiciel / cloud",
+    "ats": "greenhouse",
+    "boardToken": "twilio"
+  },
+  {
+    "slug": "vandebron",
+    "name": "Vandebron",
+    "sector": "Énergie",
+    "ats": "recruitee",
+    "boardToken": "vandebron"
+  },
+  {
+    "slug": "vanta",
+    "name": "Vanta",
+    "website": "https://www.vanta.com",
+    "sector": "Cybersécurité",
+    "ats": "ashby",
+    "boardToken": "vanta"
+  },
+  {
+    "slug": "virtu",
+    "name": "Virtu",
+    "sector": "Fintech",
+    "ats": "greenhouse",
+    "boardToken": "virtu"
+  },
+  {
+    "slug": "walkme",
+    "name": "WalkMe",
+    "sector": "Logiciel / SaaS",
+    "ats": "lever",
+    "boardToken": "walkme"
+  },
+  {
+    "slug": "wayflyer",
+    "name": "Wayflyer",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "wayflyer"
+  },
+  {
+    "slug": "wayve",
+    "name": "Wayve",
+    "sector": "Automobile",
+    "ats": "ashby",
+    "boardToken": "wayve"
+  },
+  {
+    "slug": "wellhub",
+    "name": "Wellhub",
+    "sector": "Santé / bien-être",
+    "ats": "greenhouse",
+    "boardToken": "gympass"
+  },
+  {
+    "slug": "westernacher-consulting",
+    "name": "Westernacher Consulting",
+    "sector": "Conseil / ESN",
+    "ats": "lever",
+    "boardToken": "westernacher",
+    "region": "eu"
+  },
+  {
+    "slug": "wolt",
+    "name": "Wolt",
+    "website": "https://wolt.com",
+    "sector": "Food / foodtech",
+    "ats": "greenhouse",
+    "boardToken": "wolt"
+  },
+  {
+    "slug": "workhuman",
+    "name": "Workhuman",
+    "sector": "Logiciel RH / recrutement",
+    "ats": "ashby",
+    "boardToken": "workhuman"
+  },
+  {
+    "slug": "yepoda",
+    "name": "Yepoda",
+    "sector": "Cosmétique / retail",
+    "ats": "ashby",
+    "boardToken": "yepoda"
+  },
+  {
+    "slug": "zenjob",
+    "name": "Zenjob",
+    "sector": "Recrutement / RH",
+    "ats": "ashby",
+    "boardToken": "zenjob"
+  },
+  {
+    "slug": "fonio",
+    "name": "fonio",
+    "sector": "Logiciel / IA",
+    "ats": "ashby",
+    "boardToken": "fonio"
+  },
+  {
+    "slug": "lemon-markets",
+    "name": "lemon.markets",
+    "sector": "Fintech",
+    "ats": "ashby",
+    "boardToken": "lemon-markets"
+  },
+  {
+    "slug": "mytomorrows",
+    "name": "myTomorrows",
+    "sector": "Santé",
+    "ats": "ashby",
+    "boardToken": "myTomorrows"
+  },
+  {
+    "slug": "n8n",
+    "name": "n8n",
+    "website": "https://n8n.io",
+    "sector": "Logiciel / outils développeurs",
+    "ats": "ashby",
+    "boardToken": "n8n"
+  },
+  {
+    "slug": "trawa",
+    "name": "trawa",
+    "sector": "Énergie",
+    "ats": "ashby",
+    "boardToken": "trawa"
   }
 ]

@@ -657,6 +657,34 @@ enum SourceRunStatus {
   FAILED
 }
 
+enum RadarPassStatus {
+  RUNNING
+  FINISHED
+  /// Interrompu (redémarrage du worker) ou abandonné au-delà du délai maximal.
+  INTERRUPTED
+}
+
+/// Passage complet du radar (toutes les sources, l'une après l'autre) : un
+/// seul à la fois, durée et compteurs par source pour `/app/radar`.
+model RadarPass {
+  id         String          @id @default(cuid())
+  status     RadarPassStatus @default(RUNNING)
+  startedAt  DateTime        @map("started_at")
+  finishedAt DateTime?       @map("finished_at")
+  durationMs Int?            @map("duration_ms")
+  /// Périmètres collectés (France Travail, un par board ATS) et en échec.
+  sources    Int             @default(0)
+  failed     Int             @default(0)
+  fetched    Int             @default(0)
+  created    Int             @default(0)
+  closed     Int             @default(0)
+  /// Par source (`greenhouse`, `lever`…) : `{ sources, failed, fetched, created, closed }`.
+  bySource   Json?           @map("by_source")
+
+  @@index([startedAt])
+  @@map("radar_passes")
+}
+
 /// Entreprise suivie par le radar (job board ATS public).
 /// Origine d'une entreprise surveillée par le radar.
 enum CompanyOrigin {

@@ -74,6 +74,7 @@ describe.skipIf(!url)("« Mes entreprises à suivre » (radar)", () => {
   beforeEach(async () => {
     await prisma.jobOffer.deleteMany({});
     await prisma.sourceRun.deleteMany({});
+    await prisma.radarPass.deleteMany({});
     await prisma.company.deleteMany({});
   });
 

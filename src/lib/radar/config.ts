@@ -27,6 +27,7 @@ const radarEnvSchema = z.object({
   RADAR_COUNTRIES: z.string().default("FR"),
   RADAR_COMPANIES_FILE: z.string().default("config/radar-companies.json"),
   RADAR_MIN_INTERVAL_MS: z.coerce.number().int().min(250).default(1000),
+  RADAR_HTTP_CACHE_MB: z.coerce.number().int().min(0).max(1024).default(64),
   FRANCE_TRAVAIL_CLIENT_ID: z.string().optional(),
   FRANCE_TRAVAIL_CLIENT_SECRET: z.string().optional(),
   RADAR_FT_ROME_CODES: z.string().optional(),
@@ -44,6 +45,8 @@ export type RadarConfig = {
   countries: string[];
   companiesFile: string;
   minIntervalMs: number;
+  /** Cache des requêtes conditionnelles (octets compressés). Défaut du client HTTP : 64 Mo. */
+  httpCacheBytes?: number;
   franceTravail: {
     clientId: string;
     clientSecret: string;
@@ -77,6 +80,7 @@ export function radarConfig(env: NodeJS.ProcessEnv = process.env): RadarConfig {
     countries,
     companiesFile: e.RADAR_COMPANIES_FILE,
     minIntervalMs: e.RADAR_MIN_INTERVAL_MS,
+    httpCacheBytes: e.RADAR_HTTP_CACHE_MB * 1024 * 1024,
     franceTravail: hasFt
       ? {
           clientId: e.FRANCE_TRAVAIL_CLIENT_ID!,

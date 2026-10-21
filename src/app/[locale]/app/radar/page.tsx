@@ -10,6 +10,7 @@ import { ATS_LABELS } from "@/lib/radar/careers";
 import { listRadarCompanies } from "@/lib/radar/companies";
 import { companySourceKey } from "@/lib/radar/followed";
 import { failureThreshold, loadSourceHealth, type SourceHealth } from "@/lib/radar/health";
+import { formatDuration, loadRecentPasses } from "@/lib/radar/passes";
 import { loadCompanyMomentum, type CompanyMomentum } from "@/lib/radar/signals/query";
 import { formatSalary, REMOTE_LABELS, CONTRACT_LABELS, SOURCE_LABELS } from "./labels";
 
@@ -58,27 +59,39 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
   };
 
   const threshold = failureThreshold();
-  const [health, momentum, runs, offers, matching, open, closed, duplicates, located, companies] =
-    await Promise.all([
-      loadSourceHealth(db, { threshold }),
-      loadCompanyMomentum(db),
-      db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
-      db.jobOffer.findMany({
-        where,
-        orderBy: [{ lastSeenAt: "desc" }, { publishedAt: "desc" }],
-        take: PAGE_SIZE,
-        skip: (page - 1) * PAGE_SIZE,
-        include: { _count: { select: { duplicates: true } } },
-      }),
-      db.jobOffer.count({ where }),
-      db.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
-      db.jobOffer.count({ where: { status: "CLOSED", duplicateOfId: null } }),
-      db.jobOffer.count({ where: { duplicateOfId: { not: null } } }),
-      db.jobOffer.count({
-        where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
-      }),
-      listRadarCompanies(db),
-    ]);
+  const [
+    health,
+    momentum,
+    runs,
+    offers,
+    matching,
+    open,
+    closed,
+    duplicates,
+    located,
+    companies,
+    passes,
+  ] = await Promise.all([
+    loadSourceHealth(db, { threshold }),
+    loadCompanyMomentum(db),
+    db.sourceRun.findMany({ orderBy: { startedAt: "desc" }, take: 20 }),
+    db.jobOffer.findMany({
+      where,
+      orderBy: [{ lastSeenAt: "desc" }, { publishedAt: "desc" }],
+      take: PAGE_SIZE,
+      skip: (page - 1) * PAGE_SIZE,
+      include: { _count: { select: { duplicates: true } } },
+    }),
+    db.jobOffer.count({ where }),
+    db.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
+    db.jobOffer.count({ where: { status: "CLOSED", duplicateOfId: null } }),
+    db.jobOffer.count({ where: { duplicateOfId: { not: null } } }),
+    db.jobOffer.count({
+      where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
+    }),
+    listRadarCompanies(db),
+    loadRecentPasses(db),
+  ]);
   const locatedShare = open > 0 ? Math.round((located / open) * 100) : 0;
   const pages = Math.max(1, Math.ceil(matching / PAGE_SIZE));
   const pageHref = (p: number) => {
@@ -117,6 +130,8 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
           </div>
         ))}
       </dl>
+
+      <RadarPassesSection passes={passes} />
 
       <SourceHealthSection health={health} threshold={threshold} />
 
@@ -293,6 +308,136 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
   );
 }
 
+/**
+ * Passages du radar : durée du dernier passage (une dizaine de minutes pour
+ * ~500 boards) et compteurs par source, puis les passages précédents.
+ */
+function RadarPassesSection({ passes }: { passes: Awaited<ReturnType<typeof loadRecentPasses>> }) {
+  const last = passes.find((p) => p.status === "FINISHED");
+  const running = passes.find((p) => p.status === "RUNNING");
+  const sources = last
+    ? Object.entries(last.bySource).sort(
+        ([a], [b]) =>
+          Number(b === "france_travail") - Number(a === "france_travail") || a.localeCompare(b),
+      )
+    : [];
+  return (
+    <section aria-labelledby="passes-title" className="mb-10">
+      <h2 id="passes-title" className="mb-1 text-lg font-semibold">
+        Passages du radar
+      </h2>
+      <p className="text-ink-subtle mb-3 text-sm">
+        Un passage collecte toutes les sources l&apos;une après l&apos;autre, un seul à la fois.
+        {running ? (
+          <strong className="text-warning-ink ml-1 font-medium">
+            Passage en cours depuis le {dateTime.format(running.startedAt)}.
+          </strong>
+        ) : null}
+      </p>
+      {!last ? (
+        <p className="text-ink-subtle text-sm">Aucun passage terminé pour l&apos;instant.</p>
+      ) : (
+        <>
+          <dl className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {(
+              [
+                ["Dernier passage", dateTime.format(last.startedAt)],
+                ["Durée", formatDuration(last.durationMs ?? 0)],
+                ["Périmètres collectés", `${last.sources} (${last.failed} en échec)`],
+                [
+                  "Offres reçues",
+                  `${last.fetched.toLocaleString("fr-FR")} (${last.created.toLocaleString("fr-FR")} nouvelles)`,
+                ],
+              ] as const
+            ).map(([label, value]) => (
+              <div key={label} className="border-line bg-surface rounded-xl border px-4 py-3">
+                <dt className="text-ink-subtle text-sm">{label}</dt>
+                <dd className="font-semibold tabular-nums">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="border-line bg-surface mb-4 overflow-x-auto rounded-xl border">
+            <table className="w-full text-left text-sm">
+              <caption className="sr-only">Dernier passage, par source</caption>
+              <thead className="bg-subtle text-ink-subtle">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Source</th>
+                  <th className="px-3 py-2 text-right font-medium">Périmètres</th>
+                  <th className="px-3 py-2 text-right font-medium">En échec</th>
+                  <th className="px-3 py-2 text-right font-medium">Reçues</th>
+                  <th className="px-3 py-2 text-right font-medium">Créées</th>
+                  <th className="px-3 py-2 text-right font-medium">Fermées</th>
+                </tr>
+              </thead>
+              <tbody className="divide-line divide-y">
+                {sources.map(([source, c]) => (
+                  <tr key={source}>
+                    <td className="px-3 py-2 font-medium whitespace-nowrap">
+                      {SOURCE_LABELS[source] ?? source}
+                    </td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.sources}</td>
+                    <td
+                      className={`px-3 py-2 text-right tabular-nums ${c.failed > 0 ? "text-danger-ink font-medium" : ""}`}
+                    >
+                      {c.failed}
+                    </td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.fetched}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.created}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c.closed}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+      {passes.length > 1 ? (
+        <div className="border-line bg-surface overflow-x-auto rounded-xl border">
+          <table className="w-full text-left text-sm">
+            <caption className="sr-only">Passages récents</caption>
+            <thead className="bg-subtle text-ink-subtle">
+              <tr>
+                <th className="px-3 py-2 font-medium">Début</th>
+                <th className="px-3 py-2 font-medium">Statut</th>
+                <th className="px-3 py-2 text-right font-medium">Durée</th>
+                <th className="px-3 py-2 text-right font-medium">Périmètres</th>
+                <th className="px-3 py-2 text-right font-medium">En échec</th>
+              </tr>
+            </thead>
+            <tbody className="divide-line divide-y">
+              {passes.map((p) => (
+                <tr key={p.id}>
+                  <td className="text-ink-muted px-3 py-2 whitespace-nowrap">
+                    {dateTime.format(p.startedAt)}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {p.status === "FINISHED" ? (
+                      <span className="text-success-ink">Terminé</span>
+                    ) : p.status === "RUNNING" ? (
+                      <span className="text-warning-ink">En cours</span>
+                    ) : (
+                      <span className="text-danger-ink">Interrompu</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {p.durationMs !== null ? formatDuration(p.durationMs) : "—"}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {p.status === "FINISHED" ? p.sources : "—"}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {p.status === "FINISHED" ? p.failed : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 function SourceHealthSection({
   health,
   threshold,
@@ -406,6 +551,11 @@ function WatchedCompaniesSection({
     (c) => c.active && (c.origin === "CONFIG" || c._count.followers > 0),
   ).length;
   const added = companies.filter((c) => c.origin === "USER").length;
+  const byAts = new Map<string, number>();
+  for (const c of companies) {
+    if (!c.atsType || !(c.active && (c.origin === "CONFIG" || c._count.followers > 0))) continue;
+    byAts.set(ATS_LABELS[c.atsType], (byAts.get(ATS_LABELS[c.atsType]) ?? 0) + 1);
+  }
   return (
     <section aria-labelledby="companies-title" className="mb-10">
       <h2 id="companies-title" className="mb-1 text-lg font-semibold">
@@ -417,6 +567,15 @@ function WatchedCompaniesSection({
         {added > 1 ? "s" : ""} par des candidats). Chaque board n&apos;est collecté qu&apos;une fois
         par passage, quel que soit son nombre d&apos;abonnés.
       </p>
+      {byAts.size > 0 ? (
+        <p className="text-ink-subtle mb-3 text-sm">
+          Par ATS :{" "}
+          {[...byAts.entries()]
+            .sort((a, b) => b[1] - a[1])
+            .map(([ats, n]) => `${ats} ${n}`)
+            .join(" · ")}
+        </p>
+      ) : null}
       {companies.length === 0 ? (
         <p className="text-ink-subtle text-sm">Aucune entreprise pour l&apos;instant.</p>
       ) : (

@@ -22,8 +22,6 @@ export type RunSummary = {
 };
 
 export type PipelineOptions = ConnectorContext & {
-  /** Pays conservés (ISO-2). Vide = tous. Les offres sans pays connu sont gardées. */
-  allowedCountries?: string[];
   logger?: Logger;
   /**
    * Géocode les offres nouvelles ou dont le lieu a changé (sauf si la source

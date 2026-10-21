@@ -133,6 +133,7 @@ describe.skipIf(!url)("Market Radar v2 (SmartRecruiters, Recruitee, Workable en 
   beforeEach(async () => {
     await prisma.jobOffer.deleteMany({});
     await prisma.sourceRun.deleteMany({});
+    await prisma.radarPass.deleteMany({});
     await prisma.company.deleteMany({});
   });
 

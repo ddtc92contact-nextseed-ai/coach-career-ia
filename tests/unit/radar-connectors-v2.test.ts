@@ -71,6 +71,34 @@ describe("connecteur SmartRecruiters", () => {
     expect(offers).toHaveLength(5);
   });
 
+  it("ne relit pas les annonces situées hors des pays retenus (ni en mode liste seule)", async () => {
+    const f = srRoutes();
+    const result = await smartRecruitersConnector(nexity, { pageSize: 3 }).fetch({
+      http: testHttp(f),
+      now,
+      allowedCountries: ["DE"],
+    });
+    // robots.txt + 2 pages : aucune annonce française n'est relue, toutes sont transmises.
+    expect(f.calls).toHaveLength(3);
+    expect(result.items).toHaveLength(5);
+
+    const listOnly = srRoutes();
+    const listed = await smartRecruitersConnector(nexity, { pageSize: 3, details: false }).fetch({
+      http: testHttp(listOnly),
+      now,
+    });
+    expect(listOnly.calls).toHaveLength(3);
+    expect(listed.items).toHaveLength(5);
+
+    const france = srRoutes();
+    await smartRecruitersConnector(nexity, { pageSize: 3 }).fetch({
+      http: testHttp(france),
+      now,
+      allowedCountries: ["FR"],
+    });
+    expect(france.calls).toHaveLength(1 + 2 + 5);
+  });
+
   it("mappe lieu, coordonnées, contrat et texte de l'annonce", async () => {
     const { offers } = await collect(smartRecruitersConnector(nexity, { pageSize: 3 }), srRoutes());
     const controller = byId(offers, "744000153698949");

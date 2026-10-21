@@ -15,6 +15,10 @@ async function main(): Promise<number> {
   });
   try {
     const summaries = await runRadar(prisma, config);
+    if (summaries.length === 0) {
+      console.log("Un passage du radar est déjà en cours (worker) : rien n'a été collecté.");
+      return 0;
+    }
     console.table(
       summaries.map((s) => ({
         source: s.sourceKey,

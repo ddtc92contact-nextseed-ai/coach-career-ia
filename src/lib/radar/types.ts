@@ -70,6 +70,12 @@ export type FetchResult<Raw> = {
 export type ConnectorContext = {
   http: HttpClient;
   now: () => Date;
+  /**
+   * Pays conservés (ISO-2). Vide = tous. Les offres sans pays connu sont
+   * gardées. Un connecteur peut s'épargner les requêtes de détail des offres
+   * situées ailleurs (le pipeline les ignore).
+   */
+  allowedCountries?: string[];
 };
 
 /**
