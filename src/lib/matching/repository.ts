@@ -8,6 +8,7 @@ import { parseExplanation } from "./explanation";
 import { checkGuardRails } from "./filters";
 import type { CandidateRails } from "./types";
 import { DIRECT_SOURCE } from "@/lib/employer/config";
+import { followedCompanyIds } from "@/lib/radar/followed";
 
 /**
  * Accès aux correspondances depuis l'application. Toutes les requêtes sont
@@ -42,7 +43,6 @@ const matchSelect = {
     select: {
       ...matchOfferSelect,
       source: true,
-      companyId: true,
       url: true,
       city: true,
       region: true,
@@ -54,7 +54,7 @@ const matchSelect = {
 
 type MatchRow = Prisma.MatchGetPayload<{ select: typeof matchSelect }>;
 
-function present(row: MatchRow) {
+function present(row: MatchRow, followed: ReadonlySet<string>) {
   const offer = toMatchOffer(row.offer);
   return {
     id: row.id,
@@ -67,6 +67,8 @@ function present(row: MatchRow) {
       companyId: row.offer.companyId,
       /** Publiée directement par l'entreprise (espace entreprise), pas collectée. */
       direct: row.offer.source === DIRECT_SOURCE,
+      /** Entreprise que le candidat suit (« Mes entreprises à suivre »). */
+      followed: row.offer.companyId !== null && followed.has(row.offer.companyId),
       url: row.offer.url,
       city: row.offer.city,
       region: row.offer.region,
@@ -93,9 +95,10 @@ export async function getOpportunities(
   userId: string,
   filter: { status: StatusFilter; minScore: number },
 ): Promise<Opportunities> {
-  const [candidate, state] = await Promise.all([
+  const [candidate, state, followed] = await Promise.all([
     loadCandidate(db, userId),
     db.matchingState.findUnique({ where: { userId }, select: { dirtyAt: true, computedAt: true } }),
+    followedCompanyIds(db, userId),
   ]);
   const base = { pending: Boolean(state?.dirtyAt), computedAt: state?.computedAt ?? null };
   if (!candidate.eligible) return { ...base, blocker: candidate.reason, items: [] };
@@ -114,21 +117,22 @@ export async function getOpportunities(
   return {
     ...base,
     blocker: null,
-    items: rows.filter(visible(candidate.candidate.rails)).map(present),
+    items: rows.filter(visible(candidate.candidate.rails)).map((row) => present(row, followed)),
   };
 }
 
 /** Une correspondance du candidat, ou `null` (autre utilisateur, offre fermée, hors garde-fous). */
 export async function getMatch(userId: string, id: string): Promise<MatchView | null> {
-  const [row, rails] = await Promise.all([
+  const [row, rails, followed] = await Promise.all([
     db.match.findFirst({
       where: { id, userId, offer: { status: "OPEN", duplicateOfId: null } },
       select: matchSelect,
     }),
     loadRails(db, userId),
+    followedCompanyIds(db, userId),
   ]);
   if (!row || !rails || !visible(rails)(row)) return null;
-  return present(row);
+  return present(row, followed);
 }
 
 /** Première consultation : `NEW` → `SEEN`. */

@@ -265,6 +265,17 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                       </div>
                     </div>
                   ))}
+                  {explanation.followedBonus ? (
+                    <div className="border-line flex justify-between gap-3 border-t pt-4">
+                      <dt className="flex items-center gap-2 font-medium">
+                        <Icon name="star" className="text-info-ink size-4" />
+                        {tm("followedBonus.label")}
+                      </dt>
+                      <dd className="font-semibold tabular-nums">
+                        {tm("followedBonus.value", { bonus: explanation.followedBonus })}
+                      </dd>
+                    </div>
+                  ) : null}
                 </dl>
               </Card>
             </>

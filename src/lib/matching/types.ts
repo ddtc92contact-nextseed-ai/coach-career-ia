@@ -14,6 +14,8 @@ export type MatchOffer = {
   title: string;
   description: string;
   companyName: string | null;
+  /** Entreprise rattachée par le radar (`Company.id`), pour les entreprises suivies. */
+  companyId?: string | null;
   /** Secteur déclaré (texte libre de la source). */
   sector: string | null;
   /** Expérience demandée, texte libre (« 5 An(s) », « Débutant accepté »). */

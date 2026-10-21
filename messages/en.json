@@ -581,7 +581,8 @@
         "account": "Account",
         "admin": "Administration"
       },
-      "unread": "{count, plural, one {# new reply} other {# new replies}}"
+      "unread": "{count, plural, one {# new reply} other {# new replies}}",
+      "companies": "Followed companies"
     }
   },
   "dashboard": {
@@ -813,6 +814,7 @@
       "portal": "Offer posted directly by the company: your agent drafts a short message, delivered with your anonymous card to its inbox. You review and approve it: nothing is sent without you."
     },
     "directBadge": "Posted directly by the company",
+    "followedBadge": "Followed company",
     "band": {
       "strong": "Excellent match",
       "good": "Good match",
@@ -1703,7 +1705,8 @@
       "noSkills": "Few of your skills are explicitly mentioned in the offer.",
       "proofs": "{count, plural, one {One of your achievements directly meets a requirement.} other {# of your achievements directly meet requirements.}}",
       "seniorityAbove": "The role seems more senior than your current position.",
-      "salaryUnknown": "The salary is not stated."
+      "salaryUnknown": "The salary is not stated.",
+      "followed": "The score includes a {bonus}-point bonus because you follow this company."
     },
     "match": "Your achievement “{achievement}” meets the requirement “{requirement}”.",
     "matchSemantic": "Your achievement “{achievement}” is close to the duties of the role.",
@@ -1731,6 +1734,10 @@
       "seniority": "Seniority",
       "salary": "Pay",
       "culture": "Company culture"
+    },
+    "followedBonus": {
+      "label": "Followed company",
+      "value": "+{bonus} points"
     }
   },
   "unsubscribe": {
@@ -2979,5 +2986,63 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Companies I follow",
+    "intro": "Add the companies you are targeting: the radar checks their careers page on every pass, and their jobs move up your opportunities — always within your guard rails.",
+    "count": "{count} / {limit} companies followed",
+    "privacyShort": "Visible to you only",
+    "privacy": "The companies you follow can reveal your job search: they are never shown to employers or on your anonymous card. They are included in your data export and deleted with your account.",
+    "add": {
+      "title": "Add a company",
+      "description": "Paste the address of its careers page, or search by name among the companies already watched.",
+      "label": "Careers page or company name",
+      "placeholder": "https://jobs.lever.co/company",
+      "submit": "Add",
+      "pending": "Checking…",
+      "supported": "Supported careers pages (public job boards):",
+      "unsupportedNote": "Other careers sites are not collected: the radar only uses public sources meant for this.",
+      "slug": "company"
+    },
+    "added": "You now follow {name} ({count, plural, =0 {no open jobs yet} one {# open job} other {# open jobs}}). Its jobs will be picked up on the next radar pass.",
+    "alreadyFollowed": "You already follow {name}.",
+    "errors": {
+      "tooShort": "Enter a careers page address or at least 2 letters of the name.",
+      "invalidUrl": "This address is not valid.",
+      "unsupported": "This careers site is not supported. Only public Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee and Workable job boards can be followed.",
+      "notFound": "No public job board was found at this address. Check the careers page link.",
+      "unreachable": "The job board is not responding right now. Please try again later.",
+      "limit": "You already follow the maximum of 50 companies. Remove one to add another.",
+      "rateLimited": "Too many checks in a short time. Please try again in a few minutes.",
+      "unknownCompany": "This company is no longer watched.",
+      "unavailable": "Careers page checks are unavailable right now.",
+      "tooLong": "Enter at most 500 characters.",
+      "invalidInput": "Invalid input. Reload the page and try again."
+    },
+    "search": {
+      "title": "Results for “{query}”",
+      "empty": "No watched company has this name. Paste the address of its careers page to add it.",
+      "follow": "Follow",
+      "following": "Already followed"
+    },
+    "list": {
+      "title": "{count, plural, one {# company followed} other {# companies followed}}",
+      "emptyTitle": "No company followed yet",
+      "emptyText": "Add the companies you are interested in: their jobs will be flagged to you first.",
+      "openOffers": "{count, plural, =0 {no open jobs} one {# open job} other {# open jobs}}",
+      "followedOn": "followed since {date}"
+    },
+    "status": {
+      "ok": "Watched · last pass on {date}",
+      "waiting": "Waiting for the next radar pass",
+      "failing": "Careers page unreachable on the last pass",
+      "paused": "Watching paused"
+    },
+    "excluded": {
+      "company": "Excluded by your guard rails: its jobs will not be suggested",
+      "sector": "Sector excluded by your guard rails: its jobs will not be suggested"
+    },
+    "unfollow": "Unfollow",
+    "unfollowConfirm": "Stop following {name}?"
   }
 }

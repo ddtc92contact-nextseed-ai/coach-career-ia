@@ -100,6 +100,9 @@ model User {
   organizationMemberships OrganizationMember[]
   jobPostingPayments      JobPostingPayment[]
 
+  /// Entreprises suivies par le radar (donnée personnelle : révèle une recherche).
+  followedCompanies FollowedCompany[]
+
   @@map("users")
 }
 
@@ -655,22 +658,33 @@ enum SourceRunStatus {
 }
 
 /// Entreprise suivie par le radar (job board ATS public).
+/// Origine d'une entreprise surveillée par le radar.
+enum CompanyOrigin {
+  /// Liste de référence `config/radar-companies.json`.
+  CONFIG
+  /// Ajoutée par un candidat (« Mes entreprises à suivre »), partagée par tous.
+  USER
+}
+
 model Company {
-  id         String   @id @default(cuid())
-  /// Identifiant stable issu de la configuration (`config/radar-companies.json`).
-  slug       String   @unique
+  id         String        @id @default(cuid())
+  /// Identifiant stable : celui de la configuration (`config/radar-companies.json`)
+  /// ou dérivé de l'ATS et du jeton pour une entreprise ajoutée par un candidat.
+  slug       String        @unique
   name       String
   website    String?
   sector     String?
-  atsType    AtsType? @map("ats_type")
-  boardToken String?  @map("board_token")
+  atsType    AtsType?      @map("ats_type")
+  boardToken String?       @map("board_token")
   /// Région de l'API (ex. Lever « eu »), si l'ATS en distingue plusieurs.
-  atsRegion  String?  @map("ats_region")
-  active     Boolean  @default(true)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  atsRegion  String?       @map("ats_region")
+  active     Boolean       @default(true)
+  origin     CompanyOrigin @default(CONFIG)
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
 
   offers       JobOffer[]
+  followers    FollowedCompany[]
   weekStats    CompanyWeekStat[]
   signals      CompanySignal[]
   /// Organisation de l'espace entreprise qui publie sous ce nom (offres directes).
@@ -678,6 +692,23 @@ model Company {
 
   @@unique([atsType, boardToken])
   @@map("companies")
+}
+
+/// Entreprise suivie par un candidat : le radar surveille son job board et ses
+/// offres sont mises en avant. Donnée personnelle (elle peut révéler une
+/// recherche d'emploi) : jamais montrée aux entreprises ni sur la carte
+/// anonyme, exportée avec le compte et supprimée avec lui.
+model FollowedCompany {
+  userId    String   @map("user_id")
+  companyId String   @map("company_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, companyId])
+  @@index([companyId])
+  @@map("followed_companies")
 }
 
 /// Offre d'emploi normalisée. Le salaire reste `null` quand l'offre ne

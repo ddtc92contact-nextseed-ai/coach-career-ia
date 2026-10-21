@@ -2,7 +2,7 @@ import type { PrismaClient } from "@/generated/prisma/client";
 import { createGeocoder, type Geocoder } from "@/lib/geo";
 import { backfillOfferCoordinates } from "@/lib/geo/offers";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
-import { loadCompanyConfig, syncCompanies } from "./companies";
+import { loadCompanyConfig, loadWatchedCompanies, syncCompanies } from "./companies";
 import type { AtsCompany } from "./connectors/ats";
 import { ashbyConnector } from "./connectors/ashby";
 import { franceTravailConnector } from "./connectors/france-travail";
@@ -95,7 +95,14 @@ export async function runRadar(
   const now = deps.now ?? (() => new Date());
   const http = deps.http ?? radarHttpClient(config, deps);
 
-  const companies = await syncCompanies(prisma, await loadCompanyConfig(config.companiesFile));
+  // Liste de référence d'abord, puis l'union avec les entreprises suivies par les candidats.
+  // Ordre de la liste de référence conservé, chaque board une seule fois.
+  const reference = await syncCompanies(prisma, await loadCompanyConfig(config.companiesFile));
+  const known = new Set(reference.map((c) => c.id));
+  const companies = [
+    ...reference,
+    ...(await loadWatchedCompanies(prisma)).filter((c) => !known.has(c.id)),
+  ];
   if (!config.franceTravail) {
     log.warn("radar.france_travail.disabled", { reason: "identifiants absents" });
   }

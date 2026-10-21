@@ -581,7 +581,8 @@
         "account": "Account",
         "admin": "Amministrazione"
       },
-      "unread": "{count, plural, one {# nuova risposta} other {# nuove risposte}}"
+      "unread": "{count, plural, one {# nuova risposta} other {# nuove risposte}}",
+      "companies": "Aziende seguite"
     }
   },
   "dashboard": {
@@ -813,6 +814,7 @@
       "portal": "Offerta pubblicata direttamente dall’azienda: il tuo agente scrive un breve messaggio, consegnato con la tua scheda anonima nella sua casella. Lo rileggi e lo approvi: nulla viene inviato senza di te."
     },
     "directBadge": "Pubblicata direttamente dall’azienda",
+    "followedBadge": "Azienda seguita",
     "band": {
       "strong": "Corrispondenza eccellente",
       "good": "Buona corrispondenza",
@@ -1703,7 +1705,8 @@
       "noSkills": "L’offerta cita esplicitamente poche delle tue competenze.",
       "proofs": "{count, plural, one {Uno dei tuoi risultati risponde direttamente a un requisito.} other {# dei tuoi risultati rispondono direttamente a dei requisiti.}}",
       "seniorityAbove": "Il ruolo sembra più senior della tua posizione attuale.",
-      "salaryUnknown": "Lo stipendio non è indicato."
+      "salaryUnknown": "Lo stipendio non è indicato.",
+      "followed": "Il punteggio include un bonus di {bonus} punti perché segue questa azienda."
     },
     "match": "Il tuo risultato «{achievement}» risponde al requisito «{requirement}».",
     "matchSemantic": "Il tuo risultato «{achievement}» è vicino alle mansioni del ruolo.",
@@ -1731,6 +1734,10 @@
       "seniority": "Seniority",
       "salary": "Retribuzione",
       "culture": "Cultura aziendale"
+    },
+    "followedBonus": {
+      "label": "Azienda seguita",
+      "value": "+{bonus} punti"
     }
   },
   "unsubscribe": {
@@ -2979,5 +2986,63 @@
         }
       }
     }
+  },
+  "followedCompanies": {
+    "title": "Aziende che seguo",
+    "intro": "Aggiunga le aziende a cui punta: il radar controlla la loro pagina carriere a ogni passaggio e le loro offerte salgono tra le sue opportunità, sempre nel rispetto dei suoi limiti.",
+    "count": "{count} / {limit} aziende seguite",
+    "privacyShort": "Visibile solo a lei",
+    "privacy": "Le aziende che segue possono rivelare la sua ricerca: non vengono mai mostrate alle aziende né sulla sua scheda anonima. Sono incluse nell’esportazione dei suoi dati ed eliminate con il suo account.",
+    "add": {
+      "title": "Aggiungi un’azienda",
+      "description": "Incolli l’indirizzo della sua pagina carriere, oppure la cerchi per nome tra le aziende già monitorate.",
+      "label": "Pagina carriere o nome dell’azienda",
+      "placeholder": "https://jobs.lever.co/azienda",
+      "submit": "Aggiungi",
+      "pending": "Verifica in corso…",
+      "supported": "Pagine carriere supportate (job board pubblici):",
+      "unsupportedNote": "Gli altri siti carriere non vengono raccolti: il radar usa solo fonti pubbliche previste a questo scopo.",
+      "slug": "azienda"
+    },
+    "added": "Ora segue {name} ({count, plural, =0 {nessuna offerta aperta per ora} one {# offerta aperta} other {# offerte aperte}}). Le sue offerte entreranno al prossimo passaggio del radar.",
+    "alreadyFollowed": "Segue già {name}.",
+    "errors": {
+      "tooShort": "Inserisca l’indirizzo di una pagina carriere o almeno 2 lettere del nome.",
+      "invalidUrl": "Questo indirizzo non è valido.",
+      "unsupported": "Questo sito carriere non è supportato. Si possono seguire solo i job board pubblici di Greenhouse, Lever, Ashby, SmartRecruiters, Recruitee e Workable.",
+      "notFound": "Nessun job board pubblico trovato a questo indirizzo. Verifichi il link della pagina carriere.",
+      "unreachable": "Il job board non risponde al momento. Riprovi più tardi.",
+      "limit": "Segue già il massimo di 50 aziende. Ne rimuova una per aggiungerne un’altra.",
+      "rateLimited": "Troppe verifiche in poco tempo. Riprovi tra qualche minuto.",
+      "unknownCompany": "Questa azienda non è più monitorata.",
+      "unavailable": "La verifica delle pagine carriere non è disponibile al momento.",
+      "tooLong": "Inserisca al massimo 500 caratteri.",
+      "invalidInput": "Inserimento non valido. Ricarichi la pagina e riprovi."
+    },
+    "search": {
+      "title": "Risultati per «{query}»",
+      "empty": "Nessuna azienda monitorata ha questo nome. Incolli l’indirizzo della sua pagina carriere per aggiungerla.",
+      "follow": "Segui",
+      "following": "Già seguita"
+    },
+    "list": {
+      "title": "{count, plural, one {# azienda seguita} other {# aziende seguite}}",
+      "emptyTitle": "Nessuna azienda seguita",
+      "emptyText": "Aggiunga le aziende che le interessano: le loro offerte le saranno segnalate in priorità.",
+      "openOffers": "{count, plural, =0 {nessuna offerta aperta} one {# offerta aperta} other {# offerte aperte}}",
+      "followedOn": "seguita dal {date}"
+    },
+    "status": {
+      "ok": "Monitorata · ultimo passaggio il {date}",
+      "waiting": "In attesa del prossimo passaggio del radar",
+      "failing": "Pagina carriere irraggiungibile all’ultimo passaggio",
+      "paused": "Monitoraggio sospeso"
+    },
+    "excluded": {
+      "company": "Esclusa dai suoi limiti: le sue offerte non le saranno proposte",
+      "sector": "Settore escluso dai suoi limiti: le sue offerte non le saranno proposte"
+    },
+    "unfollow": "Non seguire più",
+    "unfollowConfirm": "Non seguire più {name}?"
   }
 }

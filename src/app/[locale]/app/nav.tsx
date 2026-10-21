@@ -33,6 +33,7 @@ export const APP_NAV = [
     items: [
       { href: "/app/coach", key: "coach", icon: "spark" },
       { href: "/app/opportunites", key: "opportunities", icon: "target" },
+      { href: "/app/entreprises", key: "companies", icon: "star" },
       { href: "/app/contacts", key: "contacts", icon: "chat" },
     ],
   },

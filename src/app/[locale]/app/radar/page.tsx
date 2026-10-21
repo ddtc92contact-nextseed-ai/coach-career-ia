@@ -6,7 +6,10 @@ import { PageTitle } from "@/components/empty-state";
 import type { Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/admin";
 import { db } from "@/lib/db";
-import { failureThreshold, loadSourceHealth } from "@/lib/radar/health";
+import { ATS_LABELS } from "@/lib/radar/careers";
+import { listRadarCompanies } from "@/lib/radar/companies";
+import { companySourceKey } from "@/lib/radar/followed";
+import { failureThreshold, loadSourceHealth, type SourceHealth } from "@/lib/radar/health";
 import { loadCompanyMomentum, type CompanyMomentum } from "@/lib/radar/signals/query";
 import { formatSalary, REMOTE_LABELS, CONTRACT_LABELS, SOURCE_LABELS } from "./labels";
 
@@ -55,7 +58,7 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
   };
 
   const threshold = failureThreshold();
-  const [health, momentum, runs, offers, matching, open, closed, duplicates, located] =
+  const [health, momentum, runs, offers, matching, open, closed, duplicates, located, companies] =
     await Promise.all([
       loadSourceHealth(db, { threshold }),
       loadCompanyMomentum(db),
@@ -74,6 +77,7 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
       db.jobOffer.count({
         where: { status: "OPEN", duplicateOfId: null, latitude: { not: null } },
       }),
+      listRadarCompanies(db),
     ]);
   const locatedShare = open > 0 ? Math.round((located / open) * 100) : 0;
   const pages = Math.max(1, Math.ceil(matching / PAGE_SIZE));
@@ -115,6 +119,8 @@ export default async function RadarPage({ searchParams }: { searchParams: Search
       </dl>
 
       <SourceHealthSection health={health} threshold={threshold} />
+
+      <WatchedCompaniesSection companies={companies} health={health} />
 
       <CompanyMomentumSection companies={momentum} />
 
@@ -375,6 +381,95 @@ function SourceHealthSection({
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/**
+ * Entreprises surveillées : liste de référence et ajouts des candidats
+ * (nombre d'abonnés seulement, jamais qui les suit), avec la santé de leur
+ * dernier passage.
+ */
+function WatchedCompaniesSection({
+  companies,
+  health,
+}: {
+  companies: Awaited<ReturnType<typeof listRadarCompanies>>;
+  health: SourceHealth[];
+}) {
+  const byKey = new Map(health.map((h) => [h.sourceKey, h]));
+  const watched = companies.filter(
+    (c) => c.active && (c.origin === "CONFIG" || c._count.followers > 0),
+  ).length;
+  const added = companies.filter((c) => c.origin === "USER").length;
+  return (
+    <section aria-labelledby="companies-title" className="mb-10">
+      <h2 id="companies-title" className="mb-1 text-lg font-semibold">
+        Entreprises surveillées
+      </h2>
+      <p className="text-ink-subtle mb-3 text-sm">
+        {watched} entreprise{watched > 1 ? "s" : ""} collectée{watched > 1 ? "s" : ""} à chaque
+        passage (liste de référence et entreprises suivies par les candidats, {added} ajoutée
+        {added > 1 ? "s" : ""} par des candidats). Chaque board n&apos;est collecté qu&apos;une fois
+        par passage, quel que soit son nombre d&apos;abonnés.
+      </p>
+      {companies.length === 0 ? (
+        <p className="text-ink-subtle text-sm">Aucune entreprise pour l&apos;instant.</p>
+      ) : (
+        <div className="border-line bg-surface max-h-[32rem] overflow-auto rounded-xl border">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-subtle text-ink-subtle sticky top-0">
+              <tr>
+                <th className="px-3 py-2 font-medium">Entreprise</th>
+                <th className="px-3 py-2 font-medium">Board</th>
+                <th className="px-3 py-2 font-medium">Origine</th>
+                <th className="px-3 py-2 text-right font-medium">Abonnés</th>
+                <th className="px-3 py-2 text-right font-medium">Offres ouvertes</th>
+                <th className="px-3 py-2 font-medium">Dernier passage</th>
+                <th className="px-3 py-2 font-medium">Santé</th>
+              </tr>
+            </thead>
+            <tbody className="divide-line divide-y">
+              {companies.map((c) => {
+                const h = c.atsType
+                  ? byKey.get(companySourceKey({ atsType: c.atsType, slug: c.slug }))
+                  : undefined;
+                const isWatched = c.active && (c.origin === "CONFIG" || c._count.followers > 0);
+                return (
+                  <tr key={c.id} className={h?.failing ? "bg-danger-soft" : undefined}>
+                    <td className="px-3 py-2 font-medium whitespace-nowrap">{c.name}</td>
+                    <td className="text-ink-muted px-3 py-2 whitespace-nowrap">
+                      {c.atsType ? ATS_LABELS[c.atsType] : ""}
+                      <span className="text-ink-subtle block text-xs">{c.boardToken}</span>
+                    </td>
+                    <td className="px-3 py-2 whitespace-nowrap">
+                      {c.origin === "CONFIG" ? "Référence" : "Candidats"}
+                    </td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c._count.followers}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{c._count.offers}</td>
+                    <td className="text-ink-muted px-3 py-2 whitespace-nowrap">
+                      {h ? dateTime.format(h.lastRun.startedAt) : "—"}
+                    </td>
+                    <td className="px-3 py-2 whitespace-nowrap">
+                      {!isWatched ? (
+                        <span className="text-ink-subtle">Non surveillée</span>
+                      ) : !h ? (
+                        <span className="text-ink-subtle">En attente</span>
+                      ) : h.failing ? (
+                        <span className="text-danger-ink font-medium">
+                          ⚠ {h.consecutiveFailures} échecs
+                        </span>
+                      ) : (
+                        <RunStatus status={h.lastRun.status} complete={h.lastRun.complete} />
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
