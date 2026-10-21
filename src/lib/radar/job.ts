@@ -14,6 +14,7 @@ import { workableConnector } from "./connectors/workable";
 import type { RadarConfig } from "./config";
 import { failureThreshold, loadSourceHealth } from "./health";
 import { HttpClient, type FetchLike } from "./http";
+import { beginPass, finishPass } from "./passes";
 import { runConnectors, type RunSummary } from "./pipeline";
 import type { Connector } from "./types";
 
@@ -44,7 +45,7 @@ export const HOST_INTERVALS: Record<string, number> = {
 
 /** Client HTTP du radar (job ponctuel et worker). */
 export function radarHttpClient(
-  config: Pick<RadarConfig, "userAgent" | "minIntervalMs">,
+  config: Pick<RadarConfig, "userAgent" | "minIntervalMs" | "httpCacheBytes">,
   deps: Pick<RadarDeps, "fetch" | "sleep"> = {},
 ): HttpClient {
   const hostIntervals = Object.fromEntries(
@@ -54,9 +55,32 @@ export function radarHttpClient(
     userAgent: config.userAgent,
     minIntervalMs: config.minIntervalMs,
     hostIntervals,
+    cacheMaxBytes: config.httpCacheBytes,
     fetch: deps.fetch,
     sleep: deps.sleep,
   });
+}
+
+/**
+ * Alterne les ATS (Greenhouse, Lever, Ashby…) en gardant l'ordre au sein de
+ * chacun : deux requêtes consécutives visent rarement le même hôte, si bien
+ * que l'intervalle minimal par hôte (1 s, 5 s pour Workable) s'écoule pendant
+ * la collecte des autres boards au lieu de s'additionner.
+ */
+export function interleaveByAts(companies: AtsCompany[]): AtsCompany[] {
+  const groups = new Map<string, AtsCompany[]>();
+  for (const company of companies) {
+    const key = `${company.atsType}:${company.atsRegion ?? ""}`;
+    const group = groups.get(key) ?? [];
+    group.push(company);
+    groups.set(key, group);
+  }
+  const queues = [...groups.values()];
+  const ordered: AtsCompany[] = [];
+  for (let i = 0; ordered.length < companies.length; i++) {
+    for (const queue of queues) if (i < queue.length) ordered.push(queue[i]!);
+  }
+  return ordered;
 }
 
 export function buildConnectors(
@@ -70,7 +94,7 @@ export function buildConnectors(
       franceTravailConnector({ clientId, clientSecret }, criteria) as Connector<unknown>,
     );
   }
-  connectors.push(...companies.map(atsConnector));
+  connectors.push(...interleaveByAts(companies).map(atsConnector));
   return connectors;
 }
 
@@ -95,8 +119,43 @@ export async function runRadar(
   const now = deps.now ?? (() => new Date());
   const http = deps.http ?? radarHttpClient(config, deps);
 
+  // Un passage à la fois (worker et `npm run radar:run` peuvent coexister).
+  const pass = await beginPass(prisma, now());
+  if (!pass) {
+    log.warn("radar.pass.skipped", { reason: "un passage est déjà en cours" });
+    return [];
+  }
+  try {
+    const summaries = await collect(prisma, config, { ...deps, http, now, logger: log });
+    const { durationMs, bySource } = await finishPass(prisma, pass, summaries, now());
+    for (const [source, counts] of Object.entries(bySource)) {
+      log.info("radar.finished.source", { source, ...counts });
+    }
+    log.info("radar.finished", {
+      durationMs,
+      connectors: summaries.length,
+      failed: summaries.filter((s) => s.status === "FAILED").length,
+      created: summaries.reduce((n, s) => n + s.created, 0),
+      closed: summaries.reduce((n, s) => n + s.closed, 0),
+    });
+    return summaries;
+  } catch (error) {
+    await prisma.radarPass
+      .update({ where: { id: pass.id }, data: { status: "INTERRUPTED", finishedAt: now() } })
+      .catch(() => undefined);
+    throw error;
+  }
+}
+
+async function collect(
+  prisma: PrismaClient,
+  config: RadarConfig,
+  deps: RadarDeps & Required<Pick<RadarDeps, "http" | "now" | "logger">>,
+): Promise<RunSummary[]> {
+  const { http, now, logger: log } = deps;
+
   // Liste de référence d'abord, puis l'union avec les entreprises suivies par les candidats.
-  // Ordre de la liste de référence conservé, chaque board une seule fois.
+  // Ordre de la liste de référence conservé (ATS alternés), chaque board une seule fois.
   const reference = await syncCompanies(prisma, await loadCompanyConfig(config.companiesFile));
   const known = new Set(reference.map((c) => c.id));
   const companies = [
@@ -154,12 +213,5 @@ export async function runRadar(
     log.error("radar.health.failed", { error: error instanceof Error ? error.name : "erreur" });
   }
 
-  const failed = summaries.filter((s) => s.status === "FAILED").length;
-  log.info("radar.finished", {
-    connectors: summaries.length,
-    failed,
-    created: summaries.reduce((n, s) => n + s.created, 0),
-    closed: summaries.reduce((n, s) => n + s.closed, 0),
-  });
   return summaries;
 }

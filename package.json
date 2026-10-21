@@ -28,7 +28,8 @@
     "geo:backfill": "tsx scripts/geo-backfill.ts",
     "ai:eval": "tsx scripts/ai-eval-import.ts",
     "worker": "node --import tsx worker/index.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "radar:companies-check": "tsx scripts/radar-companies-check.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",

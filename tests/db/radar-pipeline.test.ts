@@ -84,6 +84,7 @@ describe.skipIf(!url)("Market Radar (pipeline en base)", () => {
     // Base de test dédiée : on repart de tables radar vides pour chaque scénario.
     await prisma.jobOffer.deleteMany({});
     await prisma.sourceRun.deleteMany({});
+    await prisma.radarPass.deleteMany({});
     await prisma.company.deleteMany({});
   });
 

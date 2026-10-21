@@ -99,6 +99,33 @@ describe("client HTTP poli", () => {
     expect(second).toMatchObject({ status: 200, fromCache: true, body: first.body });
   });
 
+  it("cache compressé : un balayage cyclique plus grand que le cache garde des réponses", async () => {
+    // Corps de ~20 ko, très compressible comme un board JSON ; cache de 6 ko compressés.
+    const body = (url: string) => JSON.stringify({ url, jobs: Array(2000).fill("Développeur") });
+    const fetch = fakeFetch((url, init) => {
+      const headers = init.headers as Record<string, string>;
+      return headers["If-None-Match"] === `"${url}"`
+        ? new Response(null, { status: 304 })
+        : jsonResponse(body(url), { headers: { ETag: `"${url}"` } });
+    });
+    const http = new HttpClient({
+      userAgent: TEST_USER_AGENT,
+      fetch,
+      cacheMaxBytes: 6000,
+      ...clock(),
+    });
+    const urls = Array.from({ length: 40 }, (_, i) => `https://a.test/board/${i}`);
+    for (const url of urls) await http.request(url);
+    const { entries, bytes } = http.cacheStats;
+    expect(bytes).toBeLessThanOrEqual(6000);
+    expect(entries).toBeGreaterThan(1);
+
+    // Deuxième passage dans le même ordre : les réponses gardées servent (304), à l'identique.
+    const second = await Promise.all(urls.map((url) => http.request(url)));
+    expect(second.filter((r) => r.fromCache)).toHaveLength(entries);
+    expect(second.every((r, i) => r.body === body(urls[i]!))).toBe(true);
+  });
+
   it("vérifie robots.txt pour les URL qui ne sont pas des API", async () => {
     const fetch = fakeFetch((url) =>
       url.endsWith("/robots.txt")

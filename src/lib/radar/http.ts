@@ -1,3 +1,4 @@
+import { deflateSync, inflateSync, strFromU8, strToU8 } from "fflate";
 import { ALLOW_ALL, DISALLOW_ALL, parseRobots, type RobotsRules } from "./robots";
 
 /**
@@ -5,7 +6,8 @@ import { ALLOW_ALL, DISALLOW_ALL, parseRobots, type RobotsRules } from "./robots
  * - User-Agent honnête : nom du produit + contact (jamais d'usurpation) ;
  * - débit limité par hôte (créneaux réservés, pas de rafale) ;
  * - nouvelles tentatives espacées sur 429 / 5xx, en respectant `Retry-After` ;
- * - requêtes conditionnelles (`ETag` / `Last-Modified`) avec cache mémoire ;
+ * - requêtes conditionnelles (`ETag` / `Last-Modified`) avec cache mémoire
+ *   compressé ;
  * - robots.txt vérifié pour toute URL qui n'est pas une API documentée.
  * Pas de navigateur headless, pas de proxy, pas de contournement.
  */
@@ -27,7 +29,7 @@ export type HttpClientOptions = {
   /** Au-delà, on abandonne plutôt que d'attendre (Retry-After trop long). */
   maxBackoffMs?: number;
   timeoutMs?: number;
-  /** Taille maximale du cache conditionnel (octets). */
+  /** Taille maximale du cache conditionnel (octets compressés). */
   cacheMaxBytes?: number;
 };
 
@@ -86,9 +88,14 @@ const RETRYABLE = new Set([429, 500, 502, 503, 504]);
 type CacheEntry = {
   etag: string | null;
   lastModified: string | null;
-  body: string;
+  /** Corps compressé (deflate) : un board Greenhouse ou Ashby pèse souvent 1 à 2 Mo. */
+  body: Uint8Array;
   status: number;
+  usedAt: number;
 };
+
+/** Entrée inutilisée depuis plus longtemps : board retiré, libérable si le cache est plein. */
+const CACHE_IDLE_MS = 7 * 24 * 3_600_000;
 
 export class HttpClient {
   private readonly opts: Required<Omit<HttpClientOptions, "hostIntervals">> & {
@@ -112,7 +119,7 @@ export class HttpClient {
       baseBackoffMs: 2000,
       maxBackoffMs: 120_000,
       timeoutMs: 30_000,
-      cacheMaxBytes: 32 * 1024 * 1024,
+      cacheMaxBytes: 64 * 1024 * 1024,
       // Les options explicitement `undefined` ne remplacent pas les valeurs par défaut.
       ...(Object.fromEntries(
         Object.entries(options).filter(([, v]) => v !== undefined),
@@ -175,10 +182,11 @@ export class HttpClient {
       }
 
       if (response.status === 304 && cached) {
+        cached.usedAt = this.opts.now();
         return {
           status: cached.status,
           headers: response.headers,
-          body: cached.body,
+          body: strFromU8(inflateSync(cached.body)),
           fromCache: true,
         };
       }
@@ -226,22 +234,44 @@ export class HttpClient {
     await this.opts.sleep(delay);
   }
 
+  /**
+   * Un passage parcourt les boards dans le même ordre à chaque fois : une
+   * éviction LRU, cache plein, chasserait chaque réponse juste avant qu'elle
+   * resserve. Une nouvelle réponse n'évince donc que des entrées inutilisées
+   * depuis `CACHE_IDLE_MS` ; sinon elle n'est pas mise en cache.
+   */
   private store(key: string, response: Response, body: string) {
     const etag = response.headers.get("etag");
     const lastModified = response.headers.get("last-modified");
     const previous = this.cache.get(key);
     if (previous) {
       this.cache.delete(key);
-      this.cacheBytes -= previous.body.length;
+      this.cacheBytes -= previous.body.byteLength;
     }
-    if ((!etag && !lastModified) || body.length > this.opts.cacheMaxBytes / 4) return;
-    this.cache.set(key, { etag, lastModified, body, status: response.status });
-    this.cacheBytes += body.length;
+    if (!etag && !lastModified) return;
+    const compressed = deflateSync(strToU8(body));
+    if (compressed.byteLength > this.opts.cacheMaxBytes / 4) return;
+    const now = this.opts.now();
     for (const [oldKey, entry] of this.cache) {
-      if (this.cacheBytes <= this.opts.cacheMaxBytes) break;
+      if (this.cacheBytes + compressed.byteLength <= this.opts.cacheMaxBytes) break;
+      if (now - entry.usedAt < CACHE_IDLE_MS) continue;
       this.cache.delete(oldKey);
-      this.cacheBytes -= entry.body.length;
+      this.cacheBytes -= entry.body.byteLength;
     }
+    if (this.cacheBytes + compressed.byteLength > this.opts.cacheMaxBytes) return;
+    this.cache.set(key, {
+      etag,
+      lastModified,
+      body: compressed,
+      status: response.status,
+      usedAt: now,
+    });
+    this.cacheBytes += compressed.byteLength;
+  }
+
+  /** Réponses en cache et octets (compressés) occupés. */
+  get cacheStats(): { entries: number; bytes: number } {
+    return { entries: this.cache.size, bytes: this.cacheBytes };
   }
 
   private robotsFor(url: string): Promise<RobotsRules> {

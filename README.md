@@ -94,6 +94,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `RADAR_COUNTRIES`                                                     | non (FR) | pays conservés (ISO-2, `*` = tous)                        |
 | `RADAR_COMPANIES_FILE`                                                | non      | entreprises suivies (`config/radar-companies.json`)       |
 | `RADAR_MIN_INTERVAL_MS`                                               | non      | délai minimal entre requêtes vers un même hôte (1000)     |
+| `RADAR_HTTP_CACHE_MB`                                                 | non      | cache ETag / Last-Modified, Mo compressés (64)            |
 | `FRANCE_TRAVAIL_CLIENT_ID`, `FRANCE_TRAVAIL_CLIENT_SECRET`            | non      | identifiants partenaire France Travail (sinon ignorée)    |
 | `RADAR_FT_ROME_CODES`, `RADAR_FT_KEYWORDS`, `RADAR_FT_DEPARTMENTS`    | non      | critères de recherche France Travail                      |
 | `RADAR_FT_MAX_RESULTS`                                                | non      | plafond d'offres par recherche (1050, max 3150)           |
@@ -198,33 +199,70 @@ client identifié et poli. Code : `src/lib/radar`.
 
 ### Ajouter une entreprise au radar
 
-Une entrée dans `config/radar-companies.json` (vérifiée au chargement ; `slug` unique, en
-minuscules). Vérifier d'abord que l'entreprise publie bien ses offres sur l'ATS, via son
-endpoint public (une requête manuelle suffit) :
-
-| `ats`             | `boardToken`                                   | Où le trouver / vérifier                                                                      |
-| ----------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `greenhouse`      | jeton du board (`dataiku`)                     | `job-boards.greenhouse.io/{jeton}` ; `boards-api.greenhouse.io/v1/boards/{jeton}/jobs`        |
-| `lever`           | site Lever (`qonto`), `region: "eu"` si besoin | `jobs.lever.co/{site}` ou `jobs.eu.lever.co/{site}` ; `api.lever.co/v0/postings/{site}`       |
-| `ashby`           | nom du board (`alan`)                          | `jobs.ashbyhq.com/{board}` ; `api.ashbyhq.com/posting-api/job-board/{board}`                  |
-| `smartrecruiters` | identifiant, sensible à la casse (`Nexity`)    | `careers.smartrecruiters.com/{id}` (l'API est exclue par son robots.txt)                      |
-| `recruitee`       | sous-domaine (`matera`)                        | `{sous-domaine}.recruitee.com` ; `{sous-domaine}.recruitee.com/api/offers/`                   |
-| `workable`        | compte (`exotec`)                              | `apply.workable.com/{compte}` ; `apply.workable.com/api/v1/widget/accounts/{compte}` (`jobs`) |
+La liste de référence `config/radar-companies.json` compte environ 500 employeurs qui recrutent
+en France ou dans l'UE (tech / SaaS, industrie, énergie, retail, banque-assurance, santé,
+conseil, associations…). Une entrée par board ATS public, vérifiée au chargement (schéma zod,
+`slug` unique en minuscules) :
 
 ```json
 {
   "slug": "exotec",
   "name": "Exotec",
   "website": "https://www.exotec.com",
-  "sector": "Robotique / logistique",
+  "sector": "Robotique / industrie",
   "ats": "workable",
   "boardToken": "exotec"
 }
 ```
 
+- `sector` est obligatoire en pratique : il doit contenir un mot-clé reconnu par les garde-fous
+  (`detectSectors`, ex. « Logiciel », « Banque », « Santé », « Énergie », « Conseil »,
+  « Association / ONG »), sinon l'exclusion par secteur ne s'applique pas — un test le vérifie
+  pour chaque entrée.
+- Aucun jeton deviné : seul un board validé par le script de vérification entre dans la liste.
+  Aucun site carrière hors ATS n'est collecté.
+
+| `ats`             | `boardToken`                                   | Où le trouver                                              |
+| ----------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+| `greenhouse`      | jeton du board (`dataiku`)                     | `job-boards.greenhouse.io/{jeton}`                         |
+| `lever`           | site Lever (`qonto`), `region: "eu"` si besoin | `jobs.lever.co/{site}` ou `jobs.eu.lever.co/{site}`        |
+| `ashby`           | nom du board (`alan`)                          | `jobs.ashbyhq.com/{board}`                                 |
+| `smartrecruiters` | identifiant, sensible à la casse (`Nexity`)    | `careers.smartrecruiters.com/{id}` (API exclue par robots) |
+| `recruitee`       | sous-domaine (`matera`)                        | `{sous-domaine}.recruitee.com`                             |
+| `workable`        | compte (`exotec`)                              | `apply.workable.com/{compte}`                              |
+
+**Vérifier puis ajouter** (`scripts/radar-companies-check.ts`, lancé à la main, jamais en CI) :
+
+1. Écrire les candidats dans un fichier JSON (même forme qu'une entrée, `slug` facultatif,
+   dérivé du nom).
+2. `RADAR_CONTACT=… npm run radar:companies-check -- candidats.json --markdown rapport.md --write`
+
+Chaque board est interrogé une fois via son API publique, avec le client HTTP du radar
+(User-Agent avec `RADAR_CONTACT`, robots.txt, `RADAR_MIN_INTERVAL_MS` par hôte, 5 s pour
+Workable). Verdicts : **valide** (au moins une offre en France ou dans l'UE, nom confirmé par
+l'ATS ou cité dans les annonces), **jeton inconnu** (404, board vide), **0 offre FR/UE**,
+**autre entreprise** (l'ATS donne un autre nom : jeton d'un homonyme), **injoignable**
+(robots.txt, 5xx, réseau). `--write` ajoute les seuls candidats valides à la liste (sans
+doublon de slug ni de board) ; `--report` écrit le détail par candidat. Sans fichier, le
+script revérifie la liste de référence elle-même (à faire de temps en temps : un board peut
+fermer ou changer de jeton).
+
 `"active": false` garde l'entreprise en base sans la collecter (une entreprise retirée du
-fichier est désactivée de la même façon). `npm run radar:run` prend la liste en compte au
-passage suivant.
+fichier est désactivée de la même façon, sauf si des candidats la suivent).
+
+**Mise en base** : la liste est reportée en base (idempotent) par `npm run db:seed`, au
+démarrage du worker (donc à chaque déploiement) et au début de chaque passage. Rejouer ne
+duplique rien et ne supprime jamais une entreprise ajoutée par un candidat (« Mes entreprises
+à suivre ») ; un board ajouté par un candidat qui entre dans la liste y est rattaché.
+
+**Durée d'un passage** : ~500 boards à une requête chacun, avec 1 s minimum entre deux
+requêtes vers un même hôte, soit une dizaine de minutes. Les ATS sont alternés pour que
+l'attente par hôte s'écoule pendant les autres collectes ; un seul passage à la fois (verrou
+en base : un `npm run radar:run` lancé pendant celui du worker est écarté) ; une source en
+échec n'arrête pas le passage ; les requêtes conditionnelles restent utilisées grâce à un
+cache compressé (`RADAR_HTTP_CACHE_MB`, 64 Mo par défaut). SmartRecruiters ne relit pas les
+annonces situées hors de `RADAR_COUNTRIES`. `/app/radar` affiche la durée du dernier passage,
+ses compteurs par ATS et les passages récents.
 
 ### Géocodage (filtre de distance)
 

@@ -50,9 +50,23 @@ export async function syncCompanies(
   prisma: PrismaClient,
   config: CompanyConfig,
 ): Promise<AtsCompany[]> {
+  // Une lecture pour toute la liste (~500 entrées), puis écriture des seules différences.
+  const rows = await prisma.company.findMany({
+    where: {
+      OR: [
+        { slug: { in: config.map((c) => c.slug) } },
+        { boardToken: { in: config.map((c) => c.boardToken) } },
+      ],
+    },
+    select: { ...COMPANY_SELECT, website: true, active: true, origin: true },
+  });
+  const bySlug = new Map(rows.map((r) => [r.slug, r]));
+  const byBoard = new Map(rows.map((r) => [`${r.atsType}:${r.boardToken}`, r]));
+
   const companies: AtsCompany[] = [];
   for (const c of config) {
     const data = {
+      slug: c.slug,
       name: c.name,
       website: c.website ?? null,
       sector: c.sector ?? null,
@@ -62,16 +76,16 @@ export async function syncCompanies(
       active: c.active,
       origin: "CONFIG" as const,
     };
-    const existing =
-      (await prisma.company.findUnique({ where: { slug: c.slug }, select: { id: true } })) ??
-      (await prisma.company.findUnique({
-        where: { atsType_boardToken: { atsType: data.atsType, boardToken: c.boardToken } },
-        select: { id: true },
-      }));
-    const row = existing
-      ? await prisma.company.update({ where: { id: existing.id }, data: { slug: c.slug, ...data } })
-      : await prisma.company.create({ data: { slug: c.slug, ...data } });
-    if (row.active) companies.push(toAtsCompany(row)!);
+    const existing = bySlug.get(c.slug) ?? byBoard.get(`${data.atsType}:${c.boardToken}`);
+    const changed =
+      !existing ||
+      (Object.keys(data) as (keyof typeof data)[]).some((key) => existing[key] !== data[key]);
+    const row = !changed
+      ? existing
+      : existing
+        ? await prisma.company.update({ where: { id: existing.id }, data, select: COMPANY_SELECT })
+        : await prisma.company.create({ data, select: COMPANY_SELECT });
+    if (data.active) companies.push(toAtsCompany(row)!);
   }
   const removed = {
     slug: { notIn: config.map((c) => c.slug) },
@@ -82,9 +96,19 @@ export async function syncCompanies(
     where: { ...removed, followers: { some: {} } },
     data: { origin: "USER" },
   });
-  await prisma.company.updateMany({ where: removed, data: { active: false } });
+  await prisma.company.updateMany({ where: { ...removed, active: true }, data: { active: false } });
   return companies;
 }
+
+const COMPANY_SELECT = {
+  id: true,
+  slug: true,
+  name: true,
+  sector: true,
+  atsType: true,
+  boardToken: true,
+  atsRegion: true,
+} as const;
 
 type CompanyRow = {
   id: string;

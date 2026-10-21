@@ -81,7 +81,12 @@ const SECTIONS = [
 
 export function smartRecruitersConnector(
   company: AtsCompany,
-  options: { pageSize?: number; maxPostings?: number } = {},
+  options: {
+    pageSize?: number;
+    maxPostings?: number;
+    /** `false` : liste seule, sans relire chaque offre (vérification de la liste de référence). */
+    details?: boolean;
+  } = {},
 ): Connector<SmartRecruitersPosting> {
   const pageSize = options.pageSize ?? SMARTRECRUITERS_PAGE_SIZE;
   const maxPostings = options.maxPostings ?? SMARTRECRUITERS_MAX_POSTINGS;
@@ -89,7 +94,7 @@ export function smartRecruitersConnector(
   return {
     source: "smartrecruiters",
     key: atsKey("smartrecruiters", company),
-    async fetch({ http }) {
+    async fetch({ http, allowedCountries }) {
       const listed: SmartRecruitersPosting[] = [];
       let complete = true;
       for (let offset = 0; ; offset += pageSize) {
@@ -109,10 +114,19 @@ export function smartRecruitersConnector(
         if (data.content.length < pageSize || offset + data.content.length >= total) break;
       }
 
-      // Texte de l'annonce : une requête par offre (débit limité par le client).
+      if (options.details === false) return { items: listed, complete };
+
+      // Texte de l'annonce : une requête par offre (débit limité par le client),
+      // sauf pour les offres situées hors des pays retenus, que le pipeline
+      // ignore de toute façon : un grand groupe publie surtout à l'étranger.
       const items: SmartRecruitersPosting[] = [];
       for (const posting of listed) {
         if (!posting?.id) continue;
+        const country = isoCountry(posting.location?.country);
+        if (country && allowedCountries?.length && !allowedCountries.includes(country)) {
+          items.push(posting);
+          continue;
+        }
         try {
           const { data } = await http.getJson<SmartRecruitersPosting>(
             `${base}/${boardPath(String(posting.id))}`,
