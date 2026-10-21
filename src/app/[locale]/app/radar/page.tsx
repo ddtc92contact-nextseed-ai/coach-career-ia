@@ -346,7 +346,7 @@ function RadarPassesSection({ passes }: { passes: Awaited<ReturnType<typeof load
                 ["Périmètres collectés", `${last.sources} (${last.failed} en échec)`],
                 [
                   "Offres reçues",
-                  `${last.fetched.toLocaleString("fr-FR")} (${last.created} nouvelles)`,
+                  `${last.fetched.toLocaleString("fr-FR")} (${last.created.toLocaleString("fr-FR")} nouvelles)`,
                 ],
               ] as const
             ).map(([label, value]) => (
@@ -422,8 +422,12 @@ function RadarPassesSection({ passes }: { passes: Awaited<ReturnType<typeof load
                   <td className="px-3 py-2 text-right tabular-nums">
                     {p.durationMs !== null ? formatDuration(p.durationMs) : "—"}
                   </td>
-                  <td className="px-3 py-2 text-right tabular-nums">{p.sources}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{p.failed}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {p.status === "FINISHED" ? p.sources : "—"}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {p.status === "FINISHED" ? p.failed : "—"}
+                  </td>
                 </tr>
               ))}
             </tbody>
