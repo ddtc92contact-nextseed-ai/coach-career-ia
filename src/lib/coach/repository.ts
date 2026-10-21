@@ -23,7 +23,7 @@ import {
   type FieldErrors,
 } from "@/lib/career/schemas";
 import { emailNameParts, redactSuggestion } from "./redact";
-import { COACH_QUOTA_WINDOW_MS } from "./quota";
+import { COACH_QUOTA_WINDOW_MS, quotaResetAt, remainingMessages } from "./quota";
 import {
   COACH_LIMITS,
   SUGGESTION_SCHEMAS,
@@ -272,6 +272,27 @@ export function countRecentUserMessages(userId: string, now = new Date()) {
       createdAt: { gt: new Date(now.getTime() - COACH_QUOTA_WINDOW_MS) },
     },
   });
+}
+
+/**
+ * État du quota d'un utilisateur : messages restants (`null` = illimité) et,
+ * limite atteinte, instant où un message se libère (`resetAt`).
+ */
+export async function getCoachQuota(userId: string, limit: number | null, now = new Date()) {
+  if (limit === null) return { remaining: null, resetAt: null };
+  const rows = await db.coachMessage.findMany({
+    where: {
+      userId,
+      role: "USER",
+      createdAt: { gt: new Date(now.getTime() - COACH_QUOTA_WINDOW_MS) },
+    },
+    select: { createdAt: true },
+  });
+  const sentAt = rows.map((r) => r.createdAt);
+  return {
+    remaining: remainingMessages(sentAt.length, limit),
+    resetAt: quotaResetAt(sentAt, limit),
+  };
 }
 
 // --- Contexte pour les outils ------------------------------------------------------------

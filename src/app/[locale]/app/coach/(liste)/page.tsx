@@ -10,10 +10,9 @@ import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import { isAiConfigured } from "@/lib/ai/server";
 import { requireUser } from "@/lib/auth/session";
-import { isBillingAvailable } from "@/lib/billing/config";
+import { getBillingProvider } from "@/lib/billing/provider";
 import { getEntitlements } from "@/lib/billing/server";
-import { remainingMessages } from "@/lib/coach/quota";
-import { countRecentUserMessages, listConversations } from "@/lib/coach/repository";
+import { getCoachQuota, listConversations } from "@/lib/coach/repository";
 import { COACH_MODES } from "@/lib/coach/shared";
 import { removeConversation, startConversation } from "../actions";
 import { AiNotice } from "../ai-notice";
@@ -27,23 +26,25 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CoachPage() {
   const user = await requireUser();
-  const [t, tn, format, conversations, sent, entitlements] = await Promise.all([
+  const [t, tn, format, conversations, entitlements] = await Promise.all([
     getTranslations("coach"),
     getTranslations("app.nav.groups"),
     getFormatter(),
     listConversations(user.id),
-    countRecentUserMessages(user.id),
     getEntitlements(user.id),
   ]);
   const configured = isAiConfigured();
   const limit = entitlements.limits.coachMessagesPerDay;
-  const remaining = remainingMessages(sent, limit);
+  const { remaining, resetAt } = await getCoachQuota(user.id, limit);
+  const exhausted = limit !== null && remaining === 0;
+  const provider = exhausted ? getBillingProvider() : null;
+  const price = provider ? await provider.getPremiumPrice() : null;
   const canStart = configured && remaining !== 0;
 
   return (
     <>
       <PageHeader title={t("title")} lead={t("intro")} eyebrow={tn("agent")} band="brand">
-        {configured && !(limit !== null && remaining === 0) ? (
+        {configured && !exhausted ? (
           <p className="bg-surface/80 text-ink-muted ring-brand-line mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm ring-1">
             <Icon name="chat" className="text-brand-ink size-4" />
             {remaining === null ? t("quotaUnlimited") : t("quota", { remaining })}
@@ -101,9 +102,14 @@ export default async function CoachPage() {
             </li>
           ))}
         </ul>
-        {limit !== null && remaining === 0 ? (
+        {exhausted ? (
           <div className="mt-5">
-            <CoachUpsell limit={limit} billing={isBillingAvailable()} />
+            <CoachUpsell
+              limit={limit}
+              billing={provider !== null}
+              price={price}
+              resetAt={resetAt?.toISOString() ?? null}
+            />
           </div>
         ) : null}
       </section>

@@ -106,7 +106,7 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `MISTRAL_CHAT_MODEL`, `MISTRAL_EMBED_MODEL`, `MISTRAL_BASE_URL`       | non      | `mistral-small-latest`, `mistral-embed`, URL de l'API     |
 | `OPENAI_COMPAT_BASE_URL`, `_API_KEY`, `_CHAT_MODEL`, `_EMBED_MODEL`   | non      | endpoint compatible OpenAI (Ollama local…)                |
 | `AI_TIMEOUT_MS`, `AI_MAX_RETRIES`                                     | non      | délai par tentative (45 s) et reprises (2)                |
-| `COACH_MESSAGES_PER_DAY`                                              | non (40) | offre gratuite : messages au coach sur 24 h (0 = Premium) |
+| `COACH_MESSAGES_PER_DAY`                                              | non (5)  | offre gratuite : messages au coach sur 24 h (0 = Premium) |
 | `CONTACT_DAILY_LIMIT`                                                 | non (5)  | prises de contact envoyées par candidat sur 24 h          |
 | `CONTACT_EMAIL_FROM`                                                  | non      | expéditeur des prises de contact (défaut : `EMAIL_FROM`)  |
 | `CARD_LINK_TTL_DAYS`                                                  | non (30) | durée de validité des liens de carte anonyme (jours)      |
@@ -358,11 +358,16 @@ mémoire de carrière **uniquement par des suggestions qu'il valide**.
   `user:<id>:coach-message`), `CoachSuggestion` ; suppression en cascade avec la conversation ou
   le compte, incluses dans l'export RGPD. La conversation d'un autre utilisateur répond 404.
 - **Quota** : offre gratuite, `COACH_MESSAGES_PER_DAY` messages par utilisateur sur 24 h
-  glissantes (40 par défaut ; 0 = coach réservé à Premium) ; **Premium est illimité**. La limite
+  glissantes (5 par défaut ; 0 = coach réservé à Premium) ; **Premium et les administrateurs
+  (`ADMIN_EMAILS`) sont illimités**. ⚠️ Une valeur déjà présente dans le `.env` du VPS (par
+  exemple l'ancien `40`) remplace ce défaut : la retirer pour appliquer 5 messages. La limite
   vient des droits de l'utilisateur (`getEntitlements()`, voir « Abonnements »). Comptée en base
   sous un verrou transactionnel par utilisateur (`pg_advisory_xact_lock`) : des envois simultanés
-  ne peuvent pas la dépasser ; à 0, les relances sont aussi refusées. Limite atteinte : encart
-  d'information (pas une erreur) qui propose Premium quand le paiement est disponible.
+  ne peuvent pas la dépasser ; à 0, les relances sont aussi refusées. Limite atteinte : le
+  6ᵉ envoi est refusé par le serveur (429, `{ error: "quotaExceeded", limit, resetAt }`) ; la
+  conversation reste lisible, la saisie est désactivée et un encart (pas une erreur) indique
+  quand un message se libère et, si le paiement est disponible, ce que Premium débloque, son prix
+  (simulateur ou Stripe) et un lien vers « Abonnement ».
 - **Langue** : le coach répond dans la langue de l'utilisateur (`getUserLocale()`).
 - **Journal** : compteurs (étapes, suggestions, durée) et codes d'erreur ; jamais le texte des
   messages.
@@ -883,6 +888,10 @@ Services (`docker-compose.yml`) :
 - `postgres` : `pgvector/pgvector:pg17`, volume `pgdata`, réseau interne uniquement.
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.
+
+Quota gratuit du coach : **5 messages sur 24 h** par défaut. Une ligne `COACH_MESSAGES_PER_DAY`
+déjà présente dans le `.env` du VPS (copie d'un ancien `.env.example`, qui valait `40`) l'emporte
+sur ce défaut : la supprimer ou la passer à `5`, puis `docker compose up -d app`.
 
 ### Pages légales et variables `LEGAL_*`
 

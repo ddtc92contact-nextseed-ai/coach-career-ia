@@ -169,7 +169,7 @@
       "items": {
         "free": {
           "q": "Is het echt gratis?",
-          "a": "Ja. Carrièregeheugen, randvoorwaarden, kansen en anoniem contact zijn gratis, zonder tijdslimiet. De coach is inbegrepen met een dagquotum; Premium maakt hem onbeperkt en voegt de onderhandelingsagent toe."
+          "a": "Ja. Carrièregeheugen, randvoorwaarden, kansen en anoniem contact zijn gratis, zonder tijdslimiet. {limit, plural, =0 {De AI-coach en de onderhandelingsagent maken deel uit van Premium.} one {De coach is inbegrepen met # bericht per 24 uur; Premium maakt hem onbeperkt en voegt de onderhandelingsagent toe.} other {De coach is inbegrepen met # berichten per 24 uur; Premium maakt hem onbeperkt en voegt de onderhandelingsagent toe.}}"
         },
         "employer": {
           "q": "Kan mijn huidige werkgever mij ontdekken?",
@@ -1269,7 +1269,8 @@
           "second": "Stel me een vraag over een lastige situatie",
           "third": "Laten we salarisonderhandeling oefenen"
         }
-      }
+      },
+      "locked": "Verzenden uitgeschakeld: gratis berichten van de afgelopen 24 uur opgebruikt."
     },
     "errors": {
       "title": "De coach kon niet antwoorden",
@@ -1278,7 +1279,7 @@
       "aiUnavailable": "De AI-dienst is tijdelijk niet beschikbaar.",
       "aiRateLimited": "De AI-dienst is op dit moment erg druk.",
       "aiInvalidOutput": "De coach gaf een onbruikbaar antwoord.",
-      "quotaExceeded": "U hebt de limiet van {limit} berichten per 24 uur bereikt. Kom later terug.",
+      "quotaExceeded": "U hebt de limiet van {limit} berichten per 24 uur bereikt. Met Premium is de coach onbeperkt.",
       "tooManyRetries": "Dit bericht is al meerdere keren zonder succes opnieuw verzonden. Herformuleer het of stuur een nieuw bericht.",
       "busy": "De coach beantwoordt al een bericht in dit gesprek. Wacht een paar seconden.",
       "notFound": "Dit gesprek bestaat niet meer.",
@@ -1346,13 +1347,14 @@
     },
     "quotaUnlimited": "Onbeperkt berichten met Premium.",
     "upsell": {
-      "title": "U hebt uw gratis berichten gebruikt",
-      "text": "Het gratis abonnement omvat {limit, plural, one {# bericht} other {# berichten}} aan de coach per voortschrijdende 24 uur; ze komen geleidelijk weer vrij.",
+      "title": "{limit, plural, one {U hebt uw gratis bericht gebruikt} other {U hebt uw # gratis berichten gebruikt}}",
+      "text": "Het gratis abonnement omvat {limit, plural, one {# bericht} other {# berichten}} aan de coach per voortschrijdende 24 uur: elk bericht komt 24 uur na verzending weer vrij. Uw gesprek blijft leesbaar.",
+      "resetsAt": "Volgend gratis bericht {relative}, om {time}.",
       "titlePremiumOnly": "De AI-coach is voorbehouden aan Premium",
       "textPremiumOnly": "Op deze dienst maakt de AI-coach deel uit van het Premium-abonnement.",
-      "premium": "Met Premium is de coach onbeperkt.",
-      "later": "Online betalen is nog niet beschikbaar: kom iets later terug.",
-      "cta": "Ontdek Premium"
+      "unlocks": "Premium ontgrendelt:",
+      "later": "Online betalen is nog niet beschikbaar op deze dienst.",
+      "cta": "Overstappen op Premium"
     }
   },
   "settings": {

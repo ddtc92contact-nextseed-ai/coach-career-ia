@@ -194,6 +194,14 @@ export type CoachStreamEvent =
   | { type: "suggestion"; suggestion: SuggestionView }
   /** Morceau de la réponse. */
   | { type: "delta"; text: string }
-  /** `remaining` : messages restants sur 24 h, `null` si illimité (Premium). */
-  | { type: "done"; message: CoachMessageView; remaining: number | null }
+  /**
+   * `remaining` : messages restants sur 24 h, `null` si illimité (Premium) ;
+   * `resetAt` (ISO) : à 0, quand un message gratuit se libère.
+   */
+  | {
+      type: "done";
+      message: CoachMessageView;
+      remaining: number | null;
+      resetAt: string | null;
+    }
   | { type: "error"; code: CoachErrorCode };

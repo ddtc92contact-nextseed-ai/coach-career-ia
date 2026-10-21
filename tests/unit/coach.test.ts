@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import { createAiClient, createMockProvider, scriptedReplies } from "@/lib/ai";
 import { createLogger } from "@/lib/logger";
 import { coachSystemPrompt, MODE_TOOLS } from "@/lib/coach/prompts";
-import { coachMessagesPerDay, remainingMessages } from "@/lib/coach/quota";
+import {
+  COACH_QUOTA_WINDOW_MS,
+  coachMessagesPerDay,
+  DEFAULT_COACH_MESSAGES_PER_DAY,
+  quotaResetAt,
+  remainingMessages,
+} from "@/lib/coach/quota";
 import { emailNameParts, redactPlain, redactSuggestion } from "@/lib/coach/redact";
 import { guardRailSuggestion, SUGGESTION_SCHEMAS } from "@/lib/coach/shared";
 import { chunkText, coachErrorCode } from "@/lib/coach/turn";
@@ -81,12 +87,33 @@ describe("coach : schémas des suggestions", () => {
 
 describe("coach : quota", () => {
   it("lit la limite quotidienne depuis l'environnement", () => {
-    expect(coachMessagesPerDay({})).toBe(40);
-    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "5" })).toBe(5);
+    // Offre gratuite : 5 messages par défaut, remplaçable par la variable.
+    expect(DEFAULT_COACH_MESSAGES_PER_DAY).toBe(5);
+    expect(coachMessagesPerDay({})).toBe(5);
+    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: " " })).toBe(5);
+    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "40" })).toBe(40);
     expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "0" })).toBe(0);
-    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "abc" })).toBe(40);
+    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "abc" })).toBe(5);
+    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "-1" })).toBe(5);
+    expect(coachMessagesPerDay({ COACH_MESSAGES_PER_DAY: "2.5" })).toBe(5);
     expect(remainingMessages(3, 5)).toBe(2);
     expect(remainingMessages(9, 5)).toBe(0);
+    expect(remainingMessages(9, null)).toBeNull();
+  });
+
+  it("dit quand un message se libère (fenêtre glissante)", () => {
+    const at = (h: number) => new Date(Date.UTC(2026, 9, 21, h));
+    const sent = [at(9), at(3), at(5), at(7), at(8)];
+    // Limite atteinte : le plus ancien envoi sort de la fenêtre 24 h plus tard.
+    expect(quotaResetAt(sent, 5)).toEqual(new Date(at(3).getTime() + COACH_QUOTA_WINDOW_MS));
+    // Limite abaissée (6 envois pour 4) : il faut que 3 sortent de la fenêtre.
+    expect(quotaResetAt([...sent, at(10)], 4)).toEqual(
+      new Date(at(7).getTime() + COACH_QUOTA_WINDOW_MS),
+    );
+    expect(quotaResetAt(sent.slice(0, 4), 5)).toBeNull();
+    expect(quotaResetAt(sent, null)).toBeNull();
+    // Coach réservé à Premium : aucun message ne se libère.
+    expect(quotaResetAt(sent, 0)).toBeNull();
   });
 });
 
