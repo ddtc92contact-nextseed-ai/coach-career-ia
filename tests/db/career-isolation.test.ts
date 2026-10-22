@@ -116,6 +116,7 @@ describe.skipIf(!url)("mémoire de carrière : isolation, export et suppression"
       excludedCompanies: ["Globex Corporation"],
       maxWeeklyHours: 40,
       acceptsOnCall: false,
+      acceptsRemoteOutsideZone: false,
       culturePreferences: ["ASYNC_FIRST"],
       locations: [{ label: "Nantes", radiusKm: 25 }],
     });
@@ -245,6 +246,7 @@ describe.skipIf(!url)("mémoire de carrière : isolation, export et suppression"
       excludedSectors: [],
       excludedCompanies: ["Globex Corporation"],
       acceptsOnCall: false,
+      acceptsRemoteOutsideZone: false,
       culturePreferences: [],
       minFixedSalary: 60000,
       minRemoteDays: undefined,

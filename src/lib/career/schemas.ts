@@ -221,6 +221,8 @@ export const guardRailsInput = z
       .default([]),
     maxWeeklyHours: optionalInt(1, 80),
     acceptsOnCall: z.boolean().default(false),
+    /** Télétravail complet hors des lieux acceptés (sans effet sans lieu). */
+    acceptsRemoteOutsideZone: z.boolean().default(false),
     culturePreferences: z
       .array(z.enum(CULTURE_PREFERENCES, { error: "invalidChoice" }))
       .default([]),

@@ -60,13 +60,25 @@ export const remoteDaysRule: Rule = (offer, rails) => {
 };
 
 /**
- * Zone acceptée : une offre en télétravail complet passe toujours ; sinon elle
- * doit être dans le rayon d'un lieu localisé. Une offre sans coordonnées ne
- * correspond jamais (on n'invente pas de position). Si aucun lieu du candidat
- * n'a pu être localisé, le filtre ne peut pas s'appliquer : c'est signalé.
+ * Le candidat accepte-t-il le télétravail complet hors de sa zone ? Accord
+ * explicite, ou implicite quand il ne veut QUE du télétravail complet (sinon
+ * ses lieux videraient ses résultats).
+ */
+export function remoteOutsideZoneAccepted(rails: CandidateRails): boolean {
+  return rails.acceptsRemoteOutsideZone || rails.remotePolicy === "FULL_REMOTE";
+}
+
+/**
+ * Zone acceptée : l'offre doit être dans le rayon d'un lieu localisé, qu'elle
+ * soit en télétravail ou non. Une offre en télétravail complet hors zone (ou
+ * sans coordonnées) ne passe qu'avec l'accord du candidat
+ * (`remoteOutsideZoneAccepted`). Une offre sans coordonnées ne correspond
+ * jamais (on n'invente pas de position). Si aucun lieu du candidat n'a pu
+ * être localisé, le filtre ne peut pas s'appliquer : c'est signalé.
  */
 export const locationRule: Rule = (offer, rails) => {
-  if (rails.locations.length === 0 || offer.remotePolicy === "FULL_REMOTE") return ok;
+  if (rails.locations.length === 0) return ok;
+  if (offer.remotePolicy === "FULL_REMOTE" && remoteOutsideZoneAccepted(rails)) return ok;
   const located = rails.locations.filter((l) => isValidPoint(l));
   if (located.length === 0) return { unknown: "locationNotChecked" };
   return isWithinRadius(offer, located) ? ok : { violation: "outsideRadius" };

@@ -1191,6 +1191,9 @@
       "radius": "Radio (km)",
       "remove": "Quitar",
       "add": "Añadir una ubicación",
+      "remoteOutside": "Proponer también los puestos 100 % en remoto situados fuera de mi zona",
+      "remoteOutsideHint": "En caso contrario, un puesto totalmente en remoto solo se propone si está situado dentro del radio de uno de sus lugares.",
+      "remoteOutsideImplied": "Siempre incluido: ha elegido únicamente el teletrabajo completo.",
       "notLocated": "Lugar aún no localizado: está guardado, pero el filtro de distancia no podrá aplicarse. Revisa la ortografía o indica el país («Berlín, Alemania») y vuelve a guardar.",
       "notLocatedSummary": "{count, plural, one {No se ha podido localizar # lugar. Está guardado, pero las ofertas no se filtrarán por distancia a su alrededor hasta que se reconozca.} other {No se han podido localizar # lugares. Están guardados, pero las ofertas no se filtrarán por distancia a su alrededor hasta que se reconozcan.}}"
     },
@@ -1230,6 +1233,7 @@
       "hybridDays": "{policy}, {count, plural, one {# día mínimo} other {# días mínimo}}",
       "locations": "Lugares",
       "location": "{label} ({km} km)",
+      "remoteOutside": "teletrabajo completo fuera de la zona aceptado",
       "contracts": "Contratos aceptados",
       "contractsAll": "Todos",
       "exclusionsValue": "{sectors, plural, =0 {Ningún sector} one {# sector} other {# sectores}}, {companies, plural, =0 {ninguna empresa} one {# empresa} other {# empresas}}",
@@ -1384,6 +1388,7 @@
         "excludedSectors": "Sectores excluidos",
         "maxWeeklyHours": "Horas semanales máximas",
         "acceptsOnCall": "Guardias aceptadas",
+        "acceptsRemoteOutsideZone": "Teletrabajo completo fuera de la zona aceptado",
         "locations": "Zonas de trabajo"
       }
     },
@@ -1666,7 +1671,7 @@
     "remotePolicy": {
       "ONSITE": "Presencial aceptado",
       "HYBRID": "Híbrido",
-      "FULL_REMOTE": "Solo 100 % en remoto"
+      "FULL_REMOTE": "Solo 100 % en remoto"
     },
     "culture": {
       "ASYNC_FIRST": "Trabajo asíncrono",
@@ -1727,8 +1732,10 @@
       "hoursNotStated": "Jornada semanal no indicada.",
       "locationNotChecked": "Distancia no comprobada: no se han podido localizar tus lugares.",
       "seniorityNotStated": "Nivel de experiencia esperado no indicado.",
-      "cultureNotStated": "La oferta no menciona ninguna de tus preferencias de cultura."
+      "cultureNotStated": "La oferta no menciona ninguna de tus preferencias de cultura.",
+      "remoteWithTravel": "Teletrabajo completo, pero la oferta menciona desplazamientos (sede, clientes…): por comprobar."
     },
+    "remoteWithTravelPlace": "Teletrabajo completo, pero la oferta menciona desplazamientos ({place}): por comprobar.",
     "components": {
       "skills": "Competencias y pruebas",
       "seniority": "Seniority",

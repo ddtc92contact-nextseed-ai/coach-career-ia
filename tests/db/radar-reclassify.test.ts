@@ -63,7 +63,8 @@ describe.skipIf(!url)("reclassement du télétravail des offres déjà en base",
       responsibilities: "Prospection téléphonique et cycle de vente complet",
     });
     await repo.addDeclaredSkill(userId, "Prospection");
-    // Zone limitée à l'Alsace, aucune préférence de télétravail.
+    // Zone limitée à l'Alsace, aucune préférence de télétravail ; le télétravail complet
+    // hors zone est accepté (#66) : seule la classification décide du sort de l'offre.
     await repo.saveGuardRails(
       userId,
       {
@@ -72,6 +73,7 @@ describe.skipIf(!url)("reclassement du télétravail des offres déjà en base",
         excludedSectors: [],
         excludedCompanies: [],
         acceptsOnCall: true,
+        acceptsRemoteOutsideZone: true,
         culturePreferences: [],
         locations: [
           { label: "Strasbourg", radiusKm: 30 },

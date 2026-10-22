@@ -42,6 +42,12 @@ export type CandidateRails = {
   excludedCompanies: string[];
   maxWeeklyHours: number | null;
   acceptsOnCall: boolean;
+  /**
+   * Accord explicite pour les offres en télétravail complet situées hors de
+   * la zone (ou sans lieu). Implicite avec la politique `FULL_REMOTE`, voir
+   * `remoteOutsideZoneAccepted`.
+   */
+  acceptsRemoteOutsideZone: boolean;
   culturePreferences: CulturePreferenceCode[];
   /** Lieux acceptés ; coordonnées `null` si le lieu n'a pas été localisé. */
   locations: { latitude: number | null; longitude: number | null; radiusKm: number }[];
@@ -89,6 +95,8 @@ export const UNKNOWN_CODES = [
   "locationNotChecked",
   "seniorityNotStated",
   "cultureNotStated",
+  /** Télétravail complet, mais l'offre mentionne des déplacements (siège, clients…). */
+  "remoteWithTravel",
 ] as const;
 export type UnknownCode = (typeof UNKNOWN_CODES)[number];
 

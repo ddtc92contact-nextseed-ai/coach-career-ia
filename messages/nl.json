@@ -1191,6 +1191,9 @@
       "radius": "Straal (km)",
       "remove": "Verwijderen",
       "add": "Een locatie toevoegen",
+      "remoteOutside": "Stel ook 100% thuiswerkfuncties buiten mijn regio voor",
+      "remoteOutsideHint": "Anders wordt een volledig thuiswerkfunctie alleen voorgesteld als die binnen de straal van een van uw locaties ligt.",
+      "remoteOutsideImplied": "Altijd inbegrepen: u hebt alleen volledig thuiswerken gekozen.",
       "notLocated": "Locatie nog niet gevonden: ze is opgeslagen, maar het afstandsfilter kan er niet op worden toegepast. Controleer de spelling of vermeld het land (‘Berlijn, Duitsland’) en sla opnieuw op.",
       "notLocatedSummary": "{count, plural, one {# locatie kon niet worden gevonden. Ze is opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend is.} other {# locaties konden niet worden gevonden. Ze zijn opgeslagen, maar vacatures worden pas op afstand gefilterd zodra ze herkend zijn.}}"
     },
@@ -1230,6 +1233,7 @@
       "hybridDays": "{policy}, {count, plural, one {minimaal # dag} other {minimaal # dagen}}",
       "locations": "Locaties",
       "location": "{label} ({km} km)",
+      "remoteOutside": "volledig thuiswerken buiten de regio geaccepteerd",
       "contracts": "Geaccepteerde contracten",
       "contractsAll": "Alle",
       "exclusionsValue": "{sectors, plural, =0 {Geen sector} one {# sector} other {# sectoren}}, {companies, plural, =0 {geen bedrijf} one {# bedrijf} other {# bedrijven}}",
@@ -1384,6 +1388,7 @@
         "excludedSectors": "Uitgesloten sectoren",
         "maxWeeklyHours": "Maximaal aantal uren per week",
         "acceptsOnCall": "Consignatiediensten geaccepteerd",
+        "acceptsRemoteOutsideZone": "Volledig thuiswerken buiten de regio geaccepteerd",
         "locations": "Werkgebieden"
       }
     },
@@ -1727,8 +1732,10 @@
       "hoursNotStated": "Aantal uren per week niet vermeld.",
       "locationNotChecked": "Afstand niet gecontroleerd: je locaties konden niet worden gevonden.",
       "seniorityNotStated": "Verwacht ervaringsniveau niet vermeld.",
-      "cultureNotStated": "De vacature noemt geen van je cultuurvoorkeuren."
+      "cultureNotStated": "De vacature noemt geen van je cultuurvoorkeuren.",
+      "remoteWithTravel": "Volledig thuiswerken, maar de vacature vermeldt reizen (hoofdkantoor, klanten…): te controleren."
     },
+    "remoteWithTravelPlace": "Volledig thuiswerken, maar de vacature vermeldt reizen ({place}): te controleren.",
     "components": {
       "skills": "Vaardigheden en bewijzen",
       "seniority": "Senioriteit",

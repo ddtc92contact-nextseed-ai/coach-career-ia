@@ -360,23 +360,26 @@ model AchievementSkill {
 /// Garde-fous : filtres durs appliqués par le matching (1-1 avec l'utilisateur).
 /// Montants en euros bruts annuels.
 model GuardRails {
-  userId             String         @id @map("user_id")
-  minFixedSalary     Int?           @map("min_fixed_salary")
-  targetTotalPackage Int?           @map("target_total_package")
+  userId                   String         @id @map("user_id")
+  minFixedSalary           Int?           @map("min_fixed_salary")
+  targetTotalPackage       Int?           @map("target_total_package")
   /// Enums partagés avec le radar ; l'application n'accepte que des valeurs
   /// explicites (jamais `UNKNOWN` ni `OTHER`, voir `src/lib/career/codes.ts`).
-  remotePolicy       RemotePolicy?  @map("remote_policy")
-  minRemoteDays      Int?           @map("min_remote_days")
-  contractTypes      ContractType[] @map("contract_types")
+  remotePolicy             RemotePolicy?  @map("remote_policy")
+  minRemoteDays            Int?           @map("min_remote_days")
+  contractTypes            ContractType[] @map("contract_types")
   /// Codes de secteur exclus.
-  excludedSectors    String[]       @map("excluded_sectors")
+  excludedSectors          String[]       @map("excluded_sectors")
   /// Noms d'entreprises exclues, chacun chiffré (AAD `user:<id>:excluded-company`).
-  excludedCompanies  String[]       @map("excluded_companies_enc")
-  maxWeeklyHours     Int?           @map("max_weekly_hours")
-  acceptsOnCall      Boolean        @default(false) @map("accepts_on_call")
+  excludedCompanies        String[]       @map("excluded_companies_enc")
+  maxWeeklyHours           Int?           @map("max_weekly_hours")
+  acceptsOnCall            Boolean        @default(false) @map("accepts_on_call")
+  /// Offres en télétravail complet hors de la zone acceptées (accord explicite ;
+  /// implicite avec `remotePolicy = FULL_REMOTE`, voir `matching/filters.ts`).
+  acceptsRemoteOutsideZone Boolean        @default(false) @map("accepts_remote_outside_zone")
   /// Codes de préférences de culture d'entreprise (facultatifs).
-  culturePreferences String[]       @map("culture_preferences")
-  updatedAt          DateTime       @updatedAt @map("updated_at")
+  culturePreferences       String[]       @map("culture_preferences")
+  updatedAt                DateTime       @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

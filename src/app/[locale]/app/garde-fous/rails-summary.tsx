@@ -57,11 +57,19 @@ export async function RailsSummary({
       label: t("overview.locations"),
       value:
         rails.locations.length > 0
-          ? format.list(
-              rails.locations.map((l) =>
-                t("overview.location", { label: l.label, km: l.radiusKm }),
+          ? [
+              format.list(
+                rails.locations.map((l) =>
+                  t("overview.location", { label: l.label, km: l.radiusKm }),
+                ),
               ),
-            )
+              // Accord explicite, ou implicite avec le télétravail complet uniquement.
+              rails.acceptsRemoteOutsideZone || remote === "FULL_REMOTE"
+                ? t("overview.remoteOutside")
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")
           : null,
     },
     {

@@ -1191,6 +1191,9 @@
       "radius": "Raggio (km)",
       "remove": "Rimuovi",
       "add": "Aggiungi una sede",
+      "remoteOutside": "Proporre anche i ruoli 100% da remoto situati fuori dalla mia zona",
+      "remoteOutsideHint": "Altrimenti, un ruolo interamente da remoto viene proposto solo se si trova nel raggio di uno dei Suoi luoghi.",
+      "remoteOutsideImplied": "Sempre incluso: ha scelto solo il lavoro interamente da remoto.",
       "notLocated": "Luogo non ancora localizzato: è salvato, ma il filtro di distanza non potrà applicarsi. Controlla l’ortografia o indica il paese («Berlino, Germania»), poi salva di nuovo.",
       "notLocatedSummary": "{count, plural, one {# luogo non è stato localizzato. È salvato, ma le offerte non saranno filtrate per distanza finché non viene riconosciuto.} other {# luoghi non sono stati localizzati. Sono salvati, ma le offerte non saranno filtrate per distanza finché non vengono riconosciuti.}}"
     },
@@ -1230,6 +1233,7 @@
       "hybridDays": "{policy}, {count, plural, one {# giorno minimo} other {# giorni minimo}}",
       "locations": "Luoghi",
       "location": "{label} ({km} km)",
+      "remoteOutside": "remoto completo fuori zona accettato",
       "contracts": "Contratti accettati",
       "contractsAll": "Tutti",
       "exclusionsValue": "{sectors, plural, =0 {Nessun settore} one {# settore} other {# settori}}, {companies, plural, =0 {nessuna azienda} one {# azienda} other {# aziende}}",
@@ -1384,6 +1388,7 @@
         "excludedSectors": "Settori esclusi",
         "maxWeeklyHours": "Ore settimanali massime",
         "acceptsOnCall": "Reperibilità accettata",
+        "acceptsRemoteOutsideZone": "Remoto completo fuori zona accettato",
         "locations": "Zone di lavoro"
       }
     },
@@ -1727,8 +1732,10 @@
       "hoursNotStated": "Orario settimanale non indicato.",
       "locationNotChecked": "Distanza non verificata: non è stato possibile localizzare i tuoi luoghi.",
       "seniorityNotStated": "Livello di esperienza atteso non indicato.",
-      "cultureNotStated": "L’offerta non cita nessuna delle tue preferenze di cultura."
+      "cultureNotStated": "L’offerta non cita nessuna delle tue preferenze di cultura.",
+      "remoteWithTravel": "Interamente da remoto, ma l’offerta menziona trasferte (sede, clienti…): da verificare."
     },
+    "remoteWithTravelPlace": "Interamente da remoto, ma l’offerta menziona trasferte ({place}): da verificare.",
     "components": {
       "skills": "Competenze e prove",
       "seniority": "Seniority",

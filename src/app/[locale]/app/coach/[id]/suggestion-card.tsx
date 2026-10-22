@@ -320,6 +320,11 @@ function SuggestionDetails({ suggestion }: { suggestion: SuggestionView }) {
           {d.acceptsOnCall !== undefined ? (
             <Row label={f("acceptsOnCall")}>{d.acceptsOnCall ? t("yes") : t("no")}</Row>
           ) : null}
+          {d.acceptsRemoteOutsideZone !== undefined ? (
+            <Row label={f("acceptsRemoteOutsideZone")}>
+              {d.acceptsRemoteOutsideZone ? t("yes") : t("no")}
+            </Row>
+          ) : null}
           {d.locations?.length ? (
             <Row label={f("locations")}>
               {d.locations

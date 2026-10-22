@@ -69,6 +69,7 @@ export async function loadRails(
     ),
     maxWeeklyHours: rails.maxWeeklyHours,
     acceptsOnCall: rails.acceptsOnCall,
+    acceptsRemoteOutsideZone: rails.acceptsRemoteOutsideZone,
     culturePreferences: cultureCodes(rails.culturePreferences),
     locations,
   };

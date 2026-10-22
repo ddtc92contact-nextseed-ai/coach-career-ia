@@ -1,8 +1,9 @@
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/badge";
 import { buttonClass } from "@/components/button";
 import { Icon, type IconName } from "@/components/icons";
-import { scoreBand, type Explanation } from "@/lib/matching/explanation";
+import type { AppLocale } from "@/i18n/routing";
+import { scoreBand, unknownLine, type Explanation } from "@/lib/matching/explanation";
 import type { MatchView } from "@/lib/matching/repository";
 import type { UnknownCode } from "@/lib/matching/types";
 import { changeMatchStatus } from "./actions";
@@ -191,12 +192,15 @@ const RAIL_CHECKS: {
   { key: "salary", unknowns: ["salaryNotStated"] },
   { key: "remote", unknowns: ["remoteNotStated", "remoteDaysNotStated"] },
   { key: "contract", unknowns: ["contractNotStated"] },
-  { key: "location", unknowns: ["locationNotChecked"] },
+  // Télétravail complet avec déplacements : la zone est à vérifier.
+  { key: "location", unknowns: ["locationNotChecked", "remoteWithTravel"] },
 ];
 
 /**
  * Garde-fous cochés : une offre proposée n'en viole aucun (filtres durs) ;
  * quand l'offre ne donne pas l'information, le point est « à vérifier ».
+ * Une offre en télétravail complet qui mentionne des déplacements est
+ * signalée en clair, sur la carte comme dans le détail.
  */
 export async function RailChecks({
   explanation,
@@ -205,12 +209,19 @@ export async function RailChecks({
   explanation: Explanation | null;
   compact?: boolean;
 }) {
-  const t = await getTranslations("opportunities.rails");
+  const [t, locale] = await Promise.all([
+    getTranslations("opportunities.rails"),
+    getLocale() as Promise<AppLocale>,
+  ]);
   const unknowns = new Set(explanation?.unknowns ?? []);
   const checks = RAIL_CHECKS.map((check) => ({
     key: check.key,
     unknown: check.unknowns.some((code) => unknowns.has(code)),
   }));
+  const travel =
+    explanation && unknowns.has("remoteWithTravel")
+      ? unknownLine(explanation, "remoteWithTravel", locale)
+      : null;
   if (compact) {
     const toCheck = checks.filter((c) => c.unknown).length;
     return (
@@ -223,6 +234,12 @@ export async function RailChecks({
           <span className="text-warning-ink inline-flex items-center gap-1.5">
             <Icon name="help" className="size-4" />
             {t("toCheck", { count: toCheck })}
+          </span>
+        ) : null}
+        {travel ? (
+          <span className="text-warning-ink inline-flex basis-full items-start gap-1.5 font-medium">
+            <Icon name="alert" className="mt-0.5 size-4 shrink-0" />
+            {travel}
           </span>
         ) : null}
       </p>
@@ -250,7 +267,13 @@ export async function RailChecks({
           <span className="min-w-0">
             <span className="block font-medium">{t(`items.${key}`)}</span>
             <span className="block text-sm opacity-90">
-              {!unknown ? t("ok") : key === "location" ? t("unknownLocation") : t("unknown")}
+              {!unknown
+                ? t("ok")
+                : key !== "location"
+                  ? t("unknown")
+                  : travel && !unknowns.has("locationNotChecked")
+                    ? travel
+                    : t("unknownLocation")}
             </span>
           </span>
         </li>
