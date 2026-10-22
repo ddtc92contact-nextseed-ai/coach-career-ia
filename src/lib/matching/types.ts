@@ -120,5 +120,10 @@ export const GAP_CODES = [
   "fewSkills",
   /** Peu de rapport avec le parcours : le contexte (salaire, séniorité, culture) compte moins. */
   "lowRelevance",
+  /**
+   * Aucun terme métier du candidat (compétences, expériences) cité par
+   * l'offre : seule la proximité avec les missions du poste est mesurée.
+   */
+  "noLexicalSupport",
 ] as const;
 export type GapCode = (typeof GAP_CODES)[number];

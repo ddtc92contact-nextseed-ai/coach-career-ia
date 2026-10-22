@@ -50,7 +50,7 @@ export type RecomputeDeps = {
     MatchingConfig,
     "minScore" | "maxPerUser" | "llmExplanations" | "llmMinScore" | "semanticRange"
   > &
-    Partial<Pick<MatchingConfig, "calibrationMinSamples">>;
+    Partial<Pick<MatchingConfig, "calibrationMinSamples" | "salaryNotStated">>;
   /** `null` : pas d'IA (score lexical, explications déterministes). */
   client: AiClient | null;
   /** Appels LLM restants pour ce passage, partagé entre candidats. */
@@ -88,9 +88,10 @@ class SemanticUnavailable extends Error {
 /**
  * Version des éléments d'explication : changée quand le calcul du score
  * change, pour que toutes les correspondances soient réécrites au recalcul
- * suivant (v2 : pertinence d'abord, issue #72).
+ * suivant (v2 : pertinence d'abord, issue #72 ; v3 : classement sans
+ * saturation, appui lexical, salaire non annoncé neutre, issue #77).
  */
-const EXPLANATION_INPUT_VERSION = 2;
+const EXPLANATION_INPUT_VERSION = 3;
 
 const hash = (value: unknown) =>
   createHash("sha256").update(JSON.stringify(value)).digest("base64url");
@@ -232,6 +233,7 @@ export async function recomputeUserMatches(
         similarities,
         scale,
         followed,
+        { salaryNotStated: deps.config.salaryNotStated },
       );
       excludedCount += excluded.length;
       kept = retain([

@@ -20,8 +20,8 @@ import type {
 } from "./types";
 
 /**
- * Score de 0 à 100 d'une offre qui respecte les garde-fous (issue #72 : la
- * pertinence d'abord).
+ * Score de 0 à 100 d'une offre qui respecte les garde-fous (issues #72 et
+ * #77 : la pertinence d'abord, un classement qui tient).
  *
  * 1. PERTINENCE (`skills`, 60) : rapport entre l'offre et le parcours,
  *    combinaison « l'un ou l'autre » (1 − (1 − L)(1 − S)) de deux signaux :
@@ -31,8 +31,17 @@ import type {
  *      rôle générique, voir `significantTerms`) ;
  *    - sémantique (S) : similarité des embeddings des réalisations et des
  *      expériences, CALIBRÉE par candidat (`calibratedRange`) : la médiane
- *      de ses similarités vaut 0, son top 1 % vaut 1. Une réalisation pèse
- *      plus qu'une simple expérience.
+ *      de ses similarités vaut 0, son 99e centile `P99_VALUE`, et le haut
+ *      de la distribution (son maximum) 1 : au-delà du p99, l'échelle
+ *      continue de départager (#77 : ~180 offres ex æquo par élément au
+ *      clamp du p99). Les éléments sont agrégés du meilleur au moins bon,
+ *      chacun pesant `SEMANTIC_DECAY` fois le précédent : un élément isolé
+ *      ne donne pas une pertinence pleine, l'ensemble du parcours compte.
+ *      Une réalisation pèse plus qu'une simple expérience.
+ *    APPUI LEXICAL : une offre qui ne cite AUCUN terme métier du candidat
+ *    (compétences, intitulés et responsabilités des expériences) n'a que la
+ *    proximité sémantique, multipliée par `UNSUPPORTED_FACTOR` (« noLexicalSupport ») :
+ *    à sémantique égale, elle passe toujours sous une offre qui en cite un.
  * 2. CONTEXTE (séniorité 15, salaire 15, culture 10) : il ne compte en
  *    entier que pour une offre pertinente. Son poids est multiplié par
  *    `min(1, pertinence / RELEVANCE_FULL)` : une offre hors sujet ne peut pas
@@ -42,8 +51,8 @@ import type {
  *    reste continu, et l'écart s'explique (« lowRelevance »).
  *
  * Une information absente donne un « inconnu » ; un salaire non annoncé est
- * neutre (aussi bon qu'un salaire au niveau du package visé) : le plancher,
- * filtre dur, n'est pas contredit.
+ * neutre (`DEFAULT_SALARY_NOT_STATED`, réglable) : en dessous d'un salaire
+ * annoncé au niveau du package visé, sans contredire le plancher, filtre dur.
  */
 
 export const WEIGHTS = { skills: 60, seniority: 15, salary: 15, culture: 10 } as const;
@@ -61,10 +70,30 @@ export const EXPERIENCE_WEIGHT = 0.4;
  * de poids qu'une simple expérience, et une preuve plus qu'une déclaration.
  */
 export const SEMANTIC_WEIGHTS = { proven: 1, declared: 0.85, experience: 0.7 } as const;
+/**
+ * Agrégation des éléments de la mémoire, du plus proche au moins proche :
+ * chacun pèse `SEMANTIC_DECAY` fois le précédent (moyenne pondérée). Un seul
+ * élément proche, sur quatre, donne au plus ~53 % de sa valeur (#77).
+ */
+export const SEMANTIC_DECAY = 0.5;
+/**
+ * Pertinence d'une offre sans appui lexical (aucun terme métier du candidat
+ * cité) : sa proximité sémantique seule, multipliée par ce facteur (#77).
+ */
+export const UNSUPPORTED_FACTOR = 0.6;
+/**
+ * Composante salaire d'une offre sans salaire annoncé (neutre), sous celle
+ * d'un salaire au niveau du package visé (1) ; réglable (`config.ts`).
+ */
+export const DEFAULT_SALARY_NOT_STATED = 0.7;
 /** Somme des poids lexicaux pour une composante lexicale pleine. */
 const LEXICAL_SATURATION = 3;
-/** Proximité normalisée à partir de laquelle un élément « correspond » au poste. */
-const SEMANTIC_MATCH_THRESHOLD = 0.6;
+/**
+ * Proximité normalisée à partir de laquelle un élément, sans exigence citée,
+ * est présenté comme proche des missions du poste : au-delà du p99
+ * (`P99_VALUE`), dans le haut de la distribution.
+ */
+const SEMANTIC_MATCH_THRESHOLD = 0.85;
 const MAX_PROOF_MATCHES = 5;
 const MAX_EXPERIENCE_MATCHES = 3;
 /**
@@ -76,11 +105,14 @@ const RESPONSIBILITY_TERM_WEIGHT = 0.5;
 const MAX_RESPONSIBILITY_TERMS = 40;
 
 /**
- * Échelle de similarité cosinus des embeddings : en dessous de `floor`, rien
- * en commun ; au-dessus de `ceil`, correspondance maximale. `curve`
- * (défaut `SEMANTIC_CURVE`) > 1 creuse le milieu de l'échelle.
+ * Échelle de similarité cosinus des embeddings : en dessous de `floor`
+ * (médiane), rien en commun ; `ceil` (99e centile) vaut `P99_VALUE` ; `top`
+ * (haut de la distribution ; défaut `ceil + MIN_TAIL × (ceil − floor)`,
+ * comme mesuré avec mistral-embed) vaut 1, avec
+ * une montée linéaire de `ceil` à `top`. `curve` (défaut `SEMANTIC_CURVE`)
+ * > 1 creuse le milieu de l'échelle, sous `ceil`.
  */
-export type SemanticRange = { floor: number; ceil: number; curve?: number };
+export type SemanticRange = { floor: number; ceil: number; top?: number; curve?: number };
 /**
  * Bornes fixes de repli, réglées pour mistral-embed (médiane ≈ 0,68, haut
  * de distribution ≈ 0,80 sur les offres réelles ; réglables par
@@ -96,24 +128,41 @@ export const DEFAULT_SEMANTIC_RANGE: SemanticRange = { floor: 0.68, ceil: 0.8 };
 export type SemanticScale = { fallback: SemanticRange; items?: ReadonlyMap<string, SemanticRange> };
 
 /** Distribution des similarités d'un élément de la mémoire sur les offres du candidat. */
-export type SimilarityStats = { count: number; median: number; p99: number };
+export type SimilarityStats = { count: number; median: number; p99: number; max: number };
 
 /** Nombre minimal d'offres pour calibrer (en deçà : bornes fixes). */
 export const DEFAULT_CALIBRATION_MIN_SAMPLES = 200;
 /**
- * Courbe de l'échelle (bornes calibrées comme fixes) : seul le haut de la
- * distribution compte. Calibrée : médiane 0, p90 ≈ 0,3, p97 ≈ 0,65, top 1 % = 1.
+ * Courbe de l'échelle sous le p99 (bornes calibrées comme fixes) : seul le
+ * haut de la distribution compte. Calibrée : médiane 0, p90 ≈ 0,2, p97 ≈ 0,45,
+ * p99 = `P99_VALUE`, puis montée linéaire jusqu'au maximum (1).
  */
 export const SEMANTIC_CURVE = 2;
+/**
+ * Valeur normalisée du 99e centile. Le top 1 % (~180 offres sur 18 000)
+ * garde de la place pour se départager : 0,79 et 0,84 ne finissent jamais
+ * ex æquo (#77).
+ */
+export const P99_VALUE = 0.7;
 /** Écart minimal médiane → p99 (distribution trop resserrée : rien ne se démarque). */
 const MIN_CALIBRATION_SPREAD = 0.02;
+/**
+ * Longueur de la montée p99 → haut de l'échelle, en écarts médiane → p99 :
+ * au moins `MIN_TAIL` (un maximum à peine au-dessus du p99 ne fait pas d'une
+ * offre ordinaire une correspondance parfaite), au plus `MAX_TAIL` (une
+ * seule offre aberrante n'écrase pas tout le haut de l'échelle).
+ */
+const MIN_TAIL = 0.5;
+const MAX_TAIL = 2;
 
 /**
  * Échelle calibrée sur la distribution d'un élément de la mémoire : la
- * médiane (offre quelconque) vaut 0, le 99e centile (top 1 %) vaut 1. Les
- * embeddings classent bien, mais leurs cosinus sont resserrés (mistral-embed :
- * 0,58 à 0,80) et leur niveau dépend du texte du candidat : des bornes fixes
- * écrasaient l'écart entre « audiovisuel » et « agent immobilier ».
+ * médiane (offre quelconque) vaut 0, le 99e centile `P99_VALUE`, le maximum
+ * 1. Les embeddings classent bien, mais leurs cosinus sont resserrés
+ * (mistral-embed : 0,58 à 0,84) et leur niveau dépend du texte du candidat :
+ * des bornes fixes écrasaient l'écart entre « audiovisuel » et « agent
+ * immobilier » (#72), un plafond au p99 celui entre « audiovisuel » et
+ * « maçon VRD » (#77).
  */
 export function calibratedRange(
   stats: SimilarityStats | undefined,
@@ -122,13 +171,18 @@ export function calibratedRange(
 ): SemanticRange {
   if (!stats || stats.count < Math.max(1, minSamples)) return fallback;
   if (!Number.isFinite(stats.median) || !Number.isFinite(stats.p99)) return fallback;
-  return {
-    floor: stats.median,
-    ceil: Math.max(stats.p99, stats.median + MIN_CALIBRATION_SPREAD),
-  };
+  const floor = stats.median;
+  const ceil = Math.max(stats.p99, stats.median + MIN_CALIBRATION_SPREAD);
+  const spread = ceil - floor;
+  const max = Number.isFinite(stats.max) ? stats.max : ceil + MIN_TAIL * spread;
+  const top = Math.min(ceil + MAX_TAIL * spread, Math.max(ceil + MIN_TAIL * spread, max));
+  return { floor, ceil, top };
 }
 
-/** Médiane et 99e centile (interpolés, comme `percentile_cont`) d'une liste de similarités. */
+/**
+ * Médiane, 99e centile (interpolés, comme `percentile_cont`) et maximum
+ * d'une liste de similarités.
+ */
 export function similarityStats(values: readonly number[]): SimilarityStats {
   const sorted = [...values].sort((a, b) => a - b);
   const at = (p: number) => {
@@ -138,7 +192,7 @@ export function similarityStats(values: readonly number[]): SimilarityStats {
     const j = Math.min(i + 1, sorted.length - 1);
     return sorted[i]! + (sorted[j]! - sorted[i]!) * (x - i);
   };
-  return { count: sorted.length, median: at(0.5), p99: at(0.99) };
+  return { count: sorted.length, median: at(0.5), p99: at(0.99), max: at(1) };
 }
 
 export type ProofMatch = {
@@ -157,6 +211,12 @@ export type ExperienceMatch = {
 };
 
 export type Gap = { code: GapCode; value?: string };
+
+/** Réglages du score (`config.ts`). */
+export type ScoreOptions = {
+  /** Composante salaire d'une offre sans salaire annoncé (défaut `DEFAULT_SALARY_NOT_STATED`). */
+  salaryNotStated?: number;
+};
 
 export type Evaluation = {
   score: number;
@@ -192,9 +252,15 @@ export const FOLLOWED_COMPANY_BOOST = 10;
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 
+/** Similarité normalisée : 0 à la médiane, `P99_VALUE` au p99, 1 en haut de l'échelle. */
 function normalizeSimilarity(similarity: number, range: SemanticRange): number {
-  const linear = clamp01((similarity - range.floor) / (range.ceil - range.floor));
-  return linear ** (range.curve ?? SEMANTIC_CURVE);
+  const spread = range.ceil - range.floor;
+  if (similarity <= range.ceil) {
+    const linear = clamp01((similarity - range.floor) / spread);
+    return P99_VALUE * linear ** (range.curve ?? SEMANTIC_CURVE);
+  }
+  const top = Math.max(range.top ?? range.ceil + MIN_TAIL * spread, range.ceil + Number.EPSILON);
+  return P99_VALUE + (1 - P99_VALUE) * clamp01((similarity - range.ceil) / (top - range.ceil));
 }
 
 function rangeFor(scale: SemanticRange | SemanticScale, itemId: string): SemanticRange {
@@ -333,6 +399,7 @@ export function evaluateOffer(
   offer: MatchOffer,
   similarities: ReadonlyMap<string, number> | null,
   scale: SemanticRange | SemanticScale = DEFAULT_SEMANTIC_RANGE,
+  options: ScoreOptions = {},
 ): OfferResult {
   const check = checkGuardRails(offer, rails);
   if (!check.pass) return { offerId: offer.id, pass: false, violations: check.violations };
@@ -422,13 +489,31 @@ export function evaluateOffer(
 
   let semantic: number | null = null;
   if (similarities && semanticValues.length > 0) {
+    // Du plus proche au moins proche, chaque élément pèse `SEMANTIC_DECAY` fois le précédent.
     const sorted = [...semanticValues].sort((a, b) => b - a);
-    const top = sorted.slice(0, 3);
-    semantic = 0.7 * sorted[0]! + 0.3 * (top.reduce((n, v) => n + v, 0) / top.length);
+    let sum = 0;
+    let weights = 0;
+    sorted.forEach((value, k) => {
+      const w = SEMANTIC_DECAY ** k;
+      sum += w * value;
+      weights += w;
+    });
+    semantic = sum / weights;
   }
-  // L'un OU l'autre signal suffit ; les deux ensemble renforcent la pertinence.
-  const relevance = semantic === null ? lexical : 1 - (1 - lexical) * (1 - semantic);
-  if (matchedSkills.length === 0) gaps.push({ code: "fewSkills" });
+  // Appui lexical : au moins un terme métier du candidat cité par l'offre.
+  const supported = matchedSkills.length > 0 || experienceHits.size > 0;
+  const hasLexicon = lexicon.skills.length > 0 || lexicon.experiences.length > 0;
+  let relevance: number;
+  if (semantic === null) relevance = lexical;
+  else if (supported || !hasLexicon) {
+    // L'un OU l'autre signal suffit ; les deux ensemble renforcent la pertinence.
+    relevance = 1 - (1 - lexical) * (1 - semantic);
+  } else {
+    // Sans aucun terme métier cité : la seule proximité sémantique, minorée.
+    relevance = UNSUPPORTED_FACTOR * semantic;
+  }
+  if (!supported && hasLexicon) gaps.push({ code: "noLexicalSupport" });
+  else if (matchedSkills.length === 0) gaps.push({ code: "fewSkills" });
   for (const skill of matchedSkills.filter((s) => !s.proven && s.share >= 1).slice(0, 2)) {
     gaps.push({ code: "unprovenSkill", value: skill.name });
   }
@@ -441,12 +526,12 @@ export function evaluateOffer(
   if (seniority.gap) gaps.push({ code: seniority.gap });
 
   // --- Salaire face au package visé ---
-  // Non annoncé : neutre, aussi bon qu'un salaire au niveau du package (le
-  // plancher, filtre dur, n'est pas contredit). Seul un salaire annoncé SOUS
-  // le package visé baisse la composante.
+  // Non annoncé : neutre (`salaryNotStated`), sous un salaire annoncé au
+  // niveau du package visé, sans contredire le plancher (filtre dur). Un
+  // salaire annoncé SOUS le package visé baisse la composante.
   const annual = annualSalary(offer);
   const target = rails.targetTotalPackage ?? rails.minFixedSalary;
-  let salary = 1;
+  let salary = annual ? 1 : clamp01(options.salaryNotStated ?? DEFAULT_SALARY_NOT_STATED);
   if (annual && target && annual.max < target) {
     salary = clamp01((annual.max / target - 0.8) / 0.2);
     gaps.push({ code: "salaryBelowTarget" });
@@ -524,6 +609,7 @@ export function rankOffers(
   similarities: ReadonlyMap<string, ReadonlyMap<string, number>> | null,
   scale?: SemanticRange | SemanticScale,
   followed: ReadonlySet<string> = new Set(),
+  options: ScoreOptions = {},
 ) {
   const matches: Extract<OfferResult, { pass: true }>[] = [];
   const excluded: Extract<OfferResult, { pass: false }>[] = [];
@@ -534,6 +620,7 @@ export function rankOffers(
       offer,
       similarities ? (similarities.get(offer.id) ?? new Map()) : null,
       scale,
+      options,
     );
     if (!result.pass) {
       excluded.push(result);
