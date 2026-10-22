@@ -69,6 +69,7 @@ convient.
 | `npm run geo:backfill`            | géocode les offres ouvertes encore sans coordonnées                |
 | `npm run radar:reclassify-remote` | reclasse le télétravail mal lu des offres ouvertes, puis recalcule |
 | `npm run matching:load`           | test de charge mémoire du matching (20 000 offres, base de test)   |
+| `npm run matching:audit`          | audit en lecture seule du classement d'un candidat (`-- <id>`)     |
 
 ## Variables d'environnement
 
@@ -939,6 +940,14 @@ Après le déploiement de la détection du télétravail en contexte négatif (#
 `FULL_REMOTE` / `HYBRID` d'après une mention négative sont reclassées depuis leur texte et tous
 les candidats sont recalculés (les opportunités hors zone disparaissent au passage suivant du
 worker). Idempotent ; le passage suivant du radar réécrit ces offres depuis leur source.
+
+Après chaque déploiement du matching, l'audit d'un candidat (lecture seule, aucun appel IA) dit
+si le classement est sain (voir [`src/lib/matching/README.md`](src/lib/matching/README.md) pour
+lire la sortie) :
+
+```bash
+docker compose exec worker npm run matching:audit -- <candidateId>
+```
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.
 
