@@ -3,6 +3,7 @@ import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import type { AiClient } from "@/lib/ai/client";
 import { estimateTokens } from "@/lib/ai/tokens";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
+import type { SimilarityStats } from "./score";
 
 /**
  * Embeddings du matching, stockés avec pgvector (`offer_embeddings`,
@@ -36,6 +37,17 @@ export function offerEmbeddingText(offer: { title: string; description: string }
   const head = `${offer.title}\n`;
   if (head.length >= OFFER_TEXT_MAX) return head.slice(0, OFFER_TEXT_MAX);
   return head + offer.description.slice(0, OFFER_TEXT_MAX - head.length);
+}
+
+/** Texte embarqué d'une expérience : intitulé et responsabilités (sans l'employeur). */
+export function experienceEmbeddingText(experience: {
+  title: string;
+  responsibilities: string;
+}): string {
+  return [experience.title, experience.responsibilities]
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join("\n");
 }
 
 export function memoryEmbeddingText(text: string): string {
@@ -204,6 +216,46 @@ export async function memorySimilarities(
     let byHash = result.get(row.offerId);
     if (!byHash) result.set(row.offerId, (byHash = new Map()));
     byHash.set(row.textHash, Number(row.similarity));
+  }
+  return result;
+}
+
+/**
+ * Distribution des similarités de chaque élément de la mémoire du candidat
+ * sur ses offres (`offerIds` : offres qui passent le pré-filtre des
+ * garde-fous) : `empreinte → { nombre, médiane, 99e centile }`. Calculée
+ * entièrement par PostgreSQL : seuls quelques nombres par élément remontent
+ * au worker, jamais les offres ni leurs vecteurs (issue #72, mémoire #64).
+ * Les offres pas encore embarquées n'y figurent pas.
+ */
+export async function memorySimilarityStats(
+  prisma: PrismaClient,
+  userId: string,
+  model: string,
+  offerIds: string[],
+): Promise<Map<string, SimilarityStats>> {
+  const result = new Map<string, SimilarityStats>();
+  if (offerIds.length === 0) return result;
+  const rows = await prisma.$queryRaw<
+    { textHash: string; count: number; median: number | null; p99: number | null }[]
+  >`
+    SELECT s.text_hash AS "textHash", count(*)::int AS count,
+           percentile_cont(0.5) WITHIN GROUP (ORDER BY s.similarity) AS median,
+           percentile_cont(0.99) WITHIN GROUP (ORDER BY s.similarity) AS p99
+    FROM (
+      SELECT me.text_hash, (1 - (oe.embedding <=> me.embedding))::float8 AS similarity
+      FROM offer_embeddings oe
+      JOIN memory_embeddings me ON me.user_id = ${userId} AND me.model = oe.model
+      WHERE oe.model = ${model} AND oe.offer_id = ANY(${offerIds}::text[])
+    ) s
+    GROUP BY s.text_hash`;
+  for (const row of rows) {
+    if (row.median === null || row.p99 === null) continue;
+    result.set(row.textHash, {
+      count: Number(row.count),
+      median: Number(row.median),
+      p99: Number(row.p99),
+    });
   }
   return result;
 }

@@ -228,7 +228,8 @@ describe.skipIf(!url)("matching : recalcul, stockage, isolation, alertes", () =>
       SELECT count(*) FROM offer_embeddings WHERE offer_id LIKE ${`${run}-%`}`;
     expect(Number(row?.count)).toBeGreaterThan(0);
     const memory = await db.memoryEmbedding.count({ where: { userId: alice.id } });
-    expect(memory).toBe(1);
+    // Une réalisation et une expérience (« Data engineer ») : une entrée chacune (#72).
+    expect(memory).toBe(2);
 
     const { client, provider } = mockClient();
     const result = await recomputeUserMatches(db, alice.id, {

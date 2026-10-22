@@ -30,9 +30,16 @@ const matchingEnvSchema = z.object({
   MATCHING_LLM_MAX_PER_RUN: z.coerce.number().int().min(0).max(1000).default(30),
   /** Score minimal pour un résumé formulé par le LLM. */
   MATCHING_LLM_MIN_SCORE: z.coerce.number().int().min(0).max(100).default(55),
-  /** Bornes de similarité cosinus des embeddings (dépendent du modèle). */
-  MATCHING_SIM_FLOOR: z.coerce.number().min(-1).max(1).default(0.55),
-  MATCHING_SIM_CEIL: z.coerce.number().min(-1).max(1).default(0.85),
+  /**
+   * Bornes fixes de similarité cosinus des embeddings (dépendent du modèle ;
+   * réglées pour mistral-embed). REPLI seulement : la similarité est
+   * calibrée sur la distribution de chaque candidat dès qu'elle compte
+   * `MATCHING_SIM_MIN_SAMPLES` offres (issue #72).
+   */
+  MATCHING_SIM_FLOOR: z.coerce.number().min(-1).max(1).default(0.68),
+  MATCHING_SIM_CEIL: z.coerce.number().min(-1).max(1).default(0.8),
+  /** Offres embarquées au moins pour calibrer la similarité d'un candidat. */
+  MATCHING_SIM_MIN_SAMPLES: z.coerce.number().int().min(1).max(1_000_000).default(200),
   /** URL publique de l'application (liens des e-mails) ; à défaut `AUTH_URL`. */
   APP_URL: optional,
   AUTH_URL: optional,
@@ -48,7 +55,10 @@ export type MatchingConfig = {
   llmExplanations: boolean;
   llmMaxPerRun: number;
   llmMinScore: number;
+  /** Bornes fixes de repli (distribution du candidat trop petite). */
   semanticRange: { floor: number; ceil: number };
+  /** Offres embarquées au moins pour calibrer la similarité par candidat. */
+  calibrationMinSamples: number;
   /** `null` : liens impossibles, les alertes e-mail sont désactivées. */
   appUrl: string | null;
 };
@@ -77,6 +87,7 @@ export function matchingConfig(
     llmMaxPerRun: e.MATCHING_LLM_MAX_PER_RUN,
     llmMinScore: e.MATCHING_LLM_MIN_SCORE,
     semanticRange: { floor: e.MATCHING_SIM_FLOOR, ceil: e.MATCHING_SIM_CEIL },
+    calibrationMinSamples: e.MATCHING_SIM_MIN_SAMPLES,
     appUrl: appUrl ? appUrl.replace(/\/+$/, "") : null,
   };
 }
