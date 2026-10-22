@@ -6,6 +6,7 @@ import {
   excludedSectorRule,
   locationRule,
   onCallRule,
+  remoteOutsideZoneAccepted,
   remoteDaysRule,
   remotePolicyRule,
   RULES,
@@ -14,9 +15,12 @@ import {
 } from "@/lib/matching/filters";
 import { annualSalary } from "@/lib/matching/salary";
 import { mapGreenhouseJob, type GreenhouseJob } from "@/lib/radar/connectors/greenhouse";
+import { explanationFacts, factLines } from "@/lib/matching/explanation";
 import { rankOffers } from "@/lib/matching/score";
+import { mentionsTravel, travelDestination } from "@/lib/matching/signals";
 import type { CandidateProfile, CandidateRails, MatchOffer } from "@/lib/matching/types";
 import { VIOLATION_CODES } from "@/lib/matching/types";
+import { EXOTEC_LEAD_SOLUTIONS_ENGINEER } from "../fixtures/matching/exotec";
 import { company, fixtureJson } from "../helpers/radar";
 
 const PARIS = { latitude: 48.8566, longitude: 2.3522 };
@@ -31,6 +35,7 @@ const RAILS: CandidateRails = {
   excludedCompanies: [],
   maxWeeklyHours: null,
   acceptsOnCall: true,
+  acceptsRemoteOutsideZone: false,
   culturePreferences: [],
   locations: [],
 };
@@ -197,11 +202,11 @@ describe("zone géographique", () => {
       violation: "outsideRadius",
     });
   });
-  it("garde une offre dans le rayon, ou en télétravail complet où qu'elle soit", () => {
+  it("garde une offre dans le rayon ; en télétravail complet ailleurs, seulement avec accord", () => {
     expect(locationRule(offer({ latitude: 48.8919, longitude: 2.2383 }), r)).toEqual({});
-    expect(
-      locationRule(offer({ latitude: 45.764, longitude: 4.8357, remotePolicy: "FULL_REMOTE" }), r),
-    ).toEqual({});
+    const lyonRemote = offer({ latitude: 45.764, longitude: 4.8357, remotePolicy: "FULL_REMOTE" });
+    expect(locationRule(lyonRemote, r)).toEqual({ violation: "outsideRadius" });
+    expect(locationRule(lyonRemote, { ...r, acceptsRemoteOutsideZone: true })).toEqual({});
   });
   it("lieux du candidat non localisés : filtre impossible, signalé", () => {
     const unlocated = rails({ locations: [{ latitude: null, longitude: null, radiusKm: 20 }] });
@@ -233,8 +238,71 @@ describe("zone géographique", () => {
       pass: false,
       violations: ["outsideRadius"],
     });
-    // Classée à tort en télétravail complet, elle contournait le filtre de distance.
-    expect(checkGuardRails({ ...nantes, remotePolicy: "FULL_REMOTE" }, alsace).pass).toBe(true);
+    // Même en télétravail complet, elle reste hors zone sans l'accord du candidat.
+    expect(checkGuardRails({ ...nantes, remotePolicy: "FULL_REMOTE" }, alsace).pass).toBe(false);
+  });
+});
+
+describe("télétravail complet hors zone : sur accord du candidat (#66)", () => {
+  const STRASBOURG = { latitude: 48.5734, longitude: 7.7521 };
+  const LILLE = { latitude: 50.6292, longitude: 3.0573 };
+  const alsace = rails({ locations: [{ ...STRASBOURG, radiusKm: 30 }] });
+  const agreed = { ...alsace, acceptsRemoteOutsideZone: true };
+  const lilleRemote = offer({ ...LILLE, remotePolicy: "FULL_REMOTE" });
+  const noCityRemote = offer({ latitude: null, longitude: null, remotePolicy: "FULL_REMOTE" });
+
+  it("candidat en Alsace (30 km), offre FULL_REMOTE à Lille : exclue sans accord, incluse avec", () => {
+    expect(locationRule(lilleRemote, alsace)).toEqual({ violation: "outsideRadius" });
+    expect(checkGuardRails(lilleRemote, alsace)).toMatchObject({
+      pass: false,
+      violations: ["outsideRadius"],
+    });
+    expect(locationRule(lilleRemote, agreed)).toEqual({});
+    expect(checkGuardRails(lilleRemote, agreed).pass).toBe(true);
+  });
+
+  it("offre FULL_REMOTE sans ville : exclue sans accord, incluse avec", () => {
+    expect(locationRule(noCityRemote, alsace)).toEqual({ violation: "outsideRadius" });
+    expect(locationRule(noCityRemote, agreed)).toEqual({});
+  });
+
+  it("offre dans le rayon : incluse, en télétravail complet ou sur site, sans accord", () => {
+    const colmar = { latitude: 48.4, longitude: 7.65 }; // ~20 km de Strasbourg
+    for (const remotePolicy of ["ONSITE", "HYBRID", "FULL_REMOTE", "UNKNOWN"] as const) {
+      expect(locationRule(offer({ ...colmar, remotePolicy }), alsace), remotePolicy).toEqual({});
+    }
+    expect(locationRule(offer({ ...STRASBOURG, remotePolicy: "ONSITE" }), alsace)).toEqual({});
+  });
+
+  it("l'accord ne concerne que le télétravail complet : une offre sur site hors zone reste exclue", () => {
+    for (const remotePolicy of ["ONSITE", "HYBRID", "UNKNOWN"] as const) {
+      expect(locationRule(offer({ ...LILLE, remotePolicy }), agreed), remotePolicy).toEqual({
+        violation: "outsideRadius",
+      });
+    }
+  });
+
+  it("candidat sans lieu : inchangé, tout passe", () => {
+    const anywhere = rails({ locations: [] });
+    expect(locationRule(lilleRemote, anywhere)).toEqual({});
+    expect(locationRule(noCityRemote, anywhere)).toEqual({});
+    expect(locationRule(offer({ ...LILLE, remotePolicy: "ONSITE" }), anywhere)).toEqual({});
+  });
+
+  it("candidat qui ne veut que du télétravail complet : l'accord est implicite", () => {
+    const remoteOnly = { ...alsace, remotePolicy: "FULL_REMOTE" as const };
+    expect(remoteOutsideZoneAccepted(remoteOnly)).toBe(true);
+    expect(locationRule(lilleRemote, remoteOnly)).toEqual({});
+    expect(locationRule(noCityRemote, remoteOnly)).toEqual({});
+    expect(checkGuardRails(lilleRemote, remoteOnly).pass).toBe(true);
+    expect(remoteOutsideZoneAccepted(alsace)).toBe(false);
+    expect(remoteOutsideZoneAccepted({ ...alsace, remotePolicy: "HYBRID" })).toBe(false);
+  });
+
+  it("lieux non localisés : sans accord, le filtre reste impossible (signalé) ; avec, l'offre passe", () => {
+    const unlocated = rails({ locations: [{ latitude: null, longitude: null, radiusKm: 30 }] });
+    expect(locationRule(lilleRemote, unlocated)).toEqual({ unknown: "locationNotChecked" });
+    expect(locationRule(lilleRemote, { ...unlocated, acceptsRemoteOutsideZone: true })).toEqual({});
   });
 });
 
@@ -336,6 +404,82 @@ describe("astreintes", () => {
     expect(
       onCallRule(offer({ description: "Astreintes." }), rails({ acceptsOnCall: true })),
     ).toEqual({});
+  });
+});
+
+describe("déplacements mentionnés par une offre en télétravail complet (#66)", () => {
+  it("reconnaît les déplacements réguliers, en français et en anglais", () => {
+    for (const text of [
+      EXOTEC_LEAD_SOLUTIONS_ENGINEER.description,
+      "Déplacements fréquents à prévoir en France.",
+      "Des déplacements sont à prévoir chez nos clients.",
+      "Vous viendrez deux fois par mois au siège à Lille.",
+      "Présence au bureau de Lyon une fois par mois.",
+      "Travel to our headquarters in Paris once a quarter.",
+      "Up to 30 % travel.",
+      "Regular travel to customer sites across Europe.",
+      "Willingness to travel occasionally.",
+    ]) {
+      expect(mentionsTravel(text), text).toBe(true);
+    }
+  });
+
+  it("ignore les mentions négatives et les faux amis", () => {
+    for (const text of [
+      "Pas de déplacement.",
+      "100 % télétravail, aucun déplacement à prévoir.",
+      "Sans déplacements.",
+      "No travel required.",
+      "No need to travel to the office.",
+      "Frais de déplacement remboursés. Télétravail complet.",
+      "Visit our website to learn more. Remote-first company.",
+      "Télétravail 2 jours par semaine.",
+    ]) {
+      expect(mentionsTravel(text), text).toBe(false);
+    }
+  });
+
+  it("donne la ville du siège ou du bureau quand elle est écrite simplement", () => {
+    expect(travelDestination(EXOTEC_LEAD_SOLUTIONS_ENGINEER.description)).toBe("Lille");
+    expect(travelDestination("Présence au bureau de Lyon une fois par mois.")).toBe("Lyon");
+    expect(travelDestination("Travel to our headquarters in Paris once a quarter.")).toBe("Paris");
+    expect(travelDestination("Déplacements fréquents à prévoir en France.")).toBeNull();
+    expect(travelDestination("Up to 30 % travel.")).toBeNull();
+  });
+
+  const profile: CandidateProfile = {
+    seniority: "LEAD",
+    achievements: [],
+    skills: [{ name: "Python", proven: true }],
+  };
+  const exotec = offer({
+    ...EXOTEC_LEAD_SOLUTIONS_ENGINEER,
+    remotePolicy: "FULL_REMOTE",
+  });
+  const agreed = rails({
+    locations: [{ latitude: 48.5734, longitude: 7.7521, radiusKm: 30 }],
+    acceptsRemoteOutsideZone: true,
+  });
+
+  it("signal, pas un filtre : l'offre Exotec passe avec l'accord, signalée avec la ville", () => {
+    const [match] = rankOffers(profile, agreed, [exotec], null).matches;
+    expect(match).toMatchObject({ offerId: exotec.id, travelPlace: "Lille" });
+    expect(match!.unknowns).toContain("remoteWithTravel");
+    const lines = factLines(explanationFacts(match!), "fr");
+    expect(lines.unknowns).toContain(
+      "Télétravail complet, mais l’offre mentionne des déplacements (Lille) : à vérifier.",
+    );
+    // Sans accord : hors zone, l'offre n'est pas proposée.
+    expect(
+      rankOffers(profile, { ...agreed, acceptsRemoteOutsideZone: false }, [exotec], null),
+    ).toMatchObject({ matches: [], excluded: [{ violations: ["outsideRadius"] }] });
+  });
+
+  it("ne signale rien sur une offre qui n'est pas en télétravail complet", () => {
+    const hybrid = offer({ ...EXOTEC_LEAD_SOLUTIONS_ENGINEER, ...PARIS, remotePolicy: "HYBRID" });
+    const [match] = rankOffers(profile, RAILS, [hybrid], null).matches;
+    expect(match!.unknowns).not.toContain("remoteWithTravel");
+    expect(match).not.toHaveProperty("travelPlace");
   });
 });
 

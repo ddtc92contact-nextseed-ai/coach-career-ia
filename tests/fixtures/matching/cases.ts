@@ -180,6 +180,7 @@ const NO_RAILS: CandidateRails = {
   excludedCompanies: [],
   maxWeeklyHours: null,
   acceptsOnCall: true,
+  acceptsRemoteOutsideZone: false,
   culturePreferences: [],
   locations: [],
 };
@@ -223,6 +224,7 @@ export const CASES: MatchingCase[] = [
       excludedCompanies: ["Globex"],
       maxWeeklyHours: 39,
       acceptsOnCall: false,
+      acceptsRemoteOutsideZone: false,
       culturePreferences: ["ASYNC_FIRST", "LEARNING_CULTURE"],
       locations: [{ ...PARIS, radiusKm: 30 }],
     },
@@ -230,6 +232,8 @@ export const CASES: MatchingCase[] = [
       "de-low-salary": "salaryBelowFloor",
       "de-freelance": "contractType",
       "de-lyon": "outsideRadius",
+      // Télétravail complet hors zone, sans l'accord du candidat (#66).
+      "de-remote-lyon": "outsideRadius",
       "de-unlocated": "outsideRadius",
       "de-onsite": "remotePolicy",
       "de-one-day": "remoteDays",

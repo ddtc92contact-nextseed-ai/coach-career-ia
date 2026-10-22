@@ -10,12 +10,14 @@ vi.mock("@/lib/db", async () => {
 });
 vi.mock("@/lib/auth/session", () => ({ getCurrentUser: vi.fn(), requireUser: vi.fn() }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-// Géocodage simulé : « Paris » est connue, le reste introuvable.
-vi.mock("@/lib/geo/server", () => ({
-  locateLabels: vi.fn(async (labels: string[]) =>
-    labels.map((l) => (l === "Paris" ? { latitude: 48.8566, longitude: 2.3522 } : null)),
-  ),
-}));
+// Géocodage simulé : « Paris » et « Strasbourg » sont connues, le reste introuvable.
+vi.mock("@/lib/geo/server", () => {
+  const known: Record<string, { latitude: number; longitude: number }> = {
+    Paris: { latitude: 48.8566, longitude: 2.3522 },
+    Strasbourg: { latitude: 48.5734, longitude: 7.7521 },
+  };
+  return { locateLabels: vi.fn(async (labels: string[]) => labels.map((l) => known[l] ?? null)) };
+});
 
 const { db } = await import("@/lib/db");
 const { requireUser } = await import("@/lib/auth/session");
@@ -31,6 +33,7 @@ const { POST: oneClickUnsubscribe } = await import("@/app/api/alerts/unsubscribe
 const { default: OpportunityPage } = await import("@/app/[locale]/app/opportunites/[id]/page");
 const { changeMatchStatus } = await import("@/app/[locale]/app/opportunites/actions");
 const { OFFERS } = await import("../fixtures/matching/cases");
+const { EXOTEC_LEAD_SOLUTIONS_ENGINEER: EXOTEC } = await import("../fixtures/matching/exotec");
 const { BAG_OF_WORDS_RANGE, bagOfWordsEmbedding } = await import("../helpers/matching");
 
 const url = process.env.TEST_DATABASE_URL;
@@ -86,6 +89,7 @@ const guardRails = (overrides: Record<string, unknown> = {}) => ({
   excludedCompanies: ["Globex"],
   maxWeeklyHours: 39,
   acceptsOnCall: false,
+  acceptsRemoteOutsideZone: false,
   culturePreferences: ["ASYNC_FIRST" as const, "LEARNING_CULTURE" as const],
   locations: [{ label: "Paris", radiusKm: 30 }],
   ...overrides,
@@ -380,6 +384,76 @@ describe.skipIf(!url)("matching : recalcul, stockage, isolation, alertes", () =>
     );
     expect(response.status).toBe(200);
     expect((await matching.getAlertSettings(alice.id)).frequency).toBe("OFF");
+  });
+
+  it("télétravail complet hors zone : proposé seulement avec l'accord, déplacements signalés (#66)", async () => {
+    const carla = await newUser("carla");
+    const now = new Date();
+    await db.jobOffer.create({
+      data: {
+        id: id("exotec"),
+        source: "test-matching",
+        sourceKey: `test-matching:${run}`,
+        sourceId: id("exotec"),
+        url: "https://emplois.exemple.test/exotec",
+        urlKey: `emplois.exemple.test/${run}/exotec`,
+        title: EXOTEC.title,
+        description: EXOTEC.description,
+        companyName: EXOTEC.companyName,
+        city: EXOTEC.city,
+        country: "FR",
+        latitude: EXOTEC.latitude,
+        longitude: EXOTEC.longitude,
+        remotePolicy: "FULL_REMOTE",
+        contractType: "CDI",
+        firstSeenAt: now,
+        lastSeenAt: now,
+        contentHash: "exotec",
+      },
+    });
+    try {
+      await repo.addDeclaredSkill(carla.id, "Python");
+      // Candidate en Alsace, 30 km, sans autre garde-fou.
+      const alsace = guardRails({
+        minFixedSalary: undefined,
+        targetTotalPackage: undefined,
+        remotePolicy: undefined,
+        minRemoteDays: undefined,
+        contractTypes: [],
+        excludedSectors: [],
+        excludedCompanies: [],
+        maxWeeklyHours: undefined,
+        culturePreferences: [],
+        locations: [{ label: "Strasbourg", radiusKm: 30 }],
+      });
+      const deps = {
+        config: { ...config, minScore: 0 },
+        client: null,
+        llmBudget: { remaining: 0 },
+      };
+
+      await repo.saveGuardRails(carla.id, alsace);
+      expect((await repo.getGuardRails(carla.id)).acceptsRemoteOutsideZone).toBe(false);
+      await recomputeUserMatches(db, carla.id, deps);
+      expect(await myMatches(carla.id)).toEqual([]);
+
+      await repo.saveGuardRails(carla.id, { ...alsace, acceptsRemoteOutsideZone: true });
+      expect((await repo.getGuardRails(carla.id)).acceptsRemoteOutsideZone).toBe(true);
+      await recomputeUserMatches(db, carla.id, deps);
+      const exotec = (await myMatches(carla.id)).find((m) => m.fixture === "exotec");
+      expect(exotec).toBeDefined();
+      const explanation = parseExplanation(exotec!.explanation)!;
+      expect(explanation.unknowns).toContain("remoteWithTravel");
+      expect(explanation.travelPlace).toBe("Lille");
+
+      // Accord retiré : l'opportunité disparaît au recalcul suivant.
+      await repo.saveGuardRails(carla.id, alsace);
+      await recomputeUserMatches(db, carla.id, deps);
+      expect(await myMatches(carla.id)).toEqual([]);
+    } finally {
+      await db.user.delete({ where: { id: carla.id } });
+      await db.jobOffer.delete({ where: { id: id("exotec") } });
+    }
   });
 
   it("nouvelles offres : tous les candidats avec garde-fous sont marqués à recalculer", async () => {

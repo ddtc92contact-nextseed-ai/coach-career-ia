@@ -90,6 +90,7 @@ const BASE_RAILS: CandidateRails = {
   excludedCompanies: [],
   maxWeeklyHours: 39,
   acceptsOnCall: false,
+  acceptsRemoteOutsideZone: false,
   culturePreferences: ["ASYNC_FIRST", "LEARNING_CULTURE"],
   locations: [{ ...PARIS, radiusKm: 30 }],
 };
@@ -102,6 +103,7 @@ const OPEN: CandidateRails = {
   excludedSectors: [],
   maxWeeklyHours: null,
   acceptsOnCall: true,
+  acceptsRemoteOutsideZone: false,
   locations: [],
 };
 const RAILS: Record<string, CandidateRails> = {
@@ -121,6 +123,13 @@ const RAILS: Record<string, CandidateRails> = {
   },
   unlocated: { ...OPEN, locations: [{ latitude: null, longitude: null, radiusKm: 10 }] },
   zeroRadius: { ...OPEN, locations: [{ ...PARIS, radiusKm: 0 }] },
+  // Télétravail complet hors zone (#66) : accord explicite, ou implicite (télétravail seul).
+  remoteOutside: { ...BASE_RAILS, acceptsRemoteOutsideZone: true },
+  remoteOnlyLocated: {
+    ...OPEN,
+    remotePolicy: "FULL_REMOTE",
+    locations: [{ ...PARIS, radiusKm: 30 }],
+  },
 };
 
 const config = { ...matchingConfig({}), semanticRange: BAG_OF_WORDS_RANGE, minScore: 0 };

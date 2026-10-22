@@ -296,6 +296,7 @@ describe.skipIf(!url)("espace entreprise : comptes, offres, paiement, modératio
         excludedCompanies: [],
         maxWeeklyHours: undefined,
         acceptsOnCall: true,
+        acceptsRemoteOutsideZone: false,
         culturePreferences: [],
         locations: [{ label: "Paris", radiusKm: 30 }],
       });
