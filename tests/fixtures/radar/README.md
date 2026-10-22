@@ -5,6 +5,11 @@ Réponses JSON utilisées par les tests : aucun test n'appelle le réseau.
 - `greenhouse-dataiku.json`, `lever-qonto.json`, `ashby-alan.json` : réponses réelles des
   endpoints publics (enregistrées le 2026-10-07), réduites à 3 offres et descriptions
   tronquées.
+- `greenhouse-doctolib.json` : réponse réelle (2026-10-22) de
+  `boards-api.greenhouse.io/v1/boards/doctolib/jobs?content=true`, réduite à l'offre
+  « Commercial(e) sédentaire (x/f/m) » à Nantes (texte complet) : sa rubrique « Faites demi-tour
+  si… vous recherchez un poste 100% en télétravail » ne doit pas classer l'offre en télétravail
+  complet (#63).
 - `lever-salary.json` : offre Lever construite selon la documentation de l'API publique,
   pour couvrir `salaryRange` (absent des boards enregistrés).
 - `france-travail-*.json` : construites selon la documentation de l'API « Offres d'emploi v2 »

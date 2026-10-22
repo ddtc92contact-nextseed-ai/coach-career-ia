@@ -40,6 +40,8 @@ COPY src/i18n ./src/i18n
 COPY messages ./messages
 COPY config ./config
 COPY worker ./worker
+# Scripts ponctuels (`docker compose run --rm worker npm run radar:reclassify-remote`).
+COPY scripts ./scripts
 USER node
 CMD ["node", "--import", "tsx", "worker/index.ts"]
 

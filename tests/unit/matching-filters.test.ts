@@ -13,9 +13,11 @@ import {
   weeklyHoursRule,
 } from "@/lib/matching/filters";
 import { annualSalary } from "@/lib/matching/salary";
+import { mapGreenhouseJob, type GreenhouseJob } from "@/lib/radar/connectors/greenhouse";
 import { rankOffers } from "@/lib/matching/score";
 import type { CandidateProfile, CandidateRails, MatchOffer } from "@/lib/matching/types";
 import { VIOLATION_CODES } from "@/lib/matching/types";
+import { company, fixtureJson } from "../helpers/radar";
 
 const PARIS = { latitude: 48.8566, longitude: 2.3522 };
 
@@ -204,6 +206,35 @@ describe("zone géographique", () => {
   it("lieux du candidat non localisés : filtre impossible, signalé", () => {
     const unlocated = rails({ locations: [{ latitude: null, longitude: null, radiusKm: 20 }] });
     expect(locationRule(offer(), unlocated)).toEqual({ unknown: "locationNotChecked" });
+  });
+  it("garde-fou en Alsace : l'offre de Nantes dont seule la rubrique « pas pour vous » parle de télétravail est exclue", () => {
+    // Deux communes d'Alsace, 30 km, sans préférence de télétravail.
+    const alsace = rails({
+      locations: [
+        { latitude: 48.5734, longitude: 7.7521, radiusKm: 30 },
+        { latitude: 48.0794, longitude: 7.3585, radiusKm: 30 },
+      ],
+    });
+    const [job] = fixtureJson<{ jobs: GreenhouseJob[] }>("greenhouse-doctolib.json").jobs;
+    const mapped = mapGreenhouseJob(
+      job!,
+      company({ slug: "doctolib", name: "Doctolib", boardToken: "doctolib" }),
+    )!;
+    const nantes = offer({
+      title: mapped.title,
+      description: mapped.description,
+      companyName: mapped.companyName,
+      remotePolicy: mapped.remotePolicy,
+      latitude: 47.2184,
+      longitude: -1.5536,
+    });
+    expect(mapped.location.city).toBe("Nantes");
+    expect(checkGuardRails(nantes, alsace)).toMatchObject({
+      pass: false,
+      violations: ["outsideRadius"],
+    });
+    // Classée à tort en télétravail complet, elle contournait le filtre de distance.
+    expect(checkGuardRails({ ...nantes, remotePolicy: "FULL_REMOTE" }, alsace).pass).toBe(true);
   });
 });
 
