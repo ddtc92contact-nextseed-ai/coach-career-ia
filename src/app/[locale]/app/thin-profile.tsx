@@ -1,4 +1,4 @@
-import { getFormatter, getNow, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { buttonClass } from "@/components/button";
 import { Icon, type IconName } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
@@ -31,11 +31,13 @@ export async function ThinProfileCard({
   className?: string;
 }) {
   if (issues.length === 0) return null;
-  const [t, format, now] = await Promise.all([
+  const [t, format, locale] = await Promise.all([
     getTranslations("thinProfile"),
     getFormatter(),
-    getNow(),
+    getLocale(),
   ]);
+  // Années pleines (calculées par l'indicateur), pas un arrondi : « il y a 22 ans ».
+  const yearsAgo = new Intl.RelativeTimeFormat(locale, { numeric: "always" });
   const detail = (issue: ThinProfileIssue) => {
     switch (issue.code) {
       case "achievements":
@@ -44,7 +46,7 @@ export async function ThinProfileCard({
       case "staleExperience":
         return t("issues.staleExperience.text", {
           date: format.dateTime(issue.lastEnd, "month"),
-          ago: format.relativeTime(issue.lastEnd, { now, unit: "year" }),
+          ago: yearsAgo.format(-issue.years, "year"),
         });
     }
   };
