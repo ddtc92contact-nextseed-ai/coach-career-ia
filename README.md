@@ -67,6 +67,7 @@ convient.
 | `npm run ai:eval`        | fixtures de l'import IA passées au vrai fournisseur (manuel)      |
 | `npm run worker`         | worker de tâches de fond (radar planifié)                         |
 | `npm run geo:backfill`   | géocode les offres ouvertes encore sans coordonnées               |
+| `npm run matching:load`  | test de charge mémoire du matching (20 000 offres, base de test)  |
 
 ## Variables d'environnement
 
@@ -124,7 +125,8 @@ Toutes sont documentées dans [`.env.example`](.env.example).
 | `TRAEFIK_NETWORK`                                                     | prod     | réseau Docker externe de Traefik                          |
 | `TRAEFIK_ENTRYPOINT`                                                  | prod     | entrypoint Traefik (`websecure`)                          |
 | `TRAEFIK_CERTRESOLVER`                                                | prod     | resolver de certificats (`letsencrypt`)                   |
-| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs                            |
+| `APP_MEM_LIMIT`, `WORKER_MEM_LIMIT`, `POSTGRES_MEM_LIMIT`             | non      | limites mémoire des conteneurs (worker : 512m)            |
+| `WORKER_NODE_OPTIONS`                                                 | non      | options Node du worker (vide : tas = 75 % de la limite)   |
 
 ## Base de données et migrations
 
@@ -926,6 +928,26 @@ Services (`docker-compose.yml`) :
 - `postgres` : `pgvector/pgvector:pg17`, volume `pgdata`, réseau interne uniquement.
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.
+
+### Mémoire du worker
+
+Le worker (`docker/worker-start.sh`) fixe son tas V8 à **~75 % de `WORKER_MEM_LIMIT`**
+(`--max-old-space-size`, lu dans la limite cgroup du conteneur : 512m → 384 Mo, 384m →
+288 Mo) ; le reste couvre ce qui vit hors du tas : code et transpilation `tsx`, moteur Prisma,
+cache HTTP du radar (`RADAR_HTTP_CACHE_MB`, 64 Mo). Un `--max-old-space-size` passé dans
+`WORKER_NODE_OPTIONS` l'emporte. Défaut : **512m**. Mesures (`npm run matching:load`,
+20 000 offres de 5 à 15 ko, IA simulée) : ~225 Mo de RSS au repos, pic du tas ~185 Mo et RSS
+~350-400 Mo lors du premier recalcul (embeddings de toutes les offres à calculer), ~105 Mo de
+tas ensuite ; 384m ne laisse pas de place au cache du radar.
+
+Le recalcul du matching ne charge jamais toutes les offres : un pré-filtre SQL écarte celles
+qui violent certainement un garde-fou (télétravail, contrat, zone, salaire plancher), puis
+les offres restantes sont lues **par lots de 500** (descriptions comprises), passées aux
+garde-fous complets, notées, et seules les correspondances encore retenables restent en
+mémoire. La mémoire ne dépend donc plus du nombre d'offres en base.
+
+Après un changement de limite : `docker compose up -d worker`. Si le `.env` du VPS contient
+encore `WORKER_MEM_LIMIT=384m` (ancien `.env.example`), le passer à `512m`.
 
 Quota gratuit du coach : **5 messages sur 24 h** par défaut. Une ligne `COACH_MESSAGES_PER_DAY`
 déjà présente dans le `.env` du VPS (copie d'un ancien `.env.example`, qui valait `40`) l'emporte
