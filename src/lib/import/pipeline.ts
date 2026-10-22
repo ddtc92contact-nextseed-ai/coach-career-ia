@@ -9,6 +9,7 @@ import {
 } from "@/lib/career/codes";
 import { skillKey } from "@/lib/career/derive";
 import { CareerMemoryDraft, currentMonth, LIMITS } from "@/lib/career/schemas";
+import { truncateSafe } from "@/lib/text/truncate";
 import { ImportError } from "./errors";
 import { extractCvText, normalizeText } from "./extract";
 import { fetchGithubProfile, type GithubFetch, type GithubProfile } from "./github";
@@ -143,7 +144,7 @@ function toMonth(value: string | null | undefined): string | null {
 function clip(text: string, max: number): { text: string; adjusted: boolean } {
   const trimmed = text.trim();
   return trimmed.length > max
-    ? { text: `${trimmed.slice(0, max - 1).trimEnd()}…`, adjusted: true }
+    ? { text: `${truncateSafe(trimmed, max - 1).trimEnd()}…`, adjusted: true }
     : { text: trimmed, adjusted: false };
 }
 
@@ -321,7 +322,7 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
     const result = clip(redact(raw.result, flags), LIMITS.result);
     if ([title, context, actions, result].some((f) => f.adjusted)) flags.adjusted = true;
     const skills = uniqueBy(redactList(raw.skills, flags), skillKey)
-      .map((s) => s.slice(0, LIMITS.skillName))
+      .map((s) => truncateSafe(s, LIMITS.skillName))
       .slice(0, LIMITS.skillsPerAchievement);
     const urls = uniqueBy(
       raw.links
@@ -362,7 +363,7 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
         ...extraction.skills,
         ...(linkedin?.skills ?? []),
         ...(github?.repos.flatMap((r) => r.languages) ?? []),
-      ].map((s) => s.trim().slice(0, LIMITS.skillName)),
+      ].map((s) => truncateSafe(s.trim(), LIMITS.skillName)),
       newFlags(),
     ),
     skillKey,

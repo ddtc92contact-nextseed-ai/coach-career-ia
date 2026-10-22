@@ -5,6 +5,7 @@ import type {
   SeniorityCode,
 } from "@/lib/career/codes";
 import { isIdentityUrl, redactText } from "@/lib/import/pseudonymise";
+import { truncateSafe } from "@/lib/text/truncate";
 import { CARD_LIMITS, type CardContent } from "./schema";
 
 /**
@@ -79,7 +80,7 @@ export function yearsOfExperience(
 
 function clip(text: string, max: number): string {
   const clean = text.replace(/\s+/g, " ").trim();
-  return clean.length <= max ? clean : `${clean.slice(0, max - 1).trimEnd()}…`;
+  return clean.length <= max ? clean : `${truncateSafe(clean, max - 1).trimEnd()}…`;
 }
 
 export function buildCard(source: CardSource, now: Date = new Date()): CardContent {

@@ -4,6 +4,7 @@ import { AiError, isAiError, type AiErrorCode } from "@/lib/ai/errors";
 import type { ChatMessage } from "@/lib/ai/types";
 import type { AppLocale } from "@/i18n/routing";
 import { logger } from "@/lib/logger";
+import { truncateSafe } from "@/lib/text/truncate";
 import { coachSystemPrompt } from "./prompts";
 import { addMessage, attachSuggestions, discardSuggestions, loadHistory } from "./repository";
 import {
@@ -143,7 +144,7 @@ async function runTurn(input: CoachTurnInput, send: (event: CoachStreamEvent) =>
         send({ type: "status", status: "thinking" });
       },
     });
-    const content = result.content.trim().slice(0, COACH_LIMITS.replyMaxChars);
+    const content = truncateSafe(result.content.trim(), COACH_LIMITS.replyMaxChars);
     // Réponse vide (sortie inexploitable) : erreur visible, pas de message fantôme.
     if (!content) throw new AiError("invalidOutput");
 

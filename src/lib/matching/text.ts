@@ -1,3 +1,5 @@
+import { truncateSafe } from "@/lib/text/truncate";
+
 /**
  * Outils de texte du matching (fonctions pures) : normalisation sans accents
  * ni casse, recherche d'un terme entier, termes significatifs pondérés,
@@ -134,7 +136,7 @@ export function sentences(text: string): string[] {
 export function truncate(text: string, max: number): string {
   const clean = text.replace(/\s+/g, " ").trim();
   if (clean.length <= max) return clean;
-  const cut = clean.slice(0, max - 1);
+  const cut = truncateSafe(clean, max - 1);
   const space = cut.lastIndexOf(" ");
   return `${(space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s,;:.–-]+$/, "")}…`;
 }

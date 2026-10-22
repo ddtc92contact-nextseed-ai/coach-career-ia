@@ -3,6 +3,7 @@ import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import type { AiClient } from "@/lib/ai/client";
 import { estimateTokens } from "@/lib/ai/tokens";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
+import { truncateSafe } from "@/lib/text/truncate";
 import type { SimilarityStats } from "./score";
 
 /**
@@ -29,14 +30,15 @@ const REJECTION_RETRY_MS = 7 * 24 * 3_600_000;
 export const textHash = (text: string) => createHash("sha256").update(text).digest("hex");
 
 /**
- * Titre et début de la description (`OFFER_TEXT_MAX` caractères en tout).
+ * Titre et début de la description (`OFFER_TEXT_MAX` unités UTF-16 en tout).
  * Seul le début de la description est copié : concaténer puis couper
- * aplatirait la description entière en mémoire (issue #64).
+ * aplatirait la description entière en mémoire (issue #64). La coupe ne
+ * sépare jamais les deux moitiés d'un émoji (issue #71).
  */
 export function offerEmbeddingText(offer: { title: string; description: string }): string {
   const head = `${offer.title}\n`;
-  if (head.length >= OFFER_TEXT_MAX) return head.slice(0, OFFER_TEXT_MAX);
-  return head + offer.description.slice(0, OFFER_TEXT_MAX - head.length);
+  if (head.length >= OFFER_TEXT_MAX) return truncateSafe(head, OFFER_TEXT_MAX);
+  return head + truncateSafe(offer.description, OFFER_TEXT_MAX - head.length);
 }
 
 /** Texte embarqué d'une expérience : intitulé et responsabilités (sans l'employeur). */
@@ -51,7 +53,7 @@ export function experienceEmbeddingText(experience: {
 }
 
 export function memoryEmbeddingText(text: string): string {
-  return text.slice(0, MEMORY_TEXT_MAX);
+  return truncateSafe(text, MEMORY_TEXT_MAX);
 }
 
 /** Littéral pgvector : `[0.1,0.2,…]`. */

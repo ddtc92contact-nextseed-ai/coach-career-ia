@@ -7,6 +7,7 @@ import { isAiError } from "@/lib/ai/errors";
 import { languageInstruction } from "@/lib/ai/locale";
 import { checkMessage, termsForTarget } from "@/lib/card/reidentify";
 import { redactText } from "@/lib/import/pseudonymise";
+import { truncateSafe } from "@/lib/text/truncate";
 import type { OfferAnalysis } from "./analysis";
 import { allowedFigures, checkOutgoing } from "./check";
 import { MAX_MESSAGE, type Mandate, type NegotiationOutcome } from "./mandate";
@@ -167,7 +168,7 @@ export function negotiationPromptFacts(kind: DraftKind, facts: NegotiationFacts)
     },
     companyMessages: facts.companyMessages
       .slice(-3)
-      .map((text) => text.slice(0, MAX_COMPANY_MESSAGE)),
+      .map((text) => truncateSafe(text, MAX_COMPANY_MESSAGE)),
     estimateOfLatestCompanyOffer: facts.analysis,
     ...(market
       ? {

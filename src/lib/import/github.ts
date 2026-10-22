@@ -1,3 +1,4 @@
+import { truncateSafe } from "@/lib/text/truncate";
 import { ImportError } from "./errors";
 import { GITHUB_USERNAME, IMPORT_LIMITS } from "./shared";
 
@@ -111,7 +112,7 @@ export async function fetchGithubProfile(
 
 /** Début du README en texte brut : sans images, badges ni balises HTML. */
 export function readmeExcerpt(markdown: string): string {
-  return markdown
+  const text = markdown
     .replace(/<!--[\s\S]*?-->/g, " ")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
     .replace(/<[^>]+>/g, " ")
@@ -119,6 +120,6 @@ export function readmeExcerpt(markdown: string): string {
     .replace(/```[\s\S]*?```/g, " ")
     .replace(/[#>*_`|]+/g, " ")
     .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, IMPORT_LIMITS.githubReadmeChars);
+    .trim();
+  return truncateSafe(text, IMPORT_LIMITS.githubReadmeChars);
 }
