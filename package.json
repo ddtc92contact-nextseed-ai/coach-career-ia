@@ -31,7 +31,8 @@
     "worker": "node --import tsx worker/index.ts",
     "postinstall": "prisma generate",
     "radar:companies-check": "tsx scripts/radar-companies-check.ts",
-    "matching:load": "tsx scripts/matching-load.ts"
+    "matching:load": "tsx scripts/matching-load.ts",
+    "matching:audit": "tsx scripts/matching-audit.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
