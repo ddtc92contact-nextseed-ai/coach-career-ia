@@ -4,7 +4,7 @@ import {
   type SectorCode,
   type SeniorityCode,
 } from "@/lib/career/codes";
-import { normalizeText, termPattern } from "./text";
+import { normalizeText, sentences, termPattern } from "./text";
 
 /**
  * Informations lues dans le texte d'une offre (fonctions pures, sans IA) :
@@ -82,6 +82,92 @@ export function mentionsOnCall(text: string): boolean {
     if (!NEGATION.test(before)) return true;
   }
   return false;
+}
+
+// --- Déplacements -----------------------------------------------------------------------------
+
+const TRAVEL_PLACE =
+  "(?:(?:le |au |aux |du |des |les |nos |notre |vos |our |the |your )?(?:siege(?: social)?|bureaux?|locaux|agences?|sites? clients?|clients?|client sites?|headquarters|hq|offices?|customers?|customer sites?))";
+const FREQUENCY =
+  "(?:une|deux|trois|quatre|[1-9])\\s*(?:fois|x)\\s*par\\s*(?:semaine|mois|trimestre)|(?:once|twice|(?:three|four|[1-9])\\s*times)\\s*(?:a|per|every)\\s*(?:week|month|quarter)";
+const TRAVEL_PATTERNS = [
+  // « déplacements fréquents / réguliers / à prévoir », « déplacements chez les clients »
+  /\bdeplacements?\s*(?:frequents?|reguliers?|ponctuels?|occasionnels?|nationaux|internationaux|(?:sont |seront )?a prevoir|(?:sont |seront )?necessaires|(?:sont |seront )?requis|en france|en europe|chez|au siege|aux? (?:bureaux?|locaux)|sur site|(?:jusqu'a |d'environ |de )?\d{1,3}\s*%)/g,
+  /\b(?:se deplacer|vous deplacer|vous rendre|vous etes amene a vous deplacer)\b[^.;\n]{0,40}?(?:regulierement|frequemment|chez|au siege|aux? (?:bureaux?|locaux)|sur site)/g,
+  // « présence au bureau de Lyon une fois par mois », « présence sur site »
+  /\bpresence\s*(?:physique\s*)?(?:au|aux|dans (?:nos|les)|sur|a notre)\s*(?:bureaux?|siege|locaux|site|agence)/g,
+  /\bvisites?\s*(?:chez |de |aux? )?(?:nos |les |des )?clients?\b/g,
+  // « visit our clients », « travel to our headquarters », « trips to the office »
+  new RegExp(
+    `\\b(?:visit(?:s|ing)?|travel(?:s|l?ing)?\\s*to|trips?\\s*to|commute\\s*to)\\s*${TRAVEL_PLACE}\\b`,
+    "g",
+  ),
+  // « up to 30 % travel », « 20% travel », « travel up to 25 % »
+  /\b(?:up to\s*)?\d{1,3}\s*%\s*(?:of\s*)?(?:the time\s*)?(?:travel|travelling|traveling)\b/g,
+  /\btravel(?:l?ing)?\s*(?:of\s*)?(?:up to\s*)?\d{1,3}\s*%/g,
+  /\bon[- ]?site\s*(?:visits?|presence|meetings?|days?)\b/g,
+  /\b(?:frequent|regular|occasional|domestic|international|extensive|some)\s*travel(?:l?ing)?\b/g,
+  /\b(?:travel|travelling|traveling)\s*(?:is\s*)?(?:required|expected|needed|necessary)\b/g,
+  /\b(?:willing(?:ness)?|able|ability|available)\s*to\s*travel\b/g,
+];
+/** Fréquence (« 2 fois par mois », « twice a month ») avec un lieu dans la même phrase. */
+const FREQUENCY_PATTERN = new RegExp(`\\b(?:${FREQUENCY})\\b`, "g");
+const FREQUENCY_CONTEXT = new RegExp(
+  `\\b(?:siege|bureaux?|locaux|agences?|clients?|sur site|headquarters|hq|offices?|customers?|on-?site|visit|travel|deplacements?|presence)\\b`,
+);
+const TRAVEL_NEGATION =
+  /(?:\bpas d'|\bpas de |\bsans |\baucune? |\bnon |\bno |\bwithout |\bnot |\bnever |\bzero |\bni )[\w' -]{0,16}$/;
+
+function negated(normalized: string, index: number): boolean {
+  return TRAVEL_NEGATION.test(normalized.slice(Math.max(0, index - 24), index));
+}
+
+/**
+ * Vrai si l'offre mentionne des déplacements réguliers ou un rattachement
+ * géographique (« déplacements à prévoir », « 2 fois par mois au siège »,
+ * « visit our clients », « up to 30 % travel »), hors mentions négatives
+ * (« pas de déplacement », « no travel required »). Signal seulement : sert à
+ * avertir sur une offre en télétravail complet, jamais à l'exclure.
+ */
+export function mentionsTravel(text: string): boolean {
+  const normalized = normalizeText(text);
+  for (const pattern of TRAVEL_PATTERNS) {
+    for (const m of normalized.matchAll(pattern)) {
+      if (!negated(normalized, m.index)) return true;
+    }
+  }
+  for (const sentence of sentences(normalized)) {
+    for (const m of sentence.matchAll(FREQUENCY_PATTERN)) {
+      if (!negated(sentence, m.index) && FREQUENCY_CONTEXT.test(sentence)) return true;
+    }
+  }
+  return false;
+}
+
+const PLACE_NOUN =
+  "(?:[Hh]eadquarters|HQ|[Oo]ffices?|[Ss]i[eè]ge(?: social)?|[Bb]ureaux?|[Ll]ocaux|[Aa]gence|[Ss]ite)";
+const PLACE_LINK =
+  "(?:near|close to|in|at|based in|located in|près de|pres de|à proximité de|a proximite de|à|a|de|d'|en)";
+const CITY = "(\\p{Lu}[\\p{L}'’-]+(?:[ -](?:sur|sous|en|le|la|les|de|du)[ -]\\p{Lu}[\\p{L}'’-]+)?)";
+const PLACE_PATTERN = new RegExp(
+  `(?<![\\p{L}])${PLACE_NOUN}(?![\\p{L}])(?:\\s+(?:social|principal|parisien|européen|europeen|français|francais))?\\s*(?:\\(\\s*${CITY}\\s*\\)|,?\\s*${PLACE_LINK}\\s*${CITY})`,
+  "u",
+);
+const NOT_A_CITY = new Set(["Our", "The", "Your", "Nos", "Notre", "Vos", "Votre", "France"]);
+
+/**
+ * Ville du siège ou du bureau cité avec les déplacements (« our headquarters
+ * near Lille », « présence au bureau de Lyon »), seulement si c'est écrit
+ * simplement ; sinon `null`.
+ */
+export function travelDestination(text: string): string | null {
+  for (const sentence of sentences(text)) {
+    if (!mentionsTravel(sentence)) continue;
+    const m = PLACE_PATTERN.exec(sentence);
+    const city = m?.[1] ?? m?.[2];
+    if (city && !NOT_A_CITY.has(city)) return city.replace(/’/g, "'").slice(0, 60);
+  }
+  return null;
 }
 
 // --- Secteurs -------------------------------------------------------------------------------

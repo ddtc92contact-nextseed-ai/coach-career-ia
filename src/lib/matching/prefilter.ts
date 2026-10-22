@@ -1,5 +1,6 @@
 import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import { EARTH_RADIUS_KM, isValidPoint, type RadiusLocation } from "@/lib/geo/distance";
+import { remoteOutsideZoneAccepted } from "./filters";
 import { ANNUAL_FACTORS } from "./salary";
 import type { CandidateRails } from "./types";
 
@@ -65,7 +66,8 @@ export function railsPrefilter(rails: CandidateRails): Prisma.Sql[] {
     conditions.push(keep(Prisma.sql`contract_type::text = ANY(${accepted}::text[])`));
   }
 
-  // Zone (`locationRule`) : télétravail complet, ou dans le rectangle d'un lieu.
+  // Zone (`locationRule`) : dans le rectangle d'un lieu, ou télétravail
+  // complet si le candidat l'accepte hors de sa zone.
   const located = rails.locations.filter((l) => isValidPoint(l));
   if (located.length > 0) {
     const boxes = located.flatMap((l) => {
@@ -81,7 +83,13 @@ export function railsPrefilter(rails: CandidateRails): Prisma.Sql[] {
       ];
     });
     const inZone = boxes.length > 0 ? Prisma.join(boxes, " OR ") : Prisma.sql`FALSE`;
-    conditions.push(keep(Prisma.sql`remote_policy = 'FULL_REMOTE' OR ${inZone}`));
+    conditions.push(
+      keep(
+        remoteOutsideZoneAccepted(rails)
+          ? Prisma.sql`remote_policy = 'FULL_REMOTE' OR ${inZone}`
+          : inZone,
+      ),
+    );
   }
 
   // Salaire plancher (`salaryFloorRule` / `annualSalary`) : seule une offre

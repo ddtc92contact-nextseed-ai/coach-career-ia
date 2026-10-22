@@ -104,6 +104,7 @@ const ARGS = {
     excludedSectors: z.array(z.enum(SECTORS)).max(40).nullish(),
     maxWeeklyHours: optionalInt,
     acceptsOnCall: z.boolean().nullish(),
+    acceptsRemoteOutsideZone: z.boolean().nullish(),
     locations: z
       .array(z.object({ label: z.string().max(200), radiusKm: z.number() }))
       .max(10)
@@ -134,6 +135,10 @@ const FIELD_DESCRIPTIONS: Partial<Record<CoachToolName, Record<string, string>>>
     skills: "Skills demonstrated (technology or competence names).",
     experienceId: "Id of the experience it belongs to, from read_career_memory.",
     proofUrl: "Public URL that proves the result, if the candidate gave one.",
+  },
+  propose_guard_rail_change: {
+    acceptsRemoteOutsideZone:
+      "true if the candidate also wants fully remote jobs located outside their locations' radius. Implied when remotePolicy is FULL_REMOTE.",
   },
 };
 
@@ -254,6 +259,7 @@ export function buildCoachTools(options: {
             excludedSectors: args.excludedSectors ?? undefined,
             maxWeeklyHours: args.maxWeeklyHours,
             acceptsOnCall: args.acceptsOnCall ?? undefined,
+            acceptsRemoteOutsideZone: args.acceptsRemoteOutsideZone ?? undefined,
             locations: args.locations ?? undefined,
           },
           args,

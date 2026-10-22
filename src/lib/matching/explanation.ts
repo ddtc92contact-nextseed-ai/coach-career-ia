@@ -7,7 +7,7 @@ import { isAiError } from "@/lib/ai/errors";
 import { languageInstruction } from "@/lib/ai/locale";
 import { CULTURE_PREFERENCES } from "@/lib/career/codes";
 import type { Evaluation } from "./score";
-import { GAP_CODES, UNKNOWN_CODES } from "./types";
+import { GAP_CODES, UNKNOWN_CODES, type UnknownCode } from "./types";
 
 /**
  * Explication d'une correspondance, stockée avec elle (`matches.explanation`)
@@ -48,6 +48,11 @@ export const explanationSchema = z.object({
   gaps: z.array(z.object({ code: z.enum(GAP_CODES), value: z.string().optional() })),
   unknowns: z.array(z.enum(UNKNOWN_CODES)),
   /**
+   * Ville citée avec les déplacements d'une offre en télétravail complet
+   * (`remoteWithTravel`), quand l'offre la donne simplement.
+   */
+  travelPlace: z.string().max(60).optional(),
+  /**
    * Points ajoutés parce que le candidat suit l'entreprise (absent sinon, et
    * dans les explications stockées avant cette information).
    */
@@ -67,6 +72,7 @@ export function explanationFacts(
     culture: evaluation.culture,
     gaps: evaluation.gaps,
     unknowns: evaluation.unknowns,
+    ...(evaluation.travelPlace ? { travelPlace: evaluation.travelPlace } : {}),
     // Points réellement ajoutés : détail du score + bonus = score affiché.
     ...(evaluation.followedBoost ? { followedBonus: evaluation.followedBoost } : {}),
   };
@@ -95,8 +101,21 @@ export function factLines(facts: ExplanationFacts, locale: AppLocale) {
         : t("matchSemantic", { achievement: m.achievement }),
     ),
     gaps: facts.gaps.map((g) => t(`gaps.${g.code}`, { value: g.value ?? "" })),
-    unknowns: facts.unknowns.map((u) => t(`unknowns.${u}`)),
+    unknowns: facts.unknowns.map((u) => unknownLine(facts, u, locale)),
   };
+}
+
+/** Libellé d'une information à vérifier (avec la ville des déplacements quand elle est connue). */
+export function unknownLine(
+  facts: Pick<ExplanationFacts, "travelPlace">,
+  code: UnknownCode,
+  locale: AppLocale,
+): string {
+  const t = matchingTranslator(locale);
+  if (code === "remoteWithTravel" && facts.travelPlace) {
+    return t("remoteWithTravelPlace", { place: facts.travelPlace });
+  }
+  return t(`unknowns.${code}`);
 }
 
 /** Résumé déterministe (repli quand le LLM est indisponible). */

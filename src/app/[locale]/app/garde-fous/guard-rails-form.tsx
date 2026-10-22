@@ -245,6 +245,26 @@ export function GuardRailsForm({ initial }: { initial: GuardRailsView }) {
             {t("location.add")}
           </button>
         ) : null}
+        {/* Sans lieu, toutes les offres passent déjà : la case n'a pas d'effet. */}
+        {locations.length > 0 ? (
+          <label className="border-line bg-subtle mt-4 flex cursor-pointer items-start gap-3 rounded-xl border p-4">
+            <input
+              type="checkbox"
+              name="acceptsRemoteOutsideZone"
+              defaultChecked={initial.acceptsRemoteOutsideZone}
+              aria-describedby="gf-remote-outside-hint"
+              className="accent-brand mt-0.5 size-4 shrink-0"
+            />
+            <span>
+              <span className="block font-medium">{t("location.remoteOutside")}</span>
+              <span id="gf-remote-outside-hint" className="text-ink-subtle">
+                {remotePolicy === "FULL_REMOTE"
+                  ? t("location.remoteOutsideImplied")
+                  : t("location.remoteOutsideHint")}
+              </span>
+            </span>
+          </label>
+        ) : null}
 
         <div className="border-line mt-6 border-t pt-6">
           <fieldset>

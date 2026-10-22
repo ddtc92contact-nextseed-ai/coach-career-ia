@@ -30,6 +30,7 @@ export async function updateGuardRails(
       .filter(Boolean),
     maxWeeklyHours: String(formData.get("maxWeeklyHours") ?? ""),
     acceptsOnCall: formData.get("acceptsOnCall") === "on",
+    acceptsRemoteOutsideZone: formData.get("acceptsRemoteOutsideZone") === "on",
     culturePreferences: strings("culturePreferences"),
     locations: strings("locationLabel").map((label, index) => ({
       label,

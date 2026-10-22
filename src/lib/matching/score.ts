@@ -2,7 +2,13 @@ import type { CulturePreferenceCode } from "@/lib/career/codes";
 import { isProven } from "@/lib/career/derive";
 import { checkGuardRails } from "./filters";
 import { annualSalary } from "./salary";
-import { detectCulture, offerSeniorityRank, SENIORITY_RANK } from "./signals";
+import {
+  detectCulture,
+  mentionsTravel,
+  offerSeniorityRank,
+  SENIORITY_RANK,
+  travelDestination,
+} from "./signals";
 import { normalizeText, sentences, termPattern, truncate } from "./text";
 import type {
   CandidateProfile,
@@ -62,6 +68,8 @@ export type Evaluation = {
   culture: CulturePreferenceCode[];
   gaps: Gap[];
   unknowns: UnknownCode[];
+  /** Ville citée avec les déplacements d'une offre en télétravail complet (`remoteWithTravel`). */
+  travelPlace?: string;
 };
 
 export type OfferResult =
@@ -137,6 +145,14 @@ export function evaluateOffer(
   const unknowns = [...check.unknowns];
   const gaps: Gap[] = [];
   const offerText = normalizeText(`${offer.title}\n${offer.description}`);
+
+  // --- Télétravail complet, mais déplacements mentionnés (signal, jamais un filtre) ---
+  let travelPlace: string | null = null;
+  const fullText = `${offer.title}\n${offer.description}`;
+  if (offer.remotePolicy === "FULL_REMOTE" && mentionsTravel(fullText)) {
+    unknowns.push("remoteWithTravel");
+    travelPlace = travelDestination(fullText);
+  }
 
   // --- Compétences citées par l'offre (preuve > déclaration) ---
   const matchedSkills: { name: string; proven: boolean; pattern: RegExp }[] = [];
@@ -251,6 +267,7 @@ export function evaluateOffer(
     culture: matchedCulture,
     gaps,
     unknowns,
+    ...(travelPlace ? { travelPlace } : {}),
   };
 }
 

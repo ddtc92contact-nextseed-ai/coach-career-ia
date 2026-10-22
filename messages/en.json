@@ -1191,6 +1191,9 @@
       "radius": "Radius (km)",
       "remove": "Remove",
       "add": "Add a location",
+      "remoteOutside": "Also suggest 100% remote jobs located outside my area",
+      "remoteOutsideHint": "Otherwise, a fully remote job is only suggested if it is located within the radius of one of your locations.",
+      "remoteOutsideImplied": "Always included: you chose fully remote work only.",
       "notLocated": "Location not found on the map yet: it is saved, but the distance filter can’t apply to it. Check the spelling or add the country (“Berlin, Germany”), then save again.",
       "notLocatedSummary": "{count, plural, one {# location could not be found on the map. It is saved, but offers won’t be filtered by distance around it until it is recognised.} other {# locations could not be found on the map. They are saved, but offers won’t be filtered by distance around them until they are recognised.}}"
     },
@@ -1230,6 +1233,7 @@
       "hybridDays": "{policy}, {count, plural, one {# day minimum} other {# days minimum}}",
       "locations": "Locations",
       "location": "{label} ({km} km)",
+      "remoteOutside": "fully remote outside the area accepted",
       "contracts": "Accepted contracts",
       "contractsAll": "All",
       "exclusionsValue": "{sectors, plural, =0 {No sector} one {# sector} other {# sectors}}, {companies, plural, =0 {no company} one {# company} other {# companies}}",
@@ -1384,6 +1388,7 @@
         "excludedSectors": "Excluded sectors",
         "maxWeeklyHours": "Maximum hours per week",
         "acceptsOnCall": "On-call duty accepted",
+        "acceptsRemoteOutsideZone": "Fully remote outside the area accepted",
         "locations": "Work areas"
       }
     },
@@ -1727,8 +1732,10 @@
       "hoursNotStated": "Weekly hours not specified.",
       "locationNotChecked": "Distance not checked: your locations could not be located.",
       "seniorityNotStated": "Expected experience level not specified.",
-      "cultureNotStated": "The offer does not mention any of your culture preferences."
+      "cultureNotStated": "The offer does not mention any of your culture preferences.",
+      "remoteWithTravel": "Fully remote, but the offer mentions travel (headquarters, clients…): to be checked."
     },
+    "remoteWithTravelPlace": "Fully remote, but the offer mentions travel ({place}): to be checked.",
     "components": {
       "skills": "Skills and proofs",
       "seniority": "Seniority",

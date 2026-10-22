@@ -137,6 +137,7 @@ export const guardRailSuggestion = z
       .optional(),
     maxWeeklyHours: z.number().int().min(1).max(80, { error: "outOfRange" }).optional(),
     acceptsOnCall: z.boolean().optional(),
+    acceptsRemoteOutsideZone: z.boolean().optional(),
     locations: z.array(locationInput).max(LIMITS.locations, { error: "tooMany" }).optional(),
   })
   .refine((changes) => Object.values(changes).some((v) => v !== undefined), {

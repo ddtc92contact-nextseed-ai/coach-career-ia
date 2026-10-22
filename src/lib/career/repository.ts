@@ -534,6 +534,7 @@ export async function getGuardRails(userId: string) {
     ),
     maxWeeklyHours: rails?.maxWeeklyHours ?? null,
     acceptsOnCall: rails?.acceptsOnCall ?? false,
+    acceptsRemoteOutsideZone: rails?.acceptsRemoteOutsideZone ?? false,
     culturePreferences: rails?.culturePreferences ?? [],
     locations: locations.map((l) => ({
       id: l.id,
@@ -601,6 +602,7 @@ export async function saveGuardRails(
     ),
     maxWeeklyHours: input.maxWeeklyHours ?? null,
     acceptsOnCall: input.acceptsOnCall,
+    acceptsRemoteOutsideZone: input.acceptsRemoteOutsideZone,
     culturePreferences: input.culturePreferences,
   };
   await db.$transaction([

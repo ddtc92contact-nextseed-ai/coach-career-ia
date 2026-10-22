@@ -344,6 +344,7 @@ export async function careerMemorySnapshot(userId: string) {
       excludedCompaniesCount: rails.excludedCompanies.length,
       maxWeeklyHours: rails.maxWeeklyHours,
       acceptsOnCall: rails.acceptsOnCall,
+      acceptsRemoteOutsideZone: rails.acceptsRemoteOutsideZone,
       locations: rails.locations.map((l) => ({ label: l.label, radiusKm: l.radiusKm })),
     },
   };
@@ -497,6 +498,7 @@ async function applySuggestion<K extends SuggestionKind>(
         excludedCompanies: current.excludedCompanies,
         maxWeeklyHours: current.maxWeeklyHours ?? undefined,
         acceptsOnCall: current.acceptsOnCall,
+        acceptsRemoteOutsideZone: current.acceptsRemoteOutsideZone,
         culturePreferences: current.culturePreferences,
         ...Object.fromEntries(Object.entries(changes).filter(([, v]) => v !== undefined)),
         locations,

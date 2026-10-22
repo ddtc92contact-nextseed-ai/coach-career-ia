@@ -1191,6 +1191,9 @@
       "radius": "Umkreis (km)",
       "remove": "Entfernen",
       "add": "Ort hinzufügen",
+      "remoteOutside": "Auch 100 % Remote-Stellen außerhalb meines Gebiets vorschlagen",
+      "remoteOutsideHint": "Andernfalls wird eine vollständige Remote-Stelle nur vorgeschlagen, wenn sie im Umkreis eines Ihrer Orte liegt.",
+      "remoteOutsideImplied": "Immer eingeschlossen: Sie haben ausschließlich vollständiges Remote-Arbeiten gewählt.",
       "notLocated": "Ort noch nicht lokalisiert: Er ist gespeichert, aber der Entfernungsfilter kann nicht angewendet werden. Prüfen Sie die Schreibweise oder geben Sie das Land an („Berlin, Deutschland“) und speichern Sie erneut.",
       "notLocatedSummary": "{count, plural, one {# Ort konnte nicht lokalisiert werden. Er ist gespeichert, aber Angebote werden erst nach Entfernung gefiltert, wenn er erkannt wird.} other {# Orte konnten nicht lokalisiert werden. Sie sind gespeichert, aber Angebote werden erst nach Entfernung gefiltert, wenn sie erkannt werden.}}"
     },
@@ -1230,6 +1233,7 @@
       "hybridDays": "{policy}, {count, plural, one {mindestens # Tag} other {mindestens # Tage}}",
       "locations": "Orte",
       "location": "{label} ({km} km)",
+      "remoteOutside": "vollständig remote außerhalb des Gebiets akzeptiert",
       "contracts": "Akzeptierte Verträge",
       "contractsAll": "Alle",
       "exclusionsValue": "{sectors, plural, =0 {Keine Branche} one {# Branche} other {# Branchen}}, {companies, plural, =0 {kein Unternehmen} one {# Unternehmen} other {# Unternehmen}}",
@@ -1384,6 +1388,7 @@
         "excludedSectors": "Ausgeschlossene Branchen",
         "maxWeeklyHours": "Maximale Wochenstunden",
         "acceptsOnCall": "Bereitschaftsdienst akzeptiert",
+        "acceptsRemoteOutsideZone": "Vollständig remote außerhalb des Gebiets akzeptiert",
         "locations": "Arbeitsgebiete"
       }
     },
@@ -1727,8 +1732,10 @@
       "hoursNotStated": "Wochenarbeitszeit nicht angegeben.",
       "locationNotChecked": "Entfernung nicht geprüft: Ihre Orte konnten nicht lokalisiert werden.",
       "seniorityNotStated": "Erwartetes Erfahrungsniveau nicht angegeben.",
-      "cultureNotStated": "Das Angebot erwähnt keine Ihrer Kulturpräferenzen."
+      "cultureNotStated": "Das Angebot erwähnt keine Ihrer Kulturpräferenzen.",
+      "remoteWithTravel": "Vollständig remote, aber das Angebot erwähnt Reisen (Hauptsitz, Kunden…): zu prüfen."
     },
+    "remoteWithTravelPlace": "Vollständig remote, aber das Angebot erwähnt Reisen ({place}): zu prüfen.",
     "components": {
       "skills": "Kompetenzen und Nachweise",
       "seniority": "Seniorität",
