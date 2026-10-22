@@ -36,6 +36,7 @@ const { getCurrentUser, requireUser } = await import("@/lib/auth/session");
 const repo = await import("@/lib/career/repository");
 const { POST: importRoute } = await import("@/app/api/import/route");
 const { saveImport } = await import("@/app/[locale]/app/memoire/importer/actions");
+const { logger } = await import("@/lib/logger");
 
 const url = process.env.TEST_DATABASE_URL;
 
@@ -62,16 +63,19 @@ function postImport(fields: Record<string, Blob | string>) {
 describe.skipIf(!url)("import IA : API et enregistrement des éléments validés", () => {
   let alice: { id: string; email: string };
   let bob: { id: string; email: string };
+  let carol: { id: string; email: string };
   const fixture = IMPORT_CASES.find((c) => c.id === "linkedin-github-pm")!;
   const cvFixture = IMPORT_CASES.find((c) => c.id === "cv-fr-data-engineer")!;
+  const technicien = IMPORT_CASES.find((c) => c.id === "cv-fr-technicien-audiovisuel")!;
 
   beforeAll(async () => {
     alice = await newUser("import-alice");
     bob = await newUser("import-bob");
+    carol = await newUser("import-carol");
   });
 
   afterAll(async () => {
-    await db.user.deleteMany({ where: { id: { in: [alice.id, bob.id] } } });
+    await db.user.deleteMany({ where: { id: { in: [alice.id, bob.id, carol.id] } } });
   });
 
   it("refuse l'API sans session", async () => {
@@ -163,5 +167,111 @@ describe.skipIf(!url)("import IA : API et enregistrement des éléments validés
       errors: { _form: "required" },
     });
     expect(await db.experience.count({ where: { userId: bob.id } })).toBe(0);
+  });
+
+  it("journalise le bilan de l'import sans aucune donnée personnelle", async () => {
+    asUser(carol);
+    ai.replies = [technicien.llmReply()];
+    const info = vi.spyOn(logger, "info");
+    const response = await postImport({ cv: new Blob([technicien.sources().cv!.slice()]) });
+    const body = await response.json();
+    expect(body.result.report.experiences).toMatchObject({ extracted: 5, kept: 5, flagged: 3 });
+    const call = info.mock.calls.find(([event]) => event === "import.draft");
+    info.mockRestore();
+    expect(call?.[1]).toMatchObject({
+      experiencesExtracted: 5,
+      experiencesKept: 5,
+      experiencesFlagged: 3,
+      experiencesDropped: 0,
+      reasons: "startYearOnly:2,endYearOnly:1,startMissing:1",
+      achievementsExtracted: 6,
+      achievementsDropped: 0,
+      coverageGap: "none",
+    });
+    const logged = JSON.stringify(call?.[1]).toLowerCase();
+    for (const value of [...technicien.forbidden, "technicien", "régisseur", "formateur"]) {
+      expect(logged, value).not.toContain(value.toLowerCase());
+    }
+  });
+
+  it("réimporter son CV sur un profil existant fusionne sans créer de doublons", async () => {
+    asUser(carol);
+    const { draft } = technicien.expected();
+    // Le candidat complète les dates signalées, puis accepte tout.
+    const completed = {
+      ...draft,
+      experiences: draft.experiences.map((e) =>
+        e.ref === "exp-4" ? { ...e, startMonth: "2012-09", endMonth: "2019-06" } : e,
+      ),
+    };
+    const first = await saveImport(completed);
+    expect(first.ok).toBe(true);
+    if (!first.ok) return;
+    expect(first.summary).toMatchObject({
+      experiences: 5,
+      achievements: 6,
+      merged: { experiences: 0, achievements: 0 },
+    });
+    const skillsBefore = await db.skill.count({ where: { userId: carol.id } });
+
+    // Réimportation après correction du CV : mêmes intitulés, périodes qui se
+    // chevauchent (mois précisés), une nouvelle période et une nouvelle réalisation.
+    const again = {
+      experiences: [
+        ...completed.experiences.map((e) =>
+          e.ref === "exp-1"
+            ? {
+                ...e,
+                roleTitle: "Technicien son et image – intermittent du spectacle",
+                startMonth: "2004-11",
+              }
+            : e.ref === "exp-2"
+              ? { ...e, startMonth: "2010-03", endMonth: "2015-11" }
+              : e,
+        ),
+        {
+          ...completed.experiences[4]!,
+          ref: "exp-6",
+          roleTitle: "Opérateur de prise de vue",
+          startMonth: "1999-01",
+          endMonth: "1999-12",
+        },
+      ],
+      achievements: [
+        ...completed.achievements,
+        {
+          ...completed.achievements[0]!,
+          title: "Captation d'un opéra en plein air",
+          experienceRef: "exp-1",
+        },
+      ],
+      skills: completed.skills,
+    };
+    const second = await saveImport(again);
+    expect(second.ok).toBe(true);
+    if (!second.ok) return;
+    expect(second.summary).toMatchObject({
+      experiences: 1,
+      achievements: 1,
+      merged: { experiences: 5, achievements: 6 },
+    });
+    // Les refs fusionnées pointent vers les expériences existantes (lien avec le coffre).
+    expect(second.summary.experienceIds["exp-1"]).toBe(first.summary.experienceIds["exp-1"]);
+
+    const experiences = await repo.listExperiences(carol.id);
+    expect(experiences).toHaveLength(6);
+    const intermittent = experiences.find((e) => e.id === first.summary.experienceIds["exp-1"])!;
+    // Période élargie, poste toujours en cours, saisie existante conservée.
+    expect(intermittent.startMonth.toISOString().slice(0, 7)).toBe("2004-11");
+    expect(intermittent.endMonth).toBeNull();
+    expect(intermittent.roleTitle).toBe(draft.experiences[0]!.roleTitle);
+    const missions = experiences.find((e) => e.id === first.summary.experienceIds["exp-2"])!;
+    expect(missions.startMonth.toISOString().slice(0, 7)).toBe("2010-01");
+    expect(missions.endMonth?.toISOString().slice(0, 7)).toBe("2015-11");
+
+    const achievements = await repo.listAchievements(carol.id);
+    expect(achievements).toHaveLength(7);
+    expect(new Set(achievements.map((a) => a.title)).size).toBe(7);
+    expect(await db.skill.count({ where: { userId: carol.id } })).toBe(skillsBefore);
   });
 });
