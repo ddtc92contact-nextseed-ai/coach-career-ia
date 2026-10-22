@@ -66,12 +66,13 @@ describe("pertinence d'abord : profil audiovisuel du 22/10", () => {
     expect(kept).toBeLessThanOrEqual(OFF_TOPIC_OFFERS.length / 4);
   });
 
-  it("explique : expériences proches du poste, salaire non indiqué sans pénalité", () => {
+  it("explique : expériences proches du poste, salaire non indiqué neutre (#77)", () => {
     const av = byId.get("av-expert")!;
     expect(av.experiences.length).toBeGreaterThan(0);
     expect(av.experiences.map((e) => e.experience)).toContain("Technicien régie");
     expect(av.unknowns).toContain("salaryNotStated");
-    expect(av.components.salary).toBe(100);
+    // Neutre, sous un salaire annoncé au niveau du package (#77 : non annoncé ≠ parfait).
+    expect(av.components.salary).toBe(70);
     expect(av.gaps.map((g) => g.code)).not.toContain("lowRelevance");
     // Hors sujet : salaire au-dessus du package, mais peu de rapport avec le parcours.
     expect(offTopic[0]!.components.salary).toBe(100);
@@ -96,14 +97,17 @@ describe("pertinence d'abord : profil audiovisuel du 22/10", () => {
 });
 
 describe("calibration de la similarité", () => {
-  it("médiane → 0, top 1 % → 1 ; trop peu d'offres : bornes fixes", () => {
+  it("médiane → 0, p99 → P99_VALUE, maximum → 1 ; trop peu d'offres : bornes fixes", () => {
     const values = Array.from({ length: 1000 }, (_, i) => 0.6 + (0.2 * i) / 999);
     const stats = similarityStats(values);
     expect(stats.median).toBeCloseTo(0.7, 5);
     expect(stats.p99).toBeCloseTo(0.798, 3);
+    expect(stats.max).toBeCloseTo(0.8, 5);
     expect(calibratedRange(stats, DEFAULT_SEMANTIC_RANGE)).toMatchObject({
       floor: stats.median,
       ceil: stats.p99,
+      // Maximum à peine au-dessus du p99 : montée d'au moins un demi-écart.
+      top: stats.p99 + 0.5 * (stats.p99 - stats.median),
     });
     expect(calibratedRange({ ...stats, count: 20 }, DEFAULT_SEMANTIC_RANGE)).toBe(
       DEFAULT_SEMANTIC_RANGE,
@@ -111,7 +115,7 @@ describe("calibration de la similarité", () => {
     expect(calibratedRange(undefined, DEFAULT_SEMANTIC_RANGE)).toBe(DEFAULT_SEMANTIC_RANGE);
   });
 
-  it("une offre médiane n'apporte rien, une offre du top 1 % une pertinence haute", () => {
+  it("une offre médiane n'apporte rien, une offre du top 1 % une pertinence haute, sans saturer", () => {
     const profile = { ...AV_PROFILE, skills: [], experiences: [] };
     const range = { floor: 0.681, ceil: 0.776 };
     const at = (sim: number) => {
@@ -126,7 +130,9 @@ describe("calibration de la similarité", () => {
       return r.components.skills;
     };
     expect(at(0.681)).toBe(0);
-    expect(at(0.79)).toBeGreaterThanOrEqual(80);
+    // #77 : le p99 ne vaut plus 1 (une seule réalisation déclarée : × 0,85).
+    expect(at(0.79)).toBeGreaterThanOrEqual(60);
+    expect(at(0.85)).toBeGreaterThan(at(0.79) + 10);
     expect(at(0.733)).toBeLessThan(30);
   });
 });
