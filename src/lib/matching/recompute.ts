@@ -147,7 +147,7 @@ export async function recomputeUserMatches(
             userId,
             profile.achievements.map((a) => a.text),
           );
-          await ensureOfferEmbeddings(prisma, client, passing);
+          await ensureOfferEmbeddings(prisma, client, passing, { logger: log, now });
           return memorySimilarities(
             prisma,
             userId,

@@ -811,14 +811,15 @@ model JobOffer {
   createdAt          DateTime      @default(now()) @map("created_at")
   updatedAt          DateTime      @updatedAt @map("updated_at")
 
-  company     Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
-  duplicateOf JobOffer?       @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
-  duplicates  JobOffer[]      @relation("OfferDuplicates")
-  matches     Match[]
-  embedding   OfferEmbedding?
-  contacts    Contact[]
+  company            Company?                 @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  duplicateOf        JobOffer?                @relation("OfferDuplicates", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates         JobOffer[]               @relation("OfferDuplicates")
+  matches            Match[]
+  embedding          OfferEmbedding?
+  embeddingRejection OfferEmbeddingRejection?
+  contacts           Contact[]
   /// Offre publiée directement par une entreprise (`source = "direct"`).
-  posting     JobPosting?
+  posting            JobPosting?
 
   @@unique([source, sourceId])
   @@index([sourceKey, status])
@@ -1056,6 +1057,20 @@ model OfferEmbedding {
   offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
 
   @@map("offer_embeddings")
+}
+
+/// Offre dont le texte a été refusé SEUL par le fournisseur d'embeddings (issue #69) :
+/// ce texte (`textHash`, avec ce modèle) n'est plus renvoyé tant qu'il ne change pas.
+/// L'offre reste notée, sans similarité sémantique. Donnée publique, sans lien avec un utilisateur.
+model OfferEmbeddingRejection {
+  offerId   String   @id @map("offer_id")
+  model     String
+  textHash  String   @map("text_hash")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  offer JobOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@map("offer_embedding_rejections")
 }
 
 /// Embedding (pgvector) d'un élément de la mémoire de carrière, identifié par
