@@ -64,6 +64,7 @@ describe.skipIf(!url)("import IA : API et enregistrement des éléments validés
   let alice: { id: string; email: string };
   let bob: { id: string; email: string };
   let carol: { id: string; email: string };
+  let dave: { id: string; email: string };
   const fixture = IMPORT_CASES.find((c) => c.id === "linkedin-github-pm")!;
   const cvFixture = IMPORT_CASES.find((c) => c.id === "cv-fr-data-engineer")!;
   const technicien = IMPORT_CASES.find((c) => c.id === "cv-fr-technicien-audiovisuel")!;
@@ -72,10 +73,11 @@ describe.skipIf(!url)("import IA : API et enregistrement des éléments validés
     alice = await newUser("import-alice");
     bob = await newUser("import-bob");
     carol = await newUser("import-carol");
+    dave = await newUser("import-dave");
   });
 
   afterAll(async () => {
-    await db.user.deleteMany({ where: { id: { in: [alice.id, bob.id, carol.id] } } });
+    await db.user.deleteMany({ where: { id: { in: [alice.id, bob.id, carol.id, dave.id] } } });
   });
 
   it("refuse l'API sans session", async () => {
@@ -273,5 +275,72 @@ describe.skipIf(!url)("import IA : API et enregistrement des éléments validés
     expect(achievements).toHaveLength(7);
     expect(new Set(achievements.map((a) => a.title)).size).toBe(7);
     expect(await db.skill.count({ where: { userId: carol.id } })).toBe(skillsBefore);
+  });
+  it("un premier import garde distincts les postes de même intitulé aux périodes contiguës", async () => {
+    asUser(dave);
+    const template = technicien.expected().draft.experiences[0]!;
+    const stint = (
+      ref: string,
+      startMonth: string,
+      endMonth: string,
+      responsibilities: string,
+    ) => ({
+      ...template,
+      ref,
+      roleTitle: "Technicien son",
+      startMonth,
+      endMonth,
+      responsibilities,
+    });
+    const draft = {
+      experiences: [
+        stint("exp-1", "2000-03", "2005-06", "Tournées en salle"),
+        stint("exp-2", "2005-06", "2010-12", "Plateaux télévisés"),
+        stint("exp-3", "2008-01", "2012-12", "Festivals d'été"),
+      ],
+      achievements: ["exp-1", "exp-2"].map((experienceRef) => ({
+        ...technicien.expected().draft.achievements[0]!,
+        title: "Sonorisation d'un concert",
+        experienceRef,
+      })),
+      skills: [],
+    };
+    const first = await saveImport(draft);
+    expect(first.ok).toBe(true);
+    if (!first.ok) return;
+    expect(first.summary).toMatchObject({
+      experiences: 3,
+      achievements: 2,
+      merged: { experiences: 0, achievements: 0 },
+    });
+    expect(new Set(Object.values(first.summary.experienceIds)).size).toBe(3);
+    const experiences = await repo.listExperiences(dave.id);
+    expect(experiences.map((e) => e.responsibilities).sort()).toEqual([
+      "Festivals d'été",
+      "Plateaux télévisés",
+      "Tournées en salle",
+    ]);
+
+    // Réimportation du même CV : chaque poste retrouve le sien, sans doublon.
+    const again = await saveImport(draft);
+    expect(again.ok).toBe(true);
+    if (!again.ok) return;
+    expect(again.summary).toMatchObject({
+      experiences: 0,
+      achievements: 0,
+      merged: { experiences: 3, achievements: 2 },
+    });
+    expect(again.summary.experienceIds).toEqual(first.summary.experienceIds);
+    const after = await repo.listExperiences(dave.id);
+    expect(after).toHaveLength(3);
+    expect(
+      after
+        .map(
+          (e) =>
+            `${e.startMonth.toISOString().slice(0, 7)}→${e.endMonth?.toISOString().slice(0, 7)}`,
+        )
+        .sort(),
+    ).toEqual(["2000-03→2005-06", "2005-06→2010-12", "2008-01→2012-12"]);
+    expect(await repo.listAchievements(dave.id)).toHaveLength(2);
   });
 });

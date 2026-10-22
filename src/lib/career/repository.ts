@@ -427,6 +427,50 @@ export function periodsOverlap(a: Period, b: Period): boolean {
   return a.startMonth.getTime() <= end(b) && b.startMonth.getTime() <= end(a);
 }
 
+/** Nombre de mois communs à deux périodes (bornes incluses, une fin absente = `now`). */
+export function overlapMonths(a: Period, b: Period, now = new Date()): number {
+  if (!periodsOverlap(a, b)) return 0;
+  const month = (d: Date) => d.getUTCFullYear() * 12 + d.getUTCMonth();
+  const start = Math.max(month(a.startMonth), month(b.startMonth));
+  const end = Math.min(month(a.endMonth ?? now), month(b.endMonth ?? now));
+  return Math.max(1, end - start + 1);
+}
+
+type TitledPeriod = Period & { roleTitle: string };
+
+/**
+ * Associe les expériences d'un brouillon aux expériences EXISTANTES qu'elles
+ * reprennent : même intitulé et période qui chevauche. Chaque expérience
+ * existante absorbe au plus une expérience du brouillon, celle dont le
+ * chevauchement est le plus grand : des postes successifs de même intitulé
+ * (intermittent, missions chez plusieurs employeurs) restent distincts.
+ * Renvoie, pour chaque indice du brouillon, l'indice de l'expérience existante.
+ */
+export function matchExperiences(
+  drafts: TitledPeriod[],
+  existing: TitledPeriod[],
+  now = new Date(),
+): Map<number, number> {
+  const pairs: { draft: number; known: number; months: number }[] = [];
+  drafts.forEach((d, draft) => {
+    const key = titleKey(d.roleTitle);
+    existing.forEach((k, known) => {
+      if (titleKey(k.roleTitle) !== key) return;
+      const months = overlapMonths(d, k, now);
+      if (months > 0) pairs.push({ draft, known, months });
+    });
+  });
+  pairs.sort((a, b) => b.months - a.months || a.draft - b.draft || a.known - b.known);
+  const matches = new Map<number, number>();
+  const claimed = new Set<number>();
+  for (const { draft, known } of pairs) {
+    if (matches.has(draft) || claimed.has(known)) continue;
+    matches.set(draft, known);
+    claimed.add(known);
+  }
+  return matches;
+}
+
 /**
  * Enregistre les éléments d'un brouillon d'import que le candidat a ACCEPTÉS
  * (le tri est fait avant l'appel). Tout ou rien, en une transaction. Une
@@ -435,8 +479,10 @@ export function periodsOverlap(a: Period, b: Period): boolean {
  * Réimportation sans doublon : une expérience de même intitulé dont la période
  * chevauche une expérience existante y est FUSIONNÉE (période élargie,
  * description complétée si elle était vide, le reste de la saisie existante
- * conservé) ; une réalisation de même titre, rattachée à la même expérience,
- * reçoit seulement les compétences et preuves qui lui manquent.
+ * conservé, voir `matchExperiences`) ; une réalisation de même titre, rattachée
+ * à la même expérience, reçoit seulement les compétences et preuves qui lui
+ * manquent. Seuls les éléments présents AVANT l'import sont candidats : ceux
+ * d'un même brouillon ne fusionnent jamais entre eux.
  */
 export async function importDraft(
   userId: string,
@@ -459,10 +505,17 @@ export async function importDraft(
           responsibilities: true,
         },
       });
-      for (const { ref, ...experience } of draft.experiences) {
-        const data = experienceData(experience);
-        const key = titleKey(data.roleTitle);
-        const match = known.find((k) => titleKey(k.roleTitle) === key && periodsOverlap(k, data));
+      const drafted = draft.experiences.map(({ ref, ...experience }) => ({
+        ref,
+        data: experienceData(experience),
+      }));
+      const matches = matchExperiences(
+        drafted.map((d) => d.data),
+        known,
+      );
+      for (const [index, { ref, data }] of drafted.entries()) {
+        const knownIndex = matches.get(index);
+        const match = knownIndex === undefined ? undefined : known[knownIndex];
         if (match) {
           const startMonth =
             data.startMonth < match.startMonth ? data.startMonth : match.startMonth;
@@ -477,7 +530,6 @@ export async function importDraft(
             where: { id: match.id },
             data: { startMonth, endMonth, responsibilities },
           });
-          Object.assign(match, { startMonth, endMonth, responsibilities });
           experienceIds[ref] = match.id;
           merged.experiences += 1;
           continue;
@@ -486,7 +538,6 @@ export async function importDraft(
           data: { userId, ...data },
           select: { id: true },
         });
-        known.push({ id: created.id, ...data });
         experienceIds[ref] = created.id;
         createdExperiences += 1;
       }
@@ -500,18 +551,23 @@ export async function importDraft(
           proofs: { where: { kind: "URL" }, select: { url: true } },
         },
       });
+      // Une réalisation existante n'absorbe qu'une réalisation du brouillon.
+      const claimedAchievements = new Set<string>();
       for (const achievement of draft.achievements) {
         const skillIds = await upsertSkills(tx, userId, achievement.skills);
         const experienceId = achievement.experienceRef
           ? (experienceIds[achievement.experienceRef] ?? null)
           : null;
         const key = titleKey(achievement.title);
-        const match = knownAchievements.find(
+        const candidates = knownAchievements.filter(
           (a) =>
+            !claimedAchievements.has(a.id) &&
             titleKey(a.title) === key &&
             (a.experienceId === experienceId || a.experienceId === null || experienceId === null),
         );
+        const match = candidates.find((a) => a.experienceId === experienceId) ?? candidates[0];
         if (match) {
+          claimedAchievements.add(match.id);
           const urls = new Set(match.proofs.map((p) => p.url?.toLowerCase()));
           const proofs = achievement.proofs.filter(
             (proof) => proof.kind !== "URL" || !urls.has(proof.url.toLowerCase()),
@@ -540,7 +596,7 @@ export async function importDraft(
           merged.achievements += 1;
           continue;
         }
-        const created = await tx.achievement.create({
+        await tx.achievement.create({
           data: {
             userId,
             experienceId,
@@ -559,12 +615,6 @@ export async function importDraft(
             },
           },
           select: { id: true },
-        });
-        knownAchievements.push({
-          id: created.id,
-          title: achievement.title,
-          experienceId,
-          proofs: achievement.proofs.flatMap((p) => (p.kind === "URL" ? [{ url: p.url }] : [])),
         });
         createdAchievements += 1;
       }
