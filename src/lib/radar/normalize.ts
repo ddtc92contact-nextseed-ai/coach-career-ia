@@ -11,17 +11,89 @@ const ONSITE =
   /\b(?:pas de teletravail|sans teletravail|teletravail (?:non possible|impossible)|100\s?%\s?(?:presentiel|sur site|on[\s-]?site)|on[\s-]?site only)\b/;
 
 /**
+ * Marqueurs négatifs ou conditionnels (texte replié) : « ce poste n'est pas
+ * pour vous si vous recherchez un poste 100 % en télétravail », « this is not
+ * a fully remote role »… Une mention qui les suit dans la même phrase n'est
+ * pas une description du poste. Seules les tournures adressées au candidat
+ * comptent comme conditionnelles : « ne » seul (« nous ne recrutons qu'en full
+ * remote »), « à la recherche » ou « looking for » dits par l'employeur (« we
+ * are looking for a fully remote engineer ») ne nient rien.
+ */
+const NEGATION =
+  /\b(?:pas|(?:vous|tu) (?:re)?cherch(?:ez|es)|(?:re)?cherch(?:ez vous|es tu)|(?:vous|tu) (?:etes|es) (?:a la recherche|en quete)|(?:vous|tu) (?:souhaitez|souhaites|voulez|veux|preferez|preferes|revez|reves|aspirez|aspires|avez envie|as envie)|faites demi tour|passez votre chemin|not|never|(?:isn|aren|wasn|don|doesn|won|can|couldn|wouldn|shouldn) t|cannot|(?:you|you re|you are|are you) (?:looking|searching)|if you (?:want|wish|prefer|need|seek)|you (?:want|wish|prefer|seek|re seeking|are seeking))\b/;
+/** Tournures où « pas » / « not » ne nient pas la mention qui suit. */
+const NEGATION_EXCEPTIONS =
+  /\b(?:pas (?:plus|moins|seulement|uniquement|besoin|forcement)|n hesite[sz]? pas|pas de deplacements?|n importe|no(?:t)? (?:more|less) than|not only|no need|whether or not|(?:don|doesn|won) t (?:need|have) to|never (?:need|have) to|no matter)\b/g;
+/** Négation placée après la mention : « 100 % télétravail n'est pas possible ». */
+const NEGATED_AFTER =
+  /^(?:(?:n )?(?:est|sont|is|are) )?(?:(?:pas|non|not|isn t|aren t) (?:possible|envisageable|autorise|propose|available|offered|an option|allowed)|impossible|exclu)\b/;
+/** Nombre de mots qui précèdent une mention examinés pour la négation. */
+const NEGATION_WINDOW = 8;
+/**
+ * Fin de portée d'une négation : une mention de télétravail antérieure ou une
+ * opposition (« pas de full remote, mais 2 jours de télétravail »).
+ */
+const NEGATION_SCOPE_END =
+  /^.*\b(?:teletravail|remote|hybride|hybrid|presentiel|on ?site|sur site|a distance|mais|but|however|cependant|toutefois|en revanche|par contre)\b/;
+
+/** Phrases et puces repliées : la portée d'une négation. */
+function remoteSegments(texts: (string | null | undefined)[]): string[] {
+  return texts
+    .filter(Boolean)
+    .join("\n")
+    .split(/\n|•|[.!?;…]+(?=\s|$)/)
+    .map((segment) =>
+      foldText(segment)
+        // foldText retire « % » : on le rétablit pour les motifs « 100 % ».
+        .replace(/\b100 (?=teletravail|remote|presentiel|sur site|en|a distance|on)/g, "100% "),
+    )
+    .filter(Boolean);
+}
+
+function isNegated(segment: string, start: number, end: number): boolean {
+  const before = segment
+    .slice(0, start)
+    .replace(NEGATION_SCOPE_END, " ")
+    .replace(NEGATION_EXCEPTIONS, " ")
+    .split(" ")
+    .filter(Boolean)
+    .slice(-NEGATION_WINDOW)
+    .join(" ");
+  return NEGATION.test(before) || NEGATED_AFTER.test(segment.slice(end).trim());
+}
+
+/** Vrai si le motif apparaît au moins une fois hors d'un contexte négatif. */
+function affirms(segments: string[], pattern: RegExp): boolean {
+  const global = new RegExp(pattern.source, "g");
+  return segments.some((segment) =>
+    [...segment.matchAll(global)].some((m) => !isNegated(segment, m.index, m.index + m[0].length)),
+  );
+}
+
+/**
  * Politique de télétravail déduite d'un texte. Seules des mentions explicites
- * sont retenues ; sinon `UNKNOWN`.
+ * sont retenues ; sinon `UNKNOWN`. Une mention de télétravail complet ou
+ * hybride niée ou conditionnelle (« pas pour vous si vous recherchez… ») est
+ * ignorée ; une mention positive ailleurs dans le texte compte toujours.
  */
 export function detectRemotePolicy(...texts: (string | null | undefined)[]): RemotePolicy {
-  const text = foldText(texts.filter(Boolean).join(" \n "))
-    // foldText retire « % » : on le rétablit pour les motifs « 100 % ».
-    .replace(/\b100 (?=teletravail|remote|presentiel|sur site|en|a distance|on)/g, "100% ");
-  if (ONSITE.test(text)) return "ONSITE";
-  if (FULL_REMOTE.test(text)) return "FULL_REMOTE";
-  if (HYBRID.test(text)) return "HYBRID";
+  const segments = remoteSegments(texts);
+  if (segments.some((segment) => ONSITE.test(segment))) return "ONSITE";
+  if (affirms(segments, FULL_REMOTE)) return "FULL_REMOTE";
+  if (affirms(segments, HYBRID)) return "HYBRID";
   return "UNKNOWN";
+}
+
+/**
+ * Vrai si le texte mentionne la politique, même niée : distingue une
+ * classification tirée du texte d'un indicateur structuré de l'ATS.
+ */
+export function mentionsRemotePolicy(
+  policy: "FULL_REMOTE" | "HYBRID",
+  ...texts: (string | null | undefined)[]
+): boolean {
+  const pattern = policy === "FULL_REMOTE" ? FULL_REMOTE : HYBRID;
+  return remoteSegments(texts).some((segment) => pattern.test(segment));
 }
 
 /** Valeurs structurées des ATS (`workplaceType`). */

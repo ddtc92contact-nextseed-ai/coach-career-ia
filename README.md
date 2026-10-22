@@ -48,26 +48,27 @@ convient.
 
 ### Scripts npm
 
-| Script                   | Rôle                                                              |
-| ------------------------ | ----------------------------------------------------------------- |
-| `npm run dev`            | serveur de développement                                          |
-| `npm run build`          | build de production (standalone)                                  |
-| `npm start`              | lance le build                                                    |
-| `npm run lint`           | ESLint + vérification Prettier                                    |
-| `npm run format`         | formate le code avec Prettier                                     |
-| `npm run typecheck`      | génère les types de routes Next.js puis `tsc --noEmit`            |
-| `npm test`               | tests Vitest (unitaires + intégration si `TEST_DATABASE_URL`)     |
-| `npm run i18n:check`     | vérifie que les 6 langues ont les mêmes clés (CI)                 |
-| `npm run db:up` / `down` | démarre / arrête la base de dev (`docker-compose.dev.yml`)        |
-| `npm run db:migrate`     | applique les migrations (`prisma migrate deploy`)                 |
-| `npm run db:migrate:dev` | crée une nouvelle migration après modification du schéma          |
-| `npm run db:seed`        | données de démonstration (idempotent, ignoré en production)       |
-| `npm run db:generate`    | régénère le client Prisma (`src/generated/prisma`, non versionné) |
-| `npm run radar:run`      | un passage du Market Radar sur toutes les sources                 |
-| `npm run ai:eval`        | fixtures de l'import IA passées au vrai fournisseur (manuel)      |
-| `npm run worker`         | worker de tâches de fond (radar planifié)                         |
-| `npm run geo:backfill`   | géocode les offres ouvertes encore sans coordonnées               |
-| `npm run matching:load`  | test de charge mémoire du matching (20 000 offres, base de test)  |
+| Script                            | Rôle                                                               |
+| --------------------------------- | ------------------------------------------------------------------ |
+| `npm run dev`                     | serveur de développement                                           |
+| `npm run build`                   | build de production (standalone)                                   |
+| `npm start`                       | lance le build                                                     |
+| `npm run lint`                    | ESLint + vérification Prettier                                     |
+| `npm run format`                  | formate le code avec Prettier                                      |
+| `npm run typecheck`               | génère les types de routes Next.js puis `tsc --noEmit`             |
+| `npm test`                        | tests Vitest (unitaires + intégration si `TEST_DATABASE_URL`)      |
+| `npm run i18n:check`              | vérifie que les 6 langues ont les mêmes clés (CI)                  |
+| `npm run db:up` / `down`          | démarre / arrête la base de dev (`docker-compose.dev.yml`)         |
+| `npm run db:migrate`              | applique les migrations (`prisma migrate deploy`)                  |
+| `npm run db:migrate:dev`          | crée une nouvelle migration après modification du schéma           |
+| `npm run db:seed`                 | données de démonstration (idempotent, ignoré en production)        |
+| `npm run db:generate`             | régénère le client Prisma (`src/generated/prisma`, non versionné)  |
+| `npm run radar:run`               | un passage du Market Radar sur toutes les sources                  |
+| `npm run ai:eval`                 | fixtures de l'import IA passées au vrai fournisseur (manuel)       |
+| `npm run worker`                  | worker de tâches de fond (radar planifié)                          |
+| `npm run geo:backfill`            | géocode les offres ouvertes encore sans coordonnées                |
+| `npm run radar:reclassify-remote` | reclasse le télétravail mal lu des offres ouvertes, puis recalcule |
+| `npm run matching:load`           | test de charge mémoire du matching (20 000 offres, base de test)   |
 
 ## Variables d'environnement
 
@@ -178,6 +179,12 @@ client identifié et poli. Code : `src/lib/radar`.
   si elle revient). Dédoublonnage inter-sources par URL d'origine ou entreprise + intitulé
   normalisé + ville : l'offre de l'ATS de l'employeur est canonique, les autres pointent vers
   elle (`duplicateOfId`).
+- **Télétravail** (`normalize.ts`) : indicateurs structurés de l'ATS d'abord (lieu « Remote »,
+  `workplaceType`, drapeaux), sinon mentions explicites du texte, phrase par phrase. Une mention
+  niée ou conditionnelle (« pas de 100 % télétravail », « ce poste n'est pas pour vous si vous
+  recherchez un poste en full remote », « this is not a fully remote role ») ne classe pas l'offre
+  en `FULL_REMOTE` ni en `HYBRID` : sans autre mention, elle reste `UNKNOWN` et passe par le
+  filtre de distance.
 - **Salaire** : uniquement s'il est annoncé (`salary.ts` lit « 45-55 k€ », « 50 000 € annuel »,
   mensuel, journalier, horaire, variable, BSPCE) ; sinon `null`, jamais estimé.
 - **Robustesse** : chaque périmètre (France Travail, `greenhouse:dataiku`…) est journalisé
@@ -926,6 +933,12 @@ Services (`docker-compose.yml`) :
 - `worker` : tâches de fond (Market Radar planifié), image dédiée (cible Docker `worker`) ;
   `RADAR_CONTACT` est requis ;
 - `postgres` : `pgvector/pgvector:pg17`, volume `pgdata`, réseau interne uniquement.
+
+Après le déploiement de la détection du télétravail en contexte négatif (#63), lancer une fois
+`docker compose run --rm worker npm run radar:reclassify-remote` : les offres ouvertes classées
+`FULL_REMOTE` / `HYBRID` d'après une mention négative sont reclassées depuis leur texte et tous
+les candidats sont recalculés (les opportunités hors zone disparaissent au passage suivant du
+worker). Idempotent ; le passage suivant du radar réécrit ces offres depuis leur source.
 
 Sauvegarde de la base : `docker compose exec postgres pg_dump -U coach coach_career > sauvegarde.sql`.
 

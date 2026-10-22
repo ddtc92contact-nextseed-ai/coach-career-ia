@@ -42,6 +42,8 @@ COPY config ./config
 COPY worker ./worker
 # Tas V8 fixé à ~75 % de la limite mémoire du conteneur (voir le script).
 COPY docker/worker-start.sh ./docker/worker-start.sh
+# Scripts ponctuels (`docker compose run --rm worker npm run radar:reclassify-remote`).
+COPY scripts ./scripts
 USER node
 CMD ["sh", "docker/worker-start.sh"]
 
