@@ -8,6 +8,7 @@ import { languageInstruction } from "@/lib/ai/locale";
 import type { CardContent } from "@/lib/card/schema";
 import { checkMessage, termsForTarget } from "@/lib/card/reidentify";
 import { redactText } from "@/lib/import/pseudonymise";
+import { truncateSafe } from "@/lib/text/truncate";
 
 /**
  * Brouillon du message envoyé à l'entreprise, dans la LANGUE DE L'OFFRE.
@@ -51,7 +52,7 @@ function codesTranslator(locale: AppLocale) {
 
 export function draftSubject(locale: AppLocale, offerTitle: string): string {
   const subject = translator(locale)("subject", { title: offerTitle });
-  return subject.length <= MAX_SUBJECT ? subject : `${subject.slice(0, MAX_SUBJECT - 1)}…`;
+  return subject.length <= MAX_SUBJECT ? subject : `${truncateSafe(subject, MAX_SUBJECT - 1)}…`;
 }
 
 function list(locale: AppLocale, items: string[]) {

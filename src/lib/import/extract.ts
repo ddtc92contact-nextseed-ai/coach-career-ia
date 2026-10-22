@@ -1,4 +1,5 @@
 import { strFromU8, unzipSync } from "fflate";
+import { truncateSafe } from "@/lib/text/truncate";
 import { ImportError } from "./errors";
 import { IMPORT_LIMITS } from "./shared";
 
@@ -85,7 +86,7 @@ export function normalizeText(text: string, maxChars: number): string {
     .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
-  return normalized.length > maxChars ? normalized.slice(0, maxChars) : normalized;
+  return truncateSafe(normalized, maxChars);
 }
 
 async function pdfText(bytes: Uint8Array): Promise<string> {

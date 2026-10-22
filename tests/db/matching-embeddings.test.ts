@@ -13,7 +13,8 @@ const { PrismaPg } = await import("@prisma/adapter-pg");
 const { AiError, createAiClient, createMockProvider } = await import("@/lib/ai");
 const { createLogger } = await import("@/lib/logger");
 const { matchingConfig } = await import("@/lib/matching/config");
-const { offerEmbeddingText, textHash } = await import("@/lib/matching/embeddings");
+const { ensureOfferEmbeddings, offerEmbeddingText, textHash } =
+  await import("@/lib/matching/embeddings");
 const { recomputeUserMatches } = await import("@/lib/matching/recompute");
 const { OFFERS } = await import("../fixtures/matching/cases");
 const { BAG_OF_WORDS_RANGE, bagOfWordsEmbedding } = await import("../helpers/matching");
@@ -212,5 +213,49 @@ describe.skipIf(!url)("matching : embeddings refusés isolés (#69)", { timeout:
       offerEmbeddingText({ title: poisoned.title, description: great.description }),
     ]);
     expect(await offerEmbeddingCount()).toBe(32);
+  });
+
+  it("une offre refusée pour un émoji coupé en deux est retentée sans attendre (#71)", async () => {
+    const title = `Développeur ${run}`;
+    const head = `${title}\n`;
+    const offer = {
+      ...great,
+      id: `${run}-emoji`,
+      title,
+      description: `${"é".repeat(1999 - head.length)}🚀 suite`,
+    };
+    const now = new Date();
+    await db.jobOffer.create({
+      data: {
+        ...offer,
+        source: "test-matching-embeddings",
+        sourceKey: `test-matching-embeddings:${run}`,
+        sourceId: offer.id,
+        url: `https://emplois.exemple.test/${offer.id}`,
+        urlKey: `emplois.exemple.test/${offer.id}`,
+        firstSeenAt: now,
+        lastSeenAt: now,
+        contentHash: offer.id,
+      },
+    });
+    // Refus mémorisé avant #71, sur le texte coupé par `slice` (moitié d'émoji finale).
+    const legacy = head + offer.description.slice(0, 2000 - head.length);
+    expect(legacy.isWellFormed()).toBe(false);
+    const { client, provider } = setup();
+    await db.offerEmbeddingRejection.create({
+      data: {
+        offerId: offer.id,
+        model: client.provider.embeddingModel,
+        textHash: textHash(legacy),
+        createdAt: now,
+      },
+    });
+
+    const embedded = await ensureOfferEmbeddings(db, client, [offer], { now });
+    expect(embedded).toBe(1);
+    expect(provider.embedCalls).toEqual([[offerEmbeddingText(offer)]]);
+    expect(provider.embedCalls[0]![0]!.isWellFormed()).toBe(true);
+    const stored = await db.offerEmbedding.findUniqueOrThrow({ where: { offerId: offer.id } });
+    expect(stored.textHash).toBe(textHash(offerEmbeddingText(offer)));
   });
 });

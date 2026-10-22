@@ -163,6 +163,15 @@ export function safeErrorDetail(
   };
 }
 
+/**
+ * Remplace toute moitié de paire de substitution isolée par U+FFFD avant
+ * l'envoi : `JSON.stringify` l'écrirait `\ud83d`, que l'API Mistral rejette
+ * (400 « Invalid JSON payload », issue #71). Vaut pour chaque texte de la
+ * requête : messages, outils, entrées d'embeddings.
+ */
+const wellFormed = (_key: string, value: unknown) =>
+  typeof value === "string" ? value.toWellFormed() : value;
+
 async function readErrorBody(response: Response): Promise<string> {
   try {
     const text = await response.text();
@@ -195,7 +204,7 @@ export function createOpenAiCompatibleProvider(options: OpenAiCompatibleOptions)
           Accept: "application/json",
           ...(options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : {}),
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body, wellFormed),
         signal,
       });
     } catch (error) {
