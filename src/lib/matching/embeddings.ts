@@ -12,12 +12,19 @@ import type { AiClient } from "@/lib/ai/client";
 
 const OFFER_TEXT_MAX = 2000;
 const MEMORY_TEXT_MAX = 1500;
-const INSERT_CHUNK = 100;
+const INSERT_CHUNK = 16;
 
 export const textHash = (text: string) => createHash("sha256").update(text).digest("hex");
 
+/**
+ * Titre et début de la description (`OFFER_TEXT_MAX` caractères en tout).
+ * Seul le début de la description est copié : concaténer puis couper
+ * aplatirait la description entière en mémoire (issue #64).
+ */
 export function offerEmbeddingText(offer: { title: string; description: string }): string {
-  return `${offer.title}\n${offer.description}`.slice(0, OFFER_TEXT_MAX);
+  const head = `${offer.title}\n`;
+  if (head.length >= OFFER_TEXT_MAX) return head.slice(0, OFFER_TEXT_MAX);
+  return head + offer.description.slice(0, OFFER_TEXT_MAX - head.length);
 }
 
 export function memoryEmbeddingText(text: string): string {
