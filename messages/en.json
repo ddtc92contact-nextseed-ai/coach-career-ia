@@ -1712,6 +1712,7 @@
       "proofs": "{count, plural, one {One of your achievements directly meets a requirement.} other {# of your achievements directly meet requirements.}}",
       "experiences": "{count, plural, one {One of your experiences is close to the role.} other {# of your experiences are close to the role.}}",
       "lowRelevance": "The link with your background remains limited.",
+      "noLexicalSupport": "No requirement of the offer mentions your skills or experience: the score rests only on proximity to the duties of the role.",
       "seniorityAbove": "The role seems more senior than your current position.",
       "salaryUnknown": "The salary is not stated.",
       "followed": "The score includes a {bonus}-point bonus because you follow this company."
@@ -1728,7 +1729,8 @@
       "salaryBelowTarget": "The stated pay is below your target package.",
       "unprovenSkill": "“{value}” is required but not proven yet: add a proof to an achievement that uses it.",
       "fewSkills": "The offer does not explicitly mention any of your skills.",
-      "lowRelevance": "The offer has little to do with your background: pay, seniority and culture only partly count in its score."
+      "lowRelevance": "The offer has little to do with your background: pay, seniority and culture only partly count in its score.",
+      "noLexicalSupport": "The offer mentions none of your skills and no term from your experience: only proximity to the duties of the role is measured, and it counts for less."
     },
     "unknowns": {
       "salaryNotStated": "Salary not stated.",
