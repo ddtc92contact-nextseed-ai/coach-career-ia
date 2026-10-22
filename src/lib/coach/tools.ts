@@ -10,6 +10,7 @@ import {
   SENIORITIES,
 } from "@/lib/career/codes";
 import { toFieldErrors } from "@/lib/career/schemas";
+import { truncateSafe } from "@/lib/text/truncate";
 import { MODE_TOOLS, type CoachToolName } from "./prompts";
 import { redactPlain, redactSuggestion } from "./redact";
 import {
@@ -184,7 +185,7 @@ export function buildCoachTools(options: {
     // Le texte peut être devenu invalide (titre réduit à « […] ») : revalidation.
     const checked = SUGGESTION_SCHEMAS[kind].safeParse(redacted.data);
     if (!checked.success) return invalid(checked.error);
-    const rationale = redactPlain(meta.rationale.slice(0, 500), {
+    const rationale = redactPlain(truncateSafe(meta.rationale, 500), {
       knownTerms: await terms(),
       declaredTerms: meta.identifyingTerms,
     });

@@ -583,6 +583,43 @@ describe("Fournisseur compatible OpenAI (Mistral, Ollama)", () => {
       [0, 1],
     ]);
   });
+
+  it("remplace une moitié de paire isolée par U+FFFD avant l'envoi (embeddings et chat, #71)", async () => {
+    const bodies: string[] = [];
+    const provider = createOpenAiCompatibleProvider({
+      name: "mistral",
+      baseUrl: "https://api.mistral.test/v1",
+      chatModel: "m",
+      embeddingModel: "mistral-embed",
+      fetch: async (url, init) => {
+        bodies.push(String(init.body));
+        return url.endsWith("/embeddings")
+          ? json({
+              data: [
+                { index: 0, embedding: [1] },
+                { index: 1, embedding: [2] },
+              ],
+            })
+          : json({ choices: [{ finish_reason: "stop", message: { content: "ok" } }] });
+      },
+    });
+    const broken = "Offre 🚀".slice(0, -1); // première moitié de l'émoji, seule
+    await provider.embed([broken, "Équipe 🚀 à Besançon"], { signal });
+    await provider.chat(
+      {
+        purpose: "test",
+        messages: [
+          { role: "system", content: "s" },
+          { role: "user", content: `${broken} et \udc00 seule` },
+        ],
+      },
+      { signal },
+    );
+
+    for (const body of bodies) expect(body).not.toMatch(/\\ud[89a-f]/i);
+    expect(JSON.parse(bodies[0]!).input).toEqual(["Offre �", "Équipe 🚀 à Besançon"]);
+    expect(JSON.parse(bodies[1]!).messages[1].content).toBe("Offre � et � seule");
+  });
 });
 
 describe("Configuration du fournisseur", () => {
