@@ -143,7 +143,11 @@ export function ruleSummary(score: number, facts: ExplanationFacts, locale: AppL
   const parts = [t(`summary.${scoreBand(score)}`, { score })];
   const proven = facts.skills.filter((s) => s.proven).map((s) => s.name);
   const named = (proven.length > 0 ? proven : facts.skills.map((s) => s.name)).slice(0, 3);
-  if (named.length > 0) {
+  // Aucune exigence citée : le dire, sans présenter une proximité comme un rapprochement (#77).
+  const unsupported = facts.gaps.some((g) => g.code === "noLexicalSupport");
+  if (unsupported) {
+    parts.push(t("summary.noLexicalSupport"));
+  } else if (named.length > 0) {
     parts.push(
       t(proven.length > 0 ? "summary.provenSkills" : "summary.declaredSkills", {
         count: named.length,
@@ -156,7 +160,9 @@ export function ruleSummary(score: number, facts: ExplanationFacts, locale: AppL
   const direct = facts.matches.filter((m) => m.requirement).length;
   if (direct > 0) parts.push(t("summary.proofs", { count: direct }));
   const experiences = facts.experiences?.length ?? 0;
-  if (experiences > 0) parts.push(t("summary.experiences", { count: experiences }));
+  if (experiences > 0 && !unsupported) {
+    parts.push(t("summary.experiences", { count: experiences }));
+  }
   if (facts.gaps.some((g) => g.code === "lowRelevance")) parts.push(t("summary.lowRelevance"));
   if (facts.gaps.some((g) => g.code === "seniorityAbove")) parts.push(t("summary.seniorityAbove"));
   if (facts.unknowns.includes("salaryNotStated")) parts.push(t("summary.salaryUnknown"));
@@ -206,6 +212,7 @@ export async function phraseSummary(
         content: [
           "You are a private career agent. You explain to a candidate, in 2 or 3 short sentences (under 450 characters), why a job offer was selected for them.",
           "Use ONLY the facts given as JSON: mention the strongest matched achievement, proven skill or matched experience, then the main gap or missing information. Never invent facts, figures, company details or requirements. Address the candidate directly and politely.",
+          "An achievement or experience said to be close to the duties of the role is only a proximity: never present it as meeting a requirement of the offer. If no requirement is quoted, say that the selection rests on proximity to the duties of the role.",
           "If `followedCompanyBonus` is present, say in one short clause that the score includes this bonus because the candidate follows the company.",
           'Return {"summary": "..."}.',
           languageInstruction(input.locale),
