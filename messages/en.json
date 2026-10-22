@@ -1603,7 +1603,7 @@
           "tooMany": "draft limit reached",
           "invalid": "unusable content"
         },
-        "hint": "Add them to your memory by hand if needed."
+        "hint": "{count, plural, one {Add it to your memory by hand if needed.} other {Add them to your memory by hand if needed.}}"
       }
     },
     "done": {

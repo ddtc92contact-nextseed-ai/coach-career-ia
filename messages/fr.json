@@ -1603,7 +1603,7 @@
           "tooMany": "limite du brouillon atteinte",
           "invalid": "contenu inutilisable"
         },
-        "hint": "Ajoutez-les à la main dans votre mémoire si nécessaire."
+        "hint": "{count, plural, one {Ajoutez-le à la main dans votre mémoire si nécessaire.} other {Ajoutez-les à la main dans votre mémoire si nécessaire.}}"
       }
     },
     "done": {

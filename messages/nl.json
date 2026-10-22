@@ -1603,7 +1603,7 @@
           "tooMany": "limiet van het concept bereikt",
           "invalid": "onbruikbare inhoud"
         },
-        "hint": "Voeg ze zo nodig met de hand toe aan uw geheugen."
+        "hint": "{count, plural, one {Voeg het zo nodig met de hand toe aan uw geheugen.} other {Voeg ze zo nodig met de hand toe aan uw geheugen.}}"
       }
     },
     "done": {

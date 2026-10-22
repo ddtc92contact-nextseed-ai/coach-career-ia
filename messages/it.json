@@ -1603,7 +1603,7 @@
           "tooMany": "limite della bozza raggiunto",
           "invalid": "contenuto inutilizzabile"
         },
-        "hint": "Aggiungili a mano alla tua memoria se necessario."
+        "hint": "{count, plural, one {Aggiungilo a mano alla tua memoria se necessario.} other {Aggiungili a mano alla tua memoria se necessario.}}"
       }
     },
     "done": {

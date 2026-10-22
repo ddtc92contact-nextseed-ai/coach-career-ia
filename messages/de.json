@@ -1603,7 +1603,7 @@
           "tooMany": "Obergrenze des Entwurfs erreicht",
           "invalid": "unbrauchbarer Inhalt"
         },
-        "hint": "Fügen Sie sie bei Bedarf von Hand zu Ihrem Gedächtnis hinzu."
+        "hint": "{count, plural, one {Fügen Sie ihn bei Bedarf von Hand zu Ihrem Gedächtnis hinzu.} other {Fügen Sie sie bei Bedarf von Hand zu Ihrem Gedächtnis hinzu.}}"
       }
     },
     "done": {

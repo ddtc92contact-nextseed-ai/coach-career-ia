@@ -1603,7 +1603,7 @@
           "tooMany": "límite del borrador alcanzado",
           "invalid": "contenido inutilizable"
         },
-        "hint": "Añádelos a mano a tu memoria si hace falta."
+        "hint": "{count, plural, one {Añádelo a mano a tu memoria si hace falta.} other {Añádelos a mano a tu memoria si hace falta.}}"
       }
     },
     "done": {

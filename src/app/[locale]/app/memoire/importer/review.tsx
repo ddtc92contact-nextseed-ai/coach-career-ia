@@ -332,7 +332,7 @@ function ReportNotes({ report, flagged }: { report: ImportReport; flagged: numbe
               </li>
             ))}
           </ul>
-          <p className="mt-1">{t("dropped.hint")}</p>
+          <p className="mt-1">{t("dropped.hint", { count: dropped.length })}</p>
         </div>
       ) : null}
     </>
