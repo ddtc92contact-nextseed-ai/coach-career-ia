@@ -11,8 +11,13 @@ import { COVERAGE_TOLERANCE_YEARS, type Coverage, type YearSpan } from "./shared
  * 2005 », « 2019 – aujourd'hui »… prolongent le CV jusqu'à aujourd'hui.
  */
 
-/** Années plausibles d'une carrière, hors montants (« 2000 € », « 2000 h »). */
-const YEAR = /(?<![\d,.])(19[5-9]\d|20\d\d)(?![\d,.]|\s?(?:€|\$|£|%|k€|eur\b|h\b|heures\b))/giu;
+/**
+ * Années plausibles d'une carrière, hors montants et décimales (« 2000 € »,
+ * « 2000 h », « 1,2000 », « 2000,50 »). Une année en fin de phrase (« à 2024. »)
+ * reste une année.
+ */
+const YEAR =
+  /(?<!\d|\d[,.])(19[5-9]\d|20\d\d)(?!\d|[,.]\d|\s?(?:€|\$|£|%|k€|eur\b|h\b|heures\b))/giu;
 
 const PRESENT_WORDS =
   "aujourd['’]hui|à ce jour|a ce jour|ce jour|présent|present|now|today|current|ongoing|en cours|heute|jetzt|derzeit|actualidad|actualmente|presente|hoy|oggi|attuale|in corso|heden|nu";

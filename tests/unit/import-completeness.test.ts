@@ -274,6 +274,22 @@ describe("Contrôle de couverture des années du CV", () => {
     expect(cvYearSpan("Aucune date ici", 2026)).toBeNull();
   });
 
+  it("reconnaît une année suivie d'un point ou d'une virgule, pas les décimales", () => {
+    const cv = "Technicien de 2000 à 2004.\nRégisseur de 2005 à 2024.";
+    expect(cvYearSpan(cv, 2026)).toEqual({ from: 2000, to: 2024 });
+    expect(cvYearSpan("Régisseur de 2005 à 2024, puis consultant", 2026)).toEqual({
+      from: 2005,
+      to: 2024,
+    });
+    expect(checkCoverage(cv, [{ startMonth: "2000-01", endMonth: "2004-12" }], now)?.gap).toBe(
+      "after",
+    );
+    expect(cvYearSpan("Régisseur en 2010. Budget de 1,2050 M ; ratio 2030.5", 2026)).toEqual({
+      from: 2010,
+      to: 2010,
+    });
+  });
+
   it("pas de contrôle sans CV (LinkedIn ou GitHub seuls)", () => {
     const result = buildResult(extraction([experience()]), context());
     expect(result.report.coverage).toBeNull();
