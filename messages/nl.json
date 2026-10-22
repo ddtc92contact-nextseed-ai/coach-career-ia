@@ -3051,5 +3051,27 @@
     },
     "unfollow": "Niet meer volgen",
     "unfollowConfirm": "{name} niet meer volgen?"
+  },
+  "thinProfile": {
+    "title": "Je profiel is nog mager: je kansen zijn weinig betrouwbaar",
+    "intro": "Je agent heeft meer informatie nodig om vacatures te beoordelen. Vul deze punten aan; de matching loopt intussen gewoon door.",
+    "issues": {
+      "achievements": {
+        "title": "Prestaties toevoegen",
+        "text": "{count, plural, =0 {Nog geen prestaties} one {Slechts één prestatie} other {Slechts # prestaties}}: mik op minstens {min, number}."
+      },
+      "skills": {
+        "title": "Vaardigheden toevoegen",
+        "text": "{count, plural, =0 {Nog geen vaardigheden} one {Slechts één vaardigheid} other {Slechts # vaardigheden}}: mik op minstens {min, number}, als korte trefwoorden."
+      },
+      "staleExperience": {
+        "title": "Je ervaring bijwerken",
+        "text": "Je laatste ervaring eindigde in {date} ({ago}). Voeg een recentere of huidige functie toe."
+      }
+    },
+    "coach": "Aanvullen met de coach",
+    "coachHint": "De coach stelt je een paar vragen en stelt korte formuleringen voor.",
+    "notice": "Profiel nog mager: deze kansen zijn weinig betrouwbaar.",
+    "noticeAction": "Mijn profiel aanvullen"
   }
 }

@@ -14,6 +14,7 @@ import { getOpportunities } from "@/lib/matching/repository";
 import { FIRST_RUN_LINKS, FirstRunGuidePanel, MANUAL_ENTRY_LINK } from "./first-run-guide";
 import { RailsSummary } from "./garde-fous/rails-summary";
 import { ScoreBadge } from "./opportunites/opportunity-parts";
+import { ThinProfileCard } from "./thin-profile";
 import { VisibilityForm } from "./visibility-form";
 
 const STEP_LINKS: Record<CompletenessStep, string> = {
@@ -128,6 +129,10 @@ export default async function DashboardPage() {
       </PageHeader>
 
       {guide ? <FirstRunGuidePanel guide={guide} /> : null}
+      {/* Mémoire vide : le guide de démarrage (import) passe avant l'alerte. */}
+      {completeness.done.includes("importProfile") ? (
+        <ThinProfileCard issues={dashboard.thinProfile} className="mb-6" />
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card aria-labelledby="prochaines-etapes" className="lg:col-span-2">

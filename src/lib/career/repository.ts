@@ -14,6 +14,8 @@ import {
   monthToDate,
   skillKey,
   summarizeSkill,
+  thinProfileIssues,
+  type ThinProfileIssue,
 } from "./derive";
 import { checkDocument, MAX_DOCUMENTS_PER_USER, type DocumentMimeType } from "./documents";
 import type {
@@ -618,16 +620,35 @@ export async function saveGuardRails(
 
 // --- Tableau de bord ------------------------------------------------------------------------
 
+/**
+ * Points faibles d'un profil « mince » (`thinProfileIssues`), à partir des
+ * seuls compteurs et dates de fin : aucune donnée d'identité.
+ */
+export async function getThinProfile(
+  userId: string,
+  now = new Date(),
+): Promise<ThinProfileIssue[]> {
+  const [achievementCount, skillCount, experiences] = await Promise.all([
+    db.achievement.count({ where: { userId } }),
+    db.skill.count({ where: { userId } }),
+    db.experience.findMany({ where: { userId }, select: { endMonth: true } }),
+  ]);
+  return thinProfileIssues(
+    { achievementCount, skillCount, experienceEnds: experiences.map((e) => e.endMonth) },
+    now,
+  );
+}
+
 export async function getDashboard(userId: string) {
-  const [experienceCount, achievements, skills, rails, locationCount, visibility] =
-    await Promise.all([
-      db.experience.count({ where: { userId } }),
-      db.achievement.findMany({ where: { userId }, select: { evidenceLevel: true } }),
-      listSkills(userId),
-      db.guardRails.findUnique({ where: { userId } }),
-      db.guardRailLocation.count({ where: { userId } }),
-      getVisibility(userId),
-    ]);
+  const [experiences, achievements, skills, rails, locationCount, visibility] = await Promise.all([
+    db.experience.findMany({ where: { userId }, select: { endMonth: true } }),
+    db.achievement.findMany({ where: { userId }, select: { evidenceLevel: true } }),
+    listSkills(userId),
+    db.guardRails.findUnique({ where: { userId } }),
+    db.guardRailLocation.count({ where: { userId } }),
+    getVisibility(userId),
+  ]);
+  const experienceCount = experiences.length;
   const completeness = computeCompleteness({
     experienceCount,
     achievements,
@@ -641,6 +662,11 @@ export async function getDashboard(userId: string) {
   });
   return {
     completeness,
+    thinProfile: thinProfileIssues({
+      achievementCount: achievements.length,
+      skillCount: skills.length,
+      experienceEnds: experiences.map((e) => e.endMonth),
+    }),
     visibility,
     counts: {
       experiences: experienceCount,

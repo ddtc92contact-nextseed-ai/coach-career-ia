@@ -3051,5 +3051,27 @@
     },
     "unfollow": "Ne plus suivre",
     "unfollowConfirm": "Ne plus suivre {name} ?"
+  },
+  "thinProfile": {
+    "title": "Votre profil est encore mince : vos opportunités seront peu fiables",
+    "intro": "Votre agent a besoin de plus de matière pour juger les offres. Complétez ces points : le matching continue en attendant.",
+    "issues": {
+      "achievements": {
+        "title": "Ajouter des réalisations",
+        "text": "{count, plural, =0 {Aucune réalisation pour l’instant} one {Une seule réalisation} other {# réalisations seulement}} : visez-en au moins {min, number}."
+      },
+      "skills": {
+        "title": "Ajouter des compétences",
+        "text": "{count, plural, =0 {Aucune compétence pour l’instant} one {Une seule compétence} other {# compétences seulement}} : visez-en au moins {min, number}, en mots-clés courts."
+      },
+      "staleExperience": {
+        "title": "Actualiser vos expériences",
+        "text": "Votre dernière expérience s’est terminée en {date} ({ago}). Ajoutez un poste plus récent ou en cours."
+      }
+    },
+    "coach": "Compléter avec le coach",
+    "coachHint": "Le coach vous pose quelques questions et propose des formulations courtes.",
+    "notice": "Profil encore mince : ces opportunités sont peu fiables.",
+    "noticeAction": "Compléter mon profil"
   }
 }

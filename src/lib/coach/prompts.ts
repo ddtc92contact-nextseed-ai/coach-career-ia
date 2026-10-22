@@ -1,5 +1,6 @@
 import { languageName } from "@/lib/ai/locale";
 import type { AppLocale } from "@/i18n/routing";
+import type { ThinProfileIssue } from "@/lib/career/derive";
 import type { CoachModeCode } from "./shared";
 
 /**
@@ -63,11 +64,51 @@ Challenge vague answers kindly ("is that a minimum or a wish?"). When a value is
 Run a mock interview for a role the candidate describes (ask for the role, seniority and type of company first, never the company name). Ask one question at a time, mixing motivation, behavioural (STAR) and role-specific questions. After each answer, give short, concrete feedback: what worked, what was missing (structure, numbers, impact), and a better phrasing. Use their Career Memory to suggest stronger examples. After about six questions, or when the candidate asks, give an overall assessment with three priorities to work on. Do not store anything.`,
 };
 
-export function coachSystemPrompt(mode: CoachModeCode, locale: AppLocale): string {
+/**
+ * Profil « mince » : le coach le sait et propose son aide, une fois, au bon
+ * moment. Seuls des compteurs et une ancienneté sont transmis, jamais de
+ * donnée d'identité.
+ */
+function thinProfileSection(mode: CoachModeCode, issues: ThinProfileIssue[]): string {
+  const facts = issues.map((issue) => {
+    switch (issue.code) {
+      case "achievements":
+        return `- only ${issue.count} achievement(s) in the Career Memory (at least ${issue.min} recommended);`;
+      case "skills":
+        return `- only ${issue.count} skill(s) in the Career Memory (at least ${issue.min} recommended);`;
+      case "staleExperience":
+        return `- the most recent experience ended ${issue.years} years ago and none is ongoing;`;
+    }
+  });
+  const offer =
+    mode === "DISCOVER"
+      ? `Offer ONCE, at a natural moment (in your first answer, or when the current topic is finished), to help complete it. If you already offered in this conversation, or the candidate declines or prefers another topic, do not bring it up again unless they ask.
+When helping: ask short, concrete questions about what they did (projects, tools, results), one at a time. Propose skills as short keywords recruiters search for, one per propose_skill call, e.g. "broadcast", "transcoding", "master control" rather than a long phrase such as "management of broadcast master control operations". For an old last experience, ask whether they have more recent activity (freelance, projects, current role) worth adding.`
+      : `Do not interrupt the current skill for this. At most once, at the end of a step, mention briefly that the "Discover my profile" skill can help complete it; never repeat it.`;
+  return `Profile strength
+The candidate's Career Memory is still thin, so their job matches are unreliable:
+${facts.join("\n")}
+${offer}
+This is only a warning: matching keeps running, nothing is blocked.`;
+}
+
+export type CoachPromptContext = {
+  /** Points faibles du profil (`thinProfileIssues`) ; vide : profil assez fourni. */
+  thinProfile?: ThinProfileIssue[];
+};
+
+export function coachSystemPrompt(
+  mode: CoachModeCode,
+  locale: AppLocale,
+  context: CoachPromptContext = {},
+): string {
   const language = languageName(locale);
+  const thin = context.thinProfile?.length
+    ? `\n\n${thinProfileSection(mode, context.thinProfile)}`
+    : "";
   return `${BASE}
 
-${MODES[mode]}
+${MODES[mode]}${thin}
 
 Always answer in ${language}. Proposal fields (titles, descriptions…) are also written in ${language}; keep technology, tool and product names as they are.`;
 }

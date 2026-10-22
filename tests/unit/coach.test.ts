@@ -126,6 +126,34 @@ describe("coach : consignes et outils", () => {
     expect(prompt).toContain("Always answer in German");
   });
 
+  it("profil mince : le coach le sait et propose son aide une fois, sans identité", () => {
+    const thinProfile = [
+      { code: "achievements" as const, count: 1, min: 3 },
+      { code: "skills" as const, count: 1, min: 3 },
+      { code: "staleExperience" as const, lastEnd: new Date("2004-03-01"), years: 22 },
+    ];
+    const discover = coachSystemPrompt("DISCOVER", "fr", { thinProfile });
+    expect(discover).toContain("Profile strength");
+    expect(discover).toContain("only 1 achievement(s)");
+    expect(discover).toContain("only 1 skill(s)");
+    expect(discover).toContain("ended 22 years ago");
+    expect(discover).toContain("Offer ONCE");
+    expect(discover).toContain('"transcoding"');
+    // Un seul point faible : seul ce point est cité.
+    const skillsOnly = coachSystemPrompt("DISCOVER", "fr", { thinProfile: [thinProfile[1]!] });
+    expect(skillsOnly).toContain("only 1 skill(s)");
+    expect(skillsOnly).not.toContain("achievement(s)");
+    // Autres compétences : pas d'interruption, un simple renvoi à « Discover my profile ».
+    expect(coachSystemPrompt("INTERVIEW", "fr", { thinProfile })).toContain(
+      "Do not interrupt the current skill",
+    );
+    // Profil assez fourni : rien n'est ajouté.
+    expect(coachSystemPrompt("DISCOVER", "fr", { thinProfile: [] })).toBe(
+      coachSystemPrompt("DISCOVER", "fr"),
+    );
+    expect(coachSystemPrompt("DISCOVER", "fr")).not.toContain("Profile strength");
+  });
+
   it("n'autorise que les outils de la compétence choisie", () => {
     expect(MODE_TOOLS.INTERVIEW).toEqual(["read_career_memory"]);
     expect(MODE_TOOLS.CLARIFY).not.toContain("propose_achievement");

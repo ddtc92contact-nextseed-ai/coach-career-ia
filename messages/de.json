@@ -3051,5 +3051,27 @@
     },
     "unfollow": "Nicht mehr folgen",
     "unfollowConfirm": "{name} nicht mehr folgen?"
+  },
+  "thinProfile": {
+    "title": "Ihr Profil ist noch dünn: Ihre Chancen sind wenig verlässlich",
+    "intro": "Ihr Agent braucht mehr Angaben, um Angebote zu bewerten. Ergänzen Sie diese Punkte – das Matching läuft währenddessen weiter.",
+    "issues": {
+      "achievements": {
+        "title": "Erfolge hinzufügen",
+        "text": "{count, plural, =0 {Noch keine Erfolge} one {Nur ein Erfolg} other {Nur # Erfolge}}: mindestens {min, number} sind empfohlen."
+      },
+      "skills": {
+        "title": "Kompetenzen hinzufügen",
+        "text": "{count, plural, =0 {Noch keine Kompetenzen} one {Nur eine Kompetenz} other {Nur # Kompetenzen}}: mindestens {min, number} sind empfohlen, als kurze Stichwörter."
+      },
+      "staleExperience": {
+        "title": "Erfahrungen aktualisieren",
+        "text": "Ihre letzte Erfahrung endete im {date} ({ago}). Fügen Sie eine neuere oder aktuelle Stelle hinzu."
+      }
+    },
+    "coach": "Mit dem Coach ergänzen",
+    "coachHint": "Der Coach stellt Ihnen ein paar Fragen und schlägt kurze Formulierungen vor.",
+    "notice": "Profil noch dünn: Diese Chancen sind wenig verlässlich.",
+    "noticeAction": "Mein Profil ergänzen"
   }
 }

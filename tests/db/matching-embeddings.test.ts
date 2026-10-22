@@ -57,7 +57,9 @@ const config = {
   ...matchingConfig({}),
   semanticRange: BAG_OF_WORDS_RANGE,
   minScore: 0,
-  maxPerUser: 50,
+  // Plafond large : des offres laissées par un autre fichier de test ne doivent
+  // pas évincer les nôtres du classement (ordre des fichiers variable).
+  maxPerUser: 1_000,
   llmExplanations: false,
 };
 
