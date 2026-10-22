@@ -1545,7 +1545,14 @@
         "identityRemoved": "Names or contact details were removed from this text (replaced with […]). Please reread it.",
         "identifyingLink": "This link contains your GitHub username: it stays private, but it can identify you. Remove it if you prefer.",
         "adjusted": "Some values were filled in automatically: please check them.",
-        "rareDetail": "Rare detail that could make you recognisable:"
+        "rareDetail": "Rare detail that could make you recognisable:",
+        "dates": {
+          "startMissing": "The CV gives no start date for this period.",
+          "startYearOnly": "Only the start year is known: please specify the month.",
+          "endYearOnly": "Only the end year is known: please specify the month.",
+          "startInFuture": "The start date read is in the future: please correct it."
+        },
+        "datesAction": "Complete the dates or reject this experience: it cannot be accepted as it is."
       },
       "identity": {
         "title": "Identifying data found",
@@ -1571,7 +1578,33 @@
       "saveHint": "Only accepted items will be added to your memory.",
       "save": "{count, plural, =0 {No item accepted} one {Save # item} other {Save # items}}",
       "saving": "Saving…",
-      "restart": "Start over"
+      "restart": "Start over",
+      "datesToComplete": "Dates to complete",
+      "completeDates": "Complete the dates",
+      "unknownDate": "unknown date",
+      "flaggedCount": "{count, plural, one {# experience has dates to complete: it will only be saved once corrected.} other {# experiences have dates to complete: they will only be saved once corrected.}}",
+      "coverage": {
+        "title": "Some periods of your career may be missing",
+        "after": "Your CV mentions {cvFrom}–{cvTo}, but the memory stops in {memoryTo}.",
+        "before": "Your CV mentions {cvFrom}–{cvTo}, but the memory starts in {memoryFrom}.",
+        "both": "Your CV mentions {cvFrom}–{cvTo}, but the memory only covers {memoryFrom}–{memoryTo}.",
+        "empty": "Your CV mentions {cvFrom}–{cvTo}, but no dated experience was picked up.",
+        "hint": "Check the draft, then add the missing periods by hand or run the import again.",
+        "today": "today"
+      },
+      "dropped": {
+        "title": "{count, plural, one {# item from the CV could not be picked up} other {# items from the CV could not be picked up}}",
+        "item": "{kind}: {title} ({reason})",
+        "kind": {
+          "experience": "Experience",
+          "achievement": "Achievement"
+        },
+        "reason": {
+          "tooMany": "draft limit reached",
+          "invalid": "unusable content"
+        },
+        "hint": "Add them to your memory by hand if needed."
+      }
     },
     "done": {
       "title": "Your career memory is up to date",
@@ -1581,7 +1614,8 @@
       "cta": "View my career memory",
       "again": "Import other sources",
       "nextRails": "Next step: your guard-rails (salary floor, location or remote work, contract types). Your agent can then look for your first opportunities.",
-      "ctaRails": "Set my guard-rails"
+      "ctaRails": "Set my guard-rails",
+      "merged": "Merged into your existing memory, without duplicates: {experiences, plural, =0 {no experience} one {# experience} other {# experiences}} and {achievements, plural, =0 {no achievement} one {# achievement} other {# achievements}}."
     }
   },
   "codes": {

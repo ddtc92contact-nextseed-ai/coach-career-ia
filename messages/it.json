@@ -1545,7 +1545,14 @@
         "identityRemoved": "Nomi o recapiti sono stati rimossi da questo testo (sostituiti da […]). Rileggilo.",
         "identifyingLink": "Questo link contiene il tuo nome utente GitHub: resta privato, ma permette di identificarti. Rimuovilo se preferisci.",
         "adjusted": "Alcuni valori sono stati completati automaticamente: verificali.",
-        "rareDetail": "Dettaglio raro che potrebbe renderti riconoscibile:"
+        "rareDetail": "Dettaglio raro che potrebbe renderti riconoscibile:",
+        "dates": {
+          "startMissing": "Il CV non indica una data di inizio per questo periodo.",
+          "startYearOnly": "È noto solo l’anno di inizio: indica il mese.",
+          "endYearOnly": "È noto solo l’anno di fine: indica il mese.",
+          "startInFuture": "La data di inizio letta è nel futuro: correggila."
+        },
+        "datesAction": "Completa le date o rifiuta questa esperienza: così com’è non può essere accettata."
       },
       "identity": {
         "title": "Dati identificativi rilevati",
@@ -1571,7 +1578,33 @@
       "saveHint": "Solo gli elementi accettati verranno aggiunti alla tua memoria.",
       "save": "{count, plural, =0 {Nessun elemento accettato} one {Salva # elemento} other {Salva # elementi}}",
       "saving": "Salvataggio…",
-      "restart": "Ricomincia"
+      "restart": "Ricomincia",
+      "datesToComplete": "Date da completare",
+      "completeDates": "Completa le date",
+      "unknownDate": "data sconosciuta",
+      "flaggedCount": "{count, plural, one {# esperienza ha date da completare: sarà salvata solo dopo la correzione.} other {# esperienze hanno date da completare: saranno salvate solo dopo la correzione.}}",
+      "coverage": {
+        "title": "Potrebbero mancare dei periodi del tuo percorso",
+        "after": "Il tuo CV cita {cvFrom}–{cvTo}, ma la memoria si ferma al {memoryTo}.",
+        "before": "Il tuo CV cita {cvFrom}–{cvTo}, ma la memoria inizia nel {memoryFrom}.",
+        "both": "Il tuo CV cita {cvFrom}–{cvTo}, ma la memoria copre solo {memoryFrom}–{memoryTo}.",
+        "empty": "Il tuo CV cita {cvFrom}–{cvTo}, ma non è stata ripresa nessuna esperienza datata.",
+        "hint": "Controlla la bozza, poi aggiungi a mano i periodi mancanti o rilancia l’importazione.",
+        "today": "oggi"
+      },
+      "dropped": {
+        "title": "{count, plural, one {# elemento del CV non è stato ripreso} other {# elementi del CV non sono stati ripresi}}",
+        "item": "{kind}: {title} ({reason})",
+        "kind": {
+          "experience": "Esperienza",
+          "achievement": "Risultato"
+        },
+        "reason": {
+          "tooMany": "limite della bozza raggiunto",
+          "invalid": "contenuto inutilizzabile"
+        },
+        "hint": "Aggiungili a mano alla tua memoria se necessario."
+      }
     },
     "done": {
       "title": "La tua memoria di carriera è aggiornata",
@@ -1581,7 +1614,8 @@
       "cta": "Vedi la mia memoria di carriera",
       "again": "Importa altre fonti",
       "nextRails": "Passo successivo: i tuoi paletti (stipendio minimo, luogo o lavoro da remoto, tipi di contratto). Poi il tuo agente potrà cercare le tue prime opportunità.",
-      "ctaRails": "Definisci i miei paletti"
+      "ctaRails": "Definisci i miei paletti",
+      "merged": "Unito alla tua memoria esistente, senza duplicati: {experiences, plural, =0 {nessuna esperienza} one {# esperienza} other {# esperienze}} e {achievements, plural, =0 {nessun risultato} one {# risultato} other {# risultati}}."
     }
   },
   "codes": {
