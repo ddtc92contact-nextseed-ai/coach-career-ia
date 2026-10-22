@@ -164,6 +164,22 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
                     ))}
                   </ul>
                 )}
+                {lines.experiences.length > 0 ? (
+                  <>
+                    <h3 className="mt-6 text-lg font-semibold">{t("detail.experiences")}</h3>
+                    <ul className="mt-3 space-y-2">
+                      {lines.experiences.map((line, i) => (
+                        <li
+                          key={explanation.experiences?.[i]?.experienceId ?? line}
+                          className="text-ink-muted flex items-start gap-2"
+                        >
+                          <Icon name="check" className="text-brand-ink mt-1 size-4 shrink-0" />
+                          <span className="min-w-0 break-words">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
                 {explanation.skills.length > 0 ? (
                   <>
                     <h3 className="mt-6 text-lg font-semibold">{t("detail.skills")}</h3>
@@ -246,25 +262,37 @@ export default async function OpportunityPage({ params, searchParams }: Props) {
               <Card aria-labelledby="detail-score">
                 <CardHeader id="detail-score" title={t("detail.components")} />
                 <dl className="mt-4 space-y-4">
-                  {(Object.keys(WEIGHTS) as (keyof typeof WEIGHTS)[]).map((key) => (
-                    <div key={key}>
-                      <div className="flex justify-between gap-3">
-                        <dt className="font-medium">{tm(`components.${key}`)}</dt>
-                        <dd className="font-semibold tabular-nums">
-                          {explanation.components[key]}/100
-                        </dd>
+                  {(Object.keys(WEIGHTS) as (keyof typeof WEIGHTS)[]).map((key) => {
+                    // Information absente de l'offre : composante neutre, affichée comme telle.
+                    const notStated =
+                      (key === "salary" && explanation.unknowns.includes("salaryNotStated")) ||
+                      (key === "seniority" && explanation.unknowns.includes("seniorityNotStated"));
+                    return (
+                      <div key={key}>
+                        <div className="flex justify-between gap-3">
+                          <dt className="font-medium">{tm(`components.${key}`)}</dt>
+                          <dd
+                            className={notStated ? "text-ink-muted" : "font-semibold tabular-nums"}
+                          >
+                            {notStated
+                              ? tm("components.notStated")
+                              : `${explanation.components[key]}/100`}
+                          </dd>
+                        </div>
+                        {notStated ? null : (
+                          <div
+                            aria-hidden="true"
+                            className="bg-muted mt-2 h-2.5 overflow-hidden rounded-full"
+                          >
+                            <div
+                              className="bg-brand h-full rounded-full"
+                              style={{ width: `${explanation.components[key]}%` }}
+                            />
+                          </div>
+                        )}
                       </div>
-                      <div
-                        aria-hidden="true"
-                        className="bg-muted mt-2 h-2.5 overflow-hidden rounded-full"
-                      >
-                        <div
-                          className="bg-brand h-full rounded-full"
-                          style={{ width: `${explanation.components[key]}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   {explanation.followedBonus ? (
                     <div className="border-line flex justify-between gap-3 border-t pt-4">
                       <dt className="flex items-center gap-2 font-medium">
