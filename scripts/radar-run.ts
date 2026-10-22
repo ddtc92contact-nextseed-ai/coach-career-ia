@@ -5,6 +5,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { markAllCandidatesDirty } from "../src/lib/matching/jobs";
 import { radarConfig } from "../src/lib/radar/config";
 import { runRadar } from "../src/lib/radar/job";
 
@@ -19,6 +20,8 @@ async function main(): Promise<number> {
       console.log("Un passage du radar est déjà en cours (worker) : rien n'a été collecté.");
       return 0;
     }
+    // Comme le worker : offres nouvelles, modifiées ou fermées → recalcul des candidats.
+    await markAllCandidatesDirty(prisma);
     console.table(
       summaries.map((s) => ({
         source: s.sourceKey,

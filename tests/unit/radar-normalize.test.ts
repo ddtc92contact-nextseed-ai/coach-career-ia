@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { mapGreenhouseJob, type GreenhouseJob } from "@/lib/radar/connectors/greenhouse";
 import {
   dedupKey,
   detectContractType,
@@ -9,7 +10,12 @@ import {
   tidyLocation,
 } from "@/lib/radar/normalize";
 import { parseRobots } from "@/lib/radar/robots";
-import { htmlToText } from "@/lib/radar/text";
+import { foldText, htmlToText } from "@/lib/radar/text";
+import { company, fixtureJson } from "../helpers/radar";
+
+/** Offre Doctolib réelle (Greenhouse, 2026-10-22) : poste à Nantes, hybride. */
+const doctolib = () => fixtureJson<{ jobs: GreenhouseJob[] }>("greenhouse-doctolib.json").jobs[0]!;
+const doctolibCompany = company({ slug: "doctolib", name: "Doctolib", boardToken: "doctolib" });
 
 describe("détection du télétravail", () => {
   it.each([
@@ -23,6 +29,83 @@ describe("détection du télétravail", () => {
     ["Rejoignez notre équipe", "UNKNOWN"],
   ])("« %s » → %s", (text, expected) => {
     expect(detectRemotePolicy(text)).toBe(expected);
+  });
+
+  it.each([
+    "100 % télétravail",
+    "Poste en 100% télétravail",
+    "Ce poste est en full remote",
+    "This is a fully remote role",
+    "Remote only",
+    "We are looking for a fully remote engineer",
+    "Nous ne recrutons qu'en full remote",
+    "Pas besoin de déménager : poste 100 % télétravail",
+  ])("mention positive : « %s » → FULL_REMOTE", (text) => {
+    expect(detectRemotePolicy(text)).toBe("FULL_REMOTE");
+  });
+
+  it.each([
+    "Pas de 100 % télétravail",
+    "Ce poste n'est pas pour vous si vous recherchez un poste 100 % en télétravail",
+    "Le poste ne se fait pas en full remote",
+    "Si vous cherchez un poste en full remote, passez votre chemin",
+    "Vous souhaitez travailler en télétravail complet ? Ce poste ne vous conviendra pas",
+    "Le 100 % télétravail n'est pas possible",
+    "This is not a fully remote role",
+    "Not for you if you're looking for remote only",
+    "This role isn't fully remote",
+    "If you want a full remote job, this position is not for you",
+  ])("mention négative ou conditionnelle : « %s » → UNKNOWN", (text) => {
+    expect(detectRemotePolicy(text)).toBe("UNKNOWN");
+  });
+
+  it("une mention négative n'empêche pas une mention positive ailleurs", () => {
+    expect(
+      detectRemotePolicy(
+        "Ce n'est pas un poste en full remote.\nPoste en full remote pour l'équipe data.",
+      ),
+    ).toBe("FULL_REMOTE");
+    // La négation s'arrête à la phrase ou à la puce.
+    expect(
+      detectRemotePolicy(
+        "Faites demi-tour si…",
+        "- Vous n'aimez pas la vente",
+        "- Poste 100 % télétravail",
+      ),
+    ).toBe("FULL_REMOTE");
+  });
+
+  it("une mention négative laisse sa place aux autres motifs", () => {
+    expect(detectRemotePolicy("Pas de full remote : 2 jours de télétravail par semaine")).toBe(
+      "HYBRID",
+    );
+    expect(detectRemotePolicy("This is not a hybrid role")).toBe("UNKNOWN");
+    expect(detectRemotePolicy("Pas plus de 2 jours de télétravail par semaine")).toBe("HYBRID");
+    expect(detectRemotePolicy("Pas de télétravail, et pas de full remote")).toBe("ONSITE");
+  });
+
+  it("texte Doctolib : la rubrique « faites demi-tour si… » ne classe pas en FULL_REMOTE", () => {
+    const job = doctolib();
+    const description = htmlToText(job.content);
+    expect(foldText(description)).toContain(
+      "vous preferez un environnement de travail sans challenge vous recherchez un poste 100 en teletravail details du poste cdi temps plein nantes",
+    );
+    expect(detectRemotePolicy(job.title, description)).not.toBe("FULL_REMOTE");
+    // Seule la rubrique négative parle de télétravail complet.
+    expect(detectRemotePolicy("Vous recherchez un poste 100% en télétravail")).toBe("UNKNOWN");
+  });
+
+  it("Greenhouse : l'offre Doctolib reste à Nantes, hors télétravail complet", () => {
+    const offer = mapGreenhouseJob(doctolib(), doctolibCompany)!;
+    expect(offer.location).toMatchObject({ city: "Nantes" });
+    expect(offer.remotePolicy).not.toBe("FULL_REMOTE");
+    // « Poste éligible au format hybride (3 jours en présentiel / 2 jours en télétravail) ».
+    expect(offer.remotePolicy).toBe("HYBRID");
+  });
+
+  it("Greenhouse : le lieu « Remote » reste un indicateur de télétravail complet", () => {
+    const job = { ...doctolib(), location: { name: "France, Remote" } };
+    expect(mapGreenhouseJob(job, doctolibCompany)!.remotePolicy).toBe("FULL_REMOTE");
   });
 });
 
