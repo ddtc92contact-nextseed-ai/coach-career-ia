@@ -3051,5 +3051,27 @@
     },
     "unfollow": "Non seguire più",
     "unfollowConfirm": "Non seguire più {name}?"
+  },
+  "thinProfile": {
+    "title": "Il tuo profilo è ancora scarno: le tue opportunità saranno poco affidabili",
+    "intro": "Il tuo agente ha bisogno di più elementi per valutare le offerte. Completa questi punti; nel frattempo il matching continua.",
+    "issues": {
+      "achievements": {
+        "title": "Aggiungi risultati",
+        "text": "{count, plural, =0 {Ancora nessun risultato} one {Un solo risultato} other {Solo # risultati}}: puntane almeno {min, number}."
+      },
+      "skills": {
+        "title": "Aggiungi competenze",
+        "text": "{count, plural, =0 {Ancora nessuna competenza} one {Una sola competenza} other {Solo # competenze}}: puntane almeno {min, number}, con parole chiave brevi."
+      },
+      "staleExperience": {
+        "title": "Aggiorna le tue esperienze",
+        "text": "La tua ultima esperienza si è conclusa a {date} ({ago}). Aggiungi un ruolo più recente o attuale."
+      }
+    },
+    "coach": "Completa con il coach",
+    "coachHint": "Il coach ti fa qualche domanda e propone formulazioni brevi.",
+    "notice": "Profilo ancora scarno: queste opportunità sono poco affidabili.",
+    "noticeAction": "Completa il mio profilo"
   }
 }

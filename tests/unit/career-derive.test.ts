@@ -9,6 +9,9 @@ import {
   monthToDate,
   skillKey,
   summarizeSkill,
+  THIN_PROFILE_THRESHOLDS,
+  thinProfileIssues,
+  type ThinProfileInput,
 } from "@/lib/career/derive";
 
 const month = (m: string) => monthToDate(m);
@@ -196,5 +199,62 @@ describe("utilitaires", () => {
 
   it("normalise les noms de compétences", () => {
     expect(skillKey("  Node.JS   avancé ")).toBe("node.js avancé");
+  });
+});
+
+describe("thinProfileIssues (profil mince)", () => {
+  const now = new Date("2026-10-22T10:00:00.000Z");
+  const full: ThinProfileInput = {
+    achievementCount: 3,
+    skillCount: 3,
+    experienceEnds: [month("2015-01"), month("2024-06")],
+  };
+  const codes = (input: ThinProfileInput) => thinProfileIssues(input, now).map((i) => i.code);
+
+  it("profil complet : aucune alerte", () => {
+    expect(thinProfileIssues(full, now)).toEqual([]);
+  });
+
+  it("moins de 3 réalisations : un seul point, avec le compte et le seuil", () => {
+    expect(thinProfileIssues({ ...full, achievementCount: 1 }, now)).toEqual([
+      { code: "achievements", count: 1, min: THIN_PROFILE_THRESHOLDS.minAchievements },
+    ]);
+  });
+
+  it("moins de 3 compétences : un seul point, avec le compte et le seuil", () => {
+    expect(thinProfileIssues({ ...full, skillCount: 2 }, now)).toEqual([
+      { code: "skills", count: 2, min: THIN_PROFILE_THRESHOLDS.minSkills },
+    ]);
+  });
+
+  it("dernière expérience terminée depuis plus de 10 ans : date de fin et ancienneté", () => {
+    const input = { ...full, experienceEnds: [month("1998-09"), month("2004-03")] };
+    expect(thinProfileIssues(input, now)).toEqual([
+      { code: "staleExperience", lastEnd: month("2004-03"), years: 22 },
+    ]);
+  });
+
+  it("une expérience en cours écarte l'alerte d'ancienneté", () => {
+    expect(codes({ ...full, experienceEnds: [month("2004-03"), null] })).toEqual([]);
+  });
+
+  it("10 ans pile ne suffisent pas, au-delà oui ; sans expérience, pas d'alerte d'ancienneté", () => {
+    expect(codes({ ...full, experienceEnds: [new Date("2016-11-01T00:00:00.000Z")] })).toEqual([]);
+    expect(codes({ ...full, experienceEnds: [month("2016-09")] })).toEqual(["staleExperience"]);
+    expect(codes({ ...full, experienceEnds: [] })).toEqual([]);
+  });
+
+  it("liste chaque critère manquant séparément (cas du 22/10 : 1 réalisation, 1 compétence, 2004)", () => {
+    expect(
+      codes({ achievementCount: 1, skillCount: 1, experienceEnds: [month("2004-03")] }),
+    ).toEqual(["achievements", "skills", "staleExperience"]);
+  });
+
+  it("les seuils sont réglables", () => {
+    const thresholds = { minAchievements: 5, minSkills: 1, staleExperienceYears: 1 };
+    expect(thinProfileIssues(full, now, thresholds).map((i) => i.code)).toEqual([
+      "achievements",
+      "staleExperience",
+    ]);
   });
 });

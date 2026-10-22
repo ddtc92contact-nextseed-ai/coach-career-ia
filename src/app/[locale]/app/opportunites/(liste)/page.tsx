@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/page-header";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
+import { getThinProfile } from "@/lib/career/repository";
 import { displaySummary } from "@/lib/matching/explanation";
 import {
   getOpportunities,
@@ -23,6 +24,7 @@ import {
   ScoreGauge,
   StatusActions,
 } from "../opportunity-parts";
+import { ThinProfileNotice } from "../../thin-profile";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("opportunities");
@@ -80,12 +82,13 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
   const scoreParam = Number(param(params.score));
   const minScore = (SCORE_FILTERS as readonly number[]).includes(scoreParam) ? scoreParam : 0;
 
-  const [t, tn, format, locale, data] = await Promise.all([
+  const [t, tn, format, locale, data, thinProfile] = await Promise.all([
     getTranslations("opportunities"),
     getTranslations("app.nav.groups"),
     getFormatter(),
     getLocale() as Promise<AppLocale>,
     getOpportunities(user.id, { status, minScore }),
+    getThinProfile(user.id),
   ]);
   const filtered = status !== "active" || minScore > 0;
 
@@ -172,6 +175,7 @@ export default async function OpportunitiesPage({ searchParams }: { searchParams
 
       {data.blocker === null ? (
         <>
+          <ThinProfileNotice issues={thinProfile} />
           <nav
             aria-label={t("filters.label")}
             className="border-line bg-surface mb-6 space-y-4 rounded-2xl border p-4 shadow-xs sm:p-5"

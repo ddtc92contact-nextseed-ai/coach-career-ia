@@ -3,6 +3,7 @@ import type { AiClient } from "@/lib/ai/client";
 import { AiError, isAiError, type AiErrorCode } from "@/lib/ai/errors";
 import type { ChatMessage } from "@/lib/ai/types";
 import type { AppLocale } from "@/i18n/routing";
+import { getThinProfile } from "@/lib/career/repository";
 import { logger } from "@/lib/logger";
 import { coachSystemPrompt } from "./prompts";
 import { addMessage, attachSuggestions, discardSuggestions, loadHistory } from "./repository";
@@ -108,9 +109,12 @@ async function runTurn(input: CoachTurnInput, send: (event: CoachStreamEvent) =>
   const signal = AbortSignal.any([input.signal, AbortSignal.timeout(COACH_LIMITS.turnBudgetMs)]);
 
   try {
-    const history = await loadHistory(userId, conversationId, COACH_LIMITS.historyMessages);
+    const [history, thinProfile] = await Promise.all([
+      loadHistory(userId, conversationId, COACH_LIMITS.historyMessages),
+      getThinProfile(userId),
+    ]);
     const messages: ChatMessage[] = [
-      { role: "system", content: coachSystemPrompt(mode, input.locale) },
+      { role: "system", content: coachSystemPrompt(mode, input.locale, { thinProfile }) },
       ...history.map((m): ChatMessage =>
         m.role === "USER"
           ? { role: "user", content: m.content }
@@ -169,6 +173,7 @@ async function runTurn(input: CoachTurnInput, send: (event: CoachStreamEvent) =>
     logger.info("coach.turn", {
       userId,
       mode,
+      thinProfile: thinProfile.map((issue) => issue.code).join(",") || "none",
       steps,
       suggestions: suggestions.length,
       durationMs: Date.now() - started,

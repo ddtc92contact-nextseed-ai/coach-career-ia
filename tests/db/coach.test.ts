@@ -416,6 +416,87 @@ describe.skipIf(!url)("coach IA : conversation, outils et suggestions", () => {
     expect(await db.coachSuggestion.count({ where: { conversationId: id } })).toBe(0);
   });
 
+  it("profil mince : le contexte est transmis au coach, sans donnée d'identité, quota normal", async () => {
+    const dana = await newUser("dana");
+    try {
+      asUser(dana);
+      process.env.COACH_MESSAGES_PER_DAY = "5";
+      const old = await careerRepo.createExperience(dana.id, {
+        roleTitle: "Technicienne de régie",
+        startMonth: "1999-01",
+        endMonth: "2004-03",
+        seniority: "MID",
+        contractType: "CDI",
+        sector: "MEDIA_ENTERTAINMENT",
+        companySize: "S51_200",
+        companyStage: "SME",
+        responsibilities: "",
+      });
+      await careerRepo.createAchievement(dana.id, {
+        title: "Passage au numérique",
+        context: "",
+        actions: "",
+        result: "",
+        skills: ["Broadcast"],
+        experienceId: old.id,
+      });
+      const { id } = await coachRepo.createConversation(dana.id, "DISCOVER");
+      ai.replies = ["Votre profil est encore mince : voulez-vous que je vous aide ?"];
+      const stream = await events(await send(id, { content: "Bonjour" }));
+      expect(stream.at(-1)).toMatchObject({ type: "done", remaining: 4 });
+
+      const system = ai.calls[0]!.messages[0]!.content;
+      expect(system).toContain("Profile strength");
+      expect(system).toContain("only 1 achievement(s)");
+      expect(system).toContain("only 1 skill(s)");
+      expect(system).toMatch(/ended \d+ years ago and none is ongoing/);
+      // Compteurs et ancienneté seulement : ni e-mail, ni intitulé, ni contenu de la mémoire.
+      const [local] = dana.email.split("@");
+      for (const term of [
+        dana.email,
+        local!,
+        "Technicienne",
+        "Passage au numérique",
+        "Broadcast",
+      ]) {
+        expect(system).not.toContain(term);
+      }
+      const logs = logLines.join("\n");
+      expect(logs).toContain("achievements,skills,staleExperience");
+      expect(logs).not.toContain(dana.email);
+
+      // Profil étoffé (poste en cours, 3 réalisations, 3 compétences) : plus d'alerte.
+      await careerRepo.createExperience(dana.id, {
+        roleTitle: "Ingénieure vidéo",
+        startMonth: "2022-01",
+        endMonth: undefined,
+        seniority: "SENIOR",
+        contractType: "CDI",
+        sector: "MEDIA_ENTERTAINMENT",
+        companySize: "S51_200",
+        companyStage: "SME",
+        responsibilities: "",
+      });
+      for (const [title, skill] of [
+        ["Chaîne de transcodage", "Transcodage"],
+        ["Refonte de la régie", "Régie"],
+      ]) {
+        await careerRepo.createAchievement(dana.id, {
+          title: title!,
+          context: "",
+          actions: "",
+          result: "",
+          skills: [skill!],
+        });
+      }
+      expect(await careerRepo.getThinProfile(dana.id)).toEqual([]);
+      await events(await send(id, { content: "Merci" }));
+      expect(ai.calls[0]!.messages[0]!.content).not.toContain("Profile strength");
+    } finally {
+      await db.user.delete({ where: { id: dana.id } });
+    }
+  });
+
   it("limite le nombre de messages par jour (configurable)", async () => {
     asUser(bob);
     process.env.COACH_MESSAGES_PER_DAY = "2";

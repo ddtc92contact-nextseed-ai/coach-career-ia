@@ -179,6 +179,82 @@ export function firstRunGuide(completeness: Pick<Completeness, "done">): FirstRu
   };
 }
 
+/**
+ * Seuils du « profil mince » : en dessous, les opportunités sont peu fiables
+ * (trop peu de matière pour le matching). Avertissement seulement, rien n'est
+ * bloqué.
+ */
+export const THIN_PROFILE_THRESHOLDS = {
+  /** Réalisations minimum (toutes, prouvées ou non). */
+  minAchievements: 3,
+  /** Compétences minimum (toutes, prouvées ou non). */
+  minSkills: 3,
+  /** Ancienneté maximale de la dernière expérience terminée, sans poste en cours. */
+  staleExperienceYears: 10,
+} as const;
+
+export const THIN_PROFILE_ISSUES = ["achievements", "skills", "staleExperience"] as const;
+export type ThinProfileIssueCode = (typeof THIN_PROFILE_ISSUES)[number];
+
+export type ThinProfileIssue =
+  | { code: "achievements"; count: number; min: number }
+  | { code: "skills"; count: number; min: number }
+  /** `lastEnd` : fin (premier jour du mois, UTC) de l'expérience la plus récente. */
+  | { code: "staleExperience"; lastEnd: Date; years: number };
+
+export type ThinProfileInput = {
+  achievementCount: number;
+  skillCount: number;
+  /** Fin de chaque expérience ; `null` = poste en cours. */
+  experienceEnds: (Date | null)[];
+};
+
+/** Années pleines écoulées entre `from` et `to` (UTC). */
+function fullYearsBetween(from: Date, to: Date): number {
+  let years = to.getUTCFullYear() - from.getUTCFullYear();
+  const anniversary = new Date(from);
+  anniversary.setUTCFullYear(from.getUTCFullYear() + years);
+  if (anniversary > to) years -= 1;
+  return Math.max(0, years);
+}
+
+/**
+ * Points faibles d'un profil « mince », un par critère manquant (liste vide :
+ * profil assez fourni) :
+ * - moins de `minAchievements` réalisations ;
+ * - moins de `minSkills` compétences ;
+ * - dernière expérience terminée depuis plus de `staleExperienceYears` ans,
+ *   sans expérience en cours. Sans aucune expérience, ce critère ne s'applique
+ *   pas (l'étape « ajouter une expérience » de la complétude s'en charge).
+ */
+export function thinProfileIssues(
+  input: ThinProfileInput,
+  now: Date = new Date(),
+  thresholds: Record<keyof typeof THIN_PROFILE_THRESHOLDS, number> = THIN_PROFILE_THRESHOLDS,
+): ThinProfileIssue[] {
+  const issues: ThinProfileIssue[] = [];
+  if (input.achievementCount < thresholds.minAchievements) {
+    issues.push({
+      code: "achievements",
+      count: input.achievementCount,
+      min: thresholds.minAchievements,
+    });
+  }
+  if (input.skillCount < thresholds.minSkills) {
+    issues.push({ code: "skills", count: input.skillCount, min: thresholds.minSkills });
+  }
+  const ongoing = input.experienceEnds.some((end) => end === null || end >= now);
+  if (!ongoing && input.experienceEnds.length > 0) {
+    const lastEnd = new Date(Math.max(...input.experienceEnds.map((end) => end!.getTime())));
+    const cutoff = new Date(now);
+    cutoff.setUTCFullYear(now.getUTCFullYear() - thresholds.staleExperienceYears);
+    if (lastEnd < cutoff) {
+      issues.push({ code: "staleExperience", lastEnd, years: fullYearsBetween(lastEnd, now) });
+    }
+  }
+  return issues;
+}
+
 /** `AAAA-MM` → premier jour du mois (UTC), tel que stocké en base. */
 export function monthToDate(month: string): Date {
   return new Date(`${month}-01T00:00:00.000Z`);

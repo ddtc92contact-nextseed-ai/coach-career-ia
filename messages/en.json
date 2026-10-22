@@ -3051,5 +3051,27 @@
     },
     "unfollow": "Unfollow",
     "unfollowConfirm": "Stop following {name}?"
+  },
+  "thinProfile": {
+    "title": "Your profile is still thin: your opportunities will be unreliable",
+    "intro": "Your agent needs more to go on to assess job offers. Complete these points; matching keeps running in the meantime.",
+    "issues": {
+      "achievements": {
+        "title": "Add achievements",
+        "text": "{count, plural, =0 {No achievements yet} one {Only one achievement} other {Only # achievements}}: aim for at least {min, number}."
+      },
+      "skills": {
+        "title": "Add skills",
+        "text": "{count, plural, =0 {No skills yet} one {Only one skill} other {Only # skills}}: aim for at least {min, number}, as short keywords."
+      },
+      "staleExperience": {
+        "title": "Update your experience",
+        "text": "Your most recent experience ended in {date} ({ago}). Add a more recent or current role."
+      }
+    },
+    "coach": "Complete with the coach",
+    "coachHint": "The coach asks you a few questions and suggests short wording.",
+    "notice": "Profile still thin: these opportunities are unreliable.",
+    "noticeAction": "Complete my profile"
   }
 }

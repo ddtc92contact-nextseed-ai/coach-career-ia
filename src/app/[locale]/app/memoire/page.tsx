@@ -12,9 +12,10 @@ import { StatTile } from "@/components/stat-tile";
 import { VaultEmployerName } from "@/components/vault/vault-widgets";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/session";
-import { isMemoryEmpty, isProven } from "@/lib/career/derive";
+import { isMemoryEmpty, isProven, thinProfileIssues } from "@/lib/career/derive";
 import type { ContractTypeCode } from "@/lib/career/codes";
 import { asSector, listAchievements, listExperiences, listSkills } from "@/lib/career/repository";
+import { ThinProfileCard } from "../thin-profile";
 import { removeSkill } from "./actions";
 import { SkillForm } from "./skill-form";
 
@@ -45,6 +46,14 @@ export default async function CareerMemoryPage() {
     achievements,
     skillCount: skills.length,
   });
+
+  const thinProfile = empty
+    ? []
+    : thinProfileIssues({
+        achievementCount: achievements.length,
+        skillCount: skills.length,
+        experienceEnds: experiences.map((e) => e.endMonth),
+      });
 
   const period = (start: Date, end: Date | null) =>
     t("period", {
@@ -133,6 +142,8 @@ export default async function CareerMemoryPage() {
           )}
         </div>
       </PageHeader>
+
+      <ThinProfileCard issues={thinProfile} className="mb-6" />
 
       {/* Réalisations : le cœur du profil, en premier. */}
       <Card id="realisations" aria-labelledby="achievements-title" className="scroll-mt-6">
