@@ -51,6 +51,7 @@ export const ExtractionSchema = z.object({
         companySize: text,
         companyStage: text,
         responsibilities: text,
+        skills: list,
         rareDetails: list,
       }),
     )
@@ -104,14 +105,15 @@ export const EXTRACTION_JSON_SCHEMA = {
           ref: { type: "string" },
           employerName: { type: ["string", "null"] },
           roleTitle: { type: "string" },
-          startMonth: { type: "string", pattern: "^\\d{4}-\\d{2}$" },
-          endMonth: { type: ["string", "null"], pattern: "^\\d{4}-\\d{2}$" },
+          startMonth: { type: ["string", "null"], pattern: "^\\d{4}(-\\d{2})?$" },
+          endMonth: { type: ["string", "null"], pattern: "^\\d{4}(-\\d{2})?$" },
           seniority: { enum: SENIORITIES },
           contractType: { enum: CONTRACT_TYPES },
           sector: { enum: SECTORS },
           companySize: { enum: COMPANY_SIZES },
           companyStage: { enum: COMPANY_STAGES },
           responsibilities: { type: "string" },
+          skills: { type: "array", items: { type: "string" } },
           rareDetails: { type: "array", items: { type: "string" } },
         },
       },
@@ -146,12 +148,14 @@ PRIVACY RULES (most important):
 
 EXTRACTION RULES:
 - Only use facts present in the sources. Never invent numbers, dates or results.
-- One experience per job. Merge the same job when it appears in several sources. If a job comes from a LinkedIn position, reuse its ref (li-1, li-2…); otherwise use refs exp-1, exp-2…
-- Dates: "YYYY-MM". If only the year is known use "YYYY-01". endMonth is null for the current job.
+- COMPLETENESS: list EVERY period of activity of the whole career, from the oldest to the most recent, including freelance work, self-employment, intermittent or seasonal work, temporary assignments, grouped missions ("2010-2015: missions for several TV channels" is one experience) and the current activity ("since 2005…", "2004-today"). Never skip a period because its dates are vague or missing, and never stop before the end of the sources: a 20-year career must give experiences covering 20 years.
+- One experience per job or per grouped period. Merge the same job when it appears in several sources. If a job comes from a LinkedIn position, reuse its ref (li-1, li-2…); otherwise use refs exp-1, exp-2…
+- Dates: "YYYY-MM" when the month is known; "YYYY" alone when only the year is known (never invent a month). startMonth is null if the start date is unknown: keep the experience anyway. endMonth is null for the current activity ("since…", "to date", "today").
 - Codes: seniority in ${SENIORITIES.join(", ")}; contractType in ${CONTRACT_TYPES.join(", ")} (CDI = permanent contract); sector in ${SECTORS.join(", ")}; companySize in ${COMPANY_SIZES.join(", ")} (employees: S1_10 = 1-10 … S5001_PLUS = more than 5000; estimate from what you know about the employer); companyStage in ${COMPANY_STAGES.join(", ")}.
-- responsibilities: 1 to 3 sentences, generic, no names.
-- Achievements: one per distinct accomplishment or project. title: short; context: the situation; actions: what the candidate did personally; result: the measurable outcome if stated, else "". experienceRef: the ref of the related job, or null. skills: the skills it demonstrates (max 8). links: the "LINK n" markers that prove it (e.g. a repository), or [].
-- skills: other skills the candidate declares (technologies, tools, methods, languages), short names.
+- responsibilities: 1 to 3 sentences, generic, no names. For grouped missions, summarise the kinds of missions.
+- skills (per experience): the skills, tools and techniques the sources mention for this job, short names.
+- Achievements: one per distinct accomplishment or project. Extract ALL of them: usually several per job when the sources describe tasks, projects, productions or results; do not keep only the first one. title: short; context: the situation; actions: what the candidate did personally; result: the measurable outcome if stated, else "". experienceRef: the ref of the related job, or null. skills: the skills it demonstrates (max 8). links: the "LINK n" markers that prove it (e.g. a repository), or [].
+- skills: all other skills the candidate declares (technologies, tools, methods, languages), short names.
 - Contact details were replaced by [EMAIL], [PHONE], [PROFILE LINK]; links by [LINK n]. Never copy these markers into texts.`;
 
 export type PromptSources = { cv?: string; linkedin?: string; github?: string };

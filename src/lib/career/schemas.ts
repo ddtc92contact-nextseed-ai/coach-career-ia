@@ -62,6 +62,9 @@ export const LIMITS = {
   locations: 10,
   maxRadiusKm: 300,
   maxSalary: 2_000_000,
+  /** Éléments d'un brouillon d'import. */
+  draftExperiences: 50,
+  draftAchievements: 200,
 } as const;
 
 const emptyToUndefined = (value: unknown) =>
@@ -270,7 +273,7 @@ export const CareerMemoryDraft = z.object({
         .extend({ ref: z.string().trim().min(1).max(64) })
         .superRefine(checkExperienceDates),
     )
-    .max(50),
+    .max(LIMITS.draftExperiences),
   achievements: z
     .array(
       achievementFields.extend({
@@ -278,11 +281,29 @@ export const CareerMemoryDraft = z.object({
         proofs: z.array(textProofInput).max(10).default([]),
       }),
     )
-    .max(200),
+    .max(LIMITS.draftAchievements),
   /** Compétences déclarées sans réalisation associée. */
   skills: z.array(z.string().trim().min(1).max(LIMITS.skillName)).max(100).default([]),
 });
 export type CareerMemoryDraft = z.infer<typeof CareerMemoryDraft>;
+
+/**
+ * Brouillon tel que l'import le présente à la revue : une expérience peut
+ * garder des dates à compléter (début inconnu, futur…) plutôt que d'être
+ * écartée. Le candidat les corrige ; `CareerMemoryDraft` reste exigé à
+ * l'enregistrement.
+ */
+export const ImportedDraft = CareerMemoryDraft.extend({
+  experiences: z
+    .array(
+      experienceFields.extend({
+        ref: z.string().trim().min(1).max(64),
+        startMonth: z.union([monthSchema, z.literal("")]),
+      }),
+    )
+    .max(LIMITS.draftExperiences),
+});
+export type ImportedDraft = z.infer<typeof ImportedDraft>;
 
 // --- Erreurs de formulaire --------------------------------------------------------
 

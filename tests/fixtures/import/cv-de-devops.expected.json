@@ -77,13 +77,17 @@
         "identityRemoved": true,
         "identifyingLink": false,
         "adjusted": false,
-        "rareDetails": []
+        "rareDetails": [],
+        "dateIssues": []
       },
       {
         "identityRemoved": false,
         "identifyingLink": false,
         "adjusted": true,
-        "rareDetails": []
+        "rareDetails": [],
+        "dateIssues": [
+          "startYearOnly"
+        ]
       }
     ],
     "achievements": [
@@ -91,19 +95,22 @@
         "identityRemoved": false,
         "identifyingLink": false,
         "adjusted": false,
-        "rareDetails": []
+        "rareDetails": [],
+        "dateIssues": []
       },
       {
         "identityRemoved": false,
         "identifyingLink": false,
         "adjusted": false,
-        "rareDetails": []
+        "rareDetails": [],
+        "dateIssues": []
       },
       {
         "identityRemoved": true,
         "identifyingLink": false,
         "adjusted": true,
-        "rareDetails": []
+        "rareDetails": [],
+        "dateIssues": []
       }
     ]
   },
@@ -138,5 +145,37 @@
     "cv": true,
     "linkedin": false,
     "github": false
+  },
+  "report": {
+    "experiences": {
+      "extracted": 2,
+      "kept": 2,
+      "flagged": 1,
+      "dropped": 0,
+      "reasons": {
+        "startYearOnly": 1
+      }
+    },
+    "achievements": {
+      "extracted": 3,
+      "kept": 3,
+      "dropped": 0
+    },
+    "dropped": [],
+    "coverage": {
+      "cv": {
+        "from": 2016,
+        "to": null
+      },
+      "memory": {
+        "from": 2016,
+        "to": null
+      },
+      "missingYears": {
+        "before": 0,
+        "after": 0
+      },
+      "gap": null
+    }
   }
 }

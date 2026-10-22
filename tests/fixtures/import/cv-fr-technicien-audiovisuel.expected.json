@@ -1,0 +1,306 @@
+{
+  "draft": {
+    "experiences": [
+      {
+        "roleTitle": "Technicien son et image, intermittent du spectacle",
+        "startMonth": "2005-01",
+        "seniority": "SENIOR",
+        "contractType": "FREELANCE",
+        "sector": "MEDIA_ENTERTAINMENT",
+        "companySize": "S1_10",
+        "companyStage": "SME",
+        "responsibilities": "Captation, régie vidéo et montage pour des productions télévisées, des concerts et des événements d'entreprise.",
+        "ref": "exp-1"
+      },
+      {
+        "roleTitle": "Chef d'équipe technique (missions pour plusieurs chaînes)",
+        "startMonth": "2010-01",
+        "endMonth": "2015-01",
+        "seniority": "LEAD",
+        "contractType": "FREELANCE",
+        "sector": "MEDIA_ENTERTAINMENT",
+        "companySize": "S201_500",
+        "companyStage": "MIDCAP",
+        "responsibilities": "Missions de chef d'équipe technique pour plusieurs chaînes de télévision ([…], […]) : émissions en direct et magazines.",
+        "ref": "exp-2"
+      },
+      {
+        "roleTitle": "Régisseur technique",
+        "startMonth": "2016-07",
+        "endMonth": "2024-09",
+        "seniority": "LEAD",
+        "contractType": "CDD",
+        "sector": "MEDIA_ENTERTAINMENT",
+        "companySize": "S11_50",
+        "companyStage": "NONPROFIT",
+        "responsibilities": "Régie technique saisonnière d'un grand festival de musique.",
+        "ref": "exp-3"
+      },
+      {
+        "roleTitle": "Formateur occasionnel",
+        "startMonth": "",
+        "seniority": "SENIOR",
+        "contractType": "FREELANCE",
+        "sector": "EDUCATION_EDTECH",
+        "companySize": "S1_10",
+        "companyStage": "SME",
+        "responsibilities": "Interventions ponctuelles auprès de jeunes techniciens : prise de son, sécurité en plateau.",
+        "ref": "exp-4"
+      },
+      {
+        "roleTitle": "Assistant technicien vidéo",
+        "startMonth": "2000-03",
+        "endMonth": "2004-06",
+        "seniority": "JUNIOR",
+        "contractType": "CDI",
+        "sector": "MEDIA_ENTERTAINMENT",
+        "companySize": "S11_50",
+        "companyStage": "SME",
+        "responsibilities": "Montage et étalonnage de clips et de films institutionnels.",
+        "ref": "exp-5"
+      }
+    ],
+    "achievements": [
+      {
+        "title": "Régie vidéo de plus de 300 captations de concerts en direct",
+        "context": "",
+        "actions": "Régie vidéo de captations de concerts diffusées en direct.",
+        "result": "Plus de 300 captations.",
+        "skills": [
+          "Régie vidéo",
+          "Captation multicaméra"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Régie mobile 4K pour la captation de spectacles",
+        "context": "",
+        "actions": "Mise en place d'une régie mobile 4K pour la captation de spectacles.",
+        "result": "",
+        "skills": [
+          "Régie vidéo",
+          "4K"
+        ],
+        "experienceRef": "exp-1",
+        "proofs": []
+      },
+      {
+        "title": "Encadrement d'équipes techniques en plateau",
+        "context": "Émissions en direct et magazines pour plusieurs chaînes.",
+        "actions": "Encadrement d'équipes de 6 à 12 techniciens en plateau.",
+        "result": "",
+        "skills": [
+          "Encadrement d'équipe"
+        ],
+        "experienceRef": "exp-2",
+        "proofs": []
+      },
+      {
+        "title": "Coordination technique d'une soirée électorale en direct",
+        "context": "Soirée électorale régionale de […].",
+        "actions": "Coordination technique de la soirée électorale régionale en direct.",
+        "result": "",
+        "skills": [
+          "Direct",
+          "Coordination technique"
+        ],
+        "experienceRef": "exp-2",
+        "proofs": []
+      },
+      {
+        "title": "Régie son et lumière de la grande scène d'un festival",
+        "context": "Grande scène d'un festival de musique.",
+        "actions": "Conception et exploitation de la régie son et lumière.",
+        "result": "15 000 spectateurs par soir.",
+        "skills": [
+          "Régie son",
+          "Éclairage scénique"
+        ],
+        "experienceRef": "exp-3",
+        "proofs": []
+      },
+      {
+        "title": "Montage et étalonnage de clips et de films institutionnels",
+        "context": "",
+        "actions": "Montage et étalonnage de clips et de films institutionnels.",
+        "result": "",
+        "skills": [
+          "Montage vidéo",
+          "Étalonnage"
+        ],
+        "experienceRef": "exp-5",
+        "proofs": []
+      }
+    ],
+    "skills": [
+      "Prise de son",
+      "Mixage",
+      "Avid",
+      "Premiere Pro",
+      "Habilitation électrique",
+      "Sécurité en plateau"
+    ]
+  },
+  "flags": {
+    "experiences": [
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": [
+          "startYearOnly"
+        ]
+      },
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": [
+          "startYearOnly",
+          "endYearOnly"
+        ]
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": [
+          "startMissing"
+        ]
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      }
+    ],
+    "achievements": [
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": true,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      },
+      {
+        "identityRemoved": false,
+        "identifyingLink": false,
+        "adjusted": false,
+        "rareDetails": [],
+        "dateIssues": []
+      }
+    ]
+  },
+  "identity": {
+    "fullName": "Julien Marchetti",
+    "emails": [
+      "julien.marchetti@exemple.test"
+    ],
+    "phones": [
+      "06 23 45 67 89"
+    ],
+    "links": [
+      "https://www.linkedin.com/in/julien-marchetti-exemple"
+    ],
+    "employers": [
+      {
+        "name": "Festival Échos du Rhône",
+        "experienceRef": "exp-3"
+      },
+      {
+        "name": "Studio Kaléidoscope",
+        "experienceRef": "exp-5"
+      }
+    ],
+    "schools": [
+      {
+        "name": "Lycée Auguste Vernier",
+        "degree": "BTS métiers de l'audiovisuel, option son"
+      }
+    ],
+    "organizations": [
+      "Canal Aurore",
+      "TéléVallée"
+    ]
+  },
+  "sources": {
+    "cv": true,
+    "linkedin": false,
+    "github": false
+  },
+  "report": {
+    "experiences": {
+      "extracted": 5,
+      "kept": 5,
+      "flagged": 3,
+      "dropped": 0,
+      "reasons": {
+        "startYearOnly": 2,
+        "endYearOnly": 1,
+        "startMissing": 1
+      }
+    },
+    "achievements": {
+      "extracted": 6,
+      "kept": 6,
+      "dropped": 0
+    },
+    "dropped": [],
+    "coverage": {
+      "cv": {
+        "from": 2000,
+        "to": null
+      },
+      "memory": {
+        "from": 2000,
+        "to": null
+      },
+      "missingYears": {
+        "before": 0,
+        "after": 0
+      },
+      "gap": null
+    }
+  }
+}

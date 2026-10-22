@@ -22,7 +22,7 @@ import {
   toFieldErrors,
   type FieldErrors,
 } from "@/lib/career/schemas";
-import type { ImportResult, ItemFlags } from "@/lib/import/shared";
+import type { ImportReport, ImportResult, ItemFlags } from "@/lib/import/shared";
 import { hasVaultableIdentity, mergeImportedIdentity } from "@/lib/vault/identity";
 import { saveImport } from "./actions";
 import { IdentityToVault } from "./identity-to-vault";
@@ -49,12 +49,16 @@ function toItems<T>(data: T[], flags: ItemFlags[]): Item<T>[] {
       identifyingLink: false,
       adjusted: false,
       rareDetails: [],
+      dateIssues: [],
     },
     decision: "pending",
     edited: false,
     editing: false,
   }));
 }
+
+/** Dates à compléter : l'expérience ne peut être acceptée qu'après correction. */
+const needsDates = (item: Item<DraftExperience>) => item.flags.dateIssues.length > 0;
 
 function text(form: FormData, name: string) {
   return String(form.get(name) ?? "");
@@ -97,7 +101,12 @@ export function ReviewPanel({
   function setAll(decision: Decision) {
     const apply = <T,>(items: Item<T>[]) =>
       items.map((item) => ({ ...item, decision, editing: false }));
-    setExperiences(apply);
+    // Une expérience aux dates à compléter n'est jamais acceptée telle quelle.
+    setExperiences((list) =>
+      list.map((item) =>
+        decision === "accepted" && needsDates(item) ? item : { ...item, decision, editing: false },
+      ),
+    );
     setAchievements(apply);
     setSkills((list) => list.map((s) => ({ ...s, accepted: decision === "accepted" })));
   }
@@ -173,6 +182,10 @@ export function ReviewPanel({
             skills: skills.length,
           })}
         </p>
+        <ReportNotes
+          report={result.report}
+          flagged={experiences.filter((e) => needsDates(e) && e.decision !== "rejected").length}
+        />
         <div className="mt-4 flex flex-wrap gap-2">
           <button type="button" className={neutralClass} onClick={() => setAll("accepted")}>
             {t("acceptAll")}
@@ -274,6 +287,58 @@ export function ReviewPanel({
   );
 }
 
+function ReportNotes({ report, flagged }: { report: ImportReport; flagged: number }) {
+  const t = useTranslations("import.review");
+  const { coverage, dropped } = report;
+  const year = (value: number | null) => (value === null ? t("coverage.today") : String(value));
+  return (
+    <>
+      {flagged > 0 ? (
+        <p className="bg-warning-soft text-warning-ink mt-3 rounded-lg px-3 py-2 text-sm">
+          ⚠ {t("flaggedCount", { count: flagged })}
+        </p>
+      ) : null}
+      {coverage?.gap ? (
+        <div
+          role="note"
+          className="bg-warning-soft text-warning-ink mt-3 rounded-lg px-3 py-2 text-sm"
+        >
+          <p className="font-medium">⚠ {t("coverage.title")}</p>
+          <p className="mt-1">
+            {t(`coverage.${coverage.gap}`, {
+              cvFrom: year(coverage.cv.from),
+              cvTo: year(coverage.cv.to),
+              memoryFrom: year(coverage.memory?.from ?? null),
+              memoryTo: year(coverage.memory?.to ?? null),
+            })}
+          </p>
+          <p className="mt-1">{t("coverage.hint")}</p>
+        </div>
+      ) : null}
+      {dropped.length ? (
+        <div
+          role="note"
+          className="bg-warning-soft text-warning-ink mt-3 rounded-lg px-3 py-2 text-sm"
+        >
+          <p className="font-medium">⚠ {t("dropped.title", { count: dropped.length })}</p>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5">
+            {dropped.map((item, index) => (
+              <li key={index} className="break-words">
+                {t("dropped.item", {
+                  kind: t(`dropped.kind.${item.kind}`),
+                  title: item.title,
+                  reason: t(`dropped.reason.${item.reason}`),
+                })}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1">{t("dropped.hint", { count: dropped.length })}</p>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
 function Section({
   id,
   title,
@@ -296,7 +361,16 @@ function Section({
   );
 }
 
-function DecisionBar<T>({ item, onChange }: { item: Item<T>; onChange: (next: Item<T>) => void }) {
+function DecisionBar<T>({
+  item,
+  onChange,
+  needsEdit = false,
+}: {
+  item: Item<T>;
+  onChange: (next: Item<T>) => void;
+  /** Accepter ouvre d'abord l'éditeur (dates à compléter). */
+  needsEdit?: boolean;
+}) {
   const t = useTranslations("import.review");
   const status =
     item.decision === "accepted" ? (item.edited ? "edited" : "accepted") : item.decision;
@@ -314,20 +388,31 @@ function DecisionBar<T>({ item, onChange }: { item: Item<T>; onChange: (next: It
         {t(`status.${status}`)}
       </Badge>
       <span className="grow" />
-      <button
-        type="button"
-        aria-pressed={item.decision === "accepted"}
-        className={acceptClass}
-        onClick={() =>
-          onChange({
-            ...item,
-            editing: false,
-            decision: item.decision === "accepted" ? "pending" : "accepted",
-          })
-        }
-      >
-        {t("accept")}
-      </button>
+      {needsEdit ? (
+        <button
+          type="button"
+          aria-expanded={item.editing}
+          className={acceptClass}
+          onClick={() => onChange({ ...item, editing: true, decision: "pending" })}
+        >
+          {t("completeDates")}
+        </button>
+      ) : (
+        <button
+          type="button"
+          aria-pressed={item.decision === "accepted"}
+          className={acceptClass}
+          onClick={() =>
+            onChange({
+              ...item,
+              editing: false,
+              decision: item.decision === "accepted" ? "pending" : "accepted",
+            })
+          }
+        >
+          {t("accept")}
+        </button>
+      )}
       <button
         type="button"
         aria-expanded={item.editing}
@@ -357,6 +442,8 @@ function DecisionBar<T>({ item, onChange }: { item: Item<T>; onChange: (next: It
 function FlagNotes({ flags }: { flags: ItemFlags }) {
   const t = useTranslations("import.review.flags");
   const notes: ReactNode[] = [];
+  for (const issue of flags.dateIssues) notes.push(t(`dates.${issue}`));
+  if (flags.dateIssues.length) notes.push(t("datesAction"));
   if (flags.identityRemoved) notes.push(t("identityRemoved"));
   if (flags.identifyingLink) notes.push(t("identifyingLink"));
   if (flags.adjusted) notes.push(t("adjusted"));
@@ -396,20 +483,30 @@ function ExperienceCard({
   item: Item<DraftExperience>;
   onChange: (next: Item<DraftExperience>) => void;
 }) {
+  const t = useTranslations("import.review");
   const tm = useTranslations("memory");
   const tc = useTranslations("codes");
   const month = useMonthLabel();
-  const { data } = item;
+  const { data, flags } = item;
+  const incomplete = needsDates(item);
+  // Mois inconnu : seule l'année est affichée (le « janvier » du brouillon est provisoire).
+  const label = (value: string, yearOnly: boolean) =>
+    !value ? t("unknownDate") : yearOnly ? value.slice(0, 4) : month(value);
   return (
     <article
       aria-label={data.roleTitle}
-      className={`bg-surface rounded-xl border p-4 sm:p-5 ${item.decision === "rejected" ? "border-line opacity-60" : "border-line"}`}
+      className={`bg-surface rounded-xl border p-4 sm:p-5 ${item.decision === "rejected" ? "border-line opacity-60" : incomplete ? "border-warning-line" : "border-line"}`}
     >
-      <h3 className="font-semibold break-words">{data.roleTitle}</h3>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="min-w-0 font-semibold break-words">{data.roleTitle}</h3>
+        {incomplete ? <Badge tone="warning">{t("datesToComplete")}</Badge> : null}
+      </div>
       <p className="text-ink-subtle mt-0.5 text-sm">
         {tm("period", {
-          start: month(data.startMonth),
-          end: data.endMonth ? month(data.endMonth) : tm("present"),
+          start: label(data.startMonth, flags.dateIssues.includes("startYearOnly")),
+          end: data.endMonth
+            ? label(data.endMonth, flags.dateIssues.includes("endYearOnly"))
+            : tm("present"),
         })}
       </p>
       <p className="text-ink-muted mt-2 text-sm">
@@ -427,13 +524,21 @@ function ExperienceCard({
         <p className="text-ink-muted mt-2 text-sm whitespace-pre-line">{data.responsibilities}</p>
       ) : null}
       <FlagNotes flags={item.flags} />
-      <DecisionBar item={item} onChange={onChange} />
+      <DecisionBar item={item} onChange={onChange} needsEdit={incomplete} />
       {item.editing ? (
         <ExperienceEditor
           data={data}
           onCancel={() => onChange({ ...item, editing: false })}
           onSave={(next) =>
-            onChange({ ...item, data: next, edited: true, editing: false, decision: "accepted" })
+            // Dates validées par l'éditeur (schéma strict) : plus rien à compléter.
+            onChange({
+              ...item,
+              data: next,
+              flags: { ...item.flags, dateIssues: [] },
+              edited: true,
+              editing: false,
+              decision: "accepted",
+            })
           }
         />
       ) : null}
@@ -859,6 +964,14 @@ function Done({
             skills: summary.skills,
           })}
         </p>
+        {summary.merged.experiences + summary.merged.achievements > 0 ? (
+          <p className="text-ink-muted mt-1">
+            {t("merged", {
+              experiences: summary.merged.experiences,
+              achievements: summary.merged.achievements,
+            })}
+          </p>
+        ) : null}
       </div>
       <p className="text-ink-muted mt-2 text-sm">{railsDone ? t("next") : t("nextRails")}</p>
       {vaultable ? (

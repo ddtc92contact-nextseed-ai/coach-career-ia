@@ -1545,7 +1545,14 @@
         "identityRemoved": "Namen oder Kontaktdaten wurden aus diesem Text entfernt (ersetzt durch […]). Bitte lesen Sie ihn noch einmal.",
         "identifyingLink": "Dieser Link enthält Ihren GitHub-Benutzernamen: Er bleibt privat, kann Sie aber identifizieren. Entfernen Sie ihn, wenn Sie möchten.",
         "adjusted": "Einige Werte wurden automatisch ergänzt: Bitte prüfen Sie sie.",
-        "rareDetail": "Seltenes Detail, an dem man Sie erkennen könnte:"
+        "rareDetail": "Seltenes Detail, an dem man Sie erkennen könnte:",
+        "dates": {
+          "startMissing": "Der Lebenslauf nennt für diesen Zeitraum kein Anfangsdatum.",
+          "startYearOnly": "Nur das Anfangsjahr ist bekannt: Bitte geben Sie den Monat an.",
+          "endYearOnly": "Nur das Endjahr ist bekannt: Bitte geben Sie den Monat an.",
+          "startInFuture": "Das gelesene Anfangsdatum liegt in der Zukunft: Bitte korrigieren Sie es."
+        },
+        "datesAction": "Ergänzen Sie die Daten oder verwerfen Sie diese Station: So kann sie nicht übernommen werden."
       },
       "identity": {
         "title": "Erkannte identifizierende Daten",
@@ -1571,7 +1578,33 @@
       "saveHint": "Nur übernommene Einträge werden Ihrem Gedächtnis hinzugefügt.",
       "save": "{count, plural, =0 {Kein Eintrag übernommen} one {# Eintrag speichern} other {# Einträge speichern}}",
       "saving": "Wird gespeichert…",
-      "restart": "Neu beginnen"
+      "restart": "Neu beginnen",
+      "datesToComplete": "Daten ergänzen",
+      "completeDates": "Daten ergänzen",
+      "unknownDate": "Datum unbekannt",
+      "flaggedCount": "{count, plural, one {Bei # Station fehlen Daten: Sie wird erst nach der Korrektur gespeichert.} other {Bei # Stationen fehlen Daten: Sie werden erst nach der Korrektur gespeichert.}}",
+      "coverage": {
+        "title": "Möglicherweise fehlen Zeiträume Ihres Werdegangs",
+        "after": "Ihr Lebenslauf nennt {cvFrom}–{cvTo}, das Gedächtnis endet aber {memoryTo}.",
+        "before": "Ihr Lebenslauf nennt {cvFrom}–{cvTo}, das Gedächtnis beginnt aber erst {memoryFrom}.",
+        "both": "Ihr Lebenslauf nennt {cvFrom}–{cvTo}, das Gedächtnis deckt aber nur {memoryFrom}–{memoryTo} ab.",
+        "empty": "Ihr Lebenslauf nennt {cvFrom}–{cvTo}, es wurde aber keine datierte Station übernommen.",
+        "hint": "Prüfen Sie den Entwurf und ergänzen Sie fehlende Zeiträume von Hand oder starten Sie den Import erneut.",
+        "today": "heute"
+      },
+      "dropped": {
+        "title": "{count, plural, one {# Eintrag aus dem Lebenslauf konnte nicht übernommen werden} other {# Einträge aus dem Lebenslauf konnten nicht übernommen werden}}",
+        "item": "{kind}: {title} ({reason})",
+        "kind": {
+          "experience": "Station",
+          "achievement": "Erfolg"
+        },
+        "reason": {
+          "tooMany": "Obergrenze des Entwurfs erreicht",
+          "invalid": "unbrauchbarer Inhalt"
+        },
+        "hint": "{count, plural, one {Fügen Sie ihn bei Bedarf von Hand zu Ihrem Gedächtnis hinzu.} other {Fügen Sie sie bei Bedarf von Hand zu Ihrem Gedächtnis hinzu.}}"
+      }
     },
     "done": {
       "title": "Ihr Karrieregedächtnis ist aktuell",
@@ -1581,7 +1614,8 @@
       "cta": "Mein Karrieregedächtnis ansehen",
       "again": "Weitere Quellen importieren",
       "nextRails": "Nächster Schritt: Ihre Leitplanken (Mindestgehalt, Ort oder Homeoffice, Vertragsarten). Danach kann Ihr Agent Ihre ersten Chancen suchen.",
-      "ctaRails": "Meine Leitplanken festlegen"
+      "ctaRails": "Meine Leitplanken festlegen",
+      "merged": "Ohne Duplikate mit Ihrem bestehenden Gedächtnis zusammengeführt: {experiences, plural, =0 {keine Station} one {# Station} other {# Stationen}} und {achievements, plural, =0 {kein Erfolg} one {# Erfolg} other {# Erfolge}}."
     }
   },
   "codes": {

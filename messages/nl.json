@@ -1545,7 +1545,14 @@
         "identityRemoved": "Er zijn namen of contactgegevens uit deze tekst verwijderd (vervangen door […]). Lees hem nog eens na.",
         "identifyingLink": "Deze link bevat uw GitHub-gebruikersnaam: hij blijft privé, maar kan u identificeren. Verwijder hem als u dat liever hebt.",
         "adjusted": "Sommige waarden zijn automatisch aangevuld: controleer ze.",
-        "rareDetail": "Zeldzaam detail waaraan u herkend zou kunnen worden:"
+        "rareDetail": "Zeldzaam detail waaraan u herkend zou kunnen worden:",
+        "dates": {
+          "startMissing": "Het cv geeft geen begindatum voor deze periode.",
+          "startYearOnly": "Alleen het beginjaar is bekend: vul de maand aan.",
+          "endYearOnly": "Alleen het eindjaar is bekend: vul de maand aan.",
+          "startInFuture": "De gelezen begindatum ligt in de toekomst: corrigeer deze."
+        },
+        "datesAction": "Vul de data aan of weiger deze functie: zo kan ze niet worden geaccepteerd."
       },
       "identity": {
         "title": "Gevonden identificerende gegevens",
@@ -1571,7 +1578,33 @@
       "saveHint": "Alleen geaccepteerde onderdelen worden aan uw geheugen toegevoegd.",
       "save": "{count, plural, =0 {Geen onderdeel geaccepteerd} one {# onderdeel opslaan} other {# onderdelen opslaan}}",
       "saving": "Opslaan…",
-      "restart": "Opnieuw beginnen"
+      "restart": "Opnieuw beginnen",
+      "datesToComplete": "Data aanvullen",
+      "completeDates": "Data aanvullen",
+      "unknownDate": "datum onbekend",
+      "flaggedCount": "{count, plural, one {Bij # functie ontbreken data: deze wordt pas na correctie opgeslagen.} other {Bij # functies ontbreken data: deze worden pas na correctie opgeslagen.}}",
+      "coverage": {
+        "title": "Mogelijk ontbreken er periodes uit uw loopbaan",
+        "after": "Uw cv noemt {cvFrom}–{cvTo}, maar het geheugen stopt in {memoryTo}.",
+        "before": "Uw cv noemt {cvFrom}–{cvTo}, maar het geheugen begint pas in {memoryFrom}.",
+        "both": "Uw cv noemt {cvFrom}–{cvTo}, maar het geheugen dekt alleen {memoryFrom}–{memoryTo}.",
+        "empty": "Uw cv noemt {cvFrom}–{cvTo}, maar er is geen gedateerde functie overgenomen.",
+        "hint": "Controleer het concept en voeg de ontbrekende periodes met de hand toe, of start de import opnieuw.",
+        "today": "vandaag"
+      },
+      "dropped": {
+        "title": "{count, plural, one {# onderdeel van het cv kon niet worden overgenomen} other {# onderdelen van het cv konden niet worden overgenomen}}",
+        "item": "{kind}: {title} ({reason})",
+        "kind": {
+          "experience": "Functie",
+          "achievement": "Prestatie"
+        },
+        "reason": {
+          "tooMany": "limiet van het concept bereikt",
+          "invalid": "onbruikbare inhoud"
+        },
+        "hint": "{count, plural, one {Voeg het zo nodig met de hand toe aan uw geheugen.} other {Voeg ze zo nodig met de hand toe aan uw geheugen.}}"
+      }
     },
     "done": {
       "title": "Uw carrièregeheugen is bijgewerkt",
@@ -1581,7 +1614,8 @@
       "cta": "Mijn carrièregeheugen bekijken",
       "again": "Andere bronnen importeren",
       "nextRails": "Volgende stap: uw randvoorwaarden (minimumsalaris, locatie of thuiswerken, contractvormen). Daarna kan uw agent uw eerste kansen zoeken.",
-      "ctaRails": "Mijn randvoorwaarden vastleggen"
+      "ctaRails": "Mijn randvoorwaarden vastleggen",
+      "merged": "Zonder dubbelingen samengevoegd met uw bestaande geheugen: {experiences, plural, =0 {geen functie} one {# functie} other {# functies}} en {achievements, plural, =0 {geen prestatie} one {# prestatie} other {# prestaties}}."
     }
   },
   "codes": {
