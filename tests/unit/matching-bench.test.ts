@@ -21,8 +21,12 @@ import { BENCH_CASES, memoryIds, type BenchCase } from "../fixtures/matching/ben
 
 function rank(c: BenchCase) {
   const ids = memoryIds(c.profile);
+  // Le banc ne fige pas le maximum : `calibratedRange` retombe sur sa marge par défaut.
   const items = new Map<string, SemanticRange>(
-    ids.map((id, k) => [id, calibratedRange(c.distribution[k], DEFAULT_SEMANTIC_RANGE)]),
+    ids.map((id, k) => {
+      const stats = c.distribution[k];
+      return [id, calibratedRange(stats && { max: Number.NaN, ...stats }, DEFAULT_SEMANTIC_RANGE)];
+    }),
   );
   const similarities = new Map(
     c.offers.map((o) => [o.offer.id, new Map(ids.map((id, k) => [id, o.similarities[k]!]))]),
