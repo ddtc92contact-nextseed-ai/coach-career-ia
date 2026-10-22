@@ -27,13 +27,30 @@ export class AiError extends Error {
   readonly status?: number;
   /** Délai suggéré par le fournisseur (`Retry-After`), en ms. */
   readonly retryAfterMs?: number;
+  /**
+   * Message d'erreur du fournisseur, tronqué, gardé seulement s'il ne reprend
+   * aucun contenu de la requête (voir `openai-compatible.ts`). Journalisable.
+   */
+  readonly providerMessage?: string;
+  /** Type ou code d'erreur du fournisseur (`invalid_request_error`…). */
+  readonly providerType?: string;
 
-  constructor(code: AiErrorCode, options: { status?: number; retryAfterMs?: number } = {}) {
+  constructor(
+    code: AiErrorCode,
+    options: {
+      status?: number;
+      retryAfterMs?: number;
+      providerMessage?: string;
+      providerType?: string;
+    } = {},
+  ) {
     super(`IA : ${code}${options.status ? ` (HTTP ${options.status})` : ""}`);
     this.name = "AiError";
     this.code = code;
     this.status = options.status;
     this.retryAfterMs = options.retryAfterMs;
+    this.providerMessage = options.providerMessage;
+    this.providerType = options.providerType;
   }
 
   get retryable(): boolean {
@@ -45,8 +62,26 @@ export function isAiError(error: unknown): error is AiError {
   return error instanceof AiError;
 }
 
-export function errorFromStatus(status: number, retryAfterMs?: number): AiError {
-  if (status === 429) return new AiError("rateLimited", { status, retryAfterMs });
-  if (status === 408 || status >= 500) return new AiError("unavailable", { status, retryAfterMs });
-  return new AiError("badRequest", { status });
+export function errorFromStatus(
+  status: number,
+  retryAfterMs?: number,
+  detail: { providerMessage?: string; providerType?: string } = {},
+): AiError {
+  if (status === 429) return new AiError("rateLimited", { status, retryAfterMs, ...detail });
+  if (status === 408 || status >= 500) {
+    return new AiError("unavailable", { status, retryAfterMs, ...detail });
+  }
+  return new AiError("badRequest", { status, ...detail });
+}
+
+/**
+ * Refus d'une requête à cause de son CONTENU (400, 413, 422) : une entrée
+ * d'embedding peut alors être isolée. Les autres 4xx (clé, droits, modèle
+ * inconnu…) concernent toute requête et ne sont jamais imputés à une entrée.
+ */
+export function isContentRejection(error: AiError): boolean {
+  return (
+    error.code === "badRequest" &&
+    (error.status === 400 || error.status === 413 || error.status === 422)
+  );
 }

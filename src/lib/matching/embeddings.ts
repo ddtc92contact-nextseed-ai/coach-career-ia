@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import type { AiClient } from "@/lib/ai/client";
+import { estimateTokens } from "@/lib/ai/tokens";
+import { logger as defaultLogger, type Logger } from "@/lib/logger";
 
 /**
  * Embeddings du matching, stockés avec pgvector (`offer_embeddings`,
@@ -8,11 +10,20 @@ import type { AiClient } from "@/lib/ai/client";
  * lots). Un texte déjà embarqué avec le même modèle n'est jamais renvoyé au
  * fournisseur : seule son empreinte est comparée. La similarité cosinus est
  * calculée par PostgreSQL (`<=>`).
+ *
+ * Une offre sans texte exploitable, ou dont le texte est refusé seul par le
+ * fournisseur, n'a pas d'embedding : elle est notée sans similarité
+ * sémantique, les autres offres gardent la leur (issue #69).
  */
 
 const OFFER_TEXT_MAX = 2000;
 const MEMORY_TEXT_MAX = 1500;
 const INSERT_CHUNK = 16;
+/**
+ * Un texte refusé n'est plus renvoyé tant qu'il ne change pas ; il est
+ * retenté au bout de ce délai, au cas où le refus ne venait pas de lui.
+ */
+const REJECTION_RETRY_MS = 7 * 24 * 3_600_000;
 
 export const textHash = (text: string) => createHash("sha256").update(text).digest("hex");
 
@@ -39,31 +50,61 @@ export function vectorLiteral(vector: number[]): string {
   return `[${vector.join(",")}]`;
 }
 
-/** Embarque les offres dont le texte (ou le modèle) a changé. Renvoie le nombre embarqué. */
+/**
+ * Embarque les offres dont le texte (ou le modèle) a changé. Renvoie le
+ * nombre embarqué. Écarte les offres au texte vide et celles dont ce même
+ * texte a déjà été refusé ; mémorise les nouveaux refus (id et taille au
+ * journal, jamais le texte).
+ */
 export async function ensureOfferEmbeddings(
   prisma: PrismaClient,
   client: AiClient,
   offers: { id: string; title: string; description: string }[],
+  options: { logger?: Logger; now?: Date } = {},
 ): Promise<number> {
   if (offers.length === 0) return 0;
+  const log = options.logger ?? defaultLogger;
   const model = client.provider.embeddingModel;
-  const texts = new Map(offers.map((o) => [o.id, offerEmbeddingText(o)]));
-  const existing = await prisma.offerEmbedding.findMany({
-    where: { offerId: { in: [...texts.keys()] }, model },
-    select: { offerId: true, textHash: true },
-  });
+  const texts = new Map<string, string>();
+  const empty: string[] = [];
+  for (const offer of offers) {
+    const text = offerEmbeddingText(offer);
+    if (text.trim() === "") empty.push(offer.id);
+    else texts.set(offer.id, text);
+  }
+  if (empty.length > 0) {
+    // Texte devenu vide : un ancien embedding ne correspondrait plus à l'offre.
+    await prisma.offerEmbedding.deleteMany({ where: { offerId: { in: empty } } });
+  }
+  if (texts.size === 0) return 0;
+
+  const ids = [...texts.keys()];
+  const retryBefore = new Date((options.now ?? new Date()).getTime() - REJECTION_RETRY_MS);
+  const [existing, rejected] = await Promise.all([
+    prisma.offerEmbedding.findMany({
+      where: { offerId: { in: ids }, model },
+      select: { offerId: true, textHash: true },
+    }),
+    prisma.offerEmbeddingRejection.findMany({
+      where: { offerId: { in: ids }, model, createdAt: { gt: retryBefore } },
+      select: { offerId: true, textHash: true },
+    }),
+  ]);
   const known = new Map(existing.map((e) => [e.offerId, e.textHash]));
-  const missing = [...texts].filter(([id, text]) => known.get(id) !== textHash(text));
+  const refused = new Map(rejected.map((r) => [r.offerId, r.textHash]));
+  const missing = [...texts]
+    .map(([id, text]) => ({ id, text, hash: textHash(text) }))
+    .filter(({ id, hash }) => known.get(id) !== hash && refused.get(id) !== hash);
   if (missing.length === 0) return 0;
 
   const vectors = await client.embed(
-    missing.map(([, text]) => text),
+    missing.map((m) => m.text),
     { purpose: "matching.offers" },
   );
-  for (let i = 0; i < missing.length; i += INSERT_CHUNK) {
-    const rows = missing.slice(i, i + INSERT_CHUNK).map(([id, text], j) => {
-      const vector = vectorLiteral(vectors[i + j]!);
-      return Prisma.sql`(${id}, ${model}, ${textHash(text)}, ${vector}::vector)`;
+  const embedded = missing.flatMap((m, i) => (vectors[i] ? [{ ...m, vector: vectors[i] }] : []));
+  for (let i = 0; i < embedded.length; i += INSERT_CHUNK) {
+    const rows = embedded.slice(i, i + INSERT_CHUNK).map(({ id, hash, vector }) => {
+      return Prisma.sql`(${id}, ${model}, ${hash}, ${vectorLiteral(vector)}::vector)`;
     });
     await prisma.$executeRaw`
       INSERT INTO offer_embeddings (offer_id, model, text_hash, embedding)
@@ -72,7 +113,21 @@ export async function ensureOfferEmbeddings(
         SET model = EXCLUDED.model, text_hash = EXCLUDED.text_hash,
             embedding = EXCLUDED.embedding, created_at = CURRENT_TIMESTAMP`;
   }
-  return missing.length;
+
+  for (const { id, text, hash } of missing.filter((_, i) => !vectors[i])) {
+    log.warn("matching.embeddings.rejected", {
+      offerId: id,
+      chars: text.length,
+      estTok: estimateTokens(text),
+    });
+    const data = { model, textHash: hash, createdAt: options.now ?? new Date() };
+    await prisma.offerEmbeddingRejection.upsert({
+      where: { offerId: id },
+      create: { offerId: id, ...data },
+      update: data,
+    });
+  }
+  return embedded.length;
 }
 
 /**
@@ -106,13 +161,19 @@ export async function ensureMemoryEmbeddings(
       missing.map((m) => m.text),
       { purpose: "matching.memory" },
     );
-    const rows = missing.map(
-      (m, i) => Prisma.sql`(${userId}, ${model}, ${m.hash}, ${vectorLiteral(vectors[i]!)}::vector)`,
-    );
-    await prisma.$executeRaw`
-      INSERT INTO memory_embeddings (user_id, model, text_hash, embedding)
-      VALUES ${Prisma.join(rows)}
-      ON CONFLICT (user_id, model, text_hash) DO NOTHING`;
+    // Texte vide ou refusé (`null`) : pas d'embedding, pas de similarité.
+    const rows = missing.flatMap((m, i) => {
+      const vector = vectors[i];
+      return vector
+        ? [Prisma.sql`(${userId}, ${model}, ${m.hash}, ${vectorLiteral(vector)}::vector)`]
+        : [];
+    });
+    if (rows.length > 0) {
+      await prisma.$executeRaw`
+        INSERT INTO memory_embeddings (user_id, model, text_hash, embedding)
+        VALUES ${Prisma.join(rows)}
+        ON CONFLICT (user_id, model, text_hash) DO NOTHING`;
+    }
   }
   // Ménage : embeddings d'éléments disparus, ou d'un ancien modèle.
   await prisma.memoryEmbedding.deleteMany({

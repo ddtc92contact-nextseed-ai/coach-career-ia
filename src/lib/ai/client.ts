@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { logger as defaultLogger, type Logger } from "@/lib/logger";
-import { AiError, isAiError } from "./errors";
+import { logger as defaultLogger, type LogContext, type Logger } from "@/lib/logger";
+import { AiError, isAiError, isContentRejection } from "./errors";
 import { estimateCostUsd } from "./pricing";
+import { estimateTokens, truncateToTokens } from "./tokens";
 import type {
   AiProvider,
   ChatMessage,
@@ -20,8 +21,9 @@ import type {
  * journal d'usage.
  *
  * JOURNAL : uniquement fournisseur, modèle, usage (`purpose`), durée, nombre
- * de tentatives, jetons et coût estimé. JAMAIS le contenu des prompts ni des
- * réponses, qui peuvent contenir des données personnelles.
+ * de tentatives, jetons et coût estimé (et, pour un lot d'embeddings refusé,
+ * ses compteurs). JAMAIS le contenu des prompts ni des réponses, qui peuvent
+ * contenir des données personnelles.
  */
 
 export type AiClientOptions = {
@@ -32,8 +34,12 @@ export type AiClientOptions = {
   maxRetries?: number;
   /** Délai de base de la temporisation exponentielle (ms). */
   backoffMs?: number;
-  /** Taille des lots d'embeddings. */
+  /** Nombre maximal d'entrées par lot d'embeddings. */
   embeddingBatchSize?: number;
+  /** Budget de jetons (estimés) par lot d'embeddings. */
+  embeddingBatchTokens?: number;
+  /** Jetons (estimés) au plus par entrée : au-delà, l'entrée est tronquée. */
+  embeddingInputTokens?: number;
   /** Nombre d'embeddings gardés en cache mémoire. */
   embeddingCacheSize?: number;
   logger?: Logger;
@@ -84,13 +90,35 @@ export type RunToolsResult = {
   usage: TokenUsage;
 };
 
+/**
+ * Limites des embeddings (issue #69) :
+ * - mistral-embed accepte 8 192 jetons par entrée (fenêtre du modèle, doc
+ *   Mistral « Embeddings ») ; on tronque à 4 000 jetons ESTIMÉS, la moitié,
+ *   pour absorber l'écart entre `estimateTokens` et le vrai tokenizer ;
+ * - par requête, l'API refuse au-delà d'un total de jetons (« Too many tokens
+ *   overall, split into more batches », 400) dont la valeur n'est pas publiée ;
+ *   le client officiel langchain-mistralai découpe ses lots à 16 000 jetons
+ *   (`MAX_TOKENS` de `langchain_mistralai/embeddings.py`, vrai tokenizer) et
+ *   des lots de ~22 000 jetons réels sont passés en production. Budget retenu :
+ *   16 000 jetons estimés (estimation prudente) ;
+ * - 32 entrées au plus par lot, comme avant.
+ * Ces valeurs valent aussi pour un endpoint compatible OpenAI (Ollama), dont
+ * les modèles d'embedding ont des fenêtres comparables ou plus larges.
+ */
 const DEFAULTS = {
   timeoutMs: 45_000,
   maxRetries: 2,
   backoffMs: 500,
   embeddingBatchSize: 32,
+  embeddingBatchTokens: 16_000,
+  embeddingInputTokens: 4_000,
   embeddingCacheSize: 2_000,
 };
+/**
+ * Profondeur maximale de la dichotomie qui isole une entrée refusée : un lot
+ * de 32 entrées se réduit à une entrée en 5 coupes. Au-delà, l'erreur remonte.
+ */
+const MAX_SPLIT_DEPTH = 6;
 const MAX_BACKOFF_MS = 10_000;
 
 function defaultSleep(ms: number, signal?: AbortSignal): Promise<void> {
@@ -143,6 +171,8 @@ export class AiClient {
       maxRetries: options.maxRetries ?? DEFAULTS.maxRetries,
       backoffMs: options.backoffMs ?? DEFAULTS.backoffMs,
       embeddingBatchSize: options.embeddingBatchSize ?? DEFAULTS.embeddingBatchSize,
+      embeddingBatchTokens: options.embeddingBatchTokens ?? DEFAULTS.embeddingBatchTokens,
+      embeddingInputTokens: options.embeddingInputTokens ?? DEFAULTS.embeddingInputTokens,
       embeddingCacheSize: options.embeddingCacheSize ?? DEFAULTS.embeddingCacheSize,
       sleep: options.sleep ?? defaultSleep,
       random: options.random ?? Math.random,
@@ -159,6 +189,8 @@ export class AiClient {
     purpose: string,
     settings: CallSettings,
     call: (signal: AbortSignal) => Promise<T>,
+    /** Compteurs ajoutés au journal d'un échec (jamais de contenu). */
+    failureContext?: LogContext,
   ): Promise<T> {
     const timeoutMs = settings.timeoutMs ?? this.options.timeoutMs;
     const maxRetries = settings.maxRetries ?? this.options.maxRetries;
@@ -176,7 +208,7 @@ export class AiClient {
         const error = this.normalizeError(raw, settings.signal, timeout);
         const canRetry = error.retryable && attempt <= maxRetries && !settings.signal?.aborted;
         if (!canRetry) {
-          this.logCall(kind, purpose, { ok: false, attempt, started, error });
+          this.logCall(kind, purpose, { ok: false, attempt, started, error }, failureContext);
           throw error;
         }
         const exponential = this.options.backoffMs * 2 ** (attempt - 1);
@@ -222,6 +254,7 @@ export class AiClient {
       result?: { usage: TokenUsage; model: string };
       error?: AiError;
     },
+    failureContext?: LogContext,
   ) {
     const model =
       outcome.result?.model ??
@@ -241,7 +274,17 @@ export class AiClient {
             costUsd: estimateCostUsd(this.provider.name, model, usage),
           }
         : {}),
-      ...(outcome.error ? { code: outcome.error.code, status: outcome.error.status } : {}),
+      ...(outcome.error
+        ? {
+            code: outcome.error.code,
+            status: outcome.error.status,
+            ...(outcome.error.providerMessage
+              ? { providerMessage: outcome.error.providerMessage }
+              : {}),
+            ...(outcome.error.providerType ? { providerType: outcome.error.providerType } : {}),
+            ...failureContext,
+          }
+        : {}),
     };
     if (outcome.ok) this.log.info(`ai.${kind}`, context);
     else this.log.warn(`ai.${kind}.failed`, context);
@@ -369,35 +412,122 @@ export class AiClient {
 
   /**
    * Embeddings par lots, avec cache mémoire (clé : modèle + empreinte du
-   * texte ; le texte lui-même n'est pas conservé comme clé).
+   * texte ; le texte lui-même n'est pas conservé comme clé). Renvoie un
+   * vecteur par texte, dans l'ordre, ou `null` :
+   * - pour un texte vide (ou fait d'espaces), jamais envoyé au fournisseur ;
+   * - pour un texte que le fournisseur refuse SEUL (400 sur une entrée).
+   *
+   * Lots : au plus `embeddingBatchSize` entrées et `embeddingBatchTokens`
+   * jetons estimés ; une entrée trop longue est tronquée à
+   * `embeddingInputTokens`. Un lot refusé pour son contenu (400, 413, 422) est
+   * coupé en deux et renvoyé, récursivement, pour isoler la ou les entrées
+   * fautives ; le reste est embarqué. Si TOUTES les entrées d'un lot sont
+   * refusées une à une, la requête elle-même est en cause (modèle,
+   * configuration) : l'erreur remonte. Délais, 429 et 5xx : reprises
+   * habituelles, sans découpage.
    */
-  async embed(texts: string[], settings: CallSettings & { purpose: string }): Promise<number[][]> {
+  async embed(
+    texts: string[],
+    settings: CallSettings & { purpose: string },
+  ): Promise<(number[] | null)[]> {
     const model = this.provider.embeddingModel;
     const keys = texts.map((text) =>
-      createHash("sha256").update(`${model}\0${text}`).digest("base64"),
+      text.trim() === "" ? null : createHash("sha256").update(`${model}\0${text}`).digest("base64"),
     );
-    const found = new Map<string, number[]>();
+    const found = new Map<string, number[] | null>();
     for (const key of keys) {
-      const cached = this.embeddingCache.get(key);
-      if (cached) found.set(key, cached);
+      const cached = key === null ? undefined : this.embeddingCache.get(key);
+      if (cached) found.set(key!, cached);
     }
-    const missing = [...new Set(keys.filter((key) => !found.has(key)))];
-    const textByKey = new Map(keys.map((key, i) => [key, texts[i]!]));
+    const textByKey = new Map<string, string>();
+    keys.forEach((key, i) => {
+      if (key !== null && !found.has(key) && !textByKey.has(key)) {
+        textByKey.set(key, truncateToTokens(texts[i]!, this.options.embeddingInputTokens));
+      }
+    });
+    const emptyInputs = keys.filter((key) => key === null).length;
 
-    for (let i = 0; i < missing.length; i += this.options.embeddingBatchSize) {
-      const batch = missing.slice(i, i + this.options.embeddingBatchSize);
-      const response = await this.withRetries("embed", settings.purpose, settings, (signal) =>
-        this.provider.embed(
-          batch.map((key) => textByKey.get(key)!),
-          { signal },
-        ),
+    let batch: { key: string; estTok: number }[] = [];
+    let batchTokens = 0;
+    const flush = async () => {
+      if (batch.length === 0) return;
+      const entries = batch;
+      batch = [];
+      batchTokens = 0;
+      await this.embedBatch(entries, textByKey, found, settings, { depth: 0, emptyInputs });
+    };
+    for (const [key, text] of textByKey) {
+      const estTok = estimateTokens(text);
+      if (
+        batch.length >= this.options.embeddingBatchSize ||
+        (batch.length > 0 && batchTokens + estTok > this.options.embeddingBatchTokens)
+      ) {
+        await flush();
+      }
+      batch.push({ key, estTok });
+      batchTokens += estTok;
+    }
+    await flush();
+    return keys.map((key) => (key === null ? null : (found.get(key) ?? null)));
+  }
+
+  /**
+   * Un lot d'embeddings ; sur un refus de contenu, dichotomie (profondeur
+   * bornée). Renvoie le nombre d'entrées embarquées.
+   */
+  private async embedBatch(
+    batch: { key: string; estTok: number }[],
+    textByKey: Map<string, string>,
+    found: Map<string, number[] | null>,
+    settings: CallSettings & { purpose: string },
+    context: { depth: number; emptyInputs: number },
+  ): Promise<number> {
+    try {
+      const response = await this.withRetries(
+        "embed",
+        settings.purpose,
+        settings,
+        (signal) =>
+          this.provider.embed(
+            batch.map(({ key }) => textByKey.get(key)!),
+            { signal },
+          ),
+        {
+          entries: batch.length,
+          estTok: batch.reduce((sum, entry) => sum + entry.estTok, 0),
+          maxEntryTok: Math.max(...batch.map((entry) => entry.estTok)),
+          emptyInputs: context.emptyInputs,
+          ...(context.depth > 0 ? { splitDepth: context.depth } : {}),
+        },
       );
-      batch.forEach((key, index) => {
+      batch.forEach(({ key }, index) => {
         found.set(key, response.vectors[index]!);
         this.remember(key, response.vectors[index]!);
       });
+      return batch.length;
+    } catch (error) {
+      if (!isAiError(error) || !isContentRejection(error) || settings.signal?.aborted) throw error;
+      if (batch.length === 1) {
+        found.set(batch[0]!.key, null);
+        this.log.warn("ai.embed.rejected", {
+          provider: this.provider.name,
+          purpose: settings.purpose,
+          estTok: batch[0]!.estTok,
+          chars: textByKey.get(batch[0]!.key)!.length,
+          status: error.status,
+        });
+        return 0;
+      }
+      if (context.depth >= MAX_SPLIT_DEPTH) throw error;
+      const middle = Math.ceil(batch.length / 2);
+      const next = { ...context, depth: context.depth + 1 };
+      const embedded =
+        (await this.embedBatch(batch.slice(0, middle), textByKey, found, settings, next)) +
+        (await this.embedBatch(batch.slice(middle), textByKey, found, settings, next));
+      // Aucune entrée du lot acceptée : ce n'est pas une entrée, c'est la requête.
+      if (embedded === 0 && context.depth === 0) throw error;
+      return embedded;
     }
-    return keys.map((key) => found.get(key)!);
   }
 
   private remember(key: string, vector: number[]) {

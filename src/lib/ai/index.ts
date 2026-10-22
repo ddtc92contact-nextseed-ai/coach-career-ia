@@ -9,9 +9,10 @@ export type {
   RunToolsResult,
   Tool,
 } from "./client";
-export { AI_ERROR_CODES, AiError, isAiError, type AiErrorCode } from "./errors";
+export { AI_ERROR_CODES, AiError, isAiError, isContentRejection, type AiErrorCode } from "./errors";
 export { languageInstruction, languageName } from "./locale";
 export { createMockProvider, mockEmbedding, scriptedReplies } from "./providers/mock";
 export type { MockProvider, MockReply, MockResponder } from "./providers/mock";
 export { createOpenAiCompatibleProvider } from "./providers/openai-compatible";
+export { estimateTokens, truncateToTokens } from "./tokens";
 export type * from "./types";
