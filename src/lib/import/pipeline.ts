@@ -8,8 +8,9 @@ import {
   SENIORITIES,
 } from "@/lib/career/codes";
 import { skillKey } from "@/lib/career/derive";
-import { CareerMemoryDraft, currentMonth, LIMITS } from "@/lib/career/schemas";
+import { CareerMemoryDraft, currentMonth, ImportedDraft, LIMITS } from "@/lib/career/schemas";
 import { truncateSafe } from "@/lib/text/truncate";
+import { checkCoverage } from "./coverage";
 import { ImportError } from "./errors";
 import { extractCvText, normalizeText } from "./extract";
 import { fetchGithubProfile, type GithubFetch, type GithubProfile } from "./github";
@@ -30,7 +31,16 @@ import {
   redactText,
   resolveLinkToken,
 } from "./pseudonymise";
-import { IMPORT_LIMITS, type IdentityPayload, type ImportResult, type ItemFlags } from "./shared";
+import {
+  type DateAdjustment,
+  type DateIssue,
+  type DropReason,
+  IMPORT_LIMITS,
+  type IdentityPayload,
+  type ImportReport,
+  type ImportResult,
+  type ItemFlags,
+} from "./shared";
 
 /**
  * Import d'un parcours : CV, export LinkedIn et/ou GitHub → brouillon
@@ -132,13 +142,18 @@ function pickCode<T extends string>(
   return found ? { value: found, adjusted: false } : { value: fallback, adjusted: true };
 }
 
-function toMonth(value: string | null | undefined): string | null {
-  if (!value) return null;
-  const match = /^(\d{4})(?:-(\d{1,2}))?/.exec(value.trim());
-  if (!match) return null;
+type MonthValue = { month: string | null; yearOnly: boolean };
+
+/** Avant cette année, une date lue est jugée illisible (à compléter). */
+const MIN_YEAR = 1950;
+
+/** `AAAA-MM`, ou `AAAA` seul (mois inconnu : janvier, à faire compléter). */
+function toMonth(value: string | null | undefined): MonthValue {
+  const match = value ? /^(\d{4})(?:-(\d{1,2}))?/.exec(value.trim()) : null;
+  if (!match || Number(match[1]) < MIN_YEAR) return { month: null, yearOnly: false };
   const month = Number(match[2] ?? 1);
-  if (month < 1 || month > 12) return null;
-  return `${match[1]}-${String(month).padStart(2, "0")}`;
+  if (month < 1 || month > 12) return { month: null, yearOnly: false };
+  return { month: `${match[1]}-${String(month).padStart(2, "0")}`, yearOnly: !match[2] };
 }
 
 function clip(text: string, max: number): { text: string; adjusted: boolean } {
@@ -153,6 +168,7 @@ const newFlags = (): ItemFlags => ({
   identifyingLink: false,
   adjusted: false,
   rareDetails: [],
+  dateIssues: [],
 });
 
 function uniqueBy<T>(items: T[], key: (item: T) => string): T[] {
@@ -165,15 +181,17 @@ function uniqueBy<T>(items: T[], key: (item: T) => string): T[] {
   });
 }
 
-type Context = {
+export type BuildContext = {
   linkedin: LinkedInExport | null;
   github: GithubProfile | null;
   links: LinkTable;
   contacts: { emails: string[]; phones: string[]; identityLinks: string[] };
+  /** Texte du CV (contacts masqués) : contrôle de couverture des années. */
+  cvText?: string;
 };
 
 /** Brouillon validé + signalements + identité, à partir de la réponse du modèle. */
-export function buildResult(extraction: Extraction, context: Context): ImportResult {
+export function buildResult(extraction: Extraction, context: BuildContext): ImportResult {
   const { linkedin, github, links } = context;
   const now = currentMonth();
   const positions = new Map(linkedin?.positions.map((p) => [p.ref, p]) ?? []);
@@ -256,28 +274,85 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
       .filter(Boolean)
       .slice(0, 5);
 
+  // Bilan : chaque élément extrait est gardé (éventuellement signalé) ou compté
+  // dans `dropped`, jamais abandonné en silence.
+  const report: ImportReport = {
+    experiences: {
+      extracted: extraction.experiences.length,
+      kept: 0,
+      flagged: 0,
+      dropped: 0,
+      reasons: {},
+    },
+    achievements: { extracted: extraction.achievements.length, kept: 0, dropped: 0 },
+    dropped: [],
+    coverage: null,
+  };
+  const reasons = report.experiences.reasons;
+  const count = (reason: DateIssue | DateAdjustment | DropReason) => {
+    reasons[reason] = (reasons[reason] ?? 0) + 1;
+  };
+  const drop = (kind: "experience" | "achievement", title: string, reason: DropReason) => {
+    report.dropped.push({ kind, title: title || REDACTED_TITLE, reason });
+    if (kind === "experience") {
+      report.experiences.dropped += 1;
+      count(reason);
+    } else {
+      report.achievements.dropped += 1;
+    }
+  };
+
   // Expériences.
-  const experiences: CareerMemoryDraft["experiences"] = [];
+  const experiences: ImportedDraft["experiences"] = [];
   const experienceFlags: ItemFlags[] = [];
   const refs = new Set<string>();
+  /** Réf. libre quand celle du modèle manque ou est déjà prise. */
+  const freeRef = (base: string) => {
+    const prefix = base.slice(0, 56) || "exp";
+    let n = 2;
+    while (refs.has(`${prefix}-${n}`)) n += 1;
+    return `${prefix}-${n}`;
+  };
   for (const raw of extraction.experiences) {
-    const ref = raw.ref.trim().slice(0, 64);
-    if (!ref || refs.has(ref)) continue;
     const flags = newFlags();
-    const position = positions.get(ref);
+    const roleTitle = clip(redact(raw.roleTitle, flags), LIMITS.roleTitle);
+    if (experiences.length >= LIMITS.draftExperiences) {
+      drop("experience", roleTitle.text, "tooMany");
+      continue;
+    }
+    const modelRef = raw.ref.trim().slice(0, 64);
+    let ref = modelRef;
+    if (!ref || refs.has(ref)) {
+      ref = freeRef(ref);
+      count("refRenamed");
+    }
+    const position = positions.get(modelRef);
     // Les dates de LinkedIn (structurées) priment sur celles du modèle.
-    let startMonth = position?.startMonth ?? toMonth(raw.startMonth);
-    let endMonth = position ? position.endMonth : toMonth(raw.endMonth);
-    if (!startMonth) continue;
-    if (startMonth > now) continue;
+    const start = position?.startMonth
+      ? { month: position.startMonth, yearOnly: false }
+      : toMonth(raw.startMonth);
+    const end = position ? { month: position.endMonth, yearOnly: false } : toMonth(raw.endMonth);
+    let startMonth = start.month;
+    let endMonth = end.month;
+    let [startYearOnly, endYearOnly] = [start.yearOnly, end.yearOnly];
     if (endMonth && endMonth > now) {
       endMonth = null;
+      endYearOnly = false;
       flags.adjusted = true;
+      count("endInFuture");
     }
-    if (endMonth && endMonth < startMonth) {
+    if (startMonth && endMonth && endMonth < startMonth && startMonth <= now) {
       [startMonth, endMonth] = [endMonth, startMonth];
+      [startYearOnly, endYearOnly] = [endYearOnly, startYearOnly];
       flags.adjusted = true;
+      count("endBeforeStart");
     }
+    // Dates absentes, partielles ou incohérentes : l'expérience reste, à compléter.
+    if (!startMonth) flags.dateIssues.push("startMissing");
+    else if (startMonth > now) flags.dateIssues.push("startInFuture");
+    else if (startYearOnly) flags.dateIssues.push("startYearOnly");
+    if (endMonth && endYearOnly) flags.dateIssues.push("endYearOnly");
+
     const codes = {
       seniority: pickCode(SENIORITIES, raw.seniority, "MID"),
       contractType: pickCode(CONTRACT_TYPES, raw.contractType, "CDI"),
@@ -286,15 +361,14 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
       companyStage: pickCode(COMPANY_STAGES, raw.companyStage, "SME"),
     };
     if (Object.values(codes).some((c) => c.adjusted)) flags.adjusted = true;
-    const roleTitle = clip(redact(raw.roleTitle, flags), LIMITS.roleTitle);
     const responsibilities = clip(redact(raw.responsibilities, flags), LIMITS.responsibilities);
     if (roleTitle.adjusted || responsibilities.adjusted) flags.adjusted = true;
     flags.rareDetails = redactDetails(raw.rareDetails, flags);
 
-    const parsed = CareerMemoryDraft.shape.experiences.element.safeParse({
+    const parsed = ImportedDraft.shape.experiences.element.safeParse({
       ref,
       roleTitle: roleTitle.text || REDACTED_TITLE,
-      startMonth,
+      startMonth: startMonth ?? "",
       endMonth: endMonth ?? undefined,
       seniority: codes.seniority.value,
       contractType: codes.contractType.value,
@@ -303,10 +377,16 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
       companyStage: codes.companyStage.value,
       responsibilities: responsibilities.text,
     });
-    if (!parsed.success) continue;
+    if (!parsed.success) {
+      drop("experience", roleTitle.text, "invalid");
+      continue;
+    }
     refs.add(ref);
     experiences.push(parsed.data);
     experienceFlags.push(flags);
+    report.experiences.kept += 1;
+    if (flags.dateIssues.length) report.experiences.flagged += 1;
+    flags.dateIssues.forEach(count);
   }
 
   // Réalisations.
@@ -317,6 +397,10 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
   for (const raw of extraction.achievements) {
     const flags = newFlags();
     const title = clip(redact(raw.title, flags), LIMITS.achievementTitle);
+    if (achievements.length >= LIMITS.draftAchievements) {
+      drop("achievement", title.text, "tooMany");
+      continue;
+    }
     const context = clip(redact(raw.context, flags), LIMITS.context);
     const actions = clip(redact(raw.actions, flags) || redact(raw.title, flags), LIMITS.actions);
     const result = clip(redact(raw.result, flags), LIMITS.result);
@@ -350,17 +434,23 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
       experienceRef: experienceRef && refs.has(experienceRef) ? experienceRef : undefined,
       proofs: urls.map((url) => ({ kind: "URL", url })),
     });
-    if (!parsed.success) continue;
+    if (!parsed.success) {
+      drop("achievement", title.text, "invalid");
+      continue;
+    }
     achievements.push(parsed.data);
     achievementFlags.push(flags);
+    report.achievements.kept += 1;
   }
 
-  // Compétences déclarées : modèle + LinkedIn + langages GitHub, hors celles des réalisations.
+  // Compétences déclarées : modèle (générales et par expérience) + LinkedIn + langages
+  // GitHub, hors celles des réalisations.
   const used = new Set(achievements.flatMap((a) => a.skills.map(skillKey)));
   const skills = uniqueBy(
     redactList(
       [
         ...extraction.skills,
+        ...extraction.experiences.flatMap((e) => e.skills),
         ...(linkedin?.skills ?? []),
         ...(github?.repos.flatMap((r) => r.languages) ?? []),
       ].map((s) => truncateSafe(s.trim(), LIMITS.skillName)),
@@ -371,12 +461,14 @@ export function buildResult(extraction: Extraction, context: Context): ImportRes
     .filter((s) => !used.has(skillKey(s)))
     .slice(0, 100);
 
-  const draft = CareerMemoryDraft.parse({ experiences, achievements, skills });
+  const draft = ImportedDraft.parse({ experiences, achievements, skills });
+  report.coverage = context.cvText ? checkCoverage(context.cvText, draft.experiences, now) : null;
   return {
     draft,
     flags: { experiences: experienceFlags, achievements: achievementFlags },
     identity,
     sources: { cv: false, linkedin: !!linkedin, github: !!github },
+    report,
   };
 }
 
@@ -430,6 +522,7 @@ export async function runImport(
       phones: cv?.phones ?? [],
       identityLinks: cv?.identityLinks ?? [],
     },
+    cvText: cv?.text,
   });
   result.sources.cv = !!cv;
   return result;

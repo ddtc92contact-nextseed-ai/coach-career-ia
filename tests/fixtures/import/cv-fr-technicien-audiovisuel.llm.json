@@ -1,0 +1,156 @@
+{
+  "identity": {
+    "fullName": "Julien Marchetti",
+    "schools": [{ "name": "Lycée Auguste Vernier", "degree": "BTS métiers de l'audiovisuel, option son" }],
+    "organizations": ["Canal Aurore", "TéléVallée"]
+  },
+  "experiences": [
+    {
+      "ref": "exp-1",
+      "employerName": null,
+      "roleTitle": "Technicien son et image, intermittent du spectacle",
+      "startMonth": "2005",
+      "endMonth": null,
+      "seniority": "SENIOR",
+      "contractType": "FREELANCE",
+      "sector": "MEDIA_ENTERTAINMENT",
+      "companySize": "S1_10",
+      "companyStage": "SME",
+      "responsibilities": "Captation, régie vidéo et montage pour des productions télévisées, des concerts et des événements d'entreprise.",
+      "skills": ["Régie vidéo", "Captation multicaméra"],
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-2",
+      "employerName": null,
+      "roleTitle": "Chef d'équipe technique (missions pour plusieurs chaînes)",
+      "startMonth": "2010",
+      "endMonth": "2015",
+      "seniority": "LEAD",
+      "contractType": "FREELANCE",
+      "sector": "MEDIA_ENTERTAINMENT",
+      "companySize": "S201_500",
+      "companyStage": "MIDCAP",
+      "responsibilities": "Missions de chef d'équipe technique pour plusieurs chaînes de télévision (Canal Aurore, TéléVallée) : émissions en direct et magazines.",
+      "skills": ["Encadrement d'équipe", "Direct"],
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-3",
+      "employerName": "Festival Échos du Rhône",
+      "roleTitle": "Régisseur technique",
+      "startMonth": "2016-07",
+      "endMonth": "2024-09",
+      "seniority": "LEAD",
+      "contractType": "CDD",
+      "sector": "MEDIA_ENTERTAINMENT",
+      "companySize": "S11_50",
+      "companyStage": "NONPROFIT",
+      "responsibilities": "Régie technique saisonnière d'un grand festival de musique.",
+      "skills": ["Régie son", "Éclairage scénique"],
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-4",
+      "employerName": null,
+      "roleTitle": "Formateur occasionnel",
+      "startMonth": null,
+      "endMonth": null,
+      "seniority": "SENIOR",
+      "contractType": "FREELANCE",
+      "sector": "EDUCATION_EDTECH",
+      "companySize": "S1_10",
+      "companyStage": "SME",
+      "responsibilities": "Interventions ponctuelles auprès de jeunes techniciens : prise de son, sécurité en plateau.",
+      "skills": ["Prise de son", "Sécurité en plateau"],
+      "rareDetails": []
+    },
+    {
+      "ref": "exp-5",
+      "employerName": "Studio Kaléidoscope",
+      "roleTitle": "Assistant technicien vidéo",
+      "startMonth": "2000-03",
+      "endMonth": "2004-06",
+      "seniority": "JUNIOR",
+      "contractType": "CDI",
+      "sector": "MEDIA_ENTERTAINMENT",
+      "companySize": "S11_50",
+      "companyStage": "SME",
+      "responsibilities": "Montage et étalonnage de clips et de films institutionnels.",
+      "skills": ["Montage vidéo", "Étalonnage"],
+      "rareDetails": []
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Régie vidéo de plus de 300 captations de concerts en direct",
+      "context": "",
+      "actions": "Régie vidéo de captations de concerts diffusées en direct.",
+      "result": "Plus de 300 captations.",
+      "skills": ["Régie vidéo", "Captation multicaméra"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Régie mobile 4K pour la captation de spectacles",
+      "context": "",
+      "actions": "Mise en place d'une régie mobile 4K pour la captation de spectacles.",
+      "result": "",
+      "skills": ["Régie vidéo", "4K"],
+      "experienceRef": "exp-1",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Encadrement d'équipes techniques en plateau",
+      "context": "Émissions en direct et magazines pour plusieurs chaînes.",
+      "actions": "Encadrement d'équipes de 6 à 12 techniciens en plateau.",
+      "result": "",
+      "skills": ["Encadrement d'équipe"],
+      "experienceRef": "exp-2",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Coordination technique d'une soirée électorale en direct",
+      "context": "Soirée électorale régionale de TéléVallée.",
+      "actions": "Coordination technique de la soirée électorale régionale en direct.",
+      "result": "",
+      "skills": ["Direct", "Coordination technique"],
+      "experienceRef": "exp-2",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Régie son et lumière de la grande scène d'un festival",
+      "context": "Grande scène d'un festival de musique.",
+      "actions": "Conception et exploitation de la régie son et lumière.",
+      "result": "15 000 spectateurs par soir.",
+      "skills": ["Régie son", "Éclairage scénique"],
+      "experienceRef": "exp-3",
+      "links": [],
+      "rareDetails": []
+    },
+    {
+      "title": "Montage et étalonnage de clips et de films institutionnels",
+      "context": "",
+      "actions": "Montage et étalonnage de clips et de films institutionnels.",
+      "result": "",
+      "skills": ["Montage vidéo", "Étalonnage"],
+      "experienceRef": "exp-5",
+      "links": [],
+      "rareDetails": []
+    }
+  ],
+  "skills": [
+    "Prise de son",
+    "Mixage",
+    "Avid",
+    "Premiere Pro",
+    "Étalonnage",
+    "Éclairage scénique",
+    "Captation multicaméra",
+    "Habilitation électrique"
+  ]
+}

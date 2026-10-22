@@ -163,4 +163,25 @@ export const IMPORT_CASES: ImportCase[] = [
     ],
     ...fixture("linkedin-github-pm"),
   },
+  {
+    id: "cv-fr-technicien-audiovisuel",
+    description:
+      "CV français (DOCX), technicien audiovisuel 2000-2024 : intermittence « depuis 2005 », missions regroupées « 2010-2015 », période sans date",
+    locale: "fr",
+    sources: () => ({ cv: makeDocx(lines("cv-fr-technicien-audiovisuel.txt")) }),
+    forbidden: [
+      "Julien Marchetti",
+      "julien.marchetti@exemple.test",
+      "06 23 45 67 89",
+      "julien-marchetti-exemple",
+      "Festival Échos du Rhône",
+      "Studio Kaléidoscope",
+      "Canal Aurore",
+      "TéléVallée",
+      "Lycée Auguste Vernier",
+    ],
+    forbiddenInText: ["Julien", "Marchetti", "Vernier", "Kaléidoscope"],
+    notSentToModel: ["julien.marchetti@exemple.test", "06 23 45 67 89", "julien-marchetti-exemple"],
+    ...fixture("cv-fr-technicien-audiovisuel"),
+  },
 ];

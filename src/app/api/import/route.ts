@@ -94,6 +94,8 @@ export async function POST(request: Request) {
         githubToken: process.env.GITHUB_TOKEN || undefined,
       },
     );
+    // Bilan sans texte personnel : compteurs et raisons (jamais d'intitulé).
+    const { experiences, achievements, coverage } = result.report;
     logger.info("import.draft", {
       userId: user.id,
       cv: result.sources.cv,
@@ -102,6 +104,20 @@ export async function POST(request: Request) {
       experiences: result.draft.experiences.length,
       achievements: result.draft.achievements.length,
       skills: result.draft.skills.length,
+      experiencesExtracted: experiences.extracted,
+      experiencesKept: experiences.kept,
+      experiencesFlagged: experiences.flagged,
+      experiencesDropped: experiences.dropped,
+      reasons:
+        Object.entries(experiences.reasons)
+          .map(([reason, count]) => `${reason}:${count}`)
+          .join(",") || "none",
+      achievementsExtracted: achievements.extracted,
+      achievementsDropped: achievements.dropped,
+      coverageGap: coverage?.gap ?? "none",
+      coverageMissingYears: coverage
+        ? coverage.missingYears.before + coverage.missingYears.after
+        : 0,
       durationMs: Date.now() - started,
     });
     return reply({ ok: true, result });

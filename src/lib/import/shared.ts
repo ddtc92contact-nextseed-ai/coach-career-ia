@@ -1,4 +1,4 @@
-import type { CareerMemoryDraft } from "@/lib/career/schemas";
+import type { ImportedDraft } from "@/lib/career/schemas";
 
 /**
  * Règles et types de l'import IA partagés entre le serveur et l'interface
@@ -103,6 +103,20 @@ export type IdentityPayload = {
   organizations: string[];
 };
 
+/**
+ * Dates d'une expérience que le candidat doit compléter avant de l'accepter :
+ * - `startMissing` : aucune date de début lisible (`startMonth` vide) ;
+ * - `startYearOnly` / `endYearOnly` : seule l'année est connue (mois mis à janvier) ;
+ * - `startInFuture` : date de début postérieure au mois courant.
+ */
+export const DATE_ISSUES = [
+  "startMissing",
+  "startYearOnly",
+  "endYearOnly",
+  "startInFuture",
+] as const;
+export type DateIssue = (typeof DATE_ISSUES)[number];
+
 /** Signalements d'un élément du brouillon, affichés pendant la revue. */
 export type ItemFlags = {
   /** Un nom, un contact ou un employeur a été retiré du texte. */
@@ -113,15 +127,70 @@ export type ItemFlags = {
   adjusted: boolean;
   /** Détails rares qui pourraient permettre de reconnaître le candidat (texte généré). */
   rareDetails: string[];
+  /** Expériences : dates à compléter (vide = dates exploitables). */
+  dateIssues: DateIssue[];
+};
+
+/** Raisons pour lesquelles un élément extrait n'a pas pu entrer dans le brouillon. */
+export const DROP_REASONS = ["tooMany", "invalid"] as const;
+export type DropReason = (typeof DROP_REASONS)[number];
+
+/** Corrections automatiques d'une expérience gardée (journal d'import). */
+export type DateAdjustment = "endInFuture" | "endBeforeStart" | "refRenamed";
+
+/** Période en années ; `to: null` = jusqu'à aujourd'hui. */
+export type YearSpan = { from: number; to: number | null };
+
+/**
+ * Contrôle de couverture : années citées dans le CV comparées à celles des
+ * expériences du brouillon. `gap` indique de quel côté il manque plus de
+ * `COVERAGE_TOLERANCE_YEARS` ans (`null` : rien à signaler).
+ */
+export type Coverage = {
+  cv: YearSpan;
+  memory: YearSpan | null;
+  missingYears: { before: number; after: number };
+  gap: "before" | "after" | "both" | "empty" | null;
+};
+export const COVERAGE_TOLERANCE_YEARS = 3;
+
+/**
+ * Bilan de l'import, montré à la revue et journalisé (compteurs seulement) :
+ * chaque élément extrait par le modèle est soit gardé (éventuellement signalé),
+ * soit compté dans `dropped`. Jamais d'abandon silencieux.
+ */
+export type ImportReport = {
+  experiences: {
+    /** Expériences renvoyées par le modèle. */
+    extracted: number;
+    /** Expériences présentes dans le brouillon (dont celles à compléter). */
+    kept: number;
+    /** Expériences gardées mais dont les dates sont à compléter. */
+    flagged: number;
+    dropped: number;
+    /** Nombre d'expériences par problème de dates ou correction (journal). */
+    reasons: Partial<Record<DateIssue | DateAdjustment | DropReason, number>>;
+  };
+  achievements: { extracted: number; kept: number; dropped: number };
+  /** Éléments inutilisables, avec leur intitulé (pseudonymisé). */
+  dropped: { kind: "experience" | "achievement"; title: string; reason: DropReason }[];
+  /** `null` sans CV, ou quand le CV ne cite aucune année. */
+  coverage: Coverage | null;
 };
 
 export type ImportResult = {
-  /** Partie pseudonymisée, au format de la mémoire de carrière. */
-  draft: CareerMemoryDraft;
+  /**
+   * Partie pseudonymisée, au format de la mémoire de carrière. Une expérience
+   * signalée (`flags.experiences[i].dateIssues`) peut avoir des dates
+   * invalides (`startMonth` vide…) : elle doit être corrigée avant l'enregistrement,
+   * qui revalide avec `CareerMemoryDraft`.
+   */
+  draft: ImportedDraft;
   /** Alignés sur `draft.experiences` et `draft.achievements`. */
   flags: { experiences: ItemFlags[]; achievements: ItemFlags[] };
   identity: IdentityPayload;
   sources: { cv: boolean; linkedin: boolean; github: boolean };
+  report: ImportReport;
 };
 
 export type ImportResponse =
