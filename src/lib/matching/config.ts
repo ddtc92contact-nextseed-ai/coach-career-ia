@@ -40,6 +40,11 @@ const matchingEnvSchema = z.object({
   MATCHING_SIM_CEIL: z.coerce.number().min(-1).max(1).default(0.8),
   /** Offres embarquées au moins pour calibrer la similarité d'un candidat. */
   MATCHING_SIM_MIN_SAMPLES: z.coerce.number().int().min(1).max(1_000_000).default(200),
+  /**
+   * Composante salaire (0 à 1) d'une offre sans salaire annoncé : neutre,
+   * sous un salaire annoncé au niveau du package visé (1) (issue #77).
+   */
+  MATCHING_SALARY_NOT_STATED: z.coerce.number().min(0).max(1).default(0.7),
   /** URL publique de l'application (liens des e-mails) ; à défaut `AUTH_URL`. */
   APP_URL: optional,
   AUTH_URL: optional,
@@ -59,6 +64,8 @@ export type MatchingConfig = {
   semanticRange: { floor: number; ceil: number };
   /** Offres embarquées au moins pour calibrer la similarité par candidat. */
   calibrationMinSamples: number;
+  /** Composante salaire d'une offre sans salaire annoncé (0 à 1). */
+  salaryNotStated: number;
   /** `null` : liens impossibles, les alertes e-mail sont désactivées. */
   appUrl: string | null;
 };
@@ -88,6 +95,7 @@ export function matchingConfig(
     llmMinScore: e.MATCHING_LLM_MIN_SCORE,
     semanticRange: { floor: e.MATCHING_SIM_FLOOR, ceil: e.MATCHING_SIM_CEIL },
     calibrationMinSamples: e.MATCHING_SIM_MIN_SAMPLES,
+    salaryNotStated: e.MATCHING_SALARY_NOT_STATED,
     appUrl: appUrl ? appUrl.replace(/\/+$/, "") : null,
   };
 }

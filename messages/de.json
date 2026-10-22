@@ -1746,6 +1746,7 @@
       "proofs": "{count, plural, one {Einer Ihrer Erfolge erfüllt direkt eine Anforderung.} other {# Ihrer Erfolge erfüllen direkt Anforderungen.}}",
       "experiences": "{count, plural, one {Eine Ihrer Erfahrungen liegt nah an der Stelle.} other {# Ihrer Erfahrungen liegen nah an der Stelle.}}",
       "lowRelevance": "Der Bezug zu Ihrem Werdegang bleibt begrenzt.",
+      "noLexicalSupport": "Keine Anforderung des Angebots nennt Ihre Kompetenzen oder Erfahrungen: Die Bewertung beruht allein auf der Nähe zu den Aufgaben der Stelle.",
       "seniorityAbove": "Die Stelle scheint höher angesiedelt als Ihre aktuelle Position.",
       "salaryUnknown": "Das Gehalt ist nicht angegeben.",
       "followed": "Der Score enthält einen Bonus von {bonus} Punkten, weil Sie diesem Unternehmen folgen."
@@ -1762,7 +1763,8 @@
       "salaryBelowTarget": "Die angegebene Vergütung liegt unter Ihrem Zielpaket.",
       "unprovenSkill": "„{value}“ wird verlangt, ist aber noch nicht belegt: Fügen Sie einem Erfolg, der sie nutzt, einen Nachweis hinzu.",
       "fewSkills": "Das Angebot nennt keine Ihrer Kompetenzen ausdrücklich.",
-      "lowRelevance": "Das Angebot hat wenig mit Ihrem Werdegang zu tun: Vergütung, Seniorität und Kultur zählen nur teilweise in seiner Bewertung."
+      "lowRelevance": "Das Angebot hat wenig mit Ihrem Werdegang zu tun: Vergütung, Seniorität und Kultur zählen nur teilweise in seiner Bewertung.",
+      "noLexicalSupport": "Das Angebot nennt keine Ihrer Kompetenzen und keinen Begriff aus Ihren Erfahrungen: Gemessen wird nur die Nähe zu den Aufgaben der Stelle, und sie zählt weniger."
     },
     "unknowns": {
       "salaryNotStated": "Gehalt nicht angegeben.",

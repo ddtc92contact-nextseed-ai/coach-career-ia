@@ -225,7 +225,8 @@ export async function memorySimilarities(
 /**
  * Distribution des similarités de chaque élément de la mémoire du candidat
  * sur ses offres (`offerIds` : offres qui passent le pré-filtre des
- * garde-fous) : `empreinte → { nombre, médiane, 99e centile }`. Calculée
+ * garde-fous) : `empreinte → { nombre, médiane, 99e centile, maximum }`
+ * (le maximum : haut de l'échelle calibrée, issue #77). Calculée
  * entièrement par PostgreSQL : seuls quelques nombres par élément remontent
  * au worker, jamais les offres ni leurs vecteurs (issue #72, mémoire #64).
  * Les offres pas encore embarquées n'y figurent pas.
@@ -239,11 +240,18 @@ export async function memorySimilarityStats(
   const result = new Map<string, SimilarityStats>();
   if (offerIds.length === 0) return result;
   const rows = await prisma.$queryRaw<
-    { textHash: string; count: number; median: number | null; p99: number | null }[]
+    {
+      textHash: string;
+      count: number;
+      median: number | null;
+      p99: number | null;
+      max: number | null;
+    }[]
   >`
     SELECT s.text_hash AS "textHash", count(*)::int AS count,
            percentile_cont(0.5) WITHIN GROUP (ORDER BY s.similarity) AS median,
-           percentile_cont(0.99) WITHIN GROUP (ORDER BY s.similarity) AS p99
+           percentile_cont(0.99) WITHIN GROUP (ORDER BY s.similarity) AS p99,
+           max(s.similarity) AS max
     FROM (
       SELECT me.text_hash, (1 - (oe.embedding <=> me.embedding))::float8 AS similarity
       FROM offer_embeddings oe
@@ -257,6 +265,7 @@ export async function memorySimilarityStats(
       count: Number(row.count),
       median: Number(row.median),
       p99: Number(row.p99),
+      max: row.max === null ? Number.NaN : Number(row.max),
     });
   }
   return result;

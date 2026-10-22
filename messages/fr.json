@@ -1746,6 +1746,7 @@
       "proofs": "{count, plural, one {Une de vos réalisations répond directement à une exigence.} other {# de vos réalisations répondent directement à des exigences.}}",
       "experiences": "{count, plural, one {Une de vos expériences est proche du poste.} other {# de vos expériences sont proches du poste.}}",
       "lowRelevance": "Le rapport avec votre parcours reste limité.",
+      "noLexicalSupport": "Aucune exigence de l’offre ne cite vos compétences ni vos expériences : le score repose sur la seule proximité avec les missions du poste.",
       "seniorityAbove": "Le poste semble plus senior que votre poste actuel.",
       "salaryUnknown": "Le salaire n’est pas indiqué.",
       "followed": "Le score inclut un bonus de {bonus} points : vous suivez cette entreprise."
@@ -1762,7 +1763,8 @@
       "salaryBelowTarget": "La rémunération annoncée est en dessous de votre package visé.",
       "unprovenSkill": "« {value} » est demandée mais pas encore prouvée : ajoutez une preuve à une réalisation qui l’utilise.",
       "fewSkills": "L’offre ne cite explicitement aucune de vos compétences.",
-      "lowRelevance": "L’offre a peu de rapport avec votre parcours : rémunération, séniorité et culture ne comptent qu’en partie dans son score."
+      "lowRelevance": "L’offre a peu de rapport avec votre parcours : rémunération, séniorité et culture ne comptent qu’en partie dans son score.",
+      "noLexicalSupport": "L’offre ne cite aucune de vos compétences ni aucun terme de vos expériences : seule la proximité avec les missions du poste est mesurée, et elle compte moins."
     },
     "unknowns": {
       "salaryNotStated": "Salaire non indiqué.",

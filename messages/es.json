@@ -1746,6 +1746,7 @@
       "proofs": "{count, plural, one {Uno de tus logros responde directamente a un requisito.} other {# de tus logros responden directamente a requisitos.}}",
       "experiences": "{count, plural, one {Una de tus experiencias se acerca al puesto.} other {# de tus experiencias se acercan al puesto.}}",
       "lowRelevance": "La relación con tu trayectoria sigue siendo limitada.",
+      "noLexicalSupport": "Ningún requisito de la oferta cita tus competencias ni tus experiencias: la puntuación se basa solo en la proximidad con las funciones del puesto.",
       "seniorityAbove": "El puesto parece más sénior que tu puesto actual.",
       "salaryUnknown": "El salario no está indicado.",
       "followed": "La puntuación incluye una bonificación de {bonus} puntos porque sigue a esta empresa."
@@ -1762,7 +1763,8 @@
       "salaryBelowTarget": "La remuneración indicada está por debajo de tu paquete objetivo.",
       "unprovenSkill": "Se pide «{value}» pero aún no está demostrada: añade una prueba a un logro que la utilice.",
       "fewSkills": "La oferta no cita explícitamente ninguna de tus competencias.",
-      "lowRelevance": "La oferta tiene poca relación con tu trayectoria: la remuneración, la seniority y la cultura solo cuentan en parte en su puntuación."
+      "lowRelevance": "La oferta tiene poca relación con tu trayectoria: la remuneración, la seniority y la cultura solo cuentan en parte en su puntuación.",
+      "noLexicalSupport": "La oferta no cita ninguna de tus competencias ni ningún término de tus experiencias: solo se mide la proximidad con las funciones del puesto, y cuenta menos."
     },
     "unknowns": {
       "salaryNotStated": "Salario no indicado.",

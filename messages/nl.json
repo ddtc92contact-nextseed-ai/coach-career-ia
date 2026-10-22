@@ -1746,6 +1746,7 @@
       "proofs": "{count, plural, one {Een van je prestaties beantwoordt rechtstreeks aan een eis.} other {# van je prestaties beantwoorden rechtstreeks aan eisen.}}",
       "experiences": "{count, plural, one {Een van je ervaringen ligt dicht bij de functie.} other {# van je ervaringen liggen dicht bij de functie.}}",
       "lowRelevance": "De band met je loopbaan blijft beperkt.",
+      "noLexicalSupport": "Geen enkele eis van de vacature noemt je vaardigheden of ervaring: de score berust alleen op de nabijheid tot de taken van de functie.",
       "seniorityAbove": "De functie lijkt senioriteit te vragen boven je huidige functie.",
       "salaryUnknown": "Het salaris wordt niet vermeld.",
       "followed": "De score bevat een bonus van {bonus} punten omdat u dit bedrijf volgt."
@@ -1762,7 +1763,8 @@
       "salaryBelowTarget": "De vermelde beloning ligt onder je beoogde pakket.",
       "unprovenSkill": "‘{value}’ wordt gevraagd maar is nog niet bewezen: voeg een bewijs toe aan een prestatie waarin je deze gebruikt.",
       "fewSkills": "De vacature noemt geen van je vaardigheden expliciet.",
-      "lowRelevance": "De vacature heeft weinig met je loopbaan te maken: salaris, senioriteit en cultuur tellen maar gedeeltelijk mee in de score."
+      "lowRelevance": "De vacature heeft weinig met je loopbaan te maken: salaris, senioriteit en cultuur tellen maar gedeeltelijk mee in de score.",
+      "noLexicalSupport": "De vacature noemt geen van je vaardigheden en geen term uit je ervaring: alleen de nabijheid tot de taken van de functie wordt gemeten, en die telt minder mee."
     },
     "unknowns": {
       "salaryNotStated": "Salaris niet vermeld.",
