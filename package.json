@@ -29,7 +29,8 @@
     "ai:eval": "tsx scripts/ai-eval-import.ts",
     "worker": "node --import tsx worker/index.ts",
     "postinstall": "prisma generate",
-    "radar:companies-check": "tsx scripts/radar-companies-check.ts"
+    "radar:companies-check": "tsx scripts/radar-companies-check.ts",
+    "matching:load": "tsx scripts/matching-load.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
