@@ -181,16 +181,17 @@ describe.skipIf(!url)("matching : recalcul, stockage, isolation, alertes", () =>
 
   it("le worker attend la fin des modifications (debounce), puis recalcule", async () => {
     const { client } = mockClient();
+    // D'autres candidats (autres tests, données de démo) peuvent être en attente depuis
+    // longtemps : on ne regarde qu'Alice, dès le premier cycle.
+    await db.matchingState.updateMany({
+      where: { userId: { not: alice.id }, dirtyAt: { not: null } },
+      data: { dirtyAt: null },
+    });
     const state = await db.matchingState.findUniqueOrThrow({ where: { userId: alice.id } });
     const early = await runMatchingCycle(db, { config, client, now: () => state.dirtyAt! });
     expect(early.processed).toBe(0);
 
     const later = new Date(state.dirtyAt!.getTime() + 60_000);
-    // D'autres candidats (autres tests) peuvent être en attente : on ne regarde qu'Alice.
-    await db.matchingState.updateMany({
-      where: { userId: { not: alice.id }, dirtyAt: { not: null } },
-      data: { dirtyAt: null },
-    });
     const done = await runMatchingCycle(db, { config, client, now: () => later });
     expect(done.processed).toBe(1);
     const after = await db.matchingState.findUniqueOrThrow({ where: { userId: alice.id } });
