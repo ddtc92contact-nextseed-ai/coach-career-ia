@@ -785,6 +785,7 @@
       },
       "proofs": "I tuoi risultati corrispondenti",
       "proofsEmpty": "Nessuno dei tuoi risultati risponde direttamente a un requisito dell’offerta.",
+      "experiences": "Le tue esperienze vicine al ruolo",
       "skills": "Le tue competenze citate nell’offerta",
       "culture": "Le tue preferenze di cultura citate",
       "gaps": "Punti di attenzione",
@@ -1709,12 +1710,16 @@
       "declaredSkills": "{count, plural, one {È citata la tua competenza {skills}, ancora senza prova.} other {Sono citate le tue competenze {skills}, ancora senza prova.}}",
       "noSkills": "L’offerta cita esplicitamente poche delle tue competenze.",
       "proofs": "{count, plural, one {Uno dei tuoi risultati risponde direttamente a un requisito.} other {# dei tuoi risultati rispondono direttamente a dei requisiti.}}",
+      "experiences": "{count, plural, one {Una delle tue esperienze è vicina al ruolo.} other {# delle tue esperienze sono vicine al ruolo.}}",
+      "lowRelevance": "Il legame con il tuo percorso resta limitato.",
       "seniorityAbove": "Il ruolo sembra più senior della tua posizione attuale.",
       "salaryUnknown": "Lo stipendio non è indicato.",
       "followed": "Il punteggio include un bonus di {bonus} punti perché segue questa azienda."
     },
     "match": "Il tuo risultato «{achievement}» risponde al requisito «{requirement}».",
     "matchSemantic": "Il tuo risultato «{achievement}» è vicino alle mansioni del ruolo.",
+    "experience": "La tua esperienza «{experience}» corrisponde a «{requirement}».",
+    "experienceSemantic": "La tua esperienza «{experience}» è vicina alle mansioni del ruolo.",
     "proven": "Dimostrato",
     "declared": "Dichiarato",
     "gaps": {
@@ -1722,7 +1727,8 @@
       "seniorityBelow": "Il ruolo sembra meno senior del tuo percorso.",
       "salaryBelowTarget": "La retribuzione indicata è inferiore al tuo pacchetto obiettivo.",
       "unprovenSkill": "«{value}» è richiesta ma non ancora dimostrata: aggiungi una prova a un risultato che la utilizza.",
-      "fewSkills": "L’offerta non cita esplicitamente nessuna delle tue competenze."
+      "fewSkills": "L’offerta non cita esplicitamente nessuna delle tue competenze.",
+      "lowRelevance": "L’offerta ha poco a che fare con il tuo percorso: retribuzione, seniority e cultura contano solo in parte nel suo punteggio."
     },
     "unknowns": {
       "salaryNotStated": "Stipendio non indicato.",
@@ -1737,10 +1743,11 @@
     },
     "remoteWithTravelPlace": "Interamente da remoto, ma l’offerta menziona trasferte ({place}): da verificare.",
     "components": {
-      "skills": "Competenze e prove",
+      "skills": "Pertinenza: competenze, risultati, esperienze",
       "seniority": "Seniority",
       "salary": "Retribuzione",
-      "culture": "Cultura aziendale"
+      "culture": "Cultura aziendale",
+      "notStated": "Non indicato"
     },
     "followedBonus": {
       "label": "Azienda seguita",

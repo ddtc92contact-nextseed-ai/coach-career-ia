@@ -785,6 +785,7 @@
       },
       "proofs": "Your matching achievements",
       "proofsEmpty": "None of your achievements directly meets a requirement of the offer.",
+      "experiences": "Your experience close to the role",
       "skills": "Your skills mentioned in the offer",
       "culture": "Your culture preferences mentioned",
       "gaps": "Points to consider",
@@ -1709,12 +1710,16 @@
       "declaredSkills": "{count, plural, one {Your skill {skills} is mentioned, with no proof yet.} other {Your skills {skills} are mentioned, with no proof yet.}}",
       "noSkills": "Few of your skills are explicitly mentioned in the offer.",
       "proofs": "{count, plural, one {One of your achievements directly meets a requirement.} other {# of your achievements directly meet requirements.}}",
+      "experiences": "{count, plural, one {One of your experiences is close to the role.} other {# of your experiences are close to the role.}}",
+      "lowRelevance": "The link with your background remains limited.",
       "seniorityAbove": "The role seems more senior than your current position.",
       "salaryUnknown": "The salary is not stated.",
       "followed": "The score includes a {bonus}-point bonus because you follow this company."
     },
     "match": "Your achievement “{achievement}” meets the requirement “{requirement}”.",
     "matchSemantic": "Your achievement “{achievement}” is close to the duties of the role.",
+    "experience": "Your experience “{experience}” matches “{requirement}”.",
+    "experienceSemantic": "Your experience “{experience}” is close to the duties of the role.",
     "proven": "Proven",
     "declared": "Declared",
     "gaps": {
@@ -1722,7 +1727,8 @@
       "seniorityBelow": "The role seems less senior than your background.",
       "salaryBelowTarget": "The stated pay is below your target package.",
       "unprovenSkill": "“{value}” is required but not proven yet: add a proof to an achievement that uses it.",
-      "fewSkills": "The offer does not explicitly mention any of your skills."
+      "fewSkills": "The offer does not explicitly mention any of your skills.",
+      "lowRelevance": "The offer has little to do with your background: pay, seniority and culture only partly count in its score."
     },
     "unknowns": {
       "salaryNotStated": "Salary not stated.",
@@ -1737,10 +1743,11 @@
     },
     "remoteWithTravelPlace": "Fully remote, but the offer mentions travel ({place}): to be checked.",
     "components": {
-      "skills": "Skills and proofs",
+      "skills": "Relevance: skills, achievements, experience",
       "seniority": "Seniority",
       "salary": "Pay",
-      "culture": "Company culture"
+      "culture": "Company culture",
+      "notStated": "Not stated"
     },
     "followedBonus": {
       "label": "Followed company",

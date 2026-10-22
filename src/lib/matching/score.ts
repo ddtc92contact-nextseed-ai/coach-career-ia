@@ -9,7 +9,7 @@ import {
   SENIORITY_RANK,
   travelDestination,
 } from "./signals";
-import { normalizeText, sentences, termPattern, truncate } from "./text";
+import { normalizeText, sentences, significantTerms, termPattern, truncate } from "./text";
 import type {
   CandidateProfile,
   CandidateRails,
@@ -20,35 +20,126 @@ import type {
 } from "./types";
 
 /**
- * Score de 0 à 100 d'une offre qui respecte les garde-fous, en quatre
- * composantes pondérées :
- * - compétences et preuves (50) : compétences du candidat citées par l'offre
- *   et proximité sémantique (embeddings) de ses réalisations ; ce qui est
- *   PROUVÉ pèse plus que ce qui est seulement déclaré ;
- * - séniorité (15) : écart entre le niveau attendu et celui du candidat ;
- * - salaire (20) : haut de fourchette annualisé face au package visé ;
- * - culture (15) : préférences du candidat mentionnées par l'offre.
- * Une information absente donne une composante neutre (0,5) et un « inconnu ».
+ * Score de 0 à 100 d'une offre qui respecte les garde-fous (issue #72 : la
+ * pertinence d'abord).
+ *
+ * 1. PERTINENCE (`skills`, 60) : rapport entre l'offre et le parcours,
+ *    combinaison « l'un ou l'autre » (1 − (1 − L)(1 − S)) de deux signaux :
+ *    - lexical (L) : termes significatifs des compétences (une compétence
+ *      prouvée pèse plus qu'une déclarée) et des intitulés d'expérience cités
+ *      par l'offre, appariement partiel pondéré (le métier compte plus que le
+ *      rôle générique, voir `significantTerms`) ;
+ *    - sémantique (S) : similarité des embeddings des réalisations et des
+ *      expériences, CALIBRÉE par candidat (`calibratedRange`) : la médiane
+ *      de ses similarités vaut 0, son top 1 % vaut 1. Une réalisation pèse
+ *      plus qu'une simple expérience.
+ * 2. CONTEXTE (séniorité 15, salaire 15, culture 10) : il ne compte en
+ *    entier que pour une offre pertinente. Son poids est multiplié par
+ *    `min(1, pertinence / RELEVANCE_FULL)` : une offre hors sujet ne peut pas
+ *    dépasser une offre pertinente grâce à un salaire annoncé ou une
+ *    séniorité lisible (la prod du 22/10 : 200 offres hors sujet devant les
+ *    offres du métier). Choix plutôt qu'un seuil de pertinence : le score
+ *    reste continu, et l'écart s'explique (« lowRelevance »).
+ *
+ * Une information absente donne un « inconnu » ; un salaire non annoncé est
+ * neutre (aussi bon qu'un salaire au niveau du package visé) : le plancher,
+ * filtre dur, n'est pas contredit.
  */
 
-export const WEIGHTS = { skills: 50, seniority: 15, salary: 20, culture: 15 } as const;
+export const WEIGHTS = { skills: 60, seniority: 15, salary: 15, culture: 10 } as const;
 export type Components = Record<keyof typeof WEIGHTS, number>;
+const CONTEXT_KEYS = ["seniority", "salary", "culture"] as const;
 
-/** Poids d'une réalisation ou compétence seulement déclarée, face à une prouvée (1). */
+/** Pertinence à partir de laquelle le contexte (salaire, séniorité, culture) compte en entier. */
+export const RELEVANCE_FULL = 0.5;
+/** Poids lexical d'une compétence seulement déclarée, face à une prouvée (1). */
 export const DECLARED_WEIGHT = 0.5;
-/** Nombre de compétences prouvées citées par l'offre pour un score « compétences » plein. */
+/** Poids lexical d'un intitulé d'expérience, face à une compétence prouvée (1). */
+export const EXPERIENCE_WEIGHT = 0.4;
+/**
+ * Poids sémantique d'un élément de la mémoire : une réalisation garde plus
+ * de poids qu'une simple expérience, et une preuve plus qu'une déclaration.
+ */
+export const SEMANTIC_WEIGHTS = { proven: 1, declared: 0.85, experience: 0.7 } as const;
+/** Somme des poids lexicaux pour une composante lexicale pleine. */
 const LEXICAL_SATURATION = 3;
-/** Proximité normalisée à partir de laquelle une réalisation « correspond » au poste. */
+/** Proximité normalisée à partir de laquelle un élément « correspond » au poste. */
 const SEMANTIC_MATCH_THRESHOLD = 0.6;
 const MAX_PROOF_MATCHES = 5;
+const MAX_EXPERIENCE_MATCHES = 3;
+/**
+ * Poids d'un terme des responsabilités d'une expérience trouvé dans
+ * l'intitulé de l'offre (face à un terme métier de l'intitulé de l'expérience).
+ */
+const RESPONSIBILITY_TERM_WEIGHT = 0.5;
+/** Termes de responsabilités d'une expérience retenus au plus (cherchés dans l'intitulé de l'offre). */
+const MAX_RESPONSIBILITY_TERMS = 40;
 
 /**
- * Bornes de similarité cosinus des embeddings : en dessous de `floor`, rien
- * en commun ; au-dessus de `ceil`, correspondance maximale. Dépendent du
- * modèle (réglables par l'environnement, voir `config.ts`).
+ * Échelle de similarité cosinus des embeddings : en dessous de `floor`, rien
+ * en commun ; au-dessus de `ceil`, correspondance maximale. `curve`
+ * (défaut `SEMANTIC_CURVE`) > 1 creuse le milieu de l'échelle.
  */
-export type SemanticRange = { floor: number; ceil: number };
-export const DEFAULT_SEMANTIC_RANGE: SemanticRange = { floor: 0.55, ceil: 0.85 };
+export type SemanticRange = { floor: number; ceil: number; curve?: number };
+/**
+ * Bornes fixes de repli, réglées pour mistral-embed (médiane ≈ 0,68, haut
+ * de distribution ≈ 0,80 sur les offres réelles ; réglables par
+ * l'environnement, voir `config.ts`) : utilisées quand la distribution du
+ * candidat est trop petite pour être calibrée.
+ */
+export const DEFAULT_SEMANTIC_RANGE: SemanticRange = { floor: 0.68, ceil: 0.8 };
+
+/**
+ * Échelle par élément de la mémoire (identifiant de réalisation ou
+ * d'expérience), avec un repli pour les éléments non calibrés.
+ */
+export type SemanticScale = { fallback: SemanticRange; items?: ReadonlyMap<string, SemanticRange> };
+
+/** Distribution des similarités d'un élément de la mémoire sur les offres du candidat. */
+export type SimilarityStats = { count: number; median: number; p99: number };
+
+/** Nombre minimal d'offres pour calibrer (en deçà : bornes fixes). */
+export const DEFAULT_CALIBRATION_MIN_SAMPLES = 200;
+/**
+ * Courbe de l'échelle (bornes calibrées comme fixes) : seul le haut de la
+ * distribution compte. Calibrée : médiane 0, p90 ≈ 0,3, p97 ≈ 0,65, top 1 % = 1.
+ */
+export const SEMANTIC_CURVE = 2;
+/** Écart minimal médiane → p99 (distribution trop resserrée : rien ne se démarque). */
+const MIN_CALIBRATION_SPREAD = 0.02;
+
+/**
+ * Échelle calibrée sur la distribution d'un élément de la mémoire : la
+ * médiane (offre quelconque) vaut 0, le 99e centile (top 1 %) vaut 1. Les
+ * embeddings classent bien, mais leurs cosinus sont resserrés (mistral-embed :
+ * 0,58 à 0,80) et leur niveau dépend du texte du candidat : des bornes fixes
+ * écrasaient l'écart entre « audiovisuel » et « agent immobilier ».
+ */
+export function calibratedRange(
+  stats: SimilarityStats | undefined,
+  fallback: SemanticRange,
+  minSamples = DEFAULT_CALIBRATION_MIN_SAMPLES,
+): SemanticRange {
+  if (!stats || stats.count < Math.max(1, minSamples)) return fallback;
+  if (!Number.isFinite(stats.median) || !Number.isFinite(stats.p99)) return fallback;
+  return {
+    floor: stats.median,
+    ceil: Math.max(stats.p99, stats.median + MIN_CALIBRATION_SPREAD),
+  };
+}
+
+/** Médiane et 99e centile (interpolés, comme `percentile_cont`) d'une liste de similarités. */
+export function similarityStats(values: readonly number[]): SimilarityStats {
+  const sorted = [...values].sort((a, b) => a - b);
+  const at = (p: number) => {
+    if (sorted.length === 0) return Number.NaN;
+    const x = p * (sorted.length - 1);
+    const i = Math.floor(x);
+    const j = Math.min(i + 1, sorted.length - 1);
+    return sorted[i]! + (sorted[j]! - sorted[i]!) * (x - i);
+  };
+  return { count: sorted.length, median: at(0.5), p99: at(0.99) };
+}
 
 export type ProofMatch = {
   achievementId: string;
@@ -58,12 +149,20 @@ export type ProofMatch = {
   proven: boolean;
 };
 
+export type ExperienceMatch = {
+  experienceId: string;
+  experience: string;
+  /** Phrase de l'offre qui cite l'expérience ; `null` = proximité avec les missions du poste. */
+  requirement: string | null;
+};
+
 export type Gap = { code: GapCode; value?: string };
 
 export type Evaluation = {
   score: number;
   components: Components;
   matches: ProofMatch[];
+  experiences: ExperienceMatch[];
   skills: { name: string; proven: boolean }[];
   culture: CulturePreferenceCode[];
   gaps: Gap[];
@@ -94,7 +193,101 @@ export const FOLLOWED_COMPANY_BOOST = 10;
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 
 function normalizeSimilarity(similarity: number, range: SemanticRange): number {
-  return clamp01((similarity - range.floor) / (range.ceil - range.floor));
+  const linear = clamp01((similarity - range.floor) / (range.ceil - range.floor));
+  return linear ** (range.curve ?? SEMANTIC_CURVE);
+}
+
+function rangeFor(scale: SemanticRange | SemanticScale, itemId: string): SemanticRange {
+  return "fallback" in scale ? (scale.items?.get(itemId) ?? scale.fallback) : scale;
+}
+
+// --- Lexique du candidat (préparé une fois par profil) ---
+
+type Term = { term: string; weight: number; generic: boolean; pattern: RegExp };
+/**
+ * Source lexicale : une compétence ou une expérience. `phrase` (l'expression
+ * entière) vaut un appariement complet ; sinon la part pondérée de `terms`
+ * trouvés dans l'offre, plus les `titleTerms` (responsabilités) trouvés dans
+ * son intitulé. Au moins un terme métier doit être trouvé.
+ */
+type LexicalSource = { phrase: RegExp | null; terms: Term[]; titleTerms: Term[]; total: number };
+type Lexicon = {
+  skills: { name: string; proven: boolean; source: LexicalSource }[];
+  experiences: { id: string; title: string; source: LexicalSource }[];
+};
+
+const toTerms = (terms: { term: string; weight: number }[], weight = 1): Term[] => {
+  // Que des termes génériques (« Management ») : ils disent alors le métier.
+  const allGeneric = terms.every((t) => t.weight < 1);
+  return terms.map((t) => {
+    const generic = !allGeneric && t.weight < 1;
+    return {
+      term: t.term,
+      weight: generic ? t.weight : weight,
+      generic,
+      pattern: termPattern(t.term),
+    };
+  });
+};
+
+function lexicalSource(label: string, responsibilities = ""): LexicalSource | null {
+  const key = normalizeText(label);
+  const parsed = toTerms(significantTerms(label));
+  const own = new Set(parsed.map((t) => t.term));
+  const titleTerms = toTerms(
+    significantTerms(responsibilities, { common: false })
+      .filter((t) => !own.has(t.term))
+      .slice(0, MAX_RESPONSIBILITY_TERMS),
+    RESPONSIBILITY_TERM_WEIGHT,
+  );
+  if (key.length < 1 && titleTerms.length === 0) return null;
+  // Un seul terme : l'expression entière suffit (« Python », « c++ »).
+  const terms = parsed.length >= 2 ? parsed : [];
+  return {
+    phrase: key.length > 0 ? termPattern(key) : null,
+    terms,
+    titleTerms,
+    total: terms.length > 0 ? terms.reduce((n, t) => n + t.weight, 0) : 1,
+  };
+}
+
+const lexicons = new WeakMap<CandidateProfile, Lexicon>();
+function lexiconOf(candidate: CandidateProfile): Lexicon {
+  let lexicon = lexicons.get(candidate);
+  if (!lexicon) {
+    lexicon = {
+      skills: candidate.skills.flatMap((skill) => {
+        const source = lexicalSource(skill.name);
+        return source ? [{ ...skill, source }] : [];
+      }),
+      experiences: (candidate.experiences ?? []).flatMap((e) => {
+        const source = lexicalSource(e.title, e.responsibilities);
+        return source ? [{ id: e.id, title: e.title, source }] : [];
+      }),
+    };
+    lexicons.set(candidate, lexicon);
+  }
+  return lexicon;
+}
+
+/**
+ * Part (0 à 1) d'une source citée par l'offre, et l'expression ou le terme
+ * le plus parlant trouvé (pour citer l'exigence) ; `null` sans terme métier.
+ */
+function matchSource(
+  source: LexicalSource,
+  offerText: string,
+  titleText: string,
+): { share: number; pattern: RegExp } | null {
+  if (source.phrase?.test(offerText)) return { share: 1, pattern: source.phrase };
+  const found = source.terms.filter((t) => t.pattern.test(offerText));
+  const inTitle = source.titleTerms.filter((t) => t.pattern.test(titleText));
+  const best = [...found, ...inTitle]
+    .filter((t) => !t.generic)
+    .sort((a, b) => b.weight - a.weight || b.term.length - a.term.length)[0];
+  if (!best) return null;
+  const weight = [...found, ...inTitle].reduce((n, t) => n + t.weight, 0);
+  return { share: clamp01(weight / source.total), pattern: best.pattern };
 }
 
 /** Phrase de l'offre qui cite le terme (exigence), sinon l'intitulé. */
@@ -129,15 +322,17 @@ function seniorityComponent(candidateRank: number | null, offerRank: number | nu
 /**
  * Évalue une offre : garde-fous d'abord (une violation exclut l'offre, sans
  * score), puis score et éléments d'explication.
- * `similarities` : similarité cosinus offre ↔ réalisation (par identifiant de
- * réalisation) ; absente si les embeddings sont indisponibles.
+ * `similarities` : similarité cosinus offre ↔ élément de la mémoire (par
+ * identifiant de réalisation ou d'expérience) ; absente si les embeddings
+ * sont indisponibles. `scale` : échelle de ces similarités (fixe, ou
+ * calibrée par élément).
  */
 export function evaluateOffer(
   candidate: CandidateProfile,
   rails: CandidateRails,
   offer: MatchOffer,
   similarities: ReadonlyMap<string, number> | null,
-  range: SemanticRange = DEFAULT_SEMANTIC_RANGE,
+  scale: SemanticRange | SemanticScale = DEFAULT_SEMANTIC_RANGE,
 ): OfferResult {
   const check = checkGuardRails(offer, rails);
   if (!check.pass) return { offerId: offer.id, pass: false, violations: check.violations };
@@ -145,6 +340,8 @@ export function evaluateOffer(
   const unknowns = [...check.unknowns];
   const gaps: Gap[] = [];
   const offerText = normalizeText(`${offer.title}\n${offer.description}`);
+  const titleText = normalizeText(offer.title);
+  const lexicon = lexiconOf(candidate);
 
   // --- Télétravail complet, mais déplacements mentionnés (signal, jamais un filtre) ---
   let travelPlace: string | null = null;
@@ -154,16 +351,24 @@ export function evaluateOffer(
     travelPlace = travelDestination(fullText);
   }
 
-  // --- Compétences citées par l'offre (preuve > déclaration) ---
-  const matchedSkills: { name: string; proven: boolean; pattern: RegExp }[] = [];
-  for (const skill of candidate.skills) {
-    const key = normalizeText(skill.name);
-    if (key.length < 1) continue;
-    const pattern = termPattern(key);
-    if (pattern.test(offerText)) matchedSkills.push({ ...skill, pattern });
+  // --- Lexical : compétences (preuve > déclaration) et intitulés d'expérience ---
+  const matchedSkills: { name: string; proven: boolean; share: number; pattern: RegExp }[] = [];
+  for (const skill of lexicon.skills) {
+    const hit = matchSource(skill.source, offerText, titleText);
+    if (hit) matchedSkills.push({ name: skill.name, proven: skill.proven, ...hit });
   }
-  matchedSkills.sort((a, b) => Number(b.proven) - Number(a.proven) || a.name.localeCompare(b.name));
-  const lexicalWeight = matchedSkills.reduce((n, s) => n + (s.proven ? 1 : DECLARED_WEIGHT), 0);
+  matchedSkills.sort(
+    (a, b) =>
+      Number(b.proven) - Number(a.proven) || b.share - a.share || a.name.localeCompare(b.name),
+  );
+  const experienceHits = new Map<string, { share: number; pattern: RegExp }>();
+  for (const experience of lexicon.experiences) {
+    const hit = matchSource(experience.source, offerText, titleText);
+    if (hit) experienceHits.set(experience.id, hit);
+  }
+  const lexicalWeight =
+    matchedSkills.reduce((n, s) => n + s.share * (s.proven ? 1 : DECLARED_WEIGHT), 0) +
+    [...experienceHits.values()].reduce((n, h) => n + h.share * EXPERIENCE_WEIGHT, 0);
   const lexical = clamp01(lexicalWeight / LEXICAL_SATURATION);
 
   // --- Réalisations : exigence citée (via leurs compétences) ou proximité sémantique ---
@@ -171,16 +376,19 @@ export function evaluateOffer(
   const semanticValues: number[] = [];
   for (const achievement of candidate.achievements) {
     const proven = isProven(achievement.evidenceLevel);
-    const evidence = proven ? 1 : DECLARED_WEIGHT;
     const sim = similarities?.get(achievement.id);
-    const semantic = sim === undefined ? 0 : normalizeSimilarity(sim, range);
-    if (similarities) semanticValues.push(semantic * evidence);
+    const semantic =
+      sim === undefined ? 0 : normalizeSimilarity(sim, rangeFor(scale, achievement.id));
+    if (similarities) {
+      semanticValues.push(semantic * SEMANTIC_WEIGHTS[proven ? "proven" : "declared"]);
+    }
 
     const skill = matchedSkills.find((s) =>
       achievement.skills.some((name) => normalizeText(name) === normalizeText(s.name)),
     );
     const requirement = skill ? requirementFor(offer, skill.pattern) : null;
     if (requirement || semantic >= SEMANTIC_MATCH_THRESHOLD) {
+      const evidence = proven ? 1 : DECLARED_WEIGHT;
       matches.push({
         achievementId: achievement.id,
         achievement: truncate(achievement.title, 120),
@@ -192,15 +400,36 @@ export function evaluateOffer(
   }
   matches.sort((a, b) => b.strength - a.strength);
 
+  // --- Expériences : intitulé cité par l'offre ou proximité sémantique ---
+  const experiences: (ExperienceMatch & { strength: number })[] = [];
+  for (const experience of candidate.experiences ?? []) {
+    const sim = similarities?.get(experience.id);
+    const semantic =
+      sim === undefined ? 0 : normalizeSimilarity(sim, rangeFor(scale, experience.id));
+    if (similarities) semanticValues.push(semantic * SEMANTIC_WEIGHTS.experience);
+    const hit = experienceHits.get(experience.id);
+    const requirement = hit ? requirementFor(offer, hit.pattern) : null;
+    if (requirement || semantic >= SEMANTIC_MATCH_THRESHOLD) {
+      experiences.push({
+        experienceId: experience.id,
+        experience: truncate(experience.title, 120),
+        requirement,
+        strength: (hit?.share ?? 0) + semantic,
+      });
+    }
+  }
+  experiences.sort((a, b) => b.strength - a.strength);
+
   let semantic: number | null = null;
   if (similarities && semanticValues.length > 0) {
     const sorted = [...semanticValues].sort((a, b) => b - a);
     const top = sorted.slice(0, 3);
     semantic = 0.7 * sorted[0]! + 0.3 * (top.reduce((n, v) => n + v, 0) / top.length);
   }
-  const skillsValue = semantic === null ? lexical : 0.6 * lexical + 0.4 * semantic;
+  // L'un OU l'autre signal suffit ; les deux ensemble renforcent la pertinence.
+  const relevance = semantic === null ? lexical : 1 - (1 - lexical) * (1 - semantic);
   if (matchedSkills.length === 0) gaps.push({ code: "fewSkills" });
-  for (const skill of matchedSkills.filter((s) => !s.proven).slice(0, 2)) {
+  for (const skill of matchedSkills.filter((s) => !s.proven && s.share >= 1).slice(0, 2)) {
     gaps.push({ code: "unprovenSkill", value: skill.name });
   }
 
@@ -212,14 +441,15 @@ export function evaluateOffer(
   if (seniority.gap) gaps.push({ code: seniority.gap });
 
   // --- Salaire face au package visé ---
+  // Non annoncé : neutre, aussi bon qu'un salaire au niveau du package (le
+  // plancher, filtre dur, n'est pas contredit). Seul un salaire annoncé SOUS
+  // le package visé baisse la composante.
   const annual = annualSalary(offer);
   const target = rails.targetTotalPackage ?? rails.minFixedSalary;
-  let salary = 0.5;
-  if (annual && target) {
-    salary = annual.max >= target ? 1 : clamp01((annual.max / target - 0.8) / 0.2);
-    if (annual.max < target) gaps.push({ code: "salaryBelowTarget" });
-  } else if (annual) {
-    salary = 0.6;
+  let salary = 1;
+  if (annual && target && annual.max < target) {
+    salary = clamp01((annual.max / target - 0.8) / 0.2);
+    gaps.push({ code: "salaryBelowTarget" });
   }
 
   // --- Culture ---
@@ -238,17 +468,23 @@ export function evaluateOffer(
   }
 
   const components: Components = {
-    skills: skillsValue,
+    skills: relevance,
     seniority: seniority.value,
     salary,
     culture,
   };
+  // Pertinence d'abord : le contexte ne compte en entier que pour une offre pertinente.
+  const gate = clamp01(relevance / RELEVANCE_FULL);
+  if (gate < 1) gaps.push({ code: "lowRelevance" });
   const total = Object.values(WEIGHTS).reduce((n, w) => n + w, 0);
-  const weighted = (Object.keys(WEIGHTS) as (keyof Components)[]).reduce(
-    (n, key) => n + WEIGHTS[key] * components[key],
-    0,
-  );
+  const weighted =
+    WEIGHTS.skills * components.skills +
+    gate * CONTEXT_KEYS.reduce((n, key) => n + WEIGHTS[key] * components[key], 0);
 
+  const withoutStrength = <T extends { strength: number }>({ strength, ...rest }: T) => {
+    void strength;
+    return rest;
+  };
   return {
     offerId: offer.id,
     pass: true,
@@ -259,10 +495,8 @@ export function evaluateOffer(
       salary: Math.round(components.salary * 100),
       culture: Math.round(components.culture * 100),
     },
-    matches: matches.slice(0, MAX_PROOF_MATCHES).map(({ strength, ...m }) => {
-      void strength;
-      return m;
-    }),
+    matches: matches.slice(0, MAX_PROOF_MATCHES).map(withoutStrength),
+    experiences: experiences.slice(0, MAX_EXPERIENCE_MATCHES).map(withoutStrength),
     skills: matchedSkills.slice(0, 8).map(({ name, proven }) => ({ name, proven })),
     culture: matchedCulture,
     gaps,
@@ -288,7 +522,7 @@ export function rankOffers(
   rails: CandidateRails,
   offers: MatchOffer[],
   similarities: ReadonlyMap<string, ReadonlyMap<string, number>> | null,
-  range?: SemanticRange,
+  scale?: SemanticRange | SemanticScale,
   followed: ReadonlySet<string> = new Set(),
 ) {
   const matches: Extract<OfferResult, { pass: true }>[] = [];
@@ -299,7 +533,7 @@ export function rankOffers(
       rails,
       offer,
       similarities ? (similarities.get(offer.id) ?? new Map()) : null,
-      range,
+      scale,
     );
     if (!result.pass) {
       excluded.push(result);

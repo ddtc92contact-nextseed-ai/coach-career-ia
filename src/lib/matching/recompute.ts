@@ -5,17 +5,32 @@ import { isAiError } from "@/lib/ai/errors";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
 import { loadCandidate, matchOfferSelect, toMatchOffer } from "./candidate";
 import type { MatchingConfig } from "./config";
-import { ensureMemoryEmbeddings, ensureOfferEmbeddings, memorySimilarities } from "./embeddings";
+import {
+  ensureMemoryEmbeddings,
+  ensureOfferEmbeddings,
+  experienceEmbeddingText,
+  memorySimilarities,
+  memorySimilarityStats,
+} from "./embeddings";
 import { buildExplanation, explanationFacts } from "./explanation";
 import { checkGuardRails } from "./filters";
 import { prefilteredOfferIds } from "./prefilter";
-import { byRank, rankOffers, type OfferResult } from "./score";
+import {
+  byRank,
+  calibratedRange,
+  rankOffers,
+  type OfferResult,
+  type SemanticRange,
+  type SemanticScale,
+} from "./score";
 
 /**
  * Recalcul des correspondances d'un candidat (exécuté par le worker) :
  * 1. garde-fous sur toutes les offres ouvertes et canoniques : pré-filtre SQL
  *    (sans lire les descriptions), puis garde-fous complets par lots ;
- * 2. embeddings (offres qualifiées et réalisations), en cache pgvector ;
+ * 2. embeddings (offres qualifiées, réalisations et expériences), en cache
+ *    pgvector ; similarité calibrée sur la distribution du candidat, calculée
+ *    en SQL avant le parcours (issue #72) ;
  * 3. score, puis explication — régénérée seulement si ses éléments changent ;
  * 4. suppression des correspondances devenues hors garde-fous.
  * Sans IA disponible, le score repose sur les compétences citées et
@@ -34,7 +49,8 @@ export type RecomputeDeps = {
   config: Pick<
     MatchingConfig,
     "minScore" | "maxPerUser" | "llmExplanations" | "llmMinScore" | "semanticRange"
-  >;
+  > &
+    Partial<Pick<MatchingConfig, "calibrationMinSamples">>;
   /** `null` : pas d'IA (score lexical, explications déterministes). */
   client: AiClient | null;
   /** Appels LLM restants pour ce passage, partagé entre candidats. */
@@ -56,6 +72,8 @@ export type RecomputeSummary =
       removed: number;
       llm: number;
       semantic: boolean;
+      /** Éléments de la mémoire dont la similarité est calibrée (les autres : bornes fixes). */
+      calibrated: number;
     };
 
 type Ranked = { match: Extract<OfferResult, { pass: true }>; title: string };
@@ -66,6 +84,13 @@ class SemanticUnavailable extends Error {
     super("embeddings indisponibles");
   }
 }
+
+/**
+ * Version des éléments d'explication : changée quand le calcul du score
+ * change, pour que toutes les correspondances soient réécrites au recalcul
+ * suivant (v2 : pertinence d'abord, issue #72).
+ */
+const EXPLANATION_INPUT_VERSION = 2;
 
 const hash = (value: unknown) =>
   createHash("sha256").update(JSON.stringify(value)).digest("base64url");
@@ -89,6 +114,11 @@ export async function recomputeUserMatches(
   }
   const { profile, rails, locale } = status.candidate;
   const batchSize = deps.batchSize ?? OFFER_BATCH_SIZE;
+  // Éléments embarqués de la mémoire : réalisations, puis expériences (une entrée chacune).
+  const memory = [
+    ...profile.achievements.map((a) => ({ id: a.id, text: a.text })),
+    ...(profile.experiences ?? []).map((e) => ({ id: e.id, text: experienceEmbeddingText(e) })),
+  ];
 
   const [total, followedRows, existing, ids] = await Promise.all([
     prisma.jobOffer.count({ where: { status: "OPEN", duplicateOfId: null } }),
@@ -126,7 +156,37 @@ export async function recomputeUserMatches(
     let kept: Ranked[] = [];
     let passingCount = 0;
     let excludedCount = 0;
-    let hashes: string[] | null = null;
+    let hashes: string[] = [];
+    let scale: SemanticScale = { fallback: deps.config.semanticRange };
+    let calibrated = 0;
+    if (semantic && deps.client) {
+      const client = deps.client;
+      // Avant le parcours : embeddings de la mémoire, puis distribution de
+      // chaque élément sur les offres du candidat (en SQL, quelques nombres).
+      const stats = await (async () => {
+        hashes = await ensureMemoryEmbeddings(
+          prisma,
+          client,
+          userId,
+          memory.map((m) => m.text),
+        );
+        return memorySimilarityStats(prisma, userId, client.provider.embeddingModel, ids);
+      })().catch((error: unknown) => {
+        throw new SemanticUnavailable(error);
+      });
+      const fallback = deps.config.semanticRange;
+      const items = new Map<string, SemanticRange>();
+      memory.forEach((m, k) => {
+        const range = calibratedRange(
+          stats.get(hashes[k]!),
+          fallback,
+          deps.config.calibrationMinSamples,
+        );
+        if (range !== fallback) calibrated++;
+        items.set(m.id, range);
+      });
+      scale = { fallback, items };
+    }
     for (let i = 0; i < ids.length; i += batchSize) {
       const rows = await prisma.jobOffer.findMany({
         where: { id: { in: ids.slice(i, i + batchSize) } },
@@ -141,12 +201,6 @@ export async function recomputeUserMatches(
       if (semantic && deps.client) {
         const client = deps.client;
         const byHash = await (async () => {
-          hashes ??= await ensureMemoryEmbeddings(
-            prisma,
-            client,
-            userId,
-            profile.achievements.map((a) => a.text),
-          );
           await ensureOfferEmbeddings(prisma, client, passing, { logger: log, now });
           return memorySimilarities(
             prisma,
@@ -160,12 +214,12 @@ export async function recomputeUserMatches(
         similarities = new Map(
           passing.map((offer) => {
             const sims = byHash.get(offer.id);
-            const byAchievement = new Map<string, number>();
-            profile.achievements.forEach((a, k) => {
-              const sim = sims?.get(hashes![k]!);
-              if (sim !== undefined) byAchievement.set(a.id, sim);
+            const byItem = new Map<string, number>();
+            memory.forEach((m, k) => {
+              const sim = sims?.get(hashes[k]!);
+              if (sim !== undefined) byItem.set(m.id, sim);
             });
-            return [offer.id, byAchievement];
+            return [offer.id, byItem];
           }),
         );
       }
@@ -176,7 +230,7 @@ export async function recomputeUserMatches(
         rails,
         passing,
         similarities,
-        deps.config.semanticRange,
+        scale,
         followed,
       );
       excludedCount += excluded.length;
@@ -185,11 +239,17 @@ export async function recomputeUserMatches(
         ...matches.map((match) => ({ match, title: titles.get(match.offerId)! })),
       ]);
     }
-    return { kept, passingCount, excludedCount, semantic: semantic && passingCount > 0 };
+    return {
+      kept,
+      passingCount,
+      excludedCount,
+      semantic: semantic && passingCount > 0,
+      calibrated,
+    };
   };
 
   let result: Awaited<ReturnType<typeof scan>>;
-  const wantsSemantic = deps.client !== null && profile.achievements.length > 0;
+  const wantsSemantic = deps.client !== null && memory.length > 0;
   try {
     result = await scan(wantsSemantic);
   } catch (failure) {
@@ -209,7 +269,13 @@ export async function recomputeUserMatches(
   let llm = 0;
   for (const { match, title } of kept) {
     const facts = explanationFacts(match);
-    const inputHash = hash({ v: 1, locale, title, score: match.score, facts });
+    const inputHash = hash({
+      v: EXPLANATION_INPUT_VERSION,
+      locale,
+      title,
+      score: match.score,
+      facts,
+    });
     if (existingByOffer.get(match.offerId)?.inputHash === inputHash) {
       unchanged++;
       continue;
@@ -255,5 +321,6 @@ export async function recomputeUserMatches(
     removed,
     llm,
     semantic: result.semantic,
+    calibrated: result.calibrated,
   };
 }

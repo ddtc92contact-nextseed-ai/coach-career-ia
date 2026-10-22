@@ -80,9 +80,12 @@ export async function loadProfile(prisma: PrismaClient, userId: string): Promise
   const [experiences, achievements, skills] = await Promise.all([
     prisma.experience.findMany({
       where: { userId },
-      orderBy: [{ endMonth: { sort: "desc", nulls: "first" } }, { startMonth: "desc" }],
-      select: { seniority: true },
-      take: 1,
+      orderBy: [
+        { endMonth: { sort: "desc", nulls: "first" } },
+        { startMonth: "desc" },
+        { id: "asc" },
+      ],
+      select: { id: true, roleTitle: true, responsibilities: true, seniority: true },
     }),
     prisma.achievement.findMany({
       where: { userId },
@@ -122,6 +125,9 @@ export async function loadProfile(prisma: PrismaClient, userId: string): Promise
         skills: skillNames,
       };
     }),
+    experiences: experiences
+      .filter((e) => e.roleTitle.trim() || e.responsibilities.trim())
+      .map((e) => ({ id: e.id, title: e.roleTitle, responsibilities: e.responsibilities })),
     // Prouvée dès qu'une réalisation prouvée l'utilise (cf. `summarizeSkill`).
     skills: skills.map((s) => ({
       name: s.name,
@@ -145,7 +151,9 @@ export async function loadCandidate(
     loadRails(prisma, userId),
     loadLocale(prisma, userId),
   ]);
-  if (profile.achievements.length === 0 && profile.skills.length === 0) {
+  const memory =
+    profile.achievements.length + profile.skills.length + (profile.experiences?.length ?? 0);
+  if (memory === 0) {
     return { eligible: false, reason: "noMemory" };
   }
   if (!rails) return { eligible: false, reason: "noGuardRails" };

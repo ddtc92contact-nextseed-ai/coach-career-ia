@@ -43,6 +43,19 @@ export const explanationSchema = z.object({
       proven: z.boolean(),
     }),
   ),
+  /**
+   * Expériences proches du poste (intitulé cité ou proximité sémantique) ;
+   * absent des explications stockées avant cette information (issue #72).
+   */
+  experiences: z
+    .array(
+      z.object({
+        experienceId: z.string(),
+        experience: z.string(),
+        requirement: z.string().nullable(),
+      }),
+    )
+    .optional(),
   skills: z.array(z.object({ name: z.string(), proven: z.boolean() })),
   culture: z.array(z.enum(CULTURE_PREFERENCES)),
   gaps: z.array(z.object({ code: z.enum(GAP_CODES), value: z.string().optional() })),
@@ -68,6 +81,7 @@ export function explanationFacts(
   return {
     components: evaluation.components,
     matches: evaluation.matches,
+    experiences: evaluation.experiences,
     skills: evaluation.skills,
     culture: evaluation.culture,
     gaps: evaluation.gaps,
@@ -99,6 +113,11 @@ export function factLines(facts: ExplanationFacts, locale: AppLocale) {
       m.requirement
         ? t("match", { achievement: m.achievement, requirement: m.requirement })
         : t("matchSemantic", { achievement: m.achievement }),
+    ),
+    experiences: (facts.experiences ?? []).map((e) =>
+      e.requirement
+        ? t("experience", { experience: e.experience, requirement: e.requirement })
+        : t("experienceSemantic", { experience: e.experience }),
     ),
     gaps: facts.gaps.map((g) => t(`gaps.${g.code}`, { value: g.value ?? "" })),
     unknowns: facts.unknowns.map((u) => unknownLine(facts, u, locale)),
@@ -136,6 +155,9 @@ export function ruleSummary(score: number, facts: ExplanationFacts, locale: AppL
   }
   const direct = facts.matches.filter((m) => m.requirement).length;
   if (direct > 0) parts.push(t("summary.proofs", { count: direct }));
+  const experiences = facts.experiences?.length ?? 0;
+  if (experiences > 0) parts.push(t("summary.experiences", { count: experiences }));
+  if (facts.gaps.some((g) => g.code === "lowRelevance")) parts.push(t("summary.lowRelevance"));
   if (facts.gaps.some((g) => g.code === "seniorityAbove")) parts.push(t("summary.seniorityAbove"));
   if (facts.unknowns.includes("salaryNotStated")) parts.push(t("summary.salaryUnknown"));
   if (facts.followedBonus) parts.push(t("summary.followed", { bonus: facts.followedBonus }));
@@ -163,6 +185,7 @@ export async function phraseSummary(
     score: input.score,
     matchedSkills: input.facts.skills.map((s) => ({ name: s.name, proven: s.proven })),
     matchedAchievements: lines.matches,
+    matchedExperiences: lines.experiences,
     gaps: lines.gaps,
     unknowns: lines.unknowns,
     ...(input.facts.followedBonus
@@ -182,7 +205,7 @@ export async function phraseSummary(
         role: "system",
         content: [
           "You are a private career agent. You explain to a candidate, in 2 or 3 short sentences (under 450 characters), why a job offer was selected for them.",
-          "Use ONLY the facts given as JSON: mention the strongest matched achievement or proven skill, then the main gap or missing information. Never invent facts, figures, company details or requirements. Address the candidate directly and politely.",
+          "Use ONLY the facts given as JSON: mention the strongest matched achievement, proven skill or matched experience, then the main gap or missing information. Never invent facts, figures, company details or requirements. Address the candidate directly and politely.",
           "If `followedCompanyBonus` is present, say in one short clause that the score includes this bonus because the candidate follows the company.",
           'Return {"summary": "..."}.',
           languageInstruction(input.locale),
@@ -224,6 +247,7 @@ export function parseExplanation(value: unknown): Explanation | null {
 const NO_FACTS: ExplanationFacts = {
   components: { skills: 0, seniority: 0, salary: 0, culture: 0 },
   matches: [],
+  experiences: [],
   skills: [],
   culture: [],
   gaps: [],

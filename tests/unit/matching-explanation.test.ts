@@ -97,6 +97,40 @@ describe("explication", () => {
     );
   });
 
+  it("expériences proches et pertinence faible expliquées dans les 6 langues (#72)", () => {
+    const withExperience = {
+      ...facts,
+      experiences: [
+        { experienceId: "e1", experience: "Technicien vidéo", requirement: "Support vidéo" },
+        { experienceId: "e2", experience: "Technicien régie", requirement: null },
+      ],
+      gaps: [...facts.gaps, { code: "lowRelevance" as const }],
+    };
+    for (const locale of LOCALES) {
+      const lines = factLines(withExperience, locale);
+      expect(lines.experiences, locale).toHaveLength(2);
+      expect(
+        lines.experiences.every((l) => l.includes("Technicien")),
+        locale,
+      ).toBe(true);
+      expect(
+        lines.gaps.every((l) => l.trim().length > 0),
+        locale,
+      ).toBe(true);
+    }
+    expect(factLines(withExperience, "fr").experiences).toEqual([
+      "Votre expérience « Technicien vidéo » correspond à « Support vidéo ».",
+      "Votre expérience « Technicien régie » est proche des missions du poste.",
+    ]);
+    const summary = ruleSummary(45, withExperience, "fr");
+    expect(summary).toContain("2 de vos expériences sont proches du poste.");
+    expect(summary).toContain("Le rapport avec votre parcours reste limité.");
+    // Explication stockée avant #72 (sans expériences) : toujours lisible.
+    const { experiences, ...legacy } = withExperience;
+    void experiences;
+    expect(factLines(legacy, "fr").experiences).toEqual([]);
+  });
+
   it("affiche le résumé stocké dans sa langue, sinon le résumé déterministe", async () => {
     const explanation = {
       ...(await buildExplanation(input, null)),

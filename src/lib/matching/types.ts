@@ -62,11 +62,23 @@ export type CandidateAchievement = {
   skills: string[];
 };
 
+/** Expérience (poste occupé) : intitulé et responsabilités, sans l'employeur. */
+export type CandidateExperience = {
+  id: string;
+  title: string;
+  responsibilities: string;
+};
+
 /** Mémoire de carrière utile au matching (profil pseudonymisé). */
 export type CandidateProfile = {
   /** Séniorité du poste actuel ou le plus récent. */
   seniority: SeniorityCode | null;
   achievements: CandidateAchievement[];
+  /**
+   * Expériences, du plus récent au plus ancien : signal de pertinence
+   * (lexical et embeddings), moins fort qu'une réalisation.
+   */
+  experiences?: CandidateExperience[];
   /** `proven` : au moins une réalisation prouvée utilise la compétence. */
   skills: { name: string; proven: boolean }[];
 };
@@ -106,5 +118,7 @@ export const GAP_CODES = [
   "salaryBelowTarget",
   "unprovenSkill",
   "fewSkills",
+  /** Peu de rapport avec le parcours : le contexte (salaire, séniorité, culture) compte moins. */
+  "lowRelevance",
 ] as const;
 export type GapCode = (typeof GAP_CODES)[number];
