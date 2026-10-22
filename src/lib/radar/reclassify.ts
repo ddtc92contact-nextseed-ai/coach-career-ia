@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@/generated/prisma/client";
+import { DIRECT_SOURCE } from "@/lib/employer/config";
 import { logger as defaultLogger, type Logger } from "@/lib/logger";
 import { markAllCandidatesDirty } from "@/lib/matching/jobs";
 import { detectRemotePolicy, mentionsRemotePolicy } from "./normalize";
@@ -13,7 +14,9 @@ export type ReclassifySummary = { scanned: number; reclassified: number; candida
  * puis tous les candidats sont recalculés. Idempotent.
  *
  * Une offre dont le texte ne mentionne pas la politique stockée la tient d'un
- * indicateur structuré de l'ATS : elle n'est pas touchée. Les offres
+ * indicateur structuré de l'ATS : elle n'est pas touchée. Les offres publiées
+ * par les employeurs (`direct`) non plus : leur politique est un choix
+ * explicite, que le radar ne réécrirait jamais. Les offres
  * reclassées perdent leur empreinte : le passage suivant du radar les réécrit
  * depuis la source (indicateurs structurés compris).
  */
@@ -28,7 +31,11 @@ export async function reclassifyRemotePolicies(
 
   for (;;) {
     const offers = await prisma.jobOffer.findMany({
-      where: { status: "OPEN", remotePolicy: { in: ["FULL_REMOTE", "HYBRID"] } },
+      where: {
+        status: "OPEN",
+        source: { not: DIRECT_SOURCE },
+        remotePolicy: { in: ["FULL_REMOTE", "HYBRID"] },
+      },
       select: { id: true, title: true, description: true, remotePolicy: true },
       orderBy: { id: "asc" },
       take: batchSize,

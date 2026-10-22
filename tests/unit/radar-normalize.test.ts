@@ -40,6 +40,12 @@ describe("détection du télétravail", () => {
     "We are looking for a fully remote engineer",
     "Nous ne recrutons qu'en full remote",
     "Pas besoin de déménager : poste 100 % télétravail",
+    "N'hésitez pas à postuler : poste en full remote",
+    "Pas de déplacement, 100 % télétravail",
+    "You don't need to relocate: fully remote role",
+    "You don't have to relocate: this is a fully remote role",
+    "Whether or not you live in Paris, the job is fully remote",
+    "You'll never have to commute: fully remote",
   ])("mention positive : « %s » → FULL_REMOTE", (text) => {
     expect(detectRemotePolicy(text)).toBe("FULL_REMOTE");
   });

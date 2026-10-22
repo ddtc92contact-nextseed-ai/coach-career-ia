@@ -15,6 +15,7 @@ const { recomputeUserMatches } = await import("@/lib/matching/recompute");
 const { matchingConfig } = await import("@/lib/matching/config");
 const { mapGreenhouseJob } = await import("@/lib/radar/connectors/greenhouse");
 const { reclassifyRemotePolicies } = await import("@/lib/radar/reclassify");
+const { detectRemotePolicy } = await import("@/lib/radar/normalize");
 const { createLogger } = await import("@/lib/logger");
 const { company, fixtureJson } = await import("../helpers/radar");
 type GreenhouseJob = import("@/lib/radar/connectors/greenhouse").GreenhouseJob;
@@ -42,6 +43,9 @@ describe.skipIf(!url)("reclassement du télétravail des offres déjà en base",
   let userId: string;
   const doctolibId = `${run}-doctolib`;
   const structuredId = `${run}-structured`;
+  const directId = `${run}-direct`;
+  // Lue comme négative par la détection (« pas » juste avant) : seule l'origine protège l'offre.
+  const directDescription = "Pas de déménagement à prévoir : poste en full remote.";
 
   beforeAll(async () => {
     process.env.DATA_ENCRYPTION_KEY ??= randomBytes(32).toString("base64");
@@ -121,6 +125,20 @@ describe.skipIf(!url)("reclassement du télétravail des offres déjà en base",
           city: null,
           remotePolicy: "FULL_REMOTE",
         },
+        {
+          // Offre publiée par un employeur : politique choisie, jamais recollectée.
+          ...base,
+          source: "direct",
+          sourceKey: `direct:${run}`,
+          id: directId,
+          sourceId: directId,
+          url: `https://emplois.exemple.test/${run}/direct`,
+          urlKey: `${run}/direct`,
+          title: "Commercial(e) sédentaire",
+          description: directDescription,
+          city: "Nantes",
+          remotePolicy: "FULL_REMOTE",
+        },
       ],
     });
     // Opportunité sauvegardée par la candidate, proposée avant le correctif.
@@ -162,6 +180,10 @@ describe.skipIf(!url)("reclassement du télétravail des offres déjà en base",
     // Indicateur structuré (aucune mention dans le texte) : inchangé.
     const structured = await db.jobOffer.findUniqueOrThrow({ where: { id: structuredId } });
     expect(structured).toMatchObject({ remotePolicy: "FULL_REMOTE", contentHash: "avant" });
+    // Offre directe : le choix de l'employeur et l'empreinte restent intacts.
+    expect(detectRemotePolicy("Commercial(e) sédentaire", directDescription)).toBe("UNKNOWN");
+    const direct = await db.jobOffer.findUniqueOrThrow({ where: { id: directId } });
+    expect(direct).toMatchObject({ remotePolicy: "FULL_REMOTE", contentHash: "avant" });
 
     const state = await db.matchingState.findUniqueOrThrow({ where: { userId } });
     expect(state.dirtyAt).toBeInstanceOf(Date);

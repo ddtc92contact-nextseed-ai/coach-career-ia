@@ -23,7 +23,7 @@ const NEGATION =
   /\b(?:pas|(?:vous|tu) (?:re)?cherch(?:ez|es)|(?:re)?cherch(?:ez vous|es tu)|(?:vous|tu) (?:etes|es) (?:a la recherche|en quete)|(?:vous|tu) (?:souhaitez|souhaites|voulez|veux|preferez|preferes|revez|reves|aspirez|aspires|avez envie|as envie)|faites demi tour|passez votre chemin|not|never|(?:isn|aren|wasn|don|doesn|won|can|couldn|wouldn|shouldn) t|cannot|(?:you|you re|you are|are you) (?:looking|searching)|if you (?:want|wish|prefer|need|seek)|you (?:want|wish|prefer|seek|re seeking|are seeking))\b/;
 /** Tournures où « pas » / « not » ne nient pas la mention qui suit. */
 const NEGATION_EXCEPTIONS =
-  /\b(?:pas (?:plus|moins|seulement|uniquement|besoin|forcement)|n importe|no(?:t)? (?:more|less) than|not only|no need)\b/g;
+  /\b(?:pas (?:plus|moins|seulement|uniquement|besoin|forcement)|n hesite[sz]? pas|pas de deplacements?|n importe|no(?:t)? (?:more|less) than|not only|no need|whether or not|(?:don|doesn|won) t (?:need|have) to|never (?:need|have) to|no matter)\b/g;
 /** Négation placée après la mention : « 100 % télétravail n'est pas possible ». */
 const NEGATED_AFTER =
   /^(?:(?:n )?(?:est|sont|is|are) )?(?:(?:pas|non|not|isn t|aren t) (?:possible|envisageable|autorise|propose|available|offered|an option|allowed)|impossible|exclu)\b/;
