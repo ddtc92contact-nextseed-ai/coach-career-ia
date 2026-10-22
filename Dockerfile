@@ -40,10 +40,12 @@ COPY src/i18n ./src/i18n
 COPY messages ./messages
 COPY config ./config
 COPY worker ./worker
+# Tas V8 fixé à ~75 % de la limite mémoire du conteneur (voir le script).
+COPY docker/worker-start.sh ./docker/worker-start.sh
 # Scripts ponctuels (`docker compose run --rm worker npm run radar:reclassify-remote`).
 COPY scripts ./scripts
 USER node
-CMD ["node", "--import", "tsx", "worker/index.ts"]
+CMD ["sh", "docker/worker-start.sh"]
 
 # ---- Image d'exécution (Next.js standalone) -------------------------------
 FROM node:22-bookworm-slim AS runner

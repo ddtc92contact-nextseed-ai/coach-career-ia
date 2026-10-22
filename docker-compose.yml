@@ -148,6 +148,8 @@ services:
       GEO_ENABLED: ${GEO_ENABLED:-true}
       GEO_NOMINATIM_ENABLED: ${GEO_NOMINATIM_ENABLED:-true}
       GEO_NOMINATIM_MAX_PER_RUN: ${GEO_NOMINATIM_MAX_PER_RUN:-200}
+      # Vide : tas V8 = 75 % de WORKER_MEM_LIMIT (docker/worker-start.sh).
+      NODE_OPTIONS: ${WORKER_NODE_OPTIONS:-}
     depends_on:
       postgres:
         condition: service_healthy
@@ -155,7 +157,9 @@ services:
         condition: service_completed_successfully
     networks:
       - internal
-    mem_limit: ${WORKER_MEM_LIMIT:-384m}
+    # 512 Mo : ~225 Mo hors tas au repos, pic du matching sur 20 000 offres et
+    # cache HTTP du radar (64 Mo) ; voir README « Mémoire du worker ».
+    mem_limit: ${WORKER_MEM_LIMIT:-512m}
 
   postgres:
     image: pgvector/pgvector:pg17

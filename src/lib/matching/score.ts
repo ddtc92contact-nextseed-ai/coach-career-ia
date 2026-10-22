@@ -254,6 +254,12 @@ export function evaluateOffer(
   };
 }
 
+/** Ordre du classement : score décroissant, puis identifiant (ordre stable). */
+export const byRank = (
+  a: { score: number; offerId: string },
+  b: { score: number; offerId: string },
+) => b.score - a.score || a.offerId.localeCompare(b.offerId);
+
 /**
  * Classe des offres : celles qui violent un garde-fou sont écartées, les
  * autres triées par score décroissant (puis identifiant, pour un ordre stable).
@@ -293,6 +299,6 @@ export function rankOffers(
       });
     } else matches.push(result);
   }
-  matches.sort((a, b) => b.score - a.score || a.offerId.localeCompare(b.offerId));
+  matches.sort(byRank);
   return { matches, excluded };
 }
