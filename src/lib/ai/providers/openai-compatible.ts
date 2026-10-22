@@ -15,7 +15,9 @@ import type {
  * (`http://127.0.0.1:11434/v1`) parlent ce format, outils et mode JSON compris.
  *
  * Aucune donnée de la requête ou de la réponse n'est journalisée ni reprise
- * dans les erreurs : seuls le statut HTTP et un code remontent.
+ * dans les erreurs : seuls le statut HTTP et un code remontent. Exception
+ * pour les embeddings : le message d'erreur du fournisseur (« Too many tokens
+ * overall… ») remonte, tronqué, s'il ne cite aucune entrée (`safeErrorDetail`).
  */
 
 export type FetchLike = (input: string, init: RequestInit) => Promise<Response>;
@@ -106,11 +108,84 @@ function retryAfterMs(response: Response): number | undefined {
   return Number.isNaN(date) ? undefined : Math.max(0, date - Date.now());
 }
 
+/** Longueur maximale du message d'erreur du fournisseur repris dans `AiError`. */
+const ERROR_MESSAGE_MAX = 200;
+/** Corps d'erreur lu au plus (un 422 peut recopier toute la requête). */
+const ERROR_BODY_MAX = 64_000;
+/** Un message est écarté s'il partage un fragment de cette longueur avec une entrée. */
+const QUOTE_WINDOW = 16;
+
+function quotesInput(message: string, inputs: string[]): boolean {
+  // Guillemets : signe d'une valeur citée (FastAPI, `input: "…"`).
+  if (/["«»`]/.test(message)) return true;
+  const fragments = new Set<string>();
+  if (message.length <= QUOTE_WINDOW) fragments.add(message);
+  for (let i = 0; i + QUOTE_WINDOW <= message.length; i++) {
+    fragments.add(message.slice(i, i + QUOTE_WINDOW));
+  }
+  return inputs.some((input) => [...fragments].some((fragment) => input.includes(fragment)));
+}
+
+/**
+ * Message et type d'erreur d'un corps JSON (`{message, type, code}` chez
+ * Mistral, `{error: {message, type}}` au format OpenAI, `{detail}` pour les
+ * validations). Le message n'est gardé que s'il ne reprend rien des entrées.
+ */
+export function safeErrorDetail(
+  body: string,
+  inputs: string[],
+): { providerMessage?: string; providerType?: string } {
+  let data: unknown;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    return {};
+  }
+  if (!data || typeof data !== "object") return {};
+  const root = data as Record<string, unknown>;
+  const nested =
+    root.error && typeof root.error === "object" ? (root.error as Record<string, unknown>) : root;
+  const firstDetail = Array.isArray(root.detail) ? (root.detail[0] as unknown) : undefined;
+  const fromDetail =
+    firstDetail && typeof firstDetail === "object"
+      ? (firstDetail as Record<string, unknown>)
+      : undefined;
+  const pick = (...values: unknown[]) =>
+    values.find((v): v is string | number => typeof v === "string" || typeof v === "number");
+
+  const type = pick(nested.type, nested.code, fromDetail?.type);
+  const raw = pick(nested.message, typeof root.detail === "string" ? root.detail : undefined);
+  const message =
+    typeof raw === "string" ? raw.replace(/\s+/g, " ").trim().slice(0, ERROR_MESSAGE_MAX) : "";
+  return {
+    ...(message && !quotesInput(message, inputs) ? { providerMessage: message } : {}),
+    ...(type !== undefined ? { providerType: String(type).slice(0, 60) } : {}),
+  };
+}
+
+async function readErrorBody(response: Response): Promise<string> {
+  try {
+    const text = await response.text();
+    return text.slice(0, ERROR_BODY_MAX);
+  } catch {
+    return "";
+  }
+}
+
 export function createOpenAiCompatibleProvider(options: OpenAiCompatibleOptions): AiProvider {
   const baseUrl = options.baseUrl.replace(/\/+$/, "");
   const doFetch: FetchLike = options.fetch ?? ((input, init) => fetch(input, init));
 
-  async function post<T>(path: string, body: unknown, { signal }: CallOptions): Promise<T> {
+  /**
+   * `inputs` : textes envoyés, pour vérifier qu'un message d'erreur ne les
+   * cite pas. Sans `inputs`, le corps d'erreur est ignoré.
+   */
+  async function post<T>(
+    path: string,
+    body: unknown,
+    { signal }: CallOptions,
+    inputs?: string[],
+  ): Promise<T> {
     let response: Response;
     try {
       response = await doFetch(`${baseUrl}${path}`, {
@@ -130,9 +205,13 @@ export function createOpenAiCompatibleProvider(options: OpenAiCompatibleOptions)
       throw new AiError("unavailable");
     }
     if (!response.ok) {
-      // Le corps d'erreur peut citer la requête : il est ignoré.
-      await response.body?.cancel().catch(() => {});
-      throw errorFromStatus(response.status, retryAfterMs(response));
+      if (!inputs || response.status === 429 || response.status >= 500) {
+        // Le corps d'erreur peut citer la requête : il est ignoré.
+        await response.body?.cancel().catch(() => {});
+        throw errorFromStatus(response.status, retryAfterMs(response));
+      }
+      const detail = safeErrorDetail(await readErrorBody(response), inputs);
+      throw errorFromStatus(response.status, retryAfterMs(response), detail);
     }
     try {
       return (await response.json()) as T;
@@ -206,6 +285,7 @@ export function createOpenAiCompatibleProvider(options: OpenAiCompatibleOptions)
         "/embeddings",
         { model: options.embeddingModel, input: texts },
         callOptions,
+        texts,
       );
       const rows = [...(data.data ?? [])].sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
       if (rows.length !== texts.length || rows.some((row) => !Array.isArray(row.embedding))) {

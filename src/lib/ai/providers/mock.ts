@@ -78,6 +78,8 @@ export function createMockProvider(
     embedder?: (text: string) => number[];
     /** Échec simulé des embeddings. */
     embedError?: AiError;
+    /** Refus simulé d'un lot selon son contenu (entrée « empoisonnée », lot trop gros…). */
+    embedReject?: (texts: string[]) => AiError | undefined;
   } = {},
 ): MockProvider {
   const calls: ChatRequest[] = [];
@@ -118,6 +120,8 @@ export function createMockProvider(
       if (signal.aborted) throw signal.reason;
       embedCalls.push([...texts]);
       if (options.embedError) throw options.embedError;
+      const rejection = options.embedReject?.(texts);
+      if (rejection) throw rejection;
       return {
         vectors: texts.map((text) =>
           options.embedder ? options.embedder(text) : mockEmbedding(text, options.dimensions),
